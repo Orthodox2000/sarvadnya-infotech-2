@@ -10,6 +10,8 @@
   --background-color: #ffffff;
   --background: var(--background-color);
   --foreground: var(--primary-color);
+  --font-sans: "Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-mono: "Consolas", "SFMono-Regular", "Liberation Mono", monospace;
 }
 
 @theme inline {
@@ -24,4 +26,183 @@ body {
   color: var(--foreground);
   color-scheme: light;
   forced-color-adjust: none;
+  font-family: var(--font-sans);
+}
+
+@keyframes productbar-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes productbar-logo-pop {
+  0% {
+    transform: scale(1);
+  }
+
+  45% {
+    transform: scale(1.06);
+  }
+
+  100% {
+    transform: scale(1.03);
+  }
+}
+
+.group\/product:hover .productbar-subitem,
+.group\/product:focus-within .productbar-subitem {
+  animation: productbar-fade-up 0.28s ease-out forwards;
+}
+
+.productbar-home-tile:hover,
+.productbar-home-tile:focus-visible {
+  animation: productbar-logo-pop 0.28s ease-out forwards;
+  box-shadow:
+    0 0 0 1px rgba(94, 23, 235, 0.12),
+    0 0 24px rgba(94, 23, 235, 0.28);
+}
+
+.hero-slide-layer {
+  position: absolute;
+  inset: 0;
+  transform: translate3d(0, 0, 0);
+  filter: blur(3px);
+  transition:
+    transform 1.2s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform, opacity, filter;
+}
+
+.hero-glass-panel {
+  background: linear-gradient(180deg, rgba(38, 24, 78, 0.58), rgba(22, 18, 48, 0.42));
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 18px 48px rgba(11, 18, 32, 0.24);
+}
+
+.hero-glass-panel-mobile {
+  background: linear-gradient(180deg, rgba(42, 22, 92, 0.82), rgba(69, 31, 128, 0.68));
+}
+
+.hero-text-panel-mobile {
+  background: linear-gradient(180deg, rgba(24, 18, 52, 0.56), rgba(53, 30, 104, 0.34));
+}
+
+.hero-glass-input {
+  background: rgba(255, 255, 255, 0.09);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.07);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.hero-glass-input:focus {
+  border-color: rgba(255, 255, 255, 0.44);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 0 0 3px rgba(255, 255, 255, 0.12);
+}
+
+.hero-slide-current {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+.hero-slide-current-out {
+  opacity: 1;
+  transform: translate3d(100%, 0, 0);
+}
+
+.hero-slide-current-out-top {
+  opacity: 1;
+  transform: translate3d(0, -100%, 0);
+}
+
+.hero-slide-current-out-down {
+  opacity: 1;
+  transform: translate3d(0, 100%, 0);
+}
+
+.hero-slide-next {
+  opacity: 0;
+  transform: translate3d(-100%, 0, 0);
+}
+
+.hero-slide-next-top {
+  opacity: 0;
+  transform: translate3d(0, -100%, 0);
+}
+
+.hero-slide-next-bottom {
+  opacity: 0;
+  transform: translate3d(0, 100%, 0);
+}
+
+.hero-slide-next-in {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+.hero-slide-next-in-top {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+.hero-slide-next-in-bottom {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+@media (max-width: 600px) {
+  .hero-polygon-left {
+    display: none;
+  }
+
+  .hero-polygon-right {
+    inset: 0 !important;
+    width: 100% !important;
+    clip-path: none !important;
+    box-shadow: none !important;
+  }
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .hero-glass-panel {
+    background: rgba(28, 20, 56, 0.88);
+  }
+
+  .hero-glass-panel-mobile {
+    background: rgba(42, 22, 92, 0.92);
+  }
+
+  .hero-text-panel-mobile {
+    background: rgba(24, 18, 52, 0.9);
+  }
+
+  .hero-glass-input {
+    background: rgba(255, 255, 255, 0.12);
+  }
+}
+
+@supports not (clip-path: polygon(0 0, 42% 0, 72% 100%, 0% 100%)) {
+  .hero-polygon-left {
+    clip-path: none !important;
+    transform: skewX(-18deg);
+    transform-origin: bottom;
+  }
+
+  .hero-polygon-right {
+    clip-path: none !important;
+    transform: skewX(18deg);
+    transform-origin: bottom;
+  }
 }

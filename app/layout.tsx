@@ -1,20 +1,9 @@
 import type { Metadata } from "next";
 import type { CSSProperties } from "react";
-import { Geist, Geist_Mono } from "next/font/google";
 import Navbar from "./components/Navbar";
 import { theme } from "@/lib/theme";
 import "./globals.css";
 import Productbar from "./components/Productbar";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
   title: "Sarvadnya Infotech",
@@ -27,13 +16,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-      style={{ colorScheme: "light" }}
-    >
+    <html lang="en" className="h-full antialiased" style={{ colorScheme: "light" }}>
       <body
-        className="min-h-full bg-background text-foreground"
+        className="relative min-h-full overflow-x-hidden bg-background text-foreground"
         style={
           {
             "--primary-color": theme.primaryColor,
@@ -47,7 +32,7 @@ export default function RootLayout({
         }
       >
         <Navbar />
-        <Productbar/>
+        <Productbar />
         {children}
       </body>
     </html>
