@@ -1,15 +1,28 @@
 @import "tailwindcss";
 
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
 :root {
-  --primary-color: #0f172a;
-  --secondary-color: #475569;
-  --primary-btn-color: #111827;
-  --secondary-btn-color: #e2e8f0;
-  --heading-color: #0b1220;
-  --para-color: #334155;
-  --background-color: #ffffff;
+  --primary-color: #7338a0;
+  --secondary-color: #4a2574;
+  --primary-btn-color: #1e3a8a;
+  --secondary-btn-color: #ffffff;
+  --heading-color: #0f0529;
+  --para-color: #4a2574;
+  --background-color: #fbf5ec;
   --background: var(--background-color);
-  --foreground: var(--primary-color);
+  --foreground: var(--heading-color);
   --font-sans: "Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
   --font-mono: "Consolas", "SFMono-Regular", "Liberation Mono", monospace;
 }
@@ -53,6 +66,47 @@ body {
   100% {
     transform: scale(1.03);
   }
+}
+
+@keyframes rise-up {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-rise-up {
+  opacity: 1;
+  transform: translateY(0);
+  animation: rise-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.hover-underline-animation {
+  position: relative;
+  display: inline-block;
+  padding-bottom: 2px;
+}
+
+.hover-underline-animation::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: currentColor;
+  transform-origin: bottom right;
+  transition: transform 0.3s ease-out;
+}
+
+.hover-underline-animation:hover::after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
 }
 
 .group\/product:hover .productbar-subitem,

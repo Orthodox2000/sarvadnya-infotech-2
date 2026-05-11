@@ -16,9 +16,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="h-full antialiased" style={{ colorScheme: "light" }}>
+    <html lang="en" className="h-full antialiased" style={{ colorScheme: "light" }} data-scroll-behavior="smooth" suppressHydrationWarning>
       <body
-        className="relative min-h-full overflow-x-hidden bg-background text-foreground"
+        className="relative min-h-full w-full overflow-x-hidden bg-background text-foreground"
+        suppressHydrationWarning
         style={
           {
             "--primary-color": theme.primaryColor,

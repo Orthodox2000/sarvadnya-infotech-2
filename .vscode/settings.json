@@ -1,3 +1,4 @@
 {
-    "workbench.tree.indent": 25
+    "workbench.tree.indent": 25,
+    "editor.wordWrap": "on"
 }

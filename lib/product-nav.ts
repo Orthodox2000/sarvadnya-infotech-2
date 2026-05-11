@@ -2,7 +2,8 @@ export type ProductSubItem = {
   id: string;
   label: string;
   href: string;
-  description: string;
+  description?: string;
+  subItems?: ProductSubItem[];
 };
 
 export type ProductItem = {
@@ -13,98 +14,155 @@ export type ProductItem = {
 
 export const productItems: ProductItem[] = [
   {
-    label: "Business Software",
-    href: "/",
+    label: "Products",
+    href: "/products",
     subItems: [
       {
-        id: "business-software-erp",
-        label: "ERP Workflows",
-        href: "/",
-        description: "Operational tools for billing, inventory, and day-to-day process control.",
+        id: "tp-editions",
+        label: "TallyPrime Editions",
+        href: "/products#compare",
+        description: "Core business management software.",
+        subItems: [
+          { id: "tp-silver", label: "Silver (Single User)", href: "/products#compare" },
+          { id: "tp-gold", label: "Gold (Multi-User)", href: "/products#compare" },
+          { id: "tp-server", label: "TallyPrime Server", href: "/products#compare" },
+        ]
       },
       {
-        id: "business-software-accounting",
-        label: "Accounting Stack",
-        href: "/",
-        description: "Core finance-focused modules designed for reliable business record keeping.",
-      },
-      {
-        id: "business-software-reporting",
-        label: "Management Reports",
-        href: "/",
-        description: "Decision-ready summaries and dashboards for owners and operations teams.",
+        id: "tp-cloud",
+        label: "Cloud Solutions",
+        href: "/products#cloud",
+        description: "Official Tally & AWS infrastructure.",
+        subItems: [
+          { id: "c-aws", label: "Tally on AWS", href: "/products#cloud" },
+          { id: "nosky-backup", label: "NoSky Backup", href: "/products#cloud" },
+        ]
       },
     ],
   },
   {
-    label: "Implementation",
-    href: "/",
+    label: "Modules",
+    href: "/products#modules",
     subItems: [
       {
-        id: "implementation-onboarding",
-        label: "Onboarding",
-        href: "/",
-        description: "Structured rollout support for setting up teams, data, and workflows.",
+        id: "m-cf",
+        label: "C&F Agencies",
+        href: "/products#modules",
+        description: "Logistics and agent management.",
       },
       {
-        id: "implementation-migration",
-        label: "Data Migration",
-        href: "/",
-        description: "Transition legacy records into the new setup with minimal operational friction.",
+        id: "m-soc",
+        label: "Housing Societies",
+        href: "/products#modules",
+        description: "Maintenance, billing and accounting.",
       },
       {
-        id: "implementation-customization",
-        label: "Customization",
-        href: "/",
-        description: "Tailored configuration for specific operating models and reporting needs.",
+        id: "m-trans",
+        label: "Transport & Logistics",
+        href: "/products#modules",
+        description: "Fleet management and trip sheets.",
+      },
+      {
+        id: "m-garment",
+        label: "Garment Module",
+        href: "/products#modules",
+        description: "Size, color, and fabric inventory.",
+      },
+      {
+        id: "m-sales",
+        label: "Sales & Commission",
+        href: "/products#modules",
+        description: "Track performance and commissions.",
+      },
+      {
+        id: "m-excel",
+        label: "Excel to Tally",
+        href: "/products#modules",
+        description: "Bulk data import tools.",
+      },
+      {
+        id: "m-boost",
+        label: "Business Boosters",
+        href: "/products#modules",
+        description: "Productivity add-on modules.",
       },
     ],
   },
   {
-    label: "Training",
-    href: "/",
+    label: "Services",
+    href: "/products",
     subItems: [
       {
-        id: "training-team",
-        label: "Team Enablement",
-        href: "/",
-        description: "Hands-on sessions that help staff adopt new systems with confidence.",
+        id: "s-tss",
+        label: "TSS Renewal",
+        href: "/products",
+        description: "Latest statutory & product updates.",
       },
       {
-        id: "training-admin",
-        label: "Admin Coaching",
-        href: "/",
-        description: "Advanced guidance for internal owners managing usage, settings, and controls.",
+        id: "s-amc",
+        label: "Annual Support",
+        href: "/products",
+        description: "Priority troubleshooting & visits.",
       },
       {
-        id: "training-reference",
-        label: "Reference Material",
-        href: "/",
-        description: "Repeatable documentation for ongoing support after initial rollout.",
+        id: "s-train",
+        label: "Corporate Training",
+        href: "/products",
+        description: "Hands-on training for your staff.",
+      },
+      {
+        id: "s-custom",
+        label: "Bespoke Customization",
+        href: "/products",
+        description: "Development of unique Tally features.",
+      },
+      {
+        id: "s-mobile",
+        label: "Tally on Mobile",
+        href: "/products",
+        description: "Real-time reports on your smartphone.",
       },
     ],
   },
   {
-    label: "Support",
+    label: "Learning",
+    href: "/tutorials",
+    subItems: [
+      {
+        id: "r-webinars",
+        label: "Weekly Webinars",
+        href: "/tutorials",
+        description: "Live sessions every Thursday at 3 PM.",
+      },
+      {
+        id: "r-tutorials",
+        label: "Interactive Tutorials",
+        href: "/tutorials",
+        description: "Guides and videos to master Tally.",
+      },
+    ],
+  },
+  {
+    label: "Company",
     href: "/",
     subItems: [
       {
-        id: "support-helpdesk",
-        label: "Helpdesk",
+        id: "c-about",
+        label: "About Us",
         href: "/",
-        description: "Issue resolution for operational blockers, user questions, and maintenance.",
+        description: "Our story, mission and vision.",
       },
       {
-        id: "support-audits",
-        label: "System Audits",
+        id: "c-team",
+        label: "Our Team",
         href: "/",
-        description: "Periodic review of setup quality, controls, and process consistency.",
+        description: "Meet our Tally experts.",
       },
       {
-        id: "support-improvements",
-        label: "Continuous Improvement",
+        id: "c-contact",
+        label: "Contact",
         href: "/",
-        description: "Ongoing refinement to keep tools aligned with evolving business needs.",
+        description: "Get in touch for support or sales.",
       },
     ],
   },
