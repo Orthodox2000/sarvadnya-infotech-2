@@ -14,13 +14,15 @@ html {
 }
 
 :root {
-  --primary-color: #7338a0;
-  --secondary-color: #4a2574;
-  --primary-btn-color: #1e3a8a;
+  --primary-color: #7f00ff;
+  --secondary-color: #51158c;
+  --primary-btn-color: #7f00ff;
   --secondary-btn-color: #ffffff;
-  --heading-color: #0f0529;
-  --para-color: #4a2574;
-  --background-color: #fbf5ec;
+  --heading-color: #290f4d;
+  --para-color: #51158c;
+  --background-color: #fcfaff;
+  --accent-color: #b163ff;
+  --heading-light-color: #431f82;
   --background: var(--background-color);
   --foreground: var(--heading-color);
   --font-sans: "Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -83,6 +85,63 @@ body {
   opacity: 1;
   transform: translateY(0);
   animation: rise-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.text-highlight-gradient {
+  background: linear-gradient(
+    90deg, 
+    var(--hero-text-from, #4f46e5) 0%, 
+    var(--hero-text-to, #7c3aed) 50%,
+    var(--hero-text-from, #4f46e5) 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: text-gradient-flow 12s linear infinite;
+  will-change: background-position;
+}
+
+/* Performance Optimizations */
+section {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 500px;
+}
+
+/* Ensure Hero is always visible immediately */
+main > section:first-of-type,
+main > div:first-of-type {
+  content-visibility: visible;
+}
+
+.animate-rise-up,
+.text-highlight-gradient,
+.hero-slide-layer {
+  backface-visibility: hidden;
+  perspective: 1000px;
+  transform: translateZ(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-delay: -1ms !important;
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    background-attachment: initial !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0s !important;
+    transition-delay: 0s !important;
+  }
+  
+  .text-highlight-gradient {
+    animation: none !important;
+    background-size: 100% auto !important;
+  }
+}
+
+@keyframes text-gradient-flow {
+  0% { background-position: 0% center; }
+  100% { background-position: 200% center; }
 }
 
 .hover-underline-animation {

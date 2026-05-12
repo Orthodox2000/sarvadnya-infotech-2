@@ -7,7 +7,7 @@ import Productbar from "./components/Productbar";
 
 export const metadata: Metadata = {
   title: "Sarvadnya Infotech",
-  description: "Next.js, Tailwind CSS, and MongoDB application.",
+  description: "Your Tally Assistance",
 };
 
 export default function RootLayout({
@@ -29,6 +29,8 @@ export default function RootLayout({
             "--heading-color": theme.headingColor,
             "--para-color": theme.paragraphColor,
             "--background-color": theme.backgroundColor,
+            "--accent-color": theme.accentColor,
+            "--heading-light-color": theme.headingLightColor,
           } as CSSProperties
         }
       >

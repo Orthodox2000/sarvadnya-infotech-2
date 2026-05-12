@@ -85,7 +85,7 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
           </div>
           <button
             type="submit"
-            className="w-full mt-4 rounded-2xl bg-white px-6 py-4 text-sm font-bold text-[#7338a0] shadow-xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
+            className="w-full mt-4 rounded-2xl bg-white px-6 py-4 text-sm font-bold text-[var(--primary-color,#7338a0)] shadow-xl transition-all duration-300 hover:bg-[var(--secondary-color,#4a2574)] hover:text-white hover:scale-[1.02] active:scale-[0.98]"
           >
             Send Request Now
           </button>

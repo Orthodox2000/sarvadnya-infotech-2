@@ -1,8 +1,9 @@
 'use client';
 
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
-export default function CertifiedPartners() {
+import { useEffect, useRef, useState, memo } from "react";
+
+const CertifiedPartners = () => {
     const images = [
         "/PartnerBrands/Tally-Software.png",
         "/PartnerBrands/AWS.png",
@@ -14,7 +15,7 @@ export default function CertifiedPartners() {
     const sectionRef = useRef(null);
 
     useEffect(() => {
-        // Fallback for older browsers or if observer fails
+        const currentRef = sectionRef.current;
         if (!window.IntersectionObserver) {
             setIsVisible(true);
             return;
@@ -24,20 +25,19 @@ export default function CertifiedPartners() {
             ([entry]) => {
                 if (entry.isIntersecting) {
                     setIsVisible(true);
-                    // Once visible, we can stop observing
-                    if (sectionRef.current) observer.unobserve(sectionRef.current);
+                    if (currentRef) observer.unobserve(currentRef);
                 }
             },
             { threshold: 0.05, rootMargin: "0px 0px -50px 0px" }
         );
 
-        if (sectionRef.current) {
-            observer.observe(sectionRef.current);
+        if (currentRef) {
+            observer.observe(currentRef);
         }
 
         return () => {
-            if (sectionRef.current) {
-                observer.unobserve(sectionRef.current);
+            if (currentRef) {
+                observer.unobserve(currentRef);
             }
         };
     }, []);
@@ -45,7 +45,8 @@ export default function CertifiedPartners() {
     return (
         <section
             ref={sectionRef}
-            className="flex flex-col justify-center items-center gap-10 py-20 px-6 overflow-hidden bg-white"
+            className="flex flex-col justify-center items-center gap-10 py-16 px-6 overflow-hidden transition-colors duration-300"
+            style={{ backgroundColor: 'var(--background-color, white)' }}
         >
             <div className={`text-center transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
                 <h2 className="text-sm font-semibold uppercase tracking-[0.3em] text-slate-500 mb-3">
@@ -56,11 +57,11 @@ export default function CertifiedPartners() {
                 </h1>
             </div>
             
-            <div className="w-full max-w-5xl grid grid-cols-2 md:flex md:flex-nowrap justify-items-center items-center gap-6 sm:gap-12 md:gap-16 lg:gap-24">
+            <div className="w-full max-w-5xl flex flex-row flex-nowrap items-center justify-center gap-2 sm:gap-12 md:gap-16 lg:gap-24 px-2">
                 {images.map((item, index) => (
                     <div 
                         key={index}
-                        className={`relative w-full h-20 sm:h-28 md:w-80 md:h-40 transition-all duration-1000 ${isVisible ? 'animate-rise-up' : 'opacity-0'}`}
+                        className={`relative flex-1 h-12 sm:h-28 md:h-40 bg-white/50 rounded-lg sm:rounded-2xl border border-black/[0.03] shadow-sm transition-all duration-1000 ${isVisible ? 'animate-rise-up' : 'opacity-0'}`}
                         style={{ 
                             animationDelay: isVisible ? `${index * 250}ms` : '0ms',
                         }}
@@ -69,8 +70,8 @@ export default function CertifiedPartners() {
                             src={item}
                             alt={`Partner ${index + 1}`}
                             fill
-                            className="object-contain p-2 transition-transform duration-300 hover:scale-110"
-                            sizes="(max-width: 640px) 150px, (max-width: 768px) 256px, 320px"
+                            className="object-contain p-1.5 sm:p-4 transition-transform duration-300 hover:scale-110"
+                            sizes="(max-width: 640px) 25vw, (max-width: 768px) 256px, 320px"
                             priority={index < 2}
                         />
                     </div>
@@ -78,4 +79,6 @@ export default function CertifiedPartners() {
             </div>
         </section>
     );
-}
+};
+
+export default memo(CertifiedPartners);

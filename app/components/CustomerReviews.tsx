@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, memo } from 'react';
 import Image from 'next/image';
 
 interface Review {
@@ -42,7 +42,7 @@ const reviews: Review[] = [
     }
 ];
 
-function StarRating({ rating, size = "w-4 h-4" }: { rating: number, size?: string }) {
+const StarRating = memo(function StarRating({ rating, size = "w-4 h-4" }: { rating: number, size?: string }) {
     return (
         <div className="flex gap-0.5">
             {[...Array(5)].map((_, i) => (
@@ -57,27 +57,31 @@ function StarRating({ rating, size = "w-4 h-4" }: { rating: number, size?: strin
             ))}
         </div>
     );
-}
+});
 
-export default function CustomerReviews() {
+const CustomerReviews = () => {
     const [isVisible, setIsVisible] = useState(false);
     const sectionRef = useRef<HTMLElement>(null);
 
     useEffect(() => {
+        const currentRef = sectionRef.current;
         const observer = new IntersectionObserver(
             ([entry]) => {
-                setIsVisible(entry.isIntersecting);
+                if (entry.isIntersecting) {
+                    setIsVisible(true);
+                    if (currentRef) observer.unobserve(currentRef);
+                }
             },
             { threshold: 0.1 }
         );
 
-        if (sectionRef.current) {
-            observer.observe(sectionRef.current);
+        if (currentRef) {
+            observer.observe(currentRef);
         }
 
         return () => {
-            if (sectionRef.current) {
-                observer.unobserve(sectionRef.current);
+            if (currentRef) {
+                observer.unobserve(currentRef);
             }
         };
     }, []);
@@ -85,7 +89,8 @@ export default function CustomerReviews() {
     return (
         <section 
             ref={sectionRef}
-            className="w-full py-24 px-6 bg-slate-50/50 overflow-hidden"
+            className="w-full py-8 px-6 overflow-hidden transition-colors duration-300"
+            style={{ backgroundColor: 'var(--background-color, #f8fafc)' }}
         >
             <div className="max-w-7xl mx-auto">
                 {/* Header Section - Google Branding Only */}
@@ -102,7 +107,7 @@ export default function CustomerReviews() {
                 </div>
 
                 {/* Reviews Grid - 4 Columns */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-2">
                     {reviews.map((review, index) => (
                         <div 
                             key={review.id}
@@ -138,4 +143,6 @@ export default function CustomerReviews() {
             </div>
         </section>
     );
-}
+};
+
+export default memo(CustomerReviews);

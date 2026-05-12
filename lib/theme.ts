@@ -1,12 +1,14 @@
 export const theme = {
-  primaryColor: "#7338a0",
-  secondaryColor: "#4a2574",
-  primaryButtonColor: "#1e3a8a", // Dark Blue
-  secondaryButtonColor: "#ffffff", // White for secondary/tutorial button
-  headingColor: "#0f0529",
-  paragraphColor: "#4a2574",
-  backgroundColor: "#fbf5ec",
+  primaryColor: "#7f00ff",
+  secondaryColor: "#51158c",
+  primaryButtonColor: "#7f00ff",
+  secondaryButtonColor: "#ffffff",
+  headingColor: "#290f4d",
+  paragraphColor: "#51158c",
+  backgroundColor: "#fcfaff",
   white: "#ffffff",
+  accentColor: "#b163ff",
+  headingLightColor: "#431f82",
 } as const;
 
 export type Theme = typeof theme;

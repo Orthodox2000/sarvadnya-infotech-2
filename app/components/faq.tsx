@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef, useMemo } from 'react';
+import { useState, useEffect, useRef, useMemo, memo } from 'react';
 
 const faqData = [
     {
@@ -53,7 +53,7 @@ const faqData = [
     }
 ];
 
-export default function FAQ() {
+const FAQ = () => {
     const [activeIndex, setActiveIndex] = useState<number | null>(null);
     const [isVisible, setIsVisible] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
@@ -63,6 +63,7 @@ export default function FAQ() {
     const supportPhone = process.env.NEXT_PUBLIC_SUPPORT_PHONE || "+919876543210";
 
     useEffect(() => {
+        const currentRef = sectionRef.current;
         if (!window.IntersectionObserver) {
             setIsVisible(true);
             return;
@@ -72,24 +73,25 @@ export default function FAQ() {
             ([entry]) => {
                 if (entry.isIntersecting) {
                     setIsVisible(true);
-                    if (sectionRef.current) observer.unobserve(sectionRef.current);
+                    if (currentRef) observer.unobserve(currentRef);
                 }
             },
             { threshold: 0.05, rootMargin: "0px 0px -50px 0px" }
         );
 
-        if (sectionRef.current) {
-            observer.observe(sectionRef.current);
+        if (currentRef) {
+            observer.observe(currentRef);
         }
 
         return () => {
-            if (sectionRef.current) {
-                observer.unobserve(sectionRef.current);
+            if (currentRef) {
+                observer.unobserve(currentRef);
             }
         };
     }, []);
 
     const filteredFaq = useMemo(() => {
+        if (!searchQuery) return faqData;
         return faqData.filter(item => 
             item.question.toLowerCase().includes(searchQuery.toLowerCase()) || 
             item.answer.toLowerCase().includes(searchQuery.toLowerCase())
@@ -110,7 +112,8 @@ export default function FAQ() {
         <section 
             id="faq"
             ref={sectionRef}
-            className="w-full py-24 px-6 bg-slate-50/50"
+            className="w-full py-8 px-6 transition-colors duration-300"
+            style={{ backgroundColor: 'var(--background-color, #f8fafc)' }}
         >
             <div className="max-w-4xl mx-auto">
                 <div className={`text-center mb-12 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
@@ -186,7 +189,7 @@ export default function FAQ() {
                                                 </div>
                                                 <a 
                                                     href={`tel:${supportPhone}`}
-                                                    className="inline-flex items-center justify-center px-5 py-2.5 bg-white border border-slate-200 rounded-lg text-sm font-bold text-slate-900 hover:bg-slate-900 hover:text-white transition-all shadow-sm active:scale-95"
+                                                    className="inline-flex items-center justify-center px-5 py-2.5 bg-white border border-slate-200 rounded-lg text-sm font-bold text-slate-900 hover:bg-[var(--secondary-color,#4a2574)] hover:text-white transition-all shadow-sm active:scale-95"
                                                 >
                                                     <svg className="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
@@ -203,7 +206,7 @@ export default function FAQ() {
                                 <div className="pt-6 text-center">
                                     <button
                                         onClick={() => setIsExpanded(!isExpanded)}
-                                        className="inline-flex items-center px-8 py-3 bg-slate-900 text-white text-sm font-bold rounded-full hover:bg-slate-800 transition-all transform hover:-translate-y-0.5 active:scale-95 shadow-lg shadow-slate-900/20"
+                                        className="inline-flex items-center px-8 py-3 bg-[var(--primary-color,#7338a0)] text-white text-sm font-bold rounded-full hover:bg-[var(--secondary-color,#4a2574)] transition-all transform hover:-translate-y-0.5 active:scale-95 shadow-lg shadow-slate-900/20"
                                     >
                                         {isExpanded ? 'Hide Questions' : 'Show All Questions'}
                                         <svg className={`ml-2 w-4 h-4 transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -222,4 +225,6 @@ export default function FAQ() {
             </div>
         </section>
     );
-}
+};
+
+export default memo(FAQ);

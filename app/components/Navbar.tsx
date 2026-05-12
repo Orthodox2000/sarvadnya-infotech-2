@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function Navbar() {
   return (
-    <header className="sticky top-0 z-[100] w-full border-b border-white/5 bg-[#0a041a] shadow-lg">
+    <header className="sticky top-0 z-[100] w-full border-b border-white/5 bg-[var(--heading-color,#0a041a)] shadow-lg">
       <nav className="mx-auto flex h-14 w-full max-w-7xl items-center justify-between px-6">
         <Link
           href="/"
@@ -53,7 +53,7 @@ export default function Navbar() {
 
             <a
               href="tel:+919876543210"
-              className="inline-flex items-center justify-center rounded-full bg-[#7338a0] px-4 py-1.5 text-[10px] font-bold uppercase tracking-wider text-white shadow-lg transition-all hover:brightness-110 active:scale-95"
+              className="inline-flex items-center justify-center rounded-full bg-[var(--primary-color,#7338a0)] px-4 py-1.5 text-[10px] font-bold uppercase tracking-wider text-white shadow-lg transition-all hover:bg-[var(--secondary-color,#4a2574)] active:scale-95"
             >
               Support
             </a>

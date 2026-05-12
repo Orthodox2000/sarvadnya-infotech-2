@@ -3,13 +3,20 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import QuickSupportModal from './QuickSupportModal';
+import { usePathname } from 'next/navigation';
+import Script from 'next/script';
+import dynamic from 'next/dynamic';
+
+const QuickSupportModal = dynamic(() => import('./QuickSupportModal'), {
+  ssr: false,
+});
 
 const heroContents = [
   {
     badge: "Upgraded to Tally 7.0",
     titleText: "Expert Consultation & Services",
-    gradient: "from-violet-600 to-indigo-600",
+    colorFrom: "#4f46e5", // Indigo
+    colorTo: "#7c3aed",   // Violet
     description: "Beyond Software Sales — Guiding You to Maximize Your Tally Investment with Certified Support.",
     image: "/sa.png",
     features: [
@@ -23,9 +30,10 @@ const heroContents = [
   {
     badge: "Priority Support",
     titleText: "Annual Maintenance Contracts",
-    gradient: "from-blue-600 to-cyan-600",
+    colorFrom: "#2563eb", // Blue
+    colorTo: "#0891b2",   // Cyan
     description: "Minimize downtime and maximize productivity with our priority troubleshooting and regular health checks.",
-    image: "/sa.png",
+    image: "/amc.png",
     features: [
       { text: "On-Site & Remote Support" },
       { text: "Priority Troubleshooting" },
@@ -37,7 +45,8 @@ const heroContents = [
   {
     badge: "Vertical Solutions",
     titleText: "Custom Tally Modules",
-    gradient: "from-emerald-600 to-teal-600",
+    colorFrom: "#059669", // Emerald
+    colorTo: "#0d9488",   // Teal
     description: "Tailored solutions built directly into Tally to optimize your unique industry workflows and reporting.",
     image: "/sa.png",
     features: [
@@ -47,6 +56,21 @@ const heroContents = [
       { text: "Scalable Add-ons" }
     ],
     ctaPrimary: { text: "View Modules", href: "/products#modules" }
+  },
+  {
+    badge: "New Feature",
+    titleText: "Tally to WhatsApp",
+    colorFrom: "#16a34a", // Green
+    colorTo: "#059669",   // Emerald
+    description: "Empower your business with instant communication. Send invoices, payment reminders, and reports directly from Tally to your customers' WhatsApp.",
+    image: "/tally2whatsapp.png",
+    features: [
+      { text: "One-Click Invoice Sharing" },
+      { text: "Automated Payment Links" },
+      { text: "Instant Ledger Reports" },
+      { text: "No Manual Data Entry" }
+    ],
+    ctaPrimary: { text: "Get Started", href: "/products#whatsapp" }
   }
 ];
 
@@ -56,11 +80,43 @@ export default function HomeHero() {
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [displayText, setDisplayText] = useState('');
   const [isTyping, setIsTyping] = useState(true);
+  const [isVisible, setIsVisible] = useState(true);
+  const [isTabFocused, setIsTabFocused] = useState(true);
 
   const current = heroContents[currentIndex];
 
+  // Tab Visibility Detection to prevent animation stacking
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      const hidden = document.hidden;
+      setIsTabFocused(!hidden);
+      
+      if (!hidden) {
+        // Soft reset: trigger a re-type when coming back to tab
+        setDisplayText('');
+        setIsTyping(true);
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
+  }, []);
+
+  // Intersection Observer to stop animations when not visible
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsVisible(entry.isIntersecting),
+      { threshold: 0.1 }
+    );
+    const element = document.getElementById('home-hero');
+    if (element) observer.observe(element);
+    return () => observer.disconnect();
+  }, []);
+
   // Typing effect logic
   useEffect(() => {
+    if (!isVisible || !isTabFocused) return;
+
     let i = 0;
     const textToType = current.titleText;
 
@@ -78,29 +134,57 @@ export default function HomeHero() {
       }, 50);
 
       return () => clearInterval(typingInterval);
-    }, 100); // Start almost immediately (100ms)
+    }, 100);
 
     return () => clearTimeout(typingTimeout);
-  }, [currentIndex]);
+  }, [currentIndex, isVisible, isTabFocused]);
 
   useEffect(() => {
+    if (!isVisible || !isTabFocused) return;
+
     const timer = setInterval(() => {
       setIsTransitioning(true);
       setTimeout(() => {
         setCurrentIndex((prev) => (prev + 1) % heroContents.length);
         setIsTransitioning(false);
       }, 1000);
-    }, 10000); // 10 second delay
+    }, 10000);
 
     return () => clearInterval(timer);
-  }, []);
+  }, [isVisible, isTabFocused]);
+
+  const pathname = usePathname();
+
+  useEffect(() => {
+    if (typeof window !== 'undefined' && (window as any).initSwirl && isVisible && isTabFocused) {
+      (window as any).initSwirl();
+    }
+  }, [pathname, isVisible, isTabFocused]);
 
   return (
-    <main className="relative h-[70dvh] md:h-[85dvh] w-full overflow-hidden bg-white">
+    <main 
+      id="home-hero"
+      className="relative h-[70dvh] md:h-[85dvh] w-full overflow-hidden transition-colors duration-1000 bg-[var(--background-color)] shadow-sm"
+      style={{ 
+        '--hero-text-from': current.colorFrom, 
+        '--hero-text-to': current.colorTo 
+      } as React.CSSProperties}
+    >
+      <div className="content--canvas absolute inset-0 z-[1] pointer-events-none" />
+      <Script src="/js/noise.min.js" strategy="afterInteractive" />
+      <Script src="/js/util.js" strategy="afterInteractive" />
+      <Script 
+        src="/js/swirl.js" 
+        strategy="afterInteractive" 
+        onLoad={() => {
+          if ((window as any).initSwirl) (window as any).initSwirl();
+        }}
+      />
+
       <QuickSupportModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
-      
+
       {/* Background Image Container - Dynamic & Animated */}
-      <div className={`absolute bottom-0 left-1/2 -translate-x-1/2 aspect-[16/9] w-full max-w-3xl h-1/2 md:h-[55dvh] z-0 transition-all duration-700 ease-in-out
+      <div className={`absolute bottom-0 left-1/2 -translate-x-1/2 aspect-[16/9] w-full max-w-3xl h-1/2 md:h-[55dvh] z-[2] transition-all duration-700 ease-in-out
         ${isTransitioning ? 'opacity-0 translate-y-12 scale-95 blur-sm' : 'opacity-90 translate-y-0 scale-100 blur-0'}`}>
         <Image
           src={current.image}
@@ -114,14 +198,30 @@ export default function HomeHero() {
       {/* Content Overlay */}
       <div className="relative z-10 flex h-full w-full flex-col items-center px-6">
         {/* Radial Gradient for text visibility */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-5xl h-[70%] bg-[radial-gradient(circle_at_top,rgba(255,255,255,1)_0%,rgba(255,255,255,0.9)_50%,rgba(255,255,255,0)_100%)] pointer-events-none" />
+        <div 
+          className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-5xl h-[70%] pointer-events-none" 
+          style={{ 
+            background: 'radial-gradient(circle at top, var(--background-color) 0%, rgba(252, 250, 255, 0.9) 50%, rgba(252, 250, 255, 0) 100%)'
+          }}
+        />
 
         <div className="relative z-20 mt-[30px] w-full max-w-4xl flex flex-col items-center text-center">
           
           {/* Static Global Badge */}
-          <div className="inline-flex items-center gap-2 rounded-full bg-indigo-50 px-3 py-1 border border-indigo-100 mb-6">
-            <span className="flex h-2 w-2 rounded-full bg-indigo-600 animate-pulse"></span>
-            <span className="text-[10px] font-bold uppercase tracking-wider text-indigo-700">Upgraded to Tally 7.0</span>
+          <div 
+            className="inline-flex items-center gap-2 rounded-full px-3 py-1 border mb-6 transition-all duration-1000 bg-[var(--background-color)] shadow-sm"
+            style={{ borderColor: `${current.colorFrom}33` }}
+          >
+            <span 
+              className="flex h-2 w-2 rounded-full animate-pulse"
+              style={{ backgroundColor: current.colorFrom }}
+            ></span>
+            <span 
+              className="text-[10px] font-bold uppercase tracking-wider transition-colors duration-1000"
+              style={{ color: current.colorFrom }}
+            >
+              {current.badge}
+            </span>
           </div>
 
           {/* Static Heading - Smaller */}
@@ -135,10 +235,15 @@ export default function HomeHero() {
             
             {/* Typing Sub-title - Large & Animated */}
             <h2 className="font-sans text-[24px] md:text-[42px] lg:text-[48px] font-black leading-[1.1] tracking-tight min-h-[2.2em] md:min-h-[1.2em] mb-2 overflow-visible">
-              <span className={`inline-block bg-clip-text text-transparent bg-gradient-to-r ${current.gradient} px-4 py-2 -mx-4`}>
+              <span 
+                className="inline-block px-4 py-2 -mx-4 text-highlight-gradient"
+              >
                 {displayText}
               </span>
-              <span className={`inline-block w-[3px] h-[0.9em] ml-1 bg-indigo-600 align-middle ${isTyping ? 'opacity-100' : 'animate-pulse'}`}></span>
+              <span 
+                className={`inline-block w-[3px] h-[0.9em] ml-1 align-middle transition-colors duration-1000 ${isTyping ? 'opacity-100' : 'animate-pulse'}`}
+                style={{ backgroundColor: current.colorFrom }}
+              ></span>
             </h2>
             
             <p className="max-w-2xl mx-auto text-[12px] md:text-base font-medium leading-relaxed text-slate-700 mb-4">
@@ -149,7 +254,10 @@ export default function HomeHero() {
             <div className="mt-4 flex flex-row flex-wrap justify-center gap-x-8 gap-y-4 w-full">
               {current.features.map((feature, i) => (
                 <div key={feature.text} className="flex items-center gap-2.5 group animate-in fade-in slide-in-from-top-4 duration-500 fill-mode-both" style={{ animationDelay: `${i * 100}ms` }}>
-                  <div className="flex-shrink-0 w-4 h-4 rounded-full bg-emerald-500 flex items-center justify-center shadow-sm">
+                  <div 
+                    className="flex-shrink-0 w-4 h-4 rounded-full flex items-center justify-center shadow-sm transition-colors duration-1000"
+                    style={{ backgroundColor: current.colorFrom }}
+                  >
                     <svg className="w-2.5 h-2.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="5" d="M5 13l4 4L19 7" />
                     </svg>
@@ -162,14 +270,18 @@ export default function HomeHero() {
             <div className="mt-10 flex justify-center gap-3">
               <Link
                 href={current.ctaPrimary.href}
-                className="group relative flex h-9 md:h-11 items-center justify-center overflow-hidden rounded-full bg-[#7338a0] px-8 md:px-10 text-[10px] md:text-xs font-bold text-white shadow-xl transition-all hover:scale-105 active:scale-95"
+                className="group relative flex h-10 md:h-12 w-36 md:w-44 items-center justify-center overflow-hidden rounded-full text-[10px] md:text-xs font-bold text-white shadow-md transition-all hover:scale-105 active:scale-95"
+                style={{ backgroundColor: current.colorFrom }}
               >
                 <span className="relative z-10">{current.ctaPrimary.text}</span>
-                <div className="absolute inset-0 z-0 translate-y-full bg-[#4a2574] transition-transform group-hover:translate-y-0" />
+                <div 
+                  className="absolute inset-0 z-0 translate-y-full transition-transform group-hover:translate-y-0" 
+                  style={{ backgroundColor: current.colorTo }}
+                />
               </Link>
               <button
                 onClick={() => setIsModalOpen(true)}
-                className="flex h-9 md:h-11 items-center justify-center rounded-full border border-slate-200 bg-white px-6 md:px-8 text-[10px] md:text-xs font-bold text-[#0f0529] transition-all hover:bg-slate-50 active:scale-95"
+                className="flex h-10 md:h-12 w-36 md:w-44 items-center justify-center rounded-full border border-slate-200 bg-[var(--background-color)] text-[10px] md:text-xs font-bold text-[#0f0529] transition-all hover:bg-slate-50 active:scale-95 shadow-sm"
               >
                 Request Call
               </button>
