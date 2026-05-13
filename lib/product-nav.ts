@@ -31,11 +31,11 @@ export const productItems: ProductItem[] = [
       {
         id: "tp-cloud",
         label: "Cloud Solutions",
-        href: "/products#cloud",
+        href: "/services#cloud",
         description: "Official Tally & AWS infrastructure.",
         subItems: [
-          { id: "c-aws", label: "Tally on AWS", href: "/products#cloud" },
-          { id: "nosky-backup", label: "NoSky Backup", href: "/products#cloud" },
+          { id: "c-aws", label: "Tally on AWS", href: "/services#cloud" },
+          { id: "nosky-backup", label: "NoSky Backup", href: "/services#cloud" },
         ]
       },
     ],
@@ -90,37 +90,43 @@ export const productItems: ProductItem[] = [
   },
   {
     label: "Services",
-    href: "/products",
+    href: "/services",
     subItems: [
       {
         id: "s-tss",
         label: "TSS Renewal",
-        href: "/products",
+        href: "/services#amc",
         description: "Latest statutory & product updates.",
       },
       {
         id: "s-amc",
         label: "Annual Support",
-        href: "/products",
+        href: "/services#amc",
         description: "Priority troubleshooting & visits.",
       },
       {
         id: "s-train",
         label: "Corporate Training",
-        href: "/products",
+        href: "/services#support",
         description: "Hands-on training for your staff.",
       },
       {
         id: "s-custom",
         label: "Bespoke Customization",
-        href: "/products",
+        href: "/services#support",
         description: "Development of unique Tally features.",
       },
       {
         id: "s-mobile",
         label: "Tally on Mobile",
-        href: "/products",
+        href: "/services#biz-analyst",
         description: "Real-time reports on your smartphone.",
+      },
+      {
+        id: "s-whatsapp",
+        label: "Tally to WhatsApp",
+        href: "/services#whatsapp",
+        description: "Send invoices directly to WhatsApp.",
       },
     ],
   },
@@ -149,7 +155,7 @@ export const productItems: ProductItem[] = [
       {
         id: "c-about",
         label: "About Us",
-        href: "/",
+        href: "/about",
         description: "Our story, mission and vision.",
       },
       {

@@ -101,7 +101,7 @@ const Productbar = () => {
                 ${index === 0 ? 'left-0' : index === productItems.length - 1 ? 'right-0' : 'left-1/2 -translate-x-1/2'}`}
                 onClick={e => e.stopPropagation()}
               >
-                <div className="mt-1 overflow-hidden rounded-xl border border-black/5 bg-white/95 backdrop-blur-md p-2 shadow-2xl ring-1 ring-black/5">
+                <div className="mt-1 rounded-xl border border-black/5 bg-white/95 backdrop-blur-md p-2 shadow-2xl ring-1 ring-black/5">
                   <div className="flex flex-col gap-0.5">
                     {item.subItems.map((subItem) => (
                       <div key={subItem.id} className="relative group/sub">
@@ -111,7 +111,7 @@ const Productbar = () => {
                           onClick={handleLinkClick}
                         >
                           <div className="flex flex-col">
-                            <span className="block text-[12px] font-bold text-black group-hover/item:text-[var(--primary-color,#7338a0)] transition-colors">
+                            <span className="block text-[11px] md:text-[12px] font-bold md:font-medium text-black group-hover/item:text-[var(--primary-color,#7338a0)] transition-colors">
                               {subItem.label}
                             </span>
                             {subItem.description && (
@@ -129,7 +129,8 @@ const Productbar = () => {
 
                         {/* Nested Submenu */}
                         {subItem.subItems && subItem.subItems.length > 0 && (
-                          <div className="pointer-events-none invisible absolute left-full top-0 w-56 ml-1 -translate-x-2 opacity-0 transition-all duration-300 group-hover/sub:pointer-events-auto group-hover/sub:visible group-hover/sub:translate-x-0 group-hover/sub:opacity-100">
+                          <div className={`pointer-events-none invisible absolute top-0 w-56 opacity-0 transition-all duration-300 group-hover/sub:pointer-events-auto group-hover/sub:visible group-hover/sub:opacity-100
+                            ${index > productItems.length / 2 ? 'right-full mr-1 translate-x-2 group-hover/sub:translate-x-0' : 'left-full ml-1 -translate-x-2 group-hover/sub:translate-x-0'}`}>
                             <div className="rounded-xl border border-black/5 bg-white/95 backdrop-blur-md p-1.5 shadow-xl ring-1 ring-black/5">
                               {subItem.subItems.map((nestedItem) => (
                                 <Link

@@ -27,6 +27,13 @@ html {
   --foreground: var(--heading-color);
   --font-sans: "Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
   --font-mono: "Consolas", "SFMono-Regular", "Liberation Mono", monospace;
+  --hero-gradient-opacity: 0.85;
+}
+
+@media (max-width: 768px) {
+  :root {
+    --hero-gradient-opacity: 0.4;
+  }
 }
 
 @theme inline {
@@ -42,6 +49,22 @@ body {
   color-scheme: light;
   forced-color-adjust: none;
   font-family: var(--font-sans);
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  animation: marquee 40s linear infinite;
+  will-change: transform;
+}
+
+@media (max-width: 768px) {
+  .animate-marquee {
+    animation: marquee 40s linear infinite;
+  }
 }
 
 @keyframes productbar-fade-up {
@@ -104,7 +127,7 @@ body {
 
 /* Performance Optimizations */
 section {
-  content-visibility: auto;
+  /* content-visibility: auto; */
   contain-intrinsic-size: 1px 500px;
 }
 

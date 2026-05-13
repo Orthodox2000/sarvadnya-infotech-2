@@ -26,20 +26,32 @@ let tick = 0;
 let simplex;
 let particleProps;
 let speedMultiplier = 1;
+let radiusMultiplier = 1;
+let mobileSaturation = 40;
+let mobileLightness = 50;
+let animationFrameId = null;
 
 function setup() {
 	container = document.querySelector('.content--canvas');
   if (!container) return;
   
+  // Cancel any existing animation frame
+  if (animationFrameId) {
+    window.cancelAnimationFrame(animationFrameId);
+    animationFrameId = null;
+  }
+
   const isMobile = window.innerWidth < 768;
-  particleCount = isMobile ? 120 : 600;
+  particleCount = isMobile ? 80 : 250; // Heavily reduced from 400/600 to save CPU
   particlePropsLength = particleCount * particlePropCount;
+
+  // Faster but fewer particles for a "cleaner" look with less CPU load
+  speedMultiplier = isMobile ? 0.4 : 0.7; 
+  radiusMultiplier = isMobile ? 2 : 1.2;  mobileSaturation = isMobile ? 80 : 40;
+  mobileLightness = isMobile ? 50 : 50;
   
-  // User requested 50% slower - setting to 0.15 for a truly calm feel on mobile
-  speedMultiplier = isMobile ? 0.15 : 1; 
-  
-  // Increase vertical spread on mobile so it doesn't look like a thin band
-  rangeY = isMobile ? window.innerHeight * 0.4 : 100;
+  // More concentrated vertical spread on mobile
+  rangeY = isMobile ? window.innerHeight * 0.25 : 100;
 
   // Clean up existing canvases if any
   const existingCanvases = container.querySelectorAll('canvas');
@@ -64,6 +76,8 @@ function initParticles() {
 
 function initParticle(i, isInitial = false) {
   let x, y, vx, vy, life, ttl, speed, radius, hue;
+
+  if (!canvas || !canvas.a) return;
 
   x = rand(canvas.a.width);
   // Spawn within rangeY around the vertical center
@@ -124,8 +138,8 @@ function updateParticle(i) {
 }
 
 function drawParticle(x, y, x2, y2, life, ttl, radius, hue) {
-  ctx.a.lineWidth = radius;
-  ctx.a.strokeStyle = `hsla(${hue}, 40%, 50%, ${fadeInOut(life, ttl)})`;
+  ctx.a.lineWidth = radius * radiusMultiplier;
+  ctx.a.strokeStyle = `hsla(${hue}, ${mobileSaturation}%, ${mobileLightness}%, ${fadeInOut(life, ttl)})`;
   ctx.a.beginPath();
   ctx.a.moveTo(x, y);
   ctx.a.lineTo(x2, y2);
@@ -195,6 +209,8 @@ function renderToScreen() {
 function draw() {
   tick++;
 
+  if (!canvas || !canvas.a) return;
+
   ctx.a.clearRect(0, 0, canvas.a.width, canvas.a.height);
 
   ctx.b.fillStyle = backgroundColor;
@@ -203,7 +219,7 @@ function draw() {
   drawParticles();
   renderToScreen();
 
-	window.requestAnimationFrame(draw);
+	animationFrameId = window.requestAnimationFrame(draw);
 }
 
 window.initSwirl = setup;

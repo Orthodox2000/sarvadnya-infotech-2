@@ -4,7 +4,7 @@ import Navbar from "./components/Navbar";
 import { theme } from "@/lib/theme";
 import "./globals.css";
 import Productbar from "./components/Productbar";
-
+import NewsFeed from "./components/NewsFeed";
 export const metadata: Metadata = {
   title: "Sarvadnya Infotech",
   description: "Your Tally Assistance",
@@ -34,8 +34,12 @@ export default function RootLayout({
           } as CSSProperties
         }
       >
+        <NewsFeed />
+
         <Navbar />
+
         <Productbar />
+
         {children}
       </body>
     </html>

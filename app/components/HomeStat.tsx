@@ -23,25 +23,27 @@ function StatItem({ label, value, suffix, isVisible }: StatItemProps) {
     const duration = 2000; // 2.0 seconds total duration
     let startTimestamp: number | null = null;
 
+    let animationFrameId: number;
     const step = (timestamp: number) => {
       if (!startTimestamp) startTimestamp = timestamp;
       const progress = Math.min((timestamp - startTimestamp) / duration, 1);
       
-      // Easing function: easeOutExpo for the "slowing down" effect
-      // This makes the count rapid at first and very slow towards the end
       const easeOutExpo = 1 - Math.pow(2, -10 * progress);
       
       const currentCount = Math.floor(easeOutExpo * end);
       setCount(currentCount);
 
       if (progress < 1) {
-        window.requestAnimationFrame(step);
+        animationFrameId = window.requestAnimationFrame(step);
       } else {
-        setCount(end); // Ensure we land exactly on the target
+        setCount(end);
       }
     };
 
-    window.requestAnimationFrame(step);
+    animationFrameId = window.requestAnimationFrame(step);
+    return () => {
+      if (animationFrameId) window.cancelAnimationFrame(animationFrameId);
+    };
   }, [isVisible, value]);
 
   return (

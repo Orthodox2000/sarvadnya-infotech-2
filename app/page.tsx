@@ -1,4 +1,5 @@
 import HomeHero from './components/HomeHero'
+import QuickReference from './components/QuickReference'
 import CertifiedPartners from './components/CertifiedPartners'
 import HomeStat from './components/HomeStat'
 import CustomerReviews from './components/CustomerReviews'
@@ -8,13 +9,12 @@ import Footer from './components/Footer';
 export default function Home() {
   return (
     <main>
-      <HomeHero />   
-      <HomeStat />     
-      
-      
+      <HomeHero />
+      <HomeStat />
+      <QuickReference />
       <CustomerReviews />
       <CertifiedPartners />
-      <FAQ />  
+      <FAQ />
       <Footer />
     </main>
   );

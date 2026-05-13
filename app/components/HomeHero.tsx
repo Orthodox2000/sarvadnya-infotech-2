@@ -28,19 +28,19 @@ const heroContents = [
     ctaPrimary: { text: "Compare Features", href: "/products#compare" }
   },
   {
-    badge: "Priority Support",
-    titleText: "Annual Maintenance Contracts",
+    badge: "Certified Expertise",
+    titleText: "Why Choose Certified Partner?",
     colorFrom: "#2563eb", // Blue
     colorTo: "#0891b2",   // Cyan
-    description: "Minimize downtime and maximize productivity with our priority troubleshooting and regular health checks.",
-    image: "/amc.png",
+    description: "Experience unparalleled reliability with Tally Certified Partners. We ensure your business software is always optimized, secure, and compliant.",
+    image: "/TallyCertificate.png",
     features: [
-      { text: "On-Site & Remote Support" },
-      { text: "Priority Troubleshooting" },
-      { text: "Data Backup Assistance" },
-      { text: "Unlimited Query Resolution" }
+      { text: "Authorized Sales & Service" },
+      { text: "Certified Technical Team" },
+      { text: "Deep Industry Knowledge" },
+      { text: "Priority Support Access" }
     ],
-    ctaPrimary: { text: "Learn About AMC", href: "/products" }
+    ctaPrimary: { text: "Verify Certification", href: "/services#support" }
   },
   {
     badge: "Vertical Solutions",
@@ -70,7 +70,7 @@ const heroContents = [
       { text: "Instant Ledger Reports" },
       { text: "No Manual Data Entry" }
     ],
-    ctaPrimary: { text: "Get Started", href: "/products#whatsapp" }
+    ctaPrimary: { text: "Get Started", href: "/services#whatsapp" }
   }
 ];
 
@@ -123,20 +123,22 @@ export default function HomeHero() {
     setIsTyping(true);
     setDisplayText('');
     
+    let typingInterval: NodeJS.Timeout;
     const typingTimeout = setTimeout(() => {
-      const typingInterval = setInterval(() => {
+      typingInterval = setInterval(() => {
         setDisplayText(textToType.slice(0, i + 1));
         i++;
         if (i >= textToType.length) {
           setIsTyping(false);
           clearInterval(typingInterval);
         }
-      }, 50);
-
-      return () => clearInterval(typingInterval);
+      }, 100);
     }, 100);
 
-    return () => clearTimeout(typingTimeout);
+    return () => {
+      clearTimeout(typingTimeout);
+      if (typingInterval) clearInterval(typingInterval);
+    };
   }, [currentIndex, isVisible, isTabFocused]);
 
   useEffect(() => {
@@ -164,7 +166,7 @@ export default function HomeHero() {
   return (
     <main 
       id="home-hero"
-      className="relative h-[70dvh] md:h-[85dvh] w-full overflow-hidden transition-colors duration-1000 bg-[var(--background-color)] shadow-sm"
+      className="relative h-[50dvh] md:h-[85dvh] w-full overflow-hidden transition-colors duration-1000 bg-[var(--background-color)] shadow-sm"
       style={{ 
         '--hero-text-from': current.colorFrom, 
         '--hero-text-to': current.colorTo 
@@ -184,8 +186,8 @@ export default function HomeHero() {
       <QuickSupportModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
 
       {/* Background Image Container - Dynamic & Animated */}
-      <div className={`absolute bottom-0 left-1/2 -translate-x-1/2 aspect-[16/9] w-full max-w-3xl h-1/2 md:h-[55dvh] z-[2] transition-all duration-700 ease-in-out
-        ${isTransitioning ? 'opacity-0 translate-y-12 scale-95 blur-sm' : 'opacity-90 translate-y-0 scale-100 blur-0'}`}>
+      <div className={`absolute bottom-0 left-1/2 -translate-x-1/2 aspect-[6/5] md:aspect-[16/9] w-full max-w-5xl h-[45dvh] md:h-[55dvh] z-[2] transition-all duration-700 ease-in-out
+        ${isTransitioning ? 'opacity-0 translate-y-12 scale-95 blur-sm' : 'opacity-60 md:opacity-90 translate-y-0 scale-100 blur-0'}`}>
         <Image
           src={current.image}
           alt="Sarvadnya Background"
@@ -193,23 +195,25 @@ export default function HomeHero() {
           className="object-contain"
           priority
         />
+        {/* Mobile-only gradient overlay to improve text contrast */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[var(--background-color)] via-[var(--background-color)]/40 to-transparent md:hidden" />
       </div>
 
       {/* Content Overlay */}
       <div className="relative z-10 flex h-full w-full flex-col items-center px-6">
         {/* Radial Gradient for text visibility */}
         <div 
-          className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-5xl h-[70%] pointer-events-none" 
+          className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-5xl h-[90%] md:h-[80%] pointer-events-none" 
           style={{ 
-            background: 'radial-gradient(circle at top, var(--background-color) 0%, rgba(252, 250, 255, 0.9) 50%, rgba(252, 250, 255, 0) 100%)'
+            background: 'radial-gradient(circle at top, var(--background-color) 0%, rgba(252, 250, 255, var(--hero-gradient-opacity, 0.7)) 60%, rgba(252, 250, 255, 0) 100%)'
           }}
         />
 
-        <div className="relative z-20 mt-[30px] w-full max-w-4xl flex flex-col items-center text-center">
+        <div className="relative z-20 mt-[20px] md:mt-[30px] w-full max-w-4xl flex flex-col items-center text-center">
           
           {/* Static Global Badge */}
           <div 
-            className="inline-flex items-center gap-2 rounded-full px-3 py-1 border mb-6 transition-all duration-1000 bg-[var(--background-color)] shadow-sm"
+            className="inline-flex items-center gap-2 rounded-full px-3 py-1 border mb-4 md:mb-6 transition-all duration-1000 bg-[var(--background-color)] shadow-sm"
             style={{ borderColor: `${current.colorFrom}33` }}
           >
             <span 
@@ -217,7 +221,7 @@ export default function HomeHero() {
               style={{ backgroundColor: current.colorFrom }}
             ></span>
             <span 
-              className="text-[10px] font-bold uppercase tracking-wider transition-colors duration-1000"
+              className="text-[9px] md:text-[10px] font-bold uppercase tracking-wider transition-colors duration-1000"
               style={{ color: current.colorFrom }}
             >
               {current.badge}
@@ -225,7 +229,7 @@ export default function HomeHero() {
           </div>
 
           {/* Static Heading - Smaller */}
-          <p className="font-sans text-[11px] md:text-[14px] font-bold uppercase tracking-widest text-slate-400 mb-2">
+          <p className="font-sans text-[10px] md:text-[14px] font-bold uppercase tracking-widest text-slate-400 mb-1 md:mb-2">
             Why Choose Sarvadnya Infotech LLP?
           </p>
 
@@ -234,7 +238,7 @@ export default function HomeHero() {
             ${isTransitioning ? 'opacity-0 translate-y-12 blur-sm' : 'opacity-100 translate-y-0 blur-0'}`}>
             
             {/* Typing Sub-title - Large & Animated */}
-            <h2 className="font-sans text-[24px] md:text-[42px] lg:text-[48px] font-black leading-[1.1] tracking-tight min-h-[2.2em] md:min-h-[1.2em] mb-2 overflow-visible">
+            <h2 className="font-sans text-[22px] md:text-[42px] lg:text-[48px] font-black leading-[1.1] tracking-tight min-h-[2.2em] md:min-h-[1.2em] mb-1 md:mb-2 overflow-visible">
               <span 
                 className="inline-block px-4 py-2 -mx-4 text-highlight-gradient"
               >
@@ -246,31 +250,31 @@ export default function HomeHero() {
               ></span>
             </h2>
             
-            <p className="max-w-2xl mx-auto text-[12px] md:text-base font-medium leading-relaxed text-slate-700 mb-4">
+            <p className="max-w-2xl mx-auto text-[11px] md:text-base font-medium leading-relaxed text-slate-700 mb-3 md:mb-4">
               {current.description}
             </p>
 
             {/* Tick-marked Features */}
-            <div className="mt-4 flex flex-row flex-wrap justify-center gap-x-8 gap-y-4 w-full">
+            <div className="mt-2 md:mt-4 flex flex-row flex-wrap justify-center gap-x-6 md:gap-x-8 gap-y-3 md:gap-y-4 w-full">
               {current.features.map((feature, i) => (
-                <div key={feature.text} className="flex items-center gap-2.5 group animate-in fade-in slide-in-from-top-4 duration-500 fill-mode-both" style={{ animationDelay: `${i * 100}ms` }}>
+                <div key={feature.text} className="flex items-center gap-2 md:gap-2.5 group animate-in fade-in slide-in-from-top-4 duration-500 fill-mode-both" style={{ animationDelay: `${i * 100}ms` }}>
                   <div 
-                    className="flex-shrink-0 w-4 h-4 rounded-full flex items-center justify-center shadow-sm transition-colors duration-1000"
+                    className="flex-shrink-0 w-3.5 h-3.5 md:w-4 md:h-4 rounded-full flex items-center justify-center shadow-sm transition-colors duration-1000"
                     style={{ backgroundColor: current.colorFrom }}
                   >
                     <svg className="w-2.5 h-2.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="5" d="M5 13l4 4L19 7" />
                     </svg>
                   </div>
-                  <span className="text-[11px] md:text-[14px] font-bold text-[#0f0529] whitespace-nowrap tracking-tight">{feature.text}</span>
+                  <span className="text-[10px] md:text-[14px] font-bold text-[#0f0529] whitespace-nowrap tracking-tight">{feature.text}</span>
                 </div>
               ))}
             </div>
 
-            <div className="mt-10 flex justify-center gap-3">
+            <div className="mt-6 md:mt-10 flex justify-center gap-3">
               <Link
                 href={current.ctaPrimary.href}
-                className="group relative flex h-10 md:h-12 w-36 md:w-44 items-center justify-center overflow-hidden rounded-full text-[10px] md:text-xs font-bold text-white shadow-md transition-all hover:scale-105 active:scale-95"
+                className="group relative flex h-9 md:h-12 w-32 md:w-44 items-center justify-center overflow-hidden rounded-full text-[9px] md:text-xs font-bold text-white shadow-md transition-all hover:scale-105 active:scale-95"
                 style={{ backgroundColor: current.colorFrom }}
               >
                 <span className="relative z-10">{current.ctaPrimary.text}</span>
@@ -281,7 +285,7 @@ export default function HomeHero() {
               </Link>
               <button
                 onClick={() => setIsModalOpen(true)}
-                className="flex h-10 md:h-12 w-36 md:w-44 items-center justify-center rounded-full border border-slate-200 bg-[var(--background-color)] text-[10px] md:text-xs font-bold text-[#0f0529] transition-all hover:bg-slate-50 active:scale-95 shadow-sm"
+                className="flex h-9 md:h-11 w-32 md:w-44 items-center justify-center rounded-full border border-slate-200 bg-[var(--background-color)] text-[9px] md:text-xs font-bold text-[#0f0529] transition-all hover:bg-slate-50 active:scale-95 shadow-sm"
               >
                 Request Call
               </button>
