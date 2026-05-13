@@ -1,8 +1,10 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
+import Link from 'next/link';
 import Footer from '../components/Footer';
 import Image from 'next/image';
+import QuickSupportModal from '../components/QuickSupportModal';
 
 const ServiceSection = ({ id, title, subtitle, description, features, image, reverse = false, stats = [] }: any) => (
   <section id={id} className={`py-20 px-6 max-w-7xl mx-auto flex flex-col ${reverse ? 'md:flex-row-reverse' : 'md:flex-row'} items-center gap-12`}>
@@ -47,6 +49,8 @@ const ServiceSection = ({ id, title, subtitle, description, features, image, rev
 );
 
 export default function ServicesPage() {
+  const [isSupportModalOpen, setIsSupportModalOpen] = useState(false);
+
   return (
     <div className="min-h-screen bg-[var(--background-color)] text-[var(--heading-color)]">
       {/* Hero Section */}
@@ -84,44 +88,66 @@ export default function ServicesPage() {
         ]}
       />
 
-      {/* 2. Tally on Cloud */}
+      {/* 2. NoSky Backup */}
       <div className="bg-white/50">
         <ServiceSection 
-          id="cloud"
+          id="nosky-backup"
           reverse
-          subtitle="Official Tally & AWS"
-          title="Tally on Cloud Solutions"
-          description="Access your Tally data securely from anywhere in the world. Our cloud solutions provide automatic backups, highest data security, and zero downtime."
-          image="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=800"
+          subtitle="Enterprise Protection"
+          title="NoSky Backup Solution"
+          description="Eliminate the risk of data loss with our specialized NoSky Backup service. Designed specifically for Tally data and business documents, it provides a secure, automated fortress for your most critical assets with AES-256 encryption."
+          image="https://images.unsplash.com/photo-1558494949-ef010cbdcc4b?auto=format&fit=crop&q=80&w=800"
           features={[
-            "Official AWS Infrastructure",
-            "Daily Automated Backups",
-            "Multi-Location Access",
-            "Bank-Grade Data Security"
+            "Automated Incremental Backups",
+            "Ransomware Protection",
+            "One-Click Data Restore",
+            "Centralized Status Monitoring"
+          ]}
+          stats={[
+            { value: "100%", label: "Data Integrity" },
+            { value: "Zero", label: "Manual Effort" },
+            { value: "AWS", label: "Infrastructure" }
           ]}
         />
       </div>
 
-      {/* 3. Biz Analyst (Mobile App) */}
+      {/* 3. Cloud Access & Windows VM */}
       <ServiceSection 
-        id="biz-analyst"
-        subtitle="Business on Your Fingertips"
-        title="Biz Analyst - Mobile App"
-        description="Monitor your business metrics, outstanding payments, and sales performance directly on your Android or iOS device. Biz Analyst syncs in real-time with your Tally data."
-        image="/PartnerBrands/BizAnalyst.png"
+        id="cloud-access"
+        subtitle="Remote Work Ready"
+        title="Cloud Access & Windows VM"
+        description="Experience a seamless remote office with our official AWS and Windows VM solutions. Host your Tally and business applications on high-performance virtual machines accessible from any device, anywhere, with full control."
+        image="https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&q=80&w=800"
         features={[
-          "Real-time Data Sync",
-          "Outstanding Reminders",
-          "Sales Team Tracking",
-          "Financial Snapshots"
+          "Official AWS Infrastructure",
+          "Dedicated Windows VM",
+          "Any-Device Accessibility",
+          "Full Administrative Control"
         ]}
       />
 
-      {/* 4. Tally to WhatsApp */}
+      {/* 4. Biz Analyst (Mobile App) */}
+      <div className="bg-slate-50/50">
+        <ServiceSection 
+          id="biz-analyst"
+          reverse
+          subtitle="Business on Your Fingertips"
+          title="Biz Analyst - Mobile App"
+          description="Monitor your business metrics, outstanding payments, and sales performance directly on your Android or iOS device. Biz Analyst syncs in real-time with your Tally data."
+          image="/PartnerBrands/BizAnalyst.png"
+          features={[
+            "Real-time Data Sync",
+            "Outstanding Reminders",
+            "Sales Team Tracking",
+            "Financial Snapshots"
+          ]}
+        />
+      </div>
+
+      {/* 5. Tally to WhatsApp */}
       <div className="bg-[#25D366]/5 border-y border-[#25D366]/10">
         <ServiceSection 
           id="whatsapp"
-          reverse
           subtitle="Instant Communication"
           title="Tally to WhatsApp Integration"
           description="Eliminate manual emailing. Send invoices, payment reminders, and ledger reports directly from Tally to your customers' WhatsApp with a single click."
@@ -158,9 +184,12 @@ export default function ServicesPage() {
             Consult with our experts today and find the perfect mix of services to scale your operations efficiently.
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <button className="px-10 py-4 bg-[var(--primary-color)] text-white rounded-full font-bold hover:bg-white hover:text-[var(--heading-color)] transition-all">
+            <Link
+              href="/contact"
+              className="px-10 py-4 bg-[var(--primary-color)] text-white rounded-full font-bold hover:bg-white hover:text-[var(--heading-color)] transition-all inline-flex items-center justify-center"
+            >
               Schedule Free Consultation
-            </button>
+            </Link>
             <a href="tel:+919876543210" className="px-10 py-4 border border-white/20 rounded-full font-bold hover:bg-white/10 transition-all">
               Call Support Now
             </a>
@@ -168,6 +197,7 @@ export default function ServicesPage() {
         </div>
       </section>
 
+      <QuickSupportModal isOpen={isSupportModalOpen} onClose={() => setIsSupportModalOpen(false)} />
       <Footer />
     </div>
   );

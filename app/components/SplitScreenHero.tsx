@@ -10,7 +10,7 @@ export default function SplitScreenHero() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
-    <main className="flex min-h-[calc(100svh-7rem)] w-full items-stretch justify-start bg-[#fbf5ec]">
+    <main className="flex min-h-[calc(100svh-7rem)] w-full items-stretch justify-start bg-[#f9fafb]">
       <QuickSupportModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
       
       <section className="relative min-h-[calc(100svh-7rem)] w-full overflow-hidden border-b border-slate-200 shadow-[0_24px_70px_rgba(15,23,42,0.08)]">
@@ -39,12 +39,12 @@ export default function SplitScreenHero() {
                 <span className="relative z-10">Compare Features</span>
                 <div className="absolute inset-0 z-0 translate-y-full bg-[#4a2574] transition-transform group-hover:translate-y-0" />
               </Link>
-              <button
-                onClick={() => setIsModalOpen(true)}
-                className="flex h-12 items-center justify-center rounded-full border border-[#7338a0]/20 bg-white px-10 text-xs font-bold text-[#7338a0] transition-all hover:bg-[#fbf5ec] active:scale-95"
+              <Link
+                href="/contact"
+                className="flex h-12 items-center justify-center rounded-full border border-[#7338a0]/20 bg-white px-10 text-xs font-bold text-[#7338a0] transition-all hover:bg-[#f9fafb] active:scale-95"
               >
-                Request Callback
-              </button>
+                Request Support
+              </Link>
             </div>
           </div>
         </div>

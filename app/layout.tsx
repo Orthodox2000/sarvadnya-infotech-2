@@ -38,11 +38,11 @@ export default function RootLayout({
           } as CSSProperties
         }
       >
-        <NewsFeed />
-
-        <Navbar />
-
-        <Productbar />
+        <div className="sticky top-0 z-[2000] w-full flex flex-col">
+          <NewsFeed />
+          <Navbar />
+          <Productbar />
+        </div>
 
         {children}
       </body>

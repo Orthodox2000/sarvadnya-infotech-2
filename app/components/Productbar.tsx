@@ -46,14 +46,14 @@ const Productbar = () => {
 
   return (
     <div 
-      className="w-full border-b border-black/5 sticky top-[56px] z-[90] h-[31px] flex items-center overflow-x-clip no-scrollbar transition-all duration-300 shadow-sm"
+      className="w-full border-b border-black/5 relative z-[30] h-[31px] flex items-center overflow-x-clip no-scrollbar transition-all duration-300 shadow-sm"
       style={{ 
-        backgroundColor: 'var(--background-color)' 
+        backgroundColor: 'var(--background-color)',
       } as CSSProperties}
     >
-      <div className="mx-auto w-full max-w-6xl px-1 sm:px-4 flex justify-between sm:justify-evenly items-stretch h-full">
+      <div className="mx-auto w-full max-w-7xl px-2 sm:px-4 flex justify-between items-stretch h-full">
         {/* Company Logo & Name */}
-        <Link href="/" className="flex items-center gap-1 pr-1 sm:pr-4 transition-opacity hover:opacity-80 shrink-0 border-r border-black/5 mr-0.5 sm:mr-2" onClick={handleLinkClick}>
+        <Link href="/" className="flex items-center gap-1 pr-2 sm:pr-4 transition-opacity hover:opacity-80 shrink-0 border-r border-black/5 mr-1" onClick={handleLinkClick}>
           <Image 
             src="/logo.png" 
             alt="Sarvadnya" 
@@ -64,7 +64,7 @@ const Productbar = () => {
           />
         </Link>
 
-        {productItems.map((item, index) => (
+        {(productItems || []).map((item, index) => (
           <div 
             key={item.label} 
             className="relative flex-1 border-l first:border-l-0 border-black/5 flex items-center justify-center overflow-visible group"
@@ -73,9 +73,9 @@ const Productbar = () => {
           >
             <Link
               href={item.href}
-              className={`flex flex-row items-center gap-0.5 sm:gap-1.5 transition-all duration-300 hover:opacity-100 opacity-60 h-full w-full justify-center px-0.5 sm:px-2`}
+              className={`flex flex-row items-center gap-1 sm:gap-2 transition-all duration-300 hover:opacity-100 opacity-60 h-full w-full justify-center px-1 sm:px-2`}
               onClick={(e) => {
-                if (item.subItems.length > 0 && activeMenu !== item.label) {
+                if ((item.subItems?.length ?? 0) > 0 && activeMenu !== item.label) {
                   e.preventDefault();
                   e.stopPropagation();
                   setActiveMenu(item.label);
@@ -84,26 +84,27 @@ const Productbar = () => {
                 }
               }}
             >
-              <div className="text-black group-hover:text-[var(--primary-color,#7338a0)] group-hover:scale-110 transition-all duration-300 shrink-0 hidden min-[480px]:block">
+              <div className="text-black group-hover:text-[var(--primary-color,#7338a0)] group-hover:scale-110 transition-all duration-300 shrink-0 hidden md:block">
                 {iconMap[item.label] || <TallyIcon />}
               </div>
-              <span className="text-[7px] min-[360px]:text-[8px] sm:text-[10px] font-bold tracking-tight text-black group-hover:text-[var(--primary-color,#7338a0)] transition-colors whitespace-nowrap uppercase">
+              <span className="text-[8px] min-[360px]:text-[9px] sm:text-[11px] font-bold tracking-tight text-black group-hover:text-[var(--primary-color,#7338a0)] transition-colors whitespace-nowrap uppercase">
                 {item.label}
               </span>
             </Link>
 
 
             {/* Megamenu-style dropdown - Optimized for Mobile visibility */}
-            {item.subItems.length > 0 && (
+            {(item.subItems?.length ?? 0) > 0 && (
               <div 
-                className={`absolute top-full w-64 md:w-72 transition-all duration-300 ease-out z-[100]
+                className={`absolute top-full transition-all duration-300 ease-out z-[100]
+                ${item.label === 'Company' ? 'w-[450px] md:w-[600px]' : 'w-64 md:w-72'}
                 ${activeMenu === item.label ? 'pointer-events-auto visible translate-y-0 opacity-100' : 'pointer-events-none invisible translate-y-2 opacity-0'}
-                ${index === 0 ? 'left-0' : index === productItems.length - 1 ? 'right-0' : 'left-1/2 -translate-x-1/2'}`}
+                ${index === 0 ? 'left-0' : index === (productItems?.length || 0) - 1 ? 'right-0' : 'left-1/2 -translate-x-1/2'}`}
                 onClick={e => e.stopPropagation()}
               >
                 <div className="mt-1 rounded-xl border border-black/5 bg-white/95 backdrop-blur-md p-2 shadow-2xl ring-1 ring-black/5">
-                  <div className="flex flex-col gap-0.5">
-                    {item.subItems.map((subItem) => (
+                  <div className={`grid gap-1 ${item.label === 'Company' ? 'grid-cols-1 md:grid-cols-2' : 'grid-cols-1'}`}>
+                    {(item.subItems || []).map((subItem) => (
                       <div key={subItem.id} className="relative group/sub">
                         <Link
                           href={subItem.href}
@@ -111,7 +112,7 @@ const Productbar = () => {
                           onClick={handleLinkClick}
                         >
                           <div className="flex flex-col">
-                            <span className="block text-[11px] md:text-[12px] font-bold md:font-medium text-black group-hover/item:text-[var(--primary-color,#7338a0)] transition-colors">
+                            <span className="block text-[11px] md:text-[12px] font-bold text-black group-hover/item:text-[var(--primary-color,#7338a0)] transition-colors">
                               {subItem.label}
                             </span>
                             {subItem.description && (
@@ -120,23 +121,25 @@ const Productbar = () => {
                               </span>
                             )}
                           </div>
-                          {subItem.subItems && subItem.subItems.length > 0 && (
-                            <svg className="w-3 h-3 text-black/20 group-hover/item:text-[var(--primary-color,#7338a0)] transition-transform group-hover/sub:rotate-90 md:group-hover/sub:rotate-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M9 5l7 7-7 7" />
-                            </svg>
+                          {(subItem.subItems?.length ?? 0) > 0 && (
+                            <div className="flex items-center gap-1">
+                              <svg className="w-3 h-3 text-black/20 group-hover/item:text-[var(--primary-color,#7338a0)] transition-transform group-hover/sub:rotate-90 md:group-hover/sub:rotate-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M9 5l7 7-7 7" />
+                              </svg>
+                            </div>
                           )}
                         </Link>
 
                         {/* Nested Submenu */}
-                        {subItem.subItems && subItem.subItems.length > 0 && (
-                          <div className={`pointer-events-none invisible absolute top-0 w-56 opacity-0 transition-all duration-300 group-hover/sub:pointer-events-auto group-hover/sub:visible group-hover/sub:opacity-100
-                            ${index > productItems.length / 2 ? 'right-full mr-1 translate-x-2 group-hover/sub:translate-x-0' : 'left-full ml-1 -translate-x-2 group-hover/sub:translate-x-0'}`}>
+                        {(subItem.subItems?.length ?? 0) > 0 && (
+                          <div className={`transition-all duration-300 pointer-events-none invisible absolute top-0 w-56 opacity-0 group-hover/sub:pointer-events-auto group-hover/sub:visible group-hover/sub:opacity-100
+                                ${index > (productItems?.length || 0) / 2 ? 'right-full mr-1 translate-x-2 group-hover/sub:translate-x-0' : 'left-full ml-1 -translate-x-2 group-hover/sub:translate-x-0'}`}>
                             <div className="rounded-xl border border-black/5 bg-white/95 backdrop-blur-md p-1.5 shadow-xl ring-1 ring-black/5">
-                              {subItem.subItems.map((nestedItem) => (
+                              {(subItem.subItems || []).map((nestedItem) => (
                                 <Link
                                   key={nestedItem.id}
                                   href={nestedItem.href}
-                                  className="block rounded-lg px-3 py-2 text-[11px] font-bold text-slate-600 hover:bg-[var(--background-color,#fcfaff)] hover:text-[var(--primary-color,#7338a0)] transition-all"
+                                  className="block rounded-lg px-3 py-2 transition-all hover:bg-[var(--background-color,#fcfaff)] group/news text-[11px] font-bold text-slate-600 hover:text-[var(--primary-color,#7338a0)]"
                                   onClick={handleLinkClick}
                                 >
                                   {nestedItem.label}
@@ -153,9 +156,6 @@ const Productbar = () => {
             )}
           </div>
         ))}
-
-        {/* Balanced spacer for mobile - matches logo width to ensure perfect centering of menu items */}
-        <div className="w-[22px] sm:w-[42px] shrink-0" aria-hidden="true" />
       </div>
     </div>
   );

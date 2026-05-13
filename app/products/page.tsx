@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import Footer from '../components/Footer';
+import UnifiedContactModal, { FormType } from '../components/UnifiedContactModal';
 
 interface PopupProps {
   isOpen: boolean;
@@ -84,6 +85,16 @@ const DescriptionPopup = ({ isOpen, onClose, title, details }: PopupProps) => {
 
 export default function ProductsPage() {
   const [activePopup, setActivePopup] = useState<{title: string, details: any} | null>(null);
+  const [modalConfig, setModalConfig] = useState<{isOpen: boolean; type: FormType; service: string; details: string}>({
+    isOpen: false,
+    type: 'general',
+    service: '',
+    details: ''
+  });
+
+  const openModal = (type: FormType, service: string = '', details: string = '') => {
+    setModalConfig({ isOpen: true, type, service, details });
+  };
 
   const products = [
     {
@@ -175,10 +186,10 @@ export default function ProductsPage() {
 
   const cloudProducts = [
     {
-      name: "Tally on AWS",
+      name: "AWS Cloud Server",
       type: "Official Cloud",
       price: "Official Tally & AWS",
-      features: ["Highest Data Security", "AWS Global Infrastructure", "Automatic Backups", "24/7 Remote Access", "Scalable Storage"],
+      features: ["Highest Data Security", "AWS Global Infrastructure", "Automatic Backups", "Remote Access", "Scalable Storage"],
       color: "#FF9900",
       borderWeight: "border",
       details: {
@@ -203,7 +214,7 @@ export default function ProductsPage() {
       }
     },
     {
-      name: "Tally on Windows",
+      name: "Windows VM",
       type: "Native Experience",
       price: "Dedicated VM",
       features: ["Native Desktop Feel", "Direct Printer Access", "MS Office Integration", "Full Admin Control", "Custom VM Specs"],
@@ -231,30 +242,30 @@ export default function ProductsPage() {
       }
     },
     {
-      name: "Hybrid Tally Cloud",
-      type: "Flexible Mode",
-      price: "Local + Remote",
-      features: ["Offline Work Mode", "Real-time Syncing", "Secure Data Mirroring", "Low Internet Usage", "Disaster Recovery"],
+      name: "NoSky Backup",
+      type: "Data Protection",
+      price: "Secured Cloud",
+      features: ["Ransomware Protection", "Incremental Backups", "AES-256 Encryption", "One-Click Restore", "Scheduled Tasks"],
       color: "#10b981",
       borderWeight: "border",
       details: {
-        shortDescription: "The best of both worlds: Get the speed of local Tally with the accessibility of the cloud.",
+        shortDescription: "NoSky Backup is an enterprise-grade cloud backup solution specifically optimized for Tally and business documents.",
         benefits: [
-          "Work offline when internet is down",
-          "Real-time background data mirroring",
-          "Reduced bandwidth requirements",
-          "Instant disaster recovery from cloud"
+          "Automated protection against ransomware",
+          "Incremental sync saves bandwidth",
+          "Centralized monitoring and alerts",
+          "Easy restoration to any device"
         ],
         limitations: [
-          "Requires local server and cloud setup",
-          "Data sync conflicts may occur",
-          "Initial configuration complexity"
+          "Initial sync requires high upload speed",
+          "Storage-based pricing tiers",
+          "Version history limits apply"
         ],
         useCases: [
-          "Areas with unstable internet",
-          "Businesses needing local performance",
-          "Companies with remote field staff",
-          "Zero-downtime critical operations"
+          "Critical Financial Record Security",
+          "Disaster Recovery Planning",
+          "Audit Compliance",
+          "Peace of Mind for Business Owners"
         ]
       }
     }
@@ -339,7 +350,12 @@ export default function ProductsPage() {
                   </li>
                 ))}
               </ul>
-              <button className={`w-full py-1.5 md:py-4 rounded-lg md:rounded-xl font-bold transition-all text-[7px] md:text-sm shadow-sm ${p.popular ? 'bg-[#7338a0] text-white' : 'border border-slate-200 hover:bg-slate-50'}`}>Request Quote</button>
+              <button 
+                onClick={() => openModal('quote', p.name, `I am interested in ${p.name}. Please provide a quote.`)}
+                className={`w-full py-1.5 md:py-4 rounded-lg md:rounded-xl font-bold transition-all text-[7px] md:text-sm shadow-sm ${p.popular ? 'bg-[#7338a0] text-white' : 'border border-slate-200 hover:bg-slate-50'}`}
+              >
+                Request Quote
+              </button>
             </div>
           ))}
         </div>
@@ -359,7 +375,8 @@ export default function ProductsPage() {
             {verticalModules.map((m) => (
               <div 
                 key={m.title} 
-                className={`relative group rounded-xl md:rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 cursor-default ${m.gridSpan}`}
+                className={`relative group rounded-xl md:rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 cursor-pointer ${m.gridSpan}`}
+                onClick={() => openModal('enquire', m.title, `I want to enquire about the ${m.title} module.`)}
               >
                 {/* Background Image */}
                 <div 
@@ -377,6 +394,12 @@ export default function ProductsPage() {
                     <p className="text-[8px] md:text-[12px] opacity-0 group-hover:opacity-100 text-white/90 leading-tight md:leading-relaxed transition-all duration-500 delay-100 line-clamp-2 md:line-clamp-3">
                       {m.details}
                     </p>
+                    <div className="mt-2 md:mt-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-200">
+                      <span className="inline-flex items-center gap-1 bg-white text-black text-[7px] md:text-[11px] font-bold px-2 py-0.5 md:px-4 md:py-2 rounded-full group-hover:bg-[#7338a0] group-hover:text-white transition-colors shadow-lg">
+                        Enquire Now
+                        <svg className="w-2 h-2 md:w-3 md:h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="4" d="M9 5l7 7-7 7" /></svg>
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -388,13 +411,13 @@ export default function ProductsPage() {
       {/* 3. Cloud Managed Services */}
       <section id="cloud" className="py-20 px-6 max-w-7xl mx-auto">
         <div className="text-center mb-12">
-          <h2 className="text-4xl font-black mb-4 text-[#0f0529]">Cloud Managed Services</h2>
-          <p className="text-slate-500 max-w-2xl mx-auto text-sm">
+          <h2 className="text-2xl md:text-4xl font-black mb-4 text-[#0f0529]">Cloud Managed Services</h2>
+          <p className="text-slate-500 max-w-2xl mx-auto text-[11px] md:text-sm">
             Experience Tally solutions with official AWS infrastructure and professional Windows cloud management.
           </p>
         </div>
 
-        <div className="grid grid-cols-3 md:grid-cols-3 gap-2 md:gap-8 items-stretch">
+        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-8 items-stretch">
           {cloudProducts.map((p) => (
             <div key={p.name} 
                  className={`relative p-2.5 md:p-8 rounded-xl md:rounded-3xl transition-all duration-300 flex flex-col border border-slate-200 bg-white shadow-sm hover:shadow-xl hover:border-[#7338a0]/30`}>
@@ -411,7 +434,12 @@ export default function ProductsPage() {
                   </li>
                 ))}
               </ul>
-              <button className={`w-full py-2 md:py-4 rounded-lg md:rounded-xl font-bold transition-all text-[8px] md:text-sm border border-slate-200 hover:bg-[#7338a0] hover:text-white hover:border-[#7338a0] shadow-sm`}>Get Started</button>
+              <button 
+                onClick={() => openModal('enquire', p.name, `I am interested in ${p.name}. Please provide more details.`)}
+                className={`w-full py-2 md:py-4 rounded-lg md:rounded-xl font-bold transition-all text-[8px] md:text-sm border border-slate-200 hover:bg-[#7338a0] hover:text-white hover:border-[#7338a0] shadow-sm`}
+              >
+                Get Started
+              </button>
             </div>
           ))}
         </div>
@@ -443,7 +471,10 @@ export default function ProductsPage() {
                   View Details
                   <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
                 </button>
-                <button className="px-10 py-4 border border-slate-200 text-[#0f0529] rounded-full font-bold hover:bg-slate-50 transition-all">
+                <button 
+                  onClick={() => openModal('callback', 'Tally AMC', 'I want to discuss Tally AMC services for my business.')}
+                  className="px-10 py-4 border border-slate-200 text-[#0f0529] rounded-full font-bold hover:bg-slate-50 transition-all"
+                >
                   Request Call
                 </button>
               </div>
@@ -489,12 +520,22 @@ export default function ProductsPage() {
               <p className="text-[10px] text-white/40">Secure Offsite Mirroring</p>
             </div>
           </div>
-          <button className="mt-12 px-10 py-4 bg-emerald-500 text-white rounded-full font-bold hover:bg-emerald-600 transition-all shadow-md shadow-emerald-500/20">
+          <Link
+            href="/contact"
+            className="mt-12 px-10 py-4 bg-emerald-500 text-white rounded-full font-bold hover:bg-emerald-600 transition-all shadow-md shadow-emerald-500/20 inline-block"
+          >
             Talk to Migration Expert
-          </button>
+          </Link>
         </div>
       </section>
 
+      <UnifiedContactModal 
+        isOpen={modalConfig.isOpen} 
+        onClose={() => setModalConfig(prev => ({ ...prev, isOpen: false }))}
+        type={modalConfig.type}
+        prefillService={modalConfig.service}
+        prefillDetails={modalConfig.details}
+      />
       <Footer />
     </div>
   );

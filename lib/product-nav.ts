@@ -23,19 +23,20 @@ export const productItems: ProductItem[] = [
         href: "/products#compare",
         description: "Core business management software.",
         subItems: [
-          { id: "tp-silver", label: "Silver (Single User)", href: "/products#compare" },
-          { id: "tp-gold", label: "Gold (Multi-User)", href: "/products#compare" },
+          { id: "tp-silver", label: "TallyPrime Silver", href: "/products#compare" },
+          { id: "tp-gold", label: "TallyPrime Gold", href: "/products#compare" },
           { id: "tp-server", label: "TallyPrime Server", href: "/products#compare" },
         ]
       },
       {
         id: "tp-cloud",
         label: "Cloud Solutions",
-        href: "/services#cloud",
-        description: "Official Tally & AWS infrastructure.",
+        href: "/products#cloud",
+        description: "Managed AWS & Windows infrastructure.",
         subItems: [
-          { id: "c-aws", label: "Tally on AWS", href: "/services#cloud" },
-          { id: "nosky-backup", label: "NoSky Backup", href: "/services#cloud" },
+          { id: "c-aws", label: "AWS Cloud", href: "/products#cloud" },
+          { id: "c-win", label: "Windows Cloud", href: "/products#cloud" },
+          { id: "nosky-backup", label: "NoSky Backup", href: "/services#nosky-backup" },
         ]
       },
     ],
@@ -107,13 +108,13 @@ export const productItems: ProductItem[] = [
       {
         id: "s-train",
         label: "Corporate Training",
-        href: "/services#support",
+        href: "/contact",
         description: "Hands-on training for your staff.",
       },
       {
         id: "s-custom",
         label: "Bespoke Customization",
-        href: "/services#support",
+        href: "/contact",
         description: "Development of unique Tally features.",
       },
       {
@@ -153,6 +154,12 @@ export const productItems: ProductItem[] = [
     href: "/",
     subItems: [
       {
+        id: "c-news",
+        label: "Latest News",
+        href: "/news",
+        description: "Announcements & statutory updates.",
+      },
+      {
         id: "c-about",
         label: "About Us",
         href: "/about",
@@ -161,13 +168,13 @@ export const productItems: ProductItem[] = [
       {
         id: "c-team",
         label: "Our Team",
-        href: "/",
+        href: "/team",
         description: "Meet our Tally experts.",
       },
       {
         id: "c-contact",
         label: "Contact",
-        href: "/",
+        href: "/contact",
         description: "Get in touch for support or sales.",
       },
     ],

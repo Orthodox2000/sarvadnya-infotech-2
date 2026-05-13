@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import HeroPolygonLeft from './hero-polygon-left'
 import HeroPolygonRight from './hero-polygon-right'
 import QuickSupportModal from './QuickSupportModal';
@@ -29,12 +30,12 @@ export default function SplitScreenLandingPage() {
                 Fast support for tally, billing, AMC, training, and on-site troubleshooting.
                 If your business needs help, we respond first and sort the issue without turning the call away.
               </p>
-              <button
-                onClick={() => setIsModalOpen(true)}
+              <Link
+                href="/contact"
                 className="mt-4 inline-flex rounded-full bg-white/18 px-4 py-2 text-xs font-semibold text-white shadow-[0_12px_30px_rgba(15,23,42,0.18)] ring-1 ring-white/35 backdrop-blur-sm transition-transform duration-200 hover:-translate-y-0.5 sm:mt-5 sm:px-5 sm:py-2.5 sm:text-sm"
               >
                 Request Callback
-              </button>
+              </Link>
             </div>
           </div>
 
@@ -61,12 +62,12 @@ export default function SplitScreenLandingPage() {
                   placeholder="Phone number"
                   className="hero-glass-input w-full rounded-[16px] px-3 py-2 text-xs text-white placeholder:text-white/72 focus:outline-none"
                 />
-                <button
-                  onClick={() => setIsModalOpen(true)}
-                  className="w-full rounded-[16px] bg-white/24 px-4 py-2 text-xs font-semibold text-white ring-1 ring-white/40 backdrop-blur-sm transition-colors duration-200 hover:bg-white/30"
+                <Link
+                  href="/contact"
+                  className="inline-flex w-full items-center justify-center rounded-[16px] bg-white/24 px-4 py-2 text-xs font-semibold text-white ring-1 ring-white/40 backdrop-blur-sm transition-colors duration-200 hover:bg-white/30"
                 >
                   Send Request
-                </button>
+                </Link>
               </div>
             </div>
           </div>

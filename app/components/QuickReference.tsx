@@ -13,57 +13,26 @@ const categories = [
       </svg>
     ),
     links: [
-      { label: "Silver", href: "/products#compare" },
-      { label: "Gold", href: "/products#compare" },
-      { label: "Server", href: "/products#compare" }
+      { label: "TallyPrime Silver", href: "/products#compare" },
+      { label: "TallyPrime Gold", href: "/products#compare" },
+      { label: "TallyPrime Server", href: "/products#compare" }
     ],
     color: "bg-indigo-50 text-indigo-600"
   },
   {
     title: "Cloud",
-    description: "Secure AWS, Windows, NoSky & Hybrid cloud access.",
+    description: "Secure AWS, Windows & Specialized backup solutions.",
     icon: (
       <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" />
       </svg>
     ),
     links: [
-      { label: "AWS", href: "/services#cloud" },
-      { label: "Windows", href: "/services#cloud" },
-      { label: "NoSky", href: "/services#cloud" },
-      { label: "Hybrid", href: "/services#cloud" }
+      { label: "AWS Cloud", href: "/products#cloud" },
+      { label: "Windows Cloud", href: "/products#cloud" },
+      { label: "NoSky Backup", href: "/services#nosky-backup" }
     ],
     color: "bg-blue-50 text-blue-600"
-  },
-  {
-    title: "Mobile",
-    description: "Biz Analyst app and smart WhatsApp tools.",
-    icon: (
-      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
-      </svg>
-    ),
-    links: [
-      { label: "Biz Analyst", href: "/services#biz-analyst" },
-      { label: "WhatsApp", href: "/services#whatsapp" }
-    ],
-    color: "bg-emerald-50 text-emerald-600"
-  },
-  {
-    title: "Support",
-    description: "Certified troubleshooting and expert maintenance.",
-    icon: (
-      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-      </svg>
-    ),
-    links: [
-      { label: "AMC Plans", href: "/services#amc" },
-      { label: "TSS Renew", href: "/services#amc" },
-      { label: "Help Desk", href: "/services#support" },
-      { label: "Training", href: "/services#support" }
-    ],
-    color: "bg-purple-50 text-purple-600"
   },
   {
     title: "Custom Modules",
@@ -82,6 +51,22 @@ const categories = [
       { label: "Excel Tool", href: "/products#modules" }
     ],
     color: "bg-orange-50 text-orange-600"
+  },
+  {
+    title: "Support",
+    description: "Certified troubleshooting and expert maintenance.",
+    icon: (
+      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+      </svg>
+    ),
+    links: [
+      { label: "AMC Plans", href: "/services#amc" },
+      { label: "TSS Renew", href: "/services#amc" },
+      { label: "Help Desk", href: "/contact" },
+      { label: "Training", href: "/contact" }
+    ],
+    color: "bg-purple-50 text-purple-600"
   }
 ];
 
@@ -89,7 +74,7 @@ export default function QuickReference() {
   return (
     <section className="w-full bg-[var(--background-color)] py-12 md:py-16 px-6 border-b border-[var(--primary-color)]/5">
       <div className="max-w-7xl mx-auto">
-        <div className="mb-10 md:mb-12 text-center md:text-left">
+        <div className="mb-10 md:mb-12 text-left">
           <h2 className="text-2xl md:text-3xl font-black md:font-bold text-[var(--heading-color)] mb-2 md:mb-3 tracking-tight">Quick Access Hub</h2>
           <p className="text-sm md:text-base text-[var(--para-color)] opacity-70 max-w-2xl">
             Explore our complete ecosystem of Tally solutions and professional services.
@@ -100,9 +85,9 @@ export default function QuickReference() {
           {categories.map((cat, i) => (
             <div 
               key={i} 
-              className={`flex flex-col bg-white rounded-[1.5rem] md:rounded-[2rem] p-6 md:p-8 shadow-sm border border-[var(--primary-color)]/5 hover:border-[var(--primary-color)]/20 transition-all duration-300 h-full group ${i === 4 ? 'lg:col-span-4 lg:grid lg:grid-cols-4 lg:items-center lg:gap-8' : ''}`}
+              className="flex flex-col bg-white rounded-[1.5rem] md:rounded-[2rem] p-6 md:p-8 shadow-sm border border-[var(--primary-color)]/5 hover:border-[var(--primary-color)]/20 transition-all duration-300 h-full group"
             >
-              <div className={`${i === 4 ? 'lg:col-span-1' : ''}`}>
+              <div>
                 <div className="flex items-center gap-4 mb-4">
                   <div className={`w-10 h-10 md:w-11 md:h-11 rounded-xl md:rounded-2xl ${cat.color} flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-500`}>
                     {cat.icon}
@@ -115,7 +100,7 @@ export default function QuickReference() {
                 </p>
               </div>
 
-              <div className={`grid grid-cols-2 gap-2 ${i === 4 ? 'lg:col-span-3 lg:grid-cols-6' : ''}`}>
+              <div className="grid grid-cols-2 gap-2 mt-auto">
                 {cat.links.map((link, li) => (
                   <Link 
                     key={li} 

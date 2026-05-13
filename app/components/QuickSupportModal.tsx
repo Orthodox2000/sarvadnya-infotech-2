@@ -32,11 +32,16 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
         style={{ background: 'linear-gradient(180deg, rgba(42, 22, 92, 0.95), rgba(69, 31, 128, 0.9))' }}
       >
         <button 
-          className="absolute top-6 right-6 text-white/60 hover:text-white transition-colors"
-          onClick={onClose}
+          className="absolute top-6 right-6 text-white/60 hover:text-white transition-colors z-20"
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            onClose();
+          }}
+          aria-label="Close modal"
         >
           <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12" />
           </svg>
         </button>
 

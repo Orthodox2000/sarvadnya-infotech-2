@@ -10,10 +10,12 @@ export default function Home() {
   return (
     <main>
       <HomeHero />
-      <HomeStat />
-      <QuickReference />
-      <CustomerReviews />
       <CertifiedPartners />
+
+      <QuickReference />
+      <HomeStat />
+      <CustomerReviews />
+
       <FAQ />
       <Footer />
     </main>

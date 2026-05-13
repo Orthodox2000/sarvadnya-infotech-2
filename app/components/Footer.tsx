@@ -2,8 +2,15 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
+import { useState, useEffect } from 'react';
 
 export default function Footer() {
+    const [year, setYear] = useState(new Date().getFullYear());
+
+    useEffect(() => {
+        setYear(new Date().getFullYear());
+    }, []);
+
     const supportPhone = process.env.NEXT_PUBLIC_SUPPORT_PHONE || "+919876543210";
     const supportEmail = process.env.NEXT_PUBLIC_SUPPORT_EMAIL || "info@sarvadnyainfotech.com";
     const officeAddress = process.env.NEXT_PUBLIC_OFFICE_ADDRESS || "123, Business Center, Main Road, Pune - 411001";
@@ -27,8 +34,8 @@ export default function Footer() {
     const products = [
         { name: 'TallyPrime Silver', href: '/products#compare' },
         { name: 'TallyPrime Gold', href: '/products#compare' },
-        { name: 'Tally on AWS', href: '/products#cloud' },
-        { name: 'NoSky Backup for Tally', href: '/products#cloud' },
+        { name: 'AWS Cloud Server', href: '/products#cloud' },
+        { name: 'NoSky Backup', href: '/services#nosky-backup' },
         { name: 'Excel to Tally Import', href: '/products#modules' }
     ];
 
@@ -157,10 +164,10 @@ export default function Footer() {
 
             {/* Bottom Bar */}
             <div className="max-w-7xl mx-auto pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-white/60">
-                <p>© {new Date().getFullYear()} Sarvadnya Infotech LLP. All Rights Reserved.</p>
+                <p>© {year} Sarvadnya Infotech LLP. All Rights Reserved.</p>
                 <div className="flex gap-6">
-                    <Link href="#" className="hover:text-white transition-colors">Privacy Policy</Link>
-                    <Link href="#" className="hover:text-white transition-colors">Terms of Service</Link>
+                    <Link href="/contact" className="hover:text-white transition-colors">Privacy Policy</Link>
+                    <Link href="/contact" className="hover:text-white transition-colors">Terms of Service</Link>
                 </div>
             </div>
         </footer>

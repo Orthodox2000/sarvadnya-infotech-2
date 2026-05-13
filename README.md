@@ -1,81 +1,79 @@
 # Sarvadnya Infotech
 
-Next.js 16 starter for the Sarvadnya Infotech site, with a simple branded landing page, shared theme tokens, and a MongoDB connection utility ready for server-side features.
+Next.js 16 starter for the Sarvadnya Infotech site, featuring a professional multi-page layout, interactive components, and centralized theme management.
 
-## Current Scope
+## Core Features & Updates (May 2026)
 
-- Landing page at `/`
-- Theme preview page at `/theme-settings`
-- Shared navbar with logo, brochure download link, and contact action
-- Centralized theme tokens in `lib/theme.ts`
-- Reusable MongoDB client in `lib/mongodb.ts`
+### 🚀 Performance & Stability
+- **Robust Component Logic:** Implemented safety checks and optional chaining across all dynamic navigation components (e.g., `Productbar`) to prevent runtime crashes.
+- **Optimized Assets:** High-priority hero images and localized branding for peak performance.
+
+### 💎 Interactive UI Components
+- **Advanced News Feed:** A marquee-style news ticker with hover-to-pause functionality. Provides detailed descriptions and "Learn More" links via interactive popovers on hover.
+- **Lead Generation:** Integrated `QuickSupportModal` across all key landing sections, allowing for 15-minute response time service requests.
+- **Dynamic Megamenus:** Apple-style `Productbar` with multi-level nested navigation for Products, Modules, and Services.
+
+### 📍 Localized Branding
+- **Region-Specific Focus:** Primary landing page messaging optimized for "Navi Mumbai" and "Tally Certification".
+- **Enhanced Visuals:** Increased logo visibility in the navbar and updated hero slides with certified partner branding (`certified.png`).
+
+### 🛠️ Navigation & Connectivity
+- **100% Link Integrity:** All CTAs (Request Quote, Get Started, Consultation) are wired to functional support paths or the Contact page.
+- **Simplified Access:** Clear paths to Products, Services, Modules, and Training via the navbar and footer.
 
 ## Stack
 
-- Next.js 16
-- React 19
-- Tailwind CSS 4
-- TypeScript
-- MongoDB Node.js driver
-
-## Getting Started
-
-Install dependencies:
-
-```bash
-npm install
-```
-
-Start the development server:
-
-```bash
-npm run dev
-```
-
-Open `http://localhost:3000`.
-
-## Environment
-
-Create `.env.local` and add:
-
-```env
-MONGODB_URI=mongodb://127.0.0.1:27017/sarvadnya-infotech
-MONGODB_DB=sarvadnya-infotech
-```
-
-`lib/mongodb.ts` throws at startup if `MONGODB_URI` is missing, so set the environment variable before using Mongo-backed features.
+- **Framework:** Next.js 16 (App Router)
+- **Library:** React 19
+- **Styling:** Tailwind CSS 4 & Vanilla CSS (Theme Variables)
+- **Type Safety:** TypeScript
+- **Database:** MongoDB (Server-side ready)
 
 ## Project Structure
 
 ```text
 app/
-  components/Navbar.tsx
-  theme-settings/page.tsx
-  layout.tsx
-  page.tsx
+  about/          - Company profile
+  components/     - Reusable UI (Navbar, NewsFeed, Productbar, etc.)
+  contact/        - Lead capture forms
+  products/       - Tally Editions & Custom Modules
+  services/       - AMC, Support & Cloud Hosting
+  tutorials/      - Master Tally webinars
+  theme-settings/ - Theme preview
 lib/
-  mongodb.ts
-  theme.ts
+  mongodb.ts      - Shared database client
+  product-nav.ts  - Centralized navigation data
+  theme.ts        - Global design tokens
 public/
+  certified.png   - Certified partner badge
   TallyCertificate.png
 ```
 
+## Getting Started
+
+1. **Install Dependencies:**
+   ```bash
+   npm install
+   ```
+
+2. **Environment Setup:**
+   Create `.env.local` and add:
+   ```env
+   MONGODB_URI=mongodb://127.0.0.1:27017/sarvadnya-infotech
+   MONGODB_DB=sarvadnya-infotech
+   ```
+
+3. **Development:**
+   ```bash
+   npm run dev
+   ```
+   Open `http://localhost:3000`.
+
 ## Theme Customization
 
-Update `lib/theme.ts` to change the global design tokens used across the app:
+Update `lib/theme.ts` to modify global design tokens:
+- `primaryColor` (Brand Primary)
+- `headingColor` (Typography)
+- `backgroundColor` (Site Background)
 
-- `primaryColor`
-- `secondaryColor`
-- `primaryButtonColor`
-- `secondaryButtonColor`
-- `headingColor`
-- `paragraphColor`
-- `backgroundColor`
-
-Use `/theme-settings` to preview the current values in the browser.
-
-## Scripts
-
-- `npm run dev` starts the local development server
-- `npm run build` creates the production build
-- `npm run start` runs the production server
+Preview changes at `/theme-settings`.

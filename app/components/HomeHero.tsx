@@ -5,16 +5,12 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import Script from 'next/script';
-import dynamic from 'next/dynamic';
-
-const QuickSupportModal = dynamic(() => import('./QuickSupportModal'), {
-  ssr: false,
-});
+import UnifiedContactModal, { FormType } from './UnifiedContactModal';
 
 const heroContents = [
   {
     badge: "Upgraded to Tally 7.0",
-    titleText: "Expert Consultation & Services",
+    titleText: "Trusted Tally Partner in Navi Mumbai",
     colorFrom: "#4f46e5", // Indigo
     colorTo: "#7c3aed",   // Violet
     description: "Beyond Software Sales — Guiding You to Maximize Your Tally Investment with Certified Support.",
@@ -28,19 +24,34 @@ const heroContents = [
     ctaPrimary: { text: "Compare Features", href: "/products#compare" }
   },
   {
+    badge: "Support Excellence",
+    titleText: "90% First-Call Resolution",
+    colorFrom: "#f97316", // Orange
+    colorTo: "#e11d48",   // Rose
+    description: "15min Avg. Response Time | 5000+ Queries Resolved | 99% Client Satisfaction. Reliable support that keeps your business running smoothly.",
+    image: "/sa.png",
+    features: [
+      { text: "Certified Technical Experts" },
+      { text: "Dedicated Account Managers" },
+      { text: "On-site & Remote Assistance" },
+      { text: "15min Avg. Response" }
+    ],
+    ctaPrimary: { text: "Get Support", href: "/contact" }
+  },
+  {
     badge: "Certified Expertise",
     titleText: "Why Choose Certified Partner?",
     colorFrom: "#2563eb", // Blue
     colorTo: "#0891b2",   // Cyan
     description: "Experience unparalleled reliability with Tally Certified Partners. We ensure your business software is always optimized, secure, and compliant.",
-    image: "/TallyCertificate.png",
+    image: "/certified.png",
     features: [
       { text: "Authorized Sales & Service" },
       { text: "Certified Technical Team" },
       { text: "Deep Industry Knowledge" },
       { text: "Priority Support Access" }
     ],
-    ctaPrimary: { text: "Verify Certification", href: "/services#support" }
+    ctaPrimary: { text: "Verify Certification", href: "/contact" }
   },
   {
     badge: "Vertical Solutions",
@@ -56,34 +67,30 @@ const heroContents = [
       { text: "Scalable Add-ons" }
     ],
     ctaPrimary: { text: "View Modules", href: "/products#modules" }
-  },
-  {
-    badge: "New Feature",
-    titleText: "Tally to WhatsApp",
-    colorFrom: "#16a34a", // Green
-    colorTo: "#059669",   // Emerald
-    description: "Empower your business with instant communication. Send invoices, payment reminders, and reports directly from Tally to your customers' WhatsApp.",
-    image: "/tally2whatsapp.png",
-    features: [
-      { text: "One-Click Invoice Sharing" },
-      { text: "Automated Payment Links" },
-      { text: "Instant Ledger Reports" },
-      { text: "No Manual Data Entry" }
-    ],
-    ctaPrimary: { text: "Get Started", href: "/services#whatsapp" }
   }
 ];
 
 export default function HomeHero() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalConfig, setModalConfig] = useState<{isOpen: boolean; type: FormType; service: string; details: string}>({
+    isOpen: false,
+    type: 'general',
+    service: '',
+    details: ''
+  });
+  
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [displayText, setDisplayText] = useState('');
   const [isTyping, setIsTyping] = useState(true);
   const [isVisible, setIsVisible] = useState(true);
   const [isTabFocused, setIsTabFocused] = useState(true);
+  const [isPaused, setIsPaused] = useState(false);
 
   const current = heroContents[currentIndex];
+
+  const openModal = (type: FormType, service: string = '', details: string = '') => {
+    setModalConfig({ isOpen: true, type, service, details });
+  };
 
   // Tab Visibility Detection to prevent animation stacking
   useEffect(() => {
@@ -115,7 +122,7 @@ export default function HomeHero() {
 
   // Typing effect logic
   useEffect(() => {
-    if (!isVisible || !isTabFocused) return;
+    if (!isVisible || !isTabFocused || isPaused) return;
 
     let i = 0;
     const textToType = current.titleText;
@@ -139,10 +146,10 @@ export default function HomeHero() {
       clearTimeout(typingTimeout);
       if (typingInterval) clearInterval(typingInterval);
     };
-  }, [currentIndex, isVisible, isTabFocused]);
+  }, [currentIndex, isVisible, isTabFocused, current.titleText, isPaused]);
 
   useEffect(() => {
-    if (!isVisible || !isTabFocused) return;
+    if (!isVisible || !isTabFocused || isPaused) return;
 
     const timer = setInterval(() => {
       setIsTransitioning(true);
@@ -153,7 +160,7 @@ export default function HomeHero() {
     }, 10000);
 
     return () => clearInterval(timer);
-  }, [isVisible, isTabFocused]);
+  }, [isVisible, isTabFocused, isPaused]);
 
   const pathname = usePathname();
 
@@ -166,7 +173,9 @@ export default function HomeHero() {
   return (
     <main 
       id="home-hero"
-      className="relative h-[50dvh] md:h-[85dvh] w-full overflow-hidden transition-colors duration-1000 bg-[var(--background-color)] shadow-sm"
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+      className="relative h-[50dvh] md:h-[75dvh] w-full overflow-hidden transition-colors duration-1000 bg-[var(--background-color)] shadow-sm"
       style={{ 
         '--hero-text-from': current.colorFrom, 
         '--hero-text-to': current.colorTo 
@@ -183,7 +192,13 @@ export default function HomeHero() {
         }}
       />
 
-      <QuickSupportModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+      <UnifiedContactModal 
+        isOpen={modalConfig.isOpen} 
+        onClose={() => setModalConfig(prev => ({ ...prev, isOpen: false }))}
+        type={modalConfig.type}
+        prefillService={modalConfig.service}
+        prefillDetails={modalConfig.details}
+      />
 
       {/* Background Image Container - Dynamic & Animated */}
       <div className={`absolute bottom-0 left-1/2 -translate-x-1/2 aspect-[6/5] md:aspect-[16/9] w-full max-w-5xl h-[45dvh] md:h-[55dvh] z-[2] transition-all duration-700 ease-in-out
@@ -238,7 +253,7 @@ export default function HomeHero() {
             ${isTransitioning ? 'opacity-0 translate-y-12 blur-sm' : 'opacity-100 translate-y-0 blur-0'}`}>
             
             {/* Typing Sub-title - Large & Animated */}
-            <h2 className="font-sans text-[22px] md:text-[42px] lg:text-[48px] font-black leading-[1.1] tracking-tight min-h-[2.2em] md:min-h-[1.2em] mb-1 md:mb-2 overflow-visible">
+            <h2 className="font-sans text-[22px] md:text-[42px] lg:text-[48px] font-black leading-[1.1] tracking-tight min-h-[3.3em] md:min-h-[1.5em] mb-1 md:mb-2 overflow-visible">
               <span 
                 className="inline-block px-4 py-2 -mx-4 text-highlight-gradient"
               >
@@ -283,12 +298,12 @@ export default function HomeHero() {
                   style={{ backgroundColor: current.colorTo }}
                 />
               </Link>
-              <button
-                onClick={() => setIsModalOpen(true)}
+              <Link
+                href="/contact"
                 className="flex h-9 md:h-11 w-32 md:w-44 items-center justify-center rounded-full border border-slate-200 bg-[var(--background-color)] text-[9px] md:text-xs font-bold text-[#0f0529] transition-all hover:bg-slate-50 active:scale-95 shadow-sm"
               >
                 Request Call
-              </button>
+              </Link>
             </div>
           </div>
         </div>

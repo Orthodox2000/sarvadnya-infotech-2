@@ -14,6 +14,7 @@ html {
   overflow-x: clip;
   max-width: 100%;
   position: relative;
+  scroll-padding-top: 130px;
 }
 
 :root {
@@ -24,7 +25,7 @@ html {
   --secondary-btn-color: #ffffff;
   --heading-color: #290f4d;
   --para-color: #51158c;
-  --background-color: #fcfaff;
+  --background-color: #f9fafb;
   --accent-color: #b163ff;
   --heading-light-color: #431f82;
   --background: var(--background-color);
@@ -67,6 +68,14 @@ body {
 .animate-marquee {
   animation: marquee 40s linear infinite;
   will-change: transform;
+}
+
+.pause-marquee {
+  animation-play-state: paused !important;
+}
+
+.group:hover .group-hover\:pause-marquee {
+  animation-play-state: paused !important;
 }
 
 @media (max-width: 768px) {

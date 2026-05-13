@@ -5,7 +5,7 @@ export const theme = {
   secondaryButtonColor: "#ffffff",
   headingColor: "#290f4d",
   paragraphColor: "#51158c",
-  backgroundColor: "#fcfaff",
+  backgroundColor: "#f9fafb",
   white: "#ffffff",
   accentColor: "#b163ff",
   headingLightColor: "#431f82",
