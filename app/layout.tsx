@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import type { CSSProperties } from "react";
 import Navbar from "./components/Navbar";
 import { theme } from "@/lib/theme";
@@ -10,13 +10,17 @@ export const metadata: Metadata = {
   description: "Your Tally Assistance",
 };
 
+export const viewport: Viewport = {
+  colorScheme: "only light",
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="h-full antialiased" style={{ colorScheme: "light" }} data-scroll-behavior="smooth" suppressHydrationWarning>
+    <html lang="en" className="h-full antialiased" style={{ colorScheme: "only light" }} data-scroll-behavior="smooth" suppressHydrationWarning>
       <body
         className="relative min-h-full w-full overflow-x-hidden bg-background text-foreground"
         suppressHydrationWarning

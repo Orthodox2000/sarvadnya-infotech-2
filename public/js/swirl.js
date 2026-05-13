@@ -184,32 +184,53 @@ function resize() {
   if (!canvas || !container) return;
 	const { width, height } = container.getBoundingClientRect();
 	
+  if (width <= 0 || height <= 0) return;
+
+  const canDrawA = canvas.a.width > 0 && canvas.a.height > 0;
+  const canDrawB = canvas.b.width > 0 && canvas.b.height > 0;
+
   // Force full width on mobile/desktop
 	canvas.a.width = width;
   canvas.a.height = height;
 
-  if (ctx.b) ctx.a.drawImage(canvas.b, 0, 0);
+  if (ctx.b && canDrawB) {
+    try {
+      ctx.a.drawImage(canvas.b, 0, 0);
+    } catch (e) {}
+  }
 
 	canvas.b.width = width;
   canvas.b.height = height;
   
-  if (ctx.a) ctx.b.drawImage(canvas.a, 0, 0);
+  if (ctx.a && canDrawA) {
+    try {
+      ctx.b.drawImage(canvas.a, 0, 0);
+    } catch (e) {}
+  }
 
   center[0] = 0.5 * canvas.a.width;
   center[1] = 0.5 * canvas.a.height;
 }
 
 function renderToScreen() {
+  if (!canvas || !canvas.a || canvas.a.width <= 0 || canvas.a.height <= 0) return;
+  if (!ctx || !ctx.b) return;
+
   ctx.b.save();
   ctx.b.globalCompositeOperation = 'source-over';
-  ctx.b.drawImage(canvas.a, 0, 0);
+  try {
+    ctx.b.drawImage(canvas.a, 0, 0);
+  } catch (e) {}
   ctx.b.restore();
 }
 
 function draw() {
   tick++;
 
-  if (!canvas || !canvas.a) return;
+  if (!canvas || !canvas.a || canvas.a.width <= 0 || canvas.a.height <= 0) {
+    animationFrameId = window.requestAnimationFrame(draw);
+    return;
+  }
 
   ctx.a.clearRect(0, 0, canvas.a.width, canvas.a.height);
 

@@ -11,9 +11,13 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: clip;
+  max-width: 100%;
+  position: relative;
 }
 
 :root {
+  color-scheme: only light;
   --primary-color: #7f00ff;
   --secondary-color: #51158c;
   --primary-btn-color: #7f00ff;
@@ -46,9 +50,13 @@ html {
 body {
   background: var(--background);
   color: var(--foreground);
-  color-scheme: light;
   forced-color-adjust: none;
   font-family: var(--font-sans);
+  overflow-x: clip;
+  max-width: 100%;
+  position: relative;
+  touch-action: pan-y;
+  -webkit-overflow-scrolling: touch;
 }
 
 @keyframes marquee {

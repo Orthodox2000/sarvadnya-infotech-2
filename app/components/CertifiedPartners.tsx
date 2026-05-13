@@ -57,11 +57,11 @@ const CertifiedPartners = () => {
                 </h1>
             </div>
             
-            <div className="w-full max-w-5xl flex flex-row flex-nowrap items-center justify-center gap-2 sm:gap-12 md:gap-16 lg:gap-24 px-2">
+            <div className="w-full max-w-5xl flex flex-row flex-wrap md:flex-nowrap items-center justify-center gap-2 sm:gap-12 md:gap-16 lg:gap-24 px-2">
                 {images.map((item, index) => (
                     <div 
                         key={index}
-                        className={`relative flex-1 h-12 sm:h-28 md:h-40 bg-white/50 rounded-lg sm:rounded-2xl border border-black/[0.03] shadow-sm transition-all duration-1000 ${isVisible ? 'animate-rise-up' : 'opacity-0'}`}
+                        className={`relative flex-1 min-w-[70px] sm:min-w-0 h-12 sm:h-28 md:h-40 bg-white/50 rounded-lg sm:rounded-2xl border border-black/[0.03] shadow-sm transition-all duration-1000 ${isVisible ? 'animate-rise-up' : 'opacity-0'}`}
                         style={{ 
                             animationDelay: isVisible ? `${index * 250}ms` : '0ms',
                         }}

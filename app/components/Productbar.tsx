@@ -46,7 +46,7 @@ const Productbar = () => {
 
   return (
     <div 
-      className="w-full border-b border-black/5 sticky top-[56px] z-[90] h-[31px] flex items-center overflow-visible no-scrollbar transition-all duration-300 shadow-sm"
+      className="w-full border-b border-black/5 sticky top-[56px] z-[90] h-[31px] flex items-center overflow-x-clip no-scrollbar transition-all duration-300 shadow-sm"
       style={{ 
         backgroundColor: 'var(--background-color)' 
       } as CSSProperties}
