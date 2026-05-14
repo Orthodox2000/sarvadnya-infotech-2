@@ -71,13 +71,13 @@ const heroContents = [
 ];
 
 export default function HomeHero() {
-  const [modalConfig, setModalConfig] = useState<{isOpen: boolean; type: FormType; service: string; details: string}>({
+  const [modalConfig, setModalConfig] = useState<{ isOpen: boolean; type: FormType; service: string; details: string }>({
     isOpen: false,
     type: 'general',
     service: '',
     details: ''
   });
-  
+
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [displayText, setDisplayText] = useState('');
@@ -97,7 +97,7 @@ export default function HomeHero() {
     const handleVisibilityChange = () => {
       const hidden = document.hidden;
       setIsTabFocused(!hidden);
-      
+
       if (!hidden) {
         // Soft reset: trigger a re-type when coming back to tab
         setDisplayText('');
@@ -129,7 +129,7 @@ export default function HomeHero() {
 
     setIsTyping(true);
     setDisplayText('');
-    
+
     let typingInterval: NodeJS.Timeout;
     const typingTimeout = setTimeout(() => {
       typingInterval = setInterval(() => {
@@ -171,29 +171,29 @@ export default function HomeHero() {
   }, [pathname, isVisible, isTabFocused]);
 
   return (
-    <main 
+    <main
       id="home-hero"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
       className="relative h-[50dvh] md:h-[75dvh] w-full overflow-hidden transition-colors duration-1000 bg-[var(--background-color)] shadow-sm"
-      style={{ 
-        '--hero-text-from': current.colorFrom, 
-        '--hero-text-to': current.colorTo 
+      style={{
+        '--hero-text-from': current.colorFrom,
+        '--hero-text-to': current.colorTo
       } as React.CSSProperties}
     >
       <div className="content--canvas absolute inset-0 z-[1] pointer-events-none" />
       <Script src="/js/noise.min.js" strategy="afterInteractive" />
       <Script src="/js/util.js" strategy="afterInteractive" />
-      <Script 
-        src="/js/swirl.js" 
-        strategy="afterInteractive" 
+      <Script
+        src="/js/swirl.js"
+        strategy="afterInteractive"
         onLoad={() => {
           if ((window as any).initSwirl) (window as any).initSwirl();
         }}
       />
 
-      <UnifiedContactModal 
-        isOpen={modalConfig.isOpen} 
+      <UnifiedContactModal
+        isOpen={modalConfig.isOpen}
         onClose={() => setModalConfig(prev => ({ ...prev, isOpen: false }))}
         type={modalConfig.type}
         prefillService={modalConfig.service}
@@ -217,25 +217,25 @@ export default function HomeHero() {
       {/* Content Overlay */}
       <div className="relative z-10 flex h-full w-full flex-col items-center px-6">
         {/* Radial Gradient for text visibility */}
-        <div 
-          className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-5xl h-[90%] md:h-[80%] pointer-events-none" 
-          style={{ 
+        <div
+          className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-5xl h-[90%] md:h-[80%] pointer-events-none"
+          style={{
             background: 'radial-gradient(circle at top, var(--background-color) 0%, rgba(252, 250, 255, var(--hero-gradient-opacity, 0.7)) 60%, rgba(252, 250, 255, 0) 100%)'
           }}
         />
 
         <div className="relative z-20 mt-[20px] md:mt-[30px] w-full max-w-4xl flex flex-col items-center text-center">
-          
+
           {/* Static Global Badge */}
-          <div 
+          <div
             className="inline-flex items-center gap-2 rounded-full px-3 py-1 border mb-4 md:mb-6 transition-all duration-1000 bg-[var(--background-color)] shadow-sm"
             style={{ borderColor: `${current.colorFrom}33` }}
           >
-            <span 
+            <span
               className="flex h-2 w-2 rounded-full animate-pulse"
               style={{ backgroundColor: current.colorFrom }}
             ></span>
-            <span 
+            <span
               className="text-[9px] md:text-[10px] font-bold uppercase tracking-wider transition-colors duration-1000"
               style={{ color: current.colorFrom }}
             >
@@ -251,20 +251,20 @@ export default function HomeHero() {
           {/* Dynamic Content Area - Staggered with delay-250ms */}
           <div className={`flex flex-col items-center w-full transition-all duration-700 delay-[250ms] ease-in-out
             ${isTransitioning ? 'opacity-0 translate-y-12 blur-sm' : 'opacity-100 translate-y-0 blur-0'}`}>
-            
+
             {/* Typing Sub-title - Large & Animated */}
             <h2 className="font-sans text-[22px] md:text-[42px] lg:text-[48px] font-black leading-[1.1] tracking-tight min-h-[3.3em] md:min-h-[1.5em] mb-1 md:mb-2 overflow-visible">
-              <span 
-                className="inline-block px-4 py-2 -mx-4 text-highlight-gradient"
-              >
-                {displayText}
+              <span className="inline-block whitespace-nowrap">
+                <span className="px-4 py-2 -mx-4 text-highlight-gradient">
+                  {displayText}
+                </span>
+                <span
+                  className={`inline-block w-[3px] h-[0.9em] ml-1 align-middle transition-colors duration-1000 ${isTyping ? 'opacity-100' : 'animate-pulse'}`}
+                  style={{ backgroundColor: current.colorFrom }}
+                ></span>
               </span>
-              <span 
-                className={`inline-block w-[3px] h-[0.9em] ml-1 align-middle transition-colors duration-1000 ${isTyping ? 'opacity-100' : 'animate-pulse'}`}
-                style={{ backgroundColor: current.colorFrom }}
-              ></span>
             </h2>
-            
+
             <p className="max-w-2xl mx-auto text-[11px] md:text-base font-medium leading-relaxed text-slate-700 mb-3 md:mb-4">
               {current.description}
             </p>
@@ -273,7 +273,7 @@ export default function HomeHero() {
             <div className="mt-2 md:mt-4 flex flex-row flex-wrap justify-center gap-x-6 md:gap-x-8 gap-y-3 md:gap-y-4 w-full">
               {current.features.map((feature, i) => (
                 <div key={feature.text} className="flex items-center gap-2 md:gap-2.5 group animate-in fade-in slide-in-from-top-4 duration-500 fill-mode-both" style={{ animationDelay: `${i * 100}ms` }}>
-                  <div 
+                  <div
                     className="flex-shrink-0 w-3.5 h-3.5 md:w-4 md:h-4 rounded-full flex items-center justify-center shadow-sm transition-colors duration-1000"
                     style={{ backgroundColor: current.colorFrom }}
                   >
@@ -289,20 +289,39 @@ export default function HomeHero() {
             <div className="mt-6 md:mt-10 flex justify-center gap-3">
               <Link
                 href={current.ctaPrimary.href}
-                className="group relative flex h-9 md:h-12 w-32 md:w-44 items-center justify-center overflow-hidden rounded-full text-[9px] md:text-xs font-bold text-white shadow-md transition-all hover:scale-105 active:scale-95"
-                style={{ backgroundColor: current.colorFrom }}
+                className="group relative flex h-9 md:h-12 w-32 md:w-44 items-center justify-center overflow-hidden rounded-full text-[9px] md:text-xs font-bold shadow-md transition-all hover:scale-105 active:scale-95 border"
+                style={{ 
+                  backgroundColor: current.colorFrom,
+                  borderColor: current.colorFrom
+                }}
               >
-                <span className="relative z-10">{current.ctaPrimary.text}</span>
-                <div 
-                  className="absolute inset-0 z-0 translate-y-full transition-transform group-hover:translate-y-0" 
-                  style={{ backgroundColor: current.colorTo }}
+                <span 
+                  className="relative z-10 transition-colors duration-300 group-hover:!text-[var(--hover-color)]"
+                  style={{ color: 'white', '--hover-color': current.colorFrom } as React.CSSProperties}
+                >
+                  {current.ctaPrimary.text}
+                </span>
+                <div
+                  className="absolute inset-0 z-0 translate-y-full transition-transform duration-300 group-hover:translate-y-0 bg-white"
                 />
               </Link>
               <Link
                 href="/contact"
-                className="flex h-9 md:h-11 w-32 md:w-44 items-center justify-center rounded-full border border-slate-200 bg-[var(--background-color)] text-[9px] md:text-xs font-bold text-[#0f0529] transition-all hover:bg-slate-50 active:scale-95 shadow-sm"
+                className="group relative flex h-9 md:h-11 w-32 md:w-44 items-center justify-center overflow-hidden rounded-full border transition-all active:scale-95 shadow-sm"
+                style={{ 
+                  backgroundColor: current.colorFrom,
+                  borderColor: current.colorFrom
+                }}
               >
-                Request Call
+                <span 
+                  className="relative z-10 text-[9px] md:text-xs font-bold transition-colors duration-300 text-white group-hover:!text-[var(--hover-color)]"
+                  style={{ '--hover-color': current.colorFrom } as React.CSSProperties}
+                >
+                  Request Call
+                </span>
+                <div
+                  className="absolute inset-0 z-0 translate-y-full transition-transform duration-300 group-hover:translate-y-0 bg-white"
+                />
               </Link>
             </div>
           </div>

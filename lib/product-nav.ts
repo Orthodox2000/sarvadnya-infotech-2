@@ -113,7 +113,7 @@ export const productItems: ProductItem[] = [
       },
       {
         id: "s-custom",
-        label: "Bespoke Customization",
+        label: "TDL Customization",
         href: "/contact",
         description: "Development of unique Tally features.",
       },
@@ -176,6 +176,12 @@ export const productItems: ProductItem[] = [
         label: "Contact",
         href: "/contact",
         description: "Get in touch for support or sales.",
+      },
+      {
+        id: "c-careers",
+        label: "Careers",
+        href: "/careers",
+        description: "Join our expert team.",
       },
     ],
   },

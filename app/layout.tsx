@@ -8,6 +8,17 @@ import NewsFeed from "./components/NewsFeed";
 export const metadata: Metadata = {
   title: "Sarvadnya Infotech",
   description: "Your Tally Assistance",
+  icons: {
+    icon: [
+      { url: "/favicon.ico?v=2" },
+      { url: "/favicon-96x96.png?v=2", sizes: "96x96", type: "image/png" },
+      { url: "/favicon.svg?v=2", type: "image/svg+xml" },
+    ],
+    apple: [
+      { url: "/apple-touch-icon.png?v=2" },
+    ],
+  },
+  manifest: "/site.webmanifest?v=2",
 };
 
 export const viewport: Viewport = {

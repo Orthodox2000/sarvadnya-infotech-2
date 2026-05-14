@@ -5,7 +5,7 @@ export default function AboutPage() {
   return (
     <main className="min-h-screen bg-[var(--background-color)]">
       {/* Segment 1: Company Information */}
-      <section className="py-20 px-6 sm:px-12 lg:px-24 max-w-7xl mx-auto">
+      <section className="py-20 px-6 sm:px-12 lg:px-24 max-w-7xl mx-auto animate-rise-up">
         <div className="flex flex-col md:flex-row items-center gap-12">
           <div className="flex-1 space-y-6">
             <h1 className="text-4xl md:text-5xl font-bold text-[var(--heading-color)] leading-tight">
@@ -34,7 +34,7 @@ export default function AboutPage() {
       </section>
 
       {/* Segment 2: Partner Statement 1 - Suman Sawant */}
-      <section className="py-20 bg-white">
+      <section className="py-20 bg-white animate-rise-up" style={{ animationDelay: '200ms' }}>
         <div className="px-6 sm:px-12 lg:px-24 max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row-reverse items-center gap-16">
             <div className="flex-1 space-y-6">
@@ -67,7 +67,7 @@ export default function AboutPage() {
       </section>
 
       {/* Segment 3: Partner Statement 2 - Mr. Madhukar Sawant */}
-      <section className="py-20">
+      <section className="py-20 animate-rise-up" style={{ animationDelay: '400ms' }}>
         <div className="px-6 sm:px-12 lg:px-24 max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row items-center gap-16">
             <div className="flex-1 space-y-6">

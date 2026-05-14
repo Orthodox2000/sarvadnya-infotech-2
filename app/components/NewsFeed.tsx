@@ -38,9 +38,9 @@ export default function NewsFeed() {
   const handleMouseEnter = (e: React.MouseEvent, index: number) => {
     const rect = e.currentTarget.getBoundingClientRect();
     // Position popover below the item (NewsFeed is at the top)
-    setPopoverPos({ 
-      top: rect.bottom + 8, 
-      left: Math.max(10, Math.min(rect.left, window.innerWidth - 300)) 
+    setPopoverPos({
+      top: rect.bottom + 8,
+      left: Math.max(10, Math.min(rect.left, window.innerWidth - 300))
     });
     setHoveredIndex(index);
   };
@@ -48,7 +48,7 @@ export default function NewsFeed() {
   const currentNews = hoveredIndex !== null ? newsItems[hoveredIndex % newsItems.length] : null;
 
   return (
-    <div 
+    <div
       className="relative w-full bg-[#0f0529] h-[40px] flex items-center border-b border-white/10 group overflow-visible z-[50]"
     >
       {/* Label Section */}
@@ -70,8 +70,8 @@ export default function NewsFeed() {
           {/* First set of items */}
           <div className="flex items-center gap-12 px-4 shrink-0">
             {newsItems.map((item, index) => (
-              <div 
-                key={`news-1-${index}`} 
+              <div
+                key={`news-1-${index}`}
                 className="flex items-center gap-3 relative group/item"
                 onMouseEnter={(e) => handleMouseEnter(e, index)}
                 onMouseLeave={() => setHoveredIndex(null)}
@@ -79,7 +79,7 @@ export default function NewsFeed() {
                 <span className="text-[10px] md:text-xs font-bold text-slate-400">
                   {String(index + 1).padStart(2, '0')}
                 </span>
-                <Link 
+                <Link
                   href="/news"
                   className="text-[11px] md:text-sm font-semibold text-white/90 hover:text-white transition-colors cursor-pointer drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]"
                 >
@@ -92,8 +92,8 @@ export default function NewsFeed() {
           {/* Duplicate set for seamless loop */}
           <div className="flex items-center gap-12 px-4 shrink-0">
             {newsItems.map((item, index) => (
-              <div 
-                key={`news-2-${index}`} 
+              <div
+                key={`news-2-${index}`}
                 className="flex items-center gap-3 relative group/item"
                 onMouseEnter={(e) => handleMouseEnter(e, index + newsItems.length)}
                 onMouseLeave={() => setHoveredIndex(null)}
@@ -101,7 +101,7 @@ export default function NewsFeed() {
                 <span className="text-[10px] md:text-xs font-bold text-slate-400">
                   {String(index + 1).padStart(2, '0')}
                 </span>
-                <Link 
+                <Link
                   href="/news"
                   className="text-[11px] md:text-sm font-semibold text-white/90 hover:text-white transition-colors cursor-pointer drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]"
                 >
@@ -116,12 +116,12 @@ export default function NewsFeed() {
 
       {/* Single Fixed Popover - Renders outside the marquee clipping container */}
       {currentNews && (
-        <div 
+        <div
           className={`fixed z-[9999] w-72 p-5 bg-white rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-slate-100 transition-all duration-300 pointer-events-auto
           ${hoveredIndex !== null ? 'visible opacity-100 translate-y-0 scale-100' : 'invisible opacity-0 -translate-y-2 scale-95'}`}
-          style={{ 
-            top: `${popoverPos.top}px`, 
-            left: `${popoverPos.left}px` 
+          style={{
+            top: `${popoverPos.top}px`,
+            left: `${popoverPos.left}px`
           }}
           onMouseEnter={() => setHoveredIndex(hoveredIndex)}
           onMouseLeave={() => setHoveredIndex(null)}
@@ -132,7 +132,7 @@ export default function NewsFeed() {
             <p className="text-[13px] text-slate-700 font-bold leading-relaxed mb-4 whitespace-normal">
               {currentNews.description}
             </p>
-            <Link 
+            <Link
               href="/news"
               className="inline-flex items-center gap-1.5 px-4 py-2 bg-[#7338a0] text-white text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-[#4a2574] transition-all shadow-lg shadow-indigo-100"
             >

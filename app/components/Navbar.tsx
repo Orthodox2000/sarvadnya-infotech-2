@@ -5,7 +5,7 @@ import Link from "next/link";
 
 export default function Navbar() {
   return (
-    <header 
+    <header
       className="relative z-[40] w-full border-b border-white/5 bg-[var(--heading-color,#0a041a)] shadow-lg"
     >
       <nav className="mx-auto flex h-14 w-full max-w-7xl items-center justify-between px-6">
@@ -47,7 +47,7 @@ export default function Navbar() {
               </svg>
               <span className="text-[10px] font-bold uppercase tracking-wider">Call us: +91 98765 43210</span>
             </a>
-            
+
             <Link
               href="/careers"
               className="inline-flex items-center justify-center rounded-full bg-white/10 px-4 py-1.5 text-[10px] font-bold uppercase tracking-wider text-white border border-white/20 transition-all hover:bg-white/20 active:scale-95"

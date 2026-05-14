@@ -113,7 +113,7 @@ const FAQ = () => {
             id="faq"
             ref={sectionRef}
             className="w-full py-8 px-6 transition-colors duration-300"
-            style={{ backgroundColor: 'var(--background-color, #f8fafc)' }}
+            style={{ backgroundColor: 'var(--background-color, #ffffff)' }}
         >
             <div className="max-w-4xl mx-auto">
                 <div className={`text-center mb-12 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>

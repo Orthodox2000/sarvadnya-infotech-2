@@ -8,8 +8,8 @@ const baseTTL = 50;
 const rangeTTL = 150;
 const baseSpeed = 0.1;
 const rangeSpeed = 2;
-const baseRadius = 1;
-const rangeRadius = 4;
+const baseRadius = 2;
+const rangeRadius = 8;
 const baseHue = 270; // Indigo/Purple matching #7338a0
 const rangeHue = 0;
 const noiseSteps = 8;
@@ -28,13 +28,13 @@ let particleProps;
 let speedMultiplier = 1;
 let radiusMultiplier = 1;
 let mobileSaturation = 40;
-let mobileLightness = 50;
+let mobileLightness = 40;
 let animationFrameId = null;
 
 function setup() {
-	container = document.querySelector('.content--canvas');
+  container = document.querySelector('.content--canvas');
   if (!container) return;
-  
+
   // Cancel any existing animation frame
   if (animationFrameId) {
     window.cancelAnimationFrame(animationFrameId);
@@ -42,14 +42,15 @@ function setup() {
   }
 
   const isMobile = window.innerWidth < 768;
-  particleCount = isMobile ? 80 : 250; // Heavily reduced from 400/600 to save CPU
+  particleCount = isMobile ? 40 : 150; // Heavily reduced from 400/600 to save CPU
   particlePropsLength = particleCount * particlePropCount;
 
   // Faster but fewer particles for a "cleaner" look with less CPU load
-  speedMultiplier = isMobile ? 0.4 : 0.7; 
-  radiusMultiplier = isMobile ? 2 : 1.2;  mobileSaturation = isMobile ? 80 : 40;
-  mobileLightness = isMobile ? 50 : 50;
-  
+  speedMultiplier = isMobile ? 0.4 : 0.7;
+  radiusMultiplier = isMobile ? 1 : 1;
+  mobileSaturation = isMobile ? 80 : 40;
+  mobileLightness = isMobile ? 40 : 40;
+
   // More concentrated vertical spread on mobile
   rangeY = isMobile ? window.innerHeight * 0.25 : 100;
 
@@ -57,10 +58,10 @@ function setup() {
   const existingCanvases = container.querySelectorAll('canvas');
   existingCanvases.forEach(c => c.remove());
 
-	createCanvas();
+  createCanvas();
   resize();
   initParticles();
-	draw();
+  draw();
 }
 
 function initParticles() {
@@ -82,7 +83,7 @@ function initParticle(i, isInitial = false) {
   x = rand(canvas.a.width);
   // Spawn within rangeY around the vertical center
   y = isInitial ? rand(canvas.a.height) : center[1] + randRange(rangeY);
-  
+
   vx = 0;
   vy = 0;
   life = 0;
@@ -102,12 +103,12 @@ function drawParticles() {
 }
 
 function updateParticle(i) {
-  let i2=1+i, i3=2+i, i4=3+i, i5=4+i, i6=5+i, i7=6+i, i8=7+i, i9=8+i;
+  let i2 = 1 + i, i3 = 2 + i, i4 = 3 + i, i5 = 4 + i, i6 = 5 + i, i7 = 6 + i, i8 = 7 + i, i9 = 8 + i;
   let n, x, y, vx, vy, life, ttl, speed, x2, y2, radius, hue;
 
   x = particleProps[i];
   y = particleProps[i2];
-  
+
   if (isNaN(x) || isNaN(y)) {
     initParticle(i);
     return;
@@ -148,33 +149,36 @@ function drawParticle(x, y, x2, y2, life, ttl, radius, hue) {
 }
 
 function checkBounds(x, y) {
-	return(
-		x > canvas.a.width ||
-		x < 0 ||
-		y > canvas.a.height ||
-		y < 0
-	);
+  return (
+    x > canvas.a.width ||
+    x < 0 ||
+    y > canvas.a.height ||
+    y < 0
+  );
 }
 
 function createCanvas() {
   container = document.querySelector('.content--canvas');
   if (!container) return;
-	canvas = {
-		a: document.createElement('canvas'),
-		b: document.createElement('canvas')
-	};
-	canvas.b.style = `
+  canvas = {
+    a: document.createElement('canvas'),
+    b: document.createElement('canvas')
+  };
+  canvas.b.style = `
 		position: absolute;
 		top: 0;
 		left: 0;
 		width: 100%;
 		height: 100%;
     z-index: 1;
+    will-change: transform, opacity;
 	`;
-	container.appendChild(canvas.b);
-	ctx = {
-		a: canvas.a.getContext('2d'),
-		b: canvas.b.getContext('2d')
+  canvas.b.className = 'gpu-accelerated';
+  canvas.a.className = 'gpu-accelerated';
+  container.appendChild(canvas.b);
+  ctx = {
+    a: canvas.a.getContext('2d'),
+    b: canvas.b.getContext('2d')
   };
   ctx.a.lineCap = 'round';
   center = [];
@@ -182,30 +186,30 @@ function createCanvas() {
 
 function resize() {
   if (!canvas || !container) return;
-	const { width, height } = container.getBoundingClientRect();
-	
+  const { width, height } = container.getBoundingClientRect();
+
   if (width <= 0 || height <= 0) return;
 
   const canDrawA = canvas.a.width > 0 && canvas.a.height > 0;
   const canDrawB = canvas.b.width > 0 && canvas.b.height > 0;
 
   // Force full width on mobile/desktop
-	canvas.a.width = width;
+  canvas.a.width = width;
   canvas.a.height = height;
 
   if (ctx.b && canDrawB) {
     try {
       ctx.a.drawImage(canvas.b, 0, 0);
-    } catch (e) {}
+    } catch (e) { }
   }
 
-	canvas.b.width = width;
+  canvas.b.width = width;
   canvas.b.height = height;
-  
+
   if (ctx.a && canDrawA) {
     try {
       ctx.b.drawImage(canvas.a, 0, 0);
-    } catch (e) {}
+    } catch (e) { }
   }
 
   center[0] = 0.5 * canvas.a.width;
@@ -220,7 +224,7 @@ function renderToScreen() {
   ctx.b.globalCompositeOperation = 'source-over';
   try {
     ctx.b.drawImage(canvas.a, 0, 0);
-  } catch (e) {}
+  } catch (e) { }
   ctx.b.restore();
 }
 
@@ -240,7 +244,7 @@ function draw() {
   drawParticles();
   renderToScreen();
 
-	animationFrameId = window.requestAnimationFrame(draw);
+  animationFrameId = window.requestAnimationFrame(draw);
 }
 
 window.initSwirl = setup;

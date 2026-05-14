@@ -8,7 +8,7 @@ export const theme = {
   backgroundColor: "#f9fafb",
   white: "#ffffff",
   accentColor: "#b163ff",
-  headingLightColor: "#431f82",
+  headingLightColor: "#431f82ff",
 } as const;
 
 export type Theme = typeof theme;

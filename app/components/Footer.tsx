@@ -48,7 +48,7 @@ export default function Footer() {
     ];
 
     return (
-        <footer className="bg-[var(--heading-color)] text-white pt-16 pb-8 px-6">
+        <footer className="bg-[#0a041a] text-white pt-16 pb-8 px-6">
             <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
                 {/* Company Info */}
                 <div className="space-y-6">
@@ -166,6 +166,7 @@ export default function Footer() {
             <div className="max-w-7xl mx-auto pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-white/60">
                 <p>© {year} Sarvadnya Infotech LLP. All Rights Reserved.</p>
                 <div className="flex gap-6">
+                    <Link href="/careers" className="hover:text-white transition-colors">Careers</Link>
                     <Link href="/contact" className="hover:text-white transition-colors">Privacy Policy</Link>
                     <Link href="/contact" className="hover:text-white transition-colors">Terms of Service</Link>
                 </div>

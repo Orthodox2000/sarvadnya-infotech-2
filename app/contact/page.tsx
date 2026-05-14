@@ -18,7 +18,7 @@ export default function ContactPage() {
   return (
     <main className="min-h-screen bg-[var(--background-color)]">
       {/* Hero Section */}
-      <section className="py-20 px-6 sm:px-12 lg:px-24 max-w-7xl mx-auto">
+      <section className="py-20 px-6 sm:px-12 lg:px-24 max-w-7xl mx-auto animate-rise-up">
         <div className="text-center max-w-3xl mx-auto space-y-6">
           <h1 className="text-4xl md:text-6xl font-black text-[var(--heading-color)]">Get in <span className="text-[var(--primary-color)]">Touch</span></h1>
           <p className="text-lg text-[var(--para-color)] opacity-80">
@@ -54,14 +54,14 @@ export default function ContactPage() {
       </section>
 
       {/* Social Media Grid */}
-      <section className="pb-20 px-6 sm:px-12 lg:px-24 max-w-7xl mx-auto">
+      <section className="pb-20 px-6 sm:px-12 lg:px-24 max-w-7xl mx-auto animate-rise-up" style={{ animationDelay: '200ms' }}>
         <h2 className="text-2xl font-black text-[var(--heading-color)] mb-8 text-center md:text-left">Connect with Us</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {socialMedia.map((social) => (
             <a 
               key={social.name}
               href={social.url}
-              className={`p-8 rounded-[2.5rem] ${social.bgColor} border border-transparent hover:border-white transition-all duration-300 group shadow-sm`}
+              className={`p-8 rounded-[2.5rem] ${social.bgColor} border border-transparent hover:border-white transition-all duration-300 group shadow-sm flex flex-col items-center text-center md:items-start md:text-left`}
             >
               <div className={`text-3xl mb-4 ${social.iconColor} group-hover:scale-110 transition-transform duration-300`}>
                 {social.name === 'WhatsApp' && <svg className="w-10 h-10" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.414 0 .004 5.411.002 12.048c0 2.12.54 4.19 1.563 6.024L0 24l6.135-1.608a11.81 11.81 0 005.908 1.567h.005c6.635 0 12.045-5.411 12.047-12.047 0-3.217-1.252-6.242-3.525-8.514z"/></svg>}
@@ -77,7 +77,7 @@ export default function ContactPage() {
       </section>
 
       {/* Detailed Contact Section & Support Form */}
-      <section className="pb-20 px-6 sm:px-12 lg:px-24 max-w-4xl mx-auto">
+      <section className="pb-20 px-6 sm:px-12 lg:px-24 max-w-4xl mx-auto animate-rise-up" style={{ animationDelay: '400ms' }}>
         <div className="grid grid-cols-1 gap-8 lg:gap-12">
           {/* Support Form */}
           <div className="bg-[var(--heading-color)] p-8 md:p-12 rounded-[3rem] shadow-xl text-white flex flex-col justify-center">

@@ -5,7 +5,7 @@ export default function TeamPage() {
   return (
     <main className="min-h-screen bg-[var(--background-color)]">
       {/* Hero: Team Photo & Common Message */}
-      <section className="py-20 px-6 sm:px-12 lg:px-24 max-w-7xl mx-auto">
+      <section className="py-20 px-6 sm:px-12 lg:px-24 max-w-7xl mx-auto animate-rise-up">
         <div className="flex flex-col lg:flex-row items-center gap-12">
           <div className="flex-1 space-y-8">
             <div className="inline-block px-4 py-1.5 rounded-full bg-[var(--primary-color)]/10 text-[var(--primary-color)] text-sm font-bold uppercase tracking-wider">
@@ -35,7 +35,7 @@ export default function TeamPage() {
       </section>
 
       {/* Employee Culture Description */}
-      <section className="py-20 bg-white">
+      <section className="py-20 bg-white animate-rise-up" style={{ animationDelay: '200ms' }}>
         <div className="px-6 sm:px-12 lg:px-24 max-w-5xl mx-auto text-center space-y-8">
           <h2 className="text-3xl md:text-4xl font-bold text-[var(--heading-color)]">Our Employee Culture</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -74,7 +74,7 @@ export default function TeamPage() {
       </section>
 
       {/* Team Review Section */}
-      <section className="py-20 px-6 sm:px-12 lg:px-24 max-w-7xl mx-auto">
+      <section className="py-20 px-6 sm:px-12 lg:px-24 max-w-7xl mx-auto animate-rise-up" style={{ animationDelay: '400ms' }}>
         <div className="bg-[var(--heading-color)] rounded-[3rem] p-12 md:p-20 text-white relative overflow-hidden">
           <div className="absolute top-0 right-0 w-64 h-64 bg-[var(--primary-color)]/20 rounded-full -mr-32 -mt-32 blur-3xl" />
           <div className="relative z-10 max-w-3xl">
@@ -94,7 +94,7 @@ export default function TeamPage() {
       </section>
 
       {/* Individual Employee Photo Slots (Max 4) */}
-      <section className="py-20 px-6 sm:px-12 lg:px-24 max-w-7xl mx-auto">
+      <section className="py-20 px-6 sm:px-12 lg:px-24 max-w-7xl mx-auto animate-rise-up" style={{ animationDelay: '600ms' }}>
         <h2 className="text-3xl font-black text-[var(--heading-color)] mb-12 text-center md:text-left">Our Key Pillars</h2>
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 md:gap-10">
           {[1, 2, 3, 4].map((i) => (

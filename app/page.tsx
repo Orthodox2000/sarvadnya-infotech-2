@@ -1,6 +1,6 @@
 import HomeHero from './components/HomeHero'
-import QuickReference from './components/QuickReference'
 import CertifiedPartners from './components/CertifiedPartners'
+import QuickAccessHub from './components/QuickAccessHub'
 import HomeStat from './components/HomeStat'
 import CustomerReviews from './components/CustomerReviews'
 import FAQ from './components/faq'
@@ -11,11 +11,9 @@ export default function Home() {
     <main>
       <HomeHero />
       <CertifiedPartners />
-
-      <QuickReference />
+      <QuickAccessHub />
       <HomeStat />
       <CustomerReviews />
-
       <FAQ />
       <Footer />
     </main>

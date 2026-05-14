@@ -23,10 +23,10 @@ html {
   --secondary-color: #51158c;
   --primary-btn-color: #7f00ff;
   --secondary-btn-color: #ffffff;
-  --heading-color: #290f4d;
-  --para-color: #51158c;
-  --background-color: #f9fafb;
-  --accent-color: #b163ff;
+  --heading-color: #0f0529;
+  --para-color: #334155;
+  --background-color: #ffffff;
+  --accent-color: #7f00ff;
   --heading-light-color: #431f82;
   --background: var(--background-color);
   --foreground: var(--heading-color);
@@ -156,10 +156,12 @@ main > div:first-of-type {
 
 .animate-rise-up,
 .text-highlight-gradient,
-.hero-slide-layer {
+.hero-slide-layer,
+.gpu-accelerated {
   backface-visibility: hidden;
   perspective: 1000px;
-  transform: translateZ(0);
+  transform: translate3d(0, 0, 0);
+  will-change: transform, opacity;
 }
 
 @media (prefers-reduced-motion: reduce) {

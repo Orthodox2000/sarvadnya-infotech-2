@@ -85,14 +85,16 @@ export default function NewsPage() {
                 {item.title}
               </h2>
               
-              <p className="text-slate-600 text-sm mb-6 leading-relaxed flex-grow">
-                {item.description}
-              </p>
-
-              <div className="pt-6 border-t border-slate-50 flex flex-col gap-4">
-                <p className="text-slate-500 text-xs italic">
+              <div className="flex flex-col gap-3 flex-grow mb-6">
+                <p className="text-slate-600 text-sm leading-relaxed">
+                  {item.description}
+                </p>
+                <p className="text-slate-500 text-sm leading-relaxed italic border-l-2 border-slate-100 pl-4">
                   {item.content}
                 </p>
+              </div>
+
+              <div className="flex flex-col gap-4">
                 <Link 
                   href={item.link}
                   className="inline-flex items-center gap-2 text-[#7338a0] font-bold text-xs uppercase tracking-widest hover:gap-3 transition-all"

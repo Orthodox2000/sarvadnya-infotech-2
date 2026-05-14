@@ -96,22 +96,22 @@ const categories = [
   }
 ];
 
-export default function QuickReference() {
+export default function QuickAccessHub() {
   return (
-    <section className="w-full bg-[#0f0529] py-10 md:py-14 px-4 overflow-hidden border-b border-white/10">
+    <section className="w-full bg-slate-50 py-10 md:py-14 px-4 overflow-hidden border-y border-slate-200">
       <div className="max-w-6xl mx-auto">
         <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-10 text-center md:text-left px-2">
           <div className="space-y-1">
-            <h2 className="text-2xl md:text-3xl font-black text-white tracking-tight">
-              Quick Access <span className="text-indigo-400">Hub</span>
+            <h2 className="text-2xl md:text-3xl font-black text-[#0f0529] tracking-tight">
+              Quick Access <span className="text-indigo-600">Hub</span>
             </h2>
-            <p className="text-[13px] md:text-sm text-slate-400 font-medium opacity-80">
+            <p className="text-[13px] md:text-sm text-slate-500 font-medium opacity-80">
               Complete Tally ecosystem in one compact view.
             </p>
           </div>
           <Link 
             href="/contact" 
-            className="h-10 px-6 flex items-center justify-center rounded-lg bg-indigo-600 text-white font-bold text-[11px] uppercase tracking-wider hover:bg-indigo-700 transition-all shadow-sm active:scale-95"
+            className="h-10 px-6 flex items-center justify-center rounded-lg bg-indigo-600 text-white font-bold text-[11px] uppercase tracking-wider hover:bg-indigo-700 transition-all shadow-md shadow-indigo-200 active:scale-95"
           >
             Get Free Consultation
           </Link>
@@ -121,32 +121,32 @@ export default function QuickReference() {
           {categories.map((cat, i) => (
             <div 
               key={i} 
-              className={`group flex flex-col bg-[#1a0b3d] rounded-2xl p-5 border border-white/10 ${cat.theme.hoverBorder} hover:shadow-xl hover:shadow-black/20 transition-all duration-300 relative overflow-hidden`}
+              className={`group flex flex-col bg-white rounded-2xl p-5 border border-slate-200 hover:border-transparent hover:shadow-xl hover:shadow-indigo-500/10 transition-all duration-300 relative overflow-hidden`}
             >
               {/* Top accent line */}
               <div className={`absolute top-0 left-0 w-full h-1 ${cat.theme.accent}`} />
 
               {/* Outer Header */}
               <div className="flex items-center gap-3 mb-3">
-                <div className={`w-9 h-9 rounded-lg flex items-center justify-center ${cat.theme.bg.replace('-50', '-900/30')} ${cat.theme.text.replace('-600', '-400')} transition-colors duration-300`}>
+                <div className={`w-9 h-9 rounded-lg flex items-center justify-center ${cat.theme.bg} ${cat.theme.text} transition-colors duration-300`}>
                   {cat.icon}
                 </div>
-                <h3 className="text-[15px] font-bold text-white tracking-tight">{cat.title}</h3>
+                <h3 className="text-[15px] font-bold text-[#0f0529] tracking-tight">{cat.title}</h3>
               </div>
 
               {/* Description */}
-              <p className="text-[11px] text-slate-400 leading-relaxed mb-4 font-medium opacity-70 px-0.5">
+              <p className="text-[11px] text-slate-500 leading-relaxed mb-4 font-medium opacity-70 px-0.5">
                 {cat.description}
               </p>
 
               {/* Inner Card Container */}
-              <div className="bg-white/5 rounded-xl p-3 border border-white/5 mt-auto">
+              <div className="bg-slate-50 rounded-xl p-3 border border-slate-100 mt-auto">
                 <div className="grid grid-cols-2 gap-2">
                   {cat.links.map((link, li) => (
                     <Link 
                       key={li} 
                       href={link.href}
-                      className={`flex items-center justify-center h-8 px-2 rounded-md bg-white/5 text-[10px] font-bold text-slate-300 ${cat.theme.hoverBg} hover:text-white border border-white/5 shadow-sm transition-all duration-200 text-center truncate`}
+                      className={`flex items-center justify-center h-8 px-2 rounded-md bg-white text-[10px] font-bold text-slate-600 hover:text-white ${cat.theme.hoverBg} border border-slate-200 shadow-sm transition-all duration-200 text-center truncate`}
                     >
                       {link.label}
                     </Link>

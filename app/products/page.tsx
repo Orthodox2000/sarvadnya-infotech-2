@@ -361,7 +361,47 @@ export default function ProductsPage() {
         </div>
       </section>
 
-      {/* 2. Specialized Custom Modules */}
+      {/* 2. Core Tally Capabilities (Subtle Subsection) */}
+      <section id="capabilities" className="py-12 md:py-20 px-6 border-t border-slate-100 bg-slate-50/30">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex flex-col md:flex-row items-baseline gap-4 mb-10">
+            <h2 className="text-xl md:text-2xl font-black text-[#0f0529] tracking-tight">Core Tally Capabilities</h2>
+            <p className="text-xs md:text-sm text-slate-400 font-medium italic">Comprehensive business management features included in all editions.</p>
+          </div>
+          
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 md:gap-4">
+            {[
+              { id: "accounting", title: "Accounting", features: ["Pre-defined groups", "Flexible charts", "Multi-currency"] },
+              { id: "inventory", title: "Inventory", features: ["Batch management", "Godown tracking", "Stock valuation"] },
+              { id: "sales", title: "Sales & GST", features: ["GST Invoicing", "E-Invoicing", "Sales Orders"] },
+              { id: "banking", title: "Banking", features: ["Auto BRS", "Cheque printing", "E-Payments"] },
+              { id: "statutory", title: "Statutory", features: ["VAT/TDS/TCS", "Audit tools", "Returns filing"] },
+              { id: "payroll", title: "Payroll", features: ["Salary processing", "PF/ESI", "Attendance"] }
+            ].map((cap) => (
+              <div key={cap.id} className="group p-4 md:p-5 rounded-2xl bg-white border border-slate-100 hover:border-[#7338a0]/30 transition-all hover:shadow-lg hover:shadow-indigo-500/[0.03]">
+                <h4 className="text-[11px] md:text-[13px] font-black text-[#0f0529] mb-2 uppercase tracking-wider group-hover:text-[#7338a0] transition-colors">{cap.title}</h4>
+                <ul className="space-y-1">
+                  {cap.features.map((f, i) => (
+                    <li key={i} className="text-[9px] md:text-[11px] text-slate-500 font-medium flex items-center gap-1.5">
+                      <div className="w-1 h-1 rounded-full bg-[#7338a0]/30 group-hover:bg-[#7338a0] transition-colors" />
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+          
+          <div className="mt-8 text-center">
+            <Link href="/demo" className="text-[10px] md:text-xs font-bold text-[#7338a0] hover:text-[#4a2574] uppercase tracking-widest flex items-center justify-center gap-1.5 group">
+              See these features in action
+              <svg className="w-3 h-3 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M13 7l5 5m0 0l-5 5m5-5H6" /></svg>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* 3. Specialized Custom Modules */}
       <section id="modules" className="py-20 px-4 md:px-6 bg-slate-50">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
@@ -375,8 +415,7 @@ export default function ProductsPage() {
             {verticalModules.map((m) => (
               <div 
                 key={m.title} 
-                className={`relative group rounded-xl md:rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 cursor-pointer ${m.gridSpan}`}
-                onClick={() => openModal('enquire', m.title, `I want to enquire about the ${m.title} module.`)}
+                className={`relative group rounded-xl md:rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 ${m.gridSpan}`}
               >
                 {/* Background Image */}
                 <div 
@@ -395,10 +434,13 @@ export default function ProductsPage() {
                       {m.details}
                     </p>
                     <div className="mt-2 md:mt-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-200">
-                      <span className="inline-flex items-center gap-1 bg-white text-black text-[7px] md:text-[11px] font-bold px-2 py-0.5 md:px-4 md:py-2 rounded-full group-hover:bg-[#7338a0] group-hover:text-white transition-colors shadow-lg">
+                      <button 
+                        onClick={() => openModal('enquire', m.title, `I want to enquire about the ${m.title} module.`)}
+                        className="inline-flex items-center gap-1 bg-white text-black text-[7px] md:text-[11px] font-bold px-2 py-0.5 md:px-4 md:py-2 rounded-full hover:bg-[#7338a0] hover:text-white transition-colors shadow-lg"
+                      >
                         Enquire Now
                         <svg className="w-2 h-2 md:w-3 md:h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="4" d="M9 5l7 7-7 7" /></svg>
-                      </span>
+                      </button>
                     </div>
                   </div>
                 </div>
