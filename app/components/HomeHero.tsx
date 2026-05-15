@@ -84,7 +84,6 @@ export default function HomeHero() {
   const [isTyping, setIsTyping] = useState(true);
   const [isVisible, setIsVisible] = useState(true);
   const [isTabFocused, setIsTabFocused] = useState(true);
-  const [isPaused, setIsPaused] = useState(false);
 
   const current = heroContents[currentIndex];
 
@@ -97,12 +96,6 @@ export default function HomeHero() {
     const handleVisibilityChange = () => {
       const hidden = document.hidden;
       setIsTabFocused(!hidden);
-
-      if (!hidden) {
-        // Soft reset: trigger a re-type when coming back to tab
-        setDisplayText('');
-        setIsTyping(true);
-      }
     };
 
     document.addEventListener('visibilitychange', handleVisibilityChange);
@@ -122,34 +115,26 @@ export default function HomeHero() {
 
   // Typing effect logic
   useEffect(() => {
-    if (!isVisible || !isTabFocused || isPaused) return;
-
     let i = 0;
     const textToType = current.titleText;
 
     setIsTyping(true);
     setDisplayText('');
 
-    let typingInterval: NodeJS.Timeout;
-    const typingTimeout = setTimeout(() => {
-      typingInterval = setInterval(() => {
-        setDisplayText(textToType.slice(0, i + 1));
-        i++;
-        if (i >= textToType.length) {
-          setIsTyping(false);
-          clearInterval(typingInterval);
-        }
-      }, 100);
+    const typingInterval = setInterval(() => {
+      setDisplayText(textToType.slice(0, i + 1));
+      i++;
+      if (i >= textToType.length) {
+        setIsTyping(false);
+        clearInterval(typingInterval);
+      }
     }, 100);
 
-    return () => {
-      clearTimeout(typingTimeout);
-      if (typingInterval) clearInterval(typingInterval);
-    };
-  }, [currentIndex, isVisible, isTabFocused, current.titleText, isPaused]);
+    return () => clearInterval(typingInterval);
+  }, [currentIndex, current.titleText, isTabFocused]); // Added isTabFocused to deps
 
   useEffect(() => {
-    if (!isVisible || !isTabFocused || isPaused) return;
+    if (!isVisible || !isTabFocused) return;
 
     const timer = setInterval(() => {
       setIsTransitioning(true);
@@ -160,7 +145,7 @@ export default function HomeHero() {
     }, 10000);
 
     return () => clearInterval(timer);
-  }, [isVisible, isTabFocused, isPaused]);
+  }, [isVisible, isTabFocused]);
 
   const pathname = usePathname();
 
@@ -173,8 +158,6 @@ export default function HomeHero() {
   return (
     <main
       id="home-hero"
-      onMouseEnter={() => setIsPaused(true)}
-      onMouseLeave={() => setIsPaused(false)}
       className="relative h-[50dvh] md:h-[75dvh] w-full overflow-hidden transition-colors duration-1000 bg-[var(--background-color)] shadow-sm"
       style={{
         '--hero-text-from': current.colorFrom,

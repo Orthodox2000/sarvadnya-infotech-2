@@ -9,7 +9,7 @@ import CertifiedPartners from '../components/CertifiedPartners';
 import HomeStat from '../components/HomeStat';
 import CustomerReviews from '../components/CustomerReviews';
 import FAQ from '../components/faq';
-import QuickReference from '../components/QuickReference';
+import QuickAccessHubDemo from '../components/QuickAccessHubDemo';
 import { usePathname } from 'next/navigation';
 import UnifiedContactModal, { FormType } from '../components/UnifiedContactModal';
 
@@ -90,7 +90,6 @@ function ReplicaHero() {
   const [isTyping, setIsTyping] = useState(true);
   const [isVisible, setIsVisible] = useState(true);
   const [isTabFocused, setIsTabFocused] = useState(true);
-  const [isPaused, setIsPaused] = useState(false);
 
   const current = replicaHeroContents[currentIndex];
 
@@ -102,10 +101,6 @@ function ReplicaHero() {
     const handleVisibilityChange = () => {
       const hidden = document.hidden;
       setIsTabFocused(!hidden);
-      if (!hidden) {
-        setDisplayText('');
-        setIsTyping(true);
-      }
     };
     document.addEventListener('visibilitychange', handleVisibilityChange);
     return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
@@ -122,30 +117,23 @@ function ReplicaHero() {
   }, []);
 
   useEffect(() => {
-    if (!isVisible || !isTabFocused || isPaused) return;
     let i = 0;
     const textToType = current.titleText;
     setIsTyping(true);
     setDisplayText('');
-    let typingInterval: NodeJS.Timeout;
-    const typingTimeout = setTimeout(() => {
-      typingInterval = setInterval(() => {
-        setDisplayText(textToType.slice(0, i + 1));
-        i++;
-        if (i >= textToType.length) {
-          setIsTyping(false);
-          clearInterval(typingInterval);
-        }
-      }, 100);
-    }, 100);
-    return () => {
-      clearTimeout(typingTimeout);
-      if (typingInterval) clearInterval(typingInterval);
-    };
-  }, [currentIndex, isVisible, isTabFocused, current.titleText, isPaused]);
+    const typingInterval = setInterval(() => {
+      setDisplayText(textToType.slice(0, i + 1));
+      i++;
+      if (i >= textToType.length) {
+        setIsTyping(false);
+        clearInterval(typingInterval);
+      }
+    }, 80);
+    return () => clearInterval(typingInterval);
+  }, [currentIndex, current.titleText, isTabFocused]);
 
   useEffect(() => {
-    if (!isVisible || !isTabFocused || isPaused) return;
+    if (!isVisible || !isTabFocused) return;
     const timer = setInterval(() => {
       setIsTransitioning(true);
       setTimeout(() => {
@@ -154,7 +142,7 @@ function ReplicaHero() {
       }, 1000);
     }, 10000);
     return () => clearInterval(timer);
-  }, [isVisible, isTabFocused, isPaused]);
+  }, [isVisible, isTabFocused]);
 
   const pathname = usePathname();
 
@@ -167,8 +155,6 @@ function ReplicaHero() {
   return (
     <div
       id="replica-hero"
-      onMouseEnter={() => setIsPaused(true)}
-      onMouseLeave={() => setIsPaused(false)}
       className="relative h-[50dvh] md:h-[75dvh] w-full overflow-hidden transition-colors duration-1000 bg-[#0f0529] shadow-sm"
       style={{
         '--hero-text-from': current.colorFrom,
@@ -335,10 +321,6 @@ export default function DemoPage() {
     const handleVisibilityChange = () => {
       const hidden = document.hidden;
       setIsTabFocused(!hidden);
-      if (!hidden) {
-        setDisplayText('');
-        setIsTyping(true);
-      }
     };
     document.addEventListener('visibilitychange', handleVisibilityChange);
     return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
@@ -355,27 +337,20 @@ export default function DemoPage() {
   }, []);
 
   useEffect(() => {
-    if (!isVisible || !isTabFocused) return;
     let i = 0;
     const textToType = current.titleText;
     setIsTyping(true);
     setDisplayText('');
-    let typingInterval: NodeJS.Timeout;
-    const typingTimeout = setTimeout(() => {
-      typingInterval = setInterval(() => {
-        setDisplayText(textToType.slice(0, i + 1));
-        i++;
-        if (i >= textToType.length) {
-          setIsTyping(false);
-          clearInterval(typingInterval);
-        }
-      }, 100);
-    }, 100);
-    return () => {
-      clearTimeout(typingTimeout);
-      if (typingInterval) clearInterval(typingInterval);
-    };
-  }, [currentIndex, isVisible, isTabFocused, current.titleText]);
+    const typingInterval = setInterval(() => {
+      setDisplayText(textToType.slice(0, i + 1));
+      i++;
+      if (i >= textToType.length) {
+        setIsTyping(false);
+        clearInterval(typingInterval);
+      }
+    }, 80);
+    return () => clearInterval(typingInterval);
+  }, [currentIndex, current.titleText, isTabFocused]);
 
   useEffect(() => {
     if (!isVisible || !isTabFocused) return;
@@ -502,7 +477,7 @@ export default function DemoPage() {
       </div>
 
       <CertifiedPartners />
-      <QuickReference />
+      <QuickAccessHubDemo />
       <HomeStat />
       <CustomerReviews />
       <FAQ />
