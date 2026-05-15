@@ -53,7 +53,7 @@ const Productbar = () => {
     >
       <div className="mx-auto w-full max-w-7xl px-2 sm:px-4 flex justify-between items-stretch h-full">
         {/* Company Logo & Name */}
-        <Link href="/" className="flex items-center gap-1 pr-2 sm:pr-4 transition-opacity hover:opacity-80 shrink-0 border-r border-slate-200 mr-1" onClick={handleLinkClick}>
+        <Link href="/capabilities" className="flex items-center gap-1 pr-2 sm:pr-4 transition-opacity hover:opacity-80 shrink-0 border-r border-slate-200 mr-1" onClick={handleLinkClick}>
           <Image 
             src="/logo.png" 
             alt="Sarvadnya" 

@@ -16,7 +16,7 @@ const categories = [
       { label: "Silver", href: "/products#compare" },
       { label: "Gold", href: "/products#compare" },
       { label: "Server", href: "/products#compare" },
-      { label: "Renewal", href: "/services#amc" }
+      { label: "Renewal", href: "/products#tss" }
     ],
     theme: {
       bg: "bg-indigo-50",
@@ -81,7 +81,7 @@ const categories = [
       </svg>
     ),
     links: [
-      { label: "AMC Plan", href: "/services#amc" },
+      { label: "AMC Plan", href: "/services/amc" },
       { label: "Staff Training", href: "/contact" },
       { label: "Mobile App", href: "/services#biz-analyst" },
       { label: "WhatsApp", href: "/services#whatsapp" }

@@ -21,6 +21,7 @@ export default function UnifiedContactModal({
 }: UnifiedContactModalProps) {
   const [formData, setFormData] = useState({
     name: '',
+    email: '',
     contact: '',
     service: prefillService,
     description: prefillDetails
@@ -52,6 +53,7 @@ export default function UnifiedContactModal({
     e.preventDefault();
     setIsSubmitting(true);
     // Simulate API call
+    console.log('Form submitted:', formData);
     await new Promise(resolve => setTimeout(resolve, 1500));
     setIsSubmitting(false);
     setIsSuccess(true);
@@ -81,10 +83,7 @@ export default function UnifiedContactModal({
   };
 
   return (
-    <div 
-      className="fixed inset-0 z-[300] flex items-center justify-center p-4 bg-[#0f0529]/60 backdrop-blur-md animate-in fade-in duration-300"
-      onClick={onClose}
-    >
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-[#0f0529]/60 backdrop-blur-md animate-in fade-in duration-300" onClick={onClose}>
       <div 
         className="w-full max-w-lg bg-white rounded-[2rem] overflow-hidden shadow-[0_32px_80px_rgba(15,23,42,0.5)] relative animate-in zoom-in-95 duration-300 border border-white/20"
         onClick={e => e.stopPropagation()}
@@ -132,9 +131,9 @@ export default function UnifiedContactModal({
               <p className="text-slate-500 text-sm">We'll contact you within 15 minutes.</p>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} className="md:space-y-3 space-y-5">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
-                <div className="space-y-1">
+            <form onSubmit={handleSubmit} className="md:space-y-4 space-y-5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="space-y-1.5">
                   <label className="text-[10px] font-bold uppercase tracking-wider text-slate-500 ml-1">Your Name *</label>
                   <input
                     required
@@ -145,7 +144,21 @@ export default function UnifiedContactModal({
                     className="w-full rounded-xl bg-white border border-slate-200 px-4 py-2.5 text-sm text-slate-900 placeholder:text-slate-300 focus:outline-none focus:ring-2 focus:ring-[#7338a0]/20 focus:border-[#7338a0] transition-all shadow-sm"
                   />
                 </div>
-                <div className="space-y-1">
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-slate-500 ml-1">Email Address *</label>
+                  <input
+                    required
+                    type="email"
+                    value={formData.email}
+                    onChange={e => setFormData({...formData, email: e.target.value})}
+                    placeholder="john@example.com"
+                    className="w-full rounded-xl bg-white border border-slate-200 px-4 py-2.5 text-sm text-slate-900 placeholder:text-slate-300 focus:outline-none focus:ring-2 focus:ring-[#7338a0]/20 focus:border-[#7338a0] transition-all shadow-sm"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="space-y-1.5">
                   <label className="text-[10px] font-bold uppercase tracking-wider text-slate-500 ml-1">Contact No. *</label>
                   <input
                     required
@@ -156,20 +169,19 @@ export default function UnifiedContactModal({
                     className="w-full rounded-xl bg-white border border-slate-200 px-4 py-2.5 text-sm text-slate-900 placeholder:text-slate-300 focus:outline-none focus:ring-2 focus:ring-[#7338a0]/20 focus:border-[#7338a0] transition-all shadow-sm"
                   />
                 </div>
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-slate-500 ml-1">Service / Product</label>
+                  <input
+                    type="text"
+                    value={formData.service}
+                    onChange={e => setFormData({...formData, service: e.target.value})}
+                    placeholder="e.g. TallyPrime Gold"
+                    className="w-full rounded-xl bg-white border border-slate-200 px-4 py-2.5 text-sm text-slate-900 placeholder:text-slate-300 focus:outline-none focus:ring-2 focus:ring-[#7338a0]/20 focus:border-[#7338a0] transition-all shadow-sm"
+                  />
+                </div>
               </div>
 
-              <div className="space-y-1">
-                <label className="text-[10px] font-bold uppercase tracking-wider text-slate-500 ml-1">Service / Product</label>
-                <input
-                  type="text"
-                  value={formData.service}
-                  onChange={e => setFormData({...formData, service: e.target.value})}
-                  placeholder="e.g. TallyPrime Gold"
-                  className="w-full rounded-xl bg-white border border-slate-200 px-4 py-2.5 text-sm text-slate-900 placeholder:text-slate-300 focus:outline-none focus:ring-2 focus:ring-[#7338a0]/20 focus:border-[#7338a0] transition-all shadow-sm"
-                />
-              </div>
-
-              <div className="space-y-1">
+              <div className="space-y-1.5">
                 <label className="text-[10px] font-bold uppercase tracking-wider text-slate-500 ml-1">Additional Requirements</label>
                 <textarea
                   value={formData.description}

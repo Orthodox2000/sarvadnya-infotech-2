@@ -53,20 +53,30 @@ const newsItems = [
 
 export default function NewsPage() {
   return (
-    <div className="min-h-screen bg-[#f9fafb] pt-32 pb-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="text-center mb-16">
-          <h1 className="text-4xl md:text-5xl font-black text-[#0f0529] mb-4">
-            Latest <span className="text-[#7338a0]">News</span> & Updates
+    <div className="min-h-screen bg-slate-50/50 text-slate-900">
+      {/* Centered Tighter Hero Section */}
+      <section className="bg-[#0f0529] pt-8 pb-8 md:pt-12 md:pb-12 px-6 text-center relative overflow-hidden flex flex-col items-center">
+        <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-20">
+          <div className="absolute top-0 right-0 w-[40%] h-[40%] bg-indigo-500 blur-[100px]" />
+        </div>
+        
+        <div className="max-w-4xl mx-auto relative z-10 w-full">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-white/50 text-[9px] font-bold uppercase tracking-widest mb-6">
+            <span className="flex h-1.5 w-1.5 rounded-full bg-[#7338a0]"></span>
+            Company Press & Insights
+          </div>
+          <h1 className="text-4xl md:text-6xl font-black text-white mb-4 leading-tight tracking-tight">
+            Latest News & Updates
           </h1>
-          <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-            Stay informed about the latest Tally updates, statutory changes, and Sarvadnya Infotech announcements.
+          <p className="text-white/40 text-[10px] md:text-sm max-w-xl mx-auto leading-relaxed font-medium">
+            Stay informed about the latest Tally updates, statutory changes, and Sarvadnya Infotech LLP announcements.
           </p>
         </div>
+      </section>
 
+      <div className="max-w-7xl mx-auto px-6 py-12">
         {/* News Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {newsItems.map((item) => (
             <div 
               key={item.id} 

@@ -205,8 +205,8 @@ function ReplicaHero() {
           <p className="font-sans text-[10px] md:text-[14px] font-bold uppercase tracking-widest text-slate-400 mb-1 md:mb-2">Why Choose Sarvadnya Infotech LLP?</p>
 
           <div className={`flex flex-col items-center w-full transition-all duration-700 delay-[250ms] ease-in-out ${isTransitioning ? 'opacity-0 translate-y-12 blur-sm' : 'opacity-100 translate-y-0 blur-0'}`}>
-            <h2 className="font-sans text-[22px] md:text-[42px] lg:text-[48px] font-black leading-[1.1] tracking-tight min-h-[3.3em] md:min-h-[1.5em] mb-1 md:mb-2 overflow-visible">
-              <span className="inline-block whitespace-nowrap">
+            <h2 className="font-sans text-[22px] md:text-[42px] lg:text-[48px] font-black leading-[1.1] tracking-tight min-h-[2.2em] md:min-h-[1.5em] mb-1 md:mb-2 overflow-visible">
+              <span className="inline-block">
                 <span className="px-4 py-2 -mx-4 text-highlight-gradient">{displayText}</span>
                 <span className={`inline-block w-[3px] h-[0.9em] ml-1 align-middle transition-colors duration-1000 ${isTyping ? 'opacity-100' : 'animate-pulse'}`} style={{ backgroundColor: current.colorFrom }}></span>
               </span>
@@ -228,11 +228,11 @@ function ReplicaHero() {
             <div className="mt-6 md:mt-10 flex justify-center gap-3">
               <Link href={current.ctaPrimary.href} className="group relative flex h-9 md:h-12 w-32 md:w-44 items-center justify-center overflow-hidden rounded-full text-[9px] md:text-xs font-bold shadow-md transition-all hover:scale-105 active:scale-95 border" style={{ backgroundColor: current.colorFrom, borderColor: current.colorFrom }}>
                 <span className="relative z-10 transition-colors duration-300 group-hover:!text-[var(--hover-color)]" style={{ color: 'white', '--hover-color': current.colorFrom } as React.CSSProperties}>{current.ctaPrimary.text}</span>
-                <div className="absolute inset-0 z-0 translate-y-full transition-transform duration-300 group-hover:translate-y-0 bg-white" />
+                <span className="absolute inset-0 z-0 translate-y-full transition-transform duration-300 group-hover:translate-y-0 bg-white" />
               </Link>
               <Link href="/contact" className="group relative flex h-9 md:h-11 w-32 md:w-44 items-center justify-center overflow-hidden rounded-full border transition-all active:scale-95 shadow-sm" style={{ backgroundColor: current.colorFrom, borderColor: current.colorFrom }}>
                 <span className="relative z-10 text-[9px] md:text-xs font-bold transition-colors duration-300 text-white group-hover:!text-[var(--hover-color)]" style={{ '--hover-color': current.colorFrom } as React.CSSProperties}>Request Call</span>
-                <div className="absolute inset-0 z-0 translate-y-full transition-transform duration-300 group-hover:translate-y-0 bg-white" />
+                <span className="absolute inset-0 z-0 translate-y-full transition-transform duration-300 group-hover:translate-y-0 bg-white" />
               </Link>
             </div>
           </div>
@@ -446,8 +446,8 @@ export default function DemoPage() {
             </div>
 
             {/* Title - Tighter leading and smaller font as requested */}
-            <h1 className="font-sans text-[28px] md:text-[42px] lg:text-[48px] font-black leading-[1.1] tracking-tight min-h-[2.4em] md:min-h-[1.5em] mb-3 md:mb-4 text-white">
-              <span className="inline-block whitespace-nowrap">
+            <h1 className="font-sans text-[28px] md:text-[42px] lg:text-[48px] font-black leading-[1.1] tracking-tight min-h-[2.2em] md:min-h-[1.5em] mb-3 md:mb-4 text-white">
+              <span className="inline-block">
                 <span className="inline text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-[#7338a0]">
                   {displayText}
                 </span>

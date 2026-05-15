@@ -104,10 +104,7 @@ export default function JobApplicationModal({
   };
 
   return (
-    <div 
-      className="fixed inset-0 z-[300] flex items-center justify-center p-4 bg-[#0f0529]/60 backdrop-blur-md animate-in fade-in duration-300"
-      onClick={onClose}
-    >
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-[#0f0529]/60 backdrop-blur-md animate-in fade-in duration-300" onClick={onClose}>
       <div 
         className="w-full max-w-xl bg-white rounded-[2rem] overflow-hidden shadow-[0_32px_80px_rgba(15,23,42,0.5)] relative animate-in zoom-in-95 duration-300 border border-white/20"
         onClick={e => e.stopPropagation()}
@@ -151,7 +148,7 @@ export default function JobApplicationModal({
           ) : (
             <form onSubmit={handleSubmit} className="space-y-5">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="space-y-1">
+                <div className="space-y-1.5">
                   <label className="text-[10px] font-bold uppercase tracking-wider text-slate-500 ml-1">Full Name *</label>
                   <input
                     required
@@ -159,10 +156,10 @@ export default function JobApplicationModal({
                     value={formData.name}
                     onChange={e => setFormData({...formData, name: e.target.value})}
                     placeholder="Jane Doe"
-                    className="w-full rounded-xl bg-white border border-slate-200 px-4 py-2.5 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#7338a0]/20 focus:border-[#7338a0] transition-all shadow-sm"
+                    className="w-full rounded-xl bg-slate-50 border border-slate-200 px-4 py-2.5 text-sm text-slate-900 placeholder:text-slate-300 focus:outline-none focus:ring-2 focus:ring-[#7338a0]/20 focus:border-[#7338a0] transition-all shadow-sm"
                   />
                 </div>
-                <div className="space-y-1">
+                <div className="space-y-1.5">
                   <label className="text-[10px] font-bold uppercase tracking-wider text-slate-500 ml-1">Email Address *</label>
                   <input
                     required
@@ -170,13 +167,13 @@ export default function JobApplicationModal({
                     value={formData.email}
                     onChange={e => setFormData({...formData, email: e.target.value})}
                     placeholder="jane@example.com"
-                    className="w-full rounded-xl bg-white border border-slate-200 px-4 py-2.5 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#7338a0]/20 focus:border-[#7338a0] transition-all shadow-sm"
+                    className="w-full rounded-xl bg-slate-50 border border-slate-200 px-4 py-2.5 text-sm text-slate-900 placeholder:text-slate-300 focus:outline-none focus:ring-2 focus:ring-[#7338a0]/20 focus:border-[#7338a0] transition-all shadow-sm"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="space-y-1">
+                <div className="space-y-1.5">
                   <label className="text-[10px] font-bold uppercase tracking-wider text-slate-500 ml-1">Phone Number *</label>
                   <input
                     required
@@ -184,10 +181,10 @@ export default function JobApplicationModal({
                     value={formData.phone}
                     onChange={e => setFormData({...formData, phone: e.target.value})}
                     placeholder="+91 00000 00000"
-                    className="w-full rounded-xl bg-white border border-slate-200 px-4 py-2.5 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#7338a0]/20 focus:border-[#7338a0] transition-all shadow-sm"
+                    className="w-full rounded-xl bg-slate-50 border border-slate-200 px-4 py-2.5 text-sm text-slate-900 placeholder:text-slate-300 focus:outline-none focus:ring-2 focus:ring-[#7338a0]/20 focus:border-[#7338a0] transition-all shadow-sm"
                   />
                 </div>
-                <div className="space-y-1">
+                <div className="space-y-1.5">
                   <label className="text-[10px] font-bold uppercase tracking-wider text-slate-500 ml-1">Experience (Years) *</label>
                   <input
                     required
@@ -195,16 +192,16 @@ export default function JobApplicationModal({
                     value={formData.experience}
                     onChange={e => setFormData({...formData, experience: e.target.value})}
                     placeholder="e.g. 2 years"
-                    className="w-full rounded-xl bg-white border border-slate-200 px-4 py-2.5 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#7338a0]/20 focus:border-[#7338a0] transition-all shadow-sm"
+                    className="w-full rounded-xl bg-slate-50 border border-slate-200 px-4 py-2.5 text-sm text-slate-900 placeholder:text-slate-300 focus:outline-none focus:ring-2 focus:ring-[#7338a0]/20 focus:border-[#7338a0] transition-all shadow-sm"
                   />
                 </div>
               </div>
 
-              <div className="space-y-1">
+              <div className="space-y-1.5">
                 <label className="text-[10px] font-bold uppercase tracking-wider text-slate-500 ml-1">Resume (PDF only) *</label>
                 <div 
                   className={`relative border-2 border-dashed rounded-xl p-4 transition-all flex flex-col items-center justify-center gap-2 cursor-pointer
-                  ${resume ? 'border-emerald-200 bg-emerald-50/30' : 'border-slate-200 bg-white hover:border-[#7338a0]/50 hover:bg-slate-50/50'}`}
+                  ${resume ? 'border-emerald-200 bg-emerald-50/30' : 'border-slate-200 bg-slate-50 hover:border-[#7338a0]/50 hover:bg-slate-100/50'}`}
                   onClick={() => fileInputRef.current?.click()}
                 >
                   <input
@@ -232,14 +229,14 @@ export default function JobApplicationModal({
                 </div>
               </div>
 
-              <div className="space-y-1">
+              <div className="space-y-1.5">
                 <label className="text-[10px] font-bold uppercase tracking-wider text-slate-500 ml-1">Cover Note (Optional)</label>
                 <textarea
                   value={formData.message}
                   onChange={e => setFormData({...formData, message: e.target.value})}
                   placeholder="Tell us why you're a great fit..."
                   rows={3}
-                  className="w-full rounded-xl bg-white border border-slate-200 px-4 py-3 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#7338a0]/20 focus:border-[#7338a0] transition-all shadow-sm resize-none"
+                  className="w-full rounded-xl bg-slate-50 border border-slate-200 px-4 py-3 text-sm text-slate-900 placeholder:text-slate-300 focus:outline-none focus:ring-2 focus:ring-[#7338a0]/20 focus:border-[#7338a0] transition-all shadow-sm resize-none"
                 />
               </div>
 

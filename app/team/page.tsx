@@ -93,7 +93,7 @@ export default function TeamPage() {
         </div>
       </section>
 
-      {/* Individual Employee Photo Slots (Max 4) */}
+      {/* Individual Employee Photo Slots (Max 4) we dont need this for now
       <section className="py-20 px-6 sm:px-12 lg:px-24 max-w-7xl mx-auto animate-rise-up" style={{ animationDelay: '600ms' }}>
         <h2 className="text-3xl font-black text-[var(--heading-color)] mb-12 text-center md:text-left">Our Key Pillars</h2>
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 md:gap-10">
@@ -113,7 +113,7 @@ export default function TeamPage() {
             </div>
           ))}
         </div>
-      </section>
+      </section>*/}
 
       <Footer />
     </main>

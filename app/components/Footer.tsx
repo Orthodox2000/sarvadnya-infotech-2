@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { useState, useEffect } from 'react';
 
 export default function Footer() {
-    const [year, setYear] = useState(new Date().getFullYear());
+    const [year, setYear] = useState<number>(2026);
 
     useEffect(() => {
         setYear(new Date().getFullYear());
@@ -34,24 +34,42 @@ export default function Footer() {
     const products = [
         { name: 'TallyPrime Silver', href: '/products#compare' },
         { name: 'TallyPrime Gold', href: '/products#compare' },
+        { name: 'TallyPrime Server', href: '/products#compare' },
         { name: 'AWS Cloud Server', href: '/products#cloud' },
-        { name: 'NoSky Backup', href: '/services#nosky-backup' },
-        { name: 'Excel to Tally Import', href: '/products#modules' }
+        { name: 'NoSky Backup', href: '/services#nosky-backup' }
     ];
 
-    const services = [
-        { name: 'TSS Renewal', href: '/products' },
-        { name: 'Annual Support (AMC)', href: '/products' },
-        { name: 'C&F / Transport Module', href: '/products#modules' },
-        { name: 'Garment / Retail Module', href: '/products#modules' },
-        { name: 'Corporate Training', href: '/tutorials' }
+    const customizedModules = [
+        { name: 'Logistics & Transport', href: '/modules' },
+        { name: 'C&F Agencies', href: '/modules' },
+        { name: 'Housing Societies', href: '/modules' },
+        { name: 'Excel to Tally Import', href: '/modules' },
+        { name: 'Garment Module', href: '/modules' },
+        { name: 'Sales & Commission', href: '/modules' }
+    ];
+
+    const supportOnTally = [
+        { name: 'Corporate Training', href: '/services' },
+        { name: 'System Design & Implementation', href: '/services' },
+        { name: 'Data Integration', href: '/services' },
+        { name: 'Tally Consultation Services', href: '/services' },
+        { name: 'Tally Customization (TDL)', href: '/services' },
+        { name: 'Tally on Mobile', href: '/services' },
+        { name: 'Tally AMC Services', href: '/services' }
     ];
 
     return (
-        <footer className="bg-[#0a041a] text-white pt-16 pb-8 px-6">
-            <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+        <footer className="relative bg-[#0a041a] text-white pt-20 pb-8 px-6 overflow-hidden border-t border-white/5">
+            {/* Subtle Gradient Overlays */}
+            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-indigo-600/10 rounded-full blur-[120px] -mr-64 -mt-64 pointer-events-none" />
+            <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-violet-600/5 rounded-full blur-[100px] -ml-48 -mb-48 pointer-events-none" />
+            
+            {/* Main Gradient Background */}
+            <div className="absolute inset-0 bg-gradient-to-b from-[#0a041a] via-[#0f0728] to-[#1e1b4b] opacity-100 pointer-events-none" />
+
+            <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 mb-16 relative z-10">
                 {/* Company Info */}
-                <div className="space-y-6">
+                <div className="lg:col-span-1 space-y-6">
                     <Link href="/" className="flex items-center gap-3 group">
                         <div className="relative w-10 h-10 shrink-0 overflow-hidden rounded-lg bg-white p-1">
                             <Image 
@@ -94,7 +112,7 @@ export default function Footer() {
 
                 {/* Products */}
                 <div>
-                    <h3 className="text-white font-bold mb-6">Our Products</h3>
+                    <h3 className="text-white font-bold mb-6">Tally Products</h3>
                     <ul className="space-y-4 text-sm text-white/90">
                         {products.map((item) => (
                             <li key={item.name}>
@@ -106,14 +124,28 @@ export default function Footer() {
                     </ul>
                 </div>
 
-                {/* Services */}
+                {/* Customized Modules */}
                 <div>
-                    <h3 className="text-white font-bold mb-6">Our Services</h3>
+                    <h3 className="text-white font-bold mb-6">Custom Modules</h3>
                     <ul className="space-y-4 text-sm text-white/90">
-                        {services.map((service) => (
-                            <li key={service.name}>
-                                <Link href={service.href} className="hover:text-white transition-colors hover-underline-animation py-1">
-                                    {service.name}
+                        {customizedModules.map((item) => (
+                            <li key={item.name}>
+                                <Link href={item.href} className="hover:text-white transition-colors hover-underline-animation py-1">
+                                    {item.name}
+                                </Link>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+
+                {/* Support on Tally */}
+                <div>
+                    <h3 className="text-white font-bold mb-6">Support on Tally</h3>
+                    <ul className="space-y-4 text-sm text-white/90">
+                        {supportOnTally.map((item) => (
+                            <li key={item.name}>
+                                <Link href={item.href} className="hover:text-white transition-colors hover-underline-animation py-1">
+                                    {item.name}
                                 </Link>
                             </li>
                         ))}
@@ -135,13 +167,6 @@ export default function Footer() {
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                             </svg>
                             <a href={`tel:${supportPhone}`} className="hover:text-white transition-colors">{supportPhone}</a>
-                        </li>
-                        <li className="flex items-start gap-3">
-                            <svg className="w-5 h-5 text-indigo-400 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                            </svg>
-                            <span>{officeAddress}</span>
                         </li>
                     </ul>
                     

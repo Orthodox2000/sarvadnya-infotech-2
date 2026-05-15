@@ -22,10 +22,7 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
   if (!isOpen) return null;
 
   return (
-    <div 
-      className="fixed inset-0 z-[300] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200"
-      onClick={onClose}
-    >
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200" onClick={onClose}>
       <div 
         className="hero-glass-panel hero-glass-panel-mobile w-full max-w-md rounded-[32px] p-6 text-white shadow-[0_32px_80px_rgba(15,23,42,0.4)] relative animate-in zoom-in-95 duration-200"
         onClick={e => e.stopPropagation()}
@@ -56,41 +53,53 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
         </p>
 
         <form className="mt-8 space-y-4">
-          <div className="space-y-1.5">
-            <label className="text-[10px] font-bold uppercase tracking-wider text-violet-200/70 ml-1">Full Name</label>
-            <input
-              type="text"
-              placeholder="e.g. John Doe"
-              className="hero-glass-input w-full rounded-2xl px-4 py-3 text-sm text-white placeholder:text-white/40 focus:outline-none transition-all"
-            />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-1.5">
+              <label className="text-[10px] font-bold uppercase tracking-wider text-violet-200/70 ml-1">Full Name</label>
+              <input
+                type="text"
+                placeholder="John Doe"
+                className="hero-glass-input w-full rounded-2xl px-4 py-3 text-sm text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-white/20 focus:border-white/40 transition-all"
+              />
+            </div>
+            <div className="space-y-1.5">
+              <label className="text-[10px] font-bold uppercase tracking-wider text-violet-200/70 ml-1">Email Address</label>
+              <input
+                type="email"
+                placeholder="john@example.com"
+                className="hero-glass-input w-full rounded-2xl px-4 py-3 text-sm text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-white/20 focus:border-white/40 transition-all"
+              />
+            </div>
           </div>
-          <div className="space-y-1.5">
-            <label className="text-[10px] font-bold uppercase tracking-wider text-violet-200/70 ml-1">Phone Number</label>
-            <input
-              type="tel"
-              placeholder="+91 00000 00000"
-              className="hero-glass-input w-full rounded-2xl px-4 py-3 text-sm text-white placeholder:text-white/40 focus:outline-none transition-all"
-            />
-          </div>
-          <div className="space-y-1.5">
-            <label className="text-[10px] font-bold uppercase tracking-wider text-violet-200/70 ml-1">Service Needed</label>
-            <input
-              type="text"
-              placeholder="e.g. TallyPrime Upgrade"
-              className="hero-glass-input w-full rounded-2xl px-4 py-3 text-sm text-white placeholder:text-white/40 focus:outline-none transition-all"
-            />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-1.5">
+              <label className="text-[10px] font-bold uppercase tracking-wider text-violet-200/70 ml-1">Phone Number</label>
+              <input
+                type="tel"
+                placeholder="+91 00000 00000"
+                className="hero-glass-input w-full rounded-2xl px-4 py-3 text-sm text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-white/20 focus:border-white/40 transition-all"
+              />
+            </div>
+            <div className="space-y-1.5">
+              <label className="text-[10px] font-bold uppercase tracking-wider text-violet-200/70 ml-1">Service Needed</label>
+              <input
+                type="text"
+                placeholder="e.g. TallyPrime Upgrade"
+                className="hero-glass-input w-full rounded-2xl px-4 py-3 text-sm text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-white/20 focus:border-white/40 transition-all"
+              />
+            </div>
           </div>
           <div className="space-y-1.5">
             <label className="text-[10px] font-bold uppercase tracking-wider text-violet-200/70 ml-1">Brief Description</label>
             <textarea
               placeholder="How can we help you today?"
               rows={3}
-              className="hero-glass-input w-full resize-none rounded-2xl px-4 py-3 text-sm text-white placeholder:text-white/40 focus:outline-none transition-all"
+              className="hero-glass-input w-full resize-none rounded-2xl px-4 py-3 text-sm text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-white/20 focus:border-white/40 transition-all"
             />
           </div>
           <button
             type="submit"
-            className="w-full mt-4 rounded-2xl bg-white px-6 py-4 text-sm font-bold text-[var(--primary-color,#7338a0)] shadow-xl transition-all duration-300 hover:bg-[var(--secondary-color,#4a2574)] hover:text-white hover:scale-[1.02] active:scale-[0.98]"
+            className="w-full mt-4 rounded-2xl bg-white px-6 py-4 text-sm font-bold text-[var(--primary-color,#7338a0)] shadow-xl transition-all duration-300 hover:bg-violet-50 hover:scale-[1.02] active:scale-[0.98]"
           >
             Send Request Now
           </button>

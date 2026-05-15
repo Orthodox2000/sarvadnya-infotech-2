@@ -21,7 +21,7 @@ const heroContents = [
       { text: "Custom Module Design" },
       { text: "Seamless Data Integrity" }
     ],
-    ctaPrimary: { text: "Compare Features", href: "/products#compare" }
+    ctaPrimary: { text: "Explore Capabilities", href: "/products" }
   },
   {
     badge: "Support Excellence",
@@ -253,8 +253,8 @@ export default function HomeHero() {
             ${isTransitioning ? 'opacity-0 translate-y-12 blur-sm' : 'opacity-100 translate-y-0 blur-0'}`}>
 
             {/* Typing Sub-title - Large & Animated */}
-            <h2 className="font-sans text-[22px] md:text-[42px] lg:text-[48px] font-black leading-[1.1] tracking-tight min-h-[3.3em] md:min-h-[1.5em] mb-1 md:mb-2 overflow-visible">
-              <span className="inline-block whitespace-nowrap">
+            <h2 className="font-sans text-[22px] md:text-[42px] lg:text-[48px] font-black leading-[1.1] tracking-tight min-h-[2.2em] md:min-h-[1.5em] mb-1 md:mb-2 overflow-visible">
+              <span className="inline-block">
                 <span className="px-4 py-2 -mx-4 text-highlight-gradient">
                   {displayText}
                 </span>
@@ -301,7 +301,7 @@ export default function HomeHero() {
                 >
                   {current.ctaPrimary.text}
                 </span>
-                <div
+                <span
                   className="absolute inset-0 z-0 translate-y-full transition-transform duration-300 group-hover:translate-y-0 bg-white"
                 />
               </Link>
@@ -319,7 +319,7 @@ export default function HomeHero() {
                 >
                   Request Call
                 </span>
-                <div
+                <span
                   className="absolute inset-0 z-0 translate-y-full transition-transform duration-300 group-hover:translate-y-0 bg-white"
                 />
               </Link>
