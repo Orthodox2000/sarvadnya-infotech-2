@@ -1,39 +1,29 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-
-const newsItems = [
-  {
-    title: "New TallyPrime v7.0 Released with Advanced AI Features!",
-    description: "Experience the next level of accounting with AI-driven automation, faster data processing, and enhanced GST reporting.",
-    link: "/products#compare"
-  },
-  {
-    title: "Sarvadnya Infotech LLP Awarded Top Certified Partner 2026.",
-    description: "We are proud to be recognized for our commitment to excellence and unmatched customer support in the Tally ecosystem.",
-    link: "/about"
-  },
-  {
-    title: "E-Invoicing Limits Reduced: Stay Compliant with TallyPrime.",
-    description: "New statutory regulations are in effect. Ensure your business is compliant with our seamless e-invoicing solutions.",
-    link: "/contact"
-  },
-  {
-    title: "Upcoming Webinar: Optimizing Your Supply Chain with Tally Custom Modules.",
-    description: "Join our experts this Thursday at 3 PM to learn how industry-specific modules can streamline your operations.",
-    link: "/tutorials"
-  },
-  {
-    title: "Our 'Never Deny Support' Policy is now live for all small businesses.",
-    description: "Fast response and zero turn-away support. We ensure your Tally issues are resolved first, regardless of your contract status.",
-    link: "/contact"
-  }
-];
+import { NewsItem } from '@/lib/news';
 
 export default function NewsFeed() {
+  const [newsItems, setNewsItems] = useState<NewsItem[]>([]);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [popoverPos, setPopoverPos] = useState({ top: 0, left: 0 });
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchNews = async () => {
+      try {
+        const res = await fetch('/api/admin/news', { cache: 'no-store' });
+        const data = await res.json();
+        setNewsItems(data);
+      } catch (err) {
+        console.error('Failed to fetch news for feed:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchNews();
+  }, []);
 
   const handleMouseEnter = (e: React.MouseEvent, index: number) => {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -45,7 +35,18 @@ export default function NewsFeed() {
     setHoveredIndex(index);
   };
 
-  const currentNews = hoveredIndex !== null ? newsItems[hoveredIndex % newsItems.length] : null;
+  const currentNews = hoveredIndex !== null && newsItems.length > 0 ? newsItems[hoveredIndex % newsItems.length] : null;
+
+  if (loading || newsItems.length === 0) {
+    return (
+      <div className="relative w-full bg-[#0f0529] h-[40px] flex items-center border-b border-white/10 z-[50]">
+        <div className="px-6 flex items-center gap-2">
+           <div className="h-2 w-2 rounded-full bg-slate-700 animate-pulse" />
+           <div className="h-3 w-32 bg-slate-800 rounded animate-pulse" />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div

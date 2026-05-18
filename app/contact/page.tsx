@@ -1,18 +1,30 @@
 'use client';
 
+import { useState, useEffect } from "react";
+import { getSiteSettings, SiteSettings } from "@/lib/settings";
 import Image from "next/image";
 import Footer from "../components/Footer";
 
 export default function ContactPage() {
-  const supportPhone = process.env.NEXT_PUBLIC_SUPPORT_PHONE || "+919876543210";
-  const supportEmail = process.env.NEXT_PUBLIC_SUPPORT_EMAIL || "info@sarvadnyainfotech.com";
-  const officeAddress = process.env.NEXT_PUBLIC_OFFICE_ADDRESS || "123, Business Center, Main Road, Pune - 411001";
+  const [settings, setSettings] = useState<SiteSettings | null>(null);
+
+  useEffect(() => {
+    fetchSettings();
+  }, []);
+
+  const fetchSettings = async () => {
+    const data = await getSiteSettings();
+    setSettings(data);
+  };
+
+  const supportPhone = settings?.support_phone || process.env.NEXT_PUBLIC_SUPPORT_PHONE || "+919876543210";
+  const supportEmail = settings?.support_email || process.env.NEXT_PUBLIC_SUPPORT_EMAIL || "info@sarvadnyainfotech.com";
   
   const socialMedia = [
     { name: 'WhatsApp', handle: supportPhone, url: `https://wa.me/${supportPhone.replace(/\D/g, '')}`, iconColor: 'text-[#25D366]', bgColor: 'bg-[#25D366]/10' },
-    { name: 'Facebook', handle: 'Sarvadnya Infotech', url: process.env.NEXT_PUBLIC_FACEBOOK_URL || '#', iconColor: 'text-[#1877F2]', bgColor: 'bg-[#1877F2]/10' },
-    { name: 'Instagram', handle: '@sarvadnya_infotech', url: process.env.NEXT_PUBLIC_INSTAGRAM_URL || '#', iconColor: 'text-[#E4405F]', bgColor: 'bg-[#E4405F]/10' },
-    { name: 'LinkedIn', handle: 'Sarvadnya Infotech LLP', url: process.env.NEXT_PUBLIC_LINKEDIN_URL || '#', iconColor: 'text-[#0077B5]', bgColor: 'bg-[#0077B5]/10' },
+    { name: 'Facebook', handle: settings?.facebook_handle || 'Sarvadnya Infotech', url: settings?.facebook_url || process.env.NEXT_PUBLIC_FACEBOOK_URL || '#', iconColor: 'text-[#1877F2]', bgColor: 'bg-[#1877F2]/10' },
+    { name: 'Instagram', handle: settings?.instagram_handle || '@sarvadnya_infotech', url: settings?.instagram_url || process.env.NEXT_PUBLIC_INSTAGRAM_URL || '#', iconColor: 'text-[#E4405F]', bgColor: 'bg-[#E4405F]/10' },
+    { name: 'LinkedIn', handle: settings?.linkedin_handle || 'Sarvadnya Infotech LLP', url: settings?.linkedin_url || process.env.NEXT_PUBLIC_LINKEDIN_URL || '#', iconColor: 'text-[#0077B5]', bgColor: 'bg-[#0077B5]/10' },
   ];
 
   return (

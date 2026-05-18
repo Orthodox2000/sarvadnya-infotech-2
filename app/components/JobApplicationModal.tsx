@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { Job } from '@/lib/jobs';
+import { submitApplication } from '@/app/actions/careers';
 
 interface JobApplicationModalProps {
   isOpen: boolean;
@@ -83,21 +84,18 @@ export default function JobApplicationModal({
       data.append('message', formData.message);
       data.append('resume', resume);
 
-      const response = await fetch('/api/careers/apply', {
-        method: 'POST',
-        body: data,
-      });
+      const result = await submitApplication(data);
 
-      if (!response.ok) {
-        throw new Error('Failed to submit application.');
+      if (result.error) {
+        throw new Error(result.error);
       }
 
       setIsSuccess(true);
       setTimeout(() => {
         onClose();
       }, 3000);
-    } catch (err) {
-      setError('Something went wrong. Please try again later.');
+    } catch (err: any) {
+      setError(err.message || 'Something went wrong. Please try again later.');
     } finally {
       setIsSubmitting(false);
     }

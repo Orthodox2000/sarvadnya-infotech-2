@@ -1,57 +1,26 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-
-const newsItems = [
-  {
-    id: 1,
-    title: "New TallyPrime v7.0 Released with Advanced AI Features!",
-    date: "May 12, 2026",
-    category: "Product Update",
-    description: "Experience the next level of accounting with AI-driven automation, faster data processing, and enhanced GST reporting. The new version brings unprecedented speed and accuracy to your financial management.",
-    content: "TallyPrime v7.0 is here, and it's a game-changer for businesses of all sizes. With integrated AI capabilities, it can now predict cash flow trends, automatically categorize expenses, and provide smarter GST compliance checks. Our technical team is ready to help you upgrade and train your staff on these new features.",
-    link: "/products#compare"
-  },
-  {
-    id: 2,
-    title: "Sarvadnya Infotech LLP Awarded Top Certified Partner 2026.",
-    date: "May 10, 2026",
-    category: "Achievement",
-    description: "We are proud to be recognized for our commitment to excellence and unmatched customer support in the Tally ecosystem.",
-    content: "This award belongs to our customers who have trusted us for years. Being named the Top Certified Partner 2026 in the region motivates us to push our boundaries further. We remain committed to our 'Never Deny Support' philosophy.",
-    link: "/about"
-  },
-  {
-    id: 3,
-    title: "E-Invoicing Limits Reduced: Stay Compliant with TallyPrime.",
-    date: "May 08, 2026",
-    category: "Statutory",
-    description: "New statutory regulations are in effect. Ensure your business is compliant with our seamless e-invoicing solutions.",
-    content: "The government has recently lowered the threshold for mandatory e-invoicing. If your turnover exceeds the new limit, you must generate IRN for every B2B invoice. TallyPrime makes this process completely seamless. Contact us today for a compliance audit.",
-    link: "/contact"
-  },
-  {
-    id: 4,
-    title: "Upcoming Webinar: Optimizing Your Supply Chain with Tally Custom Modules.",
-    date: "May 05, 2026",
-    category: "Event",
-    description: "Join our experts this Thursday at 3 PM to learn how industry-specific modules can streamline your operations.",
-    content: "Supply chain efficiency is critical in today's competitive market. In this webinar, we will demonstrate how our custom TDL modules for logistics, transport, and inventory management can provide real-time visibility and cost savings.",
-    link: "/tutorials"
-  },
-  {
-    id: 5,
-    title: "Our 'Never Deny Support' Policy is now live for all small businesses.",
-    date: "May 01, 2026",
-    category: "Policy",
-    description: "Fast response and zero turn-away support. We ensure your Tally issues are resolved first, regardless of your contract status.",
-    content: "We believe that technical glitches shouldn't stop your business growth. Our new policy ensures that any Tally user can reach out to us for emergency support. We prioritize resolution over paperwork, ensuring you stay productive.",
-    link: "/contact"
-  }
-];
+import { NewsItem } from '@/lib/news';
 
 export default function NewsPage() {
+  const [newsItems, setNewsItems] = useState<NewsItem[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch('/api/admin/news', { cache: 'no-store' })
+      .then(res => res.json())
+      .then(data => {
+        setNewsItems(data);
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error('Failed to fetch news:', err);
+        setLoading(false);
+      });
+  }, []);
+
   return (
     <div className="min-h-screen bg-slate-50/50 text-slate-900">
       {/* Centered Tighter Hero Section */}
@@ -79,7 +48,7 @@ export default function NewsPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {newsItems.map((item) => (
             <div 
-              key={item.id} 
+              key={(item as any)._id || item.id} 
               className="bg-white rounded-3xl p-8 border border-slate-100 shadow-sm hover:shadow-xl transition-all duration-300 group flex flex-col"
             >
               <div className="flex items-center gap-3 mb-6">

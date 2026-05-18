@@ -1,14 +1,29 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Footer from '../components/Footer';
 import JobAccordion from '../components/JobAccordion';
 import JobApplicationModal from '../components/JobApplicationModal';
-import { jobs, Job } from '@/lib/jobs';
+import { Job } from '@/lib/jobs';
 
 export default function CareersPage() {
+  const [jobs, setJobs] = useState<Job[]>([]);
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch('/api/admin/careers')
+      .then(res => res.json())
+      .then(data => {
+        setJobs(data);
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error('Failed to fetch jobs:', err);
+        setLoading(false);
+      });
+  }, []);
 
   const handleApply = (job: Job) => {
     setSelectedJob(job);
@@ -54,7 +69,7 @@ export default function CareersPage() {
             {jobs.length > 0 ? (
               jobs.map((job) => (
                 <JobAccordion 
-                  key={job.id} 
+                  key={(job as any)._id || job.id} 
                   job={job} 
                   onApply={handleApply} 
                 />

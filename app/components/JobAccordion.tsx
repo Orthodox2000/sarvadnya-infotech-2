@@ -20,11 +20,11 @@ export default function JobAccordion({ job, onApply }: JobAccordionProps) {
     return diffDays <= 7;
   };
 
-  const formattedDate = new Date(job.postedAt).toLocaleDateString('en-IN', {
+  const formattedDate = job.postedAt ? new Date(job.postedAt).toLocaleDateString('en-IN', {
     day: 'numeric',
     month: 'short',
     year: 'numeric'
-  });
+  }) : 'Recently';
 
   return (
     <div 
