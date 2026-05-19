@@ -60,8 +60,27 @@ function StatItem({ label, value, suffix, isVisible }: StatItemProps) {
 }
 
 export default function HomeStat() {
+  const [stats, setStats] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const response = await fetch('/api/content?section=home_stats');
+        const data = await response.json();
+        if (data && !data.error) {
+          setStats(data);
+        }
+      } catch (err) {
+        console.error('Error fetching stats:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchStats();
+  }, []);
 
   useEffect(() => {
     if (!window.IntersectionObserver) {
@@ -91,11 +110,7 @@ export default function HomeStat() {
     };
   }, []);
 
-  const stats = [
-    { label: 'Years Experience', value: 15, suffix: '+' },
-    { label: 'Active Clients', value: 1500, suffix: '+' },
-    { label: 'Queries Solved', value: 300, suffix: '+' },
-  ];
+  if (loading || stats.length === 0) return null;
 
   return (
     <section 

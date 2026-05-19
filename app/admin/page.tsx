@@ -5,11 +5,9 @@ import React, { useEffect, useState } from 'react';
 type HealthStatus = {
   status: string;
   mongodb: string;
-  supabase: string;
   timestamp: string;
   version: string;
-  error?: string;
-  supabase_error?: string;
+  mongodb_error?: string;
 };
 
 export default function AdminDashboard() {
@@ -75,14 +73,14 @@ export default function AdminDashboard() {
               </span>
             </div>
             <div className="flex justify-between text-xs">
-              <span className="text-slate-500">Supabase</span>
-              <span className={`font-bold ${health?.supabase === 'connected' ? 'text-green-600' : 'text-red-600'}`}>
-                {loading ? '...' : health?.supabase || 'Disconnected'}
+              <span className="text-slate-500">Storage</span>
+              <span className="font-bold text-blue-600">
+                Mega.nz
               </span>
             </div>
             <div className="flex justify-between text-xs">
               <span className="text-slate-500">Version</span>
-              <span className="font-bold text-[#7338a0]">{health?.version || 'v1.1.5'}</span>
+              <span className="font-bold text-[#7338a0]">{health?.version || 'v1.1.6'}</span>
             </div>
             <div className="flex justify-between text-xs">
               <span className="text-slate-500">Last Check</span>
@@ -92,14 +90,9 @@ export default function AdminDashboard() {
             </div>
           </div>
 
-          {health?.error && (
+          {health?.mongodb_error && (
             <div className="mt-4 p-3 bg-red-50 rounded-xl border border-red-100">
-              <p className="text-[10px] text-red-600 font-mono break-all">Mongo: {health.error}</p>
-            </div>
-          )}
-          {health?.supabase_error && (
-            <div className="mt-2 p-3 bg-red-50 rounded-xl border border-red-100">
-              <p className="text-[10px] text-red-600 font-mono break-all">Supabase: {health.supabase_error}</p>
+              <p className="text-[10px] text-red-600 font-mono break-all">Mongo: {health.mongodb_error}</p>
             </div>
           )}
         </div>

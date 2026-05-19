@@ -1,6 +1,7 @@
 'use server';
 
-import { supabase } from '@/lib/supabase';
+import { uploadToMega } from '@/lib/mega';
+import { saveApplication } from '@/lib/mongodb-utils';
 import { revalidatePath } from 'next/cache';
 
 export async function submitApplication(formData: FormData) {
@@ -18,43 +19,31 @@ export async function submitApplication(formData: FormData) {
       return { error: 'Resume is required.' };
     }
 
-    // 1. Upload Resume to Supabase Storage
-    const fileExt = resumeFile.name.split('.').pop();
-    const fileName = `${Date.now()}-${fullName.replace(/\s+/g, '-').toLowerCase()}.${fileExt}`;
-    const filePath = `resumes/${fileName}`;
-
-    const { error: uploadError } = await supabase.storage
-      .from('resumes')
-      .upload(filePath, resumeFile);
-
-    if (uploadError) throw uploadError;
-
-    // 2. Save Data to Supabase Database
-    const { error: dbError } = await supabase
-      .from('job_applications')
-      .insert([
-        {
-          job_title: jobTitle,
-          full_name: fullName,
-          email,
-          phone,
-          experience,
-          message,
-          resume_url: filePath,
-        },
-      ]);
-
-    if (dbError) {
-      if (dbError.code === 'PGRST205') {
-        throw new Error('Supabase: "job_applications" table not found. Please run the SQL bootstrap script.');
-      }
-      throw dbError;
+    // 1. Upload Resume to Mega.nz
+    let resumeUrl = '';
+    try {
+      resumeUrl = await uploadToMega(resumeFile);
+    } catch (uploadError) {
+      console.error('Mega.nz upload error:', uploadError);
+      throw new Error('Failed to upload resume to storage.');
     }
+
+    // 2. Save Data to MongoDB
+    await saveApplication({
+      job_id: jobId,
+      job_title: jobTitle,
+      full_name: fullName,
+      email,
+      phone,
+      experience,
+      message,
+      resume_url: resumeUrl,
+    });
 
     revalidatePath('/admin/careers/responses');
     return { success: true };
   } catch (err) {
     console.error('Submission error:', err);
-    return { error: 'Failed to submit application. Please try again.' };
+    return { error: err instanceof Error ? err.message : 'Failed to submit application. Please try again.' };
   }
 }

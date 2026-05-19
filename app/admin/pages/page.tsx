@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { supabase } from '@/lib/supabase';
 
 type SectionContent = {
   section: string;
@@ -9,7 +8,7 @@ type SectionContent = {
 };
 
 export default function AdminPages() {
-  const [activePage, setActivePage] = useState<'about' | 'team'>('about');
+  const [activePage, setActivePage] = useState<'about' | 'team' | 'home_hero' | 'home_stats' | 'home_partners' | 'home_faq' | 'home_quick_access'>('about');
   const [content, setContent] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -24,16 +23,11 @@ export default function AdminPages() {
   const fetchContent = async () => {
     setLoading(true);
     try {
-      const { data, error } = await supabase
-        .from('site_content')
-        .select('*')
-        .eq('section', activePage)
-        .single();
-
-      if (error && error.code !== 'PGRST116') throw error;
+      const response = await fetch(`/api/content?section=${activePage}`);
+      const data = await response.json();
       
-      if (data) {
-        setContent(data.content);
+      if (data && !data.error) {
+        setContent(data);
       } else {
         // Default structures
         const defaults = {
@@ -62,9 +56,14 @@ export default function AdminPages() {
             testimonial: 'Working at Sarvadnya...',
             testimonial_author: 'JD',
             testimonial_role: 'Senior Tally Consultant'
-          }
+          },
+          home_hero: [],
+          home_stats: [],
+          home_partners: [],
+          home_faq: [],
+          home_quick_access: []
         };
-        setContent(defaults[activePage]);
+        setContent(defaults[activePage as keyof typeof defaults] || []);
       }
     } catch (err) {
       console.error(err);
@@ -80,23 +79,20 @@ export default function AdminPages() {
 
     setUploading(field);
     try {
-      const fileExt = file.name.split('.').pop();
-      const fileName = `${activePage}-${field}-${Date.now()}.${fileExt}`;
-      const filePath = `pages/${fileName}`;
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('folder', 'site-assets');
 
-      const { error: uploadError } = await supabase.storage
-        .from('site-assets')
-        .upload(filePath, file);
+      const response = await fetch('/api/admin/upload', {
+        method: 'POST',
+        body: formData
+      });
 
-      if (uploadError) throw uploadError;
+      const data = await response.json();
+      if (data.error) throw new Error(data.error);
 
-      // Get public URL
-      const { data: { publicUrl } } = supabase.storage
-        .from('site-assets')
-        .getPublicUrl(filePath);
-
-      setContent({ ...content, [field]: publicUrl });
-      setMessage({ text: 'Image uploaded!', type: 'success' });
+      setContent({ ...content, [field]: data.url });
+      setMessage({ text: 'Image uploaded to Mega.nz!', type: 'success' });
     } catch (err) {
       console.error(err);
       setMessage({ text: 'Upload failed.', type: 'error' });
@@ -108,15 +104,15 @@ export default function AdminPages() {
   const handleSave = async () => {
     setSaving(true);
     try {
-      const { error } = await supabase
-        .from('site_content')
-        .upsert({ 
-          section: activePage, 
-          content,
-          updated_at: new Date().toISOString()
-        }, { onConflict: 'section' });
+      const response = await fetch('/api/content', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ section: activePage, content })
+      });
 
-      if (error) throw error;
+      const data = await response.json();
+      if (data.error) throw new Error(data.error);
+
       setMessage({ text: 'Page updated successfully!', type: 'success' });
     } catch (err) {
       console.error(err);
@@ -151,23 +147,20 @@ export default function AdminPages() {
       )}
 
       {/* Page Selector */}
-      <div className="flex gap-4 mb-8">
-        <button 
-          onClick={() => setActivePage('about')}
-          className={`px-6 py-2 rounded-xl font-bold transition-all ${activePage === 'about' ? 'bg-[#7338a0] text-white' : 'bg-slate-100 text-slate-500'}`}
-        >
-          About Us
-        </button>
-        <button 
-          onClick={() => setActivePage('team')}
-          className={`px-6 py-2 rounded-xl font-bold transition-all ${activePage === 'team' ? 'bg-[#7338a0] text-white' : 'bg-slate-100 text-slate-500'}`}
-        >
-          Team
-        </button>
+      <div className="flex flex-wrap gap-4 mb-8">
+        {['about', 'team', 'home_hero', 'home_stats', 'home_partners', 'home_faq', 'home_quick_access'].map((page) => (
+          <button 
+            key={page}
+            onClick={() => setActivePage(page as any)}
+            className={`px-6 py-2 rounded-xl font-bold transition-all uppercase text-[10px] tracking-widest ${activePage === page ? 'bg-[#7338a0] text-white' : 'bg-slate-100 text-slate-500 hover:bg-slate-200'}`}
+          >
+            {page.replace('_', ' ')}
+          </button>
+        ))}
       </div>
 
       <div className="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm">
-        {activePage === 'about' ? (
+        {activePage === 'about' && (
           <div className="space-y-8">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div className="space-y-4">
@@ -252,7 +245,9 @@ export default function AdminPages() {
               </div>
             </div>
           </div>
-        ) : (
+        )}
+
+        {activePage === 'team' && (
           <div className="space-y-8">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div className="space-y-4">
@@ -309,6 +304,365 @@ export default function AdminPages() {
                   onChange={e => setContent({...content, testimonial_role: e.target.value})}
                 />
               </div>
+            </div>
+          </div>
+        )}
+
+        {activePage === 'home_hero' && (
+          <div className="space-y-6">
+            <div className="flex justify-between items-center">
+              <h3 className="font-bold text-[#0f0529]">Hero Slides</h3>
+              <button 
+                onClick={() => setContent([...content, { badge: 'New Badge', titleText: 'New Title', description: '', image: '', features: [], ctaPrimary: { text: 'Explore', href: '/' } }])}
+                className="text-xs font-bold text-[#7338a0] bg-indigo-50 px-4 py-2 rounded-xl"
+              >
+                + Add Slide
+              </button>
+            </div>
+            <div className="space-y-8">
+              {content.map((slide: any, idx: number) => (
+                <div key={idx} className="p-6 bg-slate-50 rounded-3xl space-y-4 relative">
+                  <button 
+                    onClick={() => setContent(content.filter((_: any, i: number) => i !== idx))}
+                    className="absolute top-4 right-4 text-red-400 hover:text-red-600"
+                  >
+                    Remove
+                  </button>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-4">
+                      <input 
+                        className="w-full p-3 bg-white rounded-xl border-none text-sm"
+                        placeholder="Badge"
+                        value={slide.badge}
+                        onChange={e => {
+                          const newContent = [...content];
+                          newContent[idx].badge = e.target.value;
+                          setContent(newContent);
+                        }}
+                      />
+                      <input 
+                        className="w-full p-3 bg-white rounded-xl border-none text-sm font-bold"
+                        placeholder="Title"
+                        value={slide.titleText}
+                        onChange={e => {
+                          const newContent = [...content];
+                          newContent[idx].titleText = e.target.value;
+                          setContent(newContent);
+                        }}
+                      />
+                      <textarea 
+                        className="w-full p-3 bg-white rounded-xl border-none text-sm h-24"
+                        placeholder="Description"
+                        value={slide.description}
+                        onChange={e => {
+                          const newContent = [...content];
+                          newContent[idx].description = e.target.value;
+                          setContent(newContent);
+                        }}
+                      />
+                    </div>
+                    <div className="space-y-4">
+                       <div className="grid grid-cols-2 gap-2">
+                         <input 
+                            className="w-full p-3 bg-white rounded-xl border-none text-xs"
+                            placeholder="Color From (#hex)"
+                            value={slide.colorFrom}
+                            onChange={e => {
+                              const newContent = [...content];
+                              newContent[idx].colorFrom = e.target.value;
+                              setContent(newContent);
+                            }}
+                          />
+                          <input 
+                            className="w-full p-3 bg-white rounded-xl border-none text-xs"
+                            placeholder="Color To (#hex)"
+                            value={slide.colorTo}
+                            onChange={e => {
+                              const newContent = [...content];
+                              newContent[idx].colorTo = e.target.value;
+                              setContent(newContent);
+                            }}
+                          />
+                       </div>
+                       <div className="aspect-video bg-white rounded-2xl overflow-hidden relative group">
+                          {slide.image ? (
+                            <img src={slide.image} className="w-full h-full object-contain p-4" />
+                          ) : (
+                            <div className="flex items-center justify-center h-full text-slate-300 text-xs">No Image</div>
+                          )}
+                          <label className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
+                            <span className="text-white text-[10px] font-bold">Change</span>
+                            <input type="file" className="hidden" onChange={async (e) => {
+                               const file = e.target.files?.[0];
+                               if (!file) return;
+                               const formData = new FormData();
+                               formData.append('file', file);
+                               formData.append('folder', 'site-assets');
+                               const res = await fetch('/api/admin/upload', { method: 'POST', body: formData });
+                               const data = await res.json();
+                               if (data.url) {
+                                 const newContent = [...content];
+                                 newContent[idx].image = data.url;
+                                 setContent(newContent);
+                               }
+                            }} />
+                          </label>
+                       </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {activePage === 'home_stats' && (
+          <div className="space-y-6">
+            <div className="flex justify-between items-center">
+              <h3 className="font-bold text-[#0f0529]">Statistics</h3>
+              <button 
+                onClick={() => setContent([...content, { label: 'New Stat', value: 0, suffix: '+' }])}
+                className="text-xs font-bold text-[#7338a0] bg-indigo-50 px-4 py-2 rounded-xl"
+              >
+                + Add Stat
+              </button>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {content.map((stat: any, idx: number) => (
+                <div key={idx} className="p-6 bg-slate-50 rounded-3xl space-y-4 relative">
+                   <button 
+                    onClick={() => setContent(content.filter((_: any, i: number) => i !== idx))}
+                    className="absolute top-2 right-2 text-red-400 hover:text-red-600 text-[10px]"
+                  >
+                    Remove
+                  </button>
+                  <input 
+                    className="w-full p-3 bg-white rounded-xl border-none text-sm font-bold"
+                    placeholder="Label"
+                    value={stat.label}
+                    onChange={e => {
+                      const newContent = [...content];
+                      newContent[idx].label = e.target.value;
+                      setContent(newContent);
+                    }}
+                  />
+                  <div className="flex gap-2">
+                    <input 
+                      type="number"
+                      className="w-full p-3 bg-white rounded-xl border-none text-sm"
+                      placeholder="Value"
+                      value={stat.value}
+                      onChange={e => {
+                        const newContent = [...content];
+                        newContent[idx].value = parseInt(e.target.value);
+                        setContent(newContent);
+                      }}
+                    />
+                    <input 
+                      className="w-32 p-3 bg-white rounded-xl border-none text-sm"
+                      placeholder="Suffix"
+                      value={stat.suffix}
+                      onChange={e => {
+                        const newContent = [...content];
+                        newContent[idx].suffix = e.target.value;
+                        setContent(newContent);
+                      }}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {activePage === 'home_partners' && (
+          <div className="space-y-6">
+            <div className="flex justify-between items-center">
+              <h3 className="font-bold text-[#0f0529]">Partner Logos</h3>
+              <label className="text-xs font-bold text-[#7338a0] bg-indigo-50 px-4 py-2 rounded-xl cursor-pointer">
+                + Upload Partner
+                <input type="file" className="hidden" onChange={async (e) => {
+                   const file = e.target.files?.[0];
+                   if (!file) return;
+                   const formData = new FormData();
+                   formData.append('file', file);
+                   formData.append('folder', 'site-assets');
+                   const res = await fetch('/api/admin/upload', { method: 'POST', body: formData });
+                   const data = await res.json();
+                   if (data.url) setContent([...content, data.url]);
+                }} />
+              </label>
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+               {content.map((url: string, idx: number) => (
+                 <div key={idx} className="aspect-square bg-slate-50 rounded-2xl relative group p-4">
+                    <img src={url} className="w-full h-full object-contain" />
+                    <button 
+                      onClick={() => setContent(content.filter((_: any, i: number) => i !== idx))}
+                      className="absolute -top-2 -right-2 bg-red-500 text-white w-6 h-6 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                    >
+                      ×
+                    </button>
+                 </div>
+               ))}
+            </div>
+          </div>
+        )}
+
+        {activePage === 'home_faq' && (
+          <div className="space-y-6">
+            <div className="flex justify-between items-center">
+              <h3 className="font-bold text-[#0f0529]">Frequently Asked Questions</h3>
+              <button 
+                onClick={() => setContent([{ question: 'New Question', answer: '' }, ...content])}
+                className="text-xs font-bold text-[#7338a0] bg-indigo-50 px-4 py-2 rounded-xl"
+              >
+                + Add FAQ
+              </button>
+            </div>
+            <div className="space-y-4">
+               {content.map((faq: any, idx: number) => (
+                 <div key={idx} className="p-6 bg-slate-50 rounded-3xl space-y-3 relative">
+                    <button 
+                      onClick={() => setContent(content.filter((_: any, i: number) => i !== idx))}
+                      className="absolute top-4 right-4 text-red-400 hover:text-red-600 text-xs"
+                    >
+                      Delete
+                    </button>
+                    <input 
+                      className="w-full p-3 bg-white rounded-xl border-none text-sm font-bold pr-16"
+                      placeholder="Question"
+                      value={faq.question}
+                      onChange={e => {
+                        const newContent = [...content];
+                        newContent[idx].question = e.target.value;
+                        setContent(newContent);
+                      }}
+                    />
+                    <textarea 
+                      className="w-full p-3 bg-white rounded-xl border-none text-sm h-24"
+                      placeholder="Answer"
+                      value={faq.answer}
+                      onChange={e => {
+                        const newContent = [...content];
+                        newContent[idx].answer = e.target.value;
+                        setContent(newContent);
+                      }}
+                    />
+                 </div>
+               ))}
+            </div>
+          </div>
+        )}
+
+        {activePage === 'home_quick_access' && (
+          <div className="space-y-6">
+            <div className="flex justify-between items-center">
+              <h3 className="font-bold text-[#0f0529]">Quick Access Hub</h3>
+              <button 
+                onClick={() => setContent([...content, { title: 'New Category', iconName: 'core', description: '', theme: { bg: 'bg-indigo-50', accent: 'bg-indigo-500', text: 'text-indigo-600', hoverBg: 'hover:bg-indigo-600', hoverBorder: 'hover:border-indigo-200' }, links: [] }])}
+                className="text-xs font-bold text-[#7338a0] bg-indigo-50 px-4 py-2 rounded-xl"
+              >
+                + Add Category
+              </button>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+               {content.map((cat: any, idx: number) => (
+                 <div key={idx} className="p-6 bg-slate-50 rounded-3xl space-y-4 relative">
+                    <button 
+                      onClick={() => setContent(content.filter((_: any, i: number) => i !== idx))}
+                      className="absolute top-4 right-4 text-red-400 hover:text-red-600 text-xs"
+                    >
+                      Remove
+                    </button>
+                    <h4 className="font-bold text-xs uppercase tracking-widest text-slate-400">Category {idx + 1}</h4>
+                    <div className="grid grid-cols-2 gap-4">
+                      <input 
+                        className="w-full p-3 bg-white rounded-xl border-none text-sm font-bold"
+                        placeholder="Title"
+                        value={cat.title}
+                        onChange={e => {
+                          const newContent = [...content];
+                          newContent[idx].title = e.target.value;
+                          setContent(newContent);
+                        }}
+                      />
+                      <select 
+                        className="w-full p-3 bg-white rounded-xl border-none text-sm font-bold"
+                        value={cat.iconName}
+                        onChange={e => {
+                          const newContent = [...content];
+                          newContent[idx].iconName = e.target.value;
+                          setContent(newContent);
+                        }}
+                      >
+                        <option value="core">Tally Core</option>
+                        <option value="cloud">Cloud</option>
+                        <option value="custom">Customization</option>
+                        <option value="support">Support</option>
+                      </select>
+                    </div>
+                    <textarea 
+                      className="w-full p-3 bg-white rounded-xl border-none text-sm h-20"
+                      placeholder="Description"
+                      value={cat.description}
+                      onChange={e => {
+                        const newContent = [...content];
+                        newContent[idx].description = e.target.value;
+                        setContent(newContent);
+                      }}
+                    />
+                    <div className="space-y-2">
+                       <div className="flex justify-between items-center">
+                         <p className="text-[10px] font-bold text-slate-400 uppercase">Links</p>
+                         <button 
+                           onClick={() => {
+                             const newContent = [...content];
+                             newContent[idx].links.push({ label: 'New Link', href: '/' });
+                             setContent(newContent);
+                           }}
+                           className="text-[9px] font-bold text-indigo-600"
+                         >
+                           + Add Link
+                         </button>
+                       </div>
+                       {cat.links.map((link: any, lIdx: number) => (
+                         <div key={lIdx} className="flex gap-2 items-center">
+                            <input 
+                              className="w-full p-2 bg-white rounded-lg border-none text-xs"
+                              placeholder="Label"
+                              value={link.label}
+                              onChange={e => {
+                                const newContent = [...content];
+                                newContent[idx].links[lIdx].label = e.target.value;
+                                setContent(newContent);
+                              }}
+                            />
+                            <input 
+                              className="w-full p-2 bg-white rounded-lg border-none text-xs"
+                              placeholder="Href"
+                              value={link.href}
+                              onChange={e => {
+                                const newContent = [...content];
+                                newContent[idx].links[lIdx].href = e.target.value;
+                                setContent(newContent);
+                              }}
+                            />
+                            <button 
+                              onClick={() => {
+                                const newContent = [...content];
+                                newContent[idx].links.splice(lIdx, 1);
+                                setContent(newContent);
+                              }}
+                              className="text-red-300 hover:text-red-500 text-lg px-2"
+                            >
+                              ×
+                            </button>
+                         </div>
+                       ))}
+                    </div>
+                 </div>
+               ))}
             </div>
           </div>
         )}

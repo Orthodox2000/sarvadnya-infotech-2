@@ -4,43 +4,12 @@ import { useState, useEffect, useRef, memo } from 'react';
 import Image from 'next/image';
 
 interface Review {
-    id: number;
+    _id: string;
     name: string;
     rating: number;
     date: string;
     text: string;
 }
-
-const reviews: Review[] = [
-    {
-        id: 1,
-        name: "Rahul Sharma",
-        rating: 5,
-        date: "2 weeks ago",
-        text: "Excellent service! The team helped us migrate to TallyPrime seamlessly. Their support for GST filing is outstanding."
-    },
-    {
-        id: 2,
-        name: "Priya Patel",
-        rating: 5,
-        date: "1 month ago",
-        text: "Reliable and professional. Their 'Never Deny Service Call' policy is real – they solved our billing issue late in the evening."
-    },
-    {
-        id: 3,
-        name: "Amit Verma",
-        rating: 4,
-        date: "2 months ago",
-        text: "Very satisfied with the Tally on Cloud solution. It has made our accounting accessible from anywhere. Highly recommended!"
-    },
-    {
-        id: 4,
-        name: "Sandeep Gupta",
-        rating: 5,
-        date: "3 months ago",
-        text: "The best Tally partner in Navi Mumbai. They understood our manufacturing requirements and customized the reports perfectly."
-    }
-];
 
 const StarRating = memo(function StarRating({ rating, size = "w-4 h-4" }: { rating: number, size?: string }) {
     return (
@@ -60,10 +29,32 @@ const StarRating = memo(function StarRating({ rating, size = "w-4 h-4" }: { rati
 });
 
 const CustomerReviews = () => {
+    const [reviews, setReviews] = useState<Review[]>([]);
     const [isVisible, setIsVisible] = useState(false);
+    const [loading, setLoading] = useState(true);
     const sectionRef = useRef<HTMLElement>(null);
 
     useEffect(() => {
+        const fetchReviews = async () => {
+            try {
+                const response = await fetch('/api/admin/reviews');
+                const data = await response.json();
+                if (data && !data.error) {
+                    setReviews(data);
+                }
+            } catch (err) {
+                console.error('Error fetching reviews:', err);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchReviews();
+    }, []);
+
+    useEffect(() => {
+        if (loading || reviews.length === 0) return;
+
         const currentRef = sectionRef.current;
         const observer = new IntersectionObserver(
             ([entry]) => {
@@ -84,7 +75,9 @@ const CustomerReviews = () => {
                 observer.unobserve(currentRef);
             }
         };
-    }, []);
+    }, [loading, reviews.length]);
+
+    if (loading || reviews.length === 0) return null;
 
     return (
         <section 
@@ -110,7 +103,7 @@ const CustomerReviews = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-2">
                     {reviews.map((review, index) => (
                         <div 
-                            key={review.id}
+                            key={review._id}
                             className={`bg-white p-5 rounded-2xl shadow-sm border border-slate-100 flex flex-col justify-between transition-all duration-700 hover:shadow-md hover:-translate-y-1 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}
                             style={{ transitionDelay: isVisible ? `${index * 100}ms` : '0ms' }}
                         >

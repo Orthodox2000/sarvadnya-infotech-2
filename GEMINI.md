@@ -4,8 +4,10 @@
 - Always mention the application version number when presenting changes or updates.
 - Versioning follows the format `v1.1.x`.
 - Increment the patch version automatically for every iteration/significant set of changes.
-- Current Version: v1.1.6
+- Current Version: v1.1.10
 
-## Database & Bootstrap
-- `supabase_schema.sql` is the central bootstrap file for Supabase. It contains all table definitions, RLS policies, and seed data.
-- Always update this file when adding new tables or changing schemas.
+## Database & Storage
+- **MongoDB** is the primary database for all site data including careers, settings, and page content.
+- **Mega.nz** is used for storing and fetching resumes and site assets (images).
+- Resumes are stored in the `resumes` folder on Mega.nz.
+- Site assets are stored in the `site-assets` folder on Mega.nz.

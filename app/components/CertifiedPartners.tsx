@@ -4,15 +4,27 @@ import Image from "next/image";
 import { useEffect, useRef, useState, memo } from "react";
 
 const CertifiedPartners = () => {
-    const images = [
-        "/PartnerBrands/Tally-Software.png",
-        "/PartnerBrands/AWS.png",
-        "/PartnerBrands/BizAnalyst.png",
-        "/PartnerBrands/CredFlow.png",
-    ];
-
+    const [images, setImages] = useState<string[]>([]);
+    const [loading, setLoading] = useState(true);
     const [isVisible, setIsVisible] = useState(false);
     const sectionRef = useRef(null);
+
+    useEffect(() => {
+        const fetchPartners = async () => {
+            try {
+                const response = await fetch('/api/content?section=home_partners');
+                const data = await response.json();
+                if (data && !data.error) {
+                    setImages(data);
+                }
+            } catch (err) {
+                console.error('Error fetching partners:', err);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchPartners();
+    }, []);
 
     useEffect(() => {
         const currentRef = sectionRef.current;

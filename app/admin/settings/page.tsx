@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { supabase } from '@/lib/supabase';
 
 type Setting = {
   key: string;
@@ -14,24 +13,37 @@ export default function AdminSettings() {
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState({ text: '', type: '' });
 
+  const DEFAULT_KEYS = [
+    'NEXT_PUBLIC_SUPPORT_PHONE', 'NEXT_PUBLIC_SUPPORT_EMAIL', 'NEXT_PUBLIC_OFFICE_ADDRESS',
+    'NEXT_PUBLIC_FACEBOOK_URL', 'NEXT_PUBLIC_FACEBOOK_HANDLE',
+    'NEXT_PUBLIC_INSTAGRAM_URL', 'NEXT_PUBLIC_INSTAGRAM_HANDLE',
+    'NEXT_PUBLIC_LINKEDIN_URL', 'NEXT_PUBLIC_LINKEDIN_HANDLE',
+    'NEXT_PUBLIC_MAP_IFRAME_URL'
+  ];
+
   useEffect(() => {
     fetchSettings();
   }, []);
 
   const fetchSettings = async () => {
     try {
-      const { data, error } = await supabase
-        .from('site_settings')
-        .select('key, value');
+      const response = await fetch('/api/admin/settings');
+      const data = await response.json();
 
-      if (error) {
-        if (error.code === 'PGRST205') {
-          setMessage({ text: 'Table "site_settings" not found. Please run the SQL schema.', type: 'error' });
-          return;
-        }
-        throw error;
-      }
-      setSettings(data || []);
+      if (data.error) throw new Error(data.error);
+      
+      // Ensure all default keys exist in the state
+      const settingsData = data as Setting[];
+      const settingsMap = new Map<string, string>(
+        settingsData.map(s => [s.key, s.value])
+      );
+      
+      const fullSettings: Setting[] = DEFAULT_KEYS.map(key => ({
+        key,
+        value: settingsMap.get(key) || ''
+      }));
+
+      setSettings(fullSettings);
     } catch (err) {
       console.error(err);
       setMessage({ text: 'Failed to fetch settings.', type: 'error' });
@@ -50,18 +62,19 @@ export default function AdminSettings() {
     setMessage({ text: '', type: '' });
 
     try {
-      for (const setting of settings) {
-        const { error } = await supabase
-          .from('site_settings')
-          .update({ value: setting.value })
-          .eq('key', setting.key);
-        
-        if (error) throw error;
-      }
+      const response = await fetch('/api/admin/settings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ settings })
+      });
+
+      const data = await response.json();
+      if (data.error) throw new Error(data.error);
+
       setMessage({ text: 'Settings saved successfully!', type: 'success' });
     } catch (err) {
       console.error(err);
-      setMessage({ text: 'Failed to save some settings.', type: 'error' });
+      setMessage({ text: 'Failed to save settings.', type: 'error' });
     } finally {
       setSaving(false);
     }

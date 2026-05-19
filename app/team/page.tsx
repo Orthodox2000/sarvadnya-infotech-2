@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from "react";
-import { supabase } from "@/lib/supabase";
 import Image from "next/image";
 import Footer from "../components/Footer";
 
@@ -24,13 +23,11 @@ export default function TeamPage() {
 
   const fetchContent = async () => {
     try {
-      const { data, error } = await supabase
-        .from('site_content')
-        .select('content')
-        .eq('section', 'team')
-        .single();
-
-      if (data) setContent({ ...DEFAULTS, ...data.content });
+      const response = await fetch('/api/content?section=team');
+      const data = await response.json();
+      if (data && !data.error) {
+        setContent({ ...DEFAULTS, ...data });
+      }
     } catch (err) {
       console.error(err);
     } finally {

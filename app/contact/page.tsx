@@ -1,9 +1,21 @@
 'use client';
 
 import { useState, useEffect } from "react";
-import { getSiteSettings, SiteSettings } from "@/lib/settings";
 import Image from "next/image";
 import Footer from "../components/Footer";
+
+export type SiteSettings = {
+  support_phone: string;
+  support_email: string;
+  office_address: string;
+  facebook_url: string;
+  instagram_url: string;
+  linkedin_url: string;
+  facebook_handle: string;
+  instagram_handle: string;
+  linkedin_handle: string;
+  map_iframe_url: string;
+};
 
 export default function ContactPage() {
   const [settings, setSettings] = useState<SiteSettings | null>(null);
@@ -13,8 +25,15 @@ export default function ContactPage() {
   }, []);
 
   const fetchSettings = async () => {
-    const data = await getSiteSettings();
-    setSettings(data);
+    try {
+      const response = await fetch('/api/settings');
+      const data = await response.json();
+      if (!data.error) {
+        setSettings(data);
+      }
+    } catch (err) {
+      console.error('Failed to fetch contact settings:', err);
+    }
   };
 
   const supportPhone = settings?.support_phone || process.env.NEXT_PUBLIC_SUPPORT_PHONE || "+919876543210";

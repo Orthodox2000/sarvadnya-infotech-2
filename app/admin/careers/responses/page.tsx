@@ -1,11 +1,10 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { supabase } from '@/lib/supabase';
 
 type Application = {
-  id: string;
-  created_at: string;
+  _id: string;
+  createdAt: string;
   job_title: string;
   full_name: string;
   email: string;
@@ -25,19 +24,10 @@ export default function AdminResponses() {
 
   const fetchApplications = async () => {
     try {
-      const { data, error } = await supabase
-        .from('job_applications')
-        .select('*')
-        .order('created_at', { ascending: false });
-
-      if (error) {
-        if (error.code === 'PGRST205') {
-          console.warn('Supabase: "job_applications" table not found. Please run the provided SQL schema.');
-          setApplications([]);
-          return;
-        }
-        throw error;
-      }
+      const response = await fetch('/api/admin/applications');
+      const data = await response.json();
+      
+      if (data.error) throw new Error(data.error);
       setApplications(data || []);
     } catch (err) {
       console.error('Error fetching applications:', err);
@@ -46,18 +36,12 @@ export default function AdminResponses() {
     }
   };
 
-  const getResumeUrl = async (path: string) => {
-    try {
-      const { data, error } = await supabase.storage
-        .from('resumes')
-        .createSignedUrl(path, 3600); // 1 hour link
-
-      if (error) throw error;
-      window.open(data.signedUrl, '_blank');
-    } catch (err) {
-      console.error('Error getting resume URL:', err);
-      alert('Could not open resume. Make sure the file exists in storage.');
+  const openResume = (url: string) => {
+    if (!url) {
+      alert('Resume URL not found.');
+      return;
     }
+    window.open(url, '_blank');
   };
 
   // Helper to render empty rows
@@ -97,9 +81,9 @@ export default function AdminResponses() {
                 renderEmptyRows(5)
               ) : applications.length > 0 ? (
                 applications.map((app) => (
-                  <tr key={app.id} className="border-b border-slate-50 hover:bg-slate-50/30 transition-colors">
+                  <tr key={app._id} className="border-b border-slate-50 hover:bg-slate-50/30 transition-colors">
                     <td className="p-4 text-xs font-bold text-slate-500">
-                      {new Date(app.created_at).toLocaleDateString()}
+                      {new Date(app.createdAt).toLocaleDateString()}
                     </td>
                     <td className="p-4">
                       <div className="text-sm font-bold text-[#0f0529]">{app.full_name}</div>
@@ -113,7 +97,7 @@ export default function AdminResponses() {
                     </td>
                     <td className="p-4 text-right">
                       <button 
-                        onClick={() => getResumeUrl(app.resume_url)}
+                        onClick={() => openResume(app.resume_url)}
                         className="px-3 py-1.5 text-[10px] font-black uppercase tracking-widest bg-[#7338a0] text-white rounded-xl hover:shadow-lg transition-all"
                       >
                         Resume

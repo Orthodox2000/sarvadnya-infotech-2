@@ -1,4 +1,4 @@
-import { supabase } from './supabase';
+import { getSettings } from './mongodb-utils';
 
 export type SiteSettings = {
   support_phone: string;
@@ -15,23 +15,7 @@ export type SiteSettings = {
 
 export async function getSiteSettings(): Promise<SiteSettings> {
   try {
-    const { data, error } = await supabase
-      .from('site_settings')
-      .select('key, value');
-
-    if (error) {
-      if (error.code === 'PGRST205') {
-        console.warn('Supabase: "site_settings" table not found. Falling back to environment variables. Please run the provided SQL schema in your Supabase dashboard.');
-      } else {
-        throw error;
-      }
-    }
-
-    // Convert array of {key, value} to an object
-    const settingsMap = data ? data.reduce((acc: any, item: any) => {
-      acc[item.key] = item.value;
-      return acc;
-    }, {}) : {};
+    const settingsMap = await getSettings();
 
     return {
       support_phone: settingsMap['NEXT_PUBLIC_SUPPORT_PHONE'] || process.env.NEXT_PUBLIC_SUPPORT_PHONE || '',
@@ -46,7 +30,7 @@ export async function getSiteSettings(): Promise<SiteSettings> {
       map_iframe_url: settingsMap['NEXT_PUBLIC_MAP_IFRAME_URL'] || process.env.NEXT_PUBLIC_MAP_IFRAME_URL || '',
     };
   } catch (err) {
-    console.error('Error fetching site settings from Supabase:', err);
+    console.error('Error fetching site settings from MongoDB:', err);
     // Fallback to environment variables
     return {
       support_phone: process.env.NEXT_PUBLIC_SUPPORT_PHONE || '',

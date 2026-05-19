@@ -10,6 +10,7 @@ const AdminSidebar = () => {
   const navItems = [
     { label: 'Dashboard', href: '/admin', icon: '' },
     { label: 'Careers', href: '/admin/careers', icon: '' },
+    { label: 'Reviews', href: '/admin/reviews', icon: '' },
     { label: 'News', href: '/admin/news', icon: '' },
     { label: 'Pages', href: '/admin/pages', icon: '' },
     { label: 'Settings', href: '/admin/settings', icon: '' },
@@ -22,7 +23,7 @@ const AdminSidebar = () => {
           ADMIN<span className="text-indigo-400">PANEL</span>
         </h2>
         <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1">
-          v1.1.6
+          v1.1.7
         </p>
       </div>
 

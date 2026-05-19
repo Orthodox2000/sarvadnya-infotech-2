@@ -7,70 +7,27 @@ import { usePathname } from 'next/navigation';
 import Script from 'next/script';
 import UnifiedContactModal, { FormType } from './UnifiedContactModal';
 
-const heroContents = [
-  {
-    badge: "Upgraded to Tally 7.0",
-    titleText: "Trusted Tally Partner in Navi Mumbai",
-    colorFrom: "#4f46e5", // Indigo
-    colorTo: "#7c3aed",   // Violet
-    description: "Beyond Software Sales — Guiding You to Maximize Your Tally Investment with Certified Support.",
-    image: "/sa.png",
-    features: [
-      { text: "TallyPrime v7.0 Ready" },
-      { text: "Certified Expert Support" },
-      { text: "Custom Module Design" },
-      { text: "Seamless Data Integrity" }
-    ],
-    ctaPrimary: { text: "Explore Capabilities", href: "/products" }
-  },
-  {
-    badge: "Support Excellence",
-    titleText: "90% First-Call Resolution",
-    colorFrom: "#f97316", // Orange
-    colorTo: "#e11d48",   // Rose
-    description: "15min Avg. Response Time | 5000+ Queries Resolved | 99% Client Satisfaction. Reliable support that keeps your business running smoothly.",
-    image: "/sa.png",
-    features: [
-      { text: "Certified Technical Experts" },
-      { text: "Dedicated Account Managers" },
-      { text: "On-site & Remote Assistance" },
-      { text: "15min Avg. Response" }
-    ],
-    ctaPrimary: { text: "Get Support", href: "/contact" }
-  },
-  {
-    badge: "Certified Expertise",
-    titleText: "Why Choose Certified Partner?",
-    colorFrom: "#2563eb", // Blue
-    colorTo: "#0891b2",   // Cyan
-    description: "Experience unparalleled reliability with Tally Certified Partners. We ensure your business software is always optimized, secure, and compliant.",
-    image: "/certified.png",
-    features: [
-      { text: "Authorized Sales & Service" },
-      { text: "Certified Technical Team" },
-      { text: "Deep Industry Knowledge" },
-      { text: "Priority Support Access" }
-    ],
-    ctaPrimary: { text: "Verify Certification", href: "/contact" }
-  },
-  {
-    badge: "Vertical Solutions",
-    titleText: "Custom Tally Modules",
-    colorFrom: "#059669", // Emerald
-    colorTo: "#0d9488",   // Teal
-    description: "Tailored solutions built directly into Tally to optimize your unique industry workflows and reporting.",
-    image: "/sa.png",
-    features: [
-      { text: "Industry-Specific Logic" },
-      { text: "Automated Reporting" },
-      { text: "Reduced Manual Entry" },
-      { text: "Scalable Add-ons" }
-    ],
-    ctaPrimary: { text: "View Modules", href: "/products#modules" }
-  }
-];
-
 export default function HomeHero() {
+  const [heroContents, setHeroContents] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchHeroContent = async () => {
+      try {
+        const response = await fetch('/api/content?section=home_hero');
+        const data = await response.json();
+        if (data && !data.error) {
+          setHeroContents(data);
+        }
+      } catch (err) {
+        console.error('Error fetching hero content:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchHeroContent();
+  }, []);
+
   const [modalConfig, setModalConfig] = useState<{ isOpen: boolean; type: FormType; service: string; details: string }>({
     isOpen: false,
     type: 'general',
@@ -84,6 +41,14 @@ export default function HomeHero() {
   const [isTyping, setIsTyping] = useState(true);
   const [isVisible, setIsVisible] = useState(true);
   const [isTabFocused, setIsTabFocused] = useState(true);
+
+  if (loading || heroContents.length === 0) {
+    return (
+      <div className="relative h-[50dvh] md:h-[75dvh] w-full bg-slate-50 animate-pulse flex items-center justify-center">
+        <div className="text-slate-300 font-bold">Loading Experience...</div>
+      </div>
+    );
+  }
 
   const current = heroContents[currentIndex];
 
