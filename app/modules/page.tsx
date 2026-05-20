@@ -1,13 +1,15 @@
 'use client';
 
-import { useState } from 'react';
-import { modules, Module } from '@/lib/modules';
+import { useState, useEffect } from 'react';
+import { Module } from '@/lib/modules';
 import ModuleCard from '../components/ModuleCard';
 import ModuleModal from '../components/ModuleModal';
 import Footer from '../components/Footer';
 import UnifiedContactModal, { FormType } from '../components/UnifiedContactModal';
 
 export default function ModulesPage() {
+  const [modules, setModules] = useState<Module[]>([]);
+  const [loading, setLoading] = useState(true);
   const [selectedModule, setSelectedModule] = useState<Module | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [contactModalConfig, setContactModalConfig] = useState<{isOpen: boolean; type: FormType; service: string}>({
@@ -15,6 +17,23 @@ export default function ModulesPage() {
     type: 'enquire',
     service: ''
   });
+
+  useEffect(() => {
+    const fetchModules = async () => {
+      try {
+        const response = await fetch('/api/modules');
+        const data = await response.json();
+        if (data && !data.error) {
+          setModules(data);
+        }
+      } catch (err) {
+        console.error('Error fetching modules:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchModules();
+  }, []);
 
   const handleViewDetails = (module: Module) => {
     setSelectedModule(module);

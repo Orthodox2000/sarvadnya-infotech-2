@@ -40,34 +40,50 @@ export default function SplitScreenLandingPage() {
           </div>
 
           <div className="pointer-events-none absolute inset-y-0 right-0 z-30 hidden items-center justify-end pr-5 md:flex md:w-[36%] lg:pr-8">
-            <div className="hero-glass-panel pointer-events-auto w-full max-w-[15.5rem] rounded-[22px] p-3 text-white shadow-[0_20px_60px_rgba(15,23,42,0.28)] lg:max-w-[16.5rem] lg:p-3.5">
-              <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-violet-100/90">
-                Quick Support
-              </p>
-              <h2 className="mt-1.5 text-lg font-semibold leading-tight">
-                Request a callback
-              </h2>
-              <p className="mt-1 text-[11px] leading-[1.15rem] text-violet-50/95"> 
-                Share your details and our team will call you back with the right service path.
-              </p>
+            <div className="relative overflow-hidden pointer-events-auto w-full max-w-[15.5rem] rounded-[2.5rem] p-5 text-slate-900 shadow-[0_32px_80px_rgba(15,23,42,0.12)] lg:max-w-[17.5rem] bg-white border border-slate-100 group transition-all duration-500 hover:-translate-y-2">
+              {/* Animated Background Shimmer */}
+              <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-slate-50 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+              
+              <div className="relative z-10">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="flex h-1.5 w-1.5 rounded-full bg-[#7338a0] animate-pulse"></span>
+                  <p className="text-[9px] font-bold uppercase tracking-[0.22em] text-slate-400">
+                    Quick Support
+                  </p>
+                </div>
+                <h2 className="text-xl font-black leading-tight tracking-tight mb-2 text-[#0f0529]">
+                  Request a <span className="text-[#7338a0]">callback</span>
+                </h2>
+                <p className="text-[11px] leading-relaxed text-slate-500 mb-5 font-medium"> 
+                  Share your details and our team will call you back within 15 minutes.
+                </p>
 
-              <div className="mt-3 space-y-2">
-                <input
-                  type="text"
-                  placeholder="Your name"
-                  className="hero-glass-input w-full rounded-[16px] px-3 py-2 text-xs text-white placeholder:text-white/72 focus:outline-none"
-                />
-                <input
-                  type="tel"
-                  placeholder="Phone number"
-                  className="hero-glass-input w-full rounded-[16px] px-3 py-2 text-xs text-white placeholder:text-white/72 focus:outline-none"
-                />
-                <Link
-                  href="/contact"
-                  className="inline-flex w-full items-center justify-center rounded-[16px] bg-white/24 px-4 py-2 text-xs font-semibold text-white ring-1 ring-white/40 backdrop-blur-sm transition-colors duration-200 hover:bg-white/30"
-                >
-                  Send Request
-                </Link>
+                <div className="space-y-3">
+                  <div className="space-y-1">
+                    <input
+                      type="text"
+                      placeholder="Your name"
+                      className="w-full bg-slate-50 border border-slate-100 rounded-2xl px-4 py-2.5 text-[11px] text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#7338a0]/10 focus:border-[#7338a0] transition-all shadow-sm"
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    <input
+                      type="tel"
+                      placeholder="Phone number"
+                      className="w-full bg-slate-50 border border-slate-100 rounded-2xl px-4 py-2.5 text-[11px] text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#7338a0]/10 focus:border-[#7338a0] transition-all shadow-sm"
+                    />
+                  </div>
+                  <button
+                    onClick={() => {}}
+                    className="flex w-full items-center justify-center rounded-2xl bg-[#7338a0] px-4 py-3 text-[11px] font-black uppercase tracking-widest text-white shadow-lg shadow-[#7338a0]/20 transition-all duration-300 hover:bg-[#4a2574] hover:scale-[1.02] active:scale-[0.98]"
+                  >
+                    Send Request
+                  </button>
+                </div>
+                
+                <p className="mt-4 text-center text-[8px] text-slate-400 font-bold uppercase tracking-widest">
+                  Priority Response Guaranteed
+                </p>
               </div>
             </div>
           </div>

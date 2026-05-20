@@ -55,27 +55,64 @@ interface QuickAccessCategory {
 }
 
 export default function QuickAccessHub() {
-  const [categories, setCategories] = useState<QuickAccessCategory[]>([]);
-  const [loading, setLoading] = useState(true);
+  const categories: QuickAccessCategory[] = [
+    {
+      title: "Core Services",
+      description: "Fundamental Tally solutions to streamline your accounting and business processes.",
+      iconName: "core",
+      theme: { accent: "bg-blue-500", bg: "bg-blue-50", text: "text-blue-600", hoverBg: "hover:bg-blue-600" },
+      links: [
+        { label: "Tally Prime", href: "/products/tally-prime" },
+        { label: "AMC", href: "/services/amc" },
+        { label: "Training", href: "/services/corporate-training" },
+        { label: "TSS", href: "/services/tss" }
+      ]
+    },
+    {
+      title: "Cloud Access",
+      description: "Anytime, anywhere secure access to your Tally data with our robust cloud hosting.",
+      iconName: "cloud",
+      theme: { accent: "bg-indigo-500", bg: "bg-indigo-50", text: "text-indigo-600", hoverBg: "hover:bg-indigo-600" },
+      links: [
+        { label: "Cloud Hosting", href: "/cloud" },
+        { label: "Mobile App", href: "/services/mobile-app-biz" },
+        { label: "Remote Access", href: "/cloud#remote" },
+        { label: "Data Security", href: "/cloud#security" }
+      ]
+    },
+    {
+      title: "Custom Modules",
+      description: "Tailored TDL solutions and vertical specific modules built for your unique industry.",
+      iconName: "custom",
+      theme: { accent: "bg-purple-500", bg: "bg-purple-50", text: "text-purple-600", hoverBg: "hover:bg-purple-600" },
+      links: [
+        { label: "Logistics", href: "/modules#logistics" },
+        { label: "Retail", href: "/modules#retail" },
+        { label: "Housing", href: "/modules#housing" },
+        { label: "Import Utility", href: "/modules#excel" }
+      ]
+    },
+    {
+      title: "Expert Support",
+      description: "Priority technical assistance and troubleshooting from our certified experts.",
+      iconName: "support",
+      theme: { accent: "bg-emerald-500", bg: "bg-emerald-50", text: "text-emerald-600", hoverBg: "hover:bg-emerald-600" },
+      links: [
+        { label: "Priority Help", href: "/contact" },
+        { label: "WhatsApp", href: "https://wa.me/919876543210" },
+        { label: "TDL Support", href: "/services/tdl" },
+        { label: "GST Help", href: "/services/amc#gst" }
+      ]
+    }
+  ];
+
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const fetchQuickAccess = async () => {
-      try {
-        const response = await fetch('/api/content?section=home_quick_access');
-        const data = await response.json();
-        if (data && !data.error) {
-          setCategories(data);
-        }
-      } catch (err) {
-        console.error('Error fetching quick access:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchQuickAccess();
+    setLoading(false);
   }, []);
 
-  if (loading || categories.length === 0) return null;
+  if (loading) return null;
 
   return (
     <section className="w-full bg-slate-50 py-10 md:py-14 px-4 overflow-hidden border-y border-slate-200">

@@ -6,7 +6,7 @@ const FAQ = () => {
     const [faqData, setFaqData] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const [activeIndex, setActiveIndex] = useState<number | null>(null);
-    const [isVisible, setIsVisible] = useState(false);
+    const [isVisible, setIsVisible] = useState(true);
     const [searchQuery, setSearchQuery] = useState("");
     const [isExpanded, setIsExpanded] = useState(false);
     const sectionRef = useRef<HTMLDivElement>(null);
@@ -18,11 +18,14 @@ const FAQ = () => {
             try {
                 const response = await fetch('/api/content?section=home_faq');
                 const data = await response.json();
-                if (data && !data.error) {
+                if (data && !data.error && Array.isArray(data)) {
                     setFaqData(data);
+                } else {
+                    setFaqData([]);
                 }
             } catch (err) {
                 console.error('Error fetching FAQ:', err);
+                setFaqData([]);
             } finally {
                 setLoading(false);
             }
@@ -30,10 +33,11 @@ const FAQ = () => {
         fetchFaq();
     }, []);
 
+
     useEffect(() => {
+        setIsVisible(true);
         const currentRef = sectionRef.current;
         if (!window.IntersectionObserver) {
-            setIsVisible(true);
             return;
         }
 
@@ -76,17 +80,30 @@ const FAQ = () => {
         setActiveIndex(activeIndex === index ? null : index);
     };
 
-    if (loading || faqData.length === 0) return null;
+    if (loading) return (
+        <section id="faq" className="w-full py-12 px-6 bg-white">
+            <div className="max-w-4xl mx-auto">
+                <div className="text-center mb-12">
+                    <h2 className="text-sm font-semibold uppercase tracking-[0.3em] text-slate-400 mb-3">Service & Support</h2>
+                    <h1 className="font-sans text-[2.25rem] font-extrabold leading-tight text-slate-900 sm:text-[3rem] mb-6">Still have questions? <br className="hidden sm:block" /> We got them answered</h1>
+                </div>
+                <div className="flex flex-col items-center justify-center space-y-4 py-12">
+                    <div className="w-12 h-12 border-4 border-slate-200 border-t-[#7338a0] rounded-full animate-spin"></div>
+                    <p className="text-slate-500 font-medium">Loading FAQs...</p>
+                </div>
+            </div>
+        </section>
+    );
 
     return (
         <section 
             id="faq"
             ref={sectionRef}
-            className="w-full py-8 px-6 transition-colors duration-300"
+            className="w-full py-12 px-6 transition-colors duration-300"
             style={{ backgroundColor: 'var(--background-color, #ffffff)' }}
         >
             <div className="max-w-4xl mx-auto">
-                <div className={`text-center mb-12 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+                <div className={`text-center mb-12 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-100 translate-y-0'}`}>
                     <h2 className="text-sm font-semibold uppercase tracking-[0.3em] text-slate-400 mb-3">
                         Service & Support
                     </h2>
@@ -100,7 +117,7 @@ const FAQ = () => {
                     </p>
                 </div>
 
-                <div className={`mb-12 transition-all duration-1000 delay-200 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+                <div className={`mb-12 transition-all duration-1000 delay-200 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-100 translate-y-0'}`}>
                     <div className="relative group">
                         <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
                             <svg className="h-5 w-5 text-slate-400 group-focus-within:text-slate-900 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">

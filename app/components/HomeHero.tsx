@@ -28,26 +28,114 @@ interface HeroContent {
 }
 
 export default function HomeHero() {
-  const [heroContents, setHeroContents] = useState<HeroContent[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchHeroContent = async () => {
-      try {
-        const response = await fetch('/api/content?section=home_hero');
-        const data = await response.json();
-        if (data && !data.error) {
-          setHeroContents(data);
+  const heroContents: HeroContent[] = [
+    {
+      "badge": "Upgraded to Tally 7.0",
+      "titleText": "Trusted Tally Partner in Navi Mumbai",
+      "colorFrom": "#4f46e5",
+      "colorTo": "#7c3aed",
+      "description": "Beyond Software Sales — Guiding You to Maximize Your Tally Investment with Certified Support.",
+      "image": "/sa.png",
+      "features": [
+        {
+          "text": "TallyPrime v7.0 Ready"
+        },
+        {
+          "text": "Certified Expert Support"
+        },
+        {
+          "text": "Custom Module Design"
+        },
+        {
+          "text": "Seamless Data Integrity"
         }
-      } catch (err) {
-        console.error('Error fetching hero content:', err);
-      } finally {
-        setLoading(false);
+      ],
+      "ctaPrimary": {
+        "text": "Explore Capabilities",
+        "href": "/products"
       }
-    };
-    fetchHeroContent();
-  }, []);
+    },
+    {
+      "badge": "Support Excellence",
+      "titleText": "90% First-Call Resolution",
+      "colorFrom": "#f97316",
+      "colorTo": "#e11d48",
+      "description": "15min Avg. Response Time | 5000+ Queries Resolved | 99% Client Satisfaction. Reliable support that keeps your business running smoothly.",
+      "image": "/sa.png",
+      "features": [
+        {
+          "text": "Certified Technical Experts"
+        },
+        {
+          "text": "Dedicated Account Managers"
+        },
+        {
+          "text": "On-site & Remote Assistance"
+        },
+        {
+          "text": "15min Avg. Response"
+        }
+      ],
+      "ctaPrimary": {
+        "text": "Get Support",
+        "href": "/contact"
+      }
+    },
+    {
+      "badge": "Certified Expertise",
+      "titleText": "Why Choose Certified Partner?",
+      "colorFrom": "#2563eb",
+      "colorTo": "#0891b2",
+      "description": "Experience unparalleled reliability with Tally Certified Partners. We ensure your business software is always optimized, secure, and compliant.",
+      "image": "/certified.png",
+      "features": [
+        {
+          "text": "Authorized Sales & Service"
+        },
+        {
+          "text": "Certified Technical Team"
+        },
+        {
+          "text": "Deep Industry Knowledge"
+        },
+        {
+          "text": "Priority Support Access"
+        }
+      ],
+      "ctaPrimary": {
+        "text": "Verify Certification",
+        "href": "/contact"
+      }
+    },
+    {
+      "badge": "Vertical Solutions",
+      "titleText": "Custom Tally Modules",
+      "colorFrom": "#059669",
+      "colorTo": "#0d9488",
+      "description": "Tailored solutions built directly into Tally to optimize your unique industry workflows and reporting.",
+      "image": "/sa.png",
+      "features": [
+        {
+          "text": "Industry-Specific Logic"
+        },
+        {
+          "text": "Automated Reporting"
+        },
+        {
+          "text": "Reduced Manual Entry"
+        },
+        {
+          "text": "Scalable Add-ons"
+        }
+      ],
+      "ctaPrimary": {
+        "text": "View Modules",
+        "href": "/products#modules"
+      }
+    }
+  ];
 
+  const [loading, setLoading] = useState(false);
   const [modalConfig, setModalConfig] = useState<{ isOpen: boolean; type: FormType; service: string; details: string }>({
     isOpen: false,
     type: 'general',
@@ -230,17 +318,14 @@ export default function HomeHero() {
           <div className={`flex flex-col items-center w-full transition-all duration-700 delay-[250ms] ease-in-out
             ${isTransitioning ? 'opacity-0 translate-y-12 blur-sm' : 'opacity-100 translate-y-0 blur-0'}`}>
 
-            {/* Typing Sub-title - Large & Animated */}
             <h2 className="font-sans text-[22px] md:text-[42px] lg:text-[48px] font-black leading-[1.1] tracking-tight min-h-[2.2em] md:min-h-[1.5em] mb-1 md:mb-2 overflow-visible">
-              <span className="inline-block">
-                <span className="px-4 py-2 -mx-4 text-highlight-gradient">
-                  {displayText}
-                </span>
-                <span
-                  className={`inline-block w-[3px] h-[0.9em] ml-1 align-middle transition-colors duration-1000 ${isTyping ? 'opacity-100' : 'animate-pulse'}`}
-                  style={{ backgroundColor: current.colorFrom }}
-                ></span>
+              <span className="text-highlight-gradient">
+                {displayText}
               </span>
+              <span
+                className={`inline-block w-[2px] md:w-[3px] h-[0.8em] md:h-[0.9em] ml-1 align-middle transition-colors duration-1000 ${isTyping ? 'opacity-100' : 'animate-pulse'}`}
+                style={{ backgroundColor: current.colorFrom }}
+              ></span>
             </h2>
 
             <p className="max-w-2xl mx-auto text-[11px] md:text-base font-medium leading-relaxed text-slate-700 mb-3 md:mb-4">

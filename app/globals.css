@@ -144,8 +144,7 @@ body {
 
 /* Performance Optimizations */
 section {
-  /* content-visibility: auto; */
-  contain-intrinsic-size: 1px 500px;
+  content-visibility: visible;
 }
 
 /* Ensure Hero is always visible immediately */

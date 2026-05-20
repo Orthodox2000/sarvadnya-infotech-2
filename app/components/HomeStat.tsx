@@ -60,31 +60,22 @@ function StatItem({ label, value, suffix, isVisible }: StatItemProps) {
 }
 
 export default function HomeStat() {
-  const [stats, setStats] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+  const stats = [
+    { label: 'Happy Clients', value: 5000, suffix: '+' },
+    { label: 'Cities Covered', value: 50, suffix: '+' },
+    { label: 'Years Experience', value: 15, suffix: '+' }
+  ];
+  const [loading, setLoading] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    const fetchStats = async () => {
-      try {
-        const response = await fetch('/api/content?section=home_stats');
-        const data = await response.json();
-        if (data && !data.error) {
-          setStats(data);
-        }
-      } catch (err) {
-        console.error('Error fetching stats:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchStats();
+    setLoading(false);
   }, []);
 
   useEffect(() => {
+    setIsVisible(true); // Default to visible for reliability
     if (!window.IntersectionObserver) {
-      setIsVisible(true);
       return;
     }
 

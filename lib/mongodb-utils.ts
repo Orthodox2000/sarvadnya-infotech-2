@@ -66,6 +66,70 @@ export async function updateContent(section: string, content: any) {
   );
 }
 
+// Modules helpers
+export async function getModules() {
+  const col = await getCollection('modules');
+  return await col.find({}).sort({ createdAt: -1 }).toArray();
+}
+
+export async function getModule(id: string) {
+  const col = await getCollection('modules');
+  return await col.findOne({ $or: [{ id }, { _id: new ObjectId(id) }] });
+}
+
+export async function addModule(data: any) {
+  const col = await getCollection('modules');
+  return await col.insertOne({
+    ...data,
+    createdAt: new Date(),
+    updatedAt: new Date()
+  });
+}
+
+export async function updateModule(id: string, data: any) {
+  const col = await getCollection('modules');
+  const query = ObjectId.isValid(id) ? { _id: new ObjectId(id) } : { id };
+  return await col.updateOne(
+    query,
+    { $set: { ...data, updatedAt: new Date() } },
+    { upsert: true }
+  );
+}
+
+export async function deleteModule(id: string) {
+  const col = await getCollection('modules');
+  const query = ObjectId.isValid(id) ? { _id: new ObjectId(id) } : { id };
+  return await col.deleteOne(query);
+}
+
+// Tutorials/Learning helpers
+export async function getTutorials() {
+  const col = await getCollection('learning_content');
+  return await col.find({}).sort({ createdAt: -1 }).toArray();
+}
+
+export async function addTutorial(data: any) {
+  const col = await getCollection('learning_content');
+  return await col.insertOne({
+    ...data,
+    createdAt: new Date(),
+    updatedAt: new Date()
+  });
+}
+
+export async function updateTutorial(id: string, data: any) {
+  const col = await getCollection('learning_content');
+  return await col.updateOne(
+    { _id: new ObjectId(id) },
+    { $set: { ...data, updatedAt: new Date() } }
+  );
+}
+
+export async function deleteTutorial(id: string) {
+  const col = await getCollection('learning_content');
+  return await col.deleteOne({ _id: new ObjectId(id) });
+}
+
 // Reviews helpers
 export async function getReviews() {
   const col = await getCollection('reviews');

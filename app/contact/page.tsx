@@ -126,65 +126,96 @@ export default function ContactPage() {
       <section className="pb-20 px-6 sm:px-12 lg:px-24 max-w-4xl mx-auto animate-rise-up" style={{ animationDelay: '400ms' }}>
         <div className="grid grid-cols-1 gap-8 lg:gap-12">
           {/* Support Form */}
-          <div className="bg-[var(--heading-color)] p-8 md:p-12 rounded-[3rem] shadow-xl text-white flex flex-col justify-center">
-            <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-violet-200/60 mb-2">Priority Support</p>
-            <h2 className="text-3xl font-black mb-6">Request a Callback</h2>
-            <p className="text-violet-100/70 mb-8 leading-relaxed">
-              Share your details and our certified experts will call you back within 15 minutes to resolve your Tally queries.
-            </p>
+          <div className="relative overflow-hidden bg-white p-8 md:p-12 rounded-[2.5rem] md:rounded-[3.5rem] shadow-[0_40px_100px_rgba(15,23,42,0.1)] text-slate-900 border border-slate-100 group">
+            {/* Decorative Background Elements */}
+            <div className="absolute top-0 right-0 w-96 h-96 bg-indigo-50 rounded-full blur-[120px] opacity-60 -mr-48 -mt-48 transition-transform duration-1000 group-hover:scale-110" />
+            <div className="absolute bottom-0 left-0 w-64 h-64 bg-violet-50 rounded-full blur-[100px] opacity-60 -ml-32 -mb-32 transition-transform duration-1000 group-hover:scale-110" />
             
-            <form className="space-y-4">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="space-y-1.5">
-                  <label className="text-[10px] font-bold uppercase tracking-wider text-violet-200/70 ml-1">Full Name</label>
-                  <input
-                    type="text"
-                    placeholder="e.g. John Doe"
-                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-3 text-sm text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-white/20 focus:border-white/40 transition-all"
+            <div className="relative z-10">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-100 border border-slate-200 text-slate-600 text-[10px] font-bold uppercase tracking-widest mb-4">
+                <span className="flex h-2 w-2 rounded-full bg-[#7338a0] animate-pulse"></span>
+                Priority Support
+              </div>
+              <h2 className="text-3xl md:text-5xl font-black mb-6 tracking-tight leading-tight text-[#0f0529]">
+                Request a <span className="text-[#7338a0]">Callback</span>
+              </h2>
+              <p className="text-slate-500 mb-10 leading-relaxed text-sm md:text-base max-w-lg font-medium">
+                Share your details and our certified experts will call you back within <span className="text-[#7338a0] font-bold underline decoration-[#7338a0]/30 underline-offset-4">15 minutes</span> to resolve your Tally queries.
+              </p>
+              
+              <form className="space-y-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-slate-400 ml-1">Full Name</label>
+                    <input
+                      type="text"
+                      placeholder="e.g. John Doe"
+                      className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#7338a0]/10 focus:border-[#7338a0] transition-all shadow-sm"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-slate-400 ml-1">Email Address</label>
+                    <input
+                      type="email"
+                      placeholder="john@example.com"
+                      className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#7338a0]/10 focus:border-[#7338a0] transition-all shadow-sm"
+                    />
+                  </div>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-slate-400 ml-1">Phone Number</label>
+                    <input
+                      type="tel"
+                      placeholder="+91 00000 00000"
+                      className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#7338a0]/10 focus:border-[#7338a0] transition-all shadow-sm"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-slate-400 ml-1">Service Needed</label>
+                    <input
+                      type="text"
+                      placeholder="e.g. TallyPrime Upgrade"
+                      className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#7338a0]/10 focus:border-[#7338a0] transition-all shadow-sm"
+                    />
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <label className="text-[10px] font-bold uppercase tracking-widest text-slate-400 ml-1">Message</label>
+                  <textarea
+                    placeholder="How can we help you today?"
+                    rows={4}
+                    className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#7338a0]/10 focus:border-[#7338a0] resize-none transition-all shadow-sm"
                   />
                 </div>
-                <div className="space-y-1.5">
-                  <label className="text-[10px] font-bold uppercase tracking-wider text-violet-200/70 ml-1">Email Address</label>
-                  <input
-                    type="email"
-                    placeholder="john@example.com"
-                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-3 text-sm text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-white/20 focus:border-white/40 transition-all"
-                  />
+                <button
+                  type="submit"
+                  className="group relative w-full mt-4 py-5 bg-[#7338a0] text-white rounded-2xl font-black text-xs uppercase tracking-[0.2em] shadow-[0_20px_40px_rgba(115,56,160,0.2)] hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-3 overflow-hidden"
+                >
+                  <span className="relative z-10">Send Request Now</span>
+                  <svg className="w-4 h-4 relative z-10 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                  </svg>
+                  <div className="absolute inset-0 bg-gradient-to-r from-[#7338a0] via-[#4a2574] to-[#7338a0] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                </button>
+              </form>
+              
+              <div className="mt-8 pt-8 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <p className="text-[10px] text-slate-400 font-medium">
+                  🔒 Your data is secure with Sarvadnya Infotech LLP.
+                </p>
+                <div className="flex items-center gap-2">
+                  <div className="flex -space-x-2">
+                    {[1,2,3].map(i => (
+                      <div key={i} className="w-6 h-6 rounded-full border-2 border-white bg-slate-100 overflow-hidden shadow-sm">
+                        <Image src={`/sa.png`} alt="Expert" width={24} height={24} className="object-cover" />
+                      </div>
+                    ))}
+                  </div>
+                  <span className="text-[10px] text-slate-500 font-bold">50+ Experts Online</span>
                 </div>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="space-y-1.5">
-                  <label className="text-[10px] font-bold uppercase tracking-wider text-violet-200/70 ml-1">Phone Number</label>
-                  <input
-                    type="tel"
-                    placeholder="+91 00000 00000"
-                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-3 text-sm text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-white/20 focus:border-white/40 transition-all"
-                  />
-                </div>
-                <div className="space-y-1.5">
-                  <label className="text-[10px] font-bold uppercase tracking-wider text-violet-200/70 ml-1">Service Needed</label>
-                  <input
-                    type="text"
-                    placeholder="e.g. TallyPrime Upgrade"
-                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-3 text-sm text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-white/20 focus:border-white/40 transition-all"
-                  />
-                </div>
-              </div>
-              <div className="space-y-1.5">
-                <label className="text-[10px] font-bold uppercase tracking-wider text-violet-200/70 ml-1">Message</label>
-                <textarea
-                  placeholder="How can we help you?"
-                  rows={3}
-                  className="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-3 text-sm text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-white/20 focus:border-white/40 resize-none transition-all"
-                />
-              </div>
-              <button
-                type="submit"
-                className="w-full mt-6 py-4 bg-white text-[var(--heading-color)] rounded-2xl font-bold shadow-lg hover:scale-[1.02] active:scale-[0.98] transition-all hover:bg-violet-50"
-              >
-                Send Request Now
-              </button>
-            </form>
+            </div>
           </div>
         </div>
       </section>

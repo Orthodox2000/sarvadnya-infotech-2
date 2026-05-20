@@ -89,12 +89,12 @@ export default function UnifiedContactModal({
         onClick={e => e.stopPropagation()}
       >
         {/* Decorative Header */}
-        <div className="bg-[#0f0529] md:p-6 p-8 text-white relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-32 h-32 bg-[#7338a0] rounded-full blur-[60px] opacity-50 -mr-16 -mt-16" />
-          <div className="absolute bottom-0 left-0 w-24 h-24 bg-indigo-600 rounded-full blur-[50px] opacity-30 -ml-12 -mb-12" />
+        <div className="bg-white md:p-6 p-8 text-slate-900 relative overflow-hidden border-b border-slate-100">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-50 rounded-full blur-[60px] opacity-60 -mr-16 -mt-16" />
+          <div className="absolute bottom-0 left-0 w-24 h-24 bg-violet-50 rounded-full blur-[50px] opacity-40 -ml-12 -mb-12" />
           
           <button 
-            className="absolute top-4 right-4 text-white/60 hover:text-white transition-colors z-[20]"
+            className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 transition-colors z-[20] w-8 h-8 flex items-center justify-center rounded-full hover:bg-slate-100"
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
@@ -102,18 +102,19 @@ export default function UnifiedContactModal({
             }}
             aria-label="Close modal"
           >
-            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
 
           <div className="relative z-10">
-            <span className="inline-block px-3 py-0.5 rounded-full bg-white/10 text-[9px] font-bold uppercase tracking-[0.2em] text-indigo-200 mb-2 border border-white/10">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 text-[9px] font-bold uppercase tracking-[0.2em] text-slate-500 mb-3 border border-slate-200">
+              <span className="flex h-1.5 w-1.5 rounded-full bg-[#7338a0] animate-pulse"></span>
               {getBadge()}
             </span>
-            <h2 className="text-2xl font-black tracking-tight">{getTitle()}</h2>
-            <p className="mt-1 text-xs text-indigo-100/70 leading-relaxed">
-              Fill in the details below and our team will get back to you shortly.
+            <h2 className="text-2xl md:text-3xl font-black tracking-tight leading-tight text-[#0f0529]">{getTitle()}</h2>
+            <p className="mt-2 text-[11px] md:text-xs text-slate-500 leading-relaxed font-medium">
+              Fill in the details below and our team will get back to you within <span className="text-[#7338a0] font-bold">15 minutes</span>.
             </p>
           </div>
         </div>

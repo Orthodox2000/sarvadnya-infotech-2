@@ -2,7 +2,7 @@
 
 import { startTransition, useEffect, useEffectEvent, useState } from 'react'
 
-const HERO_IMAGES = ['']//['/BG1.png','BG3-1.png','/BF2.png','/offer.png', '/bg.jpg', '/ref22.jpg']
+const HERO_IMAGES = ['/BG1.png', '/offer.png', '/ref22.jpg']
 const SLIDE_INTERVAL_MS = 5000
 const SLIDE_DURATION_MS = 1200
 type AnimationPhase = 'idle' | 'staged' | 'animating'

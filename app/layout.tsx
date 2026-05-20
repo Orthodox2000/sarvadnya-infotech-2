@@ -1,10 +1,26 @@
+import dynamic from 'next/dynamic'
 import type { Metadata, Viewport } from "next";
 import type { CSSProperties } from "react";
 import Navbar from "./components/Navbar";
+import Productbar from "./components/Productbar";
 import { theme } from "@/lib/theme";
 import "./globals.css";
-import Productbar from "./components/Productbar";
-import NewsFeed from "./components/NewsFeed";
+
+const NewsFeed = dynamic(() => import("./components/NewsFeed"), {
+  loading: () => (
+    <div className="relative w-full bg-[#0f0529] h-[40px] flex items-center border-b border-white/10 z-[50]">
+      <div className="px-6 flex items-center gap-2">
+        <div className="h-2 w-2 rounded-full bg-slate-700 animate-pulse" />
+        <div className="h-3 w-32 bg-slate-800 rounded animate-pulse" />
+      </div>
+    </div>
+  )
+});
+
+const SupportButton = dynamic(() => import("./components/SupportButton"));
+
+const NotificationToast = dynamic(() => import("./components/NotificationToast"));
+
 export const metadata: Metadata = {
   title: "Sarvadnya Infotech",
   description: "Your Tally Assistance",
@@ -56,6 +72,8 @@ export default function RootLayout({
         </div>
 
         {children}
+        <SupportButton />
+        <NotificationToast />
       </body>
     </html>
   );

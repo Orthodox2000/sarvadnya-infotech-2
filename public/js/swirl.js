@@ -32,8 +32,8 @@ let mobileLightness = 40;
 let animationFrameId = null;
 
 function setup() {
-  if (typeof SimplexNoise === 'undefined') {
-    console.warn('SimplexNoise not yet loaded. Deferring swirl setup.');
+  if (typeof SimplexNoise === 'undefined' || typeof TAU === 'undefined' || typeof rand === 'undefined') {
+    console.warn('Dependencies not yet loaded. Deferring swirl setup.');
     return;
   }
   container = document.querySelector('.content--canvas');
