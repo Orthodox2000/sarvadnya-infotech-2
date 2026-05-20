@@ -62,19 +62,14 @@ export default function HomeHero() {
   const [isVisible, setIsVisible] = useState(true);
   const [isTabFocused, setIsTabFocused] = useState(true);
 
-  if (loading || heroContents.length === 0) {
-    return (
-      <div className="relative h-[50dvh] md:h-[75dvh] w-full bg-slate-50 animate-pulse flex items-center justify-center">
-        <div className="text-slate-300 font-bold">Loading Experience...</div>
-      </div>
-    );
-  }
+  const pathname = usePathname();
 
-  const current = heroContents[currentIndex];
-
-  const openModal = (type: FormType, service: string = '', details: string = '') => {
-    setModalConfig({ isOpen: true, type, service, details });
-  };
+  // Reset currentIndex if it goes out of bounds (e.g. if heroContents changes)
+  useEffect(() => {
+    if (heroContents.length > 0 && currentIndex >= heroContents.length) {
+      setCurrentIndex(0);
+    }
+  }, [heroContents.length, currentIndex]);
 
   // Tab Visibility Detection to prevent animation stacking
   useEffect(() => {
@@ -98,8 +93,11 @@ export default function HomeHero() {
     return () => observer.disconnect();
   }, []);
 
+  const current = heroContents[currentIndex] || heroContents[0];
+
   // Typing effect logic
   useEffect(() => {
+    if (!current) return;
     let i = 0;
     const textToType = current.titleText;
 
@@ -116,10 +114,10 @@ export default function HomeHero() {
     }, 100);
 
     return () => clearInterval(typingInterval);
-  }, [currentIndex, current.titleText, isTabFocused]); // Added isTabFocused to deps
+  }, [currentIndex, current?.titleText, isTabFocused]);
 
   useEffect(() => {
-    if (!isVisible || !isTabFocused) return;
+    if (!isVisible || !isTabFocused || heroContents.length === 0) return;
 
     const timer = setInterval(() => {
       setIsTransitioning(true);
@@ -130,15 +128,25 @@ export default function HomeHero() {
     }, 10000);
 
     return () => clearInterval(timer);
-  }, [isVisible, isTabFocused]);
-
-  const pathname = usePathname();
+  }, [isVisible, isTabFocused, heroContents.length]);
 
   useEffect(() => {
-    if (typeof window !== 'undefined' && (window as any).initSwirl && isVisible && isTabFocused) {
+    if (typeof window !== 'undefined' && (window as any).SimplexNoise && (window as any).initSwirl && isVisible && isTabFocused) {
       (window as any).initSwirl();
     }
   }, [pathname, isVisible, isTabFocused]);
+
+  if (loading || heroContents.length === 0) {
+    return (
+      <div className="relative h-[50dvh] md:h-[75dvh] w-full bg-slate-50 animate-pulse flex items-center justify-center">
+        <div className="text-slate-300 font-bold">Loading Experience...</div>
+      </div>
+    );
+  }
+
+  const openModal = (type: FormType, service: string = '', details: string = '') => {
+    setModalConfig({ isOpen: true, type, service, details });
+  };
 
   return (
     <main
@@ -156,7 +164,9 @@ export default function HomeHero() {
         src="/js/swirl.js"
         strategy="afterInteractive"
         onLoad={() => {
-          if ((window as any).initSwirl) (window as any).initSwirl();
+          if (typeof window !== 'undefined' && (window as any).SimplexNoise && (window as any).initSwirl) {
+            (window as any).initSwirl();
+          }
         }}
       />
 
