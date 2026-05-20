@@ -7,8 +7,28 @@ import { usePathname } from 'next/navigation';
 import Script from 'next/script';
 import UnifiedContactModal, { FormType } from './UnifiedContactModal';
 
+interface HeroFeature {
+  text: string;
+}
+
+interface HeroCTA {
+  text: string;
+  href: string;
+}
+
+interface HeroContent {
+  titleText: string;
+  description: string;
+  features: HeroFeature[];
+  colorFrom: string;
+  colorTo: string;
+  ctaPrimary: HeroCTA;
+  image: string;
+  badge: string;
+}
+
 export default function HomeHero() {
-  const [heroContents, setHeroContents] = useState<any[]>([]);
+  const [heroContents, setHeroContents] = useState<HeroContent[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

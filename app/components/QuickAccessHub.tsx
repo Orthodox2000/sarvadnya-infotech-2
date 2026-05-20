@@ -34,8 +34,28 @@ const getIcon = (iconName: string) => {
   }
 };
 
+interface QuickAccessLink {
+  label: string;
+  href: string;
+}
+
+interface QuickAccessTheme {
+  accent: string;
+  bg: string;
+  text: string;
+  hoverBg: string;
+}
+
+interface QuickAccessCategory {
+  title: string;
+  description: string;
+  iconName: string;
+  theme: QuickAccessTheme;
+  links: QuickAccessLink[];
+}
+
 export default function QuickAccessHub() {
-  const [categories, setCategories] = useState<any[]>([]);
+  const [categories, setCategories] = useState<QuickAccessCategory[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

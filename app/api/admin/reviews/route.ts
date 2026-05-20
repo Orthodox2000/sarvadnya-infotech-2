@@ -13,7 +13,7 @@ export async function GET() {
       const client = await clientPromise;
       const db = client.db();
       const collection = db.collection('reviews');
-      await collection.insertMany(staticReviews.map(r => ({ ...r, createdAt: new Date() })));
+      await collection.insertMany(staticReviews.map(({ id, _id, ...r }) => ({ ...r, createdAt: new Date() })));
       reviews = await getReviews();
     }
     
