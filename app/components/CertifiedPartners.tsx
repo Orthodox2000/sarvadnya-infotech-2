@@ -3,8 +3,14 @@
 import Image from "next/image";
 import { useEffect, useRef, useState, memo } from "react";
 
+interface Partner {
+    _id: string;
+    name: string;
+    imageUrl: string;
+}
+
 const CertifiedPartners = () => {
-    const [images, setImages] = useState<string[]>([]);
+    const [partners, setPartners] = useState<Partner[]>([]);
     const [loading, setLoading] = useState(true);
     const [isVisible, setIsVisible] = useState(false);
     const sectionRef = useRef(null);
@@ -12,10 +18,10 @@ const CertifiedPartners = () => {
     useEffect(() => {
         const fetchPartners = async () => {
             try {
-                const response = await fetch('/api/content?section=home_partners');
+                const response = await fetch('/api/admin/partners');
                 const data = await response.json();
                 if (data && !data.error) {
-                    setImages(data);
+                    setPartners(data);
                 }
             } catch (err) {
                 console.error('Error fetching partners:', err);
@@ -69,17 +75,17 @@ const CertifiedPartners = () => {
             </div>
 
             <div className="w-full max-w-5xl flex flex-row flex-wrap md:flex-nowrap items-center justify-center gap-4 sm:gap-12 md:gap-16 lg:gap-24 px-2">
-                {images.map((item, index) => (
+                {partners.map((item, index) => (
                     <div
-                        key={index}
+                        key={item._id || index}
                         className={`relative flex-1 min-w-[100px] sm:min-w-0 h-20 sm:h-28 md:h-40 bg-slate-50 rounded-lg sm:rounded-2xl border border-slate-100 shadow-sm transition-all duration-1000 ${isVisible ? 'animate-rise-up' : 'opacity-0'}`}
                         style={{
                             animationDelay: isVisible ? `${index * 250}ms` : '0ms',
                         }}
                     >
                         <Image
-                            src={item}
-                            alt={`Partner ${index + 1}`}
+                            src={item.imageUrl}
+                            alt={item.name}
                             fill
                             className="object-contain p-1.5 sm:p-4 transition-transform duration-300 hover:scale-110"
                             sizes="(max-width: 640px) 25vw, (max-width: 768px) 256px, 320px"

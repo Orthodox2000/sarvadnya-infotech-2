@@ -4,7 +4,18 @@
 - Always mention the application version number when presenting changes or updates.
 - Versioning follows the format `v1.1.x`.
 - Increment the patch version automatically for every iteration/significant set of changes.
-- Current Version: v1.1.26
+- Current Version: v1.1.28
+
+## Recent Changes (v1.1.28)
+- **Build Error Fix:** Resolved a critical TypeScript error in `app/api/admin/partners/route.ts` where string `_id` values were being incorrectly passed to MongoDB's `insertMany` during seeding.
+- **Improved Type Safety:** Implemented proper destructuring to omit `_id` when inserting static partner data, ensuring compatibility with MongoDB's `ObjectId` type.
+- **Version Bump:** Updated application version to v1.1.28 across all relevant files.
+
+## Recent Changes (v1.1.27)
+- **Dynamic Partner Management:** Migrated the "Certified Partners" section from hard-coded local assets to a fully database-driven model.
+- **Partner Admin UI:** Developed a new admin interface (`/admin/partners`) for managing partner logos, including image upload support.
+- **Improved Data Integrity:** Introduced a dedicated `partners` collection in MongoDB for better scalability and management.
+- **Version Bump:** Updated application version to v1.1.27 across all relevant files.
 
 ## Recent Changes (v1.1.26)
 - **Deep Admin Integration:** Integrated all major admin routes (Careers, Modules, Learning, Settings, etc.) directly into the mobile hamburger menu.

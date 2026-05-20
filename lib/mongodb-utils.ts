@@ -152,3 +152,22 @@ export async function deleteReview(id: string) {
   const col = await getCollection('reviews');
   return await col.deleteOne({ _id: new ObjectId(id) });
 }
+
+// Partners helpers
+export async function getPartners() {
+  const col = await getCollection('partners');
+  return await col.find({}).sort({ createdAt: 1 }).toArray();
+}
+
+export async function addPartner(data: any) {
+  const col = await getCollection('partners');
+  return await col.insertOne({
+    ...data,
+    createdAt: new Date()
+  });
+}
+
+export async function deletePartner(id: string) {
+  const col = await getCollection('partners');
+  return await col.deleteOne({ _id: new ObjectId(id) });
+}
