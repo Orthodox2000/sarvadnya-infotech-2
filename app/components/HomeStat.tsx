@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import { fetchWithCache } from '@/lib/client-api';
 
 interface StatItemProps {
   label: string;
@@ -59,23 +60,44 @@ function StatItem({ label, value, suffix, isVisible }: StatItemProps) {
   );
 }
 
+const DEFAULT_STATS = [
+  { label: 'Happy Clients', value: 5000, suffix: '+' },
+  { label: 'Cities Covered', value: 50, suffix: '+' },
+  { label: 'Years Experience', value: 15, suffix: '+' }
+];
+
 export default function HomeStat() {
-  const stats = [
-    { label: 'Happy Clients', value: 5000, suffix: '+' },
-    { label: 'Cities Covered', value: 50, suffix: '+' },
-    { label: 'Years Experience', value: 15, suffix: '+' }
-  ];
-  const [loading, setLoading] = useState(false);
+  const [stats, setStats] = useState<any[]>(DEFAULT_STATS);
+  const [loading, setLoading] = useState(true);
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    setLoading(false);
+    const fetchStats = async () => {
+      try {
+        const data = await fetchWithCache('/api/content?section=home_stats');
+        if (Array.isArray(data) && data.length > 0) {
+          // Ensure values are numbers
+          const sanitized = data.map(s => ({
+            ...s,
+            value: Number(s.value) || 0
+          }));
+          setStats(sanitized);
+        }
+      } catch (err) {
+        console.error('Failed to fetch stats:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchStats();
   }, []);
 
   useEffect(() => {
-    setIsVisible(true); // Default to visible for reliability
+    const currentRef = sectionRef.current;
+    
     if (!window.IntersectionObserver) {
+      setIsVisible(true);
       return;
     }
 
@@ -83,25 +105,28 @@ export default function HomeStat() {
       ([entry]) => {
         if (entry.isIntersecting) {
           setIsVisible(true);
-          // Once visible, keep it that way to avoid jumping
-          if (sectionRef.current) observer.unobserve(sectionRef.current);
+          if (currentRef) observer.unobserve(currentRef);
         }
       },
-      { threshold: 0.05, rootMargin: "0px 0px -50px 0px" }
+      { threshold: 0.1, rootMargin: "0px 0px -50px 0px" }
     );
 
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
+    if (currentRef) {
+      observer.observe(currentRef);
     }
 
+    // Safety fallback: if not visible in 3 seconds, just show it
+    const safetyTimer = setTimeout(() => {
+        setIsVisible(true);
+    }, 3000);
+
     return () => {
-      if (sectionRef.current) {
-        observer.unobserve(sectionRef.current);
+      clearTimeout(safetyTimer);
+      if (currentRef) {
+        observer.unobserve(currentRef);
       }
     };
   }, []);
-
-  if (loading || stats.length === 0) return null;
 
   return (
     <section 
@@ -115,7 +140,7 @@ export default function HomeStat() {
             <StatItem 
               key={index}
               label={stat.label}
-              value={stat.value}
+              value={Number(stat.value) || 0}
               suffix={stat.suffix}
               isVisible={isVisible}
             />

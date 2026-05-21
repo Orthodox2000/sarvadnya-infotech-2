@@ -35,7 +35,8 @@ export default function AdminCareers() {
     try {
       const res = await fetch('/api/admin/careers');
       const data = await res.json();
-      setJobs(data);
+      if (data && data.error) throw new Error(data.error);
+      setJobs(Array.isArray(data) ? data : []);
     } catch (err) {
       console.error(err);
     } finally {
@@ -49,8 +50,8 @@ export default function AdminCareers() {
       const response = await fetch('/api/admin/applications');
       const data = await response.json();
       
-      if (data.error) throw new Error(data.error);
-      setApplications(data || []);
+      if (data && data.error) throw new Error(data.error);
+      setApplications(Array.isArray(data) ? data : []);
     } catch (err) {
       console.error('Error fetching applications:', err);
     } finally {

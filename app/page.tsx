@@ -32,8 +32,8 @@ export default function Home() {
       <HomeHero />
       <CertifiedPartners />
       <QuickAccessHub />
-      <HomeStat />
       <CustomerReviews />
+      <HomeStat />
       <FAQ />
       <Footer />
     </main>

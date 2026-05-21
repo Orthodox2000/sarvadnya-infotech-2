@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import { fetchWithCache, prefetchData } from "@/lib/client-api";
 
 export type SiteSettings = {
   support_phone: string;
@@ -23,13 +24,16 @@ export default function Navbar() {
 
   useEffect(() => {
     fetchSettings();
+    // Prefetch common data to improve perceived speed and reduce background error rate
+    prefetchData('/api/modules');
+    prefetchData('/api/content?section=home_hero');
+    prefetchData('/api/content?section=home_stats');
   }, []);
 
   const fetchSettings = async () => {
     try {
-      const response = await fetch('/api/settings');
-      const data = await response.json();
-      if (!data.error) {
+      const data = await fetchWithCache('/api/settings');
+      if (data && !data.error) {
         setSettings(data);
       }
     } catch (err) {
@@ -84,6 +88,12 @@ export default function Navbar() {
         {/* Desktop Navigation */}
         <div className="hidden lg:flex items-center gap-6">
           <Link
+            href="/admin/palette"
+            className="text-[10px] font-bold uppercase tracking-widest text-emerald-400 hover:text-emerald-300 transition-colors"
+          >
+            Palette
+          </Link>
+          <Link
             href="/admin"
             className="text-[10px] font-bold uppercase tracking-widest text-indigo-400 hover:text-indigo-300 transition-colors"
           >
@@ -129,8 +139,21 @@ export default function Navbar() {
       )}
 
       {/* Mobile Menu Drawer */}
-      <div className={`lg:hidden fixed top-14 left-0 right-0 bg-[#0a041a] border-b border-white/10 z-[999] transition-all duration-300 overflow-y-auto ${isMenuOpen ? 'max-h-[90vh] opacity-100 py-6' : 'max-h-0 opacity-0 py-0'}`}>
+      <div className={`lg:hidden absolute top-full left-0 right-0 bg-[#0a041a] border-b border-white/10 z-[999] transition-all duration-300 overflow-y-auto ${isMenuOpen ? 'max-h-[85vh] opacity-100 py-6' : 'max-h-0 opacity-0 py-0'}`}>
         <div className="flex flex-col gap-6 px-6">
+          {/* Close Button at top of drawer for mobile */}
+          <div className="flex justify-end">
+            <button 
+              onClick={() => setIsMenuOpen(false)}
+              className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-[9px] font-black uppercase tracking-widest text-white/50 hover:text-white transition-colors"
+            >
+              <span>Close Menu</span>
+              <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+
           {/* Admin Section */}
           <div className="space-y-3">
             <div className="flex items-center gap-2 px-2">
@@ -182,6 +205,14 @@ export default function Navbar() {
             </svg>
             <span className="text-[10px] font-black uppercase tracking-widest">{supportPhone}</span>
           </a>
+
+          {/* Explicit Unexpand Button at very bottom */}
+          <button 
+            onClick={() => setIsMenuOpen(false)}
+            className="w-full py-4 text-[10px] font-black uppercase tracking-[0.3em] text-white/20 hover:text-white/40 transition-colors border-t border-white/5 mt-4"
+          >
+            ↑ Collapse Navigation ↑
+          </button>
         </div>
       </div>
     </header>

@@ -4,7 +4,112 @@
 - Always mention the application version number when presenting changes or updates.
 - Versioning follows the format `v1.1.x`.
 - Increment the patch version automatically for every iteration/significant set of changes.
-- Current Version: v1.1.42
+- Current Version: v1.1.70
+
+## Recent Changes (v1.1.70)
+- **API Import Fix:** Resolved a TypeScript build error by adding the missing `updatePartner` import in `app/api/admin/partners/route.ts`.
+- **Verified Production Build:** Confirmed code stability with a successful `npm run build` encompassing all 55+ application routes.
+- **Version Bump:** Updated application version to v1.1.70.
+
+## Recent Changes (v1.1.69)
+
+## Recent Changes (v1.1.68)
+
+## Recent Changes (v1.1.66)
+
+
+## Recent Changes (v1.1.65)
+
+## Recent Changes (v1.1.64)
+
+## Recent Changes (v1.1.63)
+
+## Recent Changes (v1.1.62)
+
+## Recent Changes (v1.1.61)
+
+## Recent Changes (v1.1.60)
+
+## Recent Changes (v1.1.59)
+
+## Recent Changes (v1.1.58)
+
+## Recent Changes (v1.1.57)
+
+## Recent Changes (v1.1.56)
+
+## Recent Changes (v1.1.55)
+
+## Recent Changes (v1.1.54)
+- **Partner Visibility Fix:** Resolved an issue where the Certified Partners section was invisible due to white logos on a white background. Implemented a light slate background (`bg-slate-50/50`) and white card containers with shadows to ensure visibility for all logo types.
+- **Enhanced Brand Presentation:** Redesigned the partner grid with responsive card layouts and interactive hover effects, significantly improving the section's visual hierarchy and professionalism.
+- **Version Bump:** Updated application version to v1.1.54.
+
+## Recent Changes (v1.1.53)
+- **HomeHero Transition Polish:** Implemented a smooth cross-fade animation for hero slides. The entire content block (text and visuals) now fades out and blurs slightly before switching content, followed by a crisp fade-in.
+- **Slower Typing Effect:** Reduced the typing speed to 80ms per character to improve readability and create a more natural "expert assistant" feel.
+- **Synchronized Cross-Fade:** Integrated an `isTransitioning` state to coordinate the exit and entry phases of slide changes, ensuring a seamless visual flow without abrupt content jumps.
+- **Version Bump:** Updated application version to v1.1.53.
+
+## Recent Changes (v1.1.52)
+- **TypeScript Type Alignment:** Resolved a type mismatch in `UnifiedContactModal` by adding the `'demo'` variant to the `FormType` union. Updated internal mapping logic to provide unique titles ("Book a Free Demo") and badges ("Live Showcase") for the demo request workflow.
+- **Version Bump:** Updated application version to v1.1.52.
+
+## Recent Changes (v1.1.51)
+- **Mobile Navigation UX Overhaul:** Added explicit "Close Menu" buttons to the top and bottom of the mobile navigation drawer to ensure effortless unexpansion.
+- **Megamenu Hardening:** Integrated dedicated mobile-only "Close Menu" buttons within the `Productbar` megamenus, resolving navigation friction on small screens.
+- **Drawer Alignment Fix:** Corrected mobile drawer positioning from `fixed` to `absolute top-full`, ensuring perfectly synchronized scrolling with the sticky navigation header.
+- **Version Bump:** Updated application version to v1.1.51.
+
+## Recent Changes (v1.1.50)
+- **HomeHero Cinematic Transitions:** Extended the hero slide duration to 10 seconds for better content digestibility. Implemented synchronized "fade-up" animations for both text and visual elements using deep slide-in offsets and smooth opacity ramps.
+- **Improved Interaction Feedback:** Added subtle scale transitions to hero buttons and badges to enhance the premium feel of the landing page.
+- **Version Bump:** Updated application version to v1.1.50.
+
+## Recent Changes (v1.1.49)
+- **HomeHero Mobile Spacing Optimization:** Reduced vertical margins and minimum height constraints for the `HomeHero` section on mobile devices. Optimized the title and description wrappers to minimize excessive whitespace during the typing animation.
+- **Improved Typography Scaling:** Adjusted text sizes and line heights for mobile viewports to ensure a compact and balanced presentation of hero content.
+- **Version Bump:** Updated application version to v1.1.49.
+
+## Recent Changes (v1.1.48)
+- **Productbar Navigation Fixes:** Refactored the `Productbar` to support explicit click-to-toggle behavior for megamenus, ensuring full functionality on mobile and touch devices.
+- **Logo Link Correction:** Updated the company logo link in the `Productbar` to navigate to the homepage (`/`) for a more intuitive user experience.
+- **Event Propagation Management:** Implemented `e.stopPropagation()` on megamenu interactions to prevent accidental menu closures during content selection.
+- **Improved Responsiveness:** Optimized hover/click logic to distinguish between desktop and mobile viewport behaviors, preventing conflicting state updates.
+- **Version Bump:** Updated application version to v1.1.48.
+
+## Recent Changes (v1.1.47)
+- **HomeHero Animation Overhaul:** Implemented a high-performance typing effect for the main headline and integrated smooth enter/exit animations using key-based transitions.
+- **Layout Stability:** Resolved height inconsistency issues in the `HomeHero` during slide transitions by implementing invisible placeholders and fixed-minimum height containers, preventing content jumping.
+- **Bug Fixes:** Corrected state update typos and added defensive property checks to ensure the hero section renders reliably even with partial database data.
+- **Version Bump:** Updated application version to v1.1.47.
+
+## Recent Changes (v1.1.46)
+- **AI Behavior Refinement:** Trained the AI assistant to never mention specific prices, redirecting users to the sales team instead. Enforced proactive product promotion and requirement gathering in every interaction.
+- **Navbar Enhancement:** Added a temporary "Palette" access button to the primary navbar for quick brand identity management.
+- **UI Overflow Fix:** Resolved a mobile display issue in the `Productbar` megamenu where dropdown options would overflow the screen. Implemented responsive positioning logic for better edge-case handling.
+- **Version Bump:** Updated application version to v1.1.46.
+
+## Recent Changes (v1.1.45)
+- **Runtime Error Fix:** Resolved a critical "Cannot read properties of null (reading 'error')" error by implementing defensive null checks on all API response data before accessing the `.error` property.
+- **Global API Safety:** Updated `lib/client-api.ts`, `QuickSupportModal`, `Footer`, and all Admin management pages to safely handle potentially null or empty API responses.
+- **Admin Sidebar Stability:** Added array validation to the Admin Sidebar to prevent crashes when fetching settings fails or returns an unexpected format.
+- **Version Bump:** Updated application version to v1.1.45.
+
+## Recent Changes (v1.1.44)
+- **AI Chat Optimization:** Refined the AI assistant to provide concise, point-based responses. Enforced strict Markdown formatting (bolding and proper line breaks) for improved readability.
+- **Multi-API Key Rotation:** Implemented a secure rotation system for Groq API keys. Administrators can now manage a comma-separated list of keys in the settings panel to ensure high availability and bypass rate limits.
+- **Local Asset Migration:** Migrated all image storage from MongoDB binary/base64 to the local filesystem (`public/uploads`). This significantly improves page load times, reduces database bloat, and resolves previous file serving errors.
+- **Surgical File Replacement:** Enhanced the upload API to automatically delete and replace old local files when assets are updated. This maintains filesystem hygiene and ensures 'renaming' behavior for site assets.
+- **Unified Upload Logic:** Consolidated all admin image uploads (Branding, Pages, Modules, Learning) to use the new local-storage upload system.
+- **Version Bump:** Updated application version to v1.1.44.
+
+## Recent Changes (v1.1.43)
+- **Dynamic Content Engine:** Refactored `HomeHero`, `HomeStat`, and `QuickAccessHub` to be fully database-driven. Administrators can now manage carousel slides, live statistics, and hub navigation links directly from the admin panel.
+- **Enhanced Asset Visualization:** Redesigned `Manage Pages` and `Asset Management` interfaces with explicit "Slot Identification" labels (e.g., "[About Page Top]", "[Leadership Section]") and helpful tips to clarify where each image replacement appears on the public site.
+- **Live Preview Links:** Added "View Live Page" shortcuts to admin management screens, allowing for instant verification of content and image updates.
+- **Admin Navigation Cleanup:** Integrated `Manage Pages` into the primary admin sidebar and removed redundant/unused content sections to streamline the management workflow.
+- **Version Bump:** Updated application version to v1.1.43.
 
 ## Recent Changes (v1.1.42)
 - **Build Stabilization:** Resolved multiple TypeScript build errors preventing production deployment.

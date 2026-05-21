@@ -68,7 +68,7 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
 
       const data = await response.json();
 
-      if (data.error) throw new Error(data.error);
+      if (data && data.error) throw new Error(data.error);
 
       const aiMessage: Message = {
         id: (Date.now() + 1).toString(),
@@ -142,7 +142,17 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
                     : 'bg-white text-slate-700 border border-slate-100 rounded-tl-none'
                 }`}
               >
-                {msg.text}
+                {msg.text.split('\n').map((line, i) => (
+                  <span key={i}>
+                    {line.split(/(\*\*.*?\*\*)/).map((part, j) => {
+                      if (part.startsWith('**') && part.endsWith('**')) {
+                        return <strong key={j} className="font-black text-[#0f0529]">{part.slice(2, -2)}</strong>;
+                      }
+                      return part;
+                    })}
+                    {i < msg.text.split('\n').length - 1 && <br />}
+                  </span>
+                ))}
               </div>
             </div>
           ))}

@@ -6,29 +6,29 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import Script from 'next/script';
 import UnifiedContactModal, { FormType } from './UnifiedContactModal';
-
-interface HeroFeature {
-  text: string;
-}
+import { fetchWithCache } from '@/lib/client-api';
 
 interface HeroCTA {
   text: string;
   href: string;
 }
 
-interface HeroContent {
-  titleText: string;
-  description: string;
-  features: HeroFeature[];
-  colorFrom: string;
-  colorTo: string;
-  ctaPrimary: HeroCTA;
-  image: string;
-  badge: string;
+interface HeroFeature {
+  text: string;
 }
 
-export default function HomeHero() {
-  const heroContents: HeroContent[] = [
+interface HeroContent {
+  badge: string;
+  titleText: string;
+  colorFrom: string;
+  colorTo: string;
+  description: string;
+  image: string;
+  features: HeroFeature[];
+  ctaPrimary: HeroCTA;
+}
+
+const DEFAULT_HERO = [
     {
       "badge": "Upgraded to Tally 7.0",
       "titleText": "Trusted Tally Partner in Navi Mumbai",
@@ -37,105 +37,35 @@ export default function HomeHero() {
       "description": "Beyond Software Sales — Guiding You to Maximize Your Tally Investment with Certified Support.",
       "image": "/sa.png",
       "features": [
-        {
-          "text": "TallyPrime v7.0 Ready"
-        },
-        {
-          "text": "Certified Expert Support"
-        },
-        {
-          "text": "Custom Module Design"
-        },
-        {
-          "text": "Seamless Data Integrity"
-        }
+        { "text": "TallyPrime v7.0 Ready" },
+        { "text": "Certified Expert Support" },
+        { "text": "Custom Module Design" },
+        { "text": "Seamless Data Integrity" }
       ],
-      "ctaPrimary": {
-        "text": "Explore Capabilities",
-        "href": "/products"
-      }
-    },
-    {
-      "badge": "Support Excellence",
-      "titleText": "90% First-Call Resolution",
-      "colorFrom": "#f97316",
-      "colorTo": "#e11d48",
-      "description": "15min Avg. Response Time | 5000+ Queries Resolved | 99% Client Satisfaction. Reliable support that keeps your business running smoothly.",
-      "image": "/sa.png",
-      "features": [
-        {
-          "text": "Certified Technical Experts"
-        },
-        {
-          "text": "Dedicated Account Managers"
-        },
-        {
-          "text": "On-site & Remote Assistance"
-        },
-        {
-          "text": "15min Avg. Response"
-        }
-      ],
-      "ctaPrimary": {
-        "text": "Get Support",
-        "href": "/contact"
-      }
-    },
-    {
-      "badge": "Certified Expertise",
-      "titleText": "Why Choose Certified Partner?",
-      "colorFrom": "#2563eb",
-      "colorTo": "#0891b2",
-      "description": "Experience unparalleled reliability with Tally Certified Partners. We ensure your business software is always optimized, secure, and compliant.",
-      "image": "/certified.png",
-      "features": [
-        {
-          "text": "Authorized Sales & Service"
-        },
-        {
-          "text": "Certified Technical Team"
-        },
-        {
-          "text": "Deep Industry Knowledge"
-        },
-        {
-          "text": "Priority Support Access"
-        }
-      ],
-      "ctaPrimary": {
-        "text": "Verify Certification",
-        "href": "/contact"
-      }
-    },
-    {
-      "badge": "Vertical Solutions",
-      "titleText": "Custom Tally Modules",
-      "colorFrom": "#059669",
-      "colorTo": "#0d9488",
-      "description": "Tailored solutions built directly into Tally to optimize your unique industry workflows and reporting.",
-      "image": "/sa.png",
-      "features": [
-        {
-          "text": "Industry-Specific Logic"
-        },
-        {
-          "text": "Automated Reporting"
-        },
-        {
-          "text": "Reduced Manual Entry"
-        },
-        {
-          "text": "Scalable Add-ons"
-        }
-      ],
-      "ctaPrimary": {
-        "text": "View Modules",
-        "href": "/products#modules"
-      }
+      "ctaPrimary": { "text": "Explore Capabilities", "href": "/products" }
     }
-  ];
+];
 
-  const [loading, setLoading] = useState(false);
+export default function HomeHero() {
+  const [heroContents, setHeroContents] = useState<HeroContent[]>(DEFAULT_HERO);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchHero = async () => {
+      try {
+        const data = await fetchWithCache('/api/content?section=home_hero');
+        if (Array.isArray(data) && data.length > 0) {
+          setHeroContents(data);
+        }
+      } catch (err) {
+        console.error('Failed to fetch hero content:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchHero();
+  }, []);
+
   const [modalConfig, setModalConfig] = useState<{ isOpen: boolean; type: FormType; service: string; details: string }>({
     isOpen: false,
     type: 'general',
@@ -143,253 +73,207 @@ export default function HomeHero() {
     details: ''
   });
 
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [isTransitioning, setIsTransitioning] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(0);
   const [displayText, setDisplayText] = useState('');
-  const [isTyping, setIsTyping] = useState(true);
-  const [isVisible, setIsVisible] = useState(true);
-  const [isTabFocused, setIsTabFocused] = useState(true);
+  const [isTyping, setIsTyping] = useState(false);
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
-  const pathname = usePathname();
-
-  // Reset currentIndex if it goes out of bounds (e.g. if heroContents changes)
   useEffect(() => {
-    if (heroContents.length > 0 && currentIndex >= heroContents.length) {
-      setCurrentIndex(0);
-    }
-  }, [heroContents.length, currentIndex]);
+    if (heroContents.length <= 1) return;
+    
+    let interval: NodeJS.Timeout;
 
-  // Tab Visibility Detection to prevent animation stacking
-  useEffect(() => {
-    const handleVisibilityChange = () => {
-      const hidden = document.hidden;
-      setIsTabFocused(!hidden);
+    const startInterval = () => {
+      interval = setInterval(() => {
+        if (document.hidden) return; // Don't trigger if tab is hidden
+        setIsTransitioning(true);
+        setDisplayText(''); // Clear text immediately on exit
+        
+        setTimeout(() => {
+          setActiveIndex((prev) => (prev + 1) % heroContents.length);
+          // Give React a frame to mount the new key before starting entrance
+          setTimeout(() => {
+            setIsTransitioning(false);
+          }, 50);
+        }, 1500);
+      }, 10000);
     };
 
-    document.addEventListener('visibilitychange', handleVisibilityChange);
-    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
-  }, []);
-
-  // Intersection Observer to stop animations when not visible
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => setIsVisible(entry.isIntersecting),
-      { threshold: 0.1 }
-    );
-    const element = document.getElementById('home-hero');
-    if (element) observer.observe(element);
-    return () => observer.disconnect();
-  }, []);
-
-  const current = heroContents[currentIndex] || heroContents[0];
-
-  // Typing effect logic
-  useEffect(() => {
-    if (!current) return;
-    let i = 0;
-    const textToType = current.titleText;
-
-    setIsTyping(true);
-    setDisplayText('');
-
-    const typingInterval = setInterval(() => {
-      setDisplayText(textToType.slice(0, i + 1));
-      i++;
-      if (i >= textToType.length) {
-        setIsTyping(false);
-        clearInterval(typingInterval);
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        clearInterval(interval);
+      } else {
+        startInterval();
       }
-    }, 100);
+    };
 
-    return () => clearInterval(typingInterval);
-  }, [currentIndex, current?.titleText, isTabFocused]);
+    startInterval();
+    document.addEventListener('visibilitychange', handleVisibilityChange);
 
-  useEffect(() => {
-    if (!isVisible || !isTabFocused || heroContents.length === 0) return;
+    return () => {
+      clearInterval(interval);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, [heroContents]);
 
-    const timer = setInterval(() => {
-      setIsTransitioning(true);
-      setTimeout(() => {
-        setCurrentIndex((prev) => (prev + 1) % heroContents.length);
-        setIsTransitioning(false);
-      }, 1000);
-    }, 10000);
-
-    return () => clearInterval(timer);
-  }, [isVisible, isTabFocused, heroContents.length]);
+  const current = heroContents[activeIndex] || DEFAULT_HERO[0];
 
   useEffect(() => {
-    if (typeof window !== 'undefined' && (window as any).SimplexNoise && (window as any).initSwirl && isVisible && isTabFocused) {
-      (window as any).initSwirl();
-    }
-  }, [pathname, isVisible, isTabFocused]);
-
-  if (loading || heroContents.length === 0) {
-    return (
-      <div className="relative h-[50dvh] md:h-[75dvh] w-full bg-slate-50 animate-pulse flex items-center justify-center">
-        <div className="text-slate-300 font-bold">Loading Experience...</div>
-      </div>
-    );
-  }
-
-  const openModal = (type: FormType, service: string = '', details: string = '') => {
-    setModalConfig({ isOpen: true, type, service, details });
-  };
+    if (!current?.titleText || isTransitioning) return;
+    
+    // Delay typing start until fade-in is partially complete
+    const delayTimer = setTimeout(() => {
+      setIsTyping(true);
+      let i = 0;
+      const text = current.titleText;
+      setDisplayText('');
+      
+      const timer = setInterval(() => {
+        setDisplayText(text.slice(0, i));
+        i++;
+        if (i > text.length) {
+          clearInterval(timer);
+          setIsTyping(false);
+        }
+      }, 80); 
+      
+      return () => clearInterval(timer);
+    }, 800);
+    
+    return () => clearTimeout(delayTimer);
+  }, [current?.titleText, isTransitioning]);
 
   return (
-    <main
-      id="home-hero"
-      className="relative h-[50dvh] md:h-[75dvh] w-full overflow-hidden transition-colors duration-1000 bg-[var(--background-color)] shadow-sm"
-      style={{
-        '--hero-text-from': current.colorFrom,
-        '--hero-text-to': current.colorTo
-      } as React.CSSProperties}
-    >
-      <div className="content--canvas absolute inset-0 z-[1] pointer-events-none" />
-      <Script src="/js/noise.min.js" strategy="afterInteractive" />
-      <Script src="/js/util.js" strategy="afterInteractive" />
-      <Script
-        src="/js/swirl.js"
-        strategy="afterInteractive"
-        onLoad={() => {
-          if (typeof window !== 'undefined' && (window as any).SimplexNoise && (window as any).initSwirl) {
-            (window as any).initSwirl();
-          }
-        }}
-      />
+    <main className="relative w-full overflow-hidden bg-slate-950 min-h-[500px] md:min-h-[600px] max-h-[100dvh] flex items-center">
+      {/* Background with Animated Gradients */}
+      <div className="absolute inset-0 z-0">
+        <div 
+          className="absolute inset-0 opacity-40 transition-colors duration-[1500ms]"
+          style={{ 
+            background: `radial-gradient(circle at 50% 50%, ${current.colorFrom || '#4f46e5'}33 0%, transparent 70%)` 
+          }}
+        />
+        <div className="absolute inset-0 bg-[url('/bg.jpg')] bg-cover bg-center mix-blend-overlay opacity-20" />
+      </div>
 
-      <UnifiedContactModal
+      <div className="mx-auto w-full max-w-7xl px-6 relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          
+          {/* Content Side */}
+          <div 
+            key={`content-${activeIndex}`} 
+            className="space-y-5 md:space-y-8 min-h-[300px] md:min-h-[400px] flex flex-col justify-center"
+          >
+            <div className={`inline-flex items-center gap-2 px-3 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm w-fit transition-all duration-[1200ms] delay-[100ms]
+              ${isTransitioning ? 'opacity-0 translate-y-4 scale-95 blur-sm' : 'opacity-100 translate-y-0 scale-100 blur-0'}`}
+            >
+              <span className="flex h-2 w-2 rounded-full bg-indigo-500 animate-pulse" />
+              <span className="text-[10px] font-black uppercase tracking-widest text-indigo-300">
+                {current.badge}
+              </span>
+            </div>
+
+            <div className={`relative min-h-[90px] md:min-h-[160px] transition-all duration-[1200ms] delay-[300ms]
+              ${isTransitioning ? 'opacity-0 translate-y-4 scale-[0.98] blur-sm' : 'opacity-100 translate-y-0 scale-100 blur-0'}`}
+            >
+              {/* Invisible placeholder to maintain height */}
+              <h1 className="text-4xl md:text-6xl font-black text-white leading-[1.1] tracking-tight invisible">
+                {current.titleText}
+              </h1>
+              {/* Actual typed text */}
+              <h1 className="absolute top-0 left-0 text-4xl md:text-6xl font-black text-white leading-[1.1] tracking-tight w-full">
+                {displayText.split(' ').map((word, i) => (
+                  <span key={i} className={i > 2 ? "text-transparent bg-clip-text bg-gradient-to-r from-white to-white/50" : ""}>
+                    {word}{' '}
+                  </span>
+                ))}
+                {isTyping && <span className="inline-block w-1 h-8 md:h-12 bg-indigo-500 ml-1 animate-pulse" />}
+              </h1>
+            </div>
+
+            <p className={`text-sm md:text-lg text-slate-400 max-w-xl leading-relaxed font-medium min-h-[60px] transition-all duration-[1200ms] delay-[500ms]
+              ${isTransitioning ? 'opacity-0 translate-y-4 blur-sm' : 'opacity-100 translate-y-0 blur-0'}`}
+            >
+              {current.description}
+            </p>
+
+            <div className={`grid grid-cols-2 gap-4 transition-all duration-[1200ms] delay-[700ms]
+              ${isTransitioning ? 'opacity-0 translate-y-4 blur-sm' : 'opacity-100 translate-y-0 blur-0'}`}
+            >
+              {(current.features || []).map((f, i) => (
+                <div key={i} className="flex items-center gap-3">
+                  <div className="h-5 w-5 rounded-full bg-indigo-500/20 flex items-center justify-center border border-indigo-500/30">
+                    <svg className="w-3 h-3 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                  <span className="text-sm font-bold text-slate-300">{f.text}</span>
+                </div>
+              ))}
+            </div>
+
+            <div className={`flex flex-wrap gap-4 transition-all duration-[1200ms] delay-[900ms]
+              ${isTransitioning ? 'opacity-0 translate-y-4 blur-sm' : 'opacity-100 translate-y-0 blur-0'}`}
+            >
+              <Link 
+                href={current.ctaPrimary?.href || '/products'}
+                className="group relative overflow-hidden px-8 py-4 rounded-2xl bg-indigo-600 text-white font-black text-xs uppercase tracking-widest shadow-2xl shadow-indigo-500/40 transition-all hover:scale-[1.05] active:scale-95"
+              >
+                <span className="relative z-10">{current.ctaPrimary?.text || 'Explore'}</span>
+                <div className="absolute inset-0 z-0 translate-y-full transition-transform duration-300 group-hover:translate-y-0 bg-white/10" />
+              </Link>
+              
+              <button 
+                onClick={() => setModalConfig({ isOpen: true, type: 'demo', service: 'TallyPrime', details: 'Requesting a personalized demo' })}
+                className="group px-8 py-4 rounded-2xl bg-white text-[#0f0529] font-black text-xs uppercase tracking-widest shadow-xl transition-all hover:bg-slate-50 hover:scale-[1.05] active:scale-95"
+              >
+                Request Free Demo
+              </button>
+            </div>
+          </div>
+
+          {/* Visual Side */}
+          <div 
+            key={`visual-${activeIndex}`} 
+            className={`relative hidden lg:block transition-all duration-[1500ms] ease-in-out
+              ${isTransitioning ? 'opacity-0 scale-95 blur-sm' : 'opacity-100 scale-100 blur-0'}`}
+          >
+             {/* Dynamic Float Background */}
+             <div className="absolute -inset-10 bg-indigo-500/10 blur-[100px] rounded-full animate-pulse" />
+             
+             <div className="relative z-10 aspect-square w-full max-w-[500px] mx-auto">
+                <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/20 to-purple-500/20 rounded-[3rem] rotate-3 scale-95" />
+                <div className="absolute inset-0 bg-white/5 backdrop-blur-3xl rounded-[3rem] border border-white/10 overflow-hidden shadow-2xl">
+                   <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-indigo-500 to-purple-500" />
+                   <div className="p-8 h-full flex flex-col items-center justify-center text-center space-y-6">
+                      <div className="relative w-64 h-64 transition-transform duration-700 hover:scale-110">
+                        <Image 
+                          src={current.image} 
+                          alt="Tally Solution" 
+                          fill 
+                          priority
+                          className="object-contain drop-shadow-[0_20px_50px_rgba(79,70,229,0.3)]" 
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <p className="text-[10px] font-black uppercase tracking-[0.3em] text-indigo-400">Certified Tally Partner</p>
+                        <p className="text-white/60 text-xs font-medium">Verified Solutions & Expert Support Since 2008</p>
+                      </div>
+                   </div>
+                </div>
+             </div>
+          </div>
+
+        </div>
+      </div>
+
+      <UnifiedContactModal 
         isOpen={modalConfig.isOpen}
         onClose={() => setModalConfig(prev => ({ ...prev, isOpen: false }))}
         type={modalConfig.type}
         prefillService={modalConfig.service}
         prefillDetails={modalConfig.details}
       />
-
-      {/* Background Image Container - Dynamic & Animated */}
-      <div className={`absolute bottom-0 left-1/2 -translate-x-1/2 aspect-[6/5] md:aspect-[16/9] w-full max-w-5xl h-[45dvh] md:h-[55dvh] z-[2] transition-all duration-700 ease-in-out
-        ${isTransitioning ? 'opacity-0 translate-y-12 scale-95 blur-sm' : 'opacity-60 md:opacity-90 translate-y-0 scale-100 blur-0'}`}>
-        <Image
-          src={current.image}
-          alt="Sarvadnya Background"
-          fill
-          className="object-contain"
-          priority
-        />
-        {/* Mobile-only gradient overlay to improve text contrast */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[var(--background-color)] via-[var(--background-color)]/40 to-transparent md:hidden" />
-      </div>
-
-      {/* Content Overlay */}
-      <div className="relative z-10 flex h-full w-full flex-col items-center px-6">
-        {/* Radial Gradient for text visibility */}
-        <div
-          className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-5xl h-[90%] md:h-[80%] pointer-events-none"
-          style={{
-            background: 'radial-gradient(circle at top, var(--background-color) 0%, rgba(252, 250, 255, var(--hero-gradient-opacity, 0.7)) 60%, rgba(252, 250, 255, 0) 100%)'
-          }}
-        />
-
-        <div className="relative z-20 mt-[20px] md:mt-[30px] w-full max-w-4xl flex flex-col items-center text-center">
-
-          {/* Static Global Badge */}
-          <div
-            className="inline-flex items-center gap-2 rounded-full px-3 py-1 border mb-4 md:mb-6 transition-all duration-1000 bg-[var(--background-color)] shadow-sm"
-            style={{ borderColor: `${current.colorFrom}33` }}
-          >
-            <span
-              className="flex h-2 w-2 rounded-full animate-pulse"
-              style={{ backgroundColor: current.colorFrom }}
-            ></span>
-            <span
-              className="text-[9px] md:text-[10px] font-bold uppercase tracking-wider transition-colors duration-1000"
-              style={{ color: current.colorFrom }}
-            >
-              {current.badge}
-            </span>
-          </div>
-
-          {/* Static Heading - Smaller */}
-          <p className="font-sans text-[10px] md:text-[14px] font-bold uppercase tracking-widest text-slate-400 mb-1 md:mb-2">
-            Why Choose Sarvadnya Infotech LLP?
-          </p>
-
-          {/* Dynamic Content Area - Staggered with delay-250ms */}
-          <div className={`flex flex-col items-center w-full transition-all duration-700 delay-[250ms] ease-in-out
-            ${isTransitioning ? 'opacity-0 translate-y-12 blur-sm' : 'opacity-100 translate-y-0 blur-0'}`}>
-
-            <h2 className="font-sans text-[22px] md:text-[42px] lg:text-[48px] font-black leading-[1.1] tracking-tight min-h-[2.2em] md:min-h-[1.5em] mb-1 md:mb-2 overflow-visible">
-              <span className="text-highlight-gradient">
-                {displayText}
-              </span>
-              <span
-                className={`inline-block w-[2px] md:w-[3px] h-[0.8em] md:h-[0.9em] ml-1 align-middle transition-colors duration-1000 ${isTyping ? 'opacity-100' : 'animate-pulse'}`}
-                style={{ backgroundColor: current.colorFrom }}
-              ></span>
-            </h2>
-
-            <p className="max-w-2xl mx-auto text-[11px] md:text-base font-medium leading-relaxed text-slate-700 mb-3 md:mb-4">
-              {current.description}
-            </p>
-
-            {/* Tick-marked Features */}
-            <div className="mt-2 md:mt-4 flex flex-row flex-wrap justify-center gap-x-6 md:gap-x-8 gap-y-3 md:gap-y-4 w-full">
-              {current.features.map((feature, i) => (
-                <div key={feature.text} className="flex items-center gap-2 md:gap-2.5 group animate-in fade-in slide-in-from-top-4 duration-500 fill-mode-both" style={{ animationDelay: `${i * 100}ms` }}>
-                  <div
-                    className="flex-shrink-0 w-3.5 h-3.5 md:w-4 md:h-4 rounded-full flex items-center justify-center shadow-sm transition-colors duration-1000"
-                    style={{ backgroundColor: current.colorFrom }}
-                  >
-                    <svg className="w-2.5 h-2.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="5" d="M5 13l4 4L19 7" />
-                    </svg>
-                  </div>
-                  <span className="text-[10px] md:text-[14px] font-bold text-[#0f0529] whitespace-nowrap tracking-tight">{feature.text}</span>
-                </div>
-              ))}
-            </div>
-
-            <div className="mt-6 md:mt-10 flex justify-center gap-3">
-              <Link
-                href={current.ctaPrimary.href}
-                className="group relative flex h-9 md:h-12 w-32 md:w-44 items-center justify-center overflow-hidden rounded-full text-[9px] md:text-xs font-bold shadow-md transition-all hover:scale-105 active:scale-95 border"
-                style={{ 
-                  backgroundColor: current.colorFrom,
-                  borderColor: current.colorFrom
-                }}
-              >
-                <span 
-                  className="relative z-10 transition-colors duration-300 group-hover:!text-[var(--hover-color)]"
-                  style={{ color: 'white', '--hover-color': current.colorFrom } as React.CSSProperties}
-                >
-                  {current.ctaPrimary.text}
-                </span>
-                <span
-                  className="absolute inset-0 z-0 translate-y-full transition-transform duration-300 group-hover:translate-y-0 bg-white"
-                />
-              </Link>
-              <Link
-                href="/contact"
-                className="group relative flex h-9 md:h-11 w-32 md:w-44 items-center justify-center overflow-hidden rounded-full border transition-all active:scale-95 shadow-sm"
-                style={{ 
-                  backgroundColor: current.colorFrom,
-                  borderColor: current.colorFrom
-                }}
-              >
-                <span 
-                  className="relative z-10 text-[9px] md:text-xs font-bold transition-colors duration-300 text-white group-hover:!text-[var(--hover-color)]"
-                  style={{ '--hover-color': current.colorFrom } as React.CSSProperties}
-                >
-                  Request Call
-                </span>
-                <span
-                  className="absolute inset-0 z-0 translate-y-full transition-transform duration-300 group-hover:translate-y-0 bg-white"
-                />
-              </Link>
-            </div>
-          </div>
-        </div>
-      </div>
     </main>
   );
 }

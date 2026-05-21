@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { fetchWithCache } from "@/lib/client-api";
 
 const getIcon = (iconName: string) => {
   switch (iconName) {
@@ -57,21 +58,21 @@ interface QuickAccessCategory {
 export default function QuickAccessHub() {
   const [settings, setSettings] = useState<any>(null);
   const [dynamicModules, setDynamicModules] = useState<any[]>([]);
+  const [dbCategories, setDbCategories] = useState<QuickAccessCategory[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [settingsRes, modulesRes] = await Promise.all([
-          fetch('/api/settings'),
-          fetch('/api/modules')
+        const [settingsData, modulesData, catData] = await Promise.all([
+          fetchWithCache('/api/settings'),
+          fetchWithCache('/api/modules'),
+          fetchWithCache('/api/content?section=home_quick_access')
         ]);
         
-        const settingsData = await settingsRes.json();
-        if (!settingsData.error) setSettings(settingsData);
-
-        const modulesData = await modulesRes.json();
+        if (settingsData && !settingsData.error) setSettings(settingsData);
         if (Array.isArray(modulesData)) setDynamicModules(modulesData);
+        if (Array.isArray(catData) && catData.length > 0) setDbCategories(catData);
       } catch (err) {
         console.error('Failed to fetch data for QuickAccessHub:', err);
       } finally {
@@ -83,7 +84,7 @@ export default function QuickAccessHub() {
 
   const supportPhone = settings?.support_phone || "+919876543210";
 
-  const categories: QuickAccessCategory[] = [
+  const defaultCategories: QuickAccessCategory[] = [
     {
       title: "Core Services",
       description: "Fundamental Tally solutions to streamline your accounting and business processes.",
@@ -135,6 +136,8 @@ export default function QuickAccessHub() {
       ]
     }
   ];
+
+  const categories = dbCategories.length > 0 ? dbCategories : defaultCategories;
 
   if (loading) return <div className="w-full h-96 bg-slate-50 animate-pulse" />;
 

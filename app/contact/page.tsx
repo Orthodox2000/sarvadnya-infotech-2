@@ -28,7 +28,7 @@ export default function ContactPage() {
     try {
       const response = await fetch('/api/settings');
       const data = await response.json();
-      if (!data.error) {
+      if (data && !data.error) {
         setSettings(data);
       }
     } catch (err) {

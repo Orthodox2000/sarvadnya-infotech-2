@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server';
-import { getPartners, addPartner, deletePartner } from '@/lib/mongodb-utils';
+import { getPartners, addPartner, updatePartner, deletePartner } from '@/lib/mongodb-utils';
 import { staticPartners } from '@/lib/partners';
 import clientPromise from '@/lib/mongodb';
+import { revalidateTag } from 'next/cache';
 
 export async function GET(request: Request) {
   try {
@@ -21,7 +22,10 @@ export async function GET(request: Request) {
         createdAt: new Date() 
       }));
       await collection.insertMany(partnersToInsert as any);
-      partners = await getPartners(type);
+      
+      // Invalidate cache and fetch fresh
+      revalidateTag('partners', 'default');
+      partners = await collection.find(type ? { type } : {}).sort({ createdAt: 1 }).toArray() as any;
     }
     
     return NextResponse.json(partners);
@@ -45,6 +49,21 @@ export async function POST(request: Request) {
   } catch (error) {
     console.error('Error adding partner:', error);
     return NextResponse.json({ error: 'Failed to add partner' }, { status: 500 });
+  }
+}
+
+export async function PATCH(request: Request) {
+  try {
+    const data = await request.json();
+    const { id, ...updateData } = data;
+    if (!id) {
+      return NextResponse.json({ error: 'ID required' }, { status: 400 });
+    }
+    await updatePartner(id, updateData);
+    return NextResponse.json({ message: 'Asset updated successfully' });
+  } catch (error) {
+    console.error('Error updating asset:', error);
+    return NextResponse.json({ error: 'Failed to update asset' }, { status: 500 });
   }
 }
 

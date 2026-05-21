@@ -232,6 +232,17 @@ export async function addPartner(data: any) {
   return result;
 }
 
+export async function updatePartner(id: string, data: any) {
+  const col = await getCollection('partners');
+  const { _id, ...updateData } = data;
+  const result = await col.updateOne(
+    { _id: new ObjectId(id) },
+    { $set: { ...updateData, updatedAt: new Date() } }
+  );
+  revalidateTag('partners', 'default');
+  return result;
+}
+
 export async function deletePartner(id: string) {
   const col = await getCollection('partners');
   const result = await col.deleteOne({ _id: new ObjectId(id) });
@@ -239,23 +250,3 @@ export async function deletePartner(id: string) {
   return result;
 }
 
-// Media helpers (MongoDB storage)
-export async function saveMedia(name: string, data: string, contentType: string) {
-  const col = await getCollection('media');
-  return await col.insertOne({
-    name,
-    data, // Base64 string
-    contentType,
-    createdAt: new Date()
-  });
-}
-
-export async function getMedia(id: string) {
-  const col = await getCollection('media');
-  return await col.findOne({ _id: new ObjectId(id) });
-}
-
-export async function getAllMedia() {
-  const col = await getCollection('media');
-  return await col.find({}).sort({ createdAt: -1 }).toArray();
-}

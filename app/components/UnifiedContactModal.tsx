@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 
-export type FormType = 'quote' | 'enquire' | 'support' | 'callback' | 'general';
+export type FormType = 'quote' | 'enquire' | 'support' | 'callback' | 'demo' | 'general';
 
 interface UnifiedContactModalProps {
   isOpen: boolean;
@@ -68,6 +68,7 @@ export default function UnifiedContactModal({
       case 'enquire': return 'Product Enquiry';
       case 'support': return 'Priority Support';
       case 'callback': return 'Request Callback';
+      case 'demo': return 'Book a Free Demo';
       default: return 'Contact Us';
     }
   };
@@ -78,6 +79,7 @@ export default function UnifiedContactModal({
       case 'enquire': return 'Detailed Info';
       case 'support': return '15-Min Response';
       case 'callback': return 'Quick Connect';
+      case 'demo': return 'Live Showcase';
       default: return 'Get in Touch';
     }
   };

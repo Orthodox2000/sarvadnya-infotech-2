@@ -1,65 +1,67 @@
 import { NextResponse } from 'next/server';
+import { getSettings } from '@/lib/mongodb-utils';
 
-const GROQ_API_KEY = process.env.GROQ_API_KEY;
 const MODEL = "llama-3.3-70b-versatile";
 
 export async function POST(request: Request) {
   try {
     const { messages } = await request.json();
+    const settings = await getSettings();
+    
+    // Support single key or comma-separated list for rotation
+    const rawKeys = settings.GROQ_API_KEYS || process.env.GROQ_API_KEY || '';
+    const apiKeys = rawKeys.split(',').map((k: string) => k.trim()).filter(Boolean);
 
-    if (!GROQ_API_KEY) {
-      return NextResponse.json({ error: 'Groq API Key not configured' }, { status: 500 });
+    if (apiKeys.length === 0) {
+      return NextResponse.json({ error: 'Groq API Keys not configured' }, { status: 500 });
     }
+
+    // Simple random rotation
+    const apiKey = apiKeys[Math.floor(Math.random() * apiKeys.length)];
 
     const systemPrompt = {
       role: "system",
-      content: `You are the AI Assistant for Sarvadnya Infotech LLP, a premier Certified Tally Partner based in Pune, India. 
-      Your goal is to provide expert guidance on TallyPrime and the various business solutions offered by the company.
-
-      Key Company Info:
-      - Founded: 2008.
-      - Clients: 1,500+ satisfied businesses.
-      - Expertise: TallyPrime Sales, Implementation, Training, and Support.
-      - Specialized Services: 
-        1. TDL Customization (tailored business logic).
-        2. Tally on Cloud (Official AWS Hosting & Windows VM).
-        3. WhatsApp Integration (Send invoices/reports directly from Tally).
-        4. NoSky Backup (Ransomware-proof cloud backup for Tally).
-        5. AMC (Annual Maintenance Contract) for priority support.
-
-      Product Knowledge:
-      - TallyPrime Silver: ₹18,000 + GST (Single User).
-      - TallyPrime Gold: ₹54,000 + GST (Multi-User).
-      - TallyPrime Server: Enterprise-grade data management.
-
-      Tone & Style:
-      - Professional, helpful, and concise.
-      - Focus on business value and efficiency.
-      - If you don't know an answer, suggest "Requesting a Callback" or contacting human support at info@sarvadnyainfotech.com.
-      - Use "we" and "our" when referring to the company.
-
-      Current Context: You are chatting with a visitor on the Sarvadnya Infotech website.`
+      content: `You are the Expert Tally Assistant for Sarvadnya Infotech LLP (Est. 2008). 
+      
+      CORE RULES:
+      1. NEVER mention specific prices. If asked, tell the user to "**Contact our sales team for the latest pricing and best deals.**"
+      2. ALWAYS promote our products or services in every single reply.
+      3. PROACTIVELY ask questions to understand the user's business requirements.
+      4. SUGGEST specific products (e.g., TallyPrime Silver/Gold, Tally on WhatsApp, Cloud Solutions, or specialized Modules) based on their needs.
+      5. Short, point-based responses ONLY (Max 3-4 bullet points).
+      
+      OUR PRODUCTS:
+      - **TallyPrime Editions**: Silver (Single User), Gold (Multi-User), Server.
+      - **Cloud Solutions**: Tally on AWS/Windows Cloud, NoSky Backup.
+      - **Specialized Modules**: C&F Agencies, Housing Societies, Transport, Garment, Sales & Commission.
+      - **Add-on Services**: Tally to WhatsApp, Tally on Mobile (Biz Analyst), TDL Customization, AMC, Corporate Training.
+      
+      FORMATTING:
+      - Use **bold** for product names and calls to action.
+      - Use bullet points for readability.
+      
+      CONTACT: info@sarvadnyainfotech.com | Suggest "**Request Call**" for personalized consulting.`
     };
 
     const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${GROQ_API_KEY}`,
+        'Authorization': `Bearer ${apiKey}`,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
         model: MODEL,
         messages: [systemPrompt, ...messages],
-        temperature: 0.7,
-        max_tokens: 1024,
+        temperature: 0.5, // Reduced for consistency
+        max_tokens: 500,  // Reduced for brevity
       })
     });
 
     const data = await response.json();
     
-    if (data.error) {
+    if (data && data.error) {
       console.error('Groq API Error:', data.error);
-      return NextResponse.json({ error: 'Failed to get AI response' }, { status: 500 });
+      return NextResponse.json({ error: 'AI service temporarily unavailable' }, { status: 503 });
     }
 
     return NextResponse.json({ 

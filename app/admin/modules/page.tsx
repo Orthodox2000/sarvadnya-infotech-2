@@ -47,7 +47,7 @@ export default function AdminModules() {
       });
 
       const data = await response.json();
-      if (data.error) throw new Error(data.error);
+      if (data && data.error) throw new Error(data.error);
 
       setMessage({ text: 'Module saved successfully!', type: 'success' });
       setEditingModule(null);
@@ -65,7 +65,7 @@ export default function AdminModules() {
     try {
       const response = await fetch(`/api/modules?id=${id}`, { method: 'DELETE' });
       const data = await response.json();
-      if (data.error) throw new Error(data.error);
+      if (data && data.error) throw new Error(data.error);
       setMessage({ text: 'Module deleted successfully!', type: 'success' });
       fetchModules();
     } catch (err: any) {
@@ -92,8 +92,11 @@ export default function AdminModules() {
     const file = e.target.files?.[0];
     if (!file) return;
 
+    const currentUrl = editingModule?.image || '';
+
     const formData = new FormData();
     formData.append('file', file);
+    if (currentUrl) formData.append('oldUrl', currentUrl);
 
     try {
       const response = await fetch('/api/admin/upload', {

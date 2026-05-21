@@ -19,7 +19,8 @@ export default function AdminSettings() {
     'NEXT_PUBLIC_INSTAGRAM_URL', 'NEXT_PUBLIC_INSTAGRAM_HANDLE',
     'NEXT_PUBLIC_LINKEDIN_URL', 'NEXT_PUBLIC_LINKEDIN_HANDLE',
     'NEXT_PUBLIC_MAP_IFRAME_URL',
-    'NEXT_PUBLIC_COMPANY_LOGO', 'NEXT_PUBLIC_ADMIN_LOGO'
+    'NEXT_PUBLIC_COMPANY_LOGO', 'NEXT_PUBLIC_ADMIN_LOGO',
+    'GROQ_API_KEYS'
   ];
 
   useEffect(() => {
@@ -30,21 +31,24 @@ export default function AdminSettings() {
     const file = e.target.files?.[0];
     if (!file) return;
 
+    const currentUrl = settings.find(s => s.key === key)?.value || '';
+
     setSaving(true);
     try {
       const formData = new FormData();
       formData.append('file', file);
+      if (currentUrl) formData.append('oldUrl', currentUrl);
 
-      const response = await fetch('/api/admin/media', {
+      const response = await fetch('/api/admin/upload', {
         method: 'POST',
         body: formData
       });
 
       const data = await response.json();
-      if (data.error) throw new Error(data.error);
+      if (data && data.error) throw new Error(data.error);
 
       handleChange(key, data.url);
-      setMessage({ text: 'Image uploaded and stored in MongoDB!', type: 'success' });
+      setMessage({ text: 'Image uploaded to local storage!', type: 'success' });
     } catch (err) {
       console.error(err);
       setMessage({ text: 'Upload failed.', type: 'error' });
@@ -58,7 +62,7 @@ export default function AdminSettings() {
       const response = await fetch('/api/admin/settings');
       const data = await response.json();
 
-      if (data.error) throw new Error(data.error);
+      if (data && data.error) throw new Error(data.error);
       
       // Ensure all default keys exist in the state
       const settingsData = data as Setting[];
@@ -97,7 +101,7 @@ export default function AdminSettings() {
       });
 
       const data = await response.json();
-      if (data.error) throw new Error(data.error);
+      if (data && data.error) throw new Error(data.error);
 
       setMessage({ text: 'Settings saved successfully!', type: 'success' });
     } catch (err) {
@@ -178,7 +182,7 @@ export default function AdminSettings() {
 
         {/* Branding Section */}
         <div className="pt-8 border-t border-slate-100 space-y-6">
-          <h2 className="text-sm font-black uppercase tracking-widest text-[#7338a0]">Branding (MongoDB Storage)</h2>
+          <h2 className="text-sm font-black uppercase tracking-widest text-[#7338a0]">Branding (Local Storage)</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="space-y-4">
               <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Company Logo</label>
@@ -213,6 +217,21 @@ export default function AdminSettings() {
                 </label>
               </div>
             </div>
+          </div>
+        </div>
+
+        {/* AI Chat Configuration */}
+        <div className="pt-8 border-t border-slate-100 space-y-6">
+          <h2 className="text-sm font-black uppercase tracking-widest text-[#7338a0]">AI Assistant (Groq Cloud)</h2>
+          <div className="space-y-2">
+            <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Rotation API Keys (Comma Separated)</label>
+            <textarea 
+              className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#7338a0] h-24 font-mono text-xs"
+              placeholder="gsk_key1, gsk_key2, gsk_key3..."
+              value={settings.find(s => s.key === 'GROQ_API_KEYS')?.value || ''}
+              onChange={e => handleChange('GROQ_API_KEYS', e.target.value)}
+            />
+            <p className="text-[10px] text-slate-400 font-medium">System will randomly pick a key for each chat request to distribute usage and increase security.</p>
           </div>
         </div>
 

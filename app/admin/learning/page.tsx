@@ -37,9 +37,12 @@ export default function AdminLearning() {
     const file = e.target.files?.[0];
     if (!file) return;
 
+    const currentUrl = editingItem?.thumbnail || '';
+
     setUploading(true);
     const formData = new FormData();
     formData.append('file', file);
+    if (currentUrl) formData.append('oldUrl', currentUrl);
 
     try {
       const response = await fetch('/api/admin/upload', {
@@ -47,9 +50,9 @@ export default function AdminLearning() {
         body: formData,
       });
       const data = await response.json();
-      if (data.error) throw new Error(data.error);
+      if (data && data.error) throw new Error(data.error);
       setEditingItem({ ...editingItem, thumbnail: data.url, thumbnailOption: 'custom' });
-      setMessage({ text: 'Thumbnail uploaded successfully!', type: 'success' });
+      setMessage({ text: 'Thumbnail uploaded to local storage!', type: 'success' });
     } catch (err) {
       console.error(err);
       setMessage({ text: 'Failed to upload thumbnail.', type: 'error' });
@@ -88,7 +91,7 @@ export default function AdminLearning() {
       });
 
       const data = await response.json();
-      if (data.error) throw new Error(data.error);
+      if (data && data.error) throw new Error(data.error);
 
       setMessage({ text: 'Item saved successfully!', type: 'success' });
       showToast('Content saved successfully!', 'success');
@@ -107,7 +110,7 @@ export default function AdminLearning() {
     try {
       const response = await fetch(`/api/tutorials?id=${id}`, { method: 'DELETE' });
       const data = await response.json();
-      if (data.error) throw new Error(data.error);
+      if (data && data.error) throw new Error(data.error);
       setMessage({ text: 'Item deleted successfully!', type: 'success' });
       fetchItems();
     } catch (err: any) {

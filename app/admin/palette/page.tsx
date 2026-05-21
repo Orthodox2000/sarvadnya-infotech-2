@@ -26,12 +26,12 @@ export default function PalettePage() {
       });
       
       const data = await response.json();
-      if (data.success) {
+      if (data && data.success) {
         showToast(`Palette "${selectedPalette.name}" with "${activeBg.name}" background has been applied!`, 'success');
         // Optionally reload to apply changes site-wide immediately
         // setTimeout(() => window.location.reload(), 1500);
       } else {
-        throw new Error(data.error || 'Failed to apply theme');
+        throw new Error((data && data.error) || 'Failed to apply theme');
       }
     } catch (err: any) {
       showToast(err.message, 'error');

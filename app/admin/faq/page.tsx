@@ -40,7 +40,7 @@ export default function AdminFAQ() {
       });
 
       const data = await response.json();
-      if (data.error) throw new Error(data.error);
+      if (data && data.error) throw new Error(data.error);
 
       setMessage({ text: 'FAQs updated successfully!', type: 'success' });
     } catch (err) {

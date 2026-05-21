@@ -27,7 +27,7 @@ export default function AdminReviews() {
     try {
       const response = await fetch('/api/admin/reviews');
       const data = await response.json();
-      if (data.error) throw new Error(data.error);
+      if (data && data.error) throw new Error(data.error);
       setReviews(data || []);
     } catch (err) {
       console.error(err);
@@ -52,7 +52,7 @@ export default function AdminReviews() {
         body: JSON.stringify(newReview)
       });
       const data = await response.json();
-      if (data.error) throw new Error(data.error);
+      if (data && data.error) throw new Error(data.error);
 
       setMessage({ text: 'Review added!', type: 'success' });
       setNewReview({ name: '', rating: 5, text: '', date: 'Just now' });
@@ -69,7 +69,7 @@ export default function AdminReviews() {
     try {
       const response = await fetch(`/api/admin/reviews?id=${id}`, { method: 'DELETE' });
       const data = await response.json();
-      if (data.error) throw new Error(data.error);
+      if (data && data.error) throw new Error(data.error);
       setMessage({ text: 'Review deleted!', type: 'success' });
       fetchReviews();
     } catch (err) {

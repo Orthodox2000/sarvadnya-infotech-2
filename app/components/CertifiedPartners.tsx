@@ -1,96 +1,33 @@
 'use client';
 
 import Image from "next/image";
-import { useEffect, useRef, useState, memo } from "react";
-
-interface Partner {
-    _id: string;
-    name: string;
-    imageUrl: string;
-}
+import { memo } from "react";
+import { staticPartners } from "@/lib/partners";
 
 const CertifiedPartners = () => {
-    const [partners, setPartners] = useState<Partner[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [isVisible, setIsVisible] = useState(false);
-    const sectionRef = useRef(null);
-
-    useEffect(() => {
-        const fetchPartners = async () => {
-            try {
-                const response = await fetch('/api/admin/partners');
-                const data = await response.json();
-                if (data && !data.error) {
-                    setPartners(data);
-                }
-            } catch (err) {
-                console.error('Error fetching partners:', err);
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchPartners();
-    }, []);
-
-    useEffect(() => {
-        const currentRef = sectionRef.current;
-        if (!window.IntersectionObserver) {
-            setIsVisible(true);
-            return;
-        }
-
-        const observer = new IntersectionObserver(
-            ([entry]) => {
-                if (entry.isIntersecting) {
-                    setIsVisible(true);
-                    if (currentRef) observer.unobserve(currentRef);
-                }
-            },
-            { threshold: 0.05, rootMargin: "0px 0px -50px 0px" }
-        );
-
-        if (currentRef) {
-            observer.observe(currentRef);
-        }
-
-        return () => {
-            if (currentRef) {
-                observer.unobserve(currentRef);
-            }
-        };
-    }, []);
-
     return (
-        <section
-            ref={sectionRef}
-            className="flex flex-col justify-center items-center gap-10 py-16 px-6 overflow-hidden transition-colors duration-300 bg-[#290f4d]"
-        >
-            <div className={`text-center transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-                <h2 className="text-sm font-semibold uppercase tracking-[0.3em] text-slate-400 mb-3">
-                    Our Network
-                </h2>
-                <h1 className="font-sans text-[1.75rem] text-white font-extrabold leading-tight text-slate-900 sm:text-[2.5rem] md:text-[3rem]">
-                    Certified Partners
-                </h1>
+        <section className="w-full py-16 md:py-24 bg-slate-50/50 border-y border-slate-100 overflow-hidden">
+            <div className="max-w-7xl mx-auto px-6 mb-12 text-center">
+                <p className="text-[10px] font-black uppercase tracking-[0.3em] text-[#7338a0] mb-3">Our Global Network</p>
+                <h2 className="text-3xl md:text-4xl font-black text-[#0f0529]">Certified Industry Partners</h2>
             </div>
 
-            <div className="w-full max-w-5xl flex flex-row flex-wrap md:flex-nowrap items-center justify-center gap-4 sm:gap-12 md:gap-16 lg:gap-24 px-2">
-                {partners.map((item, index) => (
-                    <div
-                        key={item._id || index}
-                        className={`relative flex-1 min-w-[100px] sm:min-w-0 h-20 sm:h-28 md:h-40 bg-slate-50 rounded-lg sm:rounded-2xl border border-slate-100 shadow-sm transition-all duration-1000 ${isVisible ? 'animate-rise-up' : 'opacity-0'}`}
-                        style={{
-                            animationDelay: isVisible ? `${index * 250}ms` : '0ms',
-                        }}
+            <div className="flex flex-wrap justify-center items-center gap-6 sm:gap-8 md:gap-10 lg:gap-12 px-6 max-w-7xl mx-auto">
+                {staticPartners.map((partner, index) => (
+                    <div 
+                        key={partner.name} 
+                        className="group relative w-40 h-24 sm:w-52 sm:h-28 md:w-64 md:h-36 bg-white rounded-2xl border border-slate-100 shadow-sm flex items-center justify-center p-4 sm:p-6 transition-all duration-500 hover:shadow-xl hover:border-[#7338a0]/20 hover:-translate-y-1"
                     >
-                        <Image
-                            src={item.imageUrl}
-                            alt={item.name}
-                            fill
-                            className="object-contain p-1.5 sm:p-4 transition-transform duration-300 hover:scale-110"
-                            sizes="(max-width: 640px) 25vw, (max-width: 768px) 256px, 320px"
-                            priority={index < 2}
-                        />
+                        <div className="relative w-full h-full transition-all duration-500">
+                            <Image
+                                src={partner.imageUrl}
+                                alt={partner.name}
+                                fill
+                                className="object-contain"
+                                sizes="(max-width: 768px) 160px, (max-width: 1024px) 256px, 300px"
+                                priority={index < 4}
+                            />
+                        </div>
                     </div>
                 ))}
             </div>

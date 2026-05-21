@@ -27,8 +27,8 @@ export default function AdminResponses() {
       const response = await fetch('/api/admin/applications');
       const data = await response.json();
       
-      if (data.error) throw new Error(data.error);
-      setApplications(data || []);
+      if (data && data.error) throw new Error(data.error);
+      setApplications(Array.isArray(data) ? data : []);
     } catch (err) {
       console.error('Error fetching applications:', err);
     } finally {

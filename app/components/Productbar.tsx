@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { productItems, type ProductSubItem } from "@/lib/product-nav";
+import { fetchWithCache, prefetchData } from "@/lib/client-api";
 
 // Simple Minimalist Icons for Apple-style bar
 const TallyIcon = memo(() => <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>);
@@ -31,12 +32,11 @@ const Productbar = () => {
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
   const [dynamicModules, setDynamicModules] = useState<ProductSubItem[]>([]);
 
-  // Fetch dynamic modules
+  // Fetch dynamic modules with client-side caching
   useEffect(() => {
     const fetchModules = async () => {
       try {
-        const response = await fetch('/api/modules');
-        const data = await response.json();
+        const data = await fetchWithCache('/api/modules');
         if (Array.isArray(data)) {
           setDynamicModules(data.map(m => ({
             id: m._id,
@@ -63,6 +63,32 @@ const Productbar = () => {
     return item;
   });
 
+  // Background warmer for sub-items on hover
+  const handleItemHover = (label: string) => {
+    // Only set active menu on hover for desktop
+    if (window.innerWidth >= 640) {
+      setActiveMenu(label);
+      if (label === 'Learning') prefetchData('/api/tutorials');
+      if (label === 'Company') {
+          prefetchData('/api/content?section=about');
+          prefetchData('/api/content?section=team');
+      }
+    }
+  };
+
+  const handleMenuToggle = (e: React.MouseEvent, label: string) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setActiveMenu(prev => prev === label ? null : label);
+    
+    // Prefetch for specific menus
+    if (label === 'Learning') prefetchData('/api/tutorials');
+    if (label === 'Company') {
+        prefetchData('/api/content?section=about');
+        prefetchData('/api/content?section=team');
+    }
+  };
+
   // Close menu on click
   const handleLinkClick = useCallback(() => {
     setActiveMenu(null);
@@ -86,7 +112,11 @@ const Productbar = () => {
     >
       <div className="mx-auto w-full max-w-7xl px-2 sm:px-4 flex justify-between items-stretch h-full">
         {/* Company Logo & Name */}
-        <Link href="/capabilities" className="flex items-center gap-1 pr-2 sm:pr-4 transition-opacity hover:opacity-80 shrink-0 border-r border-slate-200 mr-1" onClick={handleLinkClick}>
+        <Link 
+            href="/" 
+            className="flex items-center gap-1 pr-2 sm:pr-4 transition-opacity hover:opacity-80 shrink-0 border-r border-slate-200 mr-1" 
+            onClick={handleLinkClick}
+        >
           <Image 
             src="/logo.png" 
             alt="Sarvadnya" 
@@ -100,61 +130,61 @@ const Productbar = () => {
         {items.map((item, index) => (
           <div 
             key={item.label} 
-            className="relative flex-1 border-l first:border-l-0 border-slate-100 flex items-center justify-center overflow-visible group"
-            onMouseEnter={() => setActiveMenu(item.label)}
-            onMouseLeave={() => setActiveMenu(null)}
+            className="relative flex items-center h-full group"
+            onMouseEnter={() => handleItemHover(item.label)}
+            onMouseLeave={() => window.innerWidth >= 640 && setActiveMenu(null)}
           >
-            <Link
-              href={item.href}
-              className={`flex flex-row items-center gap-1 sm:gap-2 transition-all duration-300 hover:opacity-100 opacity-70 h-full w-full justify-center px-1 sm:px-2`}
-              onClick={(e) => {
-                if ((item.subItems?.length ?? 0) > 0 && activeMenu !== item.label) {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  setActiveMenu(item.label);
-                } else {
-                  handleLinkClick();
-                }
-              }}
+            <button
+              onClick={(e) => handleMenuToggle(e, item.label)}
+              className={`flex items-center gap-1.5 px-2 sm:px-3 text-[10px] sm:text-[11px] font-bold transition-all h-full
+                ${activeMenu === item.label ? 'text-[#7338a0] bg-slate-50' : 'text-slate-500 hover:text-slate-900 hover:bg-slate-50'}`}
             >
-              <div className="text-slate-600 group-hover:text-[var(--primary-color)] group-hover:scale-110 transition-all duration-300 shrink-0 hidden md:block">
-                {iconMap[item.label] || <TallyIcon />}
-              </div>
-              <span className="text-[8px] min-[360px]:text-[9px] sm:text-[11px] font-bold tracking-tight text-slate-700 group-hover:text-[var(--primary-color)] transition-colors whitespace-nowrap uppercase">
-                {item.label}
+              <span className="opacity-50 group-hover:opacity-100 transition-opacity">
+                {iconMap[item.label]}
               </span>
-            </Link>
-
-
-            {/* Megamenu-style dropdown - Optimized for Mobile visibility */}
-            {(item.subItems?.length ?? 0) > 0 && (
-              <div 
-                className={`absolute top-full transition-all duration-300 ease-out z-[100] gpu-accelerated
-                ${item.subItems.some(s => (s.subItems?.length ?? 0) > 0) ? 'w-[280px] md:w-[320px]' : 'w-48 md:w-52'}
-                ${activeMenu === item.label ? 'pointer-events-auto visible translate-y-0 opacity-100' : 'pointer-events-none invisible translate-y-2 opacity-0'}
-                ${index === 0 ? 'left-0' : index === (items?.length || 0) - 1 ? 'right-0' : 'left-1/2 -translate-x-1/2'}`}
-                onClick={e => e.stopPropagation()}
+              <span className="tracking-tight">{item.label}</span>
+              <svg 
+                className={`w-2.5 h-2.5 transition-transform duration-300 opacity-30 ${activeMenu === item.label ? 'rotate-180 opacity-100' : ''}`} 
+                viewBox="0 0 20 20" 
+                fill="currentColor"
               >
-                <div className="mt-1 rounded-xl border border-slate-200 bg-white p-3 shadow-2xl ring-1 ring-black/5">
-                  <div className="flex flex-col gap-2">
+                <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+              </svg>
+            </button>
+
+            {/* Megamenu Content */}
+            {activeMenu === item.label && item.subItems && (
+              <div 
+                className={`absolute top-[31px] w-[90vw] sm:w-screen max-w-[280px] sm:max-w-[400px] animate-in fade-in slide-in-from-top-1 duration-200 pointer-events-auto
+                  ${index === 0 ? '-left-2 sm:left-0' : index === (items?.length || 0) - 1 ? '-right-2 sm:right-0' : 'left-1/2 -translate-x-1/2'}
+                `}
+                onClick={(e) => e.stopPropagation()}
+              >
+                <div className="bg-white/95 backdrop-blur-xl border border-slate-100 rounded-b-2xl shadow-2xl overflow-hidden">
+                  <div className="p-2 sm:p-4 grid grid-cols-1 sm:grid-cols-2 gap-1 sm:gap-2 max-h-[70vh] overflow-y-auto no-scrollbar">
                     {(item.subItems || []).map((subItem: ProductSubItem) => (
                       <div key={subItem.id} className="flex flex-col gap-1">
                         <Link
                           href={subItem.href}
                           className="flex flex-col rounded-lg px-3 py-2 transition-all hover:bg-slate-50 group/item"
                           onClick={handleLinkClick}
+                          onMouseEnter={() => {
+                            if (subItem.href.includes('section=')) prefetchData(`/api/content?section=${subItem.href.split('section=')[1]}`);
+                          }}
                         >
-                          <span className="block text-[11px] md:text-[12px] font-bold text-slate-900 group-hover/item:text-[var(--primary-color)] transition-colors">
+                          <span className="text-[11px] font-bold text-slate-900 group-hover/item:text-[#7338a0] transition-colors flex items-center gap-1.5">
                             {subItem.label}
+                            <svg className="w-2.5 h-2.5 opacity-0 -translate-x-1 group-hover/item:opacity-100 group-hover/item:translate-x-0 transition-all" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 5l7 7-7 7" />
+                            </svg>
                           </span>
                           {subItem.description && (
-                            <span className="block text-[9px] text-slate-500 leading-tight mt-0.5 group-hover/item:text-slate-700 transition-colors">
+                            <span className="text-[9px] text-slate-500 leading-tight mt-0.5 group-hover/item:text-slate-700 transition-colors">
                               {subItem.description}
                             </span>
                           )}
                         </Link>
-
-                        {/* Nested Items - Vertically Stacked */}
+                        
                         {(subItem.subItems?.length ?? 0) > 0 && (
                           <div className="flex flex-col gap-1 ml-3 pl-3 border-l border-slate-100">
                             {(subItem.subItems || []).map((nestedItem: ProductSubItem) => (
