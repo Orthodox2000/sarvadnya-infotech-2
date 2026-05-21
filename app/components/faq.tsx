@@ -9,9 +9,23 @@ const FAQ = () => {
     const [isVisible, setIsVisible] = useState(true);
     const [searchQuery, setSearchQuery] = useState("");
     const [isExpanded, setIsExpanded] = useState(false);
+    const [supportPhone, setSupportPhone] = useState("+919876543210");
     const sectionRef = useRef<HTMLDivElement>(null);
 
-    const supportPhone = process.env.NEXT_PUBLIC_SUPPORT_PHONE || "+919876543210";
+    useEffect(() => {
+        const fetchSettings = async () => {
+            try {
+                const response = await fetch('/api/settings');
+                const data = await response.json();
+                if (data.support_phone) {
+                    setSupportPhone(data.support_phone);
+                }
+            } catch (err) {
+                console.error('Failed to fetch FAQ settings:', err);
+            }
+        };
+        fetchSettings();
+    }, []);
 
     useEffect(() => {
         const fetchFaq = async () => {

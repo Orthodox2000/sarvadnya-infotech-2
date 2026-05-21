@@ -78,7 +78,7 @@ export default function ModulesPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
           {modules.map((module) => (
             <ModuleCard
-              key={module.id}
+              key={module._id || module.id}
               module={module}
               onViewDetails={handleViewDetails}
               onEnquire={handleEnquire}

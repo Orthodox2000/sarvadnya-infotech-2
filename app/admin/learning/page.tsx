@@ -8,6 +8,7 @@ export default function AdminLearning() {
   const [loading, setLoading] = useState(true);
   const [editingItem, setEditingItem] = useState<any | null>(null);
   const [saving, setSaving] = useState(false);
+  const [uploading, setUploading] = useState(false);
   const [message, setMessage] = useState({ text: '', type: '' });
   const [searchQuery, setSearchQuery] = useState('');
   const [filterFolder, setFilterFolder] = useState('All');
@@ -29,6 +30,31 @@ export default function AdminLearning() {
       setMessage({ text: 'Failed to fetch items.', type: 'error' });
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploading(true);
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+      const response = await fetch('/api/admin/upload', {
+        method: 'POST',
+        body: formData,
+      });
+      const data = await response.json();
+      if (data.error) throw new Error(data.error);
+      setEditingItem({ ...editingItem, thumbnail: data.url, thumbnailOption: 'custom' });
+      setMessage({ text: 'Thumbnail uploaded successfully!', type: 'success' });
+    } catch (err) {
+      console.error(err);
+      setMessage({ text: 'Failed to upload thumbnail.', type: 'error' });
+    } finally {
+      setUploading(false);
     }
   };
 
@@ -97,6 +123,7 @@ export default function AdminLearning() {
       url: '',
       type: 'video',
       folder: 'General',
+      thumbnailOption: 'logo',
       tags: [],
       date: new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })
     });
@@ -227,23 +254,77 @@ export default function AdminLearning() {
                     className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#7338a0]"
                     placeholder="e.g. tallyprime, gst, training"
                     value={editingItem.tags?.join(', ')}
-                    onChange={e => setEditingItem({...editingItem, tags: e.target.value.split(',').map(t => t.trim()).filter(t => t !== '')})}
+                    onChange={e => setEditingItem({...editingItem, tags: e.target.value.split(',').map((t: string) => t.trim()).filter((t: string) => t !== '')})}
                   />
                 </div>
-                {editingItem.type === 'video' && editingItem.url && (
-                  <div>
-                    <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">Auto-Thumbnail Preview</label>
-                    <div className="relative aspect-video w-48 rounded-xl overflow-hidden bg-slate-100">
-                      <img src={getYoutubeThumbnail(editingItem.url)} alt="Thumbnail" className="w-full h-full object-cover" />
+
+                {editingItem.type === 'link' && (
+                  <div className="space-y-4 pt-2">
+                    <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400">Thumbnail Option</label>
+                    <div className="flex gap-4">
+                      <button 
+                        type="button"
+                        onClick={() => setEditingItem({...editingItem, thumbnailOption: 'logo'})}
+                        className={`flex-1 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest border-2 transition-all ${editingItem.thumbnailOption === 'logo' ? 'border-[#7338a0] bg-purple-50 text-[#7338a0]' : 'border-slate-100 text-slate-400'}`}
+                      >
+                        Use Logo
+                      </button>
+                      <button 
+                        type="button"
+                        onClick={() => setEditingItem({...editingItem, thumbnailOption: 'custom'})}
+                        className={`flex-1 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest border-2 transition-all ${editingItem.thumbnailOption === 'custom' ? 'border-[#7338a0] bg-purple-50 text-[#7338a0]' : 'border-slate-100 text-slate-400'}`}
+                      >
+                        Upload Custom
+                      </button>
                     </div>
+
+                    {editingItem.thumbnailOption === 'custom' && (
+                      <div className="flex items-center gap-4 p-4 bg-slate-50 rounded-2xl border-2 border-dashed border-slate-200">
+                        <input 
+                          type="file" 
+                          accept="image/*"
+                          onChange={handleFileUpload}
+                          className="hidden" 
+                          id="thumbnail-upload"
+                        />
+                        <label 
+                          htmlFor="thumbnail-upload"
+                          className="px-4 py-2 bg-white text-[10px] font-black uppercase tracking-widest rounded-lg shadow-sm border border-slate-100 cursor-pointer hover:bg-slate-50 transition-all"
+                        >
+                          {uploading ? 'Uploading...' : 'Choose Image'}
+                        </label>
+                        {editingItem.thumbnail && (
+                          <div className="w-12 h-12 rounded-lg overflow-hidden border border-slate-200 bg-white">
+                            <img src={editingItem.thumbnail} alt="Thumb" className="w-full h-full object-cover" />
+                          </div>
+                        )}
+                      </div>
+                    )}
                   </div>
                 )}
+
+                <div>
+                  <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">Thumbnail Preview</label>
+                  <div className="relative aspect-video w-48 rounded-xl overflow-hidden bg-slate-100 border border-slate-200">
+                    {editingItem.type === 'video' ? (
+                      <img src={getYoutubeThumbnail(editingItem.url)} alt="Thumbnail" className="w-full h-full object-cover" />
+                    ) : (
+                      editingItem.thumbnailOption === 'custom' && editingItem.thumbnail ? (
+                        <img src={editingItem.thumbnail} alt="Thumbnail" className="w-full h-full object-cover" />
+                      ) : (
+                        <div className="flex items-center justify-center h-full bg-white">
+                          <img src="/logo.png" alt="Logo" className="w-12 h-auto opacity-40" />
+                        </div>
+                      )
+                    )}
+                  </div>
+                </div>
               </div>
             </div>
 
             <div className="pt-8 flex gap-4">
               <button 
-                disabled={saving}
+                disabled={saving || uploading}
                 className="flex-1 bg-[#7338a0] text-white py-4 rounded-2xl font-bold hover:shadow-xl transition-all disabled:opacity-50"
               >
                 {saving ? 'Saving...' : 'Save Content'}
@@ -262,15 +343,17 @@ export default function AdminLearning() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredItems.map((item) => (
             <div key={item._id} className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm flex flex-col group">
-              <div className="relative aspect-video w-full mb-4 rounded-2xl overflow-hidden bg-slate-50">
+              <div className="relative aspect-video w-full mb-4 rounded-2xl overflow-hidden bg-slate-50 border border-slate-100">
                 {item.type === 'video' ? (
                   <img src={getYoutubeThumbnail(item.url)} alt={item.title} className="w-full h-full object-cover" />
                 ) : (
-                  <div className="flex items-center justify-center h-full text-slate-300 bg-indigo-50">
-                    <svg className="w-12 h-12 text-indigo-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.826L10.242 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.826" />
-                    </svg>
-                  </div>
+                  item.thumbnailOption === 'custom' && item.thumbnail ? (
+                    <img src={item.thumbnail} alt={item.title} className="w-full h-full object-cover" />
+                  ) : (
+                    <div className="flex items-center justify-center h-full bg-white">
+                      <img src="/logo.png" alt="Logo" className="w-16 h-auto opacity-30" />
+                    </div>
+                  )
                 )}
                 <div className="absolute top-2 left-2 px-2 py-0.5 bg-black/50 backdrop-blur-sm text-white text-[8px] font-bold rounded-full uppercase tracking-wider">
                   {item.folder || 'General'}

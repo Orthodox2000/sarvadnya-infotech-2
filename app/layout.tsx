@@ -3,7 +3,9 @@ import type { Metadata, Viewport } from "next";
 import type { CSSProperties } from "react";
 import Navbar from "./components/Navbar";
 import Productbar from "./components/Productbar";
-import { theme } from "@/lib/theme";
+import { theme as defaultTheme } from "@/lib/theme";
+import { getSettings } from "@/lib/mongodb-utils";
+import { palettes } from "@/lib/palettes";
 import "./globals.css";
 
 const NewsFeed = dynamic(() => import("./components/NewsFeed"), {
@@ -20,6 +22,8 @@ const NewsFeed = dynamic(() => import("./components/NewsFeed"), {
 const SupportButton = dynamic(() => import("./components/SupportButton"));
 
 const NotificationToast = dynamic(() => import("./components/NotificationToast"));
+
+const CacheConsent = dynamic(() => import("./components/CacheConsent"));
 
 export const metadata: Metadata = {
   title: "Sarvadnya Infotech",
@@ -41,11 +45,41 @@ export const viewport: Viewport = {
   colorScheme: "only light",
 };
 
-export default function RootLayout({
+async function getTheme() {
+  try {
+    const settings = await getSettings();
+    const themeJson = settings['SITE_THEME_PALETTE'];
+    if (themeJson) {
+      const { paletteId, bgIndex } = JSON.parse(themeJson);
+      const palette = palettes.find(p => p.id === paletteId);
+      if (palette) {
+        const bg = palette.backgrounds[bgIndex] || palette.backgrounds[0];
+        return {
+          primaryColor: palette.primary,
+          secondaryColor: palette.secondary,
+          primaryButtonColor: palette.primary,
+          secondaryButtonColor: palette.secondary,
+          headingColor: palette.heading,
+          paragraphColor: palette.paragraph,
+          backgroundColor: bg.value,
+          accentColor: palette.accent,
+          headingLightColor: palette.heading, // Adjust if needed
+        };
+      }
+    }
+  } catch (err) {
+    console.error('Error loading theme:', err);
+  }
+  return defaultTheme;
+}
+
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const theme = await getTheme();
+
   return (
     <html lang="en" className="h-full antialiased" style={{ colorScheme: "only light" }} data-scroll-behavior="smooth" suppressHydrationWarning>
       <body
@@ -74,7 +108,9 @@ export default function RootLayout({
         {children}
         <SupportButton />
         <NotificationToast />
+        <CacheConsent />
       </body>
     </html>
   );
 }
+

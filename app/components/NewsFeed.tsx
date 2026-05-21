@@ -50,7 +50,7 @@ export default function NewsFeed() {
 
   return (
     <div
-      className="relative w-full bg-[#0f0529] h-[40px] flex items-center border-b border-white/10 group overflow-visible z-[50]"
+      className="relative w-full bg-[#0f0529] h-[40px] flex items-center border-b border-white/10 group overflow-visible z-[2100]"
     >
       {/* Label Section */}
       <div className="absolute left-0 top-0 bottom-0 z-[1010] flex items-center bg-gradient-to-r from-[#0f0529] via-[#0f0529] to-transparent px-6 pr-12 pointer-events-none">

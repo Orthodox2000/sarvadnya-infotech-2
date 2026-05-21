@@ -18,12 +18,40 @@ export default function AdminSettings() {
     'NEXT_PUBLIC_FACEBOOK_URL', 'NEXT_PUBLIC_FACEBOOK_HANDLE',
     'NEXT_PUBLIC_INSTAGRAM_URL', 'NEXT_PUBLIC_INSTAGRAM_HANDLE',
     'NEXT_PUBLIC_LINKEDIN_URL', 'NEXT_PUBLIC_LINKEDIN_HANDLE',
-    'NEXT_PUBLIC_MAP_IFRAME_URL'
+    'NEXT_PUBLIC_MAP_IFRAME_URL',
+    'NEXT_PUBLIC_COMPANY_LOGO', 'NEXT_PUBLIC_ADMIN_LOGO'
   ];
 
   useEffect(() => {
     fetchSettings();
   }, []);
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>, key: string) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setSaving(true);
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const response = await fetch('/api/admin/media', {
+        method: 'POST',
+        body: formData
+      });
+
+      const data = await response.json();
+      if (data.error) throw new Error(data.error);
+
+      handleChange(key, data.url);
+      setMessage({ text: 'Image uploaded and stored in MongoDB!', type: 'success' });
+    } catch (err) {
+      console.error(err);
+      setMessage({ text: 'Upload failed.', type: 'error' });
+    } finally {
+      setSaving(false);
+    }
+  };
 
   const fetchSettings = async () => {
     try {
@@ -145,6 +173,46 @@ export default function AdminSettings() {
                 </div>
               );
             })}
+          </div>
+        </div>
+
+        {/* Branding Section */}
+        <div className="pt-8 border-t border-slate-100 space-y-6">
+          <h2 className="text-sm font-black uppercase tracking-widest text-[#7338a0]">Branding (MongoDB Storage)</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="space-y-4">
+              <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Company Logo</label>
+              <div className="flex items-center gap-6">
+                <div className="w-24 h-24 bg-slate-100 rounded-2xl overflow-hidden border border-slate-200 flex items-center justify-center">
+                  {settings.find(s => s.key === 'NEXT_PUBLIC_COMPANY_LOGO')?.value ? (
+                    <img src={settings.find(s => s.key === 'NEXT_PUBLIC_COMPANY_LOGO')?.value} alt="Company Logo" className="max-w-full max-h-full object-contain p-2" />
+                  ) : (
+                    <span className="text-[10px] text-slate-400 font-bold">No Logo</span>
+                  )}
+                </div>
+                <label className="bg-slate-50 border-2 border-dashed border-slate-200 px-6 py-4 rounded-2xl cursor-pointer hover:border-[#7338a0] transition-colors">
+                  <span className="text-xs font-bold text-slate-600">Change Logo</span>
+                  <input type="file" className="hidden" onChange={e => handleImageUpload(e, 'NEXT_PUBLIC_COMPANY_LOGO')} />
+                </label>
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Admin Panel Logo</label>
+              <div className="flex items-center gap-6">
+                <div className="w-24 h-24 bg-slate-100 rounded-2xl overflow-hidden border border-slate-200 flex items-center justify-center">
+                  {settings.find(s => s.key === 'NEXT_PUBLIC_ADMIN_LOGO')?.value ? (
+                    <img src={settings.find(s => s.key === 'NEXT_PUBLIC_ADMIN_LOGO')?.value} alt="Admin Logo" className="max-w-full max-h-full object-contain p-2" />
+                  ) : (
+                    <span className="text-[10px] text-slate-400 font-bold">No Logo</span>
+                  )}
+                </div>
+                <label className="bg-slate-50 border-2 border-dashed border-slate-200 px-6 py-4 rounded-2xl cursor-pointer hover:border-[#7338a0] transition-colors">
+                  <span className="text-xs font-bold text-slate-600">Change Logo</span>
+                  <input type="file" className="hidden" onChange={e => handleImageUpload(e, 'NEXT_PUBLIC_ADMIN_LOGO')} />
+                </label>
+              </div>
+            </div>
           </div>
         </div>
 

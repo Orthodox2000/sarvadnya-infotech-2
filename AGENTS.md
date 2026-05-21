@@ -1,7 +1,4 @@
-# Project Documentation & Architecture
-
-## Core Mandate: "Never Deny Service"
-The application is designed to reflect the company's core values: immediate response, certified expertise, and accessibility for all business sizes.
+# Project Documentation & Architecture 
 
 ## Technical Architecture
 

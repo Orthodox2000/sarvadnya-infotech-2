@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { capabilityCategories } from '../../lib/capabilities';
-import Footer from '../components/Footer';
+import { capabilityCategories } from '@/lib/capabilities';
+import Footer from '@/app/components/Footer';
 
 export default function CapabilitiesPage() {
   const [activeTab, setActiveTab] = useState(capabilityCategories[0].id);
@@ -64,7 +64,7 @@ export default function CapabilitiesPage() {
               A deep-dive into the technical and functional architecture that powers modern business accounting. Optimized for performance and statutory compliance.
             </p>
           </div>
-          
+
           <div className="hidden lg:flex items-center gap-4">
              <div className="p-4 bg-white/5 border border-white/10 rounded-2xl text-center">
                 <div className="text-2xl font-black text-white">500+</div>

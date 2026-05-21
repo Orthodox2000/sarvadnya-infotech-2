@@ -4,7 +4,7 @@ import { useState, useEffect, type CSSProperties, memo, useCallback } from "reac
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { productItems } from "@/lib/product-nav";
+import { productItems, type ProductSubItem } from "@/lib/product-nav";
 
 // Simple Minimalist Icons for Apple-style bar
 const TallyIcon = memo(() => <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>);
@@ -29,6 +29,39 @@ const iconMap: Record<string, React.ReactNode> = {
 
 const Productbar = () => {
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
+  const [dynamicModules, setDynamicModules] = useState<ProductSubItem[]>([]);
+
+  // Fetch dynamic modules
+  useEffect(() => {
+    const fetchModules = async () => {
+      try {
+        const response = await fetch('/api/modules');
+        const data = await response.json();
+        if (Array.isArray(data)) {
+          setDynamicModules(data.map(m => ({
+            id: m._id,
+            label: m.title,
+            href: `/modules?id=${m._id}`,
+            description: m.shortDescription
+          })));
+        }
+      } catch (err) {
+        console.error('Failed to fetch modules for productbar:', err);
+      }
+    };
+    fetchModules();
+  }, []);
+
+  // Merge dynamic modules into productItems
+  const items = (productItems || []).map(item => {
+    if (item.label === 'Modules' && dynamicModules.length > 0) {
+      return {
+        ...item,
+        subItems: dynamicModules
+      };
+    }
+    return item;
+  });
 
   // Close menu on click
   const handleLinkClick = useCallback(() => {
@@ -64,7 +97,7 @@ const Productbar = () => {
           />
         </Link>
 
-        {(productItems || []).map((item, index) => (
+        {items.map((item, index) => (
           <div 
             key={item.label} 
             className="relative flex-1 border-l first:border-l-0 border-slate-100 flex items-center justify-center overflow-visible group"
@@ -99,12 +132,12 @@ const Productbar = () => {
                 className={`absolute top-full transition-all duration-300 ease-out z-[100] gpu-accelerated
                 ${item.subItems.some(s => (s.subItems?.length ?? 0) > 0) ? 'w-[280px] md:w-[320px]' : 'w-48 md:w-52'}
                 ${activeMenu === item.label ? 'pointer-events-auto visible translate-y-0 opacity-100' : 'pointer-events-none invisible translate-y-2 opacity-0'}
-                ${index === 0 ? 'left-0' : index === (productItems?.length || 0) - 1 ? 'right-0' : 'left-1/2 -translate-x-1/2'}`}
+                ${index === 0 ? 'left-0' : index === (items?.length || 0) - 1 ? 'right-0' : 'left-1/2 -translate-x-1/2'}`}
                 onClick={e => e.stopPropagation()}
               >
                 <div className="mt-1 rounded-xl border border-slate-200 bg-white p-3 shadow-2xl ring-1 ring-black/5">
                   <div className="flex flex-col gap-2">
-                    {(item.subItems || []).map((subItem) => (
+                    {(item.subItems || []).map((subItem: ProductSubItem) => (
                       <div key={subItem.id} className="flex flex-col gap-1">
                         <Link
                           href={subItem.href}
@@ -124,7 +157,7 @@ const Productbar = () => {
                         {/* Nested Items - Vertically Stacked */}
                         {(subItem.subItems?.length ?? 0) > 0 && (
                           <div className="flex flex-col gap-1 ml-3 pl-3 border-l border-slate-100">
-                            {(subItem.subItems || []).map((nestedItem) => (
+                            {(subItem.subItems || []).map((nestedItem: ProductSubItem) => (
                               <Link
                                 key={nestedItem.id}
                                 href={nestedItem.href}

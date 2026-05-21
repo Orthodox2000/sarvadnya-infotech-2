@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import Image from "next/image";
 import Footer from "../components/Footer";
 
@@ -15,10 +15,12 @@ const DEFAULTS = {
 
 export default function TeamPage() {
   const [content, setContent] = useState<any>(DEFAULTS);
+  const [teamMembers, setTeamMembers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchContent();
+    fetchTeam();
   }, []);
 
   const fetchContent = async () => {
@@ -27,6 +29,18 @@ export default function TeamPage() {
       const data = await response.json();
       if (data && !data.error) {
         setContent({ ...DEFAULTS, ...data });
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const fetchTeam = async () => {
+    try {
+      const response = await fetch('/api/admin/partners?type=team');
+      const data = await response.json();
+      if (Array.isArray(data)) {
+        setTeamMembers(data);
       }
     } catch (err) {
       console.error(err);
@@ -70,8 +84,30 @@ export default function TeamPage() {
         </div>
       </section>
 
+      {/* Dynamic Team Grid */}
+      {teamMembers.length > 0 && (
+        <section className="py-20 px-6 sm:px-12 lg:px-24 max-w-7xl mx-auto animate-rise-up" style={{ animationDelay: '200ms' }}>
+          <div className="text-center mb-16 space-y-4">
+             <h2 className="text-3xl md:text-5xl font-black text-[var(--heading-color)]">The A-Team</h2>
+             <p className="text-[var(--para-color)] opacity-60 font-medium">Expert consultants and support staff dedicated to your success.</p>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 sm:gap-10">
+            {teamMembers.map((member, idx) => (
+              <div key={member._id} className="group flex flex-col items-center text-center">
+                 <div className="relative w-full aspect-square rounded-[2.5rem] overflow-hidden bg-white shadow-xl border-4 border-white mb-6 group-hover:shadow-2xl transition-all duration-500 group-hover:-translate-y-2">
+                    <img src={member.imageUrl} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt={member.name} />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[var(--primary-color)]/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                 </div>
+                 <h4 className="font-black text-[var(--heading-color)] text-lg mb-1 leading-tight group-hover:text-[var(--primary-color)] transition-colors">{member.name}</h4>
+                 <p className="text-[10px] sm:text-xs font-bold text-[var(--primary-color)] uppercase tracking-[0.2em] opacity-70">{member.description || 'Expert Consultant'}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
       {/* Employee Culture Description */}
-      <section className="py-20 bg-white animate-rise-up" style={{ animationDelay: '200ms' }}>
+      <section className="py-20 bg-white animate-rise-up" style={{ animationDelay: '300ms' }}>
         <div className="px-6 sm:px-12 lg:px-24 max-w-5xl mx-auto text-center space-y-8">
           <h2 className="text-3xl md:text-4xl font-bold text-[var(--heading-color)]">Our Employee Culture</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">

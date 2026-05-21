@@ -55,6 +55,34 @@ interface QuickAccessCategory {
 }
 
 export default function QuickAccessHub() {
+  const [settings, setSettings] = useState<any>(null);
+  const [dynamicModules, setDynamicModules] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [settingsRes, modulesRes] = await Promise.all([
+          fetch('/api/settings'),
+          fetch('/api/modules')
+        ]);
+        
+        const settingsData = await settingsRes.json();
+        if (!settingsData.error) setSettings(settingsData);
+
+        const modulesData = await modulesRes.json();
+        if (Array.isArray(modulesData)) setDynamicModules(modulesData);
+      } catch (err) {
+        console.error('Failed to fetch data for QuickAccessHub:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
+
+  const supportPhone = settings?.support_phone || "+919876543210";
+
   const categories: QuickAccessCategory[] = [
     {
       title: "Core Services",
@@ -85,12 +113,14 @@ export default function QuickAccessHub() {
       description: "Tailored TDL solutions and vertical specific modules built for your unique industry.",
       iconName: "custom",
       theme: { accent: "bg-purple-500", bg: "bg-purple-50", text: "text-purple-600", hoverBg: "hover:bg-purple-600" },
-      links: [
-        { label: "Logistics", href: "/modules#logistics" },
-        { label: "Retail", href: "/modules#retail" },
-        { label: "Housing", href: "/modules#housing" },
-        { label: "Import Utility", href: "/modules#excel" }
-      ]
+      links: dynamicModules.length > 0 
+        ? dynamicModules.slice(0, 4).map(m => ({ label: m.title, href: `/modules?id=${m._id}` }))
+        : [
+            { label: "Logistics", href: "/modules#logistics" },
+            { label: "Retail", href: "/modules#retail" },
+            { label: "Housing", href: "/modules#housing" },
+            { label: "Import Utility", href: "/modules#excel" }
+          ]
     },
     {
       title: "Expert Support",
@@ -99,20 +129,14 @@ export default function QuickAccessHub() {
       theme: { accent: "bg-emerald-500", bg: "bg-emerald-50", text: "text-emerald-600", hoverBg: "hover:bg-emerald-600" },
       links: [
         { label: "Priority Help", href: "/contact" },
-        { label: "WhatsApp", href: "https://wa.me/919876543210" },
+        { label: "WhatsApp", href: `https://wa.me/${supportPhone.replace(/\D/g, '')}` },
         { label: "TDL Support", href: "/services/tdl" },
         { label: "GST Help", href: "/services/amc#gst" }
       ]
     }
   ];
 
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    setLoading(false);
-  }, []);
-
-  if (loading) return null;
+  if (loading) return <div className="w-full h-96 bg-slate-50 animate-pulse" />;
 
   return (
     <section className="w-full bg-slate-50 py-10 md:py-14 px-4 overflow-hidden border-y border-slate-200">

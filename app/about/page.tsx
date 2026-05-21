@@ -19,10 +19,12 @@ const DEFAULTS = {
 
 export default function AboutPage() {
   const [content, setContent] = useState<any>(DEFAULTS);
+  const [gallery, setGallery] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchContent();
+    fetchGallery();
   }, []);
 
   const fetchContent = async () => {
@@ -31,6 +33,18 @@ export default function AboutPage() {
       const data = await response.json();
       if (data && !data.error) {
         setContent({ ...DEFAULTS, ...data });
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const fetchGallery = async () => {
+    try {
+      const response = await fetch('/api/admin/partners?type=about');
+      const data = await response.json();
+      if (Array.isArray(data)) {
+        setGallery(data);
       }
     } catch (err) {
       console.error(err);
@@ -135,6 +149,31 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
+
+      {/* Dynamic Gallery Section */}
+      {gallery.length > 0 && (
+        <section className="py-20 px-6 sm:px-10 lg:px-20 max-w-7xl mx-auto animate-rise-up" style={{ animationDelay: '500ms' }}>
+           <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
+              <div className="max-w-2xl">
+                 <div className="inline-block px-3 py-1 rounded-full bg-[var(--primary-color)]/10 text-[var(--primary-color)] text-[10px] font-black uppercase tracking-widest mb-4">Inside Sarvadnya</div>
+                 <h2 className="text-3xl md:text-5xl font-black text-[var(--heading-color)] leading-tight">Our Workspace <br/>& Culture</h2>
+              </div>
+              <p className="text-[var(--para-color)] opacity-60 font-medium max-w-sm">A glimpse into our daily operations and the environment where excellence is crafted.</p>
+           </div>
+           
+           <div className="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">
+              {gallery.map((item, idx) => (
+                <div key={item._id} className="relative group rounded-3xl overflow-hidden shadow-lg border border-slate-100 break-inside-avoid transition-all duration-500 hover:shadow-2xl hover:-translate-y-1">
+                   <img src={item.imageUrl} className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105" alt={item.name} />
+                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-6">
+                      <h4 className="text-white font-bold text-lg">{item.name}</h4>
+                      {item.description && <p className="text-white/70 text-xs mt-1">{item.description}</p>}
+                   </div>
+                </div>
+              ))}
+           </div>
+        </section>
+      )}
 
       <Footer />
     </main>

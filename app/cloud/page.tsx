@@ -201,8 +201,16 @@ export default function CloudPage() {
                  className="relative p-8 rounded-3xl transition-all duration-300 flex flex-col border border-slate-200 bg-white shadow-sm hover:shadow-xl hover:border-[#7338a0]/30">
               <div className="mb-8">
                 <p className="text-xs font-bold uppercase tracking-widest mb-1" style={{ color: p.color }}>{p.type}</p>
-                <h3 className="text-2xl font-bold mb-2 leading-tight text-[#0f0529]">{p.name}</h3>
-                <button onClick={() => setActivePopup({title: p.name, details: p.details})} className="text-[10px] font-bold text-[#7338a0] hover:underline whitespace-nowrap">Learn More →</button>
+                <h3 className="text-2xl font-bold mb-4 leading-tight text-[#0f0529]">{p.name}</h3>
+                <button 
+                  onClick={() => setActivePopup({title: p.name, details: p.details})} 
+                  className="flex items-center gap-2 px-5 py-2.5 rounded-full border border-slate-200 text-[11px] font-black uppercase tracking-widest text-slate-700 hover:bg-slate-50 hover:border-[#7338a0]/30 transition-all group/btn"
+                >
+                  View Full Details
+                  <svg className="w-3.5 h-3.5 group-hover/btn:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M9 5l7 7-7 7" />
+                  </svg>
+                </button>
               </div>
               
               <div className="mb-6 pb-6 border-b border-slate-50">

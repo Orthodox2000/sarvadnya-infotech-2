@@ -36,7 +36,7 @@ export default function TutorialsPage() {
     const filteredTutorials = useMemo(() => {
         return tutorials.filter(t => {
             const matchesSearch = t.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                                 (t.tags && t.tags.some((tag: string) => tag.toLowerCase().includes(searchQuery.toLowerCase())));
+                                 (t.tags && t.tags.some((tag: string = '') => tag.toLowerCase().includes(searchQuery.toLowerCase())));
             const matchesFolder = activeFolder === 'All' || (t.folder || 'General') === activeFolder;
             return matchesSearch && matchesFolder;
         });
@@ -99,53 +99,68 @@ export default function TutorialsPage() {
                     </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 min-h-[400px]">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 min-h-[400px]">
                     {filteredTutorials.map((video) => (
                         <div 
                             key={video._id} 
-                            className="group bg-white rounded-[32px] overflow-hidden border border-slate-100 hover:shadow-2xl transition-all duration-500 cursor-pointer flex flex-col"
+                            className="group bg-white rounded-[24px] overflow-hidden border border-slate-100 hover:shadow-xl transition-all duration-500 cursor-pointer flex flex-col"
                             onClick={() => video.type === 'video' ? setSelectedVideo(getYoutubeId(video.url)) : window.open(video.url, '_blank')}
                         >
                             <div className="aspect-video relative overflow-hidden bg-slate-50">
-                                <Image 
-                                    src={video.type === 'video' ? getYoutubeThumbnail(video.url) : '/BG1.png'} 
-                                    alt={video.title}
-                                    fill
-                                    className="object-cover transition-transform duration-700 group-hover:scale-110"
-                                />
-                                <div className="absolute inset-0 bg-black/10 group-hover:bg-black/40 transition-colors flex items-center justify-center">
-                                    <div className="w-16 h-16 bg-white/90 rounded-full flex items-center justify-center shadow-2xl scale-90 group-hover:scale-100 transition-all duration-500">
+                                {video.type === 'video' ? (
+                                    <Image 
+                                        src={getYoutubeThumbnail(video.url)} 
+                                        alt={video.title}
+                                        fill
+                                        className="object-cover transition-transform duration-700 group-hover:scale-110"
+                                    />
+                                ) : (
+                                    video.thumbnailOption === 'custom' && video.thumbnail ? (
+                                        <Image 
+                                            src={video.thumbnail} 
+                                            alt={video.title}
+                                            fill
+                                            className="object-cover transition-transform duration-700 group-hover:scale-110"
+                                        />
+                                    ) : (
+                                        <div className="absolute inset-0 flex items-center justify-center bg-white transition-transform duration-700 group-hover:scale-110">
+                                            <img src="/logo.png" alt="Logo" className="w-16 h-auto opacity-30" />
+                                        </div>
+                                    )
+                                )}
+                                <div className="absolute inset-0 bg-black/10 group-hover:bg-black/30 transition-colors flex items-center justify-center">
+                                    <div className="w-12 h-12 bg-white/90 rounded-full flex items-center justify-center shadow-xl scale-90 group-hover:scale-100 transition-all duration-500">
                                         {video.type === 'video' ? (
-                                            <svg className="w-8 h-8 text-[#7338a0] ml-1" fill="currentColor" viewBox="0 0 24 24">
+                                            <svg className="w-6 h-6 text-[#7338a0] ml-1" fill="currentColor" viewBox="0 0 24 24">
                                                 <path d="M8 5v14l11-7z" />
                                             </svg>
                                         ) : (
-                                            <svg className="w-8 h-8 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <svg className="w-6 h-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                                             </svg>
                                         )}
                                     </div>
                                 </div>
-                                <div className="absolute top-4 left-4">
-                                    <span className="px-3 py-1 bg-white/20 backdrop-blur-md border border-white/30 text-white text-[9px] font-black uppercase tracking-widest rounded-full">
+                                <div className="absolute top-3 left-3">
+                                    <span className="px-2 py-0.5 bg-white/30 backdrop-blur-md border border-white/40 text-white text-[8px] font-black uppercase tracking-widest rounded-full">
                                         {video.folder || 'General'}
                                     </span>
                                 </div>
                             </div>
-                            <div className="p-7 flex flex-col flex-1">
-                                <div className="flex items-center gap-3 mb-4">
-                                    <span className="px-2 py-0.5 rounded-md bg-slate-100 text-slate-500 text-[10px] font-bold uppercase tracking-wider">
+                            <div className="p-4 flex flex-col flex-1">
+                                <div className="flex items-center gap-2 mb-2">
+                                    <span className="px-1.5 py-0.5 rounded bg-slate-100 text-slate-500 text-[8px] font-bold uppercase tracking-wider">
                                         {video.type === 'video' ? 'Webinar' : 'Article'}
                                     </span>
-                                    <span className="text-slate-400 text-[11px] font-medium">{video.date}</span>
+                                    <span className="text-slate-400 text-[9px] font-medium">{video.date}</span>
                                 </div>
-                                <h3 className="text-xl font-black text-[var(--heading-color)] mb-3 group-hover:text-[#7338a0] transition-colors leading-tight">{video.title}</h3>
-                                <p className="text-slate-500 text-[13px] leading-relaxed line-clamp-2 font-medium opacity-80">
+                                <h3 className="text-sm font-black text-[var(--heading-color)] mb-2 group-hover:text-[#7338a0] transition-colors leading-tight line-clamp-2">{video.title}</h3>
+                                <p className="text-slate-500 text-[11px] leading-relaxed line-clamp-2 font-medium opacity-80">
                                     {video.description}
                                 </p>
-                                <div className="mt-auto pt-6 flex flex-wrap gap-2">
+                                <div className="mt-auto pt-4 flex flex-wrap gap-1">
                                     {video.tags?.map((tag: string) => (
-                                        <span key={tag} className="text-[10px] font-bold text-[#7338a0]/60">#{tag}</span>
+                                        <span key={tag} className="text-[8px] font-bold text-[#7338a0]/60">#{tag}</span>
                                     ))}
                                 </div>
                             </div>
@@ -179,7 +194,7 @@ export default function TutorialsPage() {
             {/* Video Modal */}
             {selectedVideo && (
                 <div 
-                    className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/95 backdrop-blur-md animate-in fade-in duration-300"
+                    className="fixed inset-0 z-[3000] flex items-center justify-center p-4 bg-black/95 backdrop-blur-md animate-in fade-in duration-300"
                     onClick={() => setSelectedVideo(null)}
                 >
                     <button 
@@ -195,7 +210,7 @@ export default function TutorialsPage() {
                     </button>
                     
                     <div 
-                        className="w-full max-w-5xl aspect-video bg-black rounded-3xl overflow-hidden shadow-[0_0_100px_rgba(115,56,160,0.3)] relative"
+                        className="w-full max-w-4xl aspect-video bg-black rounded-3xl overflow-hidden shadow-[0_0_100px_rgba(115,56,160,0.3)] relative"
                         onClick={(e) => e.stopPropagation()}
                     >
                         <iframe

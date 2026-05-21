@@ -39,13 +39,7 @@ export default function Navbar() {
 
   const supportPhone = settings?.support_phone || process.env.NEXT_PUBLIC_SUPPORT_PHONE || "+919876543210";
 
-  const navLinks = [
-    { label: 'Products', href: '/products' },
-    { label: 'Services', href: '/services' },
-    { label: 'Modules', href: '/modules' },
-    { label: 'Learning', href: '/tutorials' },
-    { label: 'About', href: '/about' },
-  ];
+  const navLinks: { label: string; href: string }[] = [];
 
   const adminLinks = [
     { label: 'Dashboard', href: '/admin', icon: 'M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6' },
@@ -57,6 +51,7 @@ export default function Navbar() {
     { label: 'News', href: '/admin/news', icon: 'M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z' },
     { label: 'Partners', href: '/admin/partners', icon: 'M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z' },
     { label: 'Settings', href: '/admin/settings', icon: 'M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z' },
+    { label: 'Theme Palette', href: '/admin/palette', icon: 'M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a1 1 0 010 2H5v12a2 2 0 002 2h12a2 2 0 002-2V5h-4a1 1 0 010-2h4a2 2 0 012 2v12a4 4 0 01-4 4H7z' },
   ];
 
   return (
@@ -88,16 +83,6 @@ export default function Navbar() {
 
         {/* Desktop Navigation */}
         <div className="hidden lg:flex items-center gap-6">
-          {navLinks.map((link) => (
-            <Link 
-              key={link.label} 
-              href={link.href}
-              className="text-[10px] font-bold uppercase tracking-widest text-white/60 hover:text-white transition-colors"
-            >
-              {link.label}
-            </Link>
-          ))}
-          <div className="h-4 w-px bg-white/10 mx-2" />
           <Link
             href="/admin"
             className="text-[10px] font-bold uppercase tracking-widest text-indigo-400 hover:text-indigo-300 transition-colors"
@@ -146,20 +131,6 @@ export default function Navbar() {
       {/* Mobile Menu Drawer */}
       <div className={`lg:hidden fixed top-14 left-0 right-0 bg-[#0a041a] border-b border-white/10 z-[999] transition-all duration-300 overflow-y-auto ${isMenuOpen ? 'max-h-[90vh] opacity-100 py-6' : 'max-h-0 opacity-0 py-0'}`}>
         <div className="flex flex-col gap-6 px-6">
-          {/* Main Links */}
-          <div className="grid grid-cols-2 gap-3">
-            {navLinks.map((link) => (
-              <Link 
-                key={link.label} 
-                href={link.href}
-                onClick={() => setIsMenuOpen(false)}
-                className="flex items-center justify-center h-12 rounded-xl border border-white/5 bg-white/5 text-[11px] font-black uppercase tracking-widest text-white/70 hover:text-white transition-colors"
-              >
-                {link.label}
-              </Link>
-            ))}
-          </div>
-          
           {/* Admin Section */}
           <div className="space-y-3">
             <div className="flex items-center gap-2 px-2">

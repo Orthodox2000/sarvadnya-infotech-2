@@ -1,6 +1,13 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
+
+interface Message {
+  id: string;
+  text: string;
+  sender: 'ai' | 'user';
+  timestamp: Date;
+}
 
 interface QuickSupportModalProps {
   isOpen: boolean;
@@ -8,81 +15,170 @@ interface QuickSupportModalProps {
 }
 
 export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModalProps) {
-  // We no longer want to disable body scroll because it's a small panel now
+  const [messages, setMessages] = useState<Message[]>([
+    {
+      id: '1',
+      text: "Hello! I'm your Tally Expert AI. How can I assist you with your business accounting today?",
+      sender: 'ai',
+      timestamp: new Date()
+    }
+  ]);
+  const [inputText, setInputText] = useState('');
+  const [isTyping, setIsTyping] = useState(false);
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  // Auto-scroll to bottom
   useEffect(() => {
-    // Scroll handling removed as it's not a full-screen modal anymore
-  }, [isOpen]);
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
+  }, [messages, isTyping]);
 
   if (!isOpen) return null;
 
+  const handleSendMessage = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!inputText.trim() || isTyping) return;
+
+    const userText = inputText.trim();
+    const userMessage: Message = {
+      id: Date.now().toString(),
+      text: userText,
+      sender: 'user',
+      timestamp: new Date()
+    };
+
+    setMessages(prev => [...prev, userMessage]);
+    setInputText('');
+    setIsTyping(true);
+
+    try {
+      // Map current messages to format expected by Groq/OpenAI API
+      const apiMessages = messages.map(m => ({
+        role: m.sender === 'ai' ? 'assistant' : 'user',
+        content: m.text
+      }));
+      apiMessages.push({ role: 'user', content: userText });
+
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: apiMessages })
+      });
+
+      const data = await response.json();
+
+      if (data.error) throw new Error(data.error);
+
+      const aiMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        text: data.message,
+        sender: 'ai',
+        timestamp: new Date()
+      };
+      setMessages(prev => [...prev, aiMessage]);
+    } catch (err) {
+      console.error('Chat error:', err);
+      const errorMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        text: "I'm sorry, I'm having trouble connecting right now. Please try again or contact us directly.",
+        sender: 'ai',
+        timestamp: new Date()
+      };
+      setMessages(prev => [...prev, errorMessage]);
+    } finally {
+      setIsTyping(false);
+    }
+  };
+
   return (
-    <div className="fixed top-20 right-6 z-[1001] w-[calc(100%-3rem)] max-w-sm animate-in slide-in-from-top-4 fade-in duration-300 pointer-events-none">
+    <div className="fixed bottom-24 right-6 z-[3001] w-[calc(100%-3rem)] max-w-sm animate-in slide-in-from-bottom-4 fade-in duration-300 pointer-events-none">
       <div 
-        className="relative overflow-hidden w-full rounded-[2rem] p-6 text-slate-900 shadow-[0_20px_50px_rgba(15,23,42,0.15)] border border-slate-100 bg-white/95 backdrop-blur-md pointer-events-auto"
+        className="relative overflow-hidden w-full rounded-[2rem] flex flex-col h-[500px] text-slate-900 shadow-[0_20px_50px_rgba(115,56,160,0.25)] border border-slate-100 bg-white/95 backdrop-blur-md pointer-events-auto"
         onClick={e => e.stopPropagation()}
       >
-        {/* Decorative elements */}
-        <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-50 rounded-full blur-3xl opacity-60 -mr-16 -mt-16" />
-        <div className="absolute bottom-0 left-0 w-24 h-24 bg-violet-50 rounded-full blur-3xl opacity-60 -ml-12 -mb-12" />
-
-        <button 
-          className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 transition-colors z-[20] w-8 h-8 flex items-center justify-center rounded-full hover:bg-slate-100"
-          onClick={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            onClose();
-          }}
-          aria-label="Close panel"
-        >
-          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        </button>
-
-        <div className="relative z-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-100 border border-slate-200 text-slate-500 text-[9px] font-bold uppercase tracking-widest mb-3">
-            <span className="flex h-1.5 w-1.5 rounded-full bg-[#7338a0] animate-pulse"></span>
-            AI Assistant
-          </div>
-          <h2 className="font-sans text-xl font-black leading-tight tracking-tight text-[#0f0529]">
-            Ask Our <span className="text-[#7338a0]">AI Expert</span>
-          </h2>
-          <p className="mt-2 text-xs leading-relaxed text-slate-500 font-medium">
-            How can I help you with Tally today?
-          </p>
-
-          <form className="mt-6 space-y-3">
-            <div className="space-y-1.5">
-              <input
-                type="text"
-                placeholder="Full Name"
-                className="w-full bg-slate-50 border border-slate-100 rounded-xl px-4 py-2.5 text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#7338a0]/10 focus:border-[#7338a0] transition-all shadow-sm"
-              />
+        {/* Header */}
+        <div className="p-5 border-b border-slate-100 bg-[#0f0529] text-white shrink-0">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="relative">
+                <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center border border-white/20">
+                   <svg className="w-6 h-6 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  </svg>
+                </div>
+                <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-[#0f0529] rounded-full"></span>
+              </div>
+              <div>
+                <h3 className="text-sm font-black tracking-tight">AI Expert</h3>
+                <p className="text-[10px] text-indigo-300 font-bold uppercase tracking-widest">Online Now</p>
+              </div>
             </div>
-            <div className="space-y-1.5">
-              <input
-                type="tel"
-                placeholder="Phone Number"
-                className="w-full bg-slate-50 border border-slate-100 rounded-xl px-4 py-2.5 text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#7338a0]/10 focus:border-[#7338a0] transition-all shadow-sm"
-              />
-            </div>
-            <div className="space-y-1.5">
-              <textarea
-                placeholder="Describe your query..."
-                rows={2}
-                className="w-full bg-slate-50 border border-slate-100 rounded-xl px-4 py-2.5 text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#7338a0]/10 focus:border-[#7338a0] resize-none transition-all shadow-sm"
-              />
-            </div>
-            <button
-              type="submit"
-              className="w-full mt-2 rounded-xl bg-[#7338a0] px-4 py-3 text-[11px] font-black uppercase tracking-widest text-white shadow-lg shadow-[#7338a0]/20 transition-all duration-300 hover:bg-[#4a2574] hover:scale-[1.02] active:scale-[0.98]"
+            <button 
+              onClick={onClose}
+              className="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center transition-colors"
             >
-              Send Request
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        {/* Chat Messages */}
+        <div 
+          ref={scrollRef}
+          className="flex-1 overflow-y-auto p-5 space-y-4 no-scrollbar bg-slate-50/50"
+        >
+          {messages.map((msg) => (
+            <div 
+              key={msg.id} 
+              className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}
+            >
+              <div 
+                className={`max-w-[85%] px-4 py-3 rounded-2xl text-xs font-medium shadow-sm leading-relaxed ${
+                  msg.sender === 'user' 
+                    ? 'bg-[#7338a0] text-white rounded-tr-none' 
+                    : 'bg-white text-slate-700 border border-slate-100 rounded-tl-none'
+                }`}
+              >
+                {msg.text}
+              </div>
+            </div>
+          ))}
+          {isTyping && (
+            <div className="flex justify-start">
+              <div className="bg-white px-4 py-3 rounded-2xl rounded-tl-none border border-slate-100 shadow-sm flex gap-1">
+                <span className="w-1.5 h-1.5 bg-slate-300 rounded-full animate-bounce"></span>
+                <span className="w-1.5 h-1.5 bg-slate-300 rounded-full animate-bounce [animation-delay:0.2s]"></span>
+                <span className="w-1.5 h-1.5 bg-slate-300 rounded-full animate-bounce [animation-delay:0.4s]"></span>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Input Area */}
+        <div className="p-4 bg-white border-t border-slate-100 shrink-0">
+          <form onSubmit={handleSendMessage} className="flex items-center gap-2">
+            <input 
+              type="text"
+              placeholder="Ask anything about Tally..."
+              className="flex-1 bg-slate-50 border border-slate-100 rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-[#7338a0]/10 focus:border-[#7338a0] transition-all"
+              value={inputText}
+              onChange={(e) => setInputText(e.target.value)}
+            />
+            <button 
+              type="submit"
+              disabled={!inputText.trim() || isTyping}
+              className="w-10 h-10 rounded-xl bg-[#7338a0] text-white flex items-center justify-center shadow-lg shadow-[#7338a0]/20 disabled:opacity-50 transition-all active:scale-95"
+            >
+              <svg className="w-5 h-5 rotate-90" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+              </svg>
             </button>
           </form>
-          
-          <p className="mt-4 text-center text-[8px] text-slate-400 font-medium">
-            🔒 Secure Response within 15 mins
+          <p className="mt-3 text-center text-[9px] text-slate-400 font-bold uppercase tracking-widest">
+            Powered by Sarvadnya AI & Groq
           </p>
         </div>
       </div>
