@@ -70,7 +70,7 @@ export default function MobileAppBizPage() {
         <div className="hidden lg:block absolute right-0 top-0 bottom-0 w-1/2 z-0">
           <div className="relative h-full w-full">
             <Image 
-              src="/assets/images/1486406146926-c627a92ad1ab.jpg" 
+              src="/ba.png" 
               alt="Cinematic Tally on Mobile" 
               fill 
               className="object-cover"

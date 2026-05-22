@@ -69,7 +69,7 @@ export default function TallyOnWhatsappPage() {
         <div className="hidden lg:block absolute right-0 top-0 bottom-0 w-1/2 z-0">
           <div className="relative h-full w-full">
             <Image 
-              src="/whatsappintegration.png" 
+              src="/tally2whatsapp.png" 
               alt="Cinematic Tally on WhatsApp" 
               fill 
               className="object-cover"

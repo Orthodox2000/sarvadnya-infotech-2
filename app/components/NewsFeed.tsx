@@ -13,7 +13,7 @@ export default function NewsFeed() {
   useEffect(() => {
     const fetchNews = async () => {
       try {
-        const res = await fetch('/api/admin/news', { cache: 'no-store' });
+        const res = await fetch('/api/admin/news');
         const data = await res.json();
         setNewsItems(data);
       } catch (err) {

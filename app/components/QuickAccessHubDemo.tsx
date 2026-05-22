@@ -115,7 +115,7 @@ export default function QuickAccessHubDemo() {
       return cleaned;
   };
 
-  const supportPhone = settings?.support_phone || "9876543210";
+  const supportPhone = settings?.support_phone || "9821309060";
   const whatsappPhone = settings?.whatsapp_phone || supportPhone;
 
   const defaultCategories: QuickAccessCategory[] = [

@@ -5,9 +5,9 @@ export async function GET() {
   try {
     const settingsMap = await getSettings();
     const settings = {
-      support_phone: settingsMap['NEXT_PUBLIC_SUPPORT_PHONE'] || process.env.NEXT_PUBLIC_SUPPORT_PHONE || '',
-      whatsapp_phone: settingsMap['NEXT_PUBLIC_WHATSAPP_PHONE'] || settingsMap['NEXT_PUBLIC_SUPPORT_PHONE'] || process.env.NEXT_PUBLIC_WHATSAPP_PHONE || process.env.NEXT_PUBLIC_SUPPORT_PHONE || '',
-      support_email: settingsMap['NEXT_PUBLIC_SUPPORT_EMAIL'] || process.env.NEXT_PUBLIC_SUPPORT_EMAIL || '',
+      support_phone: settingsMap['NEXT_PUBLIC_SUPPORT_PHONE'] || process.env.NEXT_PUBLIC_SUPPORT_PHONE || '9821309060',
+      whatsapp_phone: settingsMap['NEXT_PUBLIC_WHATSAPP_PHONE'] || settingsMap['NEXT_PUBLIC_SUPPORT_PHONE'] || process.env.NEXT_PUBLIC_WHATSAPP_PHONE || process.env.NEXT_PUBLIC_SUPPORT_PHONE || '9821309060',
+      support_email: settingsMap['NEXT_PUBLIC_SUPPORT_EMAIL'] || process.env.NEXT_PUBLIC_SUPPORT_EMAIL || 'info@sarvadnyainfotech.com',
       office_address: settingsMap['NEXT_PUBLIC_OFFICE_ADDRESS'] || process.env.NEXT_PUBLIC_OFFICE_ADDRESS || '',
       facebook_url: settingsMap['NEXT_PUBLIC_FACEBOOK_URL'] || process.env.NEXT_PUBLIC_FACEBOOK_URL || '',
       instagram_url: settingsMap['NEXT_PUBLIC_INSTAGRAM_URL'] || process.env.NEXT_PUBLIC_INSTAGRAM_URL || '',

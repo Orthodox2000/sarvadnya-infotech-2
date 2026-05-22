@@ -5,7 +5,7 @@ import QuickSupportModal from './QuickSupportModal';
 
 export default function SupportButton({ initialSettings }: { initialSettings?: any }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [whatsappPhone, setWhatsappPhone] = useState(initialSettings?.whatsapp_phone || initialSettings?.support_phone || "+919876543210");
+  const [whatsappPhone, setWhatsappPhone] = useState(initialSettings?.whatsapp_phone || initialSettings?.support_phone || "9821309060");
 
   useEffect(() => {
     if (initialSettings) return;

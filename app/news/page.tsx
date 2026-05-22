@@ -1,25 +1,10 @@
-'use client';
-
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Link from 'next/link';
+import { getNews } from '@/lib/mongodb-utils';
 import { NewsItem } from '@/lib/news';
 
-export default function NewsPage() {
-  const [newsItems, setNewsItems] = useState<NewsItem[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    fetch('/api/admin/news', { cache: 'no-store' })
-      .then(res => res.json())
-      .then(data => {
-        setNewsItems(data);
-        setLoading(false);
-      })
-      .catch(err => {
-        console.error('Failed to fetch news:', err);
-        setLoading(false);
-      });
-  }, []);
+export default async function NewsPage() {
+  const newsItems: NewsItem[] = await getNews();
 
   return (
     <div className="min-h-screen bg-slate-50/50 text-slate-900">
@@ -87,6 +72,12 @@ export default function NewsPage() {
             </div>
           ))}
         </div>
+        
+        {newsItems.length === 0 && (
+          <div className="text-center py-20 bg-white rounded-3xl border border-dashed border-slate-200">
+            <p className="text-slate-400 font-bold uppercase tracking-widest text-xs">No news items found.</p>
+          </div>
+        )}
       </div>
     </div>
   );

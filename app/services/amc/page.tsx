@@ -69,7 +69,7 @@ export default function AMCPage() {
         <div className="hidden lg:block absolute right-0 top-0 bottom-0 w-1/2 z-0">
           <div className="relative h-full w-full">
             <Image 
-              src="/assets/images/1586528116311-ad8dd3c8310d.jpg" 
+              src="/amc2.png" 
               alt="Cinematic Tally Support" 
               fill 
               className="object-cover"
@@ -132,7 +132,7 @@ export default function AMCPage() {
           <div className="relative">
             <div className="aspect-[4/3] rounded-[32px] overflow-hidden relative shadow-2xl">
               <Image 
-                src="/assets/images/1581091226825-a6a2a5aee158.jpg" 
+                src="/amc.png" 
                 alt="Tally Support" 
                 fill 
                 className="object-cover"

@@ -49,7 +49,7 @@ export default function Navbar({ initialSettings }: { initialSettings?: any }) {
         return cleaned;
     };
 
-    const supportPhone = settings?.support_phone || process.env.NEXT_PUBLIC_SUPPORT_PHONE || "9876543210";
+    const supportPhone = settings?.support_phone || process.env.NEXT_PUBLIC_SUPPORT_PHONE || "9821309060";
 
   const navLinks: { label: string; href: string }[] = [];
 

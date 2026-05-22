@@ -69,7 +69,7 @@ export default function CorporateTrainingPage() {
         <div className="hidden lg:block absolute right-0 top-0 bottom-0 w-1/2 z-0">
           <div className="relative h-full w-full">
             <Image 
-              src="/assets/images/1504384308090-c894fdcc538d.jpg" 
+              src="/trainning.png" 
               alt="Cinematic Corporate Training" 
               fill 
               className="object-cover"
@@ -132,7 +132,7 @@ export default function CorporateTrainingPage() {
           <div className="relative">
             <div className="aspect-[4/3] rounded-[32px] overflow-hidden relative shadow-2xl">
               <Image 
-                src="/assets/images/1504384308090-c894fdcc538d.jpg" 
+                src="/ct.png" 
                 alt="Corporate Training" 
                 fill 
                 className="object-cover"

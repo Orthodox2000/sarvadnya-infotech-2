@@ -132,7 +132,7 @@ export default function TDLPage() {
           <div className="relative">
             <div className="aspect-[4/3] rounded-[32px] overflow-hidden relative shadow-2xl">
               <Image 
-                src="/assets/images/1512941937669-90a1b58e7e9c.jpg" 
+                src="/tallycustomization.png" 
                 alt="TDL Development" 
                 fill 
                 className="object-cover"

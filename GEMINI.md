@@ -4,7 +4,27 @@
 - Always mention the application version number when presenting changes or updates.
 - Versioning follows the format `v1.1.x`.
 - Increment the patch version automatically for every iteration/significant set of changes.
-- Current Version: v1.1.110
+- Current Version: v1.1.114
+
+## Recent Changes (v1.1.114)
+- **Robust Map Rendering:** Re-engineered the `getMapSrc` helper on the Contact page and Footer to use a flexible regex that extracts the source URL from anywhere within an iframe embed string. This resolves the "Map Not Configured" issue when iframes are wrapped in other HTML tags.
+- **Unified WhatsApp Update:** Updated the default WhatsApp and Support phone number to `9821309060` across the entire application, including hardcoded fallbacks in the Contact page, Footer, Navbar, Support Button, FAQ, and Quick Access Hub.
+- **Dynamic Hover Button:** Ensured the hover support button prioritized database-driven WhatsApp settings with the new default fallback, maintaining full synchronization with the admin panel.
+- **Version Bump:** Updated application version to v1.1.114.
+
+## Recent Changes (v1.1.113)
+
+## Recent Changes (v1.1.112)
+- **Productbar Mobile Optimization:** Resolved UI issues where "Learning" and "Services" megamenus were overflowing the viewport or appearing too wide on mobile devices.
+- **Smart Alignment Logic:** Implemented responsive alignment logic for megamenus: left-aligned for start items (Products, Modules), centered for middle items (Services), and right-aligned for end items (Learning, Company). This ensures menus are always contained within the mobile screen.
+- **Improved Visual Balance:** Reduced the maximum width of mobile megamenus to `240px` and width to `85vw` to create a more compact and elegant interface that aligns with modern mobile design standards.
+- **Version Bump:** Updated application version to v1.1.112.
+
+## Recent Changes (v1.1.111)
+- **News Route Optimization:** Converted the `/news` page into a high-performance Server Component, eliminating redundant client-side fetch calls and improving SEO.
+- **1-Hour Data Caching:** Implemented a robust 1-hour caching layer for news data using Next.js `unstable_cache`. This drastically reduces database load and ensures sub-second response times for the news hub and ticker.
+- **Smart Cache Invalidation:** Integrated automatic cache purging via `revalidateTag` for all news management operations, ensuring that administrator updates are instantly live while maintaining the benefits of aggressive caching for public visitors.
+- **Version Bump:** Updated application version to v1.1.111.
 
 ## Recent Changes (v1.1.110)
 - **ShapeGrid Build Stabilization:** Resolved a TypeScript error in the `ShapeGrid` component by providing an explicit initial value to the `requestRef` hook. This fix ensures the project passes strict type checking during production builds.

@@ -10,8 +10,8 @@ const FAQ = ({ initialData, initialSettings }: { initialData?: any[], initialSet
     const [isVisible, setIsVisible] = useState(true);
     const [searchQuery, setSearchQuery] = useState("");
     const [isExpanded, setIsExpanded] = useState(false);
-    const [supportPhone, setSupportPhone] = useState(initialSettings?.support_phone || "+919876543210");
-    const [whatsappPhone, setWhatsappPhone] = useState(initialSettings?.whatsapp_phone || initialSettings?.support_phone || "+919876543210");
+    const [supportPhone, setSupportPhone] = useState(initialSettings?.support_phone || "9821309060");
+    const [whatsappPhone, setWhatsappPhone] = useState(initialSettings?.whatsapp_phone || initialSettings?.support_phone || "9821309060");
     const sectionRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {

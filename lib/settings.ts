@@ -35,9 +35,9 @@ export async function getSiteSettings(): Promise<SiteSettings> {
     console.error('Error fetching site settings from MongoDB:', err);
     // Fallback to environment variables
     return {
-      support_phone: process.env.NEXT_PUBLIC_SUPPORT_PHONE || '',
-      whatsapp_phone: process.env.NEXT_PUBLIC_WHATSAPP_PHONE || process.env.NEXT_PUBLIC_SUPPORT_PHONE || '',
-      support_email: process.env.NEXT_PUBLIC_SUPPORT_EMAIL || '',
+      support_phone: process.env.NEXT_PUBLIC_SUPPORT_PHONE || '9821309060',
+      whatsapp_phone: process.env.NEXT_PUBLIC_WHATSAPP_PHONE || process.env.NEXT_PUBLIC_SUPPORT_PHONE || '9821309060',
+      support_email: process.env.NEXT_PUBLIC_SUPPORT_EMAIL || 'info@sarvadnyainfotech.com',
       office_address: process.env.NEXT_PUBLIC_OFFICE_ADDRESS || '',
       facebook_url: process.env.NEXT_PUBLIC_FACEBOOK_URL || '',
       instagram_url: process.env.NEXT_PUBLIC_INSTAGRAM_URL || '',

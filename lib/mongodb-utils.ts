@@ -299,3 +299,44 @@ export async function deletePartner(id: string) {
   revalidateTag('partners', 'default');
   return result;
 }
+
+// News helpers
+async function fetchNews() {
+  const col = await getCollection('news');
+  const data = await col.find({}).sort({ _id: -1 }).toArray();
+  return serializeData(data);
+}
+
+export const getNews = unstable_cache(
+  async () => fetchNews(),
+  ['news-list'],
+  { revalidate: 3600, tags: ['news'] }
+);
+
+export async function addNews(data: any) {
+  const col = await getCollection('news');
+  const result = await col.insertOne({
+    ...data,
+    createdAt: new Date()
+  });
+  revalidateTag('news', 'default');
+  return result;
+}
+
+export async function updateNews(id: string, data: any) {
+  const col = await getCollection('news');
+  const { _id, ...updateData } = data;
+  const result = await col.updateOne(
+    { _id: new ObjectId(id) },
+    { $set: { ...updateData, updatedAt: new Date() } }
+  );
+  revalidateTag('news', 'default');
+  return result;
+}
+
+export async function deleteNews(id: string) {
+  const col = await getCollection('news');
+  const result = await col.deleteOne({ _id: new ObjectId(id) });
+  revalidateTag('news', 'default');
+  return result;
+}

@@ -170,8 +170,8 @@ const Productbar = ({ initialSettings }: { initialSettings?: any }) => {
             {/* Megamenu Content */}
             {activeMenu === item.label && item.subItems && (
               <div 
-                className={`absolute top-[31px] w-[90vw] sm:w-screen max-w-[280px] sm:max-w-[400px] animate-in fade-in slide-in-from-top-1 duration-200 pointer-events-auto
-                  ${index === 0 ? '-left-2 sm:left-0' : index === (items?.length || 0) - 1 ? '-right-2 sm:right-0' : 'left-1/2 -translate-x-1/2'}
+                className={`absolute top-[31px] w-[85vw] sm:w-screen max-w-[240px] sm:max-w-[400px] animate-in fade-in slide-in-from-top-1 duration-200 pointer-events-auto
+                  ${index <= 1 ? '-left-2 sm:left-0' : index >= 3 ? '-right-2 sm:right-0' : 'left-1/2 -translate-x-1/2'}
                 `}
                 onClick={(e) => e.stopPropagation()}
               >

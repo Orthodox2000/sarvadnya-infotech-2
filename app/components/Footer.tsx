@@ -56,7 +56,7 @@ export default function Footer({ settings: initialSettings }: { settings?: SiteS
         }
     };
 
-    const supportPhone = settings?.support_phone || process.env.NEXT_PUBLIC_SUPPORT_PHONE || "9876543210";
+    const supportPhone = settings?.support_phone || process.env.NEXT_PUBLIC_SUPPORT_PHONE || "9821309060";
     const whatsappPhone = settings?.whatsapp_phone || supportPhone;
     const supportEmail = settings?.support_email || process.env.NEXT_PUBLIC_SUPPORT_EMAIL || "info@sarvadnyainfotech.com";
     const officeAddress = settings?.office_address || process.env.NEXT_PUBLIC_OFFICE_ADDRESS || "123, Business Center, Main Road, Pune - 411001";
@@ -66,7 +66,7 @@ export default function Footer({ settings: initialSettings }: { settings?: SiteS
     const getMapSrc = (input: string) => {
         if (!input) return "";
         if (input.includes('<iframe')) {
-            const match = input.match(/src="([^"]+)"/);
+            const match = input.match(/src=["']([^"']+)["']/i);
             return match ? match[1] : "";
         }
         return input;

@@ -77,7 +77,7 @@ export default function TSSPage() {
         <div className="hidden lg:block absolute right-0 top-0 bottom-0 w-1/2 z-0">
           <div className="relative h-full w-full">
             <Image 
-              src="/assets/images/1552664730-d307ca884978.jpg" 
+              src="/tss-icon.png" 
               alt="Cinematic TSS Renewal" 
               fill 
               className="object-cover"
@@ -140,7 +140,7 @@ export default function TSSPage() {
           <div className="relative">
             <div className="aspect-[4/3] rounded-[32px] overflow-hidden relative shadow-2xl bg-slate-100/50">
               <Image 
-                src="/assets/images/1552664730-d307ca884978.jpg" 
+                src="/tssgold.png" 
                 alt="TSS Renewal" 
                 fill 
                 className="object-contain p-4"
