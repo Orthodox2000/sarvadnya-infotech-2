@@ -18,16 +18,16 @@ export type SiteSettings = {
     map_iframe_url: string;
 };
 
-export default function Footer() {
+export default function Footer({ settings: initialSettings }: { settings?: SiteSettings | null }) {
     const [year, setYear] = useState<number>(2026);
-    const [settings, setSettings] = useState<SiteSettings | null>(null);
+    const [settings, setSettings] = useState<SiteSettings | null>(initialSettings || null);
     const [dynamicModules, setDynamicModules] = useState<any[]>([]);
 
     useEffect(() => {
         setYear(new Date().getFullYear());
-        fetchSettings();
+        if (!initialSettings) fetchSettings();
         fetchModules();
-    }, []);
+    }, [initialSettings]);
 
     const fetchSettings = async () => {
         try {
@@ -56,14 +56,34 @@ export default function Footer() {
         }
     };
 
-    const supportPhone = settings?.support_phone || process.env.NEXT_PUBLIC_SUPPORT_PHONE || "+919876543210";
+    const supportPhone = settings?.support_phone || process.env.NEXT_PUBLIC_SUPPORT_PHONE || "9876543210";
     const whatsappPhone = settings?.whatsapp_phone || supportPhone;
     const supportEmail = settings?.support_email || process.env.NEXT_PUBLIC_SUPPORT_EMAIL || "info@sarvadnyainfotech.com";
     const officeAddress = settings?.office_address || process.env.NEXT_PUBLIC_OFFICE_ADDRESS || "123, Business Center, Main Road, Pune - 411001";
     const mapUrl = settings?.map_iframe_url || process.env.NEXT_PUBLIC_MAP_IFRAME_URL || "";
     
+    // Helper to extract src from iframe tag if provided
+    const getMapSrc = (input: string) => {
+        if (!input) return "";
+        if (input.includes('<iframe')) {
+            const match = input.match(/src="([^"]+)"/);
+            return match ? match[1] : "";
+        }
+        return input;
+    };
+
+    const mapSrc = getMapSrc(mapUrl);
+    
+    const formatPhoneDisplay = (phone: string) => {
+        const cleaned = phone.trim();
+        if (cleaned.startsWith('+')) return cleaned;
+        if (cleaned.startsWith('91') && cleaned.length === 12) return `+${cleaned}`;
+        if (cleaned.length === 10) return `+91${cleaned}`;
+        return cleaned;
+    };
+
     const socialLinks = [
-        { name: 'WhatsApp', url: `https://wa.me/${whatsappPhone.replace(/\D/g, '')}`, hoverColor: 'hover:bg-[#25D366] hover:border-[#25D366]', icon: (
+        { name: 'WhatsApp', url: `https://wa.me/${whatsappPhone.replace(/\D/g, '').length === 10 ? '91' + whatsappPhone.replace(/\D/g, '') : whatsappPhone.replace(/\D/g, '')}`, hoverColor: 'hover:bg-[#25D366] hover:border-[#25D366]', icon: (
             <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.414 0 .004 5.411.002 12.048c0 2.12.54 4.19 1.563 6.024L0 24l6.135-1.608a11.81 11.81 0 005.908 1.567h.005c6.635 0 12.045-5.411 12.047-12.047 0-3.217-1.252-6.242-3.525-8.514z"/></svg>
         )},
         { name: 'Facebook', url: settings?.facebook_url || '#', hoverColor: 'hover:bg-[#1877F2] hover:border-[#1877F2]', icon: (
@@ -137,7 +157,7 @@ export default function Footer() {
                     </Link>
                     <p className="text-sm leading-relaxed text-white/90">
                         Certified Tally Partner providing end-to-end business solutions, 
-                        cloud migration, and expert technical support to streamline your 
+                        cloud migration, and professional technical support to streamline your 
                         accounting and compliance workflows.
                     </p>
 
@@ -214,17 +234,19 @@ export default function Footer() {
                             </svg>
                             <div className="flex flex-col gap-2">
                                 {supportPhone.split(',').map((num, i) => (
-                                    <a key={i} href={`tel:${num.trim()}`} className="hover:text-white transition-colors block leading-tight">{num.trim()}</a>
+                                    <a key={i} href={`tel:${num.trim()}`} className="hover:text-white transition-colors block leading-tight">
+                                        {formatPhoneDisplay(num.trim())}
+                                    </a>
                                 ))}
                             </div>
                         </li>
                     </ul>
                     
                     {/* Map Iframe */}
-                    {mapUrl && (
+                    {mapSrc && (
                         <div className="w-full h-32 rounded-xl overflow-hidden border border-white/10 shadow-lg">
                             <iframe 
-                                src={mapUrl}
+                                src={mapSrc}
                                 width="100%" 
                                 height="100%" 
                                 style={{ border: 0 }} 

@@ -4,9 +4,86 @@
 - Always mention the application version number when presenting changes or updates.
 - Versioning follows the format `v1.1.x`.
 - Increment the patch version automatically for every iteration/significant set of changes.
-- Current Version: v1.1.88
+- Current Version: v1.1.110
 
-## Recent Changes (v1.1.88)
+## Recent Changes (v1.1.110)
+- **ShapeGrid Build Stabilization:** Resolved a TypeScript error in the `ShapeGrid` component by providing an explicit initial value to the `requestRef` hook. This fix ensures the project passes strict type checking during production builds.
+- **Version Bump:** Updated application version to v1.1.110.
+
+## Recent Changes (v1.1.109)
+- **Careers Content Expansion:** Enhanced the Careers management system with dedicated fields for "About the Role", "What We're Looking For", and "Why Join Us?".
+- **Admin Interface Upgrade:** Integrated high-capacity text areas into the Careers Admin panel, allowing administrators to provide detailed, multi-section job descriptions.
+- **Dynamic Job Accordion:** Updated the public `JobAccordion` component to intelligently render the new content sections. Added automatic list formatting (via newline splitting) for the "Looking For" and "Why Join Us?" areas, ensuring a professional and organized presentation of job details.
+- **Version Bump:** Updated application version to v1.1.109.
+
+## Recent Changes (v1.1.108)
+- **Footer Menu Restoration:** Restored the 5-column footer layout and the "Support on Tally" menu section that was unintentionally modified. Re-synchronized the menu options with the established project structure while preserving the recent server-side settings integration.
+- **Version Bump:** Updated application version to v1.1.108.
+
+## Recent Changes (v1.1.107)
+- **Desktop Layout Optimization:** Reduced the vertical gap between the `Productbar` and `HomeHero` content on desktop viewports using a negative top margin (`lg:-mt-6`) and adjusted minimum height. Mobile and tablet views remain unaffected to preserve their optimal spacing.
+- **Background Softening:** Lightened the hero background color to a soft off-white (`#fafafa`) and reduced the `ShapeGrid` opacity to `50%` for a cleaner, more elegant visual balance.
+- **Version Bump:** Updated application version to v1.1.107.
+
+## Recent Changes (v1.1.106)
+- **High-Contrast Grid Patterns:** Re-engineered the `ShapeGrid` lightness logic to optimize visibility on light-themed backgrounds. Substituted the legacy "whiter" border logic with a dynamic darkening approach (L-15), ensuring hexagons "pop" with clear definition.
+- **Enhanced Pattern Presence:** Increased the `HomeHero` background pattern opacity to `60%`, creating a more vibrant and interactive atmosphere while maintaining brand color synchronization.
+- **Version Bump:** Updated application version to v1.1.106.
+
+## Recent Changes (v1.1.105)
+- **Hero Visual Refinement:** Completed a comprehensive visual overhaul of the `HomeHero` to perfectly match the new light background. Darkened all typography (Slate-900 titles, Slate-600 descriptions) for maximum contrast and legibility. 
+- **Premium Image Presentation:** Redesigned the product visual container with a solid white card, refined Slate-200 borders, and optimized soft shadows, replacing the previous glassmorphism effect for a cleaner, more grounded aesthetic on the light canvas.
+- **Improved UI Accents:** Updated badges and secondary CTAs with subtle indigo and slate tints to maintain brand identity while ensuring a professional, modern feel.
+- **Version Bump:** Updated application version to v1.1.105.
+
+## Recent Changes (v1.1.104)
+- **Light Theme Typography Optimization:** Completely overhauled the `HomeHero` typography and UI elements to perfectly complement the new white ripple background. Transitioned all light-on-dark text to high-contrast dark-on-light shades (Slate-900, Slate-600) and refined brand accents (Indigo-600) for maximum legibility and a clean, modern aesthetic.
+- **Version Bump:** Updated application version to v1.1.104.
+
+## Recent Changes (v1.1.103)
+- **Upload API Type Fix:** Resolved a TypeScript build error in the Vercel Blob upload route by correcting the SDK property from `addSizeToPlainName` to `addRandomSuffix`. This ensures stable builds while maintaining descriptive, predictable filenames for cloud assets.
+- **Version Bump:** Updated application version to v1.1.103.
+
+## Recent Changes (v1.1.102)
+- **Responsive Grid Density:** Implemented dynamic `squareSize` for the `HomeHero` background pattern. The grid now automatically scales to `40` on desktop screens and `25` on mobile devices, ensuring optimal visual density and performance across all viewports.
+- **Version Bump:** Updated application version to v1.1.102.
+
+## Recent Changes (v1.1.101)
+- **Fluid Color Flow:** Re-engineered the `ShapeGrid` component to support internal color interpolation (lerping) and position-based hue shifting.
+- **Dynamic Atmosphere:** The hero background now features a smooth, multi-color "flow" that evolves over time and space, while remaining perfectly synchronized with the active slide's brand palette.
+- **Improved Performance:** Consolidated the dual-layered grid system into a single, highly efficient canvas renderer that handles both brand tints and "whiter" border highlights natively.
+- **Version Bump:** Updated application version to v1.1.101.
+
+## Recent Changes (v1.1.100)
+- **Grid Pattern Refinement:** Optimized the `HomeHero` background by reducing the hexagon size to `25` for a denser, more intricate texture.
+- **Enhanced Border Visibility:** Implemented a dual-layered grid system to achieve "whiter" hexagon borders while maintaining dynamic color synchronization, significantly improving pattern definition against the dark background.
+- **Version Bump:** Updated application version to v1.1.100.
+
+## Recent Changes (v1.1.99)
+- **Dynamic Grid Synchronization:** Implemented real-time color synchronization between the `ShapeGrid` and the active hero slide. The hexagon borders and hover effects now reactively update to match each slide's unique brand palette (`colorFrom` and `colorTo`).
+- **Background Streamlining:** Removed the legacy "Animated Glow" element to eliminate visual clutter and allow the geometric `ShapeGrid` to serve as the primary immersive background layer.
+- **Version Bump:** Updated application version to v1.1.99.
+
+## Recent Changes (v1.1.98)
+- **ShapeGrid Enhancement:** Integrated a sophisticated ReactBits-inspired `ShapeGrid` component into the `HomeHero` background. Added support for hexagons, triangles, and circles with dynamic trail effects and slide-synchronized colors.
+- **Critical Bug Fix:** Resolved a `ReferenceError: fetchWithCache is not defined` in the `CertifiedPartners` component by adding the missing client-api import.
+- **Workspace Cleanup:** Removed redundant source files for the ShapeGrid component to maintain project hygiene.
+- **Version Bump:** Updated application version to v1.1.98.
+
+## Recent Changes (v1.1.96)
+- **TypeScript Prop Stabilization:** Resolved "IntrinsicAttributes" errors by correctly defining and implementing props for the `Footer` and `Productbar` components. They now natively accept initial settings data from the server.
+- **Robust Data Serialization:** Refined the `serializeData` utility to recursively handle nested objects and explicitly convert MongoDB `ObjectId` instances to strings, preventing Client Component serialization failures.
+- **Layout Consistency:** Ensured that the `Productbar` and `Navbar` are synchronized with the same server-fetched settings to prevent "flash of unstyled content" for contact information.
+- **Version Bump:** Updated application version to v1.1.96.
+
+## Recent Changes (v1.1.95)
+- **Terminology Refinement:** Removed or replaced 'Expert' and 'Experts' labels across the site to maintain a more professional and grounded tone.
+- **Support Interface Updates:** Changed '50+ Experts Online' to '50+ Support Team Online' on the Contact page and updated 'Expert Support' to 'Technical Support' in the Hub.
+- **AI Chat Branding:** Renamed 'AI Expert' to 'AI Assistant' in the quick support modal and updated associated greeting messages.
+- **CTA Updates:** Replaced 'Get Expert Support' with 'Get Priority Support' in the navigation and 'Get Expert Help' with 'Get Professional Help' in the Hub.
+- **Version Bump:** Updated application version to v1.1.90.
+
+## Recent Changes (v1.1.89)
 - **Contact Page Type Alignment:** Resolved a TypeScript build error by updating the `SiteSettings` type definition within `app/contact/page.tsx`. Added the missing `whatsapp_phone` field to ensure full compatibility with the dynamic settings API and established project standards.
 - **Version Bump:** Updated application version to v1.1.88.
 

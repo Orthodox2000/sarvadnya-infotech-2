@@ -103,8 +103,8 @@ export default function JobAccordion({ job, onApply }: JobAccordionProps) {
               <span className="w-1.5 h-1.5 rounded-full bg-[#7338a0]"></span>
               About the Role
             </h4>
-            <p className="text-slate-600 leading-relaxed text-sm md:text-base">
-              {job.fullDescription}
+            <p className="text-slate-600 leading-relaxed text-sm md:text-base whitespace-pre-wrap">
+              {job.aboutRole || job.fullDescription}
             </p>
           </div>
 
@@ -115,12 +115,21 @@ export default function JobAccordion({ job, onApply }: JobAccordionProps) {
                 What We're Looking For
               </h4>
               <ul className="space-y-3">
-                {job.requirements.map((req, i) => (
-                  <li key={i} className="flex items-start gap-3 text-sm text-slate-700">
-                    <svg className="w-4 h-4 text-emerald-500 mt-1 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" /></svg>
-                    {req}
-                  </li>
-                ))}
+                {job.lookingFor ? (
+                  job.lookingFor.split('\n').filter(line => line.trim()).map((req, i) => (
+                    <li key={i} className="flex items-start gap-3 text-sm text-slate-700">
+                      <svg className="w-4 h-4 text-emerald-500 mt-1 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" /></svg>
+                      {req}
+                    </li>
+                  ))
+                ) : (
+                  (job.requirements || []).map((req, i) => (
+                    <li key={i} className="flex items-start gap-3 text-sm text-slate-700">
+                      <svg className="w-4 h-4 text-emerald-500 mt-1 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" /></svg>
+                      {req}
+                    </li>
+                  ))
+                )}
               </ul>
             </div>
 
@@ -130,12 +139,21 @@ export default function JobAccordion({ job, onApply }: JobAccordionProps) {
                 Why Join Us?
               </h4>
               <ul className="space-y-3">
-                {job.benefits.map((benefit, i) => (
-                  <li key={i} className="flex items-start gap-3 text-sm text-slate-700">
-                    <svg className="w-4 h-4 text-amber-500 mt-1 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                    {benefit}
-                  </li>
-                ))}
+                {job.whyJoinUs ? (
+                  job.whyJoinUs.split('\n').filter(line => line.trim()).map((benefit, i) => (
+                    <li key={i} className="flex items-start gap-3 text-sm text-slate-700">
+                      <svg className="w-4 h-4 text-amber-500 mt-1 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                      {benefit}
+                    </li>
+                  ))
+                ) : (
+                  (job.benefits || []).map((benefit, i) => (
+                    <li key={i} className="flex items-start gap-3 text-sm text-slate-700">
+                      <svg className="w-4 h-4 text-amber-500 mt-1 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                      {benefit}
+                    </li>
+                  ))
+                )}
               </ul>
             </div>
           </div>

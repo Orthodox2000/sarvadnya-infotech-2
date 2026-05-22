@@ -18,7 +18,7 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      text: "Hello! I'm your Tally Expert AI. How can I assist you with your business accounting today?",
+      text: "Hello! I'm your Tally Assistant AI. How can I assist you with your business accounting today?",
       sender: 'ai',
       timestamp: new Date()
     }
@@ -110,7 +110,7 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
                 <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-[#0f0529] rounded-full"></span>
               </div>
               <div>
-                <h3 className="text-sm font-black tracking-tight">AI Expert</h3>
+                <h3 className="text-sm font-black tracking-tight">AI Assistant</h3>
                 <p className="text-[10px] text-indigo-300 font-bold uppercase tracking-widest">Online Now</p>
               </div>
             </div>

@@ -28,13 +28,14 @@ const StarRating = memo(function StarRating({ rating, size = "w-4 h-4" }: { rati
     );
 });
 
-const CustomerReviews = () => {
-    const [reviews, setReviews] = useState<Review[]>([]);
+const CustomerReviews = ({ initialData }: { initialData?: Review[] }) => {
+    const [reviews, setReviews] = useState<Review[]>(initialData || []);
     const [isVisible, setIsVisible] = useState(false);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(!initialData);
     const sectionRef = useRef<HTMLElement>(null);
 
     useEffect(() => {
+        if (initialData) return;
         const fetchReviews = async () => {
             try {
                 const response = await fetch('/api/admin/reviews');
@@ -50,7 +51,7 @@ const CustomerReviews = () => {
         };
 
         fetchReviews();
-    }, []);
+    }, [initialData]);
 
     useEffect(() => {
         if (loading || reviews.length === 0) return;

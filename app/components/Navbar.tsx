@@ -18,17 +18,17 @@ export type SiteSettings = {
   map_iframe_url: string;
 };
 
-export default function Navbar() {
-  const [settings, setSettings] = useState<SiteSettings | null>(null);
+export default function Navbar({ initialSettings }: { initialSettings?: any }) {
+  const [settings, setSettings] = useState<any>(initialSettings || null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
-    fetchSettings();
+    if (!initialSettings) fetchSettings();
     // Prefetch common data to improve perceived speed and reduce background error rate
     prefetchData('/api/modules');
     prefetchData('/api/content?section=home_hero');
     prefetchData('/api/content?section=home_stats');
-  }, []);
+  }, [initialSettings]);
 
   const fetchSettings = async () => {
     try {
@@ -41,7 +41,15 @@ export default function Navbar() {
     }
   };
 
-  const supportPhone = settings?.support_phone || process.env.NEXT_PUBLIC_SUPPORT_PHONE || "+919876543210";
+    const formatPhoneDisplay = (phone: string) => {
+        const cleaned = phone.trim();
+        if (cleaned.startsWith('+')) return cleaned;
+        if (cleaned.startsWith('91') && cleaned.length === 12) return `+${cleaned}`;
+        if (cleaned.length === 10) return `+91${cleaned}`;
+        return cleaned;
+    };
+
+    const supportPhone = settings?.support_phone || process.env.NEXT_PUBLIC_SUPPORT_PHONE || "9876543210";
 
   const navLinks: { label: string; href: string }[] = [];
 
@@ -192,7 +200,7 @@ export default function Navbar() {
               onClick={() => setIsMenuOpen(false)}
               className="flex items-center justify-center h-12 rounded-xl bg-[#7338a0] text-[11px] font-black uppercase tracking-widest text-white shadow-xl shadow-indigo-500/20"
             >
-              Get Expert Support
+              Get Priority Support
             </Link>
           </div>
 
@@ -203,7 +211,7 @@ export default function Navbar() {
             <svg className="w-4 h-4 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1.031.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
             </svg>
-            <span className="text-[10px] font-black uppercase tracking-widest">{supportPhone}</span>
+            <span className="text-[10px] font-black uppercase tracking-widest">{formatPhoneDisplay(supportPhone.split(',')[0])}</span>
           </a>
 
           {/* Explicit Unexpand Button at very bottom */}

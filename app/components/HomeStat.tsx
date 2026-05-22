@@ -66,13 +66,14 @@ const DEFAULT_STATS = [
   { label: 'Years Experience', value: 15, suffix: '+' }
 ];
 
-export default function HomeStat() {
-  const [stats, setStats] = useState<any[]>(DEFAULT_STATS);
-  const [loading, setLoading] = useState(true);
+export default function HomeStat({ initialData }: { initialData?: any[] }) {
+  const [stats, setStats] = useState<any[]>(initialData || DEFAULT_STATS);
+  const [loading, setLoading] = useState(!initialData);
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
+    if (initialData) return;
     const fetchStats = async () => {
       try {
         const data = await fetchWithCache('/api/content?section=home_stats');
@@ -91,7 +92,7 @@ export default function HomeStat() {
       }
     };
     fetchStats();
-  }, []);
+  }, [initialData]);
 
   useEffect(() => {
     const currentRef = sectionRef.current;

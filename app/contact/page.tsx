@@ -37,7 +37,15 @@ export default function ContactPage() {
     }
   };
 
-  const supportPhone = settings?.support_phone || process.env.NEXT_PUBLIC_SUPPORT_PHONE || "+919876543210";
+  const formatPhoneDisplay = (phone: string) => {
+      const cleaned = phone.trim();
+      if (cleaned.startsWith('+')) return cleaned;
+      if (cleaned.startsWith('91') && cleaned.length === 12) return `+${cleaned}`;
+      if (cleaned.length === 10) return `+91${cleaned}`;
+      return cleaned;
+  };
+
+  const supportPhone = settings?.support_phone || process.env.NEXT_PUBLIC_SUPPORT_PHONE || "9876543210";
   const whatsappPhone = settings?.whatsapp_phone || (settings as any)?.whatsapp_phone || supportPhone;
   const supportEmail = settings?.support_email || process.env.NEXT_PUBLIC_SUPPORT_EMAIL || "info@sarvadnyainfotech.com";
   
@@ -81,7 +89,7 @@ export default function ContactPage() {
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
               </svg>
-              {num.trim()}
+              {formatPhoneDisplay(num.trim())}
             </a>
           ))}
           <a 
@@ -213,11 +221,11 @@ export default function ContactPage() {
                   <div className="flex -space-x-2">
                     {[1,2,3].map(i => (
                       <div key={i} className="w-6 h-6 rounded-full border-2 border-white bg-slate-100 overflow-hidden shadow-sm">
-                        <Image src={`/sa.png`} alt="Expert" width={24} height={24} className="object-cover" />
+                        <Image src={`/sa.png`} alt="Support" width={24} height={24} className="object-cover" />
                       </div>
                     ))}
                   </div>
-                  <span className="text-[10px] text-slate-500 font-bold">50+ Experts Online</span>
+                  <span className="text-[10px] text-slate-500 font-bold">50+ Support Team Online</span>
                 </div>
               </div>
             </div>

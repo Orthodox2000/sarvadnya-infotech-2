@@ -105,7 +105,7 @@ export default function AdminCareers() {
         </div>
         {activeTab === 'listings' && !editingJob && (
           <button 
-            onClick={() => setEditingJob({ title: '', department: '', location: '', type: 'Full-time', shortDescription: '', fullDescription: '', postedAt: new Date().toISOString(), requirements: [], benefits: [] })}
+            onClick={() => setEditingJob({ title: '', department: '', location: '', type: 'Full-time', shortDescription: '', fullDescription: '', aboutRole: '', lookingFor: '', whyJoinUs: '', postedAt: new Date().toISOString(), requirements: [], benefits: [] })}
             className="bg-[#7338a0] text-white px-6 py-3 rounded-2xl font-bold hover:shadow-lg transition-all"
           >
             Add New Job
@@ -185,12 +185,34 @@ export default function AdminCareers() {
               required
             />
             
+            <div className="grid grid-cols-1 gap-6">
+              <textarea 
+                placeholder="About the Role" 
+                className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#7338a0] h-32"
+                value={editingJob.aboutRole || ''}
+                onChange={e => setEditingJob({...editingJob, aboutRole: e.target.value})}
+              />
+              
+              <textarea 
+                placeholder="What We're Looking For" 
+                className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#7338a0] h-32"
+                value={editingJob.lookingFor || ''}
+                onChange={e => setEditingJob({...editingJob, lookingFor: e.target.value})}
+              />
+              
+              <textarea 
+                placeholder="Why Join Us?" 
+                className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#7338a0] h-32"
+                value={editingJob.whyJoinUs || ''}
+                onChange={e => setEditingJob({...editingJob, whyJoinUs: e.target.value})}
+              />
+            </div>
+            
             <textarea 
-              placeholder="Full Description" 
+              placeholder="Full Description (Technical/Additional Info)" 
               className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#7338a0] h-48"
               value={editingJob.fullDescription || ''}
               onChange={e => setEditingJob({...editingJob, fullDescription: e.target.value})}
-              required
             />
 
             <div className="flex gap-4">

@@ -80,13 +80,22 @@ interface QuickAccessCategory {
   links: QuickAccessLink[];
 }
 
-export default function QuickAccessHub() {
-  const [settings, setSettings] = useState<any>(null);
-  const [dynamicModules, setDynamicModules] = useState<any[]>([]);
-  const [dbCategories, setDbCategories] = useState<QuickAccessCategory[]>([]);
-  const [loading, setLoading] = useState(true);
+export default function QuickAccessHub({ 
+  initialData, 
+  initialModules, 
+  initialSettings 
+}: { 
+  initialData?: QuickAccessCategory[], 
+  initialModules?: any[],
+  initialSettings?: any
+}) {
+  const [settings, setSettings] = useState<any>(initialSettings || null);
+  const [dynamicModules, setDynamicModules] = useState<any[]>(initialModules || []);
+  const [dbCategories, setDbCategories] = useState<QuickAccessCategory[]>(initialData || []);
+  const [loading, setLoading] = useState(!initialData && !initialModules && !initialSettings);
 
   useEffect(() => {
+    if (initialData && initialModules && initialSettings) return;
     const fetchData = async () => {
       try {
         const [settingsData, modulesData, catData] = await Promise.all([
@@ -105,9 +114,17 @@ export default function QuickAccessHub() {
       }
     };
     fetchData();
-  }, []);
+  }, [initialData, initialModules, initialSettings]);
 
-  const supportPhone = settings?.support_phone || "+919876543210";
+  const formatPhoneDisplay = (phone: string) => {
+      const cleaned = phone.trim();
+      if (cleaned.startsWith('+')) return cleaned;
+      if (cleaned.startsWith('91') && cleaned.length === 12) return `+${cleaned}`;
+      if (cleaned.length === 10) return `+91${cleaned}`;
+      return cleaned;
+  };
+
+  const supportPhone = settings?.support_phone || "9876543210";
   const whatsappPhone = settings?.whatsapp_phone || supportPhone;
 
   const defaultCategories: QuickAccessCategory[] = [
@@ -152,7 +169,7 @@ export default function QuickAccessHub() {
           ]
     },
     {
-      title: "Expert Support",
+      title: "Technical Support",
       description: "Priority technical assistance and troubleshooting.",
       iconName: "support",
       theme: { accent: "bg-emerald-500", bg: "bg-emerald-50", text: "text-emerald-600", hoverBg: "hover:bg-emerald-600", border: "border-emerald-100" },
@@ -170,45 +187,45 @@ export default function QuickAccessHub() {
   if (loading) return <div className="w-full h-96 bg-white flex items-center justify-center"><div className="w-8 h-8 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin"></div></div>;
 
   return (
-    <section className="w-full bg-white py-10 md:py-16 px-5 border-y border-slate-100">
-      <div className="max-w-6xl mx-auto flex flex-col">
+    <section className="w-full bg-slate-50 py-16 md:py-24 px-5 border-y border-slate-100">
+      <div className="max-w-7xl mx-auto flex flex-col">
         
         {/* Header - Compact */}
-        <div className="flex flex-col md:flex-row items-end justify-between gap-3 mb-10 border-b border-slate-100 pb-6 shrink-0">
-          <div className="max-w-xl">
-            <span className="text-[10px] font-black uppercase tracking-[0.3em] text-indigo-600 block mb-1.5">
+        <div className="flex flex-col md:flex-row items-end justify-between gap-6 mb-12 border-b border-slate-200 pb-8">
+          <div className="max-w-xl text-left">
+            <span className="text-[10px] font-black uppercase tracking-[0.3em] text-indigo-600 block mb-2">
               Solutions Directory
             </span>
-            <h2 className="text-3xl lg:text-4xl font-black text-slate-900 tracking-tighter mb-1.5 leading-tight">
-              Quick Access <span className="text-slate-400">Hub</span>
+            <h2 className="text-3xl lg:text-4xl font-black text-slate-900 tracking-tighter mb-2 leading-tight">
+              Quick Access <span className="text-indigo-600/50">Hub</span>
             </h2>
             <p className="text-[13px] text-slate-500 font-bold leading-relaxed max-w-lg opacity-80">
-              Complete Sarvadnya ecosystem. A unified dashboard designed for professional business management.
+              Complete Sarvadnya ecosystem. A unified dashboard designed for professional business management and instant technical support.
             </p>
           </div>
           <Link 
             href="/contact"
-            className="hidden md:inline-flex h-10 px-8 items-center justify-center rounded-full bg-slate-900 text-white font-black text-[10px] uppercase tracking-widest hover:bg-indigo-600 transition-all active:scale-95 shadow-lg shadow-slate-200"
+            className="inline-flex h-12 px-10 items-center justify-center rounded-full bg-indigo-600 text-white font-black text-[10px] uppercase tracking-widest hover:bg-indigo-700 transition-all active:scale-95 shadow-xl shadow-indigo-200"
           >
-            Get Expert Help
+            Get Professional Help Now
           </Link>
         </div>
 
         {/* Custom Dashboard Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 h-full min-h-0 lg:max-h-[120dvh]">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 items-stretch">
           
           {/* Column 1: Core & Cloud (Stacked vertical lists) */}
-          <div className="flex flex-col gap-6 md:col-span-1 h-full min-h-0">
+          <div className="flex flex-col gap-6 md:col-span-1">
             {categories.slice(0, 2).map((cat, idx) => (
-              <div key={idx} className="group flex flex-col bg-white rounded-[1.5rem] p-6 border border-slate-100 hover:shadow-xl hover:shadow-indigo-500/5 transition-all duration-500 relative overflow-hidden flex-1 min-h-[250px]">
+              <div key={idx} className="group flex flex-col bg-white rounded-[2rem] p-8 border border-slate-200 hover:shadow-2xl hover:shadow-indigo-500/5 transition-all duration-500 relative overflow-hidden h-full">
                 <div className={`absolute top-0 left-0 w-1.5 h-full ${cat.theme.accent}`} />
-                <div className="flex items-center gap-4 mb-4">
-                  <div className={`w-11 h-11 rounded-xl flex items-center justify-center ${cat.theme.bg} ${cat.theme.text} transition-colors duration-500`}>
+                <div className="flex items-center gap-4 mb-5">
+                  <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${cat.theme.bg} ${cat.theme.text} transition-colors duration-500 group-hover:scale-110`}>
                     {getIcon(cat.iconName)}
                   </div>
                   <h3 className="text-xl font-black text-slate-900 tracking-tight leading-none">{cat.title}</h3>
                 </div>
-                <p className="text-[12px] text-slate-500 leading-relaxed mb-6 font-bold opacity-70">{cat.description}</p>
+                <p className="text-[12px] text-slate-500 leading-relaxed mb-8 font-bold opacity-70">{cat.description}</p>
                 
                 <div className="flex flex-col gap-2 mt-auto">
                   {cat.links.map((link, li) => (
@@ -225,21 +242,21 @@ export default function QuickAccessHub() {
           </div>
 
           {/* Column 2: Custom Modules (Full Height Stack) */}
-          <div className="md:col-span-1 h-full min-h-0">
+          <div className="md:col-span-1 h-full">
             {categories[2] && (
-              <div className="group flex flex-col bg-slate-50/50 rounded-[2.5rem] p-8 border border-indigo-50 hover:shadow-2xl hover:shadow-indigo-500/10 transition-all duration-500 relative overflow-hidden h-full min-h-[500px]">
-                <div className={`absolute top-0 left-0 w-full h-2.5 ${categories[2].theme.accent}`} />
-                <div className="flex flex-col items-center text-center mb-8 shrink-0">
-                  <div className={`w-16 h-16 rounded-[1.5rem] flex items-center justify-center ${categories[2].theme.bg} ${categories[2].theme.text} shadow-inner mb-5 transition-transform duration-500 group-hover:scale-110`}>
+              <div className="group flex flex-col bg-white rounded-[2.5rem] p-8 border border-indigo-100 hover:shadow-2xl hover:shadow-indigo-500/10 transition-all duration-500 relative overflow-hidden h-full min-h-[500px]">
+                <div className={`absolute top-0 left-0 w-full h-2 ${categories[2].theme.accent}`} />
+                <div className="flex flex-col items-center text-center mb-10 shrink-0 pt-2">
+                  <div className={`w-20 h-20 rounded-[2rem] flex items-center justify-center ${categories[2].theme.bg} ${categories[2].theme.text} shadow-inner mb-6 transition-transform duration-500 group-hover:scale-110`}>
                     {getIcon(categories[2].iconName)}
                   </div>
                   <h3 className="text-2xl lg:text-3xl font-black text-slate-900 tracking-tighter mb-3 leading-none">{categories[2].title}</h3>
                   <p className="text-[13px] text-slate-500 leading-relaxed font-bold opacity-70 px-3">{categories[2].description}</p>
                 </div>
                 
-                <div className="flex-1 overflow-y-auto pr-3 custom-scrollbar space-y-3 pb-5">
+                <div className="flex-1 space-y-3 pb-8">
                   {categories[2].links.map((link, li) => (
-                    <Link key={li} href={link.href} className="flex items-center justify-between group/link px-6 py-5 rounded-2xl bg-white border border-slate-100 text-[13px] font-black text-slate-800 hover:text-white hover:bg-indigo-600 hover:border-indigo-600 transition-all duration-300 shadow-sm">
+                    <Link key={li} href={link.href} className="flex items-center justify-between group/link px-6 py-5 rounded-2xl bg-slate-50/50 border border-slate-100 text-[13px] font-black text-slate-800 hover:text-white hover:bg-indigo-600 hover:border-indigo-600 transition-all duration-300 shadow-sm">
                       <span className="truncate mr-4">{link.label}</span>
                       <svg className="w-5 h-5 opacity-0 group-hover/link:opacity-100 transition-opacity -translate-x-2 group-hover/link:translate-x-0 duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -248,9 +265,10 @@ export default function QuickAccessHub() {
                   ))}
                 </div>
                 
-                <div className="mt-6 pt-6 border-t border-indigo-100 text-center shrink-0">
-                  <Link href="/modules" className="text-[10px] font-black uppercase tracking-[0.2em] text-indigo-600 hover:text-indigo-800 transition-colors">
-                    Explore All Industrial Modules →
+                <div className="mt-auto pt-8 border-t border-slate-100 text-center shrink-0">
+                  <Link href="/modules" className="text-[10px] font-black uppercase tracking-[0.2em] text-indigo-600 hover:text-indigo-800 transition-colors inline-flex items-center gap-2">
+                    Explore All Industrial Modules 
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M13 7l5 5m0 0l-5 5m5-5H6" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"/></svg>
                   </Link>
                 </div>
               </div>
@@ -258,21 +276,22 @@ export default function QuickAccessHub() {
           </div>
 
           {/* Column 3: Expert Support (Full Height Stack) */}
-          <div className="md:col-span-1 h-full min-h-0">
+          <div className="md:col-span-1 h-full">
             {categories[3] && (
-              <div className="group flex flex-col bg-white rounded-[2rem] p-8 border border-slate-100 hover:shadow-2xl hover:shadow-emerald-500/5 transition-all duration-500 relative overflow-hidden h-full min-h-[500px]">
-                <div className={`absolute top-0 right-0 w-2.5 h-full ${categories[3].theme.accent}`} />
+              <div className="group flex flex-col bg-white rounded-[2rem] p-8 border border-slate-200 hover:shadow-2xl hover:shadow-emerald-500/5 transition-all duration-500 relative overflow-hidden h-full min-h-[500px]">
+                <div className={`absolute top-0 right-0 w-2 h-full ${categories[3].theme.accent}`} />
                 <div className="flex items-center gap-5 mb-8 shrink-0">
-                  <div className={`w-14 h-14 rounded-xl flex items-center justify-center ${categories[3].theme.bg} ${categories[3].theme.text} transition-colors duration-500`}>
+                  <div className={`w-16 h-16 rounded-xl flex items-center justify-center ${categories[3].theme.bg} ${categories[3].theme.text} transition-colors duration-500 group-hover:rotate-12`}>
                     {getIcon(categories[3].iconName)}
                   </div>
                   <div>
                     <h3 className="text-2xl lg:text-3xl font-black text-slate-900 tracking-tight leading-none mb-1.5">{categories[3].title}</h3>
+                    <p className="text-[11px] text-emerald-600 font-black uppercase tracking-widest">Priority Access</p>
                   </div>
                 </div>
                 <p className="text-[13px] text-slate-500 leading-relaxed mb-8 font-bold opacity-70 shrink-0">{categories[3].description}</p>
                 
-                <div className="flex-1 overflow-y-auto pr-3 custom-scrollbar space-y-3 pb-5">
+                <div className="flex-1 space-y-3 pb-8">
                   {categories[3].links.map((link, li) => (
                     <Link key={li} href={link.href} className="flex items-center justify-between group/link px-6 py-5 rounded-2xl bg-slate-50 border border-slate-100 text-[13px] font-black text-slate-800 hover:text-white hover:bg-emerald-600 hover:border-emerald-600 transition-all duration-300 shadow-sm">
                       <span className="truncate mr-4">{link.label}</span>
@@ -283,11 +302,12 @@ export default function QuickAccessHub() {
                   ))}
                 </div>
 
-                <div className="mt-6 shrink-0">
-                  <div className="bg-emerald-50 rounded-[1.5rem] p-6 border border-emerald-100 text-center shadow-inner">
-                    <p className="text-[10px] font-black text-emerald-800 uppercase tracking-widest mb-2.5">Instant Callback</p>
-                    <p className="text-2xl font-black text-emerald-900 mb-5">{supportPhone.split(',')[0]}</p>
-                    <Link href="/contact" className="inline-block px-10 py-3 rounded-full bg-emerald-600 text-white text-[10px] font-black uppercase tracking-[0.2em] hover:bg-emerald-700 transition-all hover:scale-105 shadow-xl shadow-emerald-200">
+                <div className="mt-auto shrink-0">
+                  <div className="bg-emerald-50 rounded-[1.5rem] p-6 border border-emerald-100 text-center shadow-inner relative overflow-hidden">
+                    <div className="absolute -top-10 -right-10 w-24 h-24 bg-emerald-100/50 rounded-full blur-2xl" />
+                    <p className="text-[10px] font-black text-emerald-800 uppercase tracking-widest mb-2.5 relative z-10">Instant Callback</p>
+                    <p className="text-2xl font-black text-emerald-900 mb-5 relative z-10">{formatPhoneDisplay(supportPhone.split(',')[0])}</p>
+                    <Link href="/contact" className="inline-block px-10 py-3 rounded-full bg-emerald-600 text-white text-[10px] font-black uppercase tracking-[0.2em] hover:bg-emerald-700 transition-all hover:scale-105 shadow-xl shadow-emerald-200 relative z-10">
                       Request Call Now
                     </Link>
                   </div>
@@ -300,20 +320,20 @@ export default function QuickAccessHub() {
 
         {/* Dynamic Extra Sections */}
         {categories.length > 4 && (
-          <div className="mt-10 pt-10 border-t border-slate-100">
-            <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] mb-6 text-center">Extended Business Capabilities</h4>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          <div className="mt-16 pt-12 border-t border-slate-200">
+            <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] mb-10 text-center">Extended Business Capabilities</h4>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {categories.slice(4).map((cat, i) => (
-                <div key={i} className="group p-5 bg-slate-50/50 rounded-[1.5rem] border border-slate-100 hover:bg-white hover:shadow-xl transition-all duration-500 flex flex-col gap-4">
+                <div key={i} className="group p-6 bg-white rounded-[1.5rem] border border-slate-200 hover:shadow-xl transition-all duration-500 flex flex-col gap-4">
                   <div className="flex items-center gap-3">
-                     <div className={`w-8 h-8 rounded-lg flex items-center justify-center bg-white shadow-sm ${cat.theme.text}`}>{getIcon(cat.iconName)}</div>
+                     <div className={`w-10 h-10 rounded-lg flex items-center justify-center bg-slate-50 border border-slate-100 shadow-sm ${cat.theme.text} group-hover:scale-110 transition-transform`}>{getIcon(cat.iconName)}</div>
                      <span className="text-base font-black text-slate-900 tracking-tight">{cat.title}</span>
                   </div>
-                  <div className="space-y-1.5">
+                  <div className="space-y-2">
                     {cat.links.slice(0, 3).map((link, li) => (
-                      <Link key={li} href={link.href} className="flex items-center justify-between text-[10px] font-bold text-slate-500 hover:text-indigo-600 transition-colors">
+                      <Link key={li} href={link.href} className="flex items-center justify-between text-[11px] font-bold text-slate-500 hover:text-indigo-600 transition-colors">
                         {link.label}
-                        <svg className="w-2.5 h-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M9 5l7 7-7 7" strokeWidth={3} strokeLinecap="round" strokeLinejoin="round"/></svg>
+                        <svg className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M9 5l7 7-7 7" strokeWidth={3} strokeLinecap="round" strokeLinejoin="round"/></svg>
                       </Link>
                     ))}
                   </div>

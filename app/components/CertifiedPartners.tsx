@@ -3,16 +3,17 @@
 import Image from "next/image";
 import { memo, useEffect, useState } from "react";
 import { Partner } from "@/lib/partners";
+import { fetchWithCache } from "@/lib/client-api";
 
-const CertifiedPartners = () => {
-    const [partners, setPartners] = useState<Partner[]>([]);
-    const [loading, setLoading] = useState(true);
+const CertifiedPartners = ({ initialData }: { initialData?: Partner[] }) => {
+    const [partners, setPartners] = useState<Partner[]>(initialData || []);
+    const [loading, setLoading] = useState(!initialData);
 
     useEffect(() => {
+        if (initialData) return;
         const fetchPartners = async () => {
             try {
-                const response = await fetch('/api/admin/partners?type=brand');
-                const data = await response.json();
+                const data = await fetchWithCache('/api/admin/partners?type=brand');
                 if (Array.isArray(data)) {
                     setPartners(data);
                 }
@@ -23,10 +24,10 @@ const CertifiedPartners = () => {
             }
         };
         fetchPartners();
-    }, []);
+    }, [initialData]);
 
     if (loading) return (
-        <div className="w-full py-24 bg-slate-50/50 flex items-center justify-center">
+        <div className="w-full py-24 bg-white flex items-center justify-center">
             <div className="flex gap-4">
                 {[1, 2, 3, 4, 5].map(i => (
                     <div key={i} className="w-32 h-20 bg-white rounded-2xl animate-pulse border border-slate-100" />
@@ -38,7 +39,7 @@ const CertifiedPartners = () => {
     if (partners.length === 0) return null;
 
     return (
-        <section className="w-full py-16 md:py-24 bg-slate-50/50 border-y border-slate-100 overflow-hidden">
+        <section className="w-full py-16 md:py-24 bg-white border-y border-slate-100 overflow-hidden">
             <div className="max-w-7xl mx-auto px-6 mb-12 text-center">
                 <p className="text-[10px] font-black uppercase tracking-[0.3em] text-[#7338a0] mb-3">Our Global Network</p>
                 <h2 className="text-3xl md:text-4xl font-black text-[#0f0529]">Certified Industry Partners</h2>

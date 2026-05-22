@@ -12,14 +12,50 @@ export async function getCollection(name: string) {
   return db.collection(name);
 }
 
+// Serialization helper for Next.js Client Components
+function serializeData(data: any): any {
+  if (data === null || data === undefined) return data;
+  
+  if (Array.isArray(data)) {
+    return data.map(item => serializeData(item));
+  }
+  
+  if (typeof data === 'object') {
+    // Recurse through properties
+    const plain: any = {};
+    for (const key in data) {
+      const val = data[key];
+      if (val instanceof ObjectId) {
+        plain[key] = val.toString();
+      } else if (val instanceof Date) {
+        plain[key] = val.toISOString();
+      } else if (Array.isArray(val)) {
+        plain[key] = val.map(item => serializeData(item));
+      } else if (val && typeof val === 'object') {
+        plain[key] = serializeData(val);
+      } else {
+        plain[key] = val;
+      }
+    }
+    // Specific check for _id if it wasn't caught by instanceof ObjectId
+    if (data._id && typeof data._id !== 'string') {
+      plain._id = data._id.toString();
+    }
+    return plain;
+  }
+  
+  return data;
+}
+
 // Settings helpers
 async function fetchSettings() {
   const col = await getCollection('settings');
   const settings = await col.find({}).toArray();
-  return settings.reduce((acc: any, curr: any) => {
+  const map = settings.reduce((acc: any, curr: any) => {
     acc[curr.key] = curr.value;
     return acc;
   }, {});
+  return serializeData(map);
 }
 
 export const getSettings = unstable_cache(
@@ -54,14 +90,15 @@ export async function saveApplication(data: any) {
 
 export async function getApplications() {
   const col = await getCollection('job_applications');
-  return await col.find({}).sort({ createdAt: -1 }).toArray();
+  const data = await col.find({}).sort({ createdAt: -1 }).toArray();
+  return serializeData(data);
 }
 
 // Content helpers
 async function fetchContent(section: string) {
   const col = await getCollection('site_content');
   const doc = await col.findOne({ section });
-  return doc ? doc.content : null;
+  return doc ? serializeData(doc.content) : null;
 }
 
 export async function getContent(section: string) {
@@ -85,7 +122,8 @@ export async function updateContent(section: string, content: any) {
 // Modules helpers
 async function fetchModules() {
   const col = await getCollection('modules');
-  return await col.find({}).sort({ createdAt: -1 }).toArray();
+  const data = await col.find({}).sort({ createdAt: -1 }).toArray();
+  return serializeData(data);
 }
 
 export const getModules = unstable_cache(
@@ -134,7 +172,8 @@ export async function deleteModule(id: string) {
 // Tutorials/Learning helpers
 async function fetchTutorials() {
   const col = await getCollection('learning_content');
-  return await col.find({}).sort({ createdAt: -1 }).toArray();
+  const data = await col.find({}).sort({ createdAt: -1 }).toArray();
+  return serializeData(data);
 }
 
 export const getTutorials = unstable_cache(
@@ -175,7 +214,8 @@ export async function deleteTutorial(id: string) {
 // Reviews helpers
 async function fetchReviews() {
   const col = await getCollection('reviews');
-  return await col.find({}).sort({ createdAt: -1 }).limit(4).toArray();
+  const data = await col.find({}).sort({ createdAt: -1 }).limit(4).toArray();
+  return serializeData(data);
 }
 
 export const getReviews = unstable_cache(
@@ -209,7 +249,8 @@ export async function deleteReview(id: string) {
 async function fetchPartners(type?: string) {
   const col = await getCollection('partners');
   const query = type ? { type } : {};
-  return await col.find(query).sort({ createdAt: 1 }).toArray();
+  const data = await col.find(query).sort({ createdAt: 1 }).toArray();
+  return serializeData(data);
 }
 
 export async function getPartners(type?: string) {
@@ -221,7 +262,8 @@ export async function getPartners(type?: string) {
 }
 
 export async function getPartnersByType(type: string) {
-  return await fetchPartners(type);
+  const data = await fetchPartners(type);
+  return serializeData(data);
 }
 
 export async function addPartner(data: any) {
@@ -257,4 +299,3 @@ export async function deletePartner(id: string) {
   revalidateTag('partners', 'default');
   return result;
 }
-

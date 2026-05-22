@@ -6,6 +6,9 @@ export type Job = {
   type: "Full-time" | "Part-time" | "Contract" | "Internship";
   shortDescription: string;
   fullDescription: string;
+  aboutRole?: string;
+  lookingFor?: string;
+  whyJoinUs?: string;
   postedAt: string; // ISO format
   requirements: string[];
   benefits: string[];

@@ -3,11 +3,12 @@
 import { useState, useEffect } from 'react';
 import QuickSupportModal from './QuickSupportModal';
 
-export default function SupportButton() {
+export default function SupportButton({ initialSettings }: { initialSettings?: any }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [whatsappPhone, setWhatsappPhone] = useState("+919876543210");
+  const [whatsappPhone, setWhatsappPhone] = useState(initialSettings?.whatsapp_phone || initialSettings?.support_phone || "+919876543210");
 
   useEffect(() => {
+    if (initialSettings) return;
     const fetchSettings = async () => {
       try {
         const response = await fetch('/api/settings');
@@ -22,9 +23,11 @@ export default function SupportButton() {
       }
     };
     fetchSettings();
-  }, []);
+  }, [initialSettings]);
 
-  const whatsappNumber = whatsappPhone.replace(/\D/g, '');
+  const whatsappNumber = whatsappPhone.replace(/\D/g, '').length === 10 
+    ? '91' + whatsappPhone.replace(/\D/g, '') 
+    : whatsappPhone.replace(/\D/g, '');
 
   return (
     <>

@@ -173,7 +173,14 @@ function ReplicaHero() {
 
       <div className={`absolute bottom-0 left-1/2 -translate-x-1/2 aspect-[6/5] md:aspect-[16/9] w-full max-w-5xl h-[45dvh] md:h-[55dvh] z-[2] transition-all duration-700 ease-in-out
         ${isTransitioning ? 'opacity-0 translate-y-12 scale-95 blur-sm' : 'opacity-60 md:opacity-90 translate-y-0 scale-100 blur-0'}`}>
-        <Image src={current.image} alt="Replica Background" fill className="object-contain" priority />
+        <Image 
+          src={current.image} 
+          alt="Replica Background" 
+          fill 
+          className="object-contain" 
+          priority 
+          sizes="(max-width: 768px) 100vw, 1200px"
+        />
         <div className="absolute inset-0 bg-gradient-to-b from-[#0f0529] via-[#0f0529]/40 to-transparent md:hidden" />
       </div>
 

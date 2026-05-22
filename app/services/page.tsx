@@ -301,7 +301,13 @@ export default function ServicesPage() {
                 className="group relative rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-700 flex flex-col border border-white/10 h-[280px]"
               >
                 <div className="absolute inset-0 z-0">
-                  <Image src={s.image} alt={s.title} fill className="object-cover transition-transform duration-700 group-hover:scale-110" />
+                  <Image 
+                    src={s.image} 
+                    alt={s.title} 
+                    fill 
+                    className="object-cover transition-transform duration-700 group-hover:scale-110" 
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 400px"
+                  />
                   <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-90 transition-opacity duration-500" />
                 </div>
                 <div className="relative z-10 flex flex-col h-full p-5 text-white">
@@ -332,7 +338,13 @@ export default function ServicesPage() {
               >
                 <div className="flex items-center justify-between mb-4">
                   <div className="w-10 h-10 rounded-xl relative overflow-hidden shadow-inner border border-slate-100 transition-transform duration-500 group-hover:scale-110">
-                    <Image src={s.image} alt={s.title} fill className="object-cover" />
+                    <Image 
+                      src={s.image} 
+                      alt={s.title} 
+                      fill 
+                      className="object-cover" 
+                      sizes="40px"
+                    />
                   </div>
                   <span className="px-2 py-0.5 rounded-md bg-slate-50 text-slate-400 text-[7px] font-black uppercase tracking-wider border border-slate-100">
                     {s.tag}

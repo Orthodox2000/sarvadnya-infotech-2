@@ -28,9 +28,24 @@ const iconMap: Record<string, React.ReactNode> = {
   "Company": <InfoIcon />
 };
 
-const Productbar = () => {
+const Productbar = ({ initialSettings }: { initialSettings?: any }) => {
+  const [settings, setSettings] = useState<any>(initialSettings || null);
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
   const [dynamicModules, setDynamicModules] = useState<ProductSubItem[]>([]);
+
+  useEffect(() => {
+    if (!initialSettings) {
+      const fetchSettings = async () => {
+        try {
+          const data = await fetchWithCache('/api/settings');
+          if (data && !data.error) setSettings(data);
+        } catch (err) {
+          console.error('Failed to fetch settings:', err);
+        }
+      };
+      fetchSettings();
+    }
+  }, [initialSettings]);
 
   // Fetch dynamic modules with client-side caching
   useEffect(() => {
@@ -113,7 +128,7 @@ const Productbar = () => {
       <div className="mx-auto w-full max-w-7xl px-2 sm:px-4 flex justify-between items-stretch h-full">
         {/* Company Logo & Name */}
         <Link 
-            href="/" 
+            href="/capabilities" 
             className="flex items-center gap-1 pr-2 sm:pr-4 transition-opacity hover:opacity-80 shrink-0 border-r border-slate-200 mr-1" 
             onClick={handleLinkClick}
         >
@@ -123,7 +138,7 @@ const Productbar = () => {
             width={15} 
             height={15} 
             className="object-contain" 
-            style={{ height: 'auto' }}
+            style={{ width: '15px', height: 'auto' }}
           />
         </Link>
 

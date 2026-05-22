@@ -7,6 +7,10 @@ import { theme as defaultTheme } from "@/lib/theme";
 import { getSettings } from "@/lib/mongodb-utils";
 import { palettes } from "@/lib/palettes";
 import "./globals.css";
+import { Geist } from "next/font/google";
+import { cn } from "@/lib/utils";
+
+const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
 const NewsFeed = dynamic(() => import("./components/NewsFeed"), {
   loading: () => (
@@ -73,15 +77,25 @@ async function getTheme() {
   return defaultTheme;
 }
 
+async function getSettingsData() {
+  try {
+    return await getSettings();
+  } catch (err) {
+    console.error('Error loading settings:', err);
+    return {};
+  }
+}
+
 export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const settings = await getSettingsData();
   const theme = await getTheme();
 
   return (
-    <html lang="en" className="h-full antialiased" style={{ colorScheme: "only light" }} data-scroll-behavior="smooth" suppressHydrationWarning>
+    <html lang="en" className={cn("h-full antialiased", "font-sans", geist.variable)} style={{ colorScheme: "only light" }} data-scroll-behavior="smooth" suppressHydrationWarning>
       <body
         className="relative min-h-full w-full overflow-x-hidden bg-background text-foreground"
         suppressHydrationWarning
@@ -101,12 +115,12 @@ export default async function RootLayout({
       >
         <div className="sticky top-0 z-[2000] w-full flex flex-col">
           <NewsFeed />
-          <Navbar />
-          <Productbar />
+          <Navbar initialSettings={settings} />
+          <Productbar initialSettings={settings} />
         </div>
 
         {children}
-        <SupportButton />
+        <SupportButton initialSettings={settings} />
         <NotificationToast />
         <CacheConsent />
       </body>
