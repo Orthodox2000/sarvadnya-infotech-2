@@ -42,12 +42,16 @@ export default function AdminPages() {
             partner2_name: 'Mr. Madhukar Sawant',
             partner2_quote: 'Madhukar specializes...',
             partner2_image: '',
+            gallery_badge: 'Inside Sarvadnya',
+            gallery_title: 'Our Workspace & Culture',
+            gallery_description: 'A glimpse into our daily operations...'
           },
           team: {
             hero_title: 'Meet the Experts Behind Your Success',
             hero_quote: 'At Sarvadnya Infotech...',
             hero_image: '',
             culture_title: 'Our Employee Culture',
+            culture_description: 'At Sarvadnya, we believe that a happy team leads to happy clients...',
             culture_items: [
               { title: 'Constant Innovation', desc: 'We encourage...' },
               { title: 'Collaborative Spirit', desc: 'Success is...' },
@@ -84,6 +88,8 @@ export default function AdminPages() {
     try {
       const formData = new FormData();
       formData.append('file', file);
+      formData.append('type', activePage);
+      formData.append('name', field);
       if (currentUrl) formData.append('oldUrl', currentUrl);
 
       const response = await fetch('/api/admin/upload', {
@@ -101,7 +107,8 @@ export default function AdminPages() {
       } else {
         setContent({ ...content, [field]: data.url });
       }
-      setMessage({ text: 'Image uploaded to local storage!', type: 'success' });
+      setMessage({ text: 'Image uploaded and renamed!', type: 'success' });
+      setTimeout(() => window.location.reload(), 1000);
     } catch (err) {
       console.error(err);
       setMessage({ text: 'Upload failed.', type: 'error' });
@@ -123,6 +130,7 @@ export default function AdminPages() {
       if (data && data.error) throw new Error(data.error);
 
       setMessage({ text: 'Page updated successfully!', type: 'success' });
+      setTimeout(() => window.location.reload(), 1000);
     } catch (err) {
       console.error(err);
       setMessage({ text: 'Save failed.', type: 'error' });
@@ -209,6 +217,13 @@ export default function AdminPages() {
                   placeholder="Hero Title"
                   value={content.hero_title}
                   onChange={e => setContent({...content, hero_title: e.target.value})}
+                  readOnly={isLocked}
+                />
+                <input 
+                  className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#7338a0] read-only:opacity-60"
+                  placeholder="Hero Subtitle"
+                  value={content.hero_subtitle}
+                  onChange={e => setContent({...content, hero_subtitle: e.target.value})}
                   readOnly={isLocked}
                 />
                 <textarea 
@@ -311,6 +326,37 @@ export default function AdminPages() {
                 </div>
               </div>
             </div>
+
+            {/* Gallery Header Section */}
+            <div className="pt-8 border-t border-slate-100 space-y-4">
+              <h3 className="font-bold text-[#0f0529] flex items-center gap-2">
+                Gallery Header
+                <span className="text-[10px] bg-slate-100 text-slate-400 px-2 py-0.5 rounded-full uppercase tracking-widest">Workspace Gallery</span>
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <input 
+                  className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#7338a0] read-only:opacity-60"
+                  placeholder="Gallery Badge"
+                  value={content.gallery_badge}
+                  onChange={e => setContent({...content, gallery_badge: e.target.value})}
+                  readOnly={isLocked}
+                />
+                <input 
+                  className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#7338a0] read-only:opacity-60"
+                  placeholder="Gallery Title"
+                  value={content.gallery_title}
+                  onChange={e => setContent({...content, gallery_title: e.target.value})}
+                  readOnly={isLocked}
+                />
+              </div>
+              <textarea 
+                className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#7338a0] h-24 read-only:opacity-60"
+                placeholder="Gallery Description"
+                value={content.gallery_description}
+                onChange={e => setContent({...content, gallery_description: e.target.value})}
+                readOnly={isLocked}
+              />
+            </div>
           </div>
         )}
 
@@ -385,6 +431,59 @@ export default function AdminPages() {
                   onChange={e => setContent({...content, testimonial_role: e.target.value})}
                   readOnly={isLocked}
                 />
+              </div>
+            </div>
+
+            {/* Culture Section */}
+            <div className="pt-8 border-t border-slate-100 space-y-6">
+              <div className="space-y-4">
+                <h3 className="font-bold text-[#0f0529] flex items-center gap-2">
+                    Culture Section
+                    <span className="text-[10px] bg-slate-100 text-slate-400 px-2 py-0.5 rounded-full uppercase tracking-widest">Employee Culture</span>
+                </h3>
+                <input 
+                    className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#7338a0] read-only:opacity-60"
+                    placeholder="Section Title"
+                    value={content.culture_title}
+                    onChange={e => setContent({...content, culture_title: e.target.value})}
+                    readOnly={isLocked}
+                />
+                <textarea 
+                    className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#7338a0] h-24 read-only:opacity-60"
+                    placeholder="Culture Summary Text"
+                    value={content.culture_description}
+                    onChange={e => setContent({...content, culture_description: e.target.value})}
+                    readOnly={isLocked}
+                />
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {(content.culture_items || []).map((item: any, idx: number) => (
+                    <div key={idx} className="p-6 bg-slate-50 rounded-3xl space-y-3">
+                        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Item {idx + 1}</p>
+                        <input 
+                            className="w-full p-3 bg-white rounded-xl border-none text-sm font-bold read-only:opacity-60"
+                            placeholder="Title"
+                            value={item.title}
+                            onChange={e => {
+                                const newItems = [...content.culture_items];
+                                newItems[idx].title = e.target.value;
+                                setContent({...content, culture_items: newItems});
+                            }}
+                            readOnly={isLocked}
+                        />
+                        <textarea 
+                            className="w-full p-3 bg-white rounded-xl border-none text-xs h-24 read-only:opacity-60"
+                            placeholder="Description"
+                            value={item.desc}
+                            onChange={e => {
+                                const newItems = [...content.culture_items];
+                                newItems[idx].desc = e.target.value;
+                                setContent({...content, culture_items: newItems});
+                            }}
+                            readOnly={isLocked}
+                        />
+                    </div>
+                ))}
               </div>
             </div>
           </div>
@@ -466,6 +565,34 @@ export default function AdminPages() {
                                }}
                              />
                            ))}
+                        </div>
+                      </div>
+
+                      <div className="pt-4">
+                        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3">Primary CTA Button</p>
+                        <div className="grid grid-cols-2 gap-2">
+                            <input 
+                                className="w-full p-3 bg-white rounded-xl border-none text-[11px] font-bold"
+                                placeholder="Button Text"
+                                value={slide.ctaPrimary?.text || ''}
+                                onChange={e => {
+                                    const newContent = [...content];
+                                    if (!newContent[idx].ctaPrimary) newContent[idx].ctaPrimary = { text: '', href: '/' };
+                                    newContent[idx].ctaPrimary.text = e.target.value;
+                                    setContent(newContent);
+                                }}
+                            />
+                            <input 
+                                className="w-full p-3 bg-white rounded-xl border-none text-[11px] font-mono"
+                                placeholder="Link (e.g. /products)"
+                                value={slide.ctaPrimary?.href || ''}
+                                onChange={e => {
+                                    const newContent = [...content];
+                                    if (!newContent[idx].ctaPrimary) newContent[idx].ctaPrimary = { text: '', href: '/' };
+                                    newContent[idx].ctaPrimary.href = e.target.value;
+                                    setContent(newContent);
+                                }}
+                            />
                         </div>
                       </div>
                     </div>
@@ -712,6 +839,10 @@ export default function AdminPages() {
                             <option value="cloud">Cloud (Orange)</option>
                             <option value="custom">Customization (Emerald)</option>
                             <option value="support">Support (Indigo)</option>
+                            <option value="education">Education (Amber)</option>
+                            <option value="global">Global (Sky)</option>
+                            <option value="consultancy">Consultancy (Slate)</option>
+                            <option value="whatsapp">WhatsApp (Green)</option>
                         </select>
                       </div>
                     </div>

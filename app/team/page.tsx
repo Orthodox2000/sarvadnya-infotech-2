@@ -8,6 +8,12 @@ const DEFAULTS = {
   hero_title: 'Meet the Experts Behind Your Success',
   hero_quote: '"At Sarvadnya Infotech, our strength lies in our unity and our shared passion for simplifying business technology. We don\'t just solve problems; we build lasting relationships with our clients."',
   hero_image: '',
+  culture_title: 'Our Employee Culture',
+  culture_items: [
+    { title: 'Constant Innovation', desc: 'We encourage our team to stay ahead of the curve with regular training and certifications.' },
+    { title: 'Collaborative Spirit', desc: 'Success is a team effort. We foster an environment where every voice matters.' },
+    { title: 'Client-First Mindset', desc: 'Our team\'s primary goal is to ensure client satisfaction through efficient support.' }
+  ],
   testimonial: '"Working at Sarvadnya Infotech LLP has been an incredible journey of growth. The leadership truly cares about our professional development and work-life balance."',
   testimonial_author: 'JD',
   testimonial_role: 'Senior Tally Consultant'
@@ -109,38 +115,32 @@ export default function TeamPage() {
       {/* Employee Culture Description */}
       <section className="py-20 bg-white animate-rise-up" style={{ animationDelay: '300ms' }}>
         <div className="px-6 sm:px-12 lg:px-24 max-w-5xl mx-auto text-center space-y-8">
-          <h2 className="text-3xl md:text-4xl font-bold text-[var(--heading-color)]">Our Employee Culture</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-[var(--heading-color)]">{content.culture_title || 'Our Employee Culture'}</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="p-8 rounded-3xl bg-[var(--background-color)] border border-[var(--primary-color)]/5">
-              <div className="w-12 h-12 bg-[var(--primary-color)]/10 rounded-2xl flex items-center justify-center mx-auto mb-6 text-[var(--primary-color)]">
-                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
+            {(content.culture_items || []).map((item: any, idx: number) => (
+              <div key={idx} className="p-8 rounded-3xl bg-[var(--background-color)] border border-[var(--primary-color)]/5">
+                <div className="w-12 h-12 bg-[var(--primary-color)]/10 rounded-2xl flex items-center justify-center mx-auto mb-6 text-[var(--primary-color)]">
+                  {idx === 0 ? (
+                    <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                  ) : idx === 1 ? (
+                    <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                    </svg>
+                  ) : (
+                    <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  )}
+                </div>
+                <h3 className="font-bold text-lg mb-2">{item.title}</h3>
+                <p className="text-sm text-[var(--para-color)] opacity-70">{item.desc}</p>
               </div>
-              <h3 className="font-bold text-lg mb-2">Constant Innovation</h3>
-              <p className="text-sm text-[var(--para-color)] opacity-70">We encourage our team to stay ahead of the curve with regular training and certifications.</p>
-            </div>
-            <div className="p-8 rounded-3xl bg-[var(--background-color)] border border-[var(--primary-color)]/5">
-              <div className="w-12 h-12 bg-[var(--primary-color)]/10 rounded-2xl flex items-center justify-center mx-auto mb-6 text-[var(--primary-color)]">
-                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-                </svg>
-              </div>
-              <h3 className="font-bold text-lg mb-2">Collaborative Spirit</h3>
-              <p className="text-sm text-[var(--para-color)] opacity-70">Success is a team effort. We foster an environment where every voice matters.</p>
-            </div>
-            <div className="p-8 rounded-3xl bg-[var(--background-color)] border border-[var(--primary-color)]/5">
-              <div className="w-12 h-12 bg-[var(--primary-color)]/10 rounded-2xl flex items-center justify-center mx-auto mb-6 text-[var(--primary-color)]">
-                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <h3 className="font-bold text-lg mb-2">Client-First Mindset</h3>
-              <p className="text-sm text-[var(--para-color)] opacity-70">Our team's primary goal is to ensure client satisfaction through efficient support.</p>
-            </div>
+            ))}
           </div>
           <p className="text-lg text-[var(--para-color)] opacity-90 leading-relaxed max-w-3xl mx-auto pt-6">
-            At Sarvadnya, we believe that a happy team leads to happy clients. Our culture is built on transparency, continuous learning, and a deep-rooted commitment to excellence in the Tally ecosystem.
+            {content.culture_description || 'At Sarvadnya, we believe that a happy team leads to happy clients. Our culture is built on transparency, continuous learning, and a deep-rooted commitment to excellence in the Tally ecosystem.'}
           </p>
         </div>
       </section>

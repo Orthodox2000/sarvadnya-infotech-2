@@ -28,7 +28,7 @@ export default function AdminAssets() {
   const fetchAssets = async () => {
     setLoading(true);
     try {
-      const response = await fetch(`/api/admin/partners?type=${activeTab}`);
+      const response = await fetch(`/api/admin/partners?type=${activeTab}`, { cache: 'no-store' });
       const data = await response.json();
       if (data && data.error) throw new Error(data.error);
       setAssets(data || []);
@@ -40,7 +40,7 @@ export default function AdminAssets() {
     }
   };
 
-  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>, isReplacement: boolean = false, assetId?: string, oldUrl?: string) => {
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>, isReplacement: boolean = false, assetId?: string, oldUrl?: string, assetName?: string) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
@@ -48,6 +48,8 @@ export default function AdminAssets() {
     setUploading(uploadKey);
     const formData = new FormData();
     formData.append('file', file);
+    formData.append('type', activeTab);
+    formData.append('name', assetName || (isReplacement ? '' : newAsset.name) || 'untitled');
     if (oldUrl) formData.append('oldUrl', oldUrl);
 
     try {
@@ -68,10 +70,10 @@ export default function AdminAssets() {
           const patchData = await patchResponse.json();
           if (patchData.error) throw new Error(patchData.error);
           setMessage({ text: 'Image replaced successfully!', type: 'success' });
-          fetchAssets();
+          setTimeout(() => window.location.reload(), 1000);
       } else {
           setNewAsset({ ...newAsset, imageUrl: data.url });
-          setMessage({ text: 'Image uploaded to local storage!', type: 'success' });
+          setMessage({ text: 'Image uploaded and renamed!', type: 'success' });
       }
     } catch (err) {
       console.error(err);
@@ -268,7 +270,7 @@ export default function AdminAssets() {
                             type="file" 
                             className="hidden" 
                             accept="image/*"
-                            onChange={(e) => handleFileUpload(e, true, asset._id, asset.imageUrl)} 
+                            onChange={(e) => handleFileUpload(e, true, asset._id, asset.imageUrl, asset.name)} 
                             disabled={!!uploading}
                         />
                         <span className="text-[10px] text-white font-black uppercase tracking-widest bg-[#7338a0] px-3 py-1.5 rounded-full shadow-lg">

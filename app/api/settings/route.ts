@@ -6,6 +6,7 @@ export async function GET() {
     const settingsMap = await getSettings();
     const settings = {
       support_phone: settingsMap['NEXT_PUBLIC_SUPPORT_PHONE'] || process.env.NEXT_PUBLIC_SUPPORT_PHONE || '',
+      whatsapp_phone: settingsMap['NEXT_PUBLIC_WHATSAPP_PHONE'] || settingsMap['NEXT_PUBLIC_SUPPORT_PHONE'] || process.env.NEXT_PUBLIC_WHATSAPP_PHONE || process.env.NEXT_PUBLIC_SUPPORT_PHONE || '',
       support_email: settingsMap['NEXT_PUBLIC_SUPPORT_EMAIL'] || process.env.NEXT_PUBLIC_SUPPORT_EMAIL || '',
       office_address: settingsMap['NEXT_PUBLIC_OFFICE_ADDRESS'] || process.env.NEXT_PUBLIC_OFFICE_ADDRESS || '',
       facebook_url: settingsMap['NEXT_PUBLIC_FACEBOOK_URL'] || process.env.NEXT_PUBLIC_FACEBOOK_URL || '',

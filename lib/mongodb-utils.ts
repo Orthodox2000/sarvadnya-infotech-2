@@ -212,11 +212,13 @@ async function fetchPartners(type?: string) {
   return await col.find(query).sort({ createdAt: 1 }).toArray();
 }
 
-export const getPartners = unstable_cache(
-  async (type?: string) => fetchPartners(type),
-  ['partners-list'],
-  { revalidate: 18000, tags: ['partners'] }
-);
+export async function getPartners(type?: string) {
+  return unstable_cache(
+    async () => fetchPartners(type),
+    [`partners-list-${type || 'all'}`],
+    { revalidate: 18000, tags: ['partners'] }
+  )();
+}
 
 export async function getPartnersByType(type: string) {
   return await fetchPartners(type);
@@ -233,6 +235,9 @@ export async function addPartner(data: any) {
 }
 
 export async function updatePartner(id: string, data: any) {
+  if (!ObjectId.isValid(id)) {
+    throw new Error('Invalid ID format');
+  }
   const col = await getCollection('partners');
   const { _id, ...updateData } = data;
   const result = await col.updateOne(
@@ -244,6 +249,9 @@ export async function updatePartner(id: string, data: any) {
 }
 
 export async function deletePartner(id: string) {
+  if (!ObjectId.isValid(id)) {
+    throw new Error('Invalid ID format');
+  }
   const col = await getCollection('partners');
   const result = await col.deleteOne({ _id: new ObjectId(id) });
   revalidateTag('partners', 'default');

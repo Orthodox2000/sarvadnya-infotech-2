@@ -14,7 +14,7 @@ export default function AdminSettings() {
   const [message, setMessage] = useState({ text: '', type: '' });
 
   const DEFAULT_KEYS = [
-    'NEXT_PUBLIC_SUPPORT_PHONE', 'NEXT_PUBLIC_SUPPORT_EMAIL', 'NEXT_PUBLIC_OFFICE_ADDRESS',
+    'NEXT_PUBLIC_SUPPORT_PHONE', 'NEXT_PUBLIC_WHATSAPP_PHONE', 'NEXT_PUBLIC_SUPPORT_EMAIL', 'NEXT_PUBLIC_OFFICE_ADDRESS',
     'NEXT_PUBLIC_FACEBOOK_URL', 'NEXT_PUBLIC_FACEBOOK_HANDLE',
     'NEXT_PUBLIC_INSTAGRAM_URL', 'NEXT_PUBLIC_INSTAGRAM_HANDLE',
     'NEXT_PUBLIC_LINKEDIN_URL', 'NEXT_PUBLIC_LINKEDIN_HANDLE',
@@ -37,6 +37,8 @@ export default function AdminSettings() {
     try {
       const formData = new FormData();
       formData.append('file', file);
+      formData.append('type', 'branding');
+      formData.append('name', key.replace('NEXT_PUBLIC_', '').toLowerCase());
       if (currentUrl) formData.append('oldUrl', currentUrl);
 
       const response = await fetch('/api/admin/upload', {
@@ -48,7 +50,9 @@ export default function AdminSettings() {
       if (data && data.error) throw new Error(data.error);
 
       handleChange(key, data.url);
-      setMessage({ text: 'Image uploaded to local storage!', type: 'success' });
+      setMessage({ text: 'Logo uploaded and cloud-synced!', type: 'success' });
+      // Reload after short delay to ensure DB sync completes
+      setTimeout(() => window.location.reload(), 1000);
     } catch (err) {
       console.error(err);
       setMessage({ text: 'Upload failed.', type: 'error' });
@@ -132,7 +136,7 @@ export default function AdminSettings() {
           {/* Contact Info */}
           <div className="space-y-6">
             <h2 className="text-sm font-black uppercase tracking-widest text-[#7338a0]">Contact Details</h2>
-            {['NEXT_PUBLIC_SUPPORT_PHONE', 'NEXT_PUBLIC_SUPPORT_EMAIL', 'NEXT_PUBLIC_OFFICE_ADDRESS'].map(key => {
+            {['NEXT_PUBLIC_SUPPORT_PHONE', 'NEXT_PUBLIC_WHATSAPP_PHONE', 'NEXT_PUBLIC_SUPPORT_EMAIL', 'NEXT_PUBLIC_OFFICE_ADDRESS'].map(key => {
               const setting = settings.find(s => s.key === key);
               if (!setting) return null;
               return (

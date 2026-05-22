@@ -6,6 +6,7 @@ import Footer from "../components/Footer";
 
 export type SiteSettings = {
   support_phone: string;
+  whatsapp_phone: string;
   support_email: string;
   office_address: string;
   facebook_url: string;
@@ -37,10 +38,11 @@ export default function ContactPage() {
   };
 
   const supportPhone = settings?.support_phone || process.env.NEXT_PUBLIC_SUPPORT_PHONE || "+919876543210";
+  const whatsappPhone = settings?.whatsapp_phone || (settings as any)?.whatsapp_phone || supportPhone;
   const supportEmail = settings?.support_email || process.env.NEXT_PUBLIC_SUPPORT_EMAIL || "info@sarvadnyainfotech.com";
   
   const socialMedia = [
-    { name: 'WhatsApp', handle: supportPhone, url: `https://wa.me/${supportPhone.replace(/\D/g, '')}`, iconColor: 'text-[#25D366]', bgColor: 'bg-[#25D366]/10' },
+    { name: 'WhatsApp', handle: whatsappPhone, url: `https://wa.me/${whatsappPhone.replace(/\D/g, '')}`, iconColor: 'text-[#25D366]', bgColor: 'bg-[#25D366]/10' },
     { name: 'Facebook', handle: settings?.facebook_handle || 'Sarvadnya Infotech', url: settings?.facebook_url || process.env.NEXT_PUBLIC_FACEBOOK_URL || '#', iconColor: 'text-[#1877F2]', bgColor: 'bg-[#1877F2]/10' },
     { name: 'Instagram', handle: settings?.instagram_handle || '@sarvadnya_infotech', url: settings?.instagram_url || process.env.NEXT_PUBLIC_INSTAGRAM_URL || '#', iconColor: 'text-[#E4405F]', bgColor: 'bg-[#E4405F]/10' },
     { name: 'LinkedIn', handle: settings?.linkedin_handle || 'Sarvadnya Infotech LLP', url: settings?.linkedin_url || process.env.NEXT_PUBLIC_LINKEDIN_URL || '#', iconColor: 'text-[#0077B5]', bgColor: 'bg-[#0077B5]/10' },
@@ -70,15 +72,18 @@ export default function ContactPage() {
 
       <section className="max-w-7xl mx-auto px-6 py-12">
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
-          <a 
-            href={`tel:${supportPhone}`}
-            className="w-full sm:w-auto px-8 py-4 bg-[var(--primary-color,#7338a0)] text-white rounded-full font-bold shadow-lg hover:scale-105 transition-transform flex items-center justify-center gap-2 text-sm"
-          >
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-            </svg>
-            Call Us Now
-          </a>
+          {supportPhone.split(',').map((num, i) => (
+            <a 
+              key={i}
+              href={`tel:${num.trim()}`}
+              className="w-full sm:w-auto px-8 py-4 bg-[var(--primary-color,#7338a0)] text-white rounded-full font-bold shadow-lg hover:scale-105 transition-transform flex items-center justify-center gap-2 text-sm"
+            >
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+              </svg>
+              {num.trim()}
+            </a>
+          ))}
           <a 
             href={`mailto:${supportEmail}`}
             className="w-full sm:w-auto px-8 py-4 bg-white text-slate-900 border border-slate-200 rounded-full font-bold shadow-sm hover:bg-slate-50 transition-colors flex items-center justify-center gap-2 text-sm"

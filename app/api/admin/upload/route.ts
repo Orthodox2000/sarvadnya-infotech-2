@@ -1,6 +1,6 @@
+import { put, del } from '@vercel/blob';
 import { NextResponse } from 'next/server';
 import path from 'path';
-import fs from 'fs/promises';
 
 export async function POST(request: Request) {
   try {
@@ -12,39 +12,34 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'No file uploaded' }, { status: 400 });
     }
 
-    const uploadDir = path.join(process.cwd(), 'public', 'uploads');
-    await fs.mkdir(uploadDir, { recursive: true });
+    // Extract metadata hints for naming
+    const assetType = formData.get('type') as string || 'asset';
+    const assetName = (formData.get('name') as string || 'file').toLowerCase().replace(/[^a-z0-9]/g, '-');
+    const ext = path.extname(file.name).toLowerCase();
+    
+    // Generate descriptive filename
+    const fileName = `${assetType}-${assetName}-${Date.now()}${ext}`;
 
-    // Cleanup old file if it exists and is in the uploads directory
-    if (oldUrl && oldUrl.startsWith('/uploads/')) {
+    // 1. Delete old file if provided (Cleanup)
+    if (oldUrl && oldUrl.includes('public.blob.vercel-storage.com')) {
       try {
-        const oldFileName = oldUrl.replace('/uploads/', '');
-        const oldFilePath = path.join(uploadDir, oldFileName);
-        await fs.unlink(oldFilePath);
-      } catch (err) {
-        console.warn('Failed to delete old file:', err);
-        // Continue even if deletion fails (e.g. file already gone)
+        await del(oldUrl);
+      } catch (delErr) {
+        console.warn('Failed to delete old blob:', delErr);
       }
     }
 
-    const buffer = Buffer.from(await file.arrayBuffer());
-    
-    // Sanitize filename and add timestamp
-    const timestamp = Date.now();
-    const originalName = file.name.replace(/[^a-zA-Z0-9.]/g, '_');
-    const fileName = `${timestamp}-${originalName}`;
-    
-    const filePath = path.join(uploadDir, fileName);
-    await fs.writeFile(filePath, buffer);
-
-    const publicUrl = `/uploads/${fileName}`;
+    // 2. Upload to Vercel Blob
+    const blob = await put(fileName, file, {
+      access: 'public',
+    });
 
     return NextResponse.json({ 
       message: 'File uploaded successfully', 
-      url: publicUrl
+      url: blob.url
     });
   } catch (error) {
-    console.error('Error uploading file:', error);
-    return NextResponse.json({ error: 'Failed to upload file' }, { status: 500 });
+    console.error('Error uploading to Vercel Blob:', error);
+    return NextResponse.json({ error: 'Failed to upload file to cloud storage' }, { status: 500 });
   }
 }

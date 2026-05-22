@@ -42,6 +42,8 @@ export default function AdminLearning() {
     setUploading(true);
     const formData = new FormData();
     formData.append('file', file);
+    formData.append('type', 'learning');
+    formData.append('name', editingItem.title || 'thumbnail');
     if (currentUrl) formData.append('oldUrl', currentUrl);
 
     try {
@@ -52,7 +54,19 @@ export default function AdminLearning() {
       const data = await response.json();
       if (data && data.error) throw new Error(data.error);
       setEditingItem({ ...editingItem, thumbnail: data.url, thumbnailOption: 'custom' });
-      setMessage({ text: 'Thumbnail uploaded to local storage!', type: 'success' });
+      setMessage({ text: 'Thumbnail uploaded and cloud-synced!', type: 'success' });
+      
+      // If editing existing, sync to DB immediately
+      if (editingItem._id) {
+          const syncRes = await fetch('/api/tutorials', {
+              method: 'PUT',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ ...editingItem, id: editingItem._id, thumbnail: data.url, thumbnailOption: 'custom' })
+          });
+          const syncData = await syncRes.json();
+          if (syncData.error) throw new Error(syncData.error);
+          setTimeout(() => window.location.reload(), 1000);
+      }
     } catch (err) {
       console.error(err);
       setMessage({ text: 'Failed to upload thumbnail.', type: 'error' });

@@ -2,7 +2,14 @@ import { NextResponse } from 'next/server';
 import { getPartners, addPartner, updatePartner, deletePartner } from '@/lib/mongodb-utils';
 import { staticPartners } from '@/lib/partners';
 import clientPromise from '@/lib/mongodb';
-import { revalidateTag } from 'next/cache';
+import { revalidateTag, revalidatePath } from 'next/cache';
+
+export const dynamic = 'force-dynamic';
+
+async function flushCache() {
+  revalidateTag('partners', 'default');
+  revalidatePath('/', 'layout');
+}
 
 export async function GET(request: Request) {
   try {
@@ -45,6 +52,7 @@ export async function POST(request: Request) {
       ...data,
       type: data.type || 'brand'
     });
+    await flushCache();
     return NextResponse.json({ message: 'Partner added successfully', id: result.insertedId });
   } catch (error) {
     console.error('Error adding partner:', error);
@@ -60,6 +68,7 @@ export async function PATCH(request: Request) {
       return NextResponse.json({ error: 'ID required' }, { status: 400 });
     }
     await updatePartner(id, updateData);
+    await flushCache();
     return NextResponse.json({ message: 'Asset updated successfully' });
   } catch (error) {
     console.error('Error updating asset:', error);
@@ -75,6 +84,7 @@ export async function DELETE(request: Request) {
       return NextResponse.json({ error: 'ID required' }, { status: 400 });
     }
     await deletePartner(id);
+    await flushCache();
     return NextResponse.json({ message: 'Partner deleted successfully' });
   } catch (error) {
     console.error('Error deleting partner:', error);

@@ -96,6 +96,8 @@ export default function AdminModules() {
 
     const formData = new FormData();
     formData.append('file', file);
+    formData.append('type', 'module');
+    formData.append('name', editingModule.title || 'untitled');
     if (currentUrl) formData.append('oldUrl', currentUrl);
 
     try {
@@ -106,10 +108,22 @@ export default function AdminModules() {
       const data = await response.json();
       if (data.url) {
         setEditingModule({ ...editingModule, image: data.url });
+        setMessage({ text: 'Image uploaded and cloud-synced!', type: 'success' });
+        // If we're editing an existing module, we should save immediately to ensure DB sync
+        if (editingModule._id) {
+           const updateRes = await fetch('/api/modules', {
+              method: 'PUT',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ ...editingModule, id: editingModule._id, image: data.url })
+           });
+           const updateData = await updateRes.json();
+           if (updateData.error) throw new Error(updateData.error);
+           setTimeout(() => window.location.reload(), 1000);
+        }
       }
     } catch (err) {
       console.error('Upload failed:', err);
-      alert('Image upload failed');
+      setMessage({ text: 'Image upload failed.', type: 'error' });
     }
   };
 

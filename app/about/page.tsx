@@ -15,6 +15,9 @@ const DEFAULTS = {
   partner2_name: 'Mr. Madhukar Sawant',
   partner2_quote: 'Madhukar specializes in guiding businesses through seamless technology adoption. His personalized approach ensures solutions aligned with client goals, enhancing efficiency and productivity.',
   partner2_image: '',
+  gallery_badge: 'Inside Sarvadnya',
+  gallery_title: 'Our Workspace & Culture',
+  gallery_description: 'A glimpse into our daily operations and the environment where excellence is crafted.',
 };
 
 export default function AboutPage() {
@@ -155,10 +158,16 @@ export default function AboutPage() {
         <section className="py-20 px-6 sm:px-10 lg:px-20 max-w-7xl mx-auto animate-rise-up" style={{ animationDelay: '500ms' }}>
            <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
               <div className="max-w-2xl">
-                 <div className="inline-block px-3 py-1 rounded-full bg-[var(--primary-color)]/10 text-[var(--primary-color)] text-[10px] font-black uppercase tracking-widest mb-4">Inside Sarvadnya</div>
-                 <h2 className="text-3xl md:text-5xl font-black text-[var(--heading-color)] leading-tight">Our Workspace <br/>& Culture</h2>
+                 <div className="inline-block px-3 py-1 rounded-full bg-[var(--primary-color)]/10 text-[var(--primary-color)] text-[10px] font-black uppercase tracking-widest mb-4">
+                    {content.gallery_badge || 'Inside Sarvadnya'}
+                 </div>
+                 <h2 className="text-3xl md:text-5xl font-black text-[var(--heading-color)] leading-tight">
+                    {content.gallery_title || 'Our Workspace & Culture'}
+                 </h2>
               </div>
-              <p className="text-[var(--para-color)] opacity-60 font-medium max-w-sm">A glimpse into our daily operations and the environment where excellence is crafted.</p>
+              <p className="text-[var(--para-color)] opacity-60 font-medium max-w-sm">
+                {content.gallery_description || 'A glimpse into our daily operations and the environment where excellence is crafted.'}
+              </p>
            </div>
            
            <div className="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">

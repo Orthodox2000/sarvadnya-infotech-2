@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getContent, updateContent } from '@/lib/mongodb-utils';
+import { revalidatePath, revalidateTag } from 'next/cache';
 
 export async function GET(request: Request) {
   try {
@@ -27,6 +28,8 @@ export async function POST(request: Request) {
     }
 
     await updateContent(section, content);
+    revalidateTag('content', 'default');
+    revalidatePath('/', 'layout');
     return NextResponse.json({ message: 'Content updated successfully' });
   } catch (error) {
     console.error('Error updating content:', error);

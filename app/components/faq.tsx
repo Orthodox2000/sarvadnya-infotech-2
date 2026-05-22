@@ -11,6 +11,7 @@ const FAQ = () => {
     const [searchQuery, setSearchQuery] = useState("");
     const [isExpanded, setIsExpanded] = useState(false);
     const [supportPhone, setSupportPhone] = useState("+919876543210");
+    const [whatsappPhone, setWhatsappPhone] = useState("+919876543210");
     const sectionRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -19,6 +20,11 @@ const FAQ = () => {
                 const data = await fetchWithCache('/api/settings');
                 if (data.support_phone) {
                     setSupportPhone(data.support_phone);
+                }
+                if (data.whatsapp_phone) {
+                    setWhatsappPhone(data.whatsapp_phone);
+                } else if (data.support_phone) {
+                    setWhatsappPhone(data.support_phone);
                 }
             } catch (err) {
                 console.error('Failed to fetch FAQ settings:', err);
@@ -125,7 +131,7 @@ const FAQ = () => {
                                     {item.answer}
                                     <div className="mt-4 flex gap-4">
                                         <a href={`tel:${supportPhone}`} className="text-[10px] font-black uppercase text-indigo-600 hover:underline">Call for details</a>
-                                        <a href={`https://wa.me/${supportPhone.replace(/\D/g, '')}`} className="text-[10px] font-black uppercase text-emerald-600 hover:underline">WhatsApp Us</a>
+                                        <a href={`https://wa.me/${whatsappPhone.replace(/\D/g, '')}`} className="text-[10px] font-black uppercase text-emerald-600 hover:underline">WhatsApp Us</a>
                                     </div>
                                 </div>
                             </div>

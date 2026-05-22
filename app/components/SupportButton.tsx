@@ -5,24 +5,26 @@ import QuickSupportModal from './QuickSupportModal';
 
 export default function SupportButton() {
   const [isOpen, setIsOpen] = useState(false);
-  const [supportPhone, setSupportPhone] = useState("+919876543210");
+  const [whatsappPhone, setWhatsappPhone] = useState("+919876543210");
 
   useEffect(() => {
     const fetchSettings = async () => {
       try {
         const response = await fetch('/api/settings');
         const data = await response.json();
-        if (data.support_phone) {
-          setSupportPhone(data.support_phone);
+        if (data.whatsapp_phone) {
+          setWhatsappPhone(data.whatsapp_phone);
+        } else if (data.support_phone) {
+          setWhatsappPhone(data.support_phone);
         }
       } catch (err) {
-        console.error('Failed to fetch support phone:', err);
+        console.error('Failed to fetch whatsapp phone:', err);
       }
     };
     fetchSettings();
   }, []);
 
-  const whatsappNumber = supportPhone.replace(/\D/g, '');
+  const whatsappNumber = whatsappPhone.replace(/\D/g, '');
 
   return (
     <>

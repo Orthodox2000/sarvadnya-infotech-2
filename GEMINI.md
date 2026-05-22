@@ -4,12 +4,40 @@
 - Always mention the application version number when presenting changes or updates.
 - Versioning follows the format `v1.1.x`.
 - Increment the patch version automatically for every iteration/significant set of changes.
-- Current Version: v1.1.70
+- Current Version: v1.1.88
+
+## Recent Changes (v1.1.88)
+- **Contact Page Type Alignment:** Resolved a TypeScript build error by updating the `SiteSettings` type definition within `app/contact/page.tsx`. Added the missing `whatsapp_phone` field to ensure full compatibility with the dynamic settings API and established project standards.
+- **Version Bump:** Updated application version to v1.1.88.
+
+## Recent Changes (v1.1.87)
+
+## Recent Changes (v1.1.86)
+
+## Recent Changes (v1.1.83)
+
+## Recent Changes (v1.1.82)
+
+## Recent Changes (v1.1.81)
+
+## Recent Changes (v1.1.80)
+
+## Recent Changes (v1.1.77)
+
+## Recent Changes (v1.1.76)
+
+## Recent Changes (v1.1.75)
+
+## Recent Changes (v1.1.73)
+
+## Recent Changes (v1.1.72)
+- **Dedicated WhatsApp Setting:** Integrated a new `NEXT_PUBLIC_WHATSAPP_PHONE` field into the site settings and admin panel. All WhatsApp buttons and links across the site (Hover Button, Footer, Quick Access Hub, FAQ, Contact Page) now use this dedicated dynamic number with an automatic fallback to the primary support phone.
+- **Dynamic Partner Grid Optimization:** Refactored the `CertifiedPartners` component to be fully database-driven. Optimized the grid layout and reduced logo sizes to ensure 5 industry partners fit seamlessly in a single row on desktop viewports.
+- **Version Bump:** Updated application version to v1.1.72.
+
+## Recent Changes (v1.1.71)
 
 ## Recent Changes (v1.1.70)
-- **API Import Fix:** Resolved a TypeScript build error by adding the missing `updatePartner` import in `app/api/admin/partners/route.ts`.
-- **Verified Production Build:** Confirmed code stability with a successful `npm run build` encompassing all 55+ application routes.
-- **Version Bump:** Updated application version to v1.1.70.
 
 ## Recent Changes (v1.1.69)
 
