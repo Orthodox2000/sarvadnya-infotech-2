@@ -6,7 +6,7 @@ const nextConfig: NextConfig = {
   experimental: {
     // Disable the compiler to suppress animation-related warnings and reduce overhead
   },
-  allowedDevOrigins: ['26.186.62.193','169.254.141.31','192.168.1.245'],
+  allowedDevOrigins: ['26.186.62.193','192.168.7.7','192.168.1.245'],
   images: {
     remotePatterns: [
       {

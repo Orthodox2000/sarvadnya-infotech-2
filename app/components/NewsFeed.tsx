@@ -66,8 +66,8 @@ export default function NewsFeed() {
       </div>
 
       {/* Marquee Container */}
-      <div className="w-full overflow-hidden">
-        <div className="flex w-max whitespace-nowrap animate-marquee group-hover:pause-marquee">
+      <div className="w-full overflow-hidden" key={`marquee-${newsItems.length}`}>
+        <div className="flex w-max whitespace-nowrap animate-marquee-infinite group-hover:pause-marquee-infinite">
           {/* First set of items */}
           <div className="flex items-center gap-12 px-4 shrink-0">
             {newsItems.map((item, index) => (

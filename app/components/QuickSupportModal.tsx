@@ -77,11 +77,11 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
         timestamp: new Date()
       };
       setMessages(prev => [...prev, aiMessage]);
-    } catch (err) {
+    } catch (err: any) {
       console.error('Chat error:', err);
       const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
-        text: "I'm sorry, I'm having trouble connecting right now. Please try again or contact us directly.",
+        text: err.message || "I'm sorry, I'm having trouble connecting right now. Please try again or contact us directly.",
         sender: 'ai',
         timestamp: new Date()
       };

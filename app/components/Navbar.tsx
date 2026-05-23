@@ -68,54 +68,54 @@ export default function Navbar({ initialSettings }: { initialSettings?: any }) {
 
   return (
     <header className="relative z-[1000] w-full border-b border-white/5 bg-[#0a041a] shadow-lg">
-      <nav className="mx-auto flex h-14 w-full max-w-7xl items-center justify-between px-6">
+      <nav className="mx-auto flex h-16 w-full max-w-7xl items-center justify-between px-6">
         <Link
           href="/"
           className="flex items-center gap-3 group transition-transform hover:scale-[1.02]"
         >
-          <div className="relative w-28 h-10 shrink-0 brightness-0 invert opacity-90 group-hover:opacity-100 transition-opacity">
+          <div className="relative w-32 h-12 shrink-0 brightness-0 invert opacity-90 group-hover:opacity-100 transition-opacity">
             <Image
               src="/TallyCertificate.png"
               alt="Sarvadnya Infotech logo"
               fill
-              sizes="(max-width: 768px) 112px, 140px"
+              sizes="(max-width: 768px) 128px, 160px"
               className="object-contain"
               priority
             />
           </div>
           <div className="hidden sm:flex flex-col border-l border-white/20 pl-3 leading-none">
-            <span className="text-[13px] font-bold tracking-tight text-white">
+            <span className="text-[15px] font-bold tracking-tight text-white">
               Sarvadnya
             </span>
-            <span className="text-[9px] font-medium uppercase tracking-[0.2em] text-white/40">
+            <span className="text-[10px] font-medium uppercase tracking-[0.2em] text-white/40">
               Infotech LLP
             </span>
           </div>
         </Link>
 
         {/* Desktop Navigation */}
-        <div className="hidden lg:flex items-center gap-6">
+        <div className="hidden lg:flex items-center gap-8">
           <Link
             href="/admin/palette"
-            className="text-[10px] font-bold uppercase tracking-widest text-emerald-400 hover:text-emerald-300 transition-colors"
+            className="text-[11px] font-bold uppercase tracking-widest text-emerald-400 hover:text-emerald-300 transition-colors"
           >
             Palette
           </Link>
           <Link
             href="/admin"
-            className="text-[10px] font-bold uppercase tracking-widest text-indigo-400 hover:text-indigo-300 transition-colors"
+            className="text-[11px] font-bold uppercase tracking-widest text-indigo-400 hover:text-indigo-300 transition-colors"
           >
             Admin
           </Link>
           <Link
             href="/careers"
-            className="inline-flex items-center justify-center rounded-full bg-white/5 px-4 py-1.5 text-[10px] font-bold uppercase tracking-wider text-white border border-white/10 transition-all hover:bg-white/10"
+            className="inline-flex items-center justify-center rounded-full bg-white/5 px-5 py-2 text-[11px] font-bold uppercase tracking-wider text-white border border-white/10 transition-all hover:bg-white/10"
           >
             Careers
           </Link>
           <Link
             href="/contact"
-            className="inline-flex items-center justify-center rounded-full bg-[#7338a0] px-4 py-1.5 text-[10px] font-bold uppercase tracking-wider text-white shadow-lg transition-all hover:bg-[#4a2574]"
+            className="inline-flex items-center justify-center rounded-full bg-[#7338a0] px-5 py-2 text-[11px] font-bold uppercase tracking-wider text-white shadow-lg transition-all hover:bg-[#4a2574]"
           >
             Support
           </Link>

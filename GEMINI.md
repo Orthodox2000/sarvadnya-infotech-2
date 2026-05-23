@@ -4,7 +4,46 @@
 - Always mention the application version number when presenting changes or updates.
 - Versioning follows the format `v1.1.x`.
 - Increment the patch version automatically for every iteration/significant set of changes.
-- Current Version: v1.1.114
+- Current Version: v1.1.119
+
+## Recent Changes (v1.1.119)
+- **News Ticker Bulletproofing:** Resolved the persistent "stuck" animation by implementing a React `key` strategy on the marquee container. This forces a clean re-initialization of the CSS animation state whenever new news data is loaded from the server.
+- **Animation Integrity:** Renamed internal keyframes and classes to unique identifiers (`news-ticker-scroll`, `animate-marquee-infinite`) to prevent any collisions with legacy CSS or third-party libraries.
+- **Maximum Megamenu Visibility:** Achieved the final targeted font sizes for `Productbar` sub-items:
+    - Labels: `text-[14px]` with crisp bolding.
+    - Descriptions: `text-[12px]` with medium weight and improved line-height.
+- **Enhanced Spatial Balance:** Increased internal padding (`p-5`) and expanded container width (`max-w-[480px]`) to ensure the larger text elements breathe correctly within the high-end UI layout.
+- **Version Bump:** Updated application version to v1.1.119.
+
+## Recent Changes (v1.1.118)
+- **News Ticker Stabilization:** Resolved the "stuck" news bar issue by re-engineering the marquee animation with GPU-accelerated `translate3d` and enforced `animation-play-state`. Moved animation definitions to the CSS root for maximum precedence.
+- **Megamenu Visibility Boost:** Further increased font sizes for `Productbar` sub-items and descriptions (+15%). 
+    - Sub-item labels: `text-[13px]` → `text-[14px]`.
+    - Descriptions: `text-[11px]` → `text-[12px]`.
+- **Layout Optimization:** Expanded the megamenu maximum width and internal padding to accommodate larger text without crowding.
+- **Improved Hierarchy:** Enhanced nested navigation item visibility and added bold font weight to descriptions for better legibility on high-resolution displays.
+- **Version Bump:** Updated application version to v1.1.118.
+
+## Recent Changes (v1.1.117)
+- **Navigation Visibility Overhaul:** Substantially increased the height of primary navigation bars for better visual presence.
+    - **Navbar:** Height increased from `h-14` (56px) to `h-16` (64px).
+    - **Productbar:** Height increased from `h-[31px]` to `h-[40px]`.
+- **Typography Upscaling:** Increased base font sizes across all navigation elements by ~15-20% to improve legibility and professional aesthetic.
+- **Enhanced Branding:** Adjusted logo scaling and spacing in both headers to maintain perfect proportions with the new heights.
+- **Improved Interaction:** Increased horizontal padding and icon sizes in the `Productbar` to provide better touch targets and visual balance.
+- **Version Bump:** Updated application version to v1.1.117.
+
+## Recent Changes (v1.1.116)
+- **Admin Panel Sync:** Synchronized the `AdminSidebar` version display with the current application build (v1.1.115/v1.1.116).
+- **Image Optimization:** Resolved Next.js browser warnings regarding `/logo.png` by implementing modern Tailwind-based aspect ratio controls (`w-[15px] h-auto`) in the `Productbar` component.
+- **Maintenance Polish:** Conducted a sweep of hardcoded version strings to ensure global consistency across the administration and public interfaces.
+- **Version Bump:** Updated application version to v1.1.116.
+
+## Recent Changes (v1.1.115)
+- **AI Chat Robustness:** Re-engineered the `/api/chat` route with a high-availability retry mechanism. The system now shuffles and iterates through all configured Groq API keys if a failure occurs (e.g., account restriction, rate limiting).
+- **Intelligent Error Handling:** Added specific detection for `organization_restricted` errors, allowing the assistant to transparently fallback to alternative keys or provide clear account-status feedback to administrators.
+- **Improved Distribution:** Transitioned from random rotation to a shuffled-loop strategy, ensuring that every available key is tried before reporting a service outage.
+- **Version Bump:** Updated application version to v1.1.115.
 
 ## Recent Changes (v1.1.114)
 - **Robust Map Rendering:** Re-engineered the `getMapSrc` helper on the Contact page and Footer to use a flexible regex that extracts the source URL from anywhere within an iframe embed string. This resolves the "Map Not Configured" issue when iframes are wrapped in other HTML tags.

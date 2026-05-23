@@ -69,7 +69,7 @@ const AdminSidebar = ({ isOpen, onClose }: AdminSidebarProps) => {
               </h2>
             )}
             <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1">
-              v1.1.96
+              v1.1.115
             </p>
           </div>
           <button 

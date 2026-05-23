@@ -120,7 +120,7 @@ const Productbar = ({ initialSettings }: { initialSettings?: any }) => {
 
   return (
     <div 
-      className="w-full border-b border-slate-200 relative z-[30] h-[31px] flex items-center overflow-x-clip no-scrollbar transition-all duration-300 shadow-sm"
+      className="w-full border-b border-slate-200 relative z-[30] h-[40px] flex items-center overflow-x-clip no-scrollbar transition-all duration-300 shadow-sm"
       style={{ 
         backgroundColor: 'var(--background-color)',
       } as CSSProperties}
@@ -129,16 +129,15 @@ const Productbar = ({ initialSettings }: { initialSettings?: any }) => {
         {/* Company Logo & Name */}
         <Link 
             href="/capabilities" 
-            className="flex items-center gap-1 pr-2 sm:pr-4 transition-opacity hover:opacity-80 shrink-0 border-r border-slate-200 mr-1" 
+            className="flex items-center gap-1.5 pr-3 sm:pr-5 transition-opacity hover:opacity-80 shrink-0 border-r border-slate-200 mr-1.5" 
             onClick={handleLinkClick}
         >
           <Image 
             src="/logo.png" 
             alt="Sarvadnya" 
-            width={15} 
-            height={15} 
-            className="object-contain" 
-            style={{ width: '15px', height: 'auto' }}
+            width={20} 
+            height={20} 
+            className="object-contain w-[20px] h-auto" 
           />
         </Link>
 
@@ -151,15 +150,15 @@ const Productbar = ({ initialSettings }: { initialSettings?: any }) => {
           >
             <button
               onClick={(e) => handleMenuToggle(e, item.label)}
-              className={`flex items-center gap-1.5 px-2 sm:px-3 text-[10px] sm:text-[11px] font-bold transition-all h-full
+              className={`flex items-center gap-2 px-3 sm:px-4 text-[11px] sm:text-[12px] font-bold transition-all h-full
                 ${activeMenu === item.label ? 'text-[#7338a0] bg-slate-50' : 'text-slate-500 hover:text-slate-900 hover:bg-slate-50'}`}
             >
-              <span className="opacity-50 group-hover:opacity-100 transition-opacity">
+              <span className="opacity-50 group-hover:opacity-100 transition-opacity scale-110">
                 {iconMap[item.label]}
               </span>
               <span className="tracking-tight">{item.label}</span>
               <svg 
-                className={`w-2.5 h-2.5 transition-transform duration-300 opacity-30 ${activeMenu === item.label ? 'rotate-180 opacity-100' : ''}`} 
+                className={`w-3 h-3 transition-transform duration-300 opacity-30 ${activeMenu === item.label ? 'rotate-180 opacity-100' : ''}`} 
                 viewBox="0 0 20 20" 
                 fill="currentColor"
               >
@@ -170,15 +169,15 @@ const Productbar = ({ initialSettings }: { initialSettings?: any }) => {
             {/* Megamenu Content */}
             {activeMenu === item.label && item.subItems && (
               <div 
-                className={`absolute top-[31px] w-[85vw] sm:w-screen max-w-[240px] sm:max-w-[400px] animate-in fade-in slide-in-from-top-1 duration-200 pointer-events-auto
+                className={`absolute top-[40px] w-[90vw] sm:w-screen max-w-[280px] sm:max-w-[480px] animate-in fade-in slide-in-from-top-1 duration-200 pointer-events-auto
                   ${index <= 1 ? '-left-2 sm:left-0' : index >= 3 ? '-right-2 sm:right-0' : 'left-1/2 -translate-x-1/2'}
                 `}
                 onClick={(e) => e.stopPropagation()}
               >
                 <div className="bg-white/95 backdrop-blur-xl border border-slate-100 rounded-b-2xl shadow-2xl overflow-hidden">
-                  <div className="p-2 sm:p-4 grid grid-cols-1 sm:grid-cols-2 gap-1 sm:gap-2 max-h-[70vh] overflow-y-auto no-scrollbar">
+                  <div className="p-3 sm:p-5 grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4 max-h-[70vh] overflow-y-auto no-scrollbar">
                     {(item.subItems || []).map((subItem: ProductSubItem) => (
-                      <div key={subItem.id} className="flex flex-col gap-1">
+                      <div key={subItem.id} className="flex flex-col gap-1.5">
                         <Link
                           href={subItem.href}
                           className="flex flex-col rounded-lg px-3 py-2 transition-all hover:bg-slate-50 group/item"
@@ -187,26 +186,26 @@ const Productbar = ({ initialSettings }: { initialSettings?: any }) => {
                             if (subItem.href.includes('section=')) prefetchData(`/api/content?section=${subItem.href.split('section=')[1]}`);
                           }}
                         >
-                          <span className="text-[11px] font-bold text-slate-900 group-hover/item:text-[#7338a0] transition-colors flex items-center gap-1.5">
+                          <span className="text-[13px] sm:text-[14px] font-bold text-slate-900 group-hover/item:text-[#7338a0] transition-colors flex items-center gap-1.5">
                             {subItem.label}
-                            <svg className="w-2.5 h-2.5 opacity-0 -translate-x-1 group-hover/item:opacity-100 group-hover/item:translate-x-0 transition-all" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <svg className="w-3.5 h-3.5 opacity-0 -translate-x-1 group-hover/item:opacity-100 group-hover/item:translate-x-0 transition-all" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 5l7 7-7 7" />
                             </svg>
                           </span>
                           {subItem.description && (
-                            <span className="text-[9px] text-slate-500 leading-tight mt-0.5 group-hover/item:text-slate-700 transition-colors">
+                            <span className="text-[11px] sm:text-[12px] text-slate-500 leading-tight mt-1.5 group-hover/item:text-slate-700 transition-colors font-medium">
                               {subItem.description}
                             </span>
                           )}
                         </Link>
                         
                         {(subItem.subItems?.length ?? 0) > 0 && (
-                          <div className="flex flex-col gap-1 ml-3 pl-3 border-l border-slate-100">
+                          <div className="flex flex-col gap-2 ml-4 pl-4 border-l border-slate-100">
                             {(subItem.subItems || []).map((nestedItem: ProductSubItem) => (
                               <Link
                                 key={nestedItem.id}
                                 href={nestedItem.href}
-                                className="block py-1 px-3 rounded-md text-[10px] font-bold text-slate-500 hover:text-slate-900 hover:bg-slate-50 transition-all"
+                                className="block py-1.5 px-3 rounded-md text-[12px] font-bold text-slate-500 hover:text-slate-900 hover:bg-slate-50 transition-all"
                                 onClick={handleLinkClick}
                               >
                                 {nestedItem.label}
