@@ -4,7 +4,31 @@
 - Always mention the application version number when presenting changes or updates.
 - Versioning follows the format `v1.1.x`.
 - Increment the patch version automatically for every iteration/significant set of changes.
-- Current Version: v1.1.119
+- Current Version: v1.1.122
+
+## Recent Changes (v1.1.122)
+- **Hero Branding Integration:** Automatically appended the branding slogan "Why Choose Sarvadnya Infotech LLP?" to every hero tagline.
+- **Dynamic Content Sanitization:** Implemented logic in the `HomeHero` component to strip trailing punctuation from base taglines before appending the branding suffix, ensuring a clean and professional appearance.
+- **Bootstrapping Update:** Refreshed the default hero configurations in both the source code and bootstrap scripts to align with the new branding requirements.
+- **Version Bump:** Updated application version to v1.1.122.
+
+## Recent Changes (v1.1.121)
+- **Aggressive Mobile Compaction:** Shortened mobile navigation heights to their absolute minimums for maximum vertical content space.
+    - **Navbar:** Mobile height reduced to `h-12` (48px).
+    - **Productbar:** Mobile height reduced to `h-[28px]`.
+- **Mobile-First UI Scaling:** Scaled down all mobile assets and typography to ensure perfect fit without horizontal or vertical overflow.
+    - **Logos:** Reduced mobile widths to `w-24` (Navbar) and `w-[14px]` (Productbar).
+    - **Typography:** Refined mobile text to `text-[12px]` (Navbar) and `text-[9px]` (Productbar).
+- **Desktop Integrity:** Maintained the enhanced `h-16` and `h-[40px]` heights for desktop (lg breakpoint) to preserve widescreen visibility.
+- **Version Bump:** Updated application version to v1.1.121.
+
+## Recent Changes (v1.1.120)
+- **Responsive Navigation Scaling:** Implemented dynamic height and font-size scaling for the `Navbar` and `Productbar` based on viewport breakpoints.
+    - **Mobile/Tablet:** Restored original compact heights (`h-14` for Navbar, `h-[32px]` for Productbar) and base font sizes to ensure layout stability and prevent screen overflow.
+    - **Desktop (lg+):** Maintained the enhanced visibility heights (`h-16` for Navbar, `h-[40px]` for Productbar) and upscaled typography for a premium widescreen experience.
+- **Smart Logo Scaling:** Added responsive width/height constraints to all header logos, ensuring they scale naturally between mobile and desktop views.
+- **Improved Megamenu Anchoring:** Refactored the `Productbar` megamenu to use `top-full` positioning, automatically adapting to the bar's responsive height changes.
+- **Version Bump:** Updated application version to v1.1.120.
 
 ## Recent Changes (v1.1.119)
 - **News Ticker Bulletproofing:** Resolved the persistent "stuck" animation by implementing a React `key` strategy on the marquee container. This forces a clean re-initialization of the CSS animation state whenever new news data is loaded from the server.

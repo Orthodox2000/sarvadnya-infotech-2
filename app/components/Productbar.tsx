@@ -120,7 +120,7 @@ const Productbar = ({ initialSettings }: { initialSettings?: any }) => {
 
   return (
     <div 
-      className="w-full border-b border-slate-200 relative z-[30] h-[40px] flex items-center overflow-x-clip no-scrollbar transition-all duration-300 shadow-sm"
+      className="w-full border-b border-slate-200 relative z-[30] h-[28px] lg:h-[40px] flex items-center overflow-x-clip no-scrollbar transition-all duration-300 shadow-sm"
       style={{ 
         backgroundColor: 'var(--background-color)',
       } as CSSProperties}
@@ -129,7 +129,7 @@ const Productbar = ({ initialSettings }: { initialSettings?: any }) => {
         {/* Company Logo & Name */}
         <Link 
             href="/capabilities" 
-            className="flex items-center gap-1.5 pr-3 sm:pr-5 transition-opacity hover:opacity-80 shrink-0 border-r border-slate-200 mr-1.5" 
+            className="flex items-center gap-1.5 pr-2 lg:pr-3 sm:pr-5 transition-opacity hover:opacity-80 shrink-0 border-r border-slate-200 mr-1 lg:mr-1.5" 
             onClick={handleLinkClick}
         >
           <Image 
@@ -137,7 +137,7 @@ const Productbar = ({ initialSettings }: { initialSettings?: any }) => {
             alt="Sarvadnya" 
             width={20} 
             height={20} 
-            className="object-contain w-[20px] h-auto" 
+            className="object-contain w-[14px] lg:w-[20px] h-auto" 
           />
         </Link>
 
@@ -150,15 +150,15 @@ const Productbar = ({ initialSettings }: { initialSettings?: any }) => {
           >
             <button
               onClick={(e) => handleMenuToggle(e, item.label)}
-              className={`flex items-center gap-2 px-3 sm:px-4 text-[11px] sm:text-[12px] font-bold transition-all h-full
+              className={`flex items-center gap-1.5 lg:gap-2 px-2 lg:px-4 text-[9px] lg:text-[12px] font-bold transition-all h-full
                 ${activeMenu === item.label ? 'text-[#7338a0] bg-slate-50' : 'text-slate-500 hover:text-slate-900 hover:bg-slate-50'}`}
             >
-              <span className="opacity-50 group-hover:opacity-100 transition-opacity scale-110">
+              <span className="opacity-50 group-hover:opacity-100 transition-opacity scale-90 lg:scale-110">
                 {iconMap[item.label]}
               </span>
               <span className="tracking-tight">{item.label}</span>
               <svg 
-                className={`w-3 h-3 transition-transform duration-300 opacity-30 ${activeMenu === item.label ? 'rotate-180 opacity-100' : ''}`} 
+                className={`w-2.5 h-2.5 lg:w-3 lg:h-3 transition-transform duration-300 opacity-30 ${activeMenu === item.label ? 'rotate-180 opacity-100' : ''}`} 
                 viewBox="0 0 20 20" 
                 fill="currentColor"
               >
@@ -169,7 +169,7 @@ const Productbar = ({ initialSettings }: { initialSettings?: any }) => {
             {/* Megamenu Content */}
             {activeMenu === item.label && item.subItems && (
               <div 
-                className={`absolute top-[40px] w-[90vw] sm:w-screen max-w-[280px] sm:max-w-[480px] animate-in fade-in slide-in-from-top-1 duration-200 pointer-events-auto
+                className={`absolute top-full w-[90vw] sm:w-screen max-w-[280px] sm:max-w-[480px] animate-in fade-in slide-in-from-top-1 duration-200 pointer-events-auto
                   ${index <= 1 ? '-left-2 sm:left-0' : index >= 3 ? '-right-2 sm:right-0' : 'left-1/2 -translate-x-1/2'}
                 `}
                 onClick={(e) => e.stopPropagation()}

@@ -39,7 +39,7 @@ async function run() {
     const heroContents = [
       {
         badge: "Upgraded to Tally 7.0",
-        titleText: "Trusted Tally Partner in Navi Mumbai",
+        titleText: "Trusted Tally Partner in Navi Mumbai - Why Choose Sarvadnya Infotech LLP?",
         colorFrom: "#4f46e5",
         colorTo: "#7c3aed",
         description: "Beyond Software Sales — Guiding You to Maximize Your Tally Investment with Certified Support.",
@@ -54,7 +54,7 @@ async function run() {
       },
       {
         badge: "Support Excellence",
-        titleText: "90% First-Call Resolution",
+        titleText: "90% First-Call Resolution - Why Choose Sarvadnya Infotech LLP?",
         colorFrom: "#f97316",
         colorTo: "#e11d48",
         description: "15min Avg. Response Time | 5000+ Queries Resolved | 99% Client Satisfaction. Reliable support that keeps your business running smoothly.",
@@ -69,7 +69,7 @@ async function run() {
       },
       {
         badge: "Certified Expertise",
-        titleText: "Why Choose Certified Partner?",
+        titleText: "Why Choose Certified Partner? - Why Choose Sarvadnya Infotech LLP?",
         colorFrom: "#2563eb",
         colorTo: "#0891b2",
         description: "Experience unparalleled reliability with Tally Certified Partners. We ensure your business software is always optimized, secure, and compliant.",
@@ -84,7 +84,7 @@ async function run() {
       },
       {
         badge: "Vertical Solutions",
-        titleText: "Custom Tally Modules",
+        titleText: "Custom Tally Modules - Why Choose Sarvadnya Infotech LLP?",
         colorFrom: "#059669",
         colorTo: "#0d9488",
         description: "Tailored solutions built directly into Tally to optimize your unique industry workflows and reporting.",

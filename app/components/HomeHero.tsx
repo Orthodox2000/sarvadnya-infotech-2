@@ -32,7 +32,7 @@ interface HeroContent {
 const DEFAULT_HERO = [
     {
       "badge": "Upgraded to Tally 7.0",
-      "titleText": "Trusted Tally Partner in Navi Mumbai",
+      "titleText": "Trusted Tally Partner in Navi Mumbai - Why Choose Sarvadnya Infotech LLP?",
       "colorFrom": "#4f46e5",
       "colorTo": "#7c3aed",
       "description": "Beyond Software Sales — Guiding You to Maximize Your Tally Investment with Certified Support.",
@@ -57,7 +57,14 @@ export default function HomeHero({ initialData }: { initialData?: HeroContent[] 
       try {
         const data = await fetchWithCache('/api/content?section=home_hero');
         if (Array.isArray(data) && data.length > 0) {
-          setHeroContents(data);
+          // Append branding to each title if not already present
+          const brandedData = data.map((item: HeroContent) => ({
+            ...item,
+            titleText: item.titleText.includes('Why Choose Sarvadnya Infotech LLP?') 
+              ? item.titleText 
+              : `${item.titleText.replace(/[?]+$/, '')} - Why Choose Sarvadnya Infotech LLP?`
+          }));
+          setHeroContents(brandedData);
         }
       } catch (err) {
         console.error('Failed to fetch hero content:', err);

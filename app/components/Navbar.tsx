@@ -68,26 +68,26 @@ export default function Navbar({ initialSettings }: { initialSettings?: any }) {
 
   return (
     <header className="relative z-[1000] w-full border-b border-white/5 bg-[#0a041a] shadow-lg">
-      <nav className="mx-auto flex h-16 w-full max-w-7xl items-center justify-between px-6">
+      <nav className="mx-auto flex h-12 lg:h-16 w-full max-w-7xl items-center justify-between px-6">
         <Link
           href="/"
-          className="flex items-center gap-3 group transition-transform hover:scale-[1.02]"
+          className="flex items-center gap-2 lg:gap-3 group transition-transform hover:scale-[1.02]"
         >
-          <div className="relative w-32 h-12 shrink-0 brightness-0 invert opacity-90 group-hover:opacity-100 transition-opacity">
+          <div className="relative w-24 lg:w-32 h-8 lg:h-12 shrink-0 brightness-0 invert opacity-90 group-hover:opacity-100 transition-opacity">
             <Image
               src="/TallyCertificate.png"
               alt="Sarvadnya Infotech logo"
               fill
-              sizes="(max-width: 768px) 128px, 160px"
+              sizes="(max-width: 768px) 96px, 128px"
               className="object-contain"
               priority
             />
           </div>
-          <div className="hidden sm:flex flex-col border-l border-white/20 pl-3 leading-none">
-            <span className="text-[15px] font-bold tracking-tight text-white">
+          <div className="hidden sm:flex flex-col border-l border-white/20 pl-2 lg:pl-3 leading-none">
+            <span className="text-[12px] lg:text-[15px] font-bold tracking-tight text-white">
               Sarvadnya
             </span>
-            <span className="text-[10px] font-medium uppercase tracking-[0.2em] text-white/40">
+            <span className="text-[8px] lg:text-[10px] font-medium uppercase tracking-[0.2em] text-white/40">
               Infotech LLP
             </span>
           </div>
