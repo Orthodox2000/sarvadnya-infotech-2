@@ -158,43 +158,46 @@ export default function AdminLearning() {
   if (loading) return <div className="text-center py-20">Loading Learning Center...</div>;
 
   return (
-    <div className="max-w-7xl mx-auto px-6 py-10">
-      <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-10">
+    <div className="max-w-7xl mx-auto px-6 py-12">
+      <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12">
         <div>
-          <h1 className="text-3xl font-black text-[#0f0529]">Learning Admin</h1>
-          <p className="text-slate-500 text-sm mt-1">Manage videos, links, and tutorials for your users.</p>
+          <h1 className="text-3xl md:text-4xl font-black text-slate-900 tracking-tight">Learning Admin</h1>
+          <p className="text-slate-500 text-sm mt-2 font-bold opacity-80">Manage videos, links, and tutorials for your users.</p>
         </div>
         <button 
           onClick={startAdd}
-          className="bg-[#7338a0] text-white px-8 py-3 rounded-2xl font-bold hover:shadow-lg transition-all"
+          className="bg-[#0371a3] text-white px-8 py-4 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-[#00ABE4] transition-all shadow-xl shadow-[#0371a3]/20 hover:scale-105 active:scale-95"
         >
           + Add New Content
         </button>
       </header>
 
       {message.text && (
-        <div className={`mb-6 p-4 rounded-2xl font-bold text-sm ${message.type === 'success' ? 'bg-green-50 text-green-600' : 'bg-red-50 text-red-600'}`}>
-          {message.text}
+        <div className={`mb-8 p-5 rounded-2xl font-black text-[11px] uppercase tracking-widest border animate-in slide-in-from-top-2 duration-300 ${message.type === 'success' ? 'bg-emerald-50 text-emerald-600 border-emerald-100' : 'bg-rose-50 text-rose-600 border-rose-100'}`}>
+          <div className="flex items-center gap-3">
+             <div className={`w-2 h-2 rounded-full ${message.type === 'success' ? 'bg-emerald-500' : 'bg-rose-500'}`} />
+             {message.text}
+          </div>
         </div>
       )}
 
       {/* Search and Filter */}
       {!editingItem && (
-        <div className="flex flex-col md:flex-row gap-4 mb-8">
-          <div className="flex-1 relative">
+        <div className="flex flex-col md:flex-row gap-4 mb-10">
+          <div className="flex-1 relative group">
             <input 
               type="text" 
               placeholder="Search by title or tags..."
-              className="w-full pl-12 pr-4 py-3 bg-white border border-slate-100 rounded-2xl shadow-sm focus:ring-2 focus:ring-[#7338a0] outline-none"
+              className="w-full pl-12 pr-6 py-4 bg-white border border-[#E9F1FA] rounded-[1.5rem] shadow-sm focus:ring-4 focus:ring-[#00ABE4]/5 focus:border-[#00ABE4] outline-none transition-all text-slate-900 font-bold placeholder:text-slate-300"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
-            <svg className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            <svg className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-300 group-focus-within:text-[#00ABE4] transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
           </div>
           <select 
-            className="px-6 py-3 bg-white border border-slate-100 rounded-2xl shadow-sm focus:ring-2 focus:ring-[#7338a0] outline-none font-bold text-slate-700"
+            className="px-8 py-4 bg-white border border-[#E9F1FA] rounded-[1.5rem] shadow-sm focus:ring-4 focus:ring-[#00ABE4]/5 focus:border-[#00ABE4] outline-none font-black text-[10px] uppercase tracking-widest text-slate-500 transition-all cursor-pointer"
             value={filterFolder}
             onChange={(e) => setFilterFolder(e.target.value)}
           >
@@ -206,97 +209,104 @@ export default function AdminLearning() {
       )}
 
       {editingItem ? (
-        <div className="bg-white p-8 rounded-[32px] border border-slate-100 shadow-xl mb-12 animate-in slide-in-from-top-4 duration-300">
-          <div className="flex justify-between items-center mb-8">
-            <h2 className="text-xl font-bold text-[#0f0529]">{editingItem._id ? 'Edit Content' : 'New Content'}</h2>
-            <button onClick={() => setEditingItem(null)} className="text-slate-400 hover:text-slate-900 font-bold">Cancel</button>
+        <div className="bg-white p-8 md:p-12 rounded-[2.5rem] border border-[#E9F1FA] shadow-2xl mb-12 animate-in slide-in-from-top-4 duration-500">
+          <div className="flex justify-between items-center mb-10">
+            <h2 className="text-2xl font-black text-slate-900 tracking-tight">{editingItem._id ? 'Edit Content' : 'New Content'}</h2>
+            <button onClick={() => setEditingItem(null)} className="text-slate-400 hover:text-rose-500 font-black text-[10px] uppercase tracking-widest transition-colors flex items-center gap-2">
+               Cancel
+               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12" /></svg>
+            </button>
           </div>
 
-          <form onSubmit={handleSave} className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-4">
+          <form onSubmit={handleSave} className="space-y-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+              <div className="space-y-6">
                 <div>
-                  <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">Title</label>
+                  <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-[#0371a3] mb-3 ml-1">Title</label>
                   <input 
                     required
-                    className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#7338a0] font-bold"
+                    className="w-full p-5 bg-[#f0f9ff]/50 rounded-2xl border border-[#E9F1FA] focus:ring-4 focus:ring-[#00ABE4]/5 focus:border-[#00ABE4] outline-none transition-all font-bold text-slate-900"
                     value={editingItem.title}
                     onChange={e => setEditingItem({...editingItem, title: e.target.value})}
                   />
                 </div>
-                <div>
-                  <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">Type</label>
-                  <select 
-                    className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#7338a0] font-bold"
-                    value={editingItem.type}
-                    onChange={e => setEditingItem({...editingItem, type: e.target.value})}
-                  >
-                    <option value="video">YouTube Video</option>
-                    <option value="link">External Link</option>
-                  </select>
+                <div className="grid grid-cols-2 gap-4">
+                    <div>
+                        <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-[#0371a3] mb-3 ml-1">Type</label>
+                        <select 
+                            className="w-full p-5 bg-[#f0f9ff]/50 rounded-2xl border border-[#E9F1FA] focus:ring-4 focus:ring-[#00ABE4]/5 focus:border-[#00ABE4] outline-none transition-all font-bold text-slate-900 cursor-pointer"
+                            value={editingItem.type}
+                            onChange={e => setEditingItem({...editingItem, type: e.target.value})}
+                        >
+                            <option value="video">Webinar (YouTube)</option>
+                            <option value="link">Article (External)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-[#0371a3] mb-3 ml-1">Folder / Category</label>
+                        <input 
+                            className="w-full p-5 bg-[#f0f9ff]/50 rounded-2xl border border-[#E9F1FA] focus:ring-4 focus:ring-[#00ABE4]/5 focus:border-[#00ABE4] outline-none transition-all font-bold text-slate-900"
+                            placeholder="e.g. Webinars, GST Guide"
+                            value={editingItem.folder}
+                            onChange={e => setEditingItem({...editingItem, folder: e.target.value})}
+                        />
+                    </div>
                 </div>
                 <div>
-                  <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">YouTube ID or Link URL</label>
+                  <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-[#0371a3] mb-3 ml-1">
+                    {editingItem.type === 'video' ? 'YouTube Video ID or Link' : 'Target URL Link'}
+                  </label>
                   <input 
                     required
-                    className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#7338a0]"
+                    className="w-full p-5 bg-[#f0f9ff]/50 rounded-2xl border border-[#E9F1FA] focus:ring-4 focus:ring-[#00ABE4]/5 focus:border-[#00ABE4] outline-none transition-all font-bold text-slate-900"
                     placeholder={editingItem.type === 'video' ? 'e.g. dQw4w9WgXcQ' : 'https://example.com/guide'}
                     value={editingItem.url}
                     onChange={e => setEditingItem({...editingItem, url: e.target.value})}
                   />
                 </div>
                 <div>
-                  <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">Folder / Category</label>
+                  <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-[#0371a3] mb-3 ml-1">Tags (comma separated)</label>
                   <input 
-                    className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#7338a0]"
-                    placeholder="e.g. Webinars, GST Guide, Mobile App"
-                    value={editingItem.folder}
-                    onChange={e => setEditingItem({...editingItem, folder: e.target.value})}
-                  />
-                </div>
-              </div>
-
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">Description</label>
-                  <textarea 
-                    className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#7338a0] h-32"
-                    value={editingItem.description}
-                    onChange={e => setEditingItem({...editingItem, description: e.target.value})}
-                  />
-                </div>
-                <div>
-                  <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">Tags (comma separated)</label>
-                  <input 
-                    className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#7338a0]"
+                    className="w-full p-5 bg-[#f0f9ff]/50 rounded-2xl border border-[#E9F1FA] focus:ring-4 focus:ring-[#00ABE4]/5 focus:border-[#00ABE4] outline-none transition-all font-bold text-[#00ABE4]"
                     placeholder="e.g. tallyprime, gst, training"
                     value={editingItem.tags?.join(', ')}
                     onChange={e => setEditingItem({...editingItem, tags: e.target.value.split(',').map((t: string) => t.trim()).filter((t: string) => t !== '')})}
                   />
                 </div>
+              </div>
+
+              <div className="space-y-6">
+                <div>
+                  <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-[#0371a3] mb-3 ml-1">Description</label>
+                  <textarea 
+                    className="w-full p-5 bg-[#f0f9ff]/50 rounded-2xl border border-[#E9F1FA] focus:ring-4 focus:ring-[#00ABE4]/5 focus:border-[#00ABE4] outline-none transition-all font-bold text-slate-600 h-[140px] resize-none"
+                    value={editingItem.description}
+                    onChange={e => setEditingItem({...editingItem, description: e.target.value})}
+                  />
+                </div>
 
                 {editingItem.type === 'link' && (
-                  <div className="space-y-4 pt-2">
-                    <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400">Thumbnail Option</label>
+                  <div className="space-y-4">
+                    <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-[#0371a3] ml-1">Thumbnail Configuration</label>
                     <div className="flex gap-4">
                       <button 
                         type="button"
                         onClick={() => setEditingItem({...editingItem, thumbnailOption: 'logo'})}
-                        className={`flex-1 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest border-2 transition-all ${editingItem.thumbnailOption === 'logo' ? 'border-[#7338a0] bg-purple-50 text-[#7338a0]' : 'border-slate-100 text-slate-400'}`}
+                        className={`flex-1 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest border-2 transition-all ${editingItem.thumbnailOption === 'logo' ? 'border-[#00ABE4] bg-[#f0f9ff] text-[#00ABE4]' : 'border-[#E9F1FA] text-slate-300'}`}
                       >
-                        Use Logo
+                        Company Logo
                       </button>
                       <button 
                         type="button"
                         onClick={() => setEditingItem({...editingItem, thumbnailOption: 'custom'})}
-                        className={`flex-1 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest border-2 transition-all ${editingItem.thumbnailOption === 'custom' ? 'border-[#7338a0] bg-purple-50 text-[#7338a0]' : 'border-slate-100 text-slate-400'}`}
+                        className={`flex-1 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest border-2 transition-all ${editingItem.thumbnailOption === 'custom' ? 'border-[#00ABE4] bg-[#f0f9ff] text-[#00ABE4]' : 'border-[#E9F1FA] text-slate-300'}`}
                       >
-                        Upload Custom
+                        Cloud Upload
                       </button>
                     </div>
 
                     {editingItem.thumbnailOption === 'custom' && (
-                      <div className="flex items-center gap-4 p-4 bg-slate-50 rounded-2xl border-2 border-dashed border-slate-200">
+                      <div className="flex items-center gap-4 p-5 bg-[#f0f9ff]/30 rounded-2xl border-2 border-dashed border-[#E9F1FA] group hover:border-[#00ABE4]/50 transition-colors">
                         <input 
                           type="file" 
                           accept="image/*"
@@ -306,13 +316,13 @@ export default function AdminLearning() {
                         />
                         <label 
                           htmlFor="thumbnail-upload"
-                          className="px-4 py-2 bg-white text-[10px] font-black uppercase tracking-widest rounded-lg shadow-sm border border-slate-100 cursor-pointer hover:bg-slate-50 transition-all"
+                          className="px-6 py-3 bg-white text-[10px] font-black uppercase tracking-widest rounded-xl shadow-sm border border-[#E9F1FA] cursor-pointer hover:bg-[#0371a3] hover:text-white transition-all transform active:scale-95"
                         >
-                          {uploading ? 'Uploading...' : 'Choose Image'}
+                          {uploading ? 'Processing...' : 'Upload Image'}
                         </label>
                         {editingItem.thumbnail && (
-                          <div className="w-12 h-12 rounded-lg overflow-hidden border border-slate-200 bg-white">
-                            <img src={editingItem.thumbnail} alt="Thumb" className="w-full h-full object-cover" />
+                          <div className="w-14 h-14 rounded-xl overflow-hidden border border-[#E9F1FA] bg-white shadow-inner p-1">
+                            <img src={editingItem.thumbnail} alt="Thumb" className="w-full h-full object-cover rounded-lg" />
                           </div>
                         )}
                       </div>
@@ -321,8 +331,8 @@ export default function AdminLearning() {
                 )}
 
                 <div>
-                  <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">Thumbnail Preview</label>
-                  <div className="relative aspect-video w-48 rounded-xl overflow-hidden bg-slate-100 border border-slate-200">
+                  <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-[#0371a3] mb-3 ml-1">Asset Preview</label>
+                  <div className="relative aspect-video w-full max-w-[320px] rounded-[1.5rem] overflow-hidden bg-[#f0f9ff] border-4 border-white shadow-2xl">
                     {editingItem.type === 'video' ? (
                       <img src={getYoutubeThumbnail(editingItem.url)} alt="Thumbnail" className="w-full h-full object-cover" />
                     ) : (
@@ -330,26 +340,27 @@ export default function AdminLearning() {
                         <img src={editingItem.thumbnail} alt="Thumbnail" className="w-full h-full object-cover" />
                       ) : (
                         <div className="flex items-center justify-center h-full bg-white">
-                          <img src="/logo.png" alt="Logo" className="w-12 h-auto opacity-40" />
+                          <img src="/logo.png" alt="Logo" className="w-16 h-auto opacity-30" />
                         </div>
                       )
                     )}
+                    <div className="absolute inset-0 bg-[#0371a3]/5" />
                   </div>
                 </div>
               </div>
             </div>
 
-            <div className="pt-8 flex gap-4">
+            <div className="pt-10 flex flex-col sm:flex-row gap-4 border-t border-[#E9F1FA]">
               <button 
                 disabled={saving || uploading}
-                className="flex-1 bg-[#7338a0] text-white py-4 rounded-2xl font-bold hover:shadow-xl transition-all disabled:opacity-50"
+                className="flex-1 bg-[#0371a3] text-white py-5 rounded-2xl font-black text-xs uppercase tracking-[0.2em] shadow-xl shadow-[#0371a3]/20 hover:bg-[#00ABE4] transition-all disabled:opacity-50 transform active:scale-95"
               >
-                {saving ? 'Saving...' : 'Save Content'}
+                {saving ? 'Synchronizing...' : (editingItem._id ? 'Update Content' : 'Publish Content')}
               </button>
               <button 
                 type="button"
                 onClick={() => setEditingItem(null)}
-                className="px-8 py-4 border border-slate-200 rounded-2xl font-bold"
+                className="px-10 py-5 bg-slate-50 text-slate-400 rounded-2xl font-black text-xs uppercase tracking-[0.2em] hover:bg-slate-100 transition-all border border-slate-100"
               >
                 Cancel
               </button>
@@ -357,53 +368,60 @@ export default function AdminLearning() {
           </form>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {filteredItems.map((item) => (
-            <div key={item._id} className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm flex flex-col group">
-              <div className="relative aspect-video w-full mb-4 rounded-2xl overflow-hidden bg-slate-50 border border-slate-100">
+            <div key={item._id} className="bg-white p-6 rounded-[2.5rem] border border-[#E9F1FA] shadow-sm flex flex-col group hover:shadow-2xl hover:border-[#00ABE4]/20 transition-all duration-500">
+              <div className="relative aspect-video w-full mb-6 rounded-[1.5rem] overflow-hidden bg-[#f0f9ff] border border-[#E9F1FA]">
                 {item.type === 'video' ? (
-                  <img src={getYoutubeThumbnail(item.url)} alt={item.title} className="w-full h-full object-cover" />
+                  <img src={getYoutubeThumbnail(item.url)} alt={item.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
                 ) : (
                   item.thumbnailOption === 'custom' && item.thumbnail ? (
-                    <img src={item.thumbnail} alt={item.title} className="w-full h-full object-cover" />
+                    <img src={item.thumbnail} alt={item.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
                   ) : (
-                    <div className="flex items-center justify-center h-full bg-white">
-                      <img src="/logo.png" alt="Logo" className="w-16 h-auto opacity-30" />
+                    <div className="flex items-center justify-center h-full bg-white transition-transform duration-700 group-hover:scale-110">
+                      <img src="/logo.png" alt="Logo" className="w-20 h-auto opacity-30" />
                     </div>
                   )
                 )}
-                <div className="absolute top-2 left-2 px-2 py-0.5 bg-black/50 backdrop-blur-sm text-white text-[8px] font-bold rounded-full uppercase tracking-wider">
+                <div className="absolute top-4 left-4 px-3 py-1 bg-white/40 backdrop-blur-md border border-white/40 text-white text-[8px] font-black uppercase tracking-widest rounded-full shadow-sm">
                   {item.folder || 'General'}
                 </div>
+                <div className="absolute inset-0 bg-[#0371a3]/5 group-hover:bg-[#0371a3]/10 transition-colors" />
               </div>
-              <div className="mb-4">
-                <h3 className="font-bold text-[#0f0529] line-clamp-1">{item.title}</h3>
-                <p className="text-slate-400 text-[10px] mt-1 line-clamp-2">{item.description}</p>
-                <div className="flex flex-wrap gap-1 mt-3">
+              <div className="mb-6 flex-1 px-2">
+                <div className="flex items-center gap-2 mb-3">
+                    <span className="text-[#00ABE4] text-[9px] font-black uppercase tracking-widest bg-[#f0f9ff] px-2 py-0.5 rounded-full border border-[#E9F1FA]">
+                        {item.type === 'video' ? 'Webinar' : 'Article'}
+                    </span>
+                    <span className="text-slate-300 text-[10px] font-bold">{item.date}</span>
+                </div>
+                <h3 className="text-[17px] font-black text-slate-900 line-clamp-2 tracking-tight group-hover:text-[#00ABE4] transition-colors leading-tight mb-3">{item.title}</h3>
+                <p className="text-slate-500 text-[11px] font-bold opacity-80 leading-relaxed line-clamp-2">{item.description}</p>
+                <div className="flex flex-wrap gap-2 mt-4">
                   {item.tags?.slice(0, 3).map((tag: string) => (
-                    <span key={tag} className="px-2 py-0.5 bg-slate-50 text-slate-400 text-[8px] font-bold rounded-full">#{tag}</span>
+                    <span key={tag} className="text-[9px] font-black uppercase tracking-tighter text-[#00ABE4]/60">#{tag}</span>
                   ))}
                 </div>
               </div>
-              <div className="mt-auto flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+              <div className="mt-auto flex gap-3 pt-6 border-t border-[#f0f9ff]">
                 <button 
                   onClick={() => setEditingItem(item)}
-                  className="flex-1 py-2 bg-indigo-50 text-indigo-700 rounded-xl text-xs font-bold hover:bg-indigo-100 transition-all"
+                  className="flex-1 py-3 bg-[#f0f9ff] text-[#0371a3] rounded-xl text-[10px] font-black uppercase tracking-[0.2em] hover:bg-[#0371a3] hover:text-white transition-all transform active:scale-95 border border-[#E9F1FA]"
                 >
                   Edit
                 </button>
                 <button 
                   onClick={() => handleDelete(item._id)}
-                  className="py-2 px-3 bg-red-50 text-red-600 rounded-xl text-xs font-bold hover:bg-red-100 transition-all"
+                  className="px-4 py-3 bg-rose-50 text-rose-500 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-rose-500 hover:text-white transition-all border border-rose-100"
                 >
-                  Delete
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
                 </button>
               </div>
             </div>
           ))}
           {filteredItems.length === 0 && (
-            <div className="col-span-full py-20 text-center bg-slate-50 rounded-[32px] border-2 border-dashed border-slate-200">
-              <p className="text-slate-400 font-bold">No content found matching your filters.</p>
+            <div className="col-span-full py-24 text-center bg-[#f0f9ff]/30 rounded-[3rem] border-2 border-dashed border-[#E9F1FA]">
+              <p className="text-[#0371a3]/40 font-black uppercase tracking-widest text-[10px]">No content found matching your filters.</p>
             </div>
           )}
         </div>

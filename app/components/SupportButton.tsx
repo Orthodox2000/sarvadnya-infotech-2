@@ -48,12 +48,12 @@ export default function SupportButton({ initialSettings }: { initialSettings?: a
         {/* Ask AI Button */}
         <button
           onClick={() => setIsOpen(true)}
-          className="flex items-center gap-2 bg-[#7338a0] text-white px-4 py-2.5 rounded-full shadow-[0_15px_40px_rgba(115,56,160,0.3)] hover:shadow-[0_20px_50px_rgba(115,56,160,0.4)] transition-all transform hover:-translate-y-1 active:scale-95 group"
+          className="flex items-center gap-2 bg-[#00ABE4] text-white px-4 py-2.5 rounded-full shadow-[0_15px_40px_rgba(0,171,228,0.3)] hover:shadow-[0_20px_50px_rgba(0,171,228,0.4)] transition-all transform hover:-translate-y-1 active:scale-95 group"
         >
           <div className="relative">
             <span className="absolute -top-1 -right-1 flex h-2.5 w-2.5">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-purple-500 border-2 border-[#7338a0]"></span>
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-300 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-blue-500 border-2 border-[#00ABE4]"></span>
             </span>
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
@@ -62,8 +62,9 @@ export default function SupportButton({ initialSettings }: { initialSettings?: a
           <span className="font-bold text-[12px] tracking-tight">Ask AI</span>
           
           {/* Tooltip */}
-          <div className="absolute bottom-full right-0 mb-4 w-44 p-3 bg-white text-[#0f0529] rounded-2xl shadow-2xl opacity-0 group-hover:opacity-100 pointer-events-none transition-all translate-y-2 group-hover:translate-y-0 border border-slate-100">
-            <p className="text-[10px] font-bold leading-tight">Got a question? Ask our AI assistant for instant help.</p>
+          <div className="absolute bottom-full right-0 mb-4 w-44 p-3 bg-white text-slate-900 rounded-2xl shadow-2xl opacity-0 group-hover:opacity-100 pointer-events-none transition-all translate-y-2 group-hover:translate-y-0 border border-slate-100">
+            <p className="text-[10px] font-bold leading-tight text-[#00ABE4]">Instant Assistant</p>
+            <p className="text-[9px] text-slate-500 mt-1 font-medium">Ask anything about TallyPrime features or licensing.</p>
             <div className="absolute top-full right-8 w-2 h-2 bg-white border-b border-r border-slate-100 rotate-45 -translate-y-1" />
           </div>
         </button>

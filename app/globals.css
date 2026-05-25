@@ -23,15 +23,17 @@ html {
 
 :root {
   color-scheme: only light;
-  --primary-color: #7f00ff;
-  --secondary-color: #51158c;
-  --primary-btn-color: #7f00ff;
+  --primary-color: #00ABE4;
+  --primary-dark: #0371a3;
+  --secondary-color: #E9F1FA;
+  --bg-sky: #f0f9ff;
+  --primary-btn-color: #00ABE4;
   --secondary-btn-color: #ffffff;
-  --heading-color: #0f0529;
+  --heading-color: #0f172a;
   --para-color: #334155;
   --background-color: #ffffff;
-  --accent-color: #7f00ff;
-  --heading-light-color: #431f82;
+  --accent-color: #00ABE4;
+  --heading-light-color: #0371a3;
   --font-sans: "Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
   --font-mono: "Consolas", "SFMono-Regular", "Liberation Mono", monospace;
   --hero-gradient-opacity: 0.85;
@@ -41,18 +43,18 @@ html {
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
+  --primary: #00ABE4;
   --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
+  --secondary: #E9F1FA;
+  --secondary-foreground: #0371a3;
+  --muted: #f0f9ff;
   --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
+  --accent: #E9F1FA;
+  --accent-foreground: #00ABE4;
   --destructive: oklch(0.577 0.245 27.325);
   --border: oklch(0.922 0 0);
   --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
+  --ring: #00ABE4;
   --chart-1: oklch(0.87 0 0);
   --chart-2: oklch(0.556 0 0);
   --chart-3: oklch(0.439 0 0);
@@ -61,12 +63,12 @@ html {
   --radius: 0.625rem;
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary: #00ABE4;
   --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-accent: #E9F1FA;
+  --sidebar-accent-foreground: #0371a3;
   --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  --sidebar-ring: #00ABE4;
 }
 
 @media (max-width: 768px) {

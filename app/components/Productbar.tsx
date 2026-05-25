@@ -120,24 +120,21 @@ const Productbar = ({ initialSettings }: { initialSettings?: any }) => {
 
   return (
     <div 
-      className="w-full border-b border-slate-200 relative z-[30] h-[20px] lg:h-[28px] flex items-center overflow-x-clip no-scrollbar transition-all duration-300 shadow-sm"
-      style={{ 
-        backgroundColor: 'var(--background-color)',
-      } as CSSProperties}
+      className="w-full border-b border-slate-100 relative z-[30] h-[20px] lg:h-[36px] flex items-center overflow-x-clip no-scrollbar transition-all duration-300 shadow-sm bg-white"
     >
       <div className="mx-auto w-full max-w-7xl px-2 sm:px-4 flex justify-between items-stretch h-full">
         {/* Company Logo & Name */}
         <Link 
             href="/capabilities" 
-            className="flex items-center gap-1 pr-2 lg:pr-3 sm:pr-5 transition-opacity hover:opacity-80 shrink-0 border-r border-slate-200 mr-1 lg:mr-1" 
+            className="flex items-center gap-1 pr-2 lg:pr-4 sm:pr-5 transition-opacity hover:opacity-80 shrink-0 border-r border-slate-100 mr-1 lg:mr-1.5" 
             onClick={handleLinkClick}
         >
           <Image 
             src="/logo.png" 
             alt="Sarvadnya" 
-            width={16} 
-            height={16} 
-            className="object-contain w-[12px] lg:w-[16px] h-auto" 
+            width={20} 
+            height={20} 
+            className="object-contain w-[12px] lg:w-[18px] h-auto" 
           />
         </Link>
 
@@ -150,10 +147,10 @@ const Productbar = ({ initialSettings }: { initialSettings?: any }) => {
           >
             <button
               onClick={(e) => handleMenuToggle(e, item.label)}
-              className={`flex items-center gap-1 px-1.5 lg:px-3 text-[8.5px] lg:text-[11px] font-bold transition-all h-full
-                ${activeMenu === item.label ? 'text-[#7338a0] bg-slate-50' : 'text-slate-500 hover:text-slate-900 hover:bg-slate-50'}`}
+              className={`flex items-center gap-1 lg:gap-1.5 px-1.5 lg:px-4 text-[8.5px] lg:text-[11.5px] font-bold transition-all h-full
+                ${activeMenu === item.label ? 'text-[#0371a3] bg-[#E9F1FA]' : 'text-slate-500 hover:text-[#0371a3] hover:bg-[#E9F1FA]'}`}
             >
-              <span className="opacity-50 group-hover:opacity-100 transition-opacity scale-90 lg:scale-100">
+              <span className="opacity-50 group-hover:opacity-100 transition-opacity scale-90 lg:scale-110">
                 {iconMap[item.label]}
               </span>
               <span className="tracking-tighter">{item.label}</span>
@@ -174,21 +171,21 @@ const Productbar = ({ initialSettings }: { initialSettings?: any }) => {
                 `}
                 onClick={(e) => e.stopPropagation()}
               >
-                <div className="bg-white/95 backdrop-blur-xl border border-slate-100 rounded-b-2xl shadow-2xl overflow-hidden">
+                <div className="bg-white/95 backdrop-blur-xl border border-[#E9F1FA] rounded-b-2xl shadow-2xl overflow-hidden">
                   <div className="p-3 sm:p-5 grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4 max-h-[70vh] overflow-y-auto no-scrollbar">
                     {(item.subItems || []).map((subItem: ProductSubItem) => (
                       <div key={subItem.id} className="flex flex-col gap-1.5">
                         <Link
                           href={subItem.href}
-                          className="flex flex-col rounded-lg px-3 py-2 transition-all hover:bg-slate-50 group/item"
+                          className="flex flex-col rounded-lg px-3 py-2 transition-all hover:bg-[#f0f9ff] group/item border border-transparent hover:border-[#E9F1FA]"
                           onClick={handleLinkClick}
                           onMouseEnter={() => {
                             if (subItem.href.includes('section=')) prefetchData(`/api/content?section=${subItem.href.split('section=')[1]}`);
                           }}
                         >
-                          <span className="text-[13px] sm:text-[14px] font-bold text-slate-900 group-hover/item:text-[#7338a0] transition-colors flex items-center gap-1.5">
+                          <span className="text-[13px] sm:text-[14px] font-bold text-slate-900 group-hover/item:text-[#00ABE4] transition-colors flex items-center gap-1.5">
                             {subItem.label}
-                            <svg className="w-3.5 h-3.5 opacity-0 -translate-x-1 group-hover/item:opacity-100 group-hover/item:translate-x-0 transition-all" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <svg className="w-3.5 h-3.5 opacity-0 -translate-x-1 group-hover/item:opacity-100 group-hover/item:translate-x-0 transition-all text-[#00ABE4]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 5l7 7-7 7" />
                             </svg>
                           </span>
@@ -200,12 +197,12 @@ const Productbar = ({ initialSettings }: { initialSettings?: any }) => {
                         </Link>
                         
                         {(subItem.subItems?.length ?? 0) > 0 && (
-                          <div className="flex flex-col gap-2 ml-4 pl-4 border-l border-slate-100">
+                          <div className="flex flex-col gap-2 ml-4 pl-4 border-l border-[#E9F1FA]">
                             {(subItem.subItems || []).map((nestedItem: ProductSubItem) => (
                               <Link
                                 key={nestedItem.id}
                                 href={nestedItem.href}
-                                className="block py-1.5 px-3 rounded-md text-[12px] font-bold text-slate-500 hover:text-slate-900 hover:bg-slate-50 transition-all"
+                                className="block py-1.5 px-3 rounded-md text-[12px] font-bold text-slate-500 hover:text-[#0371a3] hover:bg-[#f0f9ff] transition-all"
                                 onClick={handleLinkClick}
                               >
                                 {nestedItem.label}

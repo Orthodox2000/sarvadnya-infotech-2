@@ -4,7 +4,41 @@
 - Always mention the application version number when presenting changes or updates.
 - Versioning follows the format `v1.1.x`.
 - Increment the patch version automatically for every iteration/significant set of changes.
-- Current Version: v1.1.133
+- Current Version: v1.1.141
+
+## Recent Changes (v1.1.141)
+- **Careers Route Branding:** Synchronized the entire Careers experience (Public Page, Job Accordion, Application Modal) with the **Blue, Sky & White** palette.
+    - Replaced legacy indigo/purple with **Bright Blue (#00ABE4)**, **Deep Blue (#0371a3)**, and **Sky Tint (#f0f9ff)**.
+    - Upgraded job cards with professional rounded corners and interactive hover elevations.
+- **Learning Admin Synchronization:** Fully updated the Learning & Support Hub administration panel with the new brand identity, including high-contrast inputs and authoritative deep blue actions.
+- **Admin Shell Overhaul:** Re-engineered the `AdminSidebar` with a modern high-contrast foundation (Slate-950) and Bright Blue highlights.
+- **Critical Restoration:** Recovered the `app/careers/page.tsx` file from source control following a corruption event.
+- **Version Bump:** Updated application version to v1.1.141.
+
+## Recent Changes (v1.1.140)
+- **Learning Route Branding:** Synchronized the 'Learning & Support Hub' with the new Blue, Sky & White palette.
+    - Updated search bar and folder tabs with **Bright Blue (#00ABE4)** and **Deep Blue (#0371a3)** interactive states.
+    - Re-styled tutorial cards with **Light Blue (#E9F1FA)** borders and atmospheric hover effects.
+    - Upgraded the 'Specialized Training' section with a high-contrast Deep Blue foundation and atmospheric glow effects.
+- **Version Bump:** Updated application version to v1.1.140.
+
+## Recent Changes (v1.1.139)
+- **Search Deep-Linking:** Upgraded the search engine to provide direct, exact links to specific module details (`/modules?id=...`) and specialized service pages (AMC, TDL, TSS, etc.), eliminating generic category redirects.
+- **AI-Readable Sitemap:** Created a comprehensive `SITEMAP.md` file that maps the entire site architecture. This serves as a foundational knowledge source for AI assistants and improves user discoverability of core services.
+- **Expanded Search Map:** Refined the internal search siteMap to include all 6+ specialized service categories, ensuring maximum coverage for AI recommendations and keyword matching.
+- **Version Bump:** Updated application version to v1.1.136.
+
+## Recent Changes (v1.1.135)
+- **Search Experience Optimization:** Re-engineered the search workflow to provide more intelligent and proactive assistance.
+- **AI-Generated Search Summaries:** Integrated a "Quick AI Answer" feature that summarizes how the search results relate to the user's query, providing instant context.
+- **"No Exact Match" Intelligence:** Implemented specific messaging for cases where no title matches the query perfectly, clearly distinguishing between exact and partial matches.
+- **Proactive Support Integration:** Added a persistent help footer to the search page, encouraging users to contact the support team or use the AI Chatbot for more complex inquiries.
+- **Version Bump:** Updated application version to v1.1.135.
+
+## Recent Changes (v1.1.134)
+- **Navbar Logo Integration:** Enhanced the primary navigation by adding a dedicated, square company logo (favicon-derived) right before the brand name. This strengthens brand identity while maintaining the professional "Certified Tally Partner" badge.
+- **Improved Visual Consistency:** Applied precise square dimensions (`w-8 h-8` on desktop) and rounded borders to the new logo, ensuring it aligns with the modern, high-contrast UI system.
+- **Version Bump:** Updated application version to v1.1.134.
 
 ## Recent Changes (v1.1.133)
 - **Aggressive Cache Revalidation:** Drastically reduced the database cache revalidation time from 5 hours to 60 seconds across all entities (Settings, Content, Modules, Partners, etc.). This ensures that database updates, including image path changes, are reflected nearly instantly while maintaining basic server-side performance benefits.

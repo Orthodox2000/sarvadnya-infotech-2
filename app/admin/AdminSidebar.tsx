@@ -55,7 +55,7 @@ const AdminSidebar = ({ isOpen, onClose }: AdminSidebarProps) => {
       )}
 
       <aside 
-        className={`fixed lg:static top-0 left-0 w-64 bg-[#0f0529] text-white h-screen p-6 flex flex-col z-[1002] transition-transform duration-300 ease-in-out ${
+        className={`fixed lg:static top-0 left-0 w-64 bg-slate-950 text-white h-screen p-6 flex flex-col z-[1002] transition-transform duration-300 ease-in-out border-r border-white/5 ${
           isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
         }`}
       >
@@ -65,11 +65,11 @@ const AdminSidebar = ({ isOpen, onClose }: AdminSidebarProps) => {
               <img src={adminLogo} alt="Admin Logo" className="h-10 w-auto object-contain" />
             ) : (
               <h2 className="text-2xl font-black tracking-tighter">
-                ADMIN<span className="text-indigo-400">PANEL</span>
+                ADMIN<span className="text-[#00ABE4]">PANEL</span>
               </h2>
             )}
-            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1">
-              v1.1.115
+            <p className="text-[10px] text-slate-400 font-black uppercase tracking-[0.2em] mt-1">
+              v1.1.141
             </p>
           </div>
           <button 
@@ -82,7 +82,7 @@ const AdminSidebar = ({ isOpen, onClose }: AdminSidebarProps) => {
           </button>
         </div>
 
-        <nav className="flex-grow space-y-1 custom-scrollbar">
+        <nav className="flex-grow space-y-1.5 custom-scrollbar">
           {navItems.map((item) => (
             <Link
               key={item.href}
@@ -90,15 +90,15 @@ const AdminSidebar = ({ isOpen, onClose }: AdminSidebarProps) => {
               onClick={() => {
                 if (window.innerWidth < 1024) onClose();
               }}
-              className={`flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all ${
+              className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all group ${
                 pathname === item.href
-                  ? 'bg-[#7338a0] text-white shadow-lg'
+                  ? 'bg-[#0371a3] text-white shadow-xl shadow-[#0371a3]/20'
                   : 'text-slate-400 hover:bg-white/5 hover:text-white'
               }`}
             >
               {item.icon && (
-                <svg className="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={item.icon} />
+                <svg className={`w-5 h-5 flex-shrink-0 transition-colors ${pathname === item.href ? 'text-[#00ABE4]' : 'group-hover:text-[#00ABE4]'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d={item.icon} />
                 </svg>
               )}
               <span className="font-bold text-sm tracking-tight">{item.label}</span>
@@ -109,12 +109,12 @@ const AdminSidebar = ({ isOpen, onClose }: AdminSidebarProps) => {
         <div className="mt-auto pt-6 border-t border-white/5">
           <Link
             href="/"
-            className="flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-white transition-colors group"
+            className="flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-[#00ABE4] transition-colors group"
           >
             <svg className="w-5 h-5 group-hover:-translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
             </svg>
-            <span className="font-bold text-sm">Back to Website</span>
+            <span className="font-black text-[10px] uppercase tracking-widest">Exit Admin</span>
           </Link>
         </div>
       </aside>

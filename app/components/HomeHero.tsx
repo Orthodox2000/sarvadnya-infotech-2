@@ -190,13 +190,13 @@ export default function HomeHero({ initialData }: { initialData?: HeroContent[] 
           }}
         /> */}
         
-        <div className="absolute inset-0 opacity-50">
+        <div className="absolute inset-0 opacity-40">
           <ShapeGrid 
             speed={0.25}
             squareSize={gridSize}
             direction="diagonal"
-            borderColor={current.colorFrom || '#8515f6'}
-            hoverFillColor={current.colorTo || '#6302c4'}
+            borderColor={current.colorFrom || '#E9F1FA'}
+            hoverFillColor={current.colorTo || '#00ABE4'}
             shape="hexagon"
             hoverTrailAmount={4}
             enableColorFlow={true}
@@ -212,11 +212,11 @@ export default function HomeHero({ initialData }: { initialData?: HeroContent[] 
             key={`content-${activeIndex}`} 
             className="lg:justify-self-end w-full lg:max-w-[640px] px-6 lg:px-12 py-12 lg:py-20 space-y-5 md:space-y-8 min-h-[300px] md:min-h-[400px] flex flex-col justify-center"
           >
-            <div className={`inline-flex items-center gap-2 px-3 rounded-full bg-indigo-50 border border-indigo-100 backdrop-blur-sm w-fit transition-all duration-[1200ms] delay-[100ms]
+            <div className={`inline-flex items-center gap-2 px-3 rounded-full bg-[#E9F1FA] border border-[#00ABE4]/20 backdrop-blur-sm w-fit transition-all duration-[1200ms] delay-[100ms]
               ${isTransitioning ? 'opacity-0 translate-y-4 scale-95 blur-sm' : 'opacity-100 translate-y-0 scale-100 blur-0'}`}
             >
-              <span className="flex h-2 w-2 rounded-full bg-indigo-500 animate-pulse" />
-              <span className="text-[10px] font-black uppercase tracking-widest text-indigo-600">
+              <span className="flex h-2 w-2 rounded-full bg-[#00ABE4] animate-pulse" />
+              <span className="text-[10px] font-black uppercase tracking-widest text-[#00ABE4]">
                 {current.badge}
               </span>
             </div>
@@ -231,11 +231,11 @@ export default function HomeHero({ initialData }: { initialData?: HeroContent[] 
               {/* Actual typed text */}
               <h1 className="absolute top-0 left-0 text-4xl md:text-6xl font-black text-slate-900 leading-[1.1] tracking-tight w-full">
                 {displayText.split(' ').map((word, i) => (
-                  <span key={i} className={i > 2 ? "text-transparent bg-clip-text bg-gradient-to-r from-slate-900 to-slate-500" : ""}>
+                  <span key={i} className={i > 2 ? "text-transparent bg-clip-text bg-gradient-to-r from-[#0371a3] to-[#00ABE4]" : ""}>
                     {word}{' '}
                   </span>
                 ))}
-                {isTyping && <span className="inline-block w-1 h-8 md:h-12 bg-indigo-600 ml-1 animate-pulse" />}
+                {isTyping && <span className="inline-block w-1 h-8 md:h-12 bg-[#0371a3] ml-1 animate-pulse" />}
               </h1>
             </div>
 
@@ -250,8 +250,8 @@ export default function HomeHero({ initialData }: { initialData?: HeroContent[] 
             >
               {(current.features || []).map((f, i) => (
                 <div key={i} className="flex items-center gap-3">
-                  <div className="h-5 w-5 rounded-full bg-indigo-500/10 flex items-center justify-center border border-indigo-500/20">
-                    <svg className="w-3 h-3 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
+                  <div className="h-5 w-5 rounded-full bg-[#E9F1FA] flex items-center justify-center border border-[#00ABE4]/20">
+                    <svg className="w-3 h-3 text-[#00ABE4]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                     </svg>
                   </div>
@@ -265,7 +265,7 @@ export default function HomeHero({ initialData }: { initialData?: HeroContent[] 
             >
               <Link 
                 href={current.ctaPrimary?.href || '/products'}
-                className="group relative overflow-hidden px-8 py-4 rounded-2xl bg-indigo-600 text-white font-black text-xs uppercase tracking-widest shadow-2xl shadow-indigo-500/40 transition-all hover:scale-[1.05] active:scale-95"
+                className="group relative overflow-hidden px-8 py-4 rounded-2xl bg-[#00ABE4] text-white font-black text-xs uppercase tracking-widest shadow-2xl shadow-[#00ABE4]/40 transition-all hover:scale-[1.05] active:scale-95"
               >
                 <span className="relative z-10">{current.ctaPrimary?.text || 'Explore'}</span>
                 <div className="absolute inset-0 z-0 translate-y-full transition-transform duration-300 group-hover:translate-y-0 bg-white/10" />
@@ -273,7 +273,7 @@ export default function HomeHero({ initialData }: { initialData?: HeroContent[] 
               
               <button 
                 onClick={() => setModalConfig({ isOpen: true, type: 'demo', service: 'TallyPrime', details: 'Requesting a personalized demo' })}
-                className="group px-8 py-4 rounded-2xl bg-slate-100 text-slate-900 font-black text-xs uppercase tracking-widest shadow-sm transition-all hover:bg-slate-200 hover:scale-[1.05] active:scale-95 border border-slate-200"
+                className="group px-8 py-4 rounded-2xl bg-[#E9F1FA] text-[#00ABE4] font-black text-xs uppercase tracking-widest shadow-sm transition-all hover:bg-[#d8e8f5] hover:scale-[1.05] active:scale-95 border border-[#00ABE4]/10"
               >
                 Request Free Demo
               </button>
@@ -304,19 +304,18 @@ export default function HomeHero({ initialData }: { initialData?: HeroContent[] 
                 {/* Content Overlay */}
                 <div className="absolute inset-0 p-8 flex flex-col justify-start">
                   <div className="w-fit">
-                    <div className="relative group/text p-4 rounded-2xl overflow-hidden transition-all duration-500">
-                      {/* Subtle backplate for legibility */}
-                      <div className="absolute inset-0 bg-[#0f172a]/40 backdrop-blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                      <div className="absolute inset-0 bg-gradient-to-r from-[#0f172a]/40 to-transparent backdrop-blur-sm" />
+                    <div className="mt-5 relative group/text p-4 rounded-2xl overflow-hidden transition-all duration-500 shadow-xl shadow-[#0371a3]/10">
+                      {/* Subtle backplate for legibility with brand colors */}
+                      <div className="absolute inset-0 bg-[#E9F1FA]/90 backdrop-blur-md opacity-100 transition-opacity duration-500" />
                       
                       <div className="relative z-10 space-y-3">
-                        <div className="h-1 w-12 bg-indigo-500 rounded-full shadow-[0_0_15px_rgba(99,102,241,0.5)]" />
-                        <h3 className="text-xl md:text-2xl font-black text-white leading-tight tracking-tight [text-shadow:0_4px_12px_rgba(0,0,0,0.5)]">
+                        <div className="h-1 w-12 bg-[#0371a3] rounded-full shadow-[0_0_15px_rgba(3,113,163,0.5)]" />
+                        <h3 className="text-xl md:text-2xl font-black text-[#0371a3] leading-tight tracking-tight">
                           {current.badge}
                           {current.badge.includes('7.0') && !current.badge.includes('Upgraded to Tally 7.0') && (
                             <>
-                              <span className="text-indigo-400 mx-2">|</span> 
-                              <span className="text-white/90">Upgraded to Tally 7.0</span>
+                              <span className="text-[#0371a3]/30 mx-2">|</span> 
+                              <span className="text-[#0371a3]/80">Upgraded to Tally 7.0</span>
                             </>
                           )}
                         </h3>

@@ -68,29 +68,40 @@ export default function Navbar({ initialSettings }: { initialSettings?: any }) {
   ];
 
   return (
-    <header className="relative z-[1000] w-full border-b border-white/5 bg-[#0a041a] shadow-lg">
+    <header className="relative z-[1000] w-full border-b border-[#0371a3]/10 bg-[#E9F1FA] shadow-sm">
       <nav className="mx-auto flex h-12 lg:h-16 w-full max-w-7xl items-center justify-between px-6">
         <Link
           href="/"
           className="flex items-center gap-2 lg:gap-3 group transition-transform hover:scale-[1.02]"
         >
-          <div className="relative w-24 lg:w-32 h-8 lg:h-12 shrink-0 brightness-0 invert opacity-90 group-hover:opacity-100 transition-opacity">
+          <div className="relative block w-20 lg:w-32 h-7 lg:h-12 shrink-0 opacity-90 group-hover:opacity-100 transition-opacity">
             <Image
               src="/TallyCertificate.png"
               alt="Sarvadnya Infotech logo"
               fill
-              sizes="(max-width: 768px) 96px, 128px"
+              sizes="(max-width: 768px) 80px, 128px"
               className="object-contain"
               priority
             />
           </div>
-          <div className="hidden sm:flex flex-col border-l border-white/20 pl-2 lg:pl-3 leading-none">
-            <span className="text-[12px] lg:text-[15px] font-bold tracking-tight text-white">
-              Sarvadnya
-            </span>
-            <span className="text-[8px] lg:text-[10px] font-medium uppercase tracking-[0.2em] text-white/40">
-              Infotech LLP
-            </span>
+          <div className="flex items-center">
+            <div className="hidden sm:block w-5 h-5 lg:w-7 lg:h-7 rounded-md overflow-hidden shrink-0 bg-white group-hover:scale-110 transition-transform shadow-sm">
+              <Image
+                src="/logo.png"
+                alt="Sarvadnya Logo"
+                width={28}
+                height={28}
+                className="object-contain w-full h-full"
+              />
+            </div>
+            <div className="flex flex-col ml-1 sm:ml-1.5 lg:ml-2 leading-none">
+              <span className="text-[11px] lg:text-[15px] font-bold tracking-tight text-[#0371a3]">
+                Sarvadnya
+              </span>
+              <span className="text-[7px] lg:text-[10px] font-medium uppercase tracking-[0.2em] text-[#00ABE4]">
+                Infotech LLP
+              </span>
+            </div>
           </div>
         </Link>
 
@@ -101,25 +112,25 @@ export default function Navbar({ initialSettings }: { initialSettings?: any }) {
           </div>
           <Link
             href="/admin/palette"
-            className="text-[11px] font-bold uppercase tracking-widest text-emerald-400 hover:text-emerald-300 transition-colors"
+            className="text-[11px] font-bold uppercase tracking-widest text-emerald-600 hover:text-emerald-700 transition-colors"
           >
             Palette
           </Link>
           <Link
             href="/admin"
-            className="text-[11px] font-bold uppercase tracking-widest text-indigo-400 hover:text-indigo-300 transition-colors"
+            className="text-[11px] font-bold uppercase tracking-widest text-[#0371a3] hover:text-[#00ABE4] transition-colors"
           >
             Admin
           </Link>
           <Link
             href="/careers"
-            className="inline-flex items-center justify-center rounded-full bg-white/5 px-5 py-2 text-[11px] font-bold uppercase tracking-wider text-white border border-white/10 transition-all hover:bg-white/10"
+            className="inline-flex items-center justify-center rounded-full bg-white px-5 py-2 text-[11px] font-bold uppercase tracking-wider text-slate-900 border border-[#0371a3]/10 transition-all hover:bg-[#f0f9ff] shadow-sm"
           >
             Careers
           </Link>
           <Link
             href="/contact"
-            className="inline-flex items-center justify-center rounded-full bg-[#7338a0] px-5 py-2 text-[11px] font-bold uppercase tracking-wider text-white shadow-lg transition-all hover:bg-[#4a2574]"
+            className="inline-flex items-center justify-center rounded-full bg-[#0371a3] text-white px-5 py-2 text-[11px] font-bold uppercase tracking-wider shadow-lg shadow-[#0371a3]/20 transition-all hover:bg-[#00ABE4] hover:-translate-y-0.5"
           >
             Support
           </Link>
@@ -128,7 +139,7 @@ export default function Navbar({ initialSettings }: { initialSettings?: any }) {
         {/* Mobile Toggle */}
         <div className="flex items-center gap-4 lg:hidden">
           <button 
-            className="p-2 text-white/70 hover:text-white transition-colors"
+            className="p-2 text-slate-600 hover:text-[#0371a3] transition-colors"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
             {isMenuOpen ? (
@@ -147,19 +158,19 @@ export default function Navbar({ initialSettings }: { initialSettings?: any }) {
       {/* Mobile Menu Backdrop */}
       {isMenuOpen && (
         <div 
-          className="lg:hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-[998]"
+          className="lg:hidden fixed inset-0 bg-[#0371a3]/10 backdrop-blur-sm z-[998]"
           onClick={() => setIsMenuOpen(false)}
         />
       )}
 
       {/* Mobile Menu Drawer */}
-      <div className={`lg:hidden absolute top-full left-0 right-0 bg-[#0a041a] border-b border-white/10 z-[999] transition-all duration-300 overflow-y-auto ${isMenuOpen ? 'max-h-[85vh] opacity-100 py-6' : 'max-h-0 opacity-0 py-0'}`}>
+      <div className={`lg:hidden absolute top-full left-0 right-0 bg-[#f0f9ff] border-b border-[#0371a3]/10 z-[999] transition-all duration-300 overflow-y-auto ${isMenuOpen ? 'max-h-[85vh] opacity-100 py-6 shadow-xl' : 'max-h-0 opacity-0 py-0'}`}>
         <div className="flex flex-col gap-6 px-6">
           {/* Close Button at top of drawer for mobile */}
           <div className="flex justify-end">
             <button 
               onClick={() => setIsMenuOpen(false)}
-              className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-[9px] font-black uppercase tracking-widest text-white/50 hover:text-white transition-colors"
+              className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white border border-[#0371a3]/10 text-[9px] font-black uppercase tracking-widest text-slate-400 hover:text-[#0371a3] transition-colors shadow-sm"
             >
               <span>Close Menu</span>
               <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -171,8 +182,8 @@ export default function Navbar({ initialSettings }: { initialSettings?: any }) {
           {/* Admin Section */}
           <div className="space-y-3">
             <div className="flex items-center gap-2 px-2">
-              <span className="h-1.5 w-1.5 rounded-full bg-indigo-500" />
-              <span className="text-[10px] font-black uppercase tracking-[0.2em] text-indigo-400">Admin Management</span>
+              <span className="h-1.5 w-1.5 rounded-full bg-[#0371a3]" />
+              <span className="text-[10px] font-black uppercase tracking-[0.2em] text-[#0371a3]">Admin Management</span>
             </div>
             <div className="grid grid-cols-1 gap-2">
               {adminLinks.map((link) => (
@@ -180,9 +191,9 @@ export default function Navbar({ initialSettings }: { initialSettings?: any }) {
                   key={link.label} 
                   href={link.href}
                   onClick={() => setIsMenuOpen(false)}
-                  className="flex items-center gap-4 h-12 px-4 rounded-xl border border-indigo-500/10 bg-indigo-500/5 text-[11px] font-bold uppercase tracking-widest text-indigo-100/80 hover:bg-indigo-500/10 transition-all"
+                  className="flex items-center gap-4 h-12 px-4 rounded-xl border border-[#0371a3]/5 bg-white text-[11px] font-bold uppercase tracking-widest text-slate-700 hover:bg-[#E9F1FA] hover:text-[#0371a3] transition-all shadow-sm"
                 >
-                  <svg className="w-4 h-4 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg className="w-4 h-4 text-[#0371a3]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d={link.icon} />
                   </svg>
                   {link.label}
@@ -191,20 +202,20 @@ export default function Navbar({ initialSettings }: { initialSettings?: any }) {
             </div>
           </div>
           
-          <div className="w-full h-px bg-white/10" />
+          <div className="w-full h-px bg-[#E9F1FA]" />
           
           <div className="flex flex-col gap-3">
             <Link
               href="/careers"
               onClick={() => setIsMenuOpen(false)}
-              className="flex items-center justify-center h-12 rounded-xl border border-white/10 bg-white/5 text-[11px] font-black uppercase tracking-widest text-white"
+              className="flex items-center justify-center h-12 rounded-xl border border-[#0371a3]/10 bg-white text-[11px] font-black uppercase tracking-widest text-slate-900 shadow-sm hover:bg-[#E9F1FA]"
             >
               Join Our Team
             </Link>
             <Link
               href="/contact"
               onClick={() => setIsMenuOpen(false)}
-              className="flex items-center justify-center h-12 rounded-xl bg-[#7338a0] text-[11px] font-black uppercase tracking-widest text-white shadow-xl shadow-indigo-500/20"
+              className="flex items-center justify-center h-12 rounded-xl bg-[#0371a3] text-white text-[11px] font-black uppercase tracking-widest shadow-xl shadow-[#0371a3]/20"
             >
               Get Priority Support
             </Link>
@@ -212,9 +223,9 @@ export default function Navbar({ initialSettings }: { initialSettings?: any }) {
 
           <a
             href={`tel:${supportPhone}`}
-            className="flex items-center justify-center gap-3 text-white/40 hover:text-white transition-colors py-2 border border-white/5 rounded-xl bg-white/5"
+            className="flex items-center justify-center gap-3 text-slate-500 hover:text-[#0371a3] transition-colors py-2 border border-[#0371a3]/10 rounded-xl bg-white shadow-sm"
           >
-            <svg className="w-4 h-4 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className="w-4 h-4 text-[#0371a3]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1.031.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
             </svg>
             <span className="text-[10px] font-black uppercase tracking-widest">{formatPhoneDisplay(supportPhone.split(',')[0])}</span>
@@ -223,7 +234,7 @@ export default function Navbar({ initialSettings }: { initialSettings?: any }) {
           {/* Explicit Unexpand Button at very bottom */}
           <button 
             onClick={() => setIsMenuOpen(false)}
-            className="w-full py-4 text-[10px] font-black uppercase tracking-[0.3em] text-white/20 hover:text-white/40 transition-colors border-t border-white/5 mt-4"
+            className="w-full py-4 text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 hover:text-[#0371a3] transition-colors border-t border-[#E9F1FA] mt-4"
           >
             ↑ Collapse Navigation ↑
           </button>

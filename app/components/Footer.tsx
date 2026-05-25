@@ -125,13 +125,13 @@ export default function Footer({ settings: initialSettings }: { settings?: SiteS
     ];
 
     return (
-        <footer className="relative bg-[#0a041a] text-white pt-20 pb-8 px-6 overflow-hidden border-t border-white/5">
+        <footer className="relative bg-[#0371a3] text-white pt-20 pb-8 px-6 overflow-hidden border-t border-white/10">
             {/* Subtle Gradient Overlays */}
-            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-indigo-600/10 rounded-full blur-[120px] -mr-64 -mt-64 pointer-events-none" />
-            <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-violet-600/5 rounded-full blur-[100px] -ml-48 -mb-48 pointer-events-none" />
+            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#00ABE4]/10 rounded-full blur-[120px] -mr-64 -mt-64 pointer-events-none" />
+            <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-[#E9F1FA]/5 rounded-full blur-[100px] -ml-48 -mb-48 pointer-events-none" />
             
             {/* Main Gradient Background */}
-            <div className="absolute inset-0 bg-gradient-to-b from-[#0a041a] via-[#0f0728] to-[#1e1b4b] opacity-100 pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-b from-[#0371a3] via-[#025b8a] to-[#014a6e] opacity-100 pointer-events-none" />
 
             <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 mb-16 relative z-10">
                 {/* Company Info */}
@@ -150,12 +150,12 @@ export default function Footer({ settings: initialSettings }: { settings?: SiteS
                             <span className="text-white font-bold text-lg leading-tight tracking-tight">
                                 Sarvadnya
                             </span>
-                            <span className="text-white/80 font-medium text-[10px] uppercase tracking-wider leading-none">
+                            <span className="text-[#E9F1FA] font-medium text-[10px] uppercase tracking-wider leading-none">
                                 Infotech LLP
                             </span>
                         </div>
                     </Link>
-                    <p className="text-sm leading-relaxed text-white/90">
+                    <p className="text-sm leading-relaxed text-white/90 font-medium">
                         Certified Tally Partner providing end-to-end business solutions, 
                         cloud migration, and professional technical support to streamline your 
                         accounting and compliance workflows.
@@ -166,7 +166,7 @@ export default function Footer({ settings: initialSettings }: { settings?: SiteS
                             <a 
                                 key={social.name}
                                 href={social.url}
-                                className={`w-10 h-10 rounded-full border border-white/20 flex items-center justify-center ${social.hoverColor} hover:text-white transition-all duration-300`}
+                                className={`w-10 h-10 rounded-full border border-white/20 flex items-center justify-center ${social.hoverColor} hover:text-white transition-all duration-300 bg-white/5`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                             >
@@ -178,11 +178,11 @@ export default function Footer({ settings: initialSettings }: { settings?: SiteS
 
                 {/* Products */}
                 <div>
-                    <h3 className="text-white font-bold mb-6">Tally Products</h3>
-                    <ul className="space-y-4 text-sm text-white/90">
+                    <h3 className="text-white font-black uppercase tracking-widest text-xs mb-8">Tally Products</h3>
+                    <ul className="space-y-4 text-sm text-white/80">
                         {products.map((item) => (
                             <li key={item.name}>
-                                <Link href={item.href} className="hover:text-white transition-colors hover-underline-animation py-1">
+                                <Link href={item.href} className="hover:text-[#E9F1FA] transition-colors hover-underline-animation py-1 font-bold">
                                     {item.name}
                                 </Link>
                             </li>
@@ -192,11 +192,11 @@ export default function Footer({ settings: initialSettings }: { settings?: SiteS
 
                 {/* Customized Modules */}
                 <div>
-                    <h3 className="text-white font-bold mb-6">Custom Modules</h3>
-                    <ul className="space-y-4 text-sm text-white/90">
+                    <h3 className="text-white font-black uppercase tracking-widest text-xs mb-8">Custom Modules</h3>
+                    <ul className="space-y-4 text-sm text-white/80">
                         {customizedModules.map((item) => (
                             <li key={item.name}>
-                                <Link href={item.href} className="hover:text-white transition-colors hover-underline-animation py-1">
+                                <Link href={item.href} className="hover:text-[#E9F1FA] transition-colors hover-underline-animation py-1 font-bold">
                                     {item.name}
                                 </Link>
                             </li>
@@ -206,11 +206,11 @@ export default function Footer({ settings: initialSettings }: { settings?: SiteS
 
                 {/* Support on Tally */}
                 <div>
-                    <h3 className="text-white font-bold mb-6">Support on Tally</h3>
-                    <ul className="space-y-4 text-sm text-white/90">
+                    <h3 className="text-white font-black uppercase tracking-widest text-xs mb-8">Support on Tally</h3>
+                    <ul className="space-y-4 text-sm text-white/80">
                         {supportOnTally.map((item) => (
                             <li key={item.name}>
-                                <Link href={item.href} className="hover:text-white transition-colors hover-underline-animation py-1">
+                                <Link href={item.href} className="hover:text-[#E9F1FA] transition-colors hover-underline-animation py-1 font-bold">
                                     {item.name}
                                 </Link>
                             </li>
@@ -219,22 +219,22 @@ export default function Footer({ settings: initialSettings }: { settings?: SiteS
                 </div>
 
                 {/* Contact & Map */}
-                <div className="space-y-6">
-                    <h3 className="text-white font-bold mb-6">Get In Touch</h3>
-                    <ul className="space-y-4 text-sm mb-6 text-white/90">
+                <div className="space-y-8">
+                    <h3 className="text-white font-black uppercase tracking-widest text-xs mb-8">Get In Touch</h3>
+                    <ul className="space-y-5 text-sm mb-6 text-white/90">
                         <li className="flex items-center gap-3">
-                            <svg className="w-5 h-5 text-indigo-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                            <svg className="w-5 h-5 text-[#00ABE4] flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                             </svg>
-                            <a href={`mailto:${supportEmail}`} className="hover:text-white transition-colors">{supportEmail}</a>
+                            <a href={`mailto:${supportEmail}`} className="hover:text-[#E9F1FA] transition-colors font-bold">{supportEmail}</a>
                         </li>
                         <li className="flex items-start gap-3">
-                            <svg className="w-5 h-5 text-indigo-400 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                            <svg className="w-5 h-5 text-[#00ABE4] flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                             </svg>
-                            <div className="flex flex-col gap-2">
+                            <div className="flex flex-col gap-3">
                                 {supportPhone.split(',').map((num, i) => (
-                                    <a key={i} href={`tel:${num.trim()}`} className="hover:text-white transition-colors block leading-tight">
+                                    <a key={i} href={`tel:${num.trim()}`} className="hover:text-[#E9F1FA] transition-colors block leading-tight font-black">
                                         {formatPhoneDisplay(num.trim())}
                                     </a>
                                 ))}

@@ -22,12 +22,12 @@ export default function SearchBar() {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search Tally Solutions..."
-          className="w-full bg-white/5 border border-white/10 rounded-full py-1.5 pl-9 pr-4 text-[11px] text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:bg-white/10 transition-all"
+          className="w-full bg-white border border-[#E9F1FA] rounded-full py-1.5 pl-9 pr-4 text-[11px] text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#00ABE4]/50 focus:border-[#00ABE4] transition-all"
         />
         <button 
           type="submit"
           title="Search"
-          className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30 hover:text-indigo-400 group-focus-within:text-indigo-400 transition-colors"
+          className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 hover:text-[#00ABE4] group-focus-within:text-[#00ABE4] transition-colors"
         >
           <svg
             fill="none"

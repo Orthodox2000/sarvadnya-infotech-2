@@ -51,13 +51,61 @@ async function getAIRecommendations(query: string, siteMap: any[]) {
   return [];
 }
 
+async function generateSearchSummary(query: string, results: any[]) {
+  if (results.length === 0) return null;
+  
+  try {
+    const settings = await getSettings();
+    const rawKeys = settings.GROQ_API_KEYS || process.env.GROQ_API_KEY || '';
+    const apiKeys = rawKeys.split(',').map((k: string) => k.trim()).filter(Boolean);
+    
+    if (apiKeys.length === 0) return null;
+
+    const apiKey = apiKeys[0];
+    
+    const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${apiKey}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        model: "llama-3.1-8b-instant", // Use faster model for summary
+        messages: [
+          {
+            role: "system",
+            content: `You are a helpful assistant for Sarvadnya Infotech. 
+            Summarize how the following search results answer the user's query: "${query}".
+            Keep it to one short paragraph (max 3 sentences). 
+            Focus on what Sarvadnya Infotech offers related to the query.`
+          },
+          { 
+            role: "user", 
+            content: `Results: ${results.map(r => `${r.title}: ${r.description}`).join(' | ')}` 
+          }
+        ],
+        temperature: 0.3,
+        max_tokens: 150
+      })
+    });
+
+    const data = await response.json();
+    if (data.choices && data.choices[0]) {
+      return data.choices[0].message.content.trim();
+    }
+  } catch (err) {
+    console.error('AI Summary Error:', err);
+  }
+  return null;
+}
+
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
     const query = searchParams.get('q')?.toLowerCase() || '';
 
     if (!query || query.length < 2) {
-      return NextResponse.json([]);
+      return NextResponse.json({ results: [], summary: null });
     }
 
     // 1. Get high-relevance semantic results first (instant)
@@ -78,18 +126,24 @@ export async function GET(request: Request) {
         { title: 'About Us', url: '/about', description: 'Certified Tally Partner since 2008.' },
         { title: 'Contact Support', url: '/contact', description: 'Get priority support and technical help.' },
         { title: 'Careers', url: '/careers', description: 'Join our team at Sarvadnya Infotech.' },
+        { title: 'Annual Maintenance Contract (AMC)', url: '/services/amc', description: 'Professional Tally AMC services for peace of mind.' },
         { title: 'Corporate Training', url: '/services/corporate-training', description: 'Professional Tally training for your staff.' },
+        { title: 'Mobile App (BizAnalyst)', url: '/services/mobile-app-biz', description: 'Access Tally data on your mobile with BizAnalyst.' },
+        { title: 'Tally on WhatsApp', url: '/services/tally-on-whatsapp', description: 'Send Tally invoices and reports via WhatsApp.' },
+        { title: 'Tally Customization (TDL)', url: '/services/tdl', description: 'Custom Tally features tailored to your business.' },
+        { title: 'Tally Software Services (TSS)', url: '/services/tss', description: 'Renew TSS for latest updates and remote access.' },
         { title: 'Learning Hub', url: '/tutorials', description: 'Video guides and technical documentation.' }
     ];
 
     // Search Modules
     modules.forEach((m: any) => {
-      siteMap.push({ title: m.title, url: '/modules', description: m.description });
+      const moduleUrl = `/modules?id=${m._id}`;
+      siteMap.push({ title: m.title, url: moduleUrl, description: m.description });
       if (m.title?.toLowerCase().includes(query) || m.description?.toLowerCase().includes(query)) {
         dbResults.push({
           title: m.title,
           description: m.description,
-          url: `/modules`,
+          url: moduleUrl,
           type: 'Module',
           icon: 'M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z'
         });
@@ -129,7 +183,12 @@ export async function GET(request: Request) {
       { title: 'About Us', description: 'Certified Tally Partner since 2008.', url: '/about', type: 'Page' },
       { title: 'Contact Support', description: 'Get priority support and technical help.', url: '/contact', type: 'Page' },
       { title: 'Careers', description: 'Join our team at Sarvadnya Infotech.', url: '/careers', type: 'Page' },
+      { title: 'Annual Maintenance Contract (AMC)', url: '/services/amc', description: 'Professional Tally AMC services for peace of mind.', type: 'Page' },
       { title: 'Corporate Training', description: 'Professional Tally training for your staff.', url: '/services/corporate-training', type: 'Page' },
+      { title: 'Mobile App (BizAnalyst)', url: '/services/mobile-app-biz', description: 'Access Tally data on your mobile with BizAnalyst.', type: 'Page' },
+      { title: 'Tally on WhatsApp', url: '/services/tally-on-whatsapp', description: 'Send Tally invoices and reports via WhatsApp.', type: 'Page' },
+      { title: 'Tally Customization (TDL)', url: '/services/tdl', description: 'Custom Tally features tailored to your business.', type: 'Page' },
+      { title: 'Tally Software Services (TSS)', url: '/services/tss', description: 'Renew TSS for latest updates and remote access.', type: 'Page' },
     ];
 
     staticPages.forEach(p => {
@@ -157,7 +216,13 @@ export async function GET(request: Request) {
       return !duplicate;
     });
 
-    return NextResponse.json(uniqueResults.slice(0, 10));
+    // 5. Generate Summary
+    const summary = await generateSearchSummary(query, uniqueResults.slice(0, 3));
+
+    return NextResponse.json({ 
+      results: uniqueResults.slice(0, 10),
+      summary
+    });
 
   } catch (error) {
     console.error('Search API Error:', error);

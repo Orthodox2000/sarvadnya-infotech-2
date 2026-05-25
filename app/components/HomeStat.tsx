@@ -51,7 +51,7 @@ function StatItem({ label, value, suffix, isVisible }: StatItemProps) {
     <div className="flex flex-col items-center justify-center p-3 sm:p-8 text-center transition-all duration-700">
       <div className="text-2xl sm:text-5xl md:text-6xl font-black text-slate-900 mb-1 sm:mb-2 flex items-baseline">
         <span>{count}</span>
-        <span className="text-[var(--primary-color,#2563eb)] ml-0.5 sm:ml-1">{suffix}</span>
+        <span className="text-[#00ABE4] ml-0.5 sm:ml-1">{suffix}</span>
       </div>
       <div className="text-[10px] sm:text-base font-bold uppercase tracking-[0.05em] sm:tracking-widest text-slate-400">
         {label}
@@ -132,11 +132,11 @@ export default function HomeStat({ initialData }: { initialData?: any[] }) {
   return (
     <section 
       ref={sectionRef}
-      className="w-full py-4 sm:py-4 border-y border-slate-100 transition-colors duration-300"
-      style={{ backgroundColor: 'var(--background-color, #ffffff)' }}
+      className="w-full py-4 sm:py-4 border-y border-[#E9F1FA] transition-colors duration-300"
+      style={{ backgroundColor: '#ffffff' }}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="grid grid-cols-3 gap-1 divide-x divide-slate-100">
+        <div className="grid grid-cols-3 gap-1 divide-x divide-[#E9F1FA]">
           {stats.map((stat, index) => (
             <StatItem 
               key={index}
