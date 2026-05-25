@@ -4,9 +4,25 @@
 - Always mention the application version number when presenting changes or updates.
 - Versioning follows the format `v1.1.x`.
 - Increment the patch version automatically for every iteration/significant set of changes.
-- Current Version: v1.1.129
+- Current Version: v1.1.133
 
-## Recent Changes (v1.1.129)
+## Recent Changes (v1.1.133)
+- **Aggressive Cache Revalidation:** Drastically reduced the database cache revalidation time from 5 hours to 60 seconds across all entities (Settings, Content, Modules, Partners, etc.). This ensures that database updates, including image path changes, are reflected nearly instantly while maintaining basic server-side performance benefits.
+- **Version Bump:** Updated application version to v1.1.133.
+
+## Recent Changes (v1.1.132)
+- **Dynamic Hero Visuals:** Updated the `HomeHero` visual side to dynamically pull the image source from the database (`current.image`), ensuring content flexibility across slides.
+- **Visual Scale Optimization:** Re-engineered the hero image container to maintain a perfect 1:1 (square) aspect ratio and occupy the full width of its grid column, providing a more impactful and balanced presence.
+- **Refined Image Presentation:** Applied `object-cover` to the dynamic images to ensure they fill the square container entirely without white gaps, maintaining the high-end immersive aesthetic.
+- **Version Bump:** Updated application version to v1.1.132.
+
+## Recent Changes (v1.1.131)
+- **Hero Branding Integration:** Re-engineered the `HomeHero` visual section to include a high-impact, immersive branding overlay. Replaced the static card with a full-fill `BG3-1.png` background and professional text overlay ("Certified Tally Partner", "Verified Solutions Since 2008").
+- **Partner Grid Restoration:** Reverted the `CertifiedPartners` section from a billboard banner back to its professional industry logo grid, ensuring a balanced ecosystem display.
+- **Visual Depth Enhancement:** Added sophisticated gradient overlays, backdrop blurs, and corner decorations to the hero visual to align with the premium high-contrast design system.
+- **Version Bump:** Updated application version to v1.1.131.
+
+## Recent Changes (v1.1.130)
 - **Productbar Compaction:** Reduced the product navigation bar height by 30% (from 40px to 28px on desktop, and 28px to 20px on mobile).
 - **Responsive UI Refinement:** Scaled down navigation icons, logos, and typography to ensure perfect fit and legibility within the more compact vertical space.
 - **Improved Layout Density:** Optimized internal padding and gap spacing across all header navigation elements for a more streamlined user experience.

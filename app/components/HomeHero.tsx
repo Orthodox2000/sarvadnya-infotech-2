@@ -164,6 +164,19 @@ export default function HomeHero({ initialData }: { initialData?: HeroContent[] 
 
   return (
     <main className="relative w-full overflow-hidden bg-[#fafafa] min-h-[500px] md:min-h-[650px] lg:min-h-[600px] lg:-mt-6 flex items-center">
+      {/* Background Image Preloader (Hidden) */}
+      <div className="absolute -z-[100] invisible h-0 w-0 overflow-hidden pointer-events-none">
+        {heroContents.map((content, idx) => (
+          <Image 
+            key={`preload-${idx}`}
+            src={content.image || "/BG3-1.png"} 
+            alt="preload" 
+            fill
+            priority
+          />
+        ))}
+      </div>
+
       {/* Interactive Background */}
       <div className="absolute inset-0 z-0">
         {/* <div 
@@ -191,13 +204,13 @@ export default function HomeHero({ initialData }: { initialData?: HeroContent[] 
         </div>
         </div>
 
-      <div className="mx-auto w-full max-w-7xl px-6 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      <div className="w-full relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 items-center">
           
           {/* Content Side */}
           <div 
             key={`content-${activeIndex}`} 
-            className="space-y-5 md:space-y-8 min-h-[300px] md:min-h-[400px] flex flex-col justify-center"
+            className="lg:justify-self-end w-full lg:max-w-[640px] px-6 lg:px-12 py-12 lg:py-20 space-y-5 md:space-y-8 min-h-[300px] md:min-h-[400px] flex flex-col justify-center"
           >
             <div className={`inline-flex items-center gap-2 px-3 rounded-full bg-indigo-50 border border-indigo-100 backdrop-blur-sm w-fit transition-all duration-[1200ms] delay-[100ms]
               ${isTransitioning ? 'opacity-0 translate-y-4 scale-95 blur-sm' : 'opacity-100 translate-y-0 scale-100 blur-0'}`}
@@ -270,33 +283,51 @@ export default function HomeHero({ initialData }: { initialData?: HeroContent[] 
           {/* Visual Side */}
           <div 
             key={`visual-${activeIndex}`} 
-            className={`relative hidden lg:block transition-all duration-[1500ms] ease-in-out
+            className={`relative hidden lg:block w-full transition-all duration-[1500ms] ease-in-out
               ${isTransitioning ? 'opacity-0 scale-95 blur-sm' : 'opacity-100 scale-100 blur-0'}`}
           >
-             {/* Dynamic Float Background */}
-             <div className="absolute -inset-10 bg-indigo-500/5 blur-[100px] rounded-full animate-pulse" />
-             
-             <div className="relative z-10 aspect-square w-full max-w-[500px] mx-auto">
-                <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 to-purple-500/10 rounded-[3rem] rotate-3 scale-95" />
-                <div className="absolute inset-0 bg-white rounded-[3rem] border border-slate-200 overflow-hidden shadow-[0_32px_64px_-16px_rgba(0,0,0,0.1)]">
-                   <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-indigo-500 to-purple-500" />
-                   <div className="p-8 h-full flex flex-col items-center justify-center text-center space-y-6">
-                      <div className="relative w-64 h-64 transition-transform duration-700 hover:scale-110">
-                        <Image 
-                          src={current.image} 
-                          alt="Tally Solution" 
-                          fill 
-                          priority
-                          className="object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.1)]" 
-                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 400px"
-                        />
-                      </div>
-                      <div className="space-y-2">
-                        <p className="text-[10px] font-black uppercase tracking-[0.3em] text-indigo-600">Certified Tally Partner</p>
-                        <p className="text-slate-500 text-xs font-medium">Verified Solutions & Professional Support Since 2008</p>
-                      </div>
-                   </div>
+             <div className="relative z-10 aspect-square w-full group">
+                {/* Immersive Background Image */}
+                <div className="absolute inset-0 rounded-l-[3rem] overflow-hidden border-l border-slate-200 shadow-2xl shadow-indigo-500/10 isolate transform-gpu">
+                  <Image 
+                    src={current.image || "/BG3-1.png"} 
+                    alt={current.titleText} 
+                    fill 
+                    priority
+                    className="object-cover transition-transform duration-[3000ms] group-hover:scale-110" 
+                  />
+                  {/* Premium Overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0f0529] via-transparent to-transparent opacity-10" />
+                  <div className="absolute inset-0 bg-[#0f0529]/5 backdrop-blur-[0.5px]" />
                 </div>
+
+                {/* Content Overlay */}
+                <div className="absolute inset-0 p-8 flex flex-col justify-start">
+                  <div className="w-fit">
+                    <div className="relative group/text p-4 rounded-2xl overflow-hidden transition-all duration-500">
+                      {/* Subtle backplate for legibility */}
+                      <div className="absolute inset-0 bg-[#0f172a]/40 backdrop-blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                      <div className="absolute inset-0 bg-gradient-to-r from-[#0f172a]/40 to-transparent backdrop-blur-sm" />
+                      
+                      <div className="relative z-10 space-y-3">
+                        <div className="h-1 w-12 bg-indigo-500 rounded-full shadow-[0_0_15px_rgba(99,102,241,0.5)]" />
+                        <h3 className="text-xl md:text-2xl font-black text-white leading-tight tracking-tight [text-shadow:0_4px_12px_rgba(0,0,0,0.5)]">
+                          {current.badge}
+                          {current.badge.includes('7.0') && !current.badge.includes('Upgraded to Tally 7.0') && (
+                            <>
+                              <span className="text-indigo-400 mx-2">|</span> 
+                              <span className="text-white/90">Upgraded to Tally 7.0</span>
+                            </>
+                          )}
+                        </h3>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Corner Decoration */}
+                <div className="absolute top-8 right-8 w-12 h-12 border-t-2 border-r-2 border-white/20 rounded-tr-2xl" />
+                <div className="absolute bottom-8 left-8 w-12 h-12 border-b-2 border-l-2 border-white/20 rounded-bl-2xl" />
              </div>
           </div>
 

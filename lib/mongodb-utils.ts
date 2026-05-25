@@ -61,7 +61,7 @@ async function fetchSettings() {
 export const getSettings = unstable_cache(
   async () => fetchSettings(),
   ['settings-map'],
-  { revalidate: 18000, tags: ['settings'] }
+  { revalidate: 60, tags: ['settings'] }
 );
 
 export async function getSetting(key: string, defaultValue: string = '') {
@@ -105,7 +105,7 @@ export async function getContent(section: string) {
   return unstable_cache(
     async () => fetchContent(section),
     [`content-${section}`],
-    { revalidate: 18000, tags: ['content'] }
+    { revalidate: 60, tags: ['content'] }
   )();
 }
 
@@ -129,7 +129,7 @@ async function fetchModules() {
 export const getModules = unstable_cache(
   async () => fetchModules(),
   ['modules-list'],
-  { revalidate: 18000, tags: ['modules'] }
+  { revalidate: 60, tags: ['modules'] }
 );
 
 export async function getModule(id: string) {
@@ -179,7 +179,7 @@ async function fetchTutorials() {
 export const getTutorials = unstable_cache(
   async () => fetchTutorials(),
   ['tutorials-list'],
-  { revalidate: 18000, tags: ['tutorials'] }
+  { revalidate: 60, tags: ['tutorials'] }
 );
 
 export async function addTutorial(data: any) {
@@ -221,7 +221,7 @@ async function fetchReviews() {
 export const getReviews = unstable_cache(
   async () => fetchReviews(),
   ['reviews-list'],
-  { revalidate: 18000, tags: ['reviews'] }
+  { revalidate: 60, tags: ['reviews'] }
 );
 
 export async function addReview(data: any) {
@@ -257,7 +257,7 @@ export async function getPartners(type?: string) {
   return unstable_cache(
     async () => fetchPartners(type),
     [`partners-list-${type || 'all'}`],
-    { revalidate: 18000, tags: ['partners'] }
+    { revalidate: 60, tags: ['partners'] }
   )();
 }
 
@@ -310,7 +310,7 @@ async function fetchNews() {
 export const getNews = unstable_cache(
   async () => fetchNews(),
   ['news-list'],
-  { revalidate: 3600, tags: ['news'] }
+  { revalidate: 60, tags: ['news'] }
 );
 
 export async function addNews(data: any) {
