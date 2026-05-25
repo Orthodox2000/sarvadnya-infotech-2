@@ -11,7 +11,7 @@ interface PopupProps {
   details: {
     shortDescription: string;
     benefits: string[];
-    limitations: string[];
+    whatYouGet: string[];
     useCases: string[];
   } | null;
 }
@@ -47,15 +47,15 @@ const DescriptionPopup = ({ isOpen, onClose, title, details }: PopupProps) => {
           </div>
 
           <div>
-            <h4 className="text-[10px] font-black uppercase tracking-widest text-rose-600 mb-4 flex items-center gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-rose-500"></span>
-              Limitations
+            <h4 className="text-[10px] font-black uppercase tracking-widest text-indigo-600 mb-4 flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-indigo-500"></span>
+              What You Get
             </h4>
             <ul className="space-y-3">
-              {details.limitations.map((l, i) => (
+              {details.whatYouGet.map((item, i) => (
                 <li key={i} className="flex items-start gap-3 text-sm text-slate-700">
-                  <svg className="w-4 h-4 text-rose-500 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M6 18L18 6M6 6l12 12" /></svg>
-                  {l}
+                  <svg className="w-4 h-4 text-indigo-500 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                  {item}
                 </li>
               ))}
             </ul>
@@ -95,10 +95,11 @@ export default function CloudPage() {
           "Fully managed backups and recovery",
           "Seamless scalability as you grow"
         ],
-        limitations: [
-          "Higher cost compared to local hosting",
-          "Requires consistent internet connectivity",
-          "Dependency on AWS service regions"
+        whatYouGet: [
+          "Official AWS Infrastructure",
+          "Encrypted Data Vault",
+          "24/7 Availability Guarantee",
+          "Professional Technical Support"
         ],
         useCases: [
           "Enterprises with strict security needs",
@@ -122,10 +123,11 @@ export default function CloudPage() {
           "Direct local printer and hardware access",
           "Full control over VM specifications"
         ],
-        limitations: [
-          "Requires RDP setup and management",
-          "Windows licensing costs apply",
-          "More complex user management"
+        whatYouGet: [
+          "Dedicated Windows Resource",
+          "Multi-user RDP Access",
+          "Office 365 Ready Environment",
+          "Local Peripheral Support"
         ],
         useCases: [
           "Businesses using specialized Windows add-ons",
@@ -149,10 +151,11 @@ export default function CloudPage() {
           "Centralized monitoring and alerts",
           "Easy restoration to any device"
         ],
-        limitations: [
-          "Initial sync requires high upload speed",
-          "Storage-based pricing tiers",
-          "Version history limits apply"
+        whatYouGet: [
+          "End-to-End AES-256 Encryption",
+          "Automated Scheduler",
+          "Point-in-Time Recovery",
+          "Email Status Reports"
         ],
         useCases: [
           "Critical Financial Record Security",

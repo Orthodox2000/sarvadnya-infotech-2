@@ -1,50 +1,63 @@
-# Sarvadnya Infotech LLP - Products & Services
+# Sarvadnya Infotech LLP - Ultimate Tally Product Guide (v7.0)
 
-## Core Tally Products
-- **TallyPrime Silver**: Single User Edition for standalone PCs.
-- **TallyPrime Gold**: Multi-User Edition for LAN environments.
-- **TallyPrime Server**: Enterprise-grade data concurrency for large teams.
+## Core TallyPrime Products
+Official business management software designed for simplicity and performance.
 
-## TallyPrime Business Features
-### Accounting & Financial Management
-- Pre-defined accounting groups and flexible chart of accounts.
-- Flexible financial periods and split financial year capabilities.
-- Multi-currency and multi-account reporting.
-- Percentage-based and date-based reporting.
-- Flexible voucher numbering and user-defined voucher types.
+### TallyPrime Silver (Single User)
+Perfect for sole proprietors and small businesses.
+**What You Get:**
+- Single User License (Perpetual)
+- Complete Accounting & Inventory
+- GST, TDS, and TCS Modules
+- TallyDrive (v7.0) Cloud Backup Basic
+- SmartFind Global Search
+- Remote Access (View Only)
 
-### Purchase & Sales Management
-- GST compliant invoicing (Tax Invoice, Bill of Supply).
-- Multiple billing formats, price lists, and discount management.
-- Complete Sales & Purchase order processing.
-- Tracking of receipts (paid) and delivery notes.
+### TallyPrime Gold (Multi-User)
+The industry standard for growing businesses.
+**What You Get:**
+- Multi-User License (Unlimited users on same LAN)
+- PrimeBanking (Integrated Payments & BRS)
+- Bharat Connect Plug-in for Network Exchange
+- Remote Edit & View Capability
+- Multi-Currency & Multi-Company Support
+- Centralized Data Management
 
-### Inventory & Warehouse Management
-- Unlimited stock groups and categorization.
-- Multi-location/godown management and batch tracking.
-- Real-time stock valuation and tracking.
+### TallyPrime Server (Enterprise)
+Enterprise-class performance for large organizations.
+**What You Get:**
+- High-Speed Concurrency (50+ Users)
+- Hidden Data Folders for Ultimate Security
+- Advanced User Activity Monitoring
+- Real-time Concurrent Data Access
+- Optimized Performance for Large Data Volumes
 
-### Banking & Cash Flows
-- Auto-configured cheque printing and cheque book management.
-- Auto bank reconciliation for seamless cash flow tracking.
+## Cloud Solutions
+Official cloud environments for TallyPrime.
 
-### Other Capabilities
-- Logo printing on invoices and reports.
-- Multi-language support for global business operations.
-- Data migration from earlier versions of Tally.
-- Context-sensitive help for ease of use.
+### AWS Cloud Server
+**What You Get:**
+- Official Tally & AWS Collaboration
+- Industry-leading Security Standards
+- Highly Reliable AWS Global Infrastructure
+- Fully Managed Backups and Recovery
+- Seamless Scalability
 
-## Specialized Modules & Customizations
-- **Logistics/Transport Module**: Vehicle maintenance, trip sheets, and fuel tracking.
-- **C&F Agent Module**: Container tracking and commission management.
-- **Housing Society Module**: Maintenance billing and society accounting.
-- **Excel to Tally Import**: Bulk data migration tools for masters and vouchers.
-- **Garment Module**: Size, color, and fabric inventory tracking.
-- **Sales & Commission**: Performance tracking and automated payouts.
+### Windows VM (Dedicated)
+**What You Get:**
+- Familiar Windows Desktop Interface
+- Native Integration with MS Office
+- Direct Local Printer & Hardware Access
+- Full Control Over VM Specifications
 
-## Services
-- **Tally Software Service (TSS) Renewal**: Annual subscription for updates, statutory changes, and remote access.
-- **Tally AMC Services**: Annual Maintenance Contracts for priority support and regular system health checks.
-- **Tally on Cloud**: Official Tally & AWS solutions for secure remote access.
-- **Corporate Training**: Hands-on sessions for staff to master TallyPrime.
-- **Bespoke Customization**: Unique feature development tailored to specific business needs.
+## TallyPrime Release 7.0 (Latest Features)
+- **PrimeBanking**: Native integration for secure vendor payments and real-time bank reconciliation.
+- **TallyDrive**: Integrated encrypted cloud backup service. 
+- **SmartFind**: Global fuzzy search tool across all companies.
+- **Bharat Connect**: Seamlessly exchange invoices within TallyPrime.
+
+## Professional Services
+- **Tally AMC Services**: Priority technical support.
+- **Bespoke Customization**: Custom TDL development.
+- **Corporate Training**: Hands-on training for staff.
+- **Data Migration**: Seamless transition from Tally.ERP 9.

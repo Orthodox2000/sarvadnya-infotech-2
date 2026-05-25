@@ -31,19 +31,19 @@ interface HeroContent {
 
 const DEFAULT_HERO = [
     {
-      "badge": "Upgraded to Tally 7.0",
-      "titleText": "Trusted Tally Partner in Navi Mumbai - Why Choose Sarvadnya Infotech LLP?",
+      "badge": "TallyPrime 7.0 Now Available",
+      "titleText": "Business Management — Simply Done with TallyPrime 7.0",
       "colorFrom": "#4f46e5",
       "colorTo": "#7c3aed",
-      "description": "Beyond Software Sales — Guiding You to Maximize Your Tally Investment with Certified Support.",
+      "description": "Experience the next level of business automation with PrimeBanking, TallyDrive, and SmartFind. Run your business like a pro with Sarvadnya Infotech LLP.",
       "image": "/sa.png",
       "features": [
-        { "text": "TallyPrime v7.0 Ready" },
-        { "text": "Certified Support" },
-        { "text": "Custom Module Design" },
-        { "text": "Seamless Data Integrity" }
+        { "text": "PrimeBanking Payments" },
+        { "text": "TallyDrive Cloud Backup" },
+        { "text": "SmartFind Global Search" },
+        { "text": "Bharat Connect Plug-in" }
       ],
-      "ctaPrimary": { "text": "Explore Capabilities", "href": "/products" }
+      "ctaPrimary": { "text": "Explore v7.0 Features", "href": "/products" }
     }
 ];
 

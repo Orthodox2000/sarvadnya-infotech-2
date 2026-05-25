@@ -11,7 +11,7 @@ interface PopupProps {
   details: {
     shortDescription: string;
     benefits: string[];
-    limitations: string[];
+    whatYouGet: string[];
     useCases: string[];
   } | null;
 }
@@ -47,15 +47,15 @@ const DescriptionPopup = ({ isOpen, onClose, title, details }: PopupProps) => {
           </div>
 
           <div>
-            <h4 className="text-xs font-black uppercase tracking-widest text-rose-600 mb-4 flex items-center gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-rose-500"></span>
-              Limitations
+            <h4 className="text-xs font-black uppercase tracking-widest text-indigo-600 mb-4 flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-indigo-500"></span>
+              What You Get
             </h4>
             <ul className="space-y-3">
-              {details.limitations.map((l, i) => (
+              {details.whatYouGet.map((item, i) => (
                 <li key={i} className="flex items-start gap-3 text-sm text-slate-700">
-                  <svg className="w-4 h-4 text-rose-500 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M6 18L18 6M6 6l12 12" /></svg>
-                  {l}
+                  <svg className="w-4 h-4 text-indigo-500 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                  {item}
                 </li>
               ))}
             </ul>
@@ -111,10 +111,11 @@ export default function ProductsPage() {
           "Lifetime license with easy upgrades",
           "Seamless data synchronization"
         ],
-        limitations: [
-          "Single user only at a time",
-          "Installation limited to one PC",
-          "No concurrent multi-user access"
+        whatYouGet: [
+          "Single User License (Perpetual)",
+          "GST/E-Way Bill Modules",
+          "TallyDrive (v7.0) Basic",
+          "SmartFind Global Search"
         ],
         useCases: [
           "Sole Proprietorships",
@@ -140,10 +141,11 @@ export default function ProductsPage() {
           "Advanced reporting and bank reconciliation",
           "Remote access via web browser"
         ],
-        limitations: [
-          "Performance depends on local network speed",
-          "Requires local server infrastructure",
-          "Higher initial investment than Silver"
+        whatYouGet: [
+          "Multi-User License (Unlimited LAN)",
+          "PrimeBanking (Integrated BRS)",
+          "Bharat Connect Plug-in",
+          "Remote Edit & View Capability"
         ],
         useCases: [
           "Growing SMEs",
@@ -168,10 +170,11 @@ export default function ProductsPage() {
           "Enhanced data security and audit controls",
           "Real-time monitoring of user activities"
         ],
-        limitations: [
-          "Requires robust server hardware",
-          "Needs professional implementation",
-          "Significant investment for large-scale operations"
+        whatYouGet: [
+          "Enterprise Data Management",
+          "Hidden Data Folders for Security",
+          "Real-time Concurrent Access",
+          "Advanced User Activity Logs"
         ],
         useCases: [
           "Large Enterprises",

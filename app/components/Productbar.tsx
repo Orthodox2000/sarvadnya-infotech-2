@@ -8,11 +8,11 @@ import { productItems, type ProductSubItem } from "@/lib/product-nav";
 import { fetchWithCache, prefetchData } from "@/lib/client-api";
 
 // Simple Minimalist Icons for Apple-style bar
-const TallyIcon = memo(() => <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>);
-const BoxIcon = memo(() => <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>);
-const ToolIcon = memo(() => <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.77 3.77z"/></svg>);
-const GraduationIcon = memo(() => <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M12 14l9-5-9-5-9 5 9 5z"/><path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/><path d="M5 14v7a3 3 0 003 3h8a3 3 0 003-3v-7"/></svg>);
-const InfoIcon = memo(() => <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>);
+const TallyIcon = memo(() => <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>);
+const BoxIcon = memo(() => <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>);
+const ToolIcon = memo(() => <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.77 3.77z"/></svg>);
+const GraduationIcon = memo(() => <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M12 14l9-5-9-5-9 5 9 5z"/><path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/><path d="M5 14v7a3 3 0 003 3h8a3 3 0 003-3v-7"/></svg>);
+const InfoIcon = memo(() => <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>);
 
 TallyIcon.displayName = 'TallyIcon';
 BoxIcon.displayName = 'BoxIcon';
@@ -120,7 +120,7 @@ const Productbar = ({ initialSettings }: { initialSettings?: any }) => {
 
   return (
     <div 
-      className="w-full border-b border-slate-200 relative z-[30] h-[28px] lg:h-[40px] flex items-center overflow-x-clip no-scrollbar transition-all duration-300 shadow-sm"
+      className="w-full border-b border-slate-200 relative z-[30] h-[20px] lg:h-[28px] flex items-center overflow-x-clip no-scrollbar transition-all duration-300 shadow-sm"
       style={{ 
         backgroundColor: 'var(--background-color)',
       } as CSSProperties}
@@ -129,15 +129,15 @@ const Productbar = ({ initialSettings }: { initialSettings?: any }) => {
         {/* Company Logo & Name */}
         <Link 
             href="/capabilities" 
-            className="flex items-center gap-1.5 pr-2 lg:pr-3 sm:pr-5 transition-opacity hover:opacity-80 shrink-0 border-r border-slate-200 mr-1 lg:mr-1.5" 
+            className="flex items-center gap-1 pr-2 lg:pr-3 sm:pr-5 transition-opacity hover:opacity-80 shrink-0 border-r border-slate-200 mr-1 lg:mr-1" 
             onClick={handleLinkClick}
         >
           <Image 
             src="/logo.png" 
             alt="Sarvadnya" 
-            width={20} 
-            height={20} 
-            className="object-contain w-[14px] lg:w-[20px] h-auto" 
+            width={16} 
+            height={16} 
+            className="object-contain w-[12px] lg:w-[16px] h-auto" 
           />
         </Link>
 
@@ -150,15 +150,15 @@ const Productbar = ({ initialSettings }: { initialSettings?: any }) => {
           >
             <button
               onClick={(e) => handleMenuToggle(e, item.label)}
-              className={`flex items-center gap-1.5 lg:gap-2 px-2 lg:px-4 text-[9px] lg:text-[12px] font-bold transition-all h-full
+              className={`flex items-center gap-1 px-1.5 lg:px-3 text-[8.5px] lg:text-[11px] font-bold transition-all h-full
                 ${activeMenu === item.label ? 'text-[#7338a0] bg-slate-50' : 'text-slate-500 hover:text-slate-900 hover:bg-slate-50'}`}
             >
-              <span className="opacity-50 group-hover:opacity-100 transition-opacity scale-90 lg:scale-110">
+              <span className="opacity-50 group-hover:opacity-100 transition-opacity scale-90 lg:scale-100">
                 {iconMap[item.label]}
               </span>
-              <span className="tracking-tight">{item.label}</span>
+              <span className="tracking-tighter">{item.label}</span>
               <svg 
-                className={`w-2.5 h-2.5 lg:w-3 lg:h-3 transition-transform duration-300 opacity-30 ${activeMenu === item.label ? 'rotate-180 opacity-100' : ''}`} 
+                className={`w-2 h-2 lg:w-2.5 lg:h-2.5 transition-transform duration-300 opacity-30 ${activeMenu === item.label ? 'rotate-180 opacity-100' : ''}`} 
                 viewBox="0 0 20 20" 
                 fill="currentColor"
               >

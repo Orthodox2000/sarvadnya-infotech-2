@@ -4,9 +4,31 @@
 - Always mention the application version number when presenting changes or updates.
 - Versioning follows the format `v1.1.x`.
 - Increment the patch version automatically for every iteration/significant set of changes.
-- Current Version: v1.1.122
+- Current Version: v1.1.129
 
-## Recent Changes (v1.1.122)
+## Recent Changes (v1.1.129)
+- **Productbar Compaction:** Reduced the product navigation bar height by 30% (from 40px to 28px on desktop, and 28px to 20px on mobile).
+- **Responsive UI Refinement:** Scaled down navigation icons, logos, and typography to ensure perfect fit and legibility within the more compact vertical space.
+- **Improved Layout Density:** Optimized internal padding and gap spacing across all header navigation elements for a more streamlined user experience.
+- **Version Bump:** Updated application version to v1.1.129.
+
+## Recent Changes (v1.1.128)
+- **News Feed Compaction:** Reduced the top news feed height by 50% (from 40px to 20px) for a more streamlined and professional header layout.
+- **UI Scaling:** Synchronized the news feed loading skeletons and container heights across the application to ensure layout stability.
+- **Version Bump:** Updated application version to v1.1.128.
+
+## Recent Changes (v1.1.127)
+- **Deep Content Enrichment:** Refined 'Cloud Solutions' and 'Products & Licensing' pages by removing all 'limitations' to present a more authoritative and professional brand image.
+- **'What You Get' Sections:** Implemented a new "What You Get:" section in product and cloud popups, highlighting high-value inclusions like Official AWS, PrimeBanking, and Perpetual Licensing.
+- **Documentation Sync:** Updated `products.md` and the AI Assistant system prompt to reflect the growth-oriented messaging and the latest TallyPrime 7.0 feature sets.
+- **Version Bump:** Updated application version to v1.1.127.
+
+## Recent Changes (v1.1.126)
+- **Dedicated Search Results Page:** Transitioned from live-dropdown search to a request-based model with a dedicated `/search` route. This improves performance and provides a professional "Google-style" results layout.
+- **Desktop Visibility Boost:** Optimized the `SearchBar` visibility to appear on all desktop viewports (lg breakpoint and above) for maximum utility.
+- **Version Bump:** Updated application version to v1.1.124.
+
+## Recent Changes (v1.1.123)
 - **Hero Branding Integration:** Automatically appended the branding slogan "Why Choose Sarvadnya Infotech LLP?" to every hero tagline.
 - **Dynamic Content Sanitization:** Implemented logic in the `HomeHero` component to strip trailing punctuation from base taglines before appending the branding suffix, ensuring a clean and professional appearance.
 - **Bootstrapping Update:** Refreshed the default hero configurations in both the source code and bootstrap scripts to align with the new branding requirements.

@@ -14,10 +14,10 @@ const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
 const NewsFeed = dynamic(() => import("./components/NewsFeed"), {
   loading: () => (
-    <div className="relative w-full bg-[#0f0529] h-[40px] flex items-center border-b border-white/10 z-[50]">
+    <div className="relative w-full bg-[#0f0529] h-[20px] flex items-center border-b border-white/10 z-[50]">
       <div className="px-6 flex items-center gap-2">
-        <div className="h-2 w-2 rounded-full bg-slate-700 animate-pulse" />
-        <div className="h-3 w-32 bg-slate-800 rounded animate-pulse" />
+        <div className="h-1.5 w-1.5 rounded-full bg-slate-700 animate-pulse" />
+        <div className="h-2 w-32 bg-slate-800 rounded animate-pulse" />
       </div>
     </div>
   )

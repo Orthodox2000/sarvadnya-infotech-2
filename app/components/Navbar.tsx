@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { fetchWithCache, prefetchData } from "@/lib/client-api";
+import SearchBar from "./SearchBar";
 
 export type SiteSettings = {
   support_phone: string;
@@ -94,7 +95,10 @@ export default function Navbar({ initialSettings }: { initialSettings?: any }) {
         </Link>
 
         {/* Desktop Navigation */}
-        <div className="hidden lg:flex items-center gap-8">
+        <div className="hidden lg:flex items-center gap-6 xl:gap-8">
+          <div className="hidden lg:block">
+            <SearchBar />
+          </div>
           <Link
             href="/admin/palette"
             className="text-[11px] font-bold uppercase tracking-widest text-emerald-400 hover:text-emerald-300 transition-colors"
@@ -122,20 +126,22 @@ export default function Navbar({ initialSettings }: { initialSettings?: any }) {
         </div>
 
         {/* Mobile Toggle */}
-        <button 
-          className="lg:hidden p-2 text-white/70 hover:text-white transition-colors"
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-        >
-          {isMenuOpen ? (
-            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          ) : (
-            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-7 6h7" />
-            </svg>
-          )}
-        </button>
+        <div className="flex items-center gap-4 lg:hidden">
+          <button 
+            className="p-2 text-white/70 hover:text-white transition-colors"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+          >
+            {isMenuOpen ? (
+              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            ) : (
+              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-7 6h7" />
+              </svg>
+            )}
+          </button>
+        </div>
       </nav>
 
       {/* Mobile Menu Backdrop */}
