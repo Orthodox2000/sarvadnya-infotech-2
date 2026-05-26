@@ -36,7 +36,7 @@ export default function AdminDashboard() {
   return (
     <div>
       <header className="mb-10">
-        <h1 className="text-3xl font-black text-[#0f0529]">Dashboard</h1>
+        <h1 className="text-3xl font-black text-[#0f172a]">Dashboard</h1>
         <p className="text-slate-500 text-sm mt-1">System overview and health metrics.</p>
       </header>
 
@@ -49,7 +49,7 @@ export default function AdminDashboard() {
               <button 
                 onClick={fetchHealth}
                 disabled={refreshing}
-                className={`p-1.5 rounded-lg transition-all ${refreshing ? 'animate-spin text-slate-300' : 'text-[#7338a0] hover:bg-indigo-50'}`}
+                className={`p-1.5 rounded-lg transition-all ${refreshing ? 'animate-spin text-slate-300' : 'text-[#0371a3] hover:bg-sky-50'}`}
                 title="Refresh Connection Status"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
@@ -80,7 +80,7 @@ export default function AdminDashboard() {
             </div>
             <div className="flex justify-between text-xs">
               <span className="text-slate-500">Version</span>
-              <span className="font-bold text-[#7338a0]">{health?.version || 'v1.1.6'}</span>
+              <span className="font-bold text-[#0371a3]">{health?.version || 'v1.1.6'}</span>
             </div>
             <div className="flex justify-between text-xs">
               <span className="text-slate-500">Last Check</span>
@@ -103,11 +103,11 @@ export default function AdminDashboard() {
           <div className="grid grid-cols-2 gap-4">
             <div className="bg-slate-50 p-4 rounded-2xl">
               <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest mb-1">Careers</p>
-              <p className="text-2xl font-black text-[#0f0529]">3</p>
+              <p className="text-2xl font-black text-[#0f172a]">3</p>
             </div>
             <div className="bg-slate-50 p-4 rounded-2xl">
               <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest mb-1">News</p>
-              <p className="text-2xl font-black text-[#0f0529]">5</p>
+              <p className="text-2xl font-black text-[#0f172a]">5</p>
             </div>
           </div>
         </div>
@@ -118,7 +118,7 @@ export default function AdminDashboard() {
           <div className="space-y-3">
             {[1, 2, 3].map(i => (
               <div key={i} className="flex items-center gap-3 text-xs">
-                <div className="w-2 h-2 rounded-full bg-[#7338a0]"></div>
+                <div className="w-2 h-2 rounded-full bg-[#0371a3]"></div>
                 <p className="text-slate-600">Admin panel initialized</p>
                 <span className="ml-auto text-slate-400">Just now</span>
               </div>
@@ -129,3 +129,4 @@ export default function AdminDashboard() {
     </div>
   );
 }
+

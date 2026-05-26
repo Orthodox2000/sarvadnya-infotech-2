@@ -27,8 +27,6 @@ const SupportButton = dynamic(() => import("./components/SupportButton"));
 
 const NotificationToast = dynamic(() => import("./components/NotificationToast"));
 
-const CacheConsent = dynamic(() => import("./components/CacheConsent"));
-
 export const metadata: Metadata = {
   title: "Sarvadnya Infotech",
   description: "Your Tally Assistance",
@@ -122,7 +120,6 @@ export default async function RootLayout({
         {children}
         <SupportButton initialSettings={settings} />
         <NotificationToast />
-        <CacheConsent />
       </body>
     </html>
   );

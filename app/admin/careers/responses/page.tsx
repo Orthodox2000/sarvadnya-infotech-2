@@ -60,7 +60,7 @@ export default function AdminResponses() {
   return (
     <div>
       <header className="mb-10">
-        <h1 className="text-3xl font-black text-[#0f0529]">Job Applications</h1>
+        <h1 className="text-3xl font-black text-slate-900">Job Applications</h1>
         <p className="text-slate-500 text-sm mt-1">Review and manage candidates who applied via the website.</p>
       </header>
 
@@ -86,19 +86,19 @@ export default function AdminResponses() {
                       {new Date(app.createdAt).toLocaleDateString()}
                     </td>
                     <td className="p-4">
-                      <div className="text-sm font-bold text-[#0f0529]">{app.full_name}</div>
+                      <div className="text-sm font-bold text-slate-900">{app.full_name}</div>
                       <div className="text-[10px] text-slate-400">{app.email}</div>
                     </td>
                     <td className="p-4 text-sm font-medium text-slate-600">
                       {app.job_title}
                     </td>
-                    <td className="p-4 text-xs font-bold text-indigo-600 bg-indigo-50/50 rounded-lg inline-block my-3 ml-4">
+                    <td className="p-4 text-xs font-bold text-[#0371a3] bg-sky-50 rounded-lg inline-block my-3 ml-4">
                       {app.experience}
                     </td>
                     <td className="p-4 text-right">
                       <button 
                         onClick={() => openResume(app.resume_url)}
-                        className="px-3 py-1.5 text-[10px] font-black uppercase tracking-widest bg-[#7338a0] text-white rounded-xl hover:shadow-lg transition-all"
+                        className="px-3 py-1.5 text-[10px] font-black uppercase tracking-widest bg-[#0371a3] text-white rounded-xl hover:shadow-lg transition-all"
                       >
                         Resume
                       </button>

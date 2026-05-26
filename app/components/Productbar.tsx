@@ -32,6 +32,42 @@ const Productbar = ({ initialSettings }: { initialSettings?: any }) => {
   const [settings, setSettings] = useState<any>(initialSettings || null);
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
   const [dynamicModules, setDynamicModules] = useState<ProductSubItem[]>([]);
+  const [isVisible, setIsVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+
+  // Handle Scroll Behavior (Event Driven)
+  useEffect(() => {
+    const handleWheel = (e: WheelEvent) => {
+      if (e.deltaY > 0) {
+        setIsVisible(false);
+      } else if (e.deltaY < 0) {
+        setIsVisible(true);
+      }
+    };
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (['ArrowDown', 'PageDown', ' '].includes(e.key)) {
+        setIsVisible(false);
+      } else if (['ArrowUp', 'PageUp', 'Home'].includes(e.key)) {
+        setIsVisible(true);
+      }
+    };
+
+    // Keep visible at top
+    const handleScroll = () => {
+      if (window.scrollY < 10) setIsVisible(true);
+    };
+
+    window.addEventListener('wheel', handleWheel, { passive: true });
+    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener('wheel', handleWheel);
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
 
   useEffect(() => {
     if (!initialSettings) {
@@ -120,13 +156,14 @@ const Productbar = ({ initialSettings }: { initialSettings?: any }) => {
 
   return (
     <div 
-      className="w-full border-b border-slate-100 relative z-[30] h-[20px] lg:h-[36px] flex items-center overflow-x-clip no-scrollbar transition-all duration-300 shadow-sm bg-white"
+      className={`w-full border-b border-white/5 relative z-[30] flex items-center overflow-x-clip no-scrollbar transition-all duration-500 ease-in-out shadow-sm bg-[#232F3E] 
+        ${isVisible ? 'h-[28px] lg:h-[40px] opacity-100' : 'h-0 opacity-0 pointer-events-none'}`}
     >
-      <div className="mx-auto w-full max-w-7xl px-2 sm:px-4 flex justify-between items-stretch h-full">
+      <div className="mx-auto w-full max-w-7xl px-2 sm:px-4 flex justify-evenly items-stretch h-full">
         {/* Company Logo & Name */}
         <Link 
             href="/capabilities" 
-            className="flex items-center gap-1 pr-2 lg:pr-4 sm:pr-5 transition-opacity hover:opacity-80 shrink-0 border-r border-slate-100 mr-1 lg:mr-1.5" 
+            className="flex items-center gap-1 pr-1 lg:pr-8 sm:pr-5 transition-opacity hover:opacity-80 shrink-0  mr-1 lg:mr-4" 
             onClick={handleLinkClick}
         >
           <Image 
@@ -134,7 +171,7 @@ const Productbar = ({ initialSettings }: { initialSettings?: any }) => {
             alt="Sarvadnya" 
             width={20} 
             height={20} 
-            className="object-contain w-[12px] lg:w-[18px] h-auto" 
+            className="object-contain w-[12px] lg:w-[18px] h-auto brightness-0 invert" 
           />
         </Link>
 
@@ -147,15 +184,15 @@ const Productbar = ({ initialSettings }: { initialSettings?: any }) => {
           >
             <button
               onClick={(e) => handleMenuToggle(e, item.label)}
-              className={`flex items-center gap-1 lg:gap-1.5 px-1.5 lg:px-4 text-[8.5px] lg:text-[11.5px] font-bold transition-all h-full
-                ${activeMenu === item.label ? 'text-[#0371a3] bg-[#E9F1FA]' : 'text-slate-500 hover:text-[#0371a3] hover:bg-[#E9F1FA]'}`}
+              className={`flex items-center gap-1 lg:gap-2.5 px-1.5 lg:px-7 text-[8.5px] lg:text-[13.5px] font-bold transition-all h-full
+                ${activeMenu === item.label ? 'text-white bg-white/10' : 'text-white hover:bg-white/10'}`}
             >
-              <span className="opacity-50 group-hover:opacity-100 transition-opacity scale-90 lg:scale-110">
+              <span className="opacity-100 scale-90 lg:scale-110">
                 {iconMap[item.label]}
               </span>
               <span className="tracking-tighter">{item.label}</span>
               <svg 
-                className={`w-2 h-2 lg:w-2.5 lg:h-2.5 transition-transform duration-300 opacity-30 ${activeMenu === item.label ? 'rotate-180 opacity-100' : ''}`} 
+                className={`w-2 h-2 lg:w-2.5 lg:h-2.5 transition-transform duration-300 opacity-70 ${activeMenu === item.label ? 'rotate-180 opacity-100' : ''}`} 
                 viewBox="0 0 20 20" 
                 fill="currentColor"
               >
@@ -177,20 +214,20 @@ const Productbar = ({ initialSettings }: { initialSettings?: any }) => {
                       <div key={subItem.id} className="flex flex-col gap-1.5">
                         <Link
                           href={subItem.href}
-                          className="flex flex-col rounded-lg px-3 py-2 transition-all hover:bg-[#f0f9ff] group/item border border-transparent hover:border-[#E9F1FA]"
+                          className="flex flex-col rounded-lg px-3 py-2 transition-all group/item border border-transparent"
                           onClick={handleLinkClick}
                           onMouseEnter={() => {
                             if (subItem.href.includes('section=')) prefetchData(`/api/content?section=${subItem.href.split('section=')[1]}`);
                           }}
                         >
-                          <span className="text-[13px] sm:text-[14px] font-bold text-slate-900 group-hover/item:text-[#00ABE4] transition-colors flex items-center gap-1.5">
+                          <span className="text-[13px] sm:text-[14px] font-bold text-slate-900 group-hover/item:text-[#0C3353] transition-colors flex items-center gap-1.5">
                             {subItem.label}
-                            <svg className="w-3.5 h-3.5 opacity-0 -translate-x-1 group-hover/item:opacity-100 group-hover/item:translate-x-0 transition-all text-[#00ABE4]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <svg className="w-3.5 h-3.5 opacity-0 -translate-x-1 group-hover/item:opacity-100 group-hover/item:translate-x-0 transition-all text-[#0C3353]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 5l7 7-7 7" />
                             </svg>
                           </span>
                           {subItem.description && (
-                            <span className="text-[11px] sm:text-[12px] text-slate-500 leading-tight mt-1.5 group-hover/item:text-slate-700 transition-colors font-medium">
+                            <span className="text-[11px] sm:text-[12px] text-slate-500 leading-tight mt-1.5 group-hover/item:text-[#0C3353]/70 transition-colors font-medium">
                               {subItem.description}
                             </span>
                           )}
@@ -202,7 +239,7 @@ const Productbar = ({ initialSettings }: { initialSettings?: any }) => {
                               <Link
                                 key={nestedItem.id}
                                 href={nestedItem.href}
-                                className="block py-1.5 px-3 rounded-md text-[12px] font-bold text-slate-500 hover:text-[#0371a3] hover:bg-[#f0f9ff] transition-all"
+                                className="block py-1.5 px-3 rounded-md text-[12px] font-bold text-slate-500 hover:text-[#0C3353] transition-all"
                                 onClick={handleLinkClick}
                               >
                                 {nestedItem.label}

@@ -340,3 +340,23 @@ export async function deleteNews(id: string) {
   revalidateTag('news', 'default');
   return result;
 }
+
+// Submission helpers (Forms)
+export async function saveSubmission(data: any) {
+  const col = await getCollection('form_submissions');
+  return await col.insertOne({
+    ...data,
+    createdAt: new Date()
+  });
+}
+
+export async function getSubmissions() {
+  const col = await getCollection('form_submissions');
+  const data = await col.find({}).sort({ createdAt: -1 }).toArray();
+  return serializeData(data);
+}
+
+export async function deleteSubmission(id: string) {
+  const col = await getCollection('form_submissions');
+  return await col.deleteOne({ _id: new ObjectId(id) });
+}

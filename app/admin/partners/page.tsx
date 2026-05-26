@@ -146,13 +146,13 @@ export default function AdminAssets() {
     <div>
       <header className="flex justify-between items-start mb-10">
         <div>
-          <h1 className="text-3xl font-black text-[#0f0529]">Asset Management</h1>
+          <h1 className="text-3xl font-black text-slate-900">Asset Management</h1>
           <p className="text-slate-500 text-sm mt-1">Manage brand logos, About Us images, and Team photos.</p>
         </div>
         <a 
           href={tabInfo[activeTab].url}
           target="_blank"
-          className="text-xs font-bold text-[#7338a0] bg-indigo-50 px-4 py-3 rounded-2xl hover:bg-indigo-100 transition-colors"
+          className="text-xs font-bold text-[#0371a3] bg-sky-50 px-4 py-3 rounded-2xl hover:bg-sky-100 transition-colors"
         >
           View Live {activeTab.charAt(0).toUpperCase() + activeTab.slice(1)} Section
         </a>
@@ -164,18 +164,18 @@ export default function AdminAssets() {
           <button
             key={id}
             onClick={() => setActiveTab(id as any)}
-            className={`px-6 py-2 rounded-xl font-bold transition-all text-xs uppercase tracking-widest ${activeTab === id ? 'bg-[#7338a0] text-white' : 'bg-slate-100 text-slate-500 hover:bg-slate-200'}`}
+            className={`px-6 py-2 rounded-xl font-bold transition-all text-xs uppercase tracking-widest ${activeTab === id ? 'bg-[#0371a3] text-white' : 'bg-slate-100 text-slate-500 hover:bg-slate-200'}`}
           >
             {info.label}
           </button>
         ))}
       </div>
 
-      <div className="mb-8 p-4 bg-indigo-50 rounded-2xl border border-indigo-100 flex items-center gap-3">
-        <div className="w-8 h-8 bg-indigo-500 rounded-full flex items-center justify-center text-white shrink-0">
+      <div className="mb-8 p-4 bg-sky-50 rounded-2xl border border-sky-100 flex items-center gap-3">
+        <div className="w-8 h-8 bg-sky-500 rounded-full flex items-center justify-center text-white shrink-0">
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
         </div>
-        <p className="text-xs font-bold text-indigo-700 tracking-tight">
+        <p className="text-xs font-bold text-sky-700 tracking-tight">
             {tabInfo[activeTab].hint}
         </p>
       </div>
@@ -190,10 +190,10 @@ export default function AdminAssets() {
         {/* Add Asset - Only for Brand Partners */}
         {activeTab === 'brand' ? (
           <div className="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm h-fit">
-            <h2 className="text-xl font-bold text-[#0f0529] mb-6">Add New Partner</h2>
+            <h2 className="text-xl font-bold text-slate-900 mb-6">Add New Partner</h2>
             <form onSubmit={handleAddAsset} className="space-y-4">
               <input 
-                className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#7338a0]"
+                className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#0371a3]"
                 placeholder="Partner Name"
                 value={newAsset.name}
                 onChange={e => setNewAsset({...newAsset, name: e.target.value})}
@@ -234,19 +234,19 @@ export default function AdminAssets() {
               <button 
                 type="submit" 
                 disabled={submitting || !!uploading}
-                className="w-full bg-[#7338a0] text-white p-4 rounded-2xl font-bold hover:shadow-lg transition-all disabled:opacity-50"
+                className="w-full bg-[#0371a3] text-white p-4 rounded-2xl font-bold hover:shadow-lg transition-all disabled:opacity-50"
               >
                 {submitting ? 'Adding...' : 'Add to Brand Partners'}
               </button>
             </form>
           </div>
         ) : (
-          <div className="bg-indigo-50/50 p-8 rounded-3xl border border-indigo-100 flex flex-col items-center justify-center text-center space-y-4">
-            <div className="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center text-indigo-500">
+          <div className="bg-sky-50/50 p-8 rounded-3xl border border-sky-100 flex flex-col items-center justify-center text-center space-y-4">
+            <div className="w-12 h-12 bg-sky-100 rounded-full flex items-center justify-center text-sky-500">
                 <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
             </div>
             <div>
-                <h3 className="font-bold text-[#0f0529]">Slots are Locked</h3>
+                <h3 className="font-bold text-slate-900">Slots are Locked</h3>
                 <p className="text-xs text-slate-500 mt-1 max-w-xs mx-auto">To maintain page layout integrity, you can only replace images for existing slots. Adding or removing slots is disabled for this section.</p>
             </div>
           </div>
@@ -254,7 +254,7 @@ export default function AdminAssets() {
 
         {/* List Assets */}
         <div className="space-y-4">
-          <h2 className="text-xl font-bold text-[#0f0529] mb-6">Current {activeTab === 'brand' ? 'Partners' : 'Images'} ({assets.length})</h2>
+          <h2 className="text-xl font-bold text-slate-900 mb-6">Current {activeTab === 'brand' ? 'Partners' : 'Images'} ({assets.length})</h2>
           {loading ? (
             <div className="text-center py-10">Loading assets...</div>
           ) : (
@@ -273,12 +273,12 @@ export default function AdminAssets() {
                             onChange={(e) => handleFileUpload(e, true, asset._id, asset.imageUrl, asset.name)} 
                             disabled={!!uploading}
                         />
-                        <span className="text-[10px] text-white font-black uppercase tracking-widest bg-[#7338a0] px-3 py-1.5 rounded-full shadow-lg">
+                        <span className="text-[10px] text-white font-black uppercase tracking-widest bg-[#0371a3] px-3 py-1.5 rounded-full shadow-lg">
                             {uploading === asset._id ? 'Updating...' : 'Replace Image'}
                         </span>
                     </label>
                   </div>
-                  <span className="font-bold text-[#0f0529] text-sm">{asset.name}</span>
+                  <span className="font-bold text-slate-900 text-sm">{asset.name}</span>
                   {asset.description && <p className="text-[10px] text-slate-400 mt-1 line-clamp-2">{asset.description}</p>}
                   
                   {activeTab === 'brand' && (

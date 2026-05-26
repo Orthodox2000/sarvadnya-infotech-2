@@ -83,7 +83,7 @@ export default function AdminReviews() {
   return (
     <div>
       <header className="mb-10">
-        <h1 className="text-3xl font-black text-[#0f0529]">Google Reviews</h1>
+        <h1 className="text-3xl font-black text-slate-900">Google Reviews</h1>
         <p className="text-slate-500 text-sm mt-1">Manage reviews displayed on the homepage (Max 4).</p>
       </header>
 
@@ -96,10 +96,10 @@ export default function AdminReviews() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
         {/* Add Review */}
         <div className="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm">
-          <h2 className="text-xl font-bold text-[#0f0529] mb-6">Add New Review</h2>
+          <h2 className="text-xl font-bold text-slate-900 mb-6">Add New Review</h2>
           <form onSubmit={handleAddReview} className="space-y-4">
             <input 
-              className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#7338a0]"
+              className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#0371a3]"
               placeholder="Customer Name"
               value={newReview.name}
               onChange={e => setNewReview({...newReview, name: e.target.value})}
@@ -107,14 +107,14 @@ export default function AdminReviews() {
             />
             <div className="grid grid-cols-2 gap-4">
               <select 
-                className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#7338a0]"
+                className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#0371a3]"
                 value={newReview.rating}
                 onChange={e => setNewReview({...newReview, rating: parseInt(e.target.value)})}
               >
                 {[5, 4, 3, 2, 1].map(r => <option key={r} value={r}>{r} Stars</option>)}
               </select>
               <input 
-                className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#7338a0]"
+                className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#0371a3]"
                 placeholder="Date (e.g. 2 weeks ago)"
                 value={newReview.date}
                 onChange={e => setNewReview({...newReview, date: e.target.value})}
@@ -122,7 +122,7 @@ export default function AdminReviews() {
               />
             </div>
             <textarea 
-              className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#7338a0] h-32"
+              className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#0371a3] h-32"
               placeholder="Review Text"
               value={newReview.text}
               onChange={e => setNewReview({...newReview, text: e.target.value})}
@@ -131,7 +131,7 @@ export default function AdminReviews() {
             <button 
               type="submit" 
               disabled={submitting || reviews.length >= 4}
-              className="w-full bg-[#7338a0] text-white p-4 rounded-2xl font-bold hover:shadow-lg transition-all disabled:opacity-50"
+              className="w-full bg-[#0371a3] text-white p-4 rounded-2xl font-bold hover:shadow-lg transition-all disabled:opacity-50"
             >
               {submitting ? 'Adding...' : reviews.length >= 4 ? 'Limit Reached' : 'Add Review'}
             </button>
@@ -140,12 +140,12 @@ export default function AdminReviews() {
 
         {/* List Reviews */}
         <div className="space-y-4">
-          <h2 className="text-xl font-bold text-[#0f0529] mb-6">Current Reviews ({reviews.length}/4)</h2>
+          <h2 className="text-xl font-bold text-slate-900 mb-6">Current Reviews ({reviews.length}/4)</h2>
           {reviews.map(review => (
             <div key={review._id} className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm flex justify-between items-start group">
               <div className="space-y-1">
                 <div className="flex items-center gap-2">
-                  <span className="font-bold text-[#0f0529]">{review.name}</span>
+                  <span className="font-bold text-slate-900">{review.name}</span>
                   <span className="text-[10px] bg-yellow-100 text-yellow-700 px-2 py-0.5 rounded-full font-bold">{review.rating} ★</span>
                 </div>
                 <p className="text-xs text-slate-400">{review.date}</p>
@@ -153,7 +153,7 @@ export default function AdminReviews() {
               </div>
               <button 
                 onClick={() => handleDelete(review._id)}
-                className="p-2 text-slate-300 hover:text-red-600 transition-colors"
+                className="p-2 text-slate-300 hover:text-red-500 transition-colors"
               >
                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />

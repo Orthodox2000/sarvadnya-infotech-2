@@ -4,9 +4,239 @@
 - Always mention the application version number when presenting changes or updates.
 - Versioning follows the format `v1.1.x`.
 - Increment the patch version automatically for every iteration/significant set of changes.
-- Current Version: v1.1.141
+- Current Version: v1.1.187
 
-## Recent Changes (v1.1.141)
+## Recent Changes (v1.1.187)
+- **Standard SEO Implementation:** Deployed production-grade sitemap and crawler instructions.
+    *   **Dynamic XML Sitemap:** Implemented `app/sitemap.ts` to automatically generate `sitemap.xml`, ensuring all public routes are indexed by Google, Bing, and other search engines.
+    *   **Crawler Governance:** Implemented `app/robots.ts` to guide search engine bots, specifically allowing full site crawling while protecting sensitive `/admin` and `/api/admin` routes from public indexing.
+- **Version Bump:** Updated application version to v1.1.187.
+
+## Recent Changes (v1.1.186)
+- **Header UI Synchronization:** Aligned the vertical dimensions of the global search bar with the primary navigation buttons.
+    *   **SearchBar Scaling:** Increased search input vertical padding to `py-2` to match the exact height of the 'Support' and 'Careers' buttons.
+- **Version Bump:** Updated application version to v1.1.186.
+
+## Recent Changes (v1.1.185)
+- **Services Palette Synchronization:** Completed the final phase of the brand overhaul by synchronizing the Services hub and all specialized sub-routes.
+    *   **Hub Overhaul:** Updated the main Services page with the 'Radiant Sky' palette (`#dff0f5` background, Slate-900 typography, and Brand Blue accents).
+    *   **Specialized Routes:** Synchronized all dedicated service pages (**AMC**, **Corporate Training**, **Mobile App**, **WhatsApp Integration**, **TDL**, and **TSS**) with modern cinematic heroes and shimmering brand-blue gradients.
+    *   **Asset Refresh:** Updated all service imagery to the latest high-resolution assets, including correct cinematic hero photos and process-flow diagrams.
+    *   **UX Enhancements:** Refined the service detail popups with high-contrast deliverables and improved interactive feedback.
+- **Version Bump:** Updated application version to v1.1.185.
+
+## Recent Changes (v1.1.182)
+- **Footer Legal Visibility:** Enhanced the visibility of mandatory legal documents in the site footer.
+    *   **Prominent Placement:** Integrated direct links to 'Privacy Policy' and 'Terms & Conditions' into the 'Company Info' column for immediate accessibility.
+    *   **Consistent Aesthetic:** Applied high-contrast black weights and interactive brand-blue highlights to the new links to match the premium footer design.
+    *   **Bottom Bar Preservation:** Maintained redundant links in the bottom copyright bar for compliance and standard navigation patterns.
+- **Version Bump:** Updated application version to v1.1.182.
+
+## Recent Changes (v1.1.181)
+- **Admin Access Relocation:** Restructured the primary navigation to prioritize public content while maintaining secure admin access.
+    *   **Navbar Cleanup:** Removed the 'Admin' link from the primary navigation header for a cleaner, customer-focused visual experience.
+    *   **Productbar Integration:** Relocated administrative access to the 'Company' section of the Productbar megamenu as 'Admin Access'.
+- **Version Bump:** Updated application version to v1.1.181.
+
+## Recent Changes (v1.1.180)
+- **Desktop Spacing Optimization:** Aggressively reduced the vertical gap between the primary navigation and the hero section on desktop.
+    *   **Negative Margin:** Increased the desktop negative top margin to `lg:-mt-10` to pull the hero section further under the transparent navbar area.
+    *   **Padding Reduction:** Halved the desktop top padding (`lg:pt-8`) to elevate the headline and description closer to the top of the viewport.
+- **Version Bump:** Updated application version to v1.1.180.
+
+## Recent Changes (v1.1.177)
+- **Admin Isolation & Typography Refinement:** Decoupled business inquiries from job applications for better data governance.
+    *   **Data Isolation:** Reverted the unified submissions view; `/admin/submissions` now exclusively handles business leads, while `/admin/careers` remains the dedicated hub for applicant tracking.
+    *   **Column Optimization:** Separated **Contact Person** and **Phone Number** into distinct columns across all submission tables, improving scanability and enabling targeted sorting.
+    *   **Typography Overhaul:** Refined the visual weight of the administration panel. Transitioned from heavy `font-black` to balanced `font-bold` and `font-semibold` weights for a more elegant, professional aesthetic.
+    *   **Layout Polish:** Standardized table padding and spacing to ensure maximum legibility on high-density displays.
+- **Version Bump:** Updated application version to v1.1.177.
+
+## Recent Changes (v1.1.176)
+- **Form Submissions Unified Dashboard:** Overhauled the admin submissions management system.
+    - Created a unified, tabbed interface to manage both General Inquiries and Job Applications.
+    - Implemented advanced multi-column sorting (Date, Name, Type, Service, Experience) with visual indicators.
+    - Added a detailed view modal to inspect full submission data and download resumes directly.
+    - Fixed form submission logic on the Contact Page, enabling real-time POST requests to the backend with success/loading feedback.
+    - Standardized API routes for submissions and applications, including robust DELETE support.
+- **Version Bump:** Updated application version to v1.1.176.
+
+## Recent Changes (v1.1.175)
+- **Admin Sidebar Enhancement:** Implemented a custom thin scrollbar for the admin navigation.
+    - Added `custom-scrollbar` utility with specialized thin styling (5px) and low-profile transparency.
+    - Enabled vertical scrolling on the admin sidebar with proper padding for better navigation usability on smaller vertical viewports.
+- **Version Bump:** Updated application version to v1.1.175.
+
+## Recent Changes (v1.1.172)
+- **AI Search Enhancement:** Expanded the AI sitemap strategy to the search results page.
+    - Updated the search summary generator to include interactive navigation buttons (`[[Label|URL]]`) for highly relevant results.
+    - Refined the search UI to parse and render these buttons within the "Quick AI Overview" section.
+- **Version Bump:** Updated application version to v1.1.172.
+
+## Recent Changes (v1.1.171)
+- **AI Chat Navigation Enhancement:** Integrated the site map into the AI Assistant's logic to support direct navigation via interactive buttons.
+    - Updated the system prompt with a full knowledge map of the site (Products, Services, Modules, Learning Hub, etc.).
+    - Implemented a bracket-based parsing system (`[[Label|URL]]`) that allows the AI to suggest specific pages as clickable buttons within replies.
+    - Refined the integrated call-to-action to "Contact Our Team" with professional expert-advice prompting.
+- **Version Bump:** Updated application version to v1.1.170.
+
+## Recent Changes (v1.1.169)
+- **Search & Capabilities Synchronization:** Refined the search experience and fully synchronized the Capabilities page with the "Radiant Sky" brand identity.
+    - Updated the global search placeholder in `SearchBar.tsx` to "Search Sarvadnya..." for improved brand alignment.
+    - Overhauled the Capabilities page (`app/capabilities/page.tsx`) with the `#dff0f5` hero background and immersive `bgggg.png` overlay.
+    - Transitioned all capabilities typography to high-contrast Slate-900/600 and implemented the shimmering brand-blue gradient for the "Core Capabilities" headline.
+    - Upgraded the "Experience the Full Suite" CTA section with a professional Slate-950 foundation and interactive brand-blue elements.
+    - Preserved the unique styling and color spectrum of the AI Assistant (bot) to maintain its distinct visual identity.
+- **Version Bump:** Updated application version to v1.1.165.
+
+## Recent Changes (v1.1.164)
+- **Admin Panel Palette Sync & Locking:** Fully synchronized the administration panel with the "Radiant Sky" brand identity and deprecated the dynamic palette selector.
+    - Updated all admin routes (`Dashboard`, `Careers`, `Modules`, `Learning`, `FAQ`, `Reviews`, `News`, `Page Images`, `Assets`, `Settings`) to use high-contrast Slate-900 typography and official Brand Blue (#0371a3) accents.
+    - Disabled the 'Theme Palette' functionality to ensure site-wide branding consistency. Commented out all associated navigation links in the `Navbar` and `AdminSidebar`.
+    - Implemented a "Locked for Brand Consistency" overlay on the Palette page and disabled all interactive selection logic.
+    - Synchronized all admin form inputs, buttons, and status badges with the finalized professional palette.
+- **Version Bump:** Updated application version to v1.1.164.
+
+## Recent Changes (v1.1.163)
+- **Search Page Palette Sync:** Fully synchronized the Search results page (`app/search/page.tsx`) with the "Radiant Sky" brand identity.
+    - Implemented a dedicated hero section with the `#dff0f5` background and immersive `bgggg.png` overlay at 10% opacity.
+    - Transitioned the entire page to a high-contrast Slate-900/600 typography system and implemented the shimmering brand-blue gradient for the "Search Results" title.
+    - Upgraded all interactive result cards, AI summaries, and empty-state UI with official brand-blue accents (#0371a3).
+    - Refined the "Still can't find what you need?" CTA with a high-contrast Slate-950 foundation and interactive brand-blue highlights.
+- **Version Bump:** Updated application version to v1.1.163.
+
+## Recent Changes (v1.1.162)
+- **Navigation & Hero Refinement:** Optimized the `Productbar` visibility and refined the Products page visual hierarchy.
+    - Updated `Productbar` text to be solid white before hover, ensuring maximum contrast and legibility against the dark background.
+    - Adjusted the Products page hero headline to remove the gradient from "Editions & Licensing" while maintaining it on "TallyPrime", focusing brand emphasis on the product name.
+- **Version Bump:** Updated application version to v1.1.162.
+
+## Recent Changes (v1.1.161)
+- **Product Page Title Gradient:** Expanded the shimmering brand-blue gradient to include the "TallyPrime" text in the hero section, creating a unified and high-impact visual hierarchy for the "TallyPrime Editions & Licensing" headline.
+- **Version Bump:** Updated application version to v1.1.161.
+
+## Recent Changes (v1.1.160)
+- **Product Page Refinement:** Optimized the "Official TallyPrime Partner" badge to a vibrant yellowish-gold aesthetic.
+    - Transitioned from the amber spectrum to a brighter yellow palette (`bg-yellow-400/10`, `border-yellow-500/20`, `text-yellow-600`) to eliminate orange tones and ensure a premium, radiant feel.
+- **Version Bump:** Updated application version to v1.1.160.
+
+## Recent Changes (v1.1.159)
+- **Product Page Refinement:** Upgraded the "Official TallyPrime Partner" badge to a premium golden aesthetic.
+    - Implemented a high-contrast amber spectrum (`bg-amber-400/10`, `border-amber-500/20`, `text-amber-700`) with an active pulse animation to emphasize the brand's certified status.
+- **Version Bump:** Updated application version to v1.1.159.
+
+## Recent Changes (v1.1.158)
+- **Products & Cloud Palette Sync:** Fully synchronized the Products (`app/products/page.tsx`) and Cloud (`app/cloud/page.tsx`) routes with the "Radiant Sky" brand identity.
+    - Updated all hero backgrounds to `#dff0f5` and implemented the immersive `bgggg.png` overlay at 10% opacity.
+    - Transitioned all page typography to high-contrast Slate-900/600 and implemented brand-blue shimmering gradients for key titles.
+    - Upgraded product pricing cards and cloud solution grids with white foundations and professional brand-blue accents (#0371a3).
+    - Refined the "Why move Tally to Cloud?" banner with a professional high-contrast layout and interactive brand-blue elements.
+    - Synchronized all `DescriptionPopup` modals with the new visual language, including sky-blue foundations and brand-blue accents.
+- **Version Bump:** Updated application version to v1.1.158.
+
+## Recent Changes (v1.1.157)
+- **Module Section Palette Sync:** Fully synchronized the Modules gallery (`app/modules/page.tsx`), `ModuleCard`, and `ModuleModal` with the "Radiant Sky" brand identity.
+    - Updated the hero section background to `#dff0f5` and implemented the immersive `bgggg.png` overlay at 10% opacity.
+    - Transitioned all module typography to high-contrast Slate-900/600 and updated the "Industry Logic" keyword with the shimmering brand-blue gradient.
+    - Upgraded the "Need a Custom Solution?" CTA section with a professional Slate-950 foundation and interactive brand-blue elements (#0371a3).
+    - Refined all interactive cards and modals with brand-blue accents, sky-blue badges, and professional high-contrast layouts.
+- **Version Bump:** Updated application version to v1.1.157.
+
+## Recent Changes (v1.1.156)
+- **Legal & UX Cleanup:** Standardized site-wide legal documentation and streamlined the user experience.
+    - Removed the legacy "Data Caching" consent popup from the entire application.
+    - Created dedicated, high-contrast `Privacy Policy` and `Terms & Conditions` pages using the "Radiant Sky" palette.
+    - Implemented a mandatory legal disclosure in the Terms stating that product availability may vary depending on stock and regional factors.
+    - Standardized the footer copyright notice to "Sarvadnya Infotech LLP. All Rights Reserved." and integrated direct links to all legal documents.
+- **Version Bump:** Updated application version to v1.1.156.
+
+## Recent Changes (v1.1.155)
+- **Global Services Palette Sync:** Fully synchronized all specialized service pages (`AMC`, `Corporate Training`, `Mobile App`, `WhatsApp Integration`, `TDL`, and `TSS`) with the finalized "Radiant Sky" brand identity.
+    - Updated all hero backgrounds to `#dff0f5` and implemented the immersive `bgggg.png` overlay at 10% opacity.
+    - Transitioned hero titles to shimmering brand-blue gradients and upscaled typography to high-contrast Slate-900/600.
+    - Standardized all CTA sections with compact sizing (50% reduction), Slate-950 foundations, and brand-blue interactive elements.
+    - Unified all feature grids and process steps with white foundations and professional brand-blue accents (#0371a3).
+- **Version Bump:** Updated application version to v1.1.155.
+
+## Recent Changes (v1.1.154)
+- **AMC Service Palette Sync:** Fully synchronized the Tally AMC service page (`app/services/amc/page.tsx`) with the "Radiant Sky" brand identity.
+    - Updated the cinematic hero background to `#dff0f5` and added the immersive `bgggg.png` layer at 10% opacity.
+    - Transitioned hero typography to high-contrast dark shades (Slate-900, Slate-600) and implemented the shimmering brand-blue gradient for the "Contract (AMC)" keyword.
+    - Upgraded feature cards and process steps with white foundations and brand-blue (#0371a3) accents.
+    - Redesigned the CTA section with a high-contrast Slate-950 foundation and official brand-blue highlights.
+- **Version Bump:** Updated application version to v1.1.154.
+
+## Recent Changes (v1.1.153)
+- **Our Team Palette Sync:** Fully synchronized the Team page (`app/team/page.tsx`) with the "Radiant Sky" brand identity.
+    - Updated the hero section background to `#dff0f5` and added the immersive `bgggg.png` layer at 10% opacity.
+    - Transitioned hero typography to high-contrast dark shades (Slate-900, Slate-600) and implemented the shimmering brand-blue gradient for the "Experts" keyword.
+    - Redesigned the team grid with upscaled member cards, white foundations, and brand-blue (#0371a3) accents.
+    - Refined the "Employee Culture" and "Team Reviews" sections with professional high-contrast layouts and interactive elevations.
+- **Version Bump:** Updated application version to v1.1.153.
+
+## Recent Changes (v1.1.152)
+- **Careers Route Palette Sync:** Fully synchronized the Careers page (`app/careers/page.tsx`) with the "Radiant Sky" brand identity.
+    - Updated the hero section background to `#dff0f5` and added the immersive `bgggg.png` layer at 10% opacity.
+    - Transitioned hero typography to high-contrast dark shades (Slate-900, Slate-600) and implemented the shimmering brand-blue gradient for the headline.
+    - Upgraded the "Life at Sarvadnya" perks section with a neutral `bg-slate-50/50` foundation and brand-blue (#0371a3) interactive elements.
+- **Version Bump:** Updated application version to v1.1.152.
+
+## Recent Changes (v1.1.151)
+- **About Us Palette Sync:** Fully synchronized the About Us page (`app/about/page.tsx`) with the "Radiant Sky" brand identity.
+    - Updated the hero section background to `#dff0f5` and added the immersive `bgggg.png` layer at 10% opacity.
+    - Transitioned the entire page to a neutral white background with high-contrast dark typography (Slate-900, Slate-600).
+    - Upgraded leadership and strategic vision sections with professional brand-blue badges and accents (#0371a3).
+    - Refined the masonry gallery with immersive brand-gradient overlays and enhanced interactive elevations.
+- **Version Bump:** Updated application version to v1.1.151.
+
+## Recent Changes (v1.1.150)
+- **News Route Palette Sync:** Fully synchronized the News route (`app/news/page.tsx`) with the finalized "Radiant Sky" brand identity.
+    - Updated global and hero backgrounds to `#dff0f5`.
+    - Transitioned all typography to high-contrast dark shades (Slate-900, Slate-600).
+    - Implemented the shimmering brand-blue gradient for the hero title.
+    - Added the immersive `bgggg.png` background layer with 10% opacity.
+    - Updated card accents and category tags to the official brand blue spectrum (#0371a3).
+- **Version Bump:** Updated application version to v1.1.150.
+
+## Recent Changes (v1.1.149)
+- **Productbar Desktop Optimization:** Substantially increased the visibility and presence of the secondary navigation bar on desktop viewports.
+    - Upscaled height from `36px` to `40px` for a more authoritative presence.
+    - Increased primary option font size to `13.5px` and expanded horizontal padding to `28px` (`px-7`) for improved legibility and touch targets.
+    - Optimized logo spacing and internal gaps to maintain perfect visual balance with the new dimensions.
+- **Version Bump:** Updated application version to v1.1.149.
+
+## Recent Changes (v1.1.148)
+- **Contact Typography Refinement:** Optimized the Contact page hero typography for the new background image. Transitioned titles and descriptions to high-contrast dark shades (Slate-900, Slate-600) and upgraded the "Touch" keyword with a vibrant brand-blue gradient.
+- **Version Bump:** Updated application version to v1.1.148.
+
+## Recent Changes (v1.1.147)
+- **Contact Page Background:** Enhanced the Contact page hero section with an immersive background image (`bgggg.png`) while maintaining the brand's light blue foundation.
+- **Version Bump:** Updated application version to v1.1.147.
+
+## Recent Changes (v1.1.146)
+- **Navbar Dark Theme:** Overhauled the primary navigation header with a high-contrast dark palette.
+    - Set background to **Midnight Black (#131921)** and transitioned brand text and links to crisp white.
+    - Refined the "Support" button with a **Bright Blue (#00ABE4)** foundation and high-contrast hover states.
+- **Contact Gradient Refinement:** Iterated on the Contact hero section with a specific metallic silver gradient for the "Touch" keyword.
+- **Version Bump:** Updated application version to v1.1.146.
+
+## Recent Changes (v1.1.145)
+- **AI Behavior Refinement:** Trained the AI assistant to be less interrogatory and more polite. It now asks only one polite question at a time to maintain a professional conversational flow.
+- **AI Chat UI Upgrade:** Synchronized the `QuickSupportModal` with the **Blue, Sky & White** brand palette. Added a professional "Call Our Team" button within the chat interface that deep-links to the contact section for more detailed assistance.
+- **Version Bump:** Updated application version to v1.1.145.
+
+## Recent Changes (v1.1.144)
+- **Contact Page Branding:** Synchronized the Contact experience with the **Blue, Sky & White** palette.
+    - Replaced legacy indigo/purple with **Bright Blue (#00ABE4)**, **Deep Blue (#0371a3)**, and **Sky Tint (#f0f9ff)**.
+    - Upgraded the "Request a Callback" section with a high-contrast Deep Blue foundation and interactive Bright Blue highlights.
+- **Version Bump:** Updated application version to v1.1.144.
+
+## Recent Changes (v1.1.143)
+- **Footer Palette Refinement:** Darkened the footer's color spectrum for a more authoritative and high-contrast aesthetic. 
+    - Shifted the base and gradient start to **Deep Blue (#025b8a)** and implemented a new ultra-dark anchor **(#001a29)** for maximum visual depth.
+- **Version Bump:** Updated application version to v1.1.143.
+
+## Recent Changes (v1.1.142)
 - **Careers Route Branding:** Synchronized the entire Careers experience (Public Page, Job Accordion, Application Modal) with the **Blue, Sky & White** palette.
     - Replaced legacy indigo/purple with **Bright Blue (#00ABE4)**, **Deep Blue (#0371a3)**, and **Sky Tint (#f0f9ff)**.
     - Upgraded job cards with professional rounded corners and interactive hover elevations.

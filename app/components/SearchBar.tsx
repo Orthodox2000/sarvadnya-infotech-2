@@ -21,8 +21,8 @@ export default function SearchBar() {
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Search Tally Solutions..."
-          className="w-full bg-white border border-[#E9F1FA] rounded-full py-1.5 pl-9 pr-4 text-[11px] text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#00ABE4]/50 focus:border-[#00ABE4] transition-all"
+          placeholder="Search Sarvadnya..."
+          className="w-full bg-gray-100 border border-[#ffffff] rounded-full py-2 pl-9 pr-4 text-[11px] text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#00ABE4]/50 focus:border-[#00ABE4] transition-all"
         />
         <button 
           type="submit"

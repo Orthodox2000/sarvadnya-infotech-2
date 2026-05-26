@@ -31,6 +31,7 @@ const AdminSidebar = ({ isOpen, onClose }: AdminSidebarProps) => {
 
   const navItems = [
     { label: 'Dashboard', href: '/admin', icon: 'M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6' },
+    { label: 'Submissions', href: '/admin/submissions', icon: 'M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z' },
     { label: 'Careers', href: '/admin/careers', icon: 'M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z' },
     { label: 'Modules', href: '/admin/modules', icon: 'M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z' },
     { label: 'Learning', href: '/admin/learning', icon: 'M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5s3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253' },
@@ -40,7 +41,7 @@ const AdminSidebar = ({ isOpen, onClose }: AdminSidebarProps) => {
     { label: 'Page Images', href: '/admin/pages', icon: 'M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z' },
     { label: 'Assets & Partners', href: '/admin/partners', icon: 'M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z' },
     { label: 'Settings', href: '/admin/settings', icon: 'M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z' },
-    { label: 'Theme Palette', href: '/admin/palette', icon: 'M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a1 1 0 010 2H5v12a2 2 0 002 2h12a2 2 0 002-2V5h-4a1 1 0 010-2h4a2 2 0 012 2v12a4 4 0 01-4 4H7z' },
+    // { label: 'Theme Palette', href: '/admin/palette', icon: 'M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a1 1 0 010 2H5v12a2 2 0 002 2h12a2 2 0 002-2V5h-4a1 1 0 010-2h4a2 2 0 012 2v12a4 4 0 01-4 4H7z' },
 
   ];
 
@@ -68,8 +69,8 @@ const AdminSidebar = ({ isOpen, onClose }: AdminSidebarProps) => {
                 ADMIN<span className="text-[#00ABE4]">PANEL</span>
               </h2>
             )}
-            <p className="text-[10px] text-slate-400 font-black uppercase tracking-[0.2em] mt-1">
-              v1.1.141
+            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-[0.2em] mt-1">
+              v1.1.187
             </p>
           </div>
           <button 
@@ -82,7 +83,7 @@ const AdminSidebar = ({ isOpen, onClose }: AdminSidebarProps) => {
           </button>
         </div>
 
-        <nav className="flex-grow space-y-1.5 custom-scrollbar">
+        <nav className="flex-grow space-y-1.5 custom-scrollbar overflow-y-auto pr-2">
           {navItems.map((item) => (
             <Link
               key={item.href}

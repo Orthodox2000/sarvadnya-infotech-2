@@ -57,14 +57,14 @@ export default function MobileAppBizPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50">
-      {/* Cinematic Hero Section */}
-      <section className="bg-[#0f0529] relative overflow-hidden flex items-center min-h-[200px] md:min-h-[300px]">
-        {/* Background Effects */}
-        <div className="absolute inset-0 opacity-20 pointer-events-none">
-          <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-[#7338a0] blur-[120px] rounded-full -ml-64 -mt-64" />
-          <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-indigo-600 blur-[120px] rounded-full -ml-64 -mb-64" />
-        </div>
+    <div className="min-h-screen bg-white text-slate-900">
+      {/* Cinematic Hero Section (Themed Hero) */}
+      <section className="bg-[#dff0f5] relative overflow-hidden flex items-center min-h-[200px] md:min-h-[350px] border-b border-[#0371a3]/10">
+        {/* Background Image Overlay */}
+        <div 
+          className="absolute inset-0 z-0 opacity-10 pointer-events-none"
+          style={{ backgroundImage: 'url(/bgggg.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}
+        />
 
         {/* Cinematic Image Side - Hidden on mobile, full height on desktop */}
         <div className="hidden lg:block absolute right-0 top-0 bottom-0 w-1/2 z-0">
@@ -76,133 +76,121 @@ export default function MobileAppBizPage() {
               className="object-cover"
               priority
             />
-            {/* Cinematic Overlay - Fades image into the dark background */}
-            <div className="absolute inset-0 bg-gradient-to-r from-[#0f0529] via-[#0f0529]/40 to-transparent" />
+            {/* Cinematic Overlay - Fades image into the light background */}
+            <div className="absolute inset-0 bg-gradient-to-r from-[#dff0f5] via-[#dff0f5]/60 to-transparent" />
           </div>
         </div>
         
-        <div className="max-w-7xl mx-auto w-full px-6 relative z-10 py-8 md:py-12">
+        <div className="max-w-7xl mx-auto w-full px-6 relative z-10 py-12 md:py-16">
           <div className="max-w-2xl lg:pr-12">
             <div className="flex items-center gap-4 mb-6">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-white/50 text-[10px] font-bold uppercase tracking-widest">
-                <span className="h-1.5 w-1.5 rounded-full bg-[#7338a0]"></span>
+              <div className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-white/40 border border-[#0371a3]/10 text-[#0371a3] text-[10px] font-bold uppercase tracking-widest backdrop-blur-sm">
+                <span className="flex h-0.5 w-0.5 rounded-full bg-[#0371a3]"></span>
                 Mobile Intelligence
               </div>
-              <div className="h-8 w-px bg-white/10" />
-              <Image 
-                src="/PartnerBrands/BizAnalyst.png" 
-                alt="Biz Analyst Logo" 
-                width={120} 
-                height={30} 
-                className="opacity-80 brightness-0 invert"
-              />
+              <div className="h-8 w-px bg-[#0371a3]/20" />
+              <div className="relative h-8 w-24">
+                 <Image 
+                    src="/PartnerBrands/BizAnalyst.png" 
+                    alt="Biz Analyst Logo" 
+                    fill
+                    className="object-contain"
+                 />
+              </div>
             </div>
-            <h1 className="text-3xl md:text-5xl font-black text-white mb-4 leading-tight tracking-tight">
-              Tally on Mobile <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#7338a0] to-indigo-400">(Biz Analyst)</span>
+            <h1 className="text-3xl md:text-6xl font-black text-slate-900 mb-6 leading-tight tracking-tight">
+              Tally on <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0371a3] via-[#00ABE4] to-[#0371a3]">Mobile Dashboard</span>
             </h1>
-            <p className="text-white/60 text-base md:text-lg max-w-xl leading-relaxed mb-8">
-              Take your business with you wherever you go. Get real-time access to your Tally data, track your sales team, and make data-driven decisions from the palm of your hand.
+            <p className="text-slate-600 text-base md:text-lg max-w-xl leading-relaxed mb-8 font-semibold">
+              Bring your office in your pocket. Access critical business data, track sales performance, and send outstanding reminders instantly from anywhere.
             </p>
             <div className="flex flex-wrap gap-4">
               <button 
-                onClick={() => openModal('enquire')}
-                className="px-8 py-3 bg-[#7338a0] text-white rounded-xl font-black text-xs uppercase tracking-widest hover:bg-indigo-600 transition-all shadow-xl shadow-indigo-900/20"
+                onClick={() => openModal('demo')}
+                className="px-8 py-4 bg-[#0371a3] text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-[#00ABE4] transition-all shadow-xl shadow-[#0371a3]/20"
               >
-                Get Free Demo
-              </button>
-              <button 
-                onClick={() => openModal('callback')}
-                className="px-8 py-3 bg-white/5 border border-white/10 text-white rounded-xl font-black text-xs uppercase tracking-widest hover:bg-white/10 transition-all flex items-center justify-center"
-              >
-                Start Free Trial
+                Request Free Demo
               </button>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Features Grid */}
-      <section className="py-24 px-6 max-w-7xl mx-auto -mt-16 relative z-20">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {mobileFeatures.map((f, i) => (
-            <div key={i} className="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm hover:shadow-xl transition-all duration-300">
-              <div className="w-12 h-12 rounded-2xl bg-indigo-50 text-[#7338a0] flex items-center justify-center mb-6">
-                {f.icon}
+      {/* Feature Grid */}
+      <section className="py-24 px-6 max-w-7xl mx-auto">
+        <div className="text-center mb-16">
+          <h2 className="text-3xl md:text-4xl font-black text-slate-900 mb-4">Powerful Features</h2>
+          <p className="text-slate-500 font-medium max-w-2xl mx-auto">Modern analytical tools designed for business owners who are always on the move.</p>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {mobileFeatures.map((feature, i) => (
+            <div key={i} className="p-8 bg-white rounded-3xl border border-slate-100 shadow-sm hover:shadow-xl transition-all duration-300 group">
+              <div className="w-12 h-12 bg-[#dff0f5] text-[#0371a3] rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                {feature.icon}
               </div>
-              <h3 className="text-lg font-black text-[#0f0529] mb-3">{f.title}</h3>
-              <p className="text-slate-500 text-sm leading-relaxed">{f.desc}</p>
+              <h3 className="text-lg font-black text-slate-900 mb-3">{feature.title}</h3>
+              <p className="text-slate-500 text-sm leading-relaxed font-medium">{feature.desc}</p>
             </div>
           ))}
         </div>
       </section>
 
-      {/* Detailed Content */}
-      <section className="py-12 px-6">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
-          <div className="relative">
-            <div className="aspect-[16/10] rounded-[32px] overflow-hidden relative shadow-2xl bg-slate-100/50">
-              <Image 
-                src="/biz-analyst-tally-mobile-app.jpg" 
-                alt="Mobile App for Tally" 
-                fill 
-                className="object-contain p-4"
-              />
-            </div>
-            <div className="absolute -bottom-4 -right-4 bg-white p-5 rounded-2xl shadow-xl border border-slate-100 max-w-[180px] hidden md:block">
-              <div className="text-2xl font-black text-[#7338a0] mb-0.5">10k+</div>
-              <div className="text-[8px] font-black uppercase tracking-widest text-slate-400">Business Owners Using Biz Analyst Every Day</div>
-            </div>
+      {/* Analytics Section */}
+      <section className="py-24 px-6 bg-slate-50">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          <div className="relative rounded-[2.5rem] overflow-hidden shadow-2xl aspect-[3/4] max-w-md mx-auto">
+            <Image 
+              src="/biz-analyst-tally-mobile-app.jpg" 
+              alt="Mobile App Analytics" 
+              fill 
+              className="object-cover"
+            />
           </div>
-          
-          <div>
-            <h2 className="text-2xl md:text-3xl font-black text-[#0f0529] mb-6 leading-tight">
-              Why Choose <br />Biz Analyst?
-            </h2>
-            <div className="space-y-5">
+          <div className="space-y-8">
+            <h2 className="text-3xl md:text-4xl font-black text-slate-900 leading-tight">Data-Driven <br /><span className="text-[#0371a3]">Decision Making</span></h2>
+            <div className="space-y-6">
               {[
-                {
-                  q: "Data-Driven Decisions",
-                  a: "Understand your business trends and identify growth opportunities with visual reports."
-                },
-                {
-                  q: "Enhanced Sales Efficiency",
-                  a: "Empower your sales team with customer history and stock availability on the go."
-                },
-                {
-                  q: "Secure Data Access",
-                  a: "Your data is encrypted and remains under your control at all times."
-                }
-              ].map((item, i) => (
+                { title: "Sales Analysis", desc: "Track top customers, items, and sales trends over any period." },
+                { title: "Inventory Control", desc: "Check stock levels and godown-wise inventory on the fly." },
+                { title: "Outstanding Reports", desc: "View party-wise outstandings and ageing analysis instantly." },
+                { title: "Secure & Offline", desc: "Your data is encrypted and accessible even without internet." }
+              ].map((benefit, i) => (
                 <div key={i} className="flex gap-4">
-                  <div className="flex-shrink-0 w-9 h-9 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold text-xs">
-                    0{i+1}
+                  <div className="mt-1 shrink-0 w-5 h-5 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center">
+                    <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="4"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
                   </div>
                   <div>
-                    <h4 className="text-sm font-bold text-[#0f0529] mb-1">{item.q}</h4>
-                    <p className="text-slate-600 leading-relaxed text-[11px] md:text-xs">{item.a}</p>
+                    <h4 className="font-bold text-slate-900">{benefit.title}</h4>
+                    <p className="text-slate-500 text-sm font-medium">{benefit.desc}</p>
                   </div>
                 </div>
               ))}
+            </div>
+            <div className="pt-6">
+               <button 
+                  onClick={() => openModal('quote')}
+                  className="px-10 py-4 bg-slate-900 text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-[#0371a3] transition-all shadow-lg"
+               >
+                  Get Pricing Plans
+               </button>
             </div>
           </div>
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="py-24 px-6">
-        <div className="max-w-5xl mx-auto bg-indigo-600 rounded-[40px] p-12 md:p-20 text-center relative overflow-hidden shadow-2xl shadow-indigo-200">
-          <div className="absolute inset-0 bg-gradient-to-br from-[#7338a0] to-indigo-800" />
+      <section className="py-20 px-6">
+        <div className="max-w-5xl mx-auto bg-slate-900 rounded-[3rem] p-12 text-center relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-[#0371a3]/20 rounded-full blur-[80px]" />
           <div className="relative z-10">
-            <h2 className="text-3xl md:text-5xl font-black text-white mb-8">Business in Your Pocket</h2>
-            <p className="text-indigo-100 text-lg mb-10 max-w-2xl mx-auto">
-              Ready to experience Tally on your mobile? Get started with our 7-day free trial today.
-            </p>
+            <h2 className="text-3xl md:text-4xl font-black text-white mb-6">Experience the Freedom</h2>
+            <p className="text-white/60 mb-10 max-w-xl mx-auto font-medium">Join thousands of business owners who manage their Tally from their smartphones.</p>
             <button 
-              onClick={() => openModal('enquire')}
-              className="px-12 py-5 bg-white text-indigo-600 rounded-2xl font-black text-sm uppercase tracking-widest hover:bg-indigo-50 transition-all shadow-xl"
+              onClick={() => openModal('callback')}
+              className="px-10 py-4 bg-[#00ABE4] text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:scale-105 transition-all shadow-xl shadow-[#00ABE4]/20"
             >
-              Request Free Setup
+              Consult an Expert
             </button>
           </div>
         </div>

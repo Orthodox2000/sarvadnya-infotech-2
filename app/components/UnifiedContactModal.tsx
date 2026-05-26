@@ -52,14 +52,38 @@ export default function UnifiedContactModal({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    // Simulate API call
-    console.log('Form submitted:', formData);
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    setIsSubmitting(false);
-    setIsSuccess(true);
-    setTimeout(() => {
-      onClose();
-    }, 2000);
+    
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...formData,
+          formType: type,
+        })
+      });
+
+      const data = await res.json();
+      if (data.error) throw new Error(data.error);
+
+      setIsSuccess(true);
+      setTimeout(() => {
+        onClose();
+        // Reset form for next time
+        setFormData({
+          name: '',
+          email: '',
+          contact: '',
+          service: prefillService,
+          description: prefillDetails
+        });
+      }, 2500);
+    } catch (err) {
+      console.error('Submission error:', err);
+      alert('Failed to send request. Please try again or call us directly.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const getTitle = () => {

@@ -49,25 +49,31 @@ export default function ModulesPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50/50">
-      {/* Compact Hero Section */}
-      <section className="relative pt-8 pb-10 md:pt-10 md:pb-14 px-6 overflow-hidden bg-[#0f0529]">
-        {/* Abstract Background Elements */}
-        <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none opacity-20">
-          <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-gradient-to-br from-[#7338a0] to-transparent blur-3xl animate-pulse" />
-          <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-gradient-to-tl from-indigo-500 to-transparent blur-3xl" />
+    <div className="min-h-screen bg-white">
+      {/* Compact Hero Section (Radiant Sky Theme) */}
+      <section className="bg-[#f0f8fa] relative pt-12 pb-16 md:pt-16 md:pb-24 px-6 overflow-hidden border-b border-white/5">
+        {/* Background Image Overlay */}
+        <div 
+          className="absolute inset-0 z-0 opacity-10 pointer-events-none"
+          style={{ backgroundImage: 'url(/bgggg.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}
+        />
+
+        {/* Background Effects */}
+        <div className="absolute inset-0 opacity-40 pointer-events-none">
+          <div className="absolute top-0 right-0 w-[60%] h-[60%] bg-white/40 blur-[130px] -mr-32 -mt-32" />
+          <div className="absolute bottom-0 left-0 w-[40%] h-[40%] bg-sky-200/30 blur-[110px] -ml-24 -mb-24" />
         </div>
 
         <div className="relative z-10 max-w-7xl mx-auto text-center">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-white/80 text-[10px] font-black uppercase tracking-[0.2em] mb-6">
-            <span className="flex h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+          <div className="inline-flex items-center gap-1.5 px-2 py-1 rounded-full bg-slate-900/5 border border-slate-900/10 text-slate-500 text-[10px] font-bold uppercase tracking-[0.2em] mb-8 backdrop-blur-sm">
+            <span className="flex h-1 w-1 rounded-full bg-slate-400"></span>
             Specialized Solutions
           </div>
-          <h1 className="text-3xl md:text-5xl font-black text-white mb-4 leading-tight tracking-tight">
+          <h1 className="text-3xl md:text-6xl font-black text-slate-900 mb-6 leading-tight tracking-tight">
             Custom Modules for <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#7338a0] to-indigo-400">Your Industry Logic</span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0371a3] via-[#4b91ca] to-[#0371a3] drop-shadow-[0_2px_15px_rgba(0,171,228,0.2)]">Your Industry Logic</span>
           </h1>
-          <p className="text-white/60 text-xs md:text-lg max-w-2xl mx-auto leading-relaxed">
+          <p className="text-slate-600/80 text-sm md:text-xl max-w-2xl mx-auto leading-relaxed font-semibold">
             Beyond standard accounting. We build deep, industry-specific logic directly into your Tally environment to automate your unique business workflows.
           </p>
         </div>
@@ -87,19 +93,23 @@ export default function ModulesPage() {
         </div>
       </section>
 
-      {/* Trust Banner */}
-      <section className="py-20 px-6 bg-white border-y border-slate-100">
-        <div className="max-w-5xl mx-auto text-center">
-          <h2 className="text-2xl md:text-4xl font-black text-[#0f0529] mb-6">Need a Custom TDL Solution?</h2>
-          <p className="text-slate-600 text-sm md:text-lg mb-10 leading-relaxed">
+      {/* Trust Banner (High Contrast CTA) */}
+      <section className="py-16 px-6 bg-slate-950 relative overflow-hidden">
+        {/* Subtle decorative glow */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-full bg-[#0371a3]/10 blur-[120px] pointer-events-none"></div>
+        
+        <div className="max-w-4xl mx-auto text-center relative z-10">
+          <h2 className="text-2xl md:text-4xl font-black text-white mb-6">Need a Custom TDL Solution?</h2>
+          <p className="text-slate-400 text-sm md:text-lg mb-10 leading-relaxed max-w-2xl mx-auto">
             Don't see a module that fits your specific needs? Our TDL experts can develop a bespoke solution tailored 
-            exactly to your business processes. Let's discuss your requirements today.
+            exactly to your business processes.
           </p>
           <button 
             onClick={() => setContactModalConfig({ isOpen: true, type: 'callback', service: 'Bespoke TDL Customization' })}
-            className="px-10 py-4 bg-[#7338a0] text-white rounded-full font-bold hover:bg-[#0f0529] transition-all shadow-xl shadow-indigo-100"
+            className="group px-10 py-4 bg-[#0371a3] text-white rounded-full font-bold hover:bg-[#00ABE4] transition-all shadow-xl shadow-sky-900/20 flex items-center gap-3 mx-auto"
           >
-            Consult Our Experts
+            Consult Our Team
+            <svg className="w-5 h-5 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
           </button>
         </div>
       </section>

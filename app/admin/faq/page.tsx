@@ -71,20 +71,20 @@ export default function AdminFAQ() {
     <div className="max-w-5xl mx-auto">
       <header className="flex justify-between items-center mb-10">
         <div>
-          <h1 className="text-3xl font-black text-[#0f0529]">Manage FAQ</h1>
+          <h1 className="text-3xl font-black text-[#0f172a]">Manage FAQ</h1>
           <p className="text-slate-500 text-sm mt-1">Add, edit, or remove frequently asked questions.</p>
         </div>
         <div className="flex gap-4">
           <button 
             onClick={addFaq}
-            className="bg-indigo-50 text-[#7338a0] px-6 py-3 rounded-2xl font-bold hover:bg-indigo-100 transition-all"
+            className="bg-sky-50 text-[#0371a3] px-6 py-3 rounded-2xl font-bold hover:bg-sky-100 transition-all"
           >
             + Add Question
           </button>
           <button 
             onClick={handleSave}
             disabled={saving}
-            className="bg-[#7338a0] text-white px-8 py-3 rounded-2xl font-bold hover:shadow-lg transition-all disabled:opacity-50"
+            className="bg-[#0371a3] text-white px-8 py-3 rounded-2xl font-bold hover:shadow-lg transition-all disabled:opacity-50"
           >
             {saving ? 'Saving...' : 'Save Changes'}
           </button>
@@ -118,7 +118,7 @@ export default function AdminFAQ() {
               <div className="pr-10">
                 <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">Question {faqs.length - idx}</label>
                 <input 
-                  className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#7338a0] font-bold text-slate-800"
+                  className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#0371a3] font-bold text-slate-800"
                   placeholder="e.g. How do I upgrade to TallyPrime?"
                   value={faq.question}
                   onChange={e => updateFaq(idx, 'question', e.target.value)}
@@ -128,7 +128,7 @@ export default function AdminFAQ() {
               <div>
                 <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">Answer</label>
                 <textarea 
-                  className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#7338a0] h-32 text-slate-600 leading-relaxed"
+                  className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#0371a3] h-32 text-slate-600 leading-relaxed"
                   placeholder="Provide a detailed answer..."
                   value={faq.answer}
                   onChange={e => updateFaq(idx, 'answer', e.target.value)}
@@ -141,3 +141,4 @@ export default function AdminFAQ() {
     </div>
   );
 }
+

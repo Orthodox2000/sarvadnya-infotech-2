@@ -177,6 +177,12 @@ export const productItems: ProductItem[] = [
         href: "/careers",
         description: "Join our expert team.",
       },
+      {
+        id: "c-admin",
+        label: "Admin Access",
+        href: "/admin",
+        description: "Secure administrative dashboard.",
+      },
     ],
   },
 ];

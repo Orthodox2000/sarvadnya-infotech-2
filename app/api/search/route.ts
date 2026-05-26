@@ -77,15 +77,19 @@ async function generateSearchSummary(query: string, results: any[]) {
             content: `You are a helpful assistant for Sarvadnya Infotech. 
             Summarize how the following search results answer the user's query: "${query}".
             Keep it to one short paragraph (max 3 sentences). 
-            Focus on what Sarvadnya Infotech offers related to the query.`
+            
+            NAVIGATION BUTTONS:
+            - Whenever you mention a relevant page or result, you MUST include a navigation button using: [[Button Label|/url]]
+            - Use the exact URLs provided in the results list.
+            - Example: "You can find more on our [[Pricing Page|/products]]."`
           },
           { 
             role: "user", 
-            content: `Results: ${results.map(r => `${r.title}: ${r.description}`).join(' | ')}` 
+            content: `Results: ${results.map(r => `${r.title}: ${r.url} (${r.description})`).join(' | ')}` 
           }
         ],
         temperature: 0.3,
-        max_tokens: 150
+        max_tokens: 250
       })
     });
 

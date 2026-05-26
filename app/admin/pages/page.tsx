@@ -97,13 +97,13 @@ export default function AdminPages() {
     <div className="max-w-4xl mx-auto">
       <header className="flex justify-between items-center mb-10">
         <div>
-          <h1 className="text-3xl font-black text-[#0f0529]">Asset Management</h1>
+          <h1 className="text-3xl font-black text-slate-900">Asset Management</h1>
           <p className="text-slate-500 text-sm mt-1">Replace images for About and Team pages.</p>
         </div>
         <a 
           href={`/${activePage}`}
           target="_blank"
-          className="text-xs font-black text-[#7338a0] bg-indigo-50 px-6 py-3 rounded-2xl hover:bg-indigo-100 transition-all active:scale-95"
+          className="text-xs font-black text-[#0371a3] bg-sky-50 px-6 py-3 rounded-2xl hover:bg-sky-100 transition-all active:scale-95"
         >
           View Live Page
         </a>
@@ -124,7 +124,7 @@ export default function AdminPages() {
           <button 
             key={page.id}
             onClick={() => setActivePage(page.id as any)}
-            className={`px-6 py-2.5 rounded-xl font-black transition-all uppercase text-[10px] tracking-widest ${activePage === page.id ? 'bg-white text-[#7338a0] shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+            className={`px-6 py-2.5 rounded-xl font-black transition-all uppercase text-[10px] tracking-widest ${activePage === page.id ? 'bg-white text-[#0371a3] shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
           >
             {page.label}
           </button>
@@ -137,7 +137,7 @@ export default function AdminPages() {
             {/* About Hero Image */}
             <div className="bg-white p-6 rounded-[2.5rem] border border-slate-100 shadow-sm space-y-4">
                 <div className="flex items-center justify-between">
-                    <h3 className="font-black text-[#0f0529] text-sm uppercase tracking-wider">Top Hero Banner</h3>
+                    <h3 className="font-black text-slate-900 text-sm uppercase tracking-wider">Top Hero Banner</h3>
                     <span className="text-[10px] font-bold text-slate-400">About Page</span>
                 </div>
                 <div className="aspect-video bg-slate-50 rounded-3xl overflow-hidden relative group border-2 border-dashed border-slate-200">
@@ -149,7 +149,7 @@ export default function AdminPages() {
                             <span className="text-[10px] font-black uppercase tracking-widest">No Image Set</span>
                         </div>
                     )}
-                    <label className="absolute inset-0 bg-[#0f0529]/60 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-all cursor-pointer backdrop-blur-sm">
+                    <label className="absolute inset-0 bg-slate-900/60 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-all cursor-pointer backdrop-blur-sm">
                         <span className="text-white font-black text-xs uppercase tracking-widest">{uploading === 'hero_image' ? 'Uploading...' : 'Replace Banner'}</span>
                         <input type="file" className="hidden" onChange={e => handleImageUpload(e, 'hero_image')} disabled={!!uploading} />
                     </label>
@@ -159,7 +159,7 @@ export default function AdminPages() {
             {/* Leadership 1 */}
             <div className="bg-white p-6 rounded-[2.5rem] border border-slate-100 shadow-sm space-y-4">
                 <div className="flex items-center justify-between">
-                    <h3 className="font-black text-[#0f0529] text-sm uppercase tracking-wider">Leadership Photo 1</h3>
+                    <h3 className="font-black text-slate-900 text-sm uppercase tracking-wider">Leadership Photo 1</h3>
                     <span className="text-[10px] font-bold text-slate-400">Suman Sawant</span>
                 </div>
                 <div className="aspect-square w-32 mx-auto bg-slate-50 rounded-full overflow-hidden relative group border-2 border-dashed border-slate-200">
@@ -170,7 +170,7 @@ export default function AdminPages() {
                             <svg className="w-8 h-8 opacity-20" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
                         </div>
                     )}
-                    <label className="absolute inset-0 bg-[#0f0529]/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all cursor-pointer backdrop-blur-sm">
+                    <label className="absolute inset-0 bg-slate-900/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all cursor-pointer backdrop-blur-sm">
                         <span className="text-white font-black text-[10px] uppercase tracking-widest text-center px-2">{uploading === 'partner1_image' ? '...' : 'Change'}</span>
                         <input type="file" className="hidden" onChange={e => handleImageUpload(e, 'partner1_image')} disabled={!!uploading} />
                     </label>
@@ -181,7 +181,7 @@ export default function AdminPages() {
             {/* Leadership 2 */}
             <div className="bg-white p-6 rounded-[2.5rem] border border-slate-100 shadow-sm space-y-4">
                 <div className="flex items-center justify-between">
-                    <h3 className="font-black text-[#0f0529] text-sm uppercase tracking-wider">Leadership Photo 2</h3>
+                    <h3 className="font-black text-slate-900 text-sm uppercase tracking-wider">Leadership Photo 2</h3>
                     <span className="text-[10px] font-bold text-slate-400">Madhukar Sawant</span>
                 </div>
                 <div className="aspect-square w-32 mx-auto bg-slate-50 rounded-full overflow-hidden relative group border-2 border-dashed border-slate-200">
@@ -192,7 +192,7 @@ export default function AdminPages() {
                             <svg className="w-8 h-8 opacity-20" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
                         </div>
                     )}
-                    <label className="absolute inset-0 bg-[#0f0529]/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all cursor-pointer backdrop-blur-sm">
+                    <label className="absolute inset-0 bg-slate-900/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all cursor-pointer backdrop-blur-sm">
                         <span className="text-white font-black text-[10px] uppercase tracking-widest text-center px-2">{uploading === 'partner2_image' ? '...' : 'Change'}</span>
                         <input type="file" className="hidden" onChange={e => handleImageUpload(e, 'partner2_image')} disabled={!!uploading} />
                     </label>
@@ -221,7 +221,7 @@ export default function AdminPages() {
           <div className="space-y-8">
             <div className="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm space-y-6">
                 <div className="flex items-center justify-between">
-                    <h3 className="font-black text-[#0f0529] text-base uppercase tracking-wider">Main Team Photo</h3>
+                    <h3 className="font-black text-slate-900 text-base uppercase tracking-wider">Main Team Photo</h3>
                     <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Team Page Banner</span>
                 </div>
                 <div className="aspect-video w-full bg-slate-50 rounded-[2rem] overflow-hidden relative group border-2 border-dashed border-slate-200">
@@ -233,7 +233,7 @@ export default function AdminPages() {
                             <span className="text-[10px] font-black uppercase tracking-[0.2em]">No Photo Selected</span>
                         </div>
                     )}
-                    <label className="absolute inset-0 bg-[#0f0529]/60 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-all cursor-pointer backdrop-blur-sm">
+                    <label className="absolute inset-0 bg-slate-900/60 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-all cursor-pointer backdrop-blur-sm">
                         <div className="bg-white/10 p-4 rounded-full mb-3">
                             <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
                         </div>
@@ -241,9 +241,9 @@ export default function AdminPages() {
                         <input type="file" className="hidden" onChange={e => handleImageUpload(e, 'hero_image')} disabled={!!uploading} />
                     </label>
                 </div>
-                <div className="p-6 bg-indigo-50/50 rounded-2xl border border-indigo-100/50">
-                    <p className="text-[10px] font-bold text-indigo-400 uppercase tracking-widest mb-1">Requirement</p>
-                    <p className="text-indigo-900/60 text-xs font-medium leading-relaxed">
+                <div className="p-6 bg-sky-50/50 rounded-2xl border border-sky-100/50">
+                    <p className="text-[10px] font-bold text-sky-400 uppercase tracking-widest mb-1">Requirement</p>
+                    <p className="text-sky-900/60 text-xs font-medium leading-relaxed">
                         For the best presentation, use a high-resolution wide-angle photo of your team 
                         in the office workspace. Landscape orientation (16:9) is recommended.
                     </p>

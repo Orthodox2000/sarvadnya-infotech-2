@@ -121,7 +121,7 @@ export default function AdminSettings() {
   return (
     <div>
       <header className="mb-10">
-        <h1 className="text-3xl font-black text-[#0f0529]">Site Settings</h1>
+        <h1 className="text-3xl font-black text-slate-900">Site Settings</h1>
         <p className="text-slate-500 text-sm mt-1">Manage contact information and social media links.</p>
       </header>
 
@@ -135,7 +135,7 @@ export default function AdminSettings() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Contact Info */}
           <div className="space-y-6">
-            <h2 className="text-sm font-black uppercase tracking-widest text-[#7338a0]">Contact Details</h2>
+            <h2 className="text-sm font-black uppercase tracking-widest text-[#0371a3]">Contact Details</h2>
             {['NEXT_PUBLIC_SUPPORT_PHONE', 'NEXT_PUBLIC_WHATSAPP_PHONE', 'NEXT_PUBLIC_SUPPORT_EMAIL', 'NEXT_PUBLIC_OFFICE_ADDRESS'].map(key => {
               const setting = settings.find(s => s.key === key);
               if (!setting) return null;
@@ -144,7 +144,7 @@ export default function AdminSettings() {
                   <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">{key.replace('NEXT_PUBLIC_', '').replace('_', ' ')}</label>
                   <input 
                     type="text"
-                    className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#7338a0]"
+                    className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#0371a3]"
                     value={setting.value}
                     onChange={e => handleChange(key, e.target.value)}
                   />
@@ -155,7 +155,7 @@ export default function AdminSettings() {
 
           {/* Social Links */}
           <div className="space-y-6">
-            <h2 className="text-sm font-black uppercase tracking-widest text-[#7338a0]">Social Media & Map</h2>
+            <h2 className="text-sm font-black uppercase tracking-widest text-[#0371a3]">Social Media & Map</h2>
             {[
               'NEXT_PUBLIC_FACEBOOK_URL', 'NEXT_PUBLIC_FACEBOOK_HANDLE',
               'NEXT_PUBLIC_INSTAGRAM_URL', 'NEXT_PUBLIC_INSTAGRAM_HANDLE',
@@ -173,7 +173,7 @@ export default function AdminSettings() {
                   </label>
                   <input 
                     type="text"
-                    className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#7338a0]"
+                    className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#0371a3]"
                     value={value}
                     onChange={e => handleChange(key, e.target.value)}
                     placeholder={`Enter ${key.replace('NEXT_PUBLIC_', '').toLowerCase().replace(/_/g, ' ')}`}
@@ -186,7 +186,7 @@ export default function AdminSettings() {
 
         {/* Branding Section */}
         <div className="pt-8 border-t border-slate-100 space-y-6">
-          <h2 className="text-sm font-black uppercase tracking-widest text-[#7338a0]">Branding (Local Storage)</h2>
+          <h2 className="text-sm font-black uppercase tracking-widest text-[#0371a3]">Branding (Local Storage)</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="space-y-4">
               <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Company Logo</label>
@@ -198,7 +198,7 @@ export default function AdminSettings() {
                     <span className="text-[10px] text-slate-400 font-bold">No Logo</span>
                   )}
                 </div>
-                <label className="bg-slate-50 border-2 border-dashed border-slate-200 px-6 py-4 rounded-2xl cursor-pointer hover:border-[#7338a0] transition-colors">
+                <label className="bg-slate-50 border-2 border-dashed border-slate-200 px-6 py-4 rounded-2xl cursor-pointer hover:border-[#0371a3] transition-colors">
                   <span className="text-xs font-bold text-slate-600">Change Logo</span>
                   <input type="file" className="hidden" onChange={e => handleImageUpload(e, 'NEXT_PUBLIC_COMPANY_LOGO')} />
                 </label>
@@ -215,7 +215,7 @@ export default function AdminSettings() {
                     <span className="text-[10px] text-slate-400 font-bold">No Logo</span>
                   )}
                 </div>
-                <label className="bg-slate-50 border-2 border-dashed border-slate-200 px-6 py-4 rounded-2xl cursor-pointer hover:border-[#7338a0] transition-colors">
+                <label className="bg-slate-50 border-2 border-dashed border-slate-200 px-6 py-4 rounded-2xl cursor-pointer hover:border-[#0371a3] transition-colors">
                   <span className="text-xs font-bold text-slate-600">Change Logo</span>
                   <input type="file" className="hidden" onChange={e => handleImageUpload(e, 'NEXT_PUBLIC_ADMIN_LOGO')} />
                 </label>
@@ -226,11 +226,11 @@ export default function AdminSettings() {
 
         {/* AI Chat Configuration */}
         <div className="pt-8 border-t border-slate-100 space-y-6">
-          <h2 className="text-sm font-black uppercase tracking-widest text-[#7338a0]">AI Assistant (Groq Cloud)</h2>
+          <h2 className="text-sm font-black uppercase tracking-widest text-[#0371a3]">AI Assistant (Groq Cloud)</h2>
           <div className="space-y-2">
             <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Rotation API Keys (Comma Separated)</label>
             <textarea 
-              className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#7338a0] h-24 font-mono text-xs"
+              className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#0371a3] h-24 font-mono text-xs"
               placeholder="gsk_key1, gsk_key2, gsk_key3..."
               value={settings.find(s => s.key === 'GROQ_API_KEYS')?.value || ''}
               onChange={e => handleChange('GROQ_API_KEYS', e.target.value)}
@@ -243,7 +243,7 @@ export default function AdminSettings() {
           <button 
             type="submit" 
             disabled={saving}
-            className="bg-[#7338a0] text-white px-10 py-4 rounded-2xl font-bold hover:shadow-xl transition-all disabled:opacity-50"
+            className="bg-[#0371a3] text-white px-10 py-4 rounded-2xl font-bold hover:shadow-xl transition-all disabled:opacity-50"
           >
             {saving ? 'Saving...' : 'Save All Settings'}
           </button>

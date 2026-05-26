@@ -163,7 +163,7 @@ export default function HomeHero({ initialData }: { initialData?: HeroContent[] 
   }, [current?.titleText, isTransitioning]);
 
   return (
-    <main className="relative w-full overflow-hidden bg-[#fafafa] min-h-[500px] md:min-h-[650px] lg:min-h-[600px] lg:-mt-6 flex items-center">
+    <main className="relative w-full overflow-hidden bg-[#fafafa] min-h-[500px] md:min-h-[650px] lg:min-h-[600px] lg:-mt-6 flex items-start">
       {/* Background Image Preloader (Hidden) */}
       <div className="absolute -z-[100] invisible h-0 w-0 overflow-hidden pointer-events-none">
         {heroContents.map((content, idx) => (
@@ -210,7 +210,7 @@ export default function HomeHero({ initialData }: { initialData?: HeroContent[] 
           {/* Content Side */}
           <div 
             key={`content-${activeIndex}`} 
-            className="lg:justify-self-end w-full lg:max-w-[640px] px-6 lg:px-12 py-12 lg:py-20 space-y-5 md:space-y-8 min-h-[300px] md:min-h-[400px] flex flex-col justify-center"
+            className="lg:justify-self-end w-full lg:max-w-[640px] px-6 lg:px-12 pt-8 lg:pt-8 pb-12 lg:pb-20 space-y-5 md:space-y-8 min-h-[300px] md:min-h-[400px] flex flex-col justify-start"
           >
             <div className={`inline-flex items-center gap-2 px-3 rounded-full bg-[#E9F1FA] border border-[#00ABE4]/20 backdrop-blur-sm w-fit transition-all duration-[1200ms] delay-[100ms]
               ${isTransitioning ? 'opacity-0 translate-y-4 scale-95 blur-sm' : 'opacity-100 translate-y-0 scale-100 blur-0'}`}
@@ -225,11 +225,11 @@ export default function HomeHero({ initialData }: { initialData?: HeroContent[] 
               ${isTransitioning ? 'opacity-0 translate-y-4 scale-[0.98] blur-sm' : 'opacity-100 translate-y-0 scale-100 blur-0'}`}
             >
               {/* Invisible placeholder to maintain height */}
-              <h1 className="text-4xl md:text-6xl font-black text-slate-900 leading-[1.1] tracking-tight invisible">
+              <h1 className="text-4xl md:text-6xl font-black text-slate-900 leading-tight tracking-tight invisible">
                 {current.titleText}
               </h1>
               {/* Actual typed text */}
-              <h1 className="absolute top-0 left-0 text-4xl md:text-6xl font-black text-slate-900 leading-[1.1] tracking-tight w-full">
+              <h1 className="absolute top-0 left-0 text-4xl md:text-6xl font-black text-slate-900 leading-tight tracking-tight w-full">
                 {displayText.split(' ').map((word, i) => (
                   <span key={i} className={i > 2 ? "text-transparent bg-clip-text bg-gradient-to-r from-[#0371a3] to-[#00ABE4]" : ""}>
                     {word}{' '}
@@ -239,7 +239,7 @@ export default function HomeHero({ initialData }: { initialData?: HeroContent[] 
               </h1>
             </div>
 
-            <p className={`text-sm md:text-lg text-slate-600 max-w-xl leading-relaxed font-medium min-h-[60px] transition-all duration-[1200ms] delay-[500ms]
+            <p className={`text-sm md:text-lg text-slate-600 max-w-xl leading-snug font-medium min-h-[60px] transition-all duration-[1200ms] delay-[500ms]
               ${isTransitioning ? 'opacity-0 translate-y-4 blur-sm' : 'opacity-100 translate-y-0 blur-0'}`}
             >
               {current.description}
@@ -343,3 +343,4 @@ export default function HomeHero({ initialData }: { initialData?: HeroContent[] 
     </main>
   );
 }
+

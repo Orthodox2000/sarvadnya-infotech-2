@@ -64,11 +64,11 @@ export default function Navbar({ initialSettings }: { initialSettings?: any }) {
     { label: 'News', href: '/admin/news', icon: 'M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z' },
     { label: 'Partners', href: '/admin/partners', icon: 'M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z' },
     { label: 'Settings', href: '/admin/settings', icon: 'M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z' },
-    { label: 'Theme Palette', href: '/admin/palette', icon: 'M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a1 1 0 010 2H5v12a2 2 0 002 2h12a2 2 0 002-2V5h-4a1 1 0 010-2h4a2 2 0 012 2v12a4 4 0 01-4 4H7z' },
+    // { label: 'Theme Palette', href: '/admin/palette', icon: 'M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a1 1 0 010 2H5v12a2 2 0 002 2h12a2 2 0 002-2V5h-4a1 1 0 010-2h4a2 2 0 012 2v12a4 4 0 01-4 4H7z' },
   ];
 
   return (
-    <header className="relative z-[1000] w-full border-b border-[#0371a3]/10 bg-[#E9F1FA] shadow-sm">
+    <header className="relative z-[1000] w-full border-b border-white/5 bg-[#131921] shadow-sm">
       <nav className="mx-auto flex h-12 lg:h-16 w-full max-w-7xl items-center justify-between px-6">
         <Link
           href="/"
@@ -80,25 +80,25 @@ export default function Navbar({ initialSettings }: { initialSettings?: any }) {
               alt="Sarvadnya Infotech logo"
               fill
               sizes="(max-width: 768px) 80px, 128px"
-              className="object-contain"
+              className="object-contain brightness-0 invert"
               priority
             />
           </div>
           <div className="flex items-center">
-            <div className="hidden sm:block w-5 h-5 lg:w-7 lg:h-7 rounded-md overflow-hidden shrink-0 bg-white group-hover:scale-110 transition-transform shadow-sm">
+            <div className="hidden sm:block w-5 h-5 lg:w-7 lg:h-7 rounded-md overflow-hidden shrink-0 bg-white/10 group-hover:scale-110 transition-transform shadow-sm border border-white/10">
               <Image
                 src="/logo.png"
                 alt="Sarvadnya Logo"
                 width={28}
                 height={28}
-                className="object-contain w-full h-full"
+                className="object-contain w-full h-full brightness-0 invert"
               />
             </div>
             <div className="flex flex-col ml-1 sm:ml-1.5 lg:ml-2 leading-none">
-              <span className="text-[11px] lg:text-[15px] font-bold tracking-tight text-[#0371a3]">
+              <span className="text-[11px] lg:text-[15px] font-bold tracking-tight text-white">
                 Sarvadnya
               </span>
-              <span className="text-[7px] lg:text-[10px] font-medium uppercase tracking-[0.2em] text-[#00ABE4]">
+              <span className="text-[7px] lg:text-[10px] font-medium uppercase tracking-[0.2em] text-sky-400">
                 Infotech LLP
               </span>
             </div>
@@ -110,27 +110,21 @@ export default function Navbar({ initialSettings }: { initialSettings?: any }) {
           <div className="hidden lg:block">
             <SearchBar />
           </div>
-          <Link
+          {/* <Link
             href="/admin/palette"
-            className="text-[11px] font-bold uppercase tracking-widest text-emerald-600 hover:text-emerald-700 transition-colors"
+            className="text-[11px] font-bold uppercase tracking-widest text-emerald-400 hover:text-emerald-300 transition-colors"
           >
             Palette
-          </Link>
-          <Link
-            href="/admin"
-            className="text-[11px] font-bold uppercase tracking-widest text-[#0371a3] hover:text-[#00ABE4] transition-colors"
-          >
-            Admin
-          </Link>
+          </Link> */}
           <Link
             href="/careers"
-            className="inline-flex items-center justify-center rounded-full bg-white px-5 py-2 text-[11px] font-bold uppercase tracking-wider text-slate-900 border border-[#0371a3]/10 transition-all hover:bg-[#f0f9ff] shadow-sm"
+            className="inline-flex items-center justify-center rounded-full bg-white/5 px-5 py-2 text-[11px] font-bold uppercase tracking-wider text-white border border-white/10 transition-all hover:bg-white/10 shadow-sm"
           >
             Careers
           </Link>
           <Link
             href="/contact"
-            className="inline-flex items-center justify-center rounded-full bg-[#0371a3] text-white px-5 py-2 text-[11px] font-bold uppercase tracking-wider shadow-lg shadow-[#0371a3]/20 transition-all hover:bg-[#00ABE4] hover:-translate-y-0.5"
+            className="inline-flex items-center justify-center rounded-full bg-[#00ABE4] text-white px-5 py-2 text-[11px] font-bold uppercase tracking-wider shadow-lg shadow-[#00ABE4]/20 transition-all hover:bg-white hover:text-[#131921] hover:-translate-y-0.5"
           >
             Support
           </Link>
@@ -139,7 +133,7 @@ export default function Navbar({ initialSettings }: { initialSettings?: any }) {
         {/* Mobile Toggle */}
         <div className="flex items-center gap-4 lg:hidden">
           <button 
-            className="p-2 text-slate-600 hover:text-[#0371a3] transition-colors"
+            className="p-2 text-white/70 hover:text-white transition-colors"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
             {isMenuOpen ? (

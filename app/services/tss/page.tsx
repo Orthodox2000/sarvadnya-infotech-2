@@ -64,164 +64,116 @@ export default function TSSPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50">
-      {/* Cinematic Hero Section */}
-      <section className="bg-[#0f0529] relative overflow-hidden flex items-center min-h-[200px] md:min-h-[300px]">
-        {/* Background Effects */}
-        <div className="absolute inset-0 opacity-20 pointer-events-none">
-          <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-[#7338a0] blur-[120px] rounded-full -ml-64 -mt-64" />
-          <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-indigo-600 blur-[120px] rounded-full -ml-64 -mb-64" />
-        </div>
+    <div className="min-h-screen bg-white text-slate-900">
+      {/* Cinematic Hero Section (Themed Hero) */}
+      <section className="bg-[#dff0f5] relative overflow-hidden flex items-center min-h-[200px] md:min-h-[350px] border-b border-[#0371a3]/10">
+        {/* Background Image Overlay */}
+        <div 
+          className="absolute inset-0 z-0 opacity-10 pointer-events-none"
+          style={{ backgroundImage: 'url(/bgggg.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}
+        />
 
         {/* Cinematic Image Side - Hidden on mobile, full height on desktop */}
         <div className="hidden lg:block absolute right-0 top-0 bottom-0 w-1/2 z-0">
           <div className="relative h-full w-full">
             <Image 
-              src="/tss-icon.png" 
+              src="/tssgold.png" 
               alt="Cinematic TSS Renewal" 
               fill 
               className="object-cover"
               priority
             />
-            {/* Cinematic Overlay - Fades image into the dark background */}
-            <div className="absolute inset-0 bg-gradient-to-r from-[#0f0529] via-[#0f0529]/40 to-transparent" />
+            {/* Cinematic Overlay - Fades image into the light background */}
+            <div className="absolute inset-0 bg-gradient-to-r from-[#dff0f5] via-[#dff0f5]/60 to-transparent" />
           </div>
         </div>
         
-        <div className="max-w-7xl mx-auto w-full px-6 relative z-10 py-8 md:py-12">
+        <div className="max-w-7xl mx-auto w-full px-6 relative z-10 py-12 md:py-16">
           <div className="max-w-2xl lg:pr-12">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-white/50 text-[10px] font-bold uppercase tracking-widest mb-6">
-              <span className="h-1.5 w-1.5 rounded-full bg-[#7338a0]"></span>
-              Stay Updated
+            <div className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-white/40 border border-[#0371a3]/10 text-[#0371a3] text-[10px] font-bold uppercase tracking-widest mb-6 backdrop-blur-sm">
+              <span className="flex h-0.5 w-0.5 rounded-full bg-[#0371a3]"></span>
+              Software Continuity
             </div>
-            <h1 className="text-3xl md:text-5xl font-black text-white mb-4 leading-tight tracking-tight">
-              Tally Software Service <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#7338a0] to-indigo-400">(TSS) Renewal</span>
+            <h1 className="text-3xl md:text-6xl font-black text-slate-900 mb-6 leading-tight tracking-tight">
+              Tally Software <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0371a3] via-[#00ABE4] to-[#0371a3]">Service (TSS)</span>
             </h1>
-            <p className="text-white/60 text-base md:text-lg max-w-xl leading-relaxed mb-8">
-              Keep your Tally always up-to-date with the latest statutory changes, product enhancements, and remote access features.
+            <p className="text-slate-600 text-base md:text-lg max-w-xl leading-relaxed mb-8 font-semibold">
+              Don't miss out on the latest features and statutory compliance. Renew your TSS to unlock a world of remote access and seamless updates.
             </p>
             <div className="flex flex-wrap gap-4">
               <button 
-                onClick={() => openModal('enquire')}
-                className="px-8 py-3 bg-[#7338a0] text-white rounded-xl font-black text-xs uppercase tracking-widest hover:bg-indigo-600 transition-all shadow-xl shadow-indigo-900/20"
+                onClick={() => openModal('quote')}
+                className="px-8 py-4 bg-[#0371a3] text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-[#00ABE4] transition-all shadow-xl shadow-[#0371a3]/20"
               >
-                Renew Now
-              </button>
-              <button 
-                onClick={() => openModal('callback')}
-                className="px-8 py-3 bg-white/5 border border-white/10 text-white rounded-xl font-black text-xs uppercase tracking-widest hover:bg-white/10 transition-all flex items-center justify-center"
-              >
-                Learn More
+                Renew TSS Today
               </button>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Features Grid */}
-      <section className="py-24 px-6 max-w-7xl mx-auto -mt-16 relative z-20">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {tssFeatures.map((f, i) => (
-            <div key={i} className="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm hover:shadow-xl transition-all duration-300">
-              <div className="w-12 h-12 rounded-2xl bg-indigo-50 text-[#7338a0] flex items-center justify-center mb-6">
-                {f.icon}
+      {/* Feature Grid */}
+      <section className="py-24 px-6 max-w-7xl mx-auto">
+        <div className="text-center mb-16">
+          <h2 className="text-3xl md:text-4xl font-black text-slate-900 mb-4">Why Renew TSS?</h2>
+          <p className="text-slate-500 font-medium max-w-2xl mx-auto">Access a suite of advanced features designed to enhance your TallyPrime experience and business productivity.</p>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {tssFeatures.map((feature, i) => (
+            <div key={i} className="p-8 bg-white rounded-3xl border border-slate-100 shadow-sm hover:shadow-xl transition-all duration-300 group">
+              <div className="w-12 h-12 bg-[#dff0f5] text-[#0371a3] rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                {feature.icon}
               </div>
-              <h3 className="text-lg font-black text-[#0f0529] mb-3">{f.title}</h3>
-              <p className="text-slate-500 text-sm leading-relaxed">{f.desc}</p>
+              <h3 className="text-lg font-black text-slate-900 mb-3">{feature.title}</h3>
+              <p className="text-slate-500 text-sm leading-relaxed font-medium">{feature.desc}</p>
             </div>
           ))}
         </div>
       </section>
 
-      {/* Detailed Content */}
-      <section className="py-16 px-6">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <div className="relative">
-            <div className="aspect-[4/3] rounded-[32px] overflow-hidden relative shadow-2xl bg-slate-100/50">
-              <Image 
-                src="/tssgold.png" 
-                alt="TSS Renewal" 
+      {/* Benefits Section */}
+      <section className="py-24 px-6 bg-slate-50">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          <div className="relative rounded-[2.5rem] overflow-hidden shadow-2xl aspect-video bg-white">
+             <Image 
+                src="/tss-icon.png" 
+                alt="TSS Benefits Overview" 
                 fill 
-                className="object-contain p-4"
-              />
-            </div>
-            <div className="absolute -bottom-6 -right-6 bg-white p-6 rounded-2xl shadow-xl border border-slate-100 max-w-[200px] hidden md:block">
-              <div className="text-3xl font-black text-[#7338a0] mb-1">100%</div>
-              <div className="text-[9px] font-black uppercase tracking-widest text-slate-400">Compliance with Latest Statutory Laws</div>
-            </div>
+                className="object-contain p-12"
+             />
           </div>
-          
-          <div>
-            <h2 className="text-2xl md:text-4xl font-black text-[#0f0529] mb-6 leading-tight">
-              Why Renew <br />TSS?
-            </h2>
-            <div className="space-y-6">
-              {[
-                {
-                  q: "Statutory Compliance",
-                  a: "Stay worry-free about changing tax laws. TSS ensures your Tally is always compliant with GST, TDS, and other regulations."
-                },
-                {
-                  q: "Business Productivity",
-                  a: "Access features like automated bank reconciliation and remote data access to speed up your business operations."
-                },
-                {
-                  q: "Enhanced Security",
-                  a: "Regular product updates provide the latest security patches and data encryption to keep your financial records safe."
-                }
-              ].map((item, i) => (
-                <div key={i} className="flex gap-4">
-                  <div className="flex-shrink-0 w-10 h-10 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold text-sm">
-                    0{i+1}
+          <div className="space-y-8">
+            <h2 className="text-3xl md:text-4xl font-black text-slate-900 leading-tight">Comprehensive Product <br /><span className="text-[#0371a3]">Capabilities</span></h2>
+            <div className="space-y-4">
+              {deliverableList.map((benefit, i) => (
+                <div key={i} className="flex items-center gap-4 p-4 bg-white rounded-2xl border border-slate-100 shadow-sm">
+                  <div className="shrink-0 w-6 h-6 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center">
+                    <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="4"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
                   </div>
-                  <div>
-                    <h4 className="text-base font-bold text-[#0f0529] mb-1">{item.q}</h4>
-                    <p className="text-slate-600 leading-relaxed text-xs md:text-sm">{item.a}</p>
-                  </div>
+                  <span className="font-bold text-slate-700 text-sm">{benefit}</span>
                 </div>
               ))}
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Core Deliverables Section */}
-      <section className="py-12 px-6 bg-white">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-2xl md:text-4xl font-black text-[#0f0529] mb-4">Core Deliverables</h2>
-            <p className="text-slate-500 max-w-2xl mx-auto">What you get when you renew your Tally Software Service subscription.</p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {deliverableList.map((item, i) => (
-              <div key={i} className="flex items-center gap-4 p-6 rounded-2xl bg-slate-50 border border-slate-100">
-                <div className="w-8 h-8 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center flex-shrink-0">
-                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" />
-                  </svg>
-                </div>
-                <span className="font-bold text-slate-700">{item}</span>
-              </div>
-            ))}
+            <p className="text-slate-500 font-medium leading-relaxed italic border-l-4 border-[#0371a3] pl-4">
+              "TSS is not an expense; it's an investment in keeping your business compliant and technologically current."
+            </p>
           </div>
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="py-24 px-6">
-        <div className="max-w-5xl mx-auto bg-indigo-600 rounded-[40px] p-12 md:p-20 text-center relative overflow-hidden shadow-2xl shadow-indigo-200">
-          <div className="absolute inset-0 bg-gradient-to-br from-[#7338a0] to-indigo-800" />
+      <section className="py-20 px-6">
+        <div className="max-w-5xl mx-auto bg-slate-900 rounded-[3rem] p-12 text-center relative overflow-hidden shadow-2xl">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-[#0371a3]/20 rounded-full blur-[80px]" />
           <div className="relative z-10">
-            <h2 className="text-3xl md:text-5xl font-black text-white mb-8">Ready to Stay Ahead?</h2>
-            <p className="text-indigo-100 text-lg mb-10 max-w-2xl mx-auto">
-              Renew your TSS today and unlock the full potential of TallyPrime with the latest features and compliance updates.
-            </p>
+            <h2 className="text-3xl md:text-4xl font-black text-white mb-6">Stay Current. Stay Compliant.</h2>
+            <p className="text-white/60 mb-10 max-w-xl mx-auto font-medium">Renewal takes less than 5 minutes. Protect your statutory compliance and product features today.</p>
             <button 
-              onClick={() => openModal('enquire')}
-              className="px-12 py-5 bg-white text-indigo-600 rounded-2xl font-black text-sm uppercase tracking-widest hover:bg-indigo-50 transition-all shadow-xl"
+              onClick={() => openModal('callback')}
+              className="px-10 py-4 bg-[#00ABE4] text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:scale-105 transition-all shadow-xl shadow-[#00ABE4]/20"
             >
-              Renew Subscription
+              Consult an Expert
             </button>
           </div>
         </div>

@@ -20,10 +20,48 @@ export type SiteSettings = {
 
 export default function ContactPage() {
   const [settings, setSettings] = useState<SiteSettings | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    contact: '',
+    service: '',
+    message: ''
+  });
 
   useEffect(() => {
     fetchSettings();
   }, []);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...formData,
+          formType: 'general',
+          description: formData.message
+        })
+      });
+
+      const data = await res.json();
+      if (data.error) throw new Error(data.error);
+
+      setIsSuccess(true);
+      setFormData({ name: '', email: '', contact: '', service: '', message: '' });
+      setTimeout(() => setIsSuccess(false), 5000);
+    } catch (err) {
+      console.error('Submission error:', err);
+      alert('Failed to send request. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   const fetchSettings = async () => {
     try {
@@ -71,22 +109,33 @@ export default function ContactPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50/50 text-slate-900">
+    <div className="min-h-screen bg-white text-slate-900">
       {/* Centered Tighter Hero Section */}
-      <section className="bg-[#0f0529] pt-8 pb-8 md:pt-12 md:pb-12 px-6 text-center relative overflow-hidden flex flex-col items-center">
-        <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-20">
-          <div className="absolute top-0 right-0 w-[40%] h-[40%] bg-indigo-500 blur-[100px]" />
+      <section 
+        className="bg-[#f0f8fa] pt-8 pb-8 md:pt-12 md:pb-12 px-6 text-center relative overflow-hidden flex flex-col items-center border-b border-white/5"
+      >
+        {/* Background Image Overlay */}
+        <div 
+          className="absolute inset-0 z-0 opacity-10 pointer-events-none"
+          style={{ backgroundImage: 'url(/bgggg.png)', backgroundSize: 'cover', backgroundPosition: 'center',opacity: 0.2 }}
+        />
+
+        <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-40">
+          <div className="absolute top-0 right-0 w-[70%] h-[70%] bg-white/10 blur-[130px] -mr-32 -mt-32" />
+          <div className="absolute bottom-0 left-0 w-[50%] h-[50%] bg-sky-200/20 blur-[110px] -ml-24 -mb-24" />
         </div>
         
-        <div className="max-w-4xl mx-auto relative z-10 w-full">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-white/50 text-[9px] font-bold uppercase tracking-widest mb-6">
-            <span className="flex h-1.5 w-1.5 rounded-full bg-[#7338a0]"></span>
+        <div className="max-w-4xl mx-auto relative z-10 w-full flex flex-col items-center">
+          <div className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-slate-900/5 border border-slate-900/10 text-slate-600 text-[6px] font-bold uppercase tracking-widest mb-3 backdrop-blur-sm">
+            <span className="flex h-0.5 w-0.5 rounded-full bg-slate-400"></span>
             Contact Us
           </div>
-          <h1 className="text-4xl md:text-6xl font-black text-white mb-4 leading-tight tracking-tight">
-            Get in <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#7338a0] via-indigo-400 to-emerald-400 text-highlight-gradient">Touch</span>
-          </h1>
-          <p className="text-white/40 text-[10px] md:text-sm max-w-xl mx-auto leading-relaxed font-medium">
+          <div className="relative inline-block mb-4 text-center">
+            <h1 className="text-4xl md:text-6xl font-black text-slate-900 leading-tight tracking-tight">
+              Get in <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0371a3] via-[#4b91ca] to-[#0371a3] drop-shadow-[0_2px_15px_rgba(0,171,228,0.3)]">Touch</span>
+            </h1>
+          </div>
+          <p className="text-slate-600/80 text-[10px] md:text-sm max-w-xl mx-auto leading-relaxed font-semibold text-center">
             Have questions about Tally? Need a custom module? Our team is here to help you optimize your business workflows.
           </p>
         </div>
@@ -98,7 +147,7 @@ export default function ContactPage() {
             <a 
               key={i}
               href={`tel:${num.trim()}`}
-              className="w-full sm:w-auto px-8 py-4 bg-[var(--primary-color,#7338a0)] text-white rounded-full font-bold shadow-lg hover:scale-105 transition-transform flex items-center justify-center gap-2 text-sm"
+              className="w-full sm:w-auto px-8 py-4 bg-[#00ABE4] text-white rounded-full font-bold shadow-lg hover:scale-105 transition-transform flex items-center justify-center gap-2 text-sm"
             >
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
@@ -116,7 +165,7 @@ export default function ContactPage() {
             Email Support
           </a>
         </div>
-        <div className="pt-4 flex items-center justify-center gap-2 text-[var(--primary-color)] font-bold uppercase tracking-wider text-xs">
+        <div className="pt-4 flex items-center justify-center gap-2 text-[#0371a3] font-bold uppercase tracking-wider text-xs">
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
@@ -126,7 +175,7 @@ export default function ContactPage() {
 
       {/* Social Media Grid */}
       <section className="pb-20 px-6 sm:px-12 lg:px-24 max-w-7xl mx-auto animate-rise-up" style={{ animationDelay: '200ms' }}>
-        <h2 className="text-xl font-bold text-[var(--heading-color)] mb-6 text-center md:text-left">Connect with Us</h2>
+        <h2 className="text-xl font-bold text-[#0371a3] mb-6 text-center md:text-left">Connect with Us</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {socialMedia.map((social) => (
             <a 
@@ -141,7 +190,7 @@ export default function ContactPage() {
                 {social.name === 'LinkedIn' && <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>}
               </div>
               <div className="min-w-0 flex-1">
-                <p className="font-bold text-sm text-[var(--heading-color)] leading-none mb-1.5">{social.name}</p>
+                <p className="font-bold text-sm text-[#0371a3] leading-none mb-1.5">{social.name}</p>
                 <p className="text-xs opacity-60 font-medium truncate">{social.handle}</p>
               </div>
             </a>
@@ -153,79 +202,111 @@ export default function ContactPage() {
       <section className="pb-20 px-6 max-w-7xl mx-auto animate-rise-up" style={{ animationDelay: '400ms' }}>
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12">
           {/* Support Form */}
-          <div className="lg:col-span-3 relative overflow-hidden bg-white p-8 md:p-10 rounded-[2.5rem] shadow-[0_40px_100px_rgba(15,23,42,0.1)] text-slate-900 border border-slate-100 group">
+          <div className="lg:col-span-3 relative overflow-hidden bg-white p-8 md:p-10 rounded-[2.5rem] shadow-[0_40px_100px_rgba(3,113,163,0.1)] text-slate-900 border border-slate-100 group">
             {/* Decorative Background Elements */}
-            <div className="absolute top-0 right-0 w-96 h-96 bg-indigo-50 rounded-full blur-[120px] opacity-60 -mr-48 -mt-48 transition-transform duration-1000 group-hover:scale-110" />
-            <div className="absolute bottom-0 left-0 w-64 h-64 bg-violet-50 rounded-full blur-[100px] opacity-60 -ml-32 -mb-32 transition-transform duration-1000 group-hover:scale-110" />
+            <div className="absolute top-0 right-0 w-96 h-96 bg-[#E9F1FA] rounded-full blur-[120px] opacity-60 -mr-48 -mt-48 transition-transform duration-1000 group-hover:scale-110" />
+            <div className="absolute bottom-0 left-0 w-64 h-64 bg-[#f0f9ff] rounded-full blur-[100px] opacity-60 -ml-32 -mb-32 transition-transform duration-1000 group-hover:scale-110" />
             
             <div className="relative z-10">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-100 border border-slate-200 text-slate-600 text-[10px] font-bold uppercase tracking-widest mb-4">
-                <span className="flex h-2 w-2 rounded-full bg-[#7338a0] animate-pulse"></span>
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#E9F1FA] border border-[#00ABE4]/20 text-[#0371a3] text-[10px] font-bold uppercase tracking-widest mb-4">
+                <span className="flex h-2 w-2 rounded-full bg-[#00ABE4] animate-pulse"></span>
                 Priority Support
               </div>
-              <h2 className="text-3xl md:text-4xl font-black mb-4 tracking-tight leading-tight text-[#0f0529]">
-                Request a <span className="text-[#7338a0]">Callback</span>
+              <h2 className="text-3xl md:text-4xl font-black mb-4 tracking-tight leading-tight text-[#0371a3]">
+                Request a <span className="text-[#00ABE4]">Callback</span>
               </h2>
               <p className="text-slate-500 mb-8 leading-relaxed text-sm max-w-lg font-medium">
-                Certified experts will call you back within <span className="text-[#7338a0] font-bold underline decoration-[#7338a0]/30 underline-offset-4">15 minutes</span>.
+                Certified experts will call you back within <span className="text-[#00ABE4] font-bold underline decoration-[#00ABE4]/30 underline-offset-4">15 minutes</span>.
               </p>
               
-              <form className="space-y-5">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                  <div className="space-y-1.5">
-                    <label className="text-[10px] font-bold uppercase tracking-widest text-slate-400 ml-1">Full Name</label>
-                    <input
-                      type="text"
-                      placeholder="e.g. John Doe"
-                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#7338a0]/10 focus:border-[#7338a0] transition-all shadow-sm"
-                    />
+              {isSuccess ? (
+                <div className="py-12 text-center animate-in fade-in zoom-in-95 duration-500">
+                  <div className="w-20 h-20 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-inner">
+                    <svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" />
+                    </svg>
                   </div>
-                  <div className="space-y-1.5">
-                    <label className="text-[10px] font-bold uppercase tracking-widest text-slate-400 ml-1">Email Address</label>
-                    <input
-                      type="email"
-                      placeholder="john@example.com"
-                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#7338a0]/10 focus:border-[#7338a0] transition-all shadow-sm"
-                    />
-                  </div>
+                  <h3 className="text-2xl font-black text-[#0371a3] mb-2">Request Received!</h3>
+                  <p className="text-slate-500 font-medium">Our team will call you back within 15 minutes.</p>
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                  <div className="space-y-1.5">
-                    <label className="text-[10px] font-bold uppercase tracking-widest text-slate-400 ml-1">Phone Number</label>
-                    <input
-                      type="tel"
-                      placeholder="+91 00000 00000"
-                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#7338a0]/10 focus:border-[#7338a0] transition-all shadow-sm"
-                    />
+              ) : (
+                <form onSubmit={handleSubmit} className="space-y-5">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                    <div className="space-y-1.5">
+                      <label className="text-[10px] font-bold uppercase tracking-widest text-slate-400 ml-1">Full Name</label>
+                      <input
+                        required
+                        type="text"
+                        value={formData.name}
+                        onChange={e => setFormData({...formData, name: e.target.value})}
+                        placeholder="e.g. John Doe"
+                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#00ABE4]/10 focus:border-[#00ABE4] transition-all shadow-sm"
+                      />
+                    </div>
+                    <div className="space-y-1.5">
+                      <label className="text-[10px] font-bold uppercase tracking-widest text-slate-400 ml-1">Email Address</label>
+                      <input
+                        required
+                        type="email"
+                        value={formData.email}
+                        onChange={e => setFormData({...formData, email: e.target.value})}
+                        placeholder="john@example.com"
+                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#00ABE4]/10 focus:border-[#00ABE4] transition-all shadow-sm"
+                      />
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                    <div className="space-y-1.5">
+                      <label className="text-[10px] font-bold uppercase tracking-widest text-slate-400 ml-1">Phone Number</label>
+                      <input
+                        required
+                        type="tel"
+                        value={formData.contact}
+                        onChange={e => setFormData({...formData, contact: e.target.value})}
+                        placeholder="+91 00000 00000"
+                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#00ABE4]/10 focus:border-[#00ABE4] transition-all shadow-sm"
+                      />
+                    </div>
+                    <div className="space-y-1.5">
+                      <label className="text-[10px] font-bold uppercase tracking-widest text-slate-400 ml-1">Service Needed</label>
+                      <input
+                        type="text"
+                        value={formData.service}
+                        onChange={e => setFormData({...formData, service: e.target.value})}
+                        placeholder="e.g. TallyPrime Upgrade"
+                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#00ABE4]/10 focus:border-[#00ABE4] transition-all shadow-sm"
+                      />
+                    </div>
                   </div>
                   <div className="space-y-1.5">
-                    <label className="text-[10px] font-bold uppercase tracking-widest text-slate-400 ml-1">Service Needed</label>
-                    <input
-                      type="text"
-                      placeholder="e.g. TallyPrime Upgrade"
-                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#7338a0]/10 focus:border-[#7338a0] transition-all shadow-sm"
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-slate-400 ml-1">Message</label>
+                    <textarea
+                      value={formData.message}
+                      onChange={e => setFormData({...formData, message: e.target.value})}
+                      placeholder="How can we help you today?"
+                      rows={3}
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#00ABE4]/10 focus:border-[#00ABE4] resize-none transition-all shadow-sm"
                     />
                   </div>
-                </div>
-                <div className="space-y-1.5">
-                  <label className="text-[10px] font-bold uppercase tracking-widest text-slate-400 ml-1">Message</label>
-                  <textarea
-                    placeholder="How can we help you today?"
-                    rows={3}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#7338a0]/10 focus:border-[#7338a0] resize-none transition-all shadow-sm"
-                  />
-                </div>
-                <button
-                  type="submit"
-                  className="group relative w-full mt-2 py-4 bg-[#7338a0] text-white rounded-xl font-black text-xs uppercase tracking-[0.2em] shadow-[0_20px_40px_rgba(115,56,160,0.2)] hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-3 overflow-hidden"
-                >
-                  <span className="relative z-10">Send Request Now</span>
-                  <svg className="w-4 h-4 relative z-10 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                  </svg>
-                  <div className="absolute inset-0 bg-gradient-to-r from-[#7338a0] via-[#4a2574] to-[#7338a0] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                </button>
-              </form>
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="group relative w-full mt-2 py-4 bg-[#00ABE4] text-white rounded-xl font-black text-xs uppercase tracking-[0.2em] shadow-[0_20px_40px_rgba(0,171,228,0.2)] hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-3 overflow-hidden disabled:opacity-70"
+                  >
+                    {isSubmitting ? (
+                      <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    ) : (
+                      <>
+                        <span className="relative z-10">Send Request Now</span>
+                        <svg className="w-4 h-4 relative z-10 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                        </svg>
+                      </>
+                    )}
+                    <div className="absolute inset-0 bg-gradient-to-r from-[#00ABE4] via-[#0371a3] to-[#00ABE4] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  </button>
+                </form>
+              )}
               
               <div className="mt-6 pt-6 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4">
                 <p className="text-[9px] text-slate-400 font-medium">
@@ -248,8 +329,8 @@ export default function ContactPage() {
           {/* Map Column */}
           <div className="lg:col-span-2 flex flex-col gap-6">
             <div className="bg-white p-6 rounded-[2.5rem] border border-slate-100 shadow-sm h-full flex flex-col">
-               <h3 className="text-lg font-bold text-[#0f0529] mb-4 flex items-center gap-2">
-                  <svg className="w-5 h-5 text-[#7338a0]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+               <h3 className="text-lg font-bold text-[#0371a3] mb-4 flex items-center gap-2">
+                  <svg className="w-5 h-5 text-[#00ABE4]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                   </svg>
@@ -273,9 +354,9 @@ export default function ContactPage() {
                     </div>
                   )}
                </div>
-               <div className="mt-4 p-4 bg-slate-50 rounded-2xl border border-slate-100">
-                  <p className="text-[10px] font-black uppercase tracking-widest text-[#7338a0] mb-1">Office Address</p>
-                  <p className="text-xs text-slate-600 leading-relaxed font-medium">
+               <div className="mt-4 p-4 bg-[#f0f9ff] rounded-2xl border border-[#E9F1FA]">
+                  <p className="text-[10px] font-black uppercase tracking-widest text-[#00ABE4] mb-1">Office Address</p>
+                  <p className="text-xs text-[#0371a3] leading-relaxed font-medium">
                     {settings?.office_address || "Sarvadnya Infotech LLP, Business Hub, Pune, Maharashtra, India"}
                   </p>
                </div>

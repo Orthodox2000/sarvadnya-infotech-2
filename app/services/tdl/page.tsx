@@ -56,14 +56,14 @@ export default function TDLPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50">
-      {/* Cinematic Hero Section */}
-      <section className="bg-[#0f0529] relative overflow-hidden flex items-center min-h-[200px] md:min-h-[300px]">
-        {/* Background Effects */}
-        <div className="absolute inset-0 opacity-20 pointer-events-none">
-          <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-[#7338a0] blur-[120px] rounded-full -ml-64 -mt-64" />
-          <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-indigo-600 blur-[120px] rounded-full -ml-64 -mb-64" />
-        </div>
+    <div className="min-h-screen bg-white text-slate-900">
+      {/* Cinematic Hero Section (Themed Hero) */}
+      <section className="bg-[#dff0f5] relative overflow-hidden flex items-center min-h-[200px] md:min-h-[350px] border-b border-[#0371a3]/10">
+        {/* Background Image Overlay */}
+        <div 
+          className="absolute inset-0 z-0 opacity-10 pointer-events-none"
+          style={{ backgroundImage: 'url(/bgggg.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}
+        />
 
         {/* Cinematic Image Side - Hidden on mobile, full height on desktop */}
         <div className="hidden lg:block absolute right-0 top-0 bottom-0 w-1/2 z-0">
@@ -75,101 +75,80 @@ export default function TDLPage() {
               className="object-cover"
               priority
             />
-            {/* Cinematic Overlay - Fades image into the dark background */}
-            <div className="absolute inset-0 bg-gradient-to-r from-[#0f0529] via-[#0f0529]/40 to-transparent" />
+            {/* Cinematic Overlay - Fades image into the light background */}
+            <div className="absolute inset-0 bg-gradient-to-r from-[#dff0f5] via-[#dff0f5]/60 to-transparent" />
           </div>
         </div>
         
-        <div className="max-w-7xl mx-auto w-full px-6 relative z-10 py-8 md:py-12">
+        <div className="max-w-7xl mx-auto w-full px-6 relative z-10 py-12 md:py-16">
           <div className="max-w-2xl lg:pr-12">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-white/50 text-[10px] font-bold uppercase tracking-widest mb-6">
-              <span className="h-1.5 w-1.5 rounded-full bg-[#7338a0]"></span>
+            <div className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-white/40 border border-[#0371a3]/10 text-[#0371a3] text-[10px] font-bold uppercase tracking-widest mb-6 backdrop-blur-sm">
+              <span className="flex h-0.5 w-0.5 rounded-full bg-[#0371a3]"></span>
               Tailored Excellence
             </div>
-            <h1 className="text-3xl md:text-5xl font-black text-white mb-4 leading-tight tracking-tight">
+            <h1 className="text-3xl md:text-6xl font-black text-slate-900 mb-6 leading-tight tracking-tight">
               TDL & Custom <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#7338a0] to-indigo-400">Development</span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0371a3] via-[#00ABE4] to-[#0371a3]">Development</span>
             </h1>
-            <p className="text-white/60 text-base md:text-lg max-w-xl leading-relaxed mb-8">
+            <p className="text-slate-600 text-base md:text-lg max-w-xl leading-relaxed mb-8 font-semibold">
               Make Tally work exactly the way your business does. Our expert TDL developers create custom solutions to bridge the gap between standard features and your unique needs.
             </p>
             <div className="flex flex-wrap gap-4">
-              <button 
-                onClick={() => openModal('enquire')}
-                className="px-8 py-3 bg-[#7338a0] text-white rounded-xl font-black text-xs uppercase tracking-widest hover:bg-indigo-600 transition-all shadow-xl shadow-indigo-900/20"
-              >
-                Request Customization
-              </button>
-              <a 
-                href="tel:+919923942204"
-                className="px-8 py-3 bg-white/5 border border-white/10 text-white rounded-xl font-black text-xs uppercase tracking-widest hover:bg-white/10 transition-all flex items-center justify-center"
-              >
-                Consult an Expert
-              </a>
+               <button 
+                  onClick={() => openModal('enquire')}
+                  className="px-8 py-4 bg-[#0371a3] text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-[#00ABE4] transition-all shadow-xl shadow-[#0371a3]/20"
+               >
+                  Consult a Developer
+               </button>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Features Grid */}
-      <section className="py-24 px-6 max-w-7xl mx-auto -mt-16 relative z-20">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {tdlFeatures.map((f, i) => (
-            <div key={i} className="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm hover:shadow-xl transition-all duration-300">
-              <div className="w-12 h-12 rounded-2xl bg-indigo-50 text-[#7338a0] flex items-center justify-center mb-6">
-                {f.icon}
+      {/* Feature Grid */}
+      <section className="py-24 px-6 max-w-7xl mx-auto">
+        <div className="text-center mb-16">
+          <h2 className="text-3xl md:text-4xl font-black text-slate-900 mb-4">Unlimited Possibilities</h2>
+          <p className="text-slate-500 font-medium max-w-2xl mx-auto">From simple invoice formatting to complex industry-specific modules, we build it all.</p>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {tdlFeatures.map((feature, i) => (
+            <div key={i} className="p-8 bg-white rounded-3xl border border-slate-100 shadow-sm hover:shadow-xl transition-all duration-300 group">
+              <div className="w-12 h-12 bg-[#dff0f5] text-[#0371a3] rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                {feature.icon}
               </div>
-              <h3 className="text-lg font-black text-[#0f0529] mb-3">{f.title}</h3>
-              <p className="text-slate-500 text-sm leading-relaxed">{f.desc}</p>
+              <h3 className="text-lg font-black text-slate-900 mb-3">{feature.title}</h3>
+              <p className="text-slate-500 text-sm leading-relaxed font-medium">{feature.desc}</p>
             </div>
           ))}
         </div>
       </section>
 
-      {/* Detailed Content */}
-      <section className="py-16 px-6">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <div className="relative">
-            <div className="aspect-[4/3] rounded-[32px] overflow-hidden relative shadow-2xl">
-              <Image 
+      {/* Process Section */}
+      <section className="py-24 px-6 bg-slate-50">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          <div className="relative rounded-[2.5rem] overflow-hidden shadow-2xl aspect-video bg-white">
+             <Image 
                 src="/tallycustomization.png" 
-                alt="TDL Development" 
+                alt="TDL Customization Workflow" 
                 fill 
-                className="object-cover"
-              />
-            </div>
-            <div className="absolute -bottom-6 -right-6 bg-white p-6 rounded-2xl shadow-xl border border-slate-100 max-w-[200px] hidden md:block">
-              <div className="text-3xl font-black text-[#7338a0] mb-1">500+</div>
-              <div className="text-[9px] font-black uppercase tracking-widest text-slate-400">Custom TDL Projects Successfully Delivered</div>
-            </div>
+                className="object-contain p-8"
+             />
           </div>
-          
-          <div>
-            <h2 className="text-2xl md:text-4xl font-black text-[#0f0529] mb-6 leading-tight">
-              Why Choose Our <br />TDL Services?
-            </h2>
-            <div className="space-y-6">
+          <div className="space-y-8">
+            <h2 className="text-3xl md:text-4xl font-black text-slate-900 leading-tight">Our Development <br /><span className="text-[#0371a3]">Lifecycle</span></h2>
+            <div className="space-y-4">
               {[
-                {
-                  q: "Domain Expertise",
-                  a: "We don't just write code; we understand accounting and business logic to build functional solutions."
-                },
-                {
-                  q: "Scalable Development",
-                  a: "Our TDL modules are built to handle large data volumes without compromising Tally's performance."
-                },
-                {
-                  q: "Seamless Upgrades",
-                  a: "We ensure your customizations remain compatible with future TallyPrime releases and updates."
-                }
+                { step: "01", title: "Requirement Analysis", desc: "We sit with you to understand your specific business logic and pain points." },
+                { step: "02", title: "Prototype Design", desc: "Create a mock-up of the report or feature for your initial approval." },
+                { step: "03", title: "Core Development", desc: "Expert TDL coding adhering to Tally's best practices for data integrity." },
+                { step: "04", title: "UAT & Deployment", desc: "Testing the module with your live data and final implementation." }
               ].map((item, i) => (
-                <div key={i} className="flex gap-4">
-                  <div className="flex-shrink-0 w-10 h-10 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold text-sm">
-                    0{i+1}
-                  </div>
+                <div key={i} className="flex gap-5 p-5 bg-white rounded-2xl border border-slate-100 shadow-sm">
+                  <span className="text-2xl font-black text-[#0371a3]/20">{item.step}</span>
                   <div>
-                    <h4 className="text-base font-bold text-[#0f0529] mb-1">{item.q}</h4>
-                    <p className="text-slate-600 leading-relaxed text-xs md:text-sm">{item.a}</p>
+                    <h4 className="font-bold text-slate-900">{item.title}</h4>
+                    <p className="text-slate-500 text-sm font-medium">{item.desc}</p>
                   </div>
                 </div>
               ))}
@@ -179,19 +158,17 @@ export default function TDLPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-24 px-6">
-        <div className="max-w-5xl mx-auto bg-indigo-600 rounded-[40px] p-12 md:p-20 text-center relative overflow-hidden shadow-2xl shadow-indigo-200">
-          <div className="absolute inset-0 bg-gradient-to-br from-[#7338a0] to-indigo-800" />
+      <section className="py-20 px-6">
+        <div className="max-w-5xl mx-auto bg-slate-900 rounded-[3rem] p-12 text-center relative overflow-hidden shadow-2xl">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-[#0371a3]/20 rounded-full blur-[80px]" />
           <div className="relative z-10">
-            <h2 className="text-3xl md:text-5xl font-black text-white mb-8">Build Your Dream Tally</h2>
-            <p className="text-indigo-100 text-lg mb-10 max-w-2xl mx-auto">
-              If you can imagine it, we can build it in Tally. Let's discuss your unique requirements today.
-            </p>
+            <h2 className="text-3xl md:text-4xl font-black text-white mb-6">Have a Unique Requirement?</h2>
+            <p className="text-white/60 mb-10 max-w-xl mx-auto font-medium">If you can imagine it, we can build it in Tally. Let's discuss your custom module today.</p>
             <button 
-              onClick={() => openModal('enquire')}
-              className="px-12 py-5 bg-white text-indigo-600 rounded-2xl font-black text-sm uppercase tracking-widest hover:bg-indigo-50 transition-all shadow-xl"
+              onClick={() => openModal('callback')}
+              className="px-10 py-4 bg-[#00ABE4] text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:scale-105 transition-all shadow-xl shadow-[#00ABE4]/20"
             >
-              Request a Demo
+              Get a Callback
             </button>
           </div>
         </div>

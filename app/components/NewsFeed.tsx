@@ -39,7 +39,7 @@ export default function NewsFeed() {
 
   if (loading || newsItems.length === 0) {
     return (
-      <div className="relative w-full bg-[#0f0529] h-[20px] flex items-center border-b border-white/10 z-[50]">
+      <div className="relative w-full bg-[#131921] h-[20px] flex items-center border-b border-white/10 z-[50]">
         <div className="px-6 flex items-center gap-2">
            <div className="h-1.5 w-1.5 rounded-full bg-slate-700 animate-pulse" />
            <div className="h-2 w-32 bg-slate-800 rounded animate-pulse" />
@@ -50,10 +50,10 @@ export default function NewsFeed() {
 
   return (
     <div
-      className="relative w-full bg-[#0f0529] h-[20px] flex items-center border-b border-white/10 group overflow-visible z-[2100]"
+      className="relative w-full bg-[#131921] h-[20px] flex items-center border-b border-white/10 group overflow-visible z-[2100]"
     >
       {/* Label Section */}
-      <div className="absolute left-0 top-0 bottom-0 z-[1010] flex items-center bg-gradient-to-r from-[#0f0529] via-[#0f0529] to-transparent px-6 pr-12 pointer-events-none">
+      <div className="absolute left-0 top-0 bottom-0 z-[1010] flex items-center bg-gradient-to-r from-[#131921] via-[#131921] to-transparent px-6 pr-12 pointer-events-none">
         <div className="flex items-center gap-2">
           <span className="relative flex h-2 w-2">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>

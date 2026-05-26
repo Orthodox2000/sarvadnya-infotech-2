@@ -7,22 +7,29 @@ export default async function NewsPage() {
   const newsItems: NewsItem[] = await getNews();
 
   return (
-    <div className="min-h-screen bg-slate-50/50 text-slate-900">
+    <div className="min-h-screen bg-white text-slate-900">
       {/* Centered Tighter Hero Section */}
-      <section className="bg-[#0f0529] pt-8 pb-8 md:pt-12 md:pb-12 px-6 text-center relative overflow-hidden flex flex-col items-center">
-        <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-20">
-          <div className="absolute top-0 right-0 w-[40%] h-[40%] bg-indigo-500 blur-[100px]" />
+      <section className="bg-[#dff0f5] pt-8 pb-8 md:pt-12 md:pb-12 px-6 text-center relative overflow-hidden flex flex-col items-center border-b border-white/5">
+        {/* Background Image Overlay */}
+        <div 
+          className="absolute inset-0 z-0 opacity-10 pointer-events-none"
+          style={{ backgroundImage: 'url(/bgggg.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}
+        />
+
+        <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-40">
+          <div className="absolute top-0 right-0 w-[70%] h-[70%] bg-white/10 blur-[130px] -mr-32 -mt-32" />
+          <div className="absolute bottom-0 left-0 w-[50%] h-[50%] bg-sky-200/20 blur-[110px] -ml-24 -mb-24" />
         </div>
         
-        <div className="max-w-4xl mx-auto relative z-10 w-full">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-white/50 text-[9px] font-bold uppercase tracking-widest mb-6">
-            <span className="flex h-1.5 w-1.5 rounded-full bg-[#7338a0]"></span>
+        <div className="max-w-4xl mx-auto relative z-10 w-full flex flex-col items-center">
+          <div className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-slate-900/5 border border-slate-900/10 text-slate-600 text-[6px] font-bold uppercase tracking-widest mb-3 backdrop-blur-sm">
+            <span className="flex h-0.5 w-0.5 rounded-full bg-slate-400"></span>
             Company Press & Insights
           </div>
-          <h1 className="text-4xl md:text-6xl font-black text-white mb-4 leading-tight tracking-tight">
-            Latest News & Updates
+          <h1 className="text-4xl md:text-6xl font-black text-slate-900 mb-4 leading-tight tracking-tight">
+            Latest News & <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0371a3] via-[#4b91ca] to-[#0371a3] drop-shadow-[0_2px_15px_rgba(0,171,228,0.3)]">Updates</span>
           </h1>
-          <p className="text-white/40 text-[10px] md:text-sm max-w-xl mx-auto leading-relaxed font-medium">
+          <p className="text-slate-600/80 text-[10px] md:text-sm max-w-xl mx-auto leading-relaxed font-semibold">
             Stay informed about the latest Tally updates, statutory changes, and Sarvadnya Infotech LLP announcements.
           </p>
         </div>
@@ -34,10 +41,10 @@ export default async function NewsPage() {
           {newsItems.map((item) => (
             <div 
               key={(item as any)._id || item.id} 
-              className="bg-white rounded-3xl p-8 border border-slate-100 shadow-sm hover:shadow-xl transition-all duration-300 group flex flex-col"
+              className="bg-white/80 backdrop-blur-sm rounded-3xl p-8 border border-slate-200 shadow-sm hover:shadow-xl transition-all duration-300 group flex flex-col"
             >
               <div className="flex items-center gap-3 mb-6">
-                <span className="px-3 py-1 bg-indigo-50 text-indigo-600 text-[10px] font-black uppercase tracking-widest rounded-full">
+                <span className="px-3 py-1 bg-[#E9F1FA] text-[#0371a3] text-[10px] font-black uppercase tracking-widest rounded-full">
                   {item.category}
                 </span>
                 <span className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">
@@ -45,7 +52,7 @@ export default async function NewsPage() {
                 </span>
               </div>
               
-              <h2 className="text-xl font-bold text-[#0f0529] mb-4 group-hover:text-[#7338a0] transition-colors leading-tight">
+              <h2 className="text-xl font-bold text-slate-900 mb-4 group-hover:text-[#0371a3] transition-colors leading-tight">
                 {item.title}
               </h2>
               
@@ -53,7 +60,7 @@ export default async function NewsPage() {
                 <p className="text-slate-600 text-sm leading-relaxed">
                   {item.description}
                 </p>
-                <p className="text-slate-500 text-sm leading-relaxed italic border-l-2 border-slate-100 pl-4">
+                <p className="text-slate-500 text-sm leading-relaxed italic border-l-2 border-slate-200 pl-4">
                   {item.content}
                 </p>
               </div>
@@ -61,7 +68,7 @@ export default async function NewsPage() {
               <div className="flex flex-col gap-4">
                 <Link 
                   href={item.link}
-                  className="inline-flex items-center gap-2 text-[#7338a0] font-bold text-xs uppercase tracking-widest hover:gap-3 transition-all"
+                  className="inline-flex items-center gap-2 text-[#0371a3] font-bold text-xs uppercase tracking-widest hover:gap-3 transition-all"
                 >
                   Learn More
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -74,7 +81,7 @@ export default async function NewsPage() {
         </div>
         
         {newsItems.length === 0 && (
-          <div className="text-center py-20 bg-white rounded-3xl border border-dashed border-slate-200">
+          <div className="text-center py-20 bg-white/50 backdrop-blur-sm rounded-3xl border border-dashed border-slate-200">
             <p className="text-slate-400 font-bold uppercase tracking-widest text-xs">No news items found.</p>
           </div>
         )}

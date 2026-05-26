@@ -30,10 +30,10 @@ export default function ModuleCard({ module, onViewDetails, onEnquire }: ModuleC
 
       {/* Content */}
       <div className="p-5 flex flex-col flex-1">
-        <h3 className="text-lg font-black text-[#0f0529] mb-2 group-hover:text-[#7338a0] transition-colors">
+        <h3 className="text-lg font-black text-slate-900 mb-2 group-hover:text-[#0371a3] transition-colors">
           {module.title}
         </h3>
-        <p className="text-slate-600 text-[13px] leading-relaxed mb-5 line-clamp-3">
+        <p className="text-slate-600 text-[13px] leading-relaxed mb-5 line-clamp-3 font-medium">
           {module.shortDescription}
         </p>
 
@@ -43,7 +43,7 @@ export default function ModuleCard({ module, onViewDetails, onEnquire }: ModuleC
             href={module.videoUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center justify-center gap-1.5 py-2 rounded-xl bg-slate-50 text-slate-700 text-[10px] font-bold hover:bg-[#7338a0] hover:text-white transition-all border border-slate-100"
+            className="flex items-center justify-center gap-1.5 py-2 rounded-xl bg-slate-50 text-slate-600 text-[10px] font-bold hover:bg-[#0371a3] hover:text-white transition-all border border-slate-100"
           >
             <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
             Watch Video
@@ -52,7 +52,7 @@ export default function ModuleCard({ module, onViewDetails, onEnquire }: ModuleC
             href={module.brochureUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center justify-center gap-1.5 py-2 rounded-xl bg-slate-50 text-slate-700 text-[10px] font-bold hover:bg-[#7338a0] hover:text-white transition-all border border-slate-100"
+            className="flex items-center justify-center gap-1.5 py-2 rounded-xl bg-slate-50 text-slate-600 text-[10px] font-bold hover:bg-[#0371a3] hover:text-white transition-all border border-slate-100"
           >
             <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
             Brochure
@@ -62,13 +62,13 @@ export default function ModuleCard({ module, onViewDetails, onEnquire }: ModuleC
         <div className="mt-auto flex items-center gap-2">
           <button
             onClick={() => onViewDetails(module)}
-            className="flex-1 py-2.5 bg-[#0f0529] text-white text-[11px] font-bold rounded-xl hover:bg-black transition-colors shadow-lg shadow-indigo-100"
+            className="flex-1 py-2.5 bg-slate-900 text-white text-[11px] font-bold rounded-xl hover:bg-[#0371a3] transition-colors shadow-lg shadow-slate-200"
           >
             Explore Details
           </button>
           <button
             onClick={() => onEnquire(module)}
-            className="w-10 h-10 flex items-center justify-center rounded-xl border border-slate-200 text-[#7338a0] hover:bg-slate-50 transition-all"
+            className="w-10 h-10 flex items-center justify-center rounded-xl border border-slate-200 text-[#0371a3] hover:bg-sky-50 transition-all"
             title="Enquire Now"
           >
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>

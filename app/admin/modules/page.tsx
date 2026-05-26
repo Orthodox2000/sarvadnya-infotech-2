@@ -148,12 +148,12 @@ export default function AdminModules() {
     <div className="max-w-7xl mx-auto px-6 py-10">
       <header className="flex justify-between items-center mb-10">
         <div>
-          <h1 className="text-3xl font-black text-[#0f0529]">Manage Modules</h1>
+          <h1 className="text-3xl font-black text-[#0f172a]">Manage Modules</h1>
           <p className="text-slate-500 text-sm mt-1">Configure your product modules and industry solutions.</p>
         </div>
         <button 
           onClick={startAdd}
-          className="bg-[#7338a0] text-white px-8 py-3 rounded-2xl font-bold hover:shadow-lg transition-all"
+          className="bg-[#0371a3] text-white px-8 py-3 rounded-2xl font-bold hover:shadow-lg transition-all"
         >
           + Create New Module
         </button>
@@ -168,7 +168,7 @@ export default function AdminModules() {
       {editingModule ? (
         <div className="bg-white p-8 rounded-[32px] border border-slate-100 shadow-xl mb-12 animate-in slide-in-from-top-4 duration-300">
           <div className="flex justify-between items-center mb-8">
-            <h2 className="text-xl font-bold text-[#0f0529]">{editingModule._id ? 'Edit Module' : 'New Module'}</h2>
+            <h2 className="text-xl font-bold text-[#0f172a]">{editingModule._id ? 'Edit Module' : 'New Module'}</h2>
             <button onClick={() => setEditingModule(null)} className="text-slate-400 hover:text-slate-900">Cancel</button>
           </div>
 
@@ -179,7 +179,7 @@ export default function AdminModules() {
                   <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">Module Title</label>
                   <input 
                     required
-                    className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#7338a0] font-bold"
+                    className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#0371a3] font-bold"
                     value={editingModule.title}
                     onChange={e => setEditingModule({...editingModule, title: e.target.value})}
                   />
@@ -187,7 +187,7 @@ export default function AdminModules() {
                 <div>
                   <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">Category</label>
                   <select 
-                    className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#7338a0] font-bold"
+                    className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#0371a3] font-bold"
                     value={editingModule.category}
                     onChange={e => setEditingModule({...editingModule, category: e.target.value})}
                   >
@@ -201,7 +201,7 @@ export default function AdminModules() {
                   <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">Short Description</label>
                   <textarea 
                     required
-                    className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#7338a0] h-24"
+                    className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#0371a3] h-24"
                     value={editingModule.shortDescription}
                     onChange={e => setEditingModule({...editingModule, shortDescription: e.target.value})}
                   />
@@ -210,7 +210,7 @@ export default function AdminModules() {
                   <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">Full Description</label>
                   <textarea 
                     required
-                    className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#7338a0] h-32"
+                    className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#0371a3] h-32"
                     value={editingModule.fullDescription}
                     onChange={e => setEditingModule({...editingModule, fullDescription: e.target.value})}
                   />
@@ -233,7 +233,7 @@ export default function AdminModules() {
                         type="file" 
                         accept="image/*"
                         onChange={handleImageUpload}
-                        className="text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"
+                        className="text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-sky-50 file:text-[#0371a3] hover:file:bg-sky-100"
                       />
                       <p className="text-[10px] text-slate-400 mt-2">Images are stored directly in MongoDB.</p>
                     </div>
@@ -242,7 +242,7 @@ export default function AdminModules() {
                 <div>
                   <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">Video URL (Embed)</label>
                   <input 
-                    className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#7338a0]"
+                    className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#0371a3]"
                     value={editingModule.videoUrl}
                     placeholder="https://www.youtube.com/embed/..."
                     onChange={e => setEditingModule({...editingModule, videoUrl: e.target.value})}
@@ -251,7 +251,7 @@ export default function AdminModules() {
                 <div>
                   <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">Brochure URL</label>
                   <input 
-                    className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#7338a0]"
+                    className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#0371a3]"
                     value={editingModule.brochureUrl}
                     onChange={e => setEditingModule({...editingModule, brochureUrl: e.target.value})}
                   />
@@ -263,7 +263,7 @@ export default function AdminModules() {
               <div>
                 <div className="flex justify-between items-center mb-4">
                   <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400">Core Features</label>
-                  <button type="button" onClick={() => addListItem('features')} className="text-indigo-600 text-xs font-bold">+ Add Feature</button>
+                  <button type="button" onClick={() => addListItem('features')} className="text-[#0371a3] text-xs font-bold">+ Add Feature</button>
                 </div>
                 <div className="space-y-3">
                   {editingModule.features.map((feature: string, idx: number) => (
@@ -282,7 +282,7 @@ export default function AdminModules() {
               <div>
                 <div className="flex justify-between items-center mb-4">
                   <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400">Business Benefits</label>
-                  <button type="button" onClick={() => addListItem('benefits')} className="text-indigo-600 text-xs font-bold">+ Add Benefit</button>
+                  <button type="button" onClick={() => addListItem('benefits')} className="text-[#0371a3] text-xs font-bold">+ Add Benefit</button>
                 </div>
                 <div className="space-y-3">
                   {editingModule.benefits.map((benefit: string, idx: number) => (
@@ -302,7 +302,7 @@ export default function AdminModules() {
             <div className="pt-8 flex gap-4">
               <button 
                 disabled={saving}
-                className="flex-1 bg-[#7338a0] text-white py-4 rounded-2xl font-bold hover:shadow-xl transition-all disabled:opacity-50"
+                className="flex-1 bg-[#0371a3] text-white py-4 rounded-2xl font-bold hover:shadow-xl transition-all disabled:opacity-50"
               >
                 {saving ? 'Saving...' : 'Save Module'}
               </button>
@@ -328,13 +328,13 @@ export default function AdminModules() {
                 )}
               </div>
               <div className="mb-4">
-                <span className="text-[9px] font-black uppercase tracking-widest text-indigo-400">{m.category}</span>
-                <h3 className="font-bold text-[#0f0529] mt-1">{m.title}</h3>
+                <span className="text-[9px] font-black uppercase tracking-widest text-sky-400">{m.category}</span>
+                <h3 className="font-bold text-[#0f172a] mt-1">{m.title}</h3>
               </div>
               <div className="mt-auto flex gap-2">
                 <button 
                   onClick={() => setEditingModule(m)}
-                  className="flex-1 py-2 bg-indigo-50 text-indigo-700 rounded-xl text-xs font-bold hover:bg-indigo-100 transition-all"
+                  className="flex-1 py-2 bg-sky-50 text-[#0371a3] rounded-xl text-xs font-bold hover:bg-sky-100 transition-all"
                 >
                   Edit
                 </button>
@@ -352,3 +352,4 @@ export default function AdminModules() {
     </div>
   );
 }
+

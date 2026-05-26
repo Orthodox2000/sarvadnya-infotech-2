@@ -125,13 +125,13 @@ export default function Footer({ settings: initialSettings }: { settings?: SiteS
     ];
 
     return (
-        <footer className="relative bg-[#0371a3] text-white pt-20 pb-8 px-6 overflow-hidden border-t border-white/10">
+        <footer className="relative bg-[#025b8a] text-white pt-20 pb-8 px-6 overflow-hidden border-t border-white/10">
             {/* Subtle Gradient Overlays */}
             <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#00ABE4]/10 rounded-full blur-[120px] -mr-64 -mt-64 pointer-events-none" />
             <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-[#E9F1FA]/5 rounded-full blur-[100px] -ml-48 -mb-48 pointer-events-none" />
             
             {/* Main Gradient Background */}
-            <div className="absolute inset-0 bg-gradient-to-b from-[#0371a3] via-[#025b8a] to-[#014a6e] opacity-100 pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-b from-[#025b8a] via-[#014a6e] to-[#001a29] opacity-100 pointer-events-none" />
 
             <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 mb-16 relative z-10">
                 {/* Company Info */}
@@ -173,6 +173,17 @@ export default function Footer({ settings: initialSettings }: { settings?: SiteS
                                 {social.icon}
                             </a>
                         ))}
+                    </div>
+
+                    <div className="pt-4 flex flex-col gap-3">
+                        <Link href="/privacy" className="text-[10px] font-black uppercase tracking-widest text-white/40 hover:text-[#00ABE4] transition-colors flex items-center gap-2 group/link">
+                            <span className="w-1.5 h-1.5 rounded-full bg-[#00ABE4] opacity-0 group-hover/link:opacity-100 transition-opacity" />
+                            Privacy Policy
+                        </Link>
+                        <Link href="/terms" className="text-[10px] font-black uppercase tracking-widest text-white/40 hover:text-[#00ABE4] transition-colors flex items-center gap-2 group/link">
+                            <span className="w-1.5 h-1.5 rounded-full bg-[#00ABE4] opacity-0 group-hover/link:opacity-100 transition-opacity" />
+                            Terms & Conditions
+                        </Link>
                     </div>
                 </div>
 
@@ -264,8 +275,8 @@ export default function Footer({ settings: initialSettings }: { settings?: SiteS
                 <p>© {year} Sarvadnya Infotech LLP. All Rights Reserved.</p>
                 <div className="flex gap-6">
                     <Link href="/careers" className="hover:text-white transition-colors">Careers</Link>
-                    <Link href="/contact" className="hover:text-white transition-colors">Privacy Policy</Link>
-                    <Link href="/contact" className="hover:text-white transition-colors">Terms of Service</Link>
+                    <Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
+                    <Link href="/terms" className="hover:text-white transition-colors">Terms & Conditions</Link>
                 </div>
             </div>
         </footer>
