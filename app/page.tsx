@@ -30,7 +30,7 @@ export default async function Home() {
   ]);
 
   return (
-    <main>
+    <main className="bg-white">
       <HomeHero initialData={heroData} />
       <CertifiedPartners initialData={partnersData} />
       <QuickAccessHub initialData={hubData} initialModules={modulesData} initialSettings={settingsData} />

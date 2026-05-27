@@ -12,10 +12,19 @@ export default function AdminLearning() {
   const [message, setMessage] = useState({ text: '', type: '' });
   const [searchQuery, setSearchQuery] = useState('');
   const [filterFolder, setFilterFolder] = useState('All');
+  const [tagInput, setTagInput] = useState('');
 
   useEffect(() => {
     fetchItems();
   }, []);
+
+  useEffect(() => {
+    if (editingItem) {
+      setTagInput(editingItem.tags?.join(', ') || '');
+    } else {
+      setTagInput('');
+    }
+  }, [editingItem]);
 
   const fetchItems = async () => {
     setLoading(true);
@@ -93,10 +102,13 @@ export default function AdminLearning() {
     e.preventDefault();
     setSaving(true);
     try {
-      const method = editingItem._id ? 'PUT' : 'POST';
-      const body = editingItem._id 
-        ? { id: editingItem._id, ...editingItem } 
-        : editingItem;
+      const processedTags = tagInput.split(',').map(t => t.trim()).filter(t => t !== '');
+      const finalItem = { ...editingItem, tags: processedTags };
+      
+      const method = finalItem._id ? 'PUT' : 'POST';
+      const body = finalItem._id 
+        ? { id: finalItem._id, ...finalItem } 
+        : finalItem;
 
       const response = await fetch('/api/tutorials', {
         method,
@@ -269,8 +281,8 @@ export default function AdminLearning() {
                   <input 
                     className="w-full p-5 bg-[#f0f9ff]/50 rounded-2xl border border-[#E9F1FA] focus:ring-4 focus:ring-[#00ABE4]/5 focus:border-[#00ABE4] outline-none transition-all font-bold text-[#00ABE4]"
                     placeholder="e.g. tallyprime, gst, training"
-                    value={editingItem.tags?.join(', ')}
-                    onChange={e => setEditingItem({...editingItem, tags: e.target.value.split(',').map((t: string) => t.trim()).filter((t: string) => t !== '')})}
+                    value={tagInput}
+                    onChange={e => setTagInput(e.target.value)}
                   />
                 </div>
               </div>
@@ -334,7 +346,11 @@ export default function AdminLearning() {
                   <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-[#0371a3] mb-3 ml-1">Asset Preview</label>
                   <div className="relative aspect-video w-full max-w-[320px] rounded-[1.5rem] overflow-hidden bg-[#f0f9ff] border-4 border-white shadow-2xl">
                     {editingItem.type === 'video' ? (
-                      <img src={getYoutubeThumbnail(editingItem.url)} alt="Thumbnail" className="w-full h-full object-cover" />
+                      getYoutubeThumbnail(editingItem.url) ? (
+                        <img src={getYoutubeThumbnail(editingItem.url)} alt="Thumbnail" className="w-full h-full object-cover" />
+                      ) : (
+                        <div className="flex items-center justify-center h-full bg-white text-[8px] font-black text-slate-300 uppercase tracking-widest">Awaiting Video ID</div>
+                      )
                     ) : (
                       editingItem.thumbnailOption === 'custom' && editingItem.thumbnail ? (
                         <img src={editingItem.thumbnail} alt="Thumbnail" className="w-full h-full object-cover" />
@@ -373,7 +389,11 @@ export default function AdminLearning() {
             <div key={item._id} className="bg-white p-6 rounded-[2.5rem] border border-[#E9F1FA] shadow-sm flex flex-col group hover:shadow-2xl hover:border-[#00ABE4]/20 transition-all duration-500">
               <div className="relative aspect-video w-full mb-6 rounded-[1.5rem] overflow-hidden bg-[#f0f9ff] border border-[#E9F1FA]">
                 {item.type === 'video' ? (
-                  <img src={getYoutubeThumbnail(item.url)} alt={item.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                  getYoutubeThumbnail(item.url) ? (
+                    <img src={getYoutubeThumbnail(item.url)} alt={item.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                  ) : (
+                    <div className="flex items-center justify-center h-full bg-white text-[8px] font-black text-slate-300 uppercase tracking-widest">No Video ID</div>
+                  )
                 ) : (
                   item.thumbnailOption === 'custom' && item.thumbnail ? (
                     <img src={item.thumbnail} alt={item.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />

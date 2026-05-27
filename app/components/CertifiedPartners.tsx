@@ -8,6 +8,24 @@ import { fetchWithCache } from "@/lib/client-api";
 const CertifiedPartners = ({ initialData }: { initialData?: Partner[] }) => {
     const [partners, setPartners] = useState<Partner[]>(initialData || []);
     const [loading, setLoading] = useState(!initialData);
+    const [isVisible, setIsVisible] = useState(false);
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    setIsVisible(true);
+                    observer.disconnect();
+                }
+            },
+            { threshold: 0.1 }
+        );
+
+        const section = document.getElementById('partners-section');
+        if (section) observer.observe(section);
+
+        return () => observer.disconnect();
+    }, []);
 
     useEffect(() => {
         if (initialData) return;
@@ -39,8 +57,11 @@ const CertifiedPartners = ({ initialData }: { initialData?: Partner[] }) => {
     if (partners.length === 0) return null;
 
     return (
-        <section className="w-full py-16 md:py-24 bg-white border-y border-[#E9F1FA] overflow-hidden">
-            <div className="max-w-7xl mx-auto px-6 mb-12 text-center">
+        <section 
+            id="partners-section"
+            className="w-full py-16 md:py-24 bg-white border-y border-[#E9F1FA] overflow-hidden"
+        >
+            <div className={`max-w-7xl mx-auto px-6 mb-12 text-center transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
                 <p className="text-[10px] font-black uppercase tracking-[0.3em] text-[#00ABE4] mb-3">Our Global Network</p>
                 <h2 className="text-3xl md:text-4xl font-black text-slate-900">Certified Industry Partners</h2>
             </div>
@@ -49,9 +70,11 @@ const CertifiedPartners = ({ initialData }: { initialData?: Partner[] }) => {
                 {partners.map((partner, index) => (
                     <div 
                         key={partner._id || partner.name} 
-                        className="group relative w-32 h-20 sm:w-40 sm:h-24 md:w-48 md:h-28 bg-white rounded-2xl border border-[#E9F1FA] shadow-sm flex items-center justify-center p-3 sm:p-4 transition-all duration-500 hover:shadow-xl hover:border-[#00ABE4]/20 hover:-translate-y-1"
+                        style={{ transitionDelay: `${index * 100}ms` }}
+                        className={`group relative w-32 h-20 sm:w-40 sm:h-24 md:w-48 md:h-28 bg-white rounded-2xl border border-[#E9F1FA] shadow-sm flex items-center justify-center p-3 sm:p-4 transition-all duration-700 hover:shadow-xl hover:border-[#00ABE4]/20 hover:-translate-y-2
+                            ${isVisible ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-12 scale-95'}`}
                     >
-                        <div className="relative w-full h-full transition-all duration-500">
+                        <div className="relative w-full h-full transition-all duration-500 group-hover:scale-110">
                             <Image
                                 src={partner.imageUrl}
                                 alt={partner.name}
@@ -61,6 +84,8 @@ const CertifiedPartners = ({ initialData }: { initialData?: Partner[] }) => {
                                 priority={index < 5}
                             />
                         </div>
+                        {/* Shimmer Effect on Hover */}
+                        <div className="absolute inset-0 bg-gradient-to-tr from-[#00ABE4]/0 via-[#00ABE4]/5 to-[#00ABE4]/0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
                     </div>
                 ))}
             </div>

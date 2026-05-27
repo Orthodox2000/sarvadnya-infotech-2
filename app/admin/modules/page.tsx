@@ -9,6 +9,8 @@ export default function AdminModules() {
   const [loading, setLoading] = useState(true);
   const [editingModule, setEditingModule] = useState<any | null>(null);
   const [saving, setSaving] = useState(false);
+  const [isReorderMode, setIsReorderMode] = useState(false);
+  const [reordering, setReordering] = useState(false);
   const [message, setMessage] = useState({ text: '', type: '' });
 
   useEffect(() => {
@@ -58,6 +60,38 @@ export default function AdminModules() {
     } finally {
       setSaving(false);
     }
+  };
+
+  const handleReorder = async () => {
+    setReordering(true);
+    try {
+      const orders = modules.map((m, idx) => ({ id: m._id, sequence: idx }));
+      const response = await fetch('/api/admin/modules/reorder', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ orders })
+      });
+      const data = await response.json();
+      if (data.error) throw new Error(data.error);
+      
+      setMessage({ text: 'Module sequence updated!', type: 'success' });
+      setIsReorderMode(false);
+      fetchModules();
+    } catch (err: any) {
+      console.error(err);
+      setMessage({ text: err.message || 'Reorder failed.', type: 'error' });
+    } finally {
+      setReordering(false);
+    }
+  };
+
+  const moveModule = (index: number, direction: 'up' | 'down') => {
+    const newModules = [...modules];
+    const targetIndex = direction === 'up' ? index - 1 : index + 1;
+    if (targetIndex < 0 || targetIndex >= newModules.length) return;
+    
+    [newModules[index], newModules[targetIndex]] = [newModules[targetIndex], newModules[index]];
+    setModules(newModules);
   };
 
   const handleDelete = async (id: string) => {
@@ -142,8 +176,6 @@ export default function AdminModules() {
     setEditingModule({ ...editingModule, [field]: newList });
   };
 
-  if (loading) return <div className="text-center py-20">Loading Modules...</div>;
-
   return (
     <div className="max-w-7xl mx-auto px-6 py-10">
       <header className="flex justify-between items-center mb-10">
@@ -151,12 +183,31 @@ export default function AdminModules() {
           <h1 className="text-3xl font-black text-[#0f172a]">Manage Modules</h1>
           <p className="text-slate-500 text-sm mt-1">Configure your product modules and industry solutions.</p>
         </div>
-        <button 
-          onClick={startAdd}
-          className="bg-[#0371a3] text-white px-8 py-3 rounded-2xl font-bold hover:shadow-lg transition-all"
-        >
-          + Create New Module
-        </button>
+        <div className="flex gap-4">
+          <button 
+            onClick={() => setIsReorderMode(!isReorderMode)}
+            className={`px-6 py-3 rounded-2xl font-bold transition-all ${isReorderMode ? 'bg-slate-900 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`}
+          >
+            {isReorderMode ? 'Cancel Reordering' : '↕ Reorder Modules'}
+          </button>
+          {!isReorderMode && (
+            <button 
+              onClick={startAdd}
+              className="bg-[#0371a3] text-white px-8 py-3 rounded-2xl font-bold hover:shadow-lg transition-all"
+            >
+              + Create New Module
+            </button>
+          )}
+          {isReorderMode && (
+            <button 
+              onClick={handleReorder}
+              disabled={reordering}
+              className="bg-green-600 text-white px-8 py-3 rounded-2xl font-bold hover:shadow-lg transition-all disabled:opacity-50"
+            >
+              {reordering ? 'Saving Order...' : '✓ Save New Order'}
+            </button>
+          )}
+        </div>
       </header>
 
       {message.text && (
@@ -317,33 +368,62 @@ export default function AdminModules() {
           </form>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {modules.map((m) => (
-            <div key={m._id} className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm flex flex-col">
+        <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 ${isReorderMode ? 'bg-slate-50 p-6 rounded-[2rem] border-2 border-dashed border-slate-200' : ''}`}>
+          {modules.map((m, idx) => (
+            <div key={m._id} className={`bg-white p-6 rounded-3xl border border-slate-100 shadow-sm flex flex-col transition-all ${isReorderMode ? 'scale-[0.98] opacity-80' : ''}`}>
               <div className="relative h-32 w-full mb-4 rounded-2xl overflow-hidden bg-slate-50">
                 {m.image ? (
                   <Image src={m.image} alt={m.title} fill className="object-cover" />
                 ) : (
                   <div className="flex items-center justify-center h-full text-slate-300">No Image</div>
                 )}
+                {isReorderMode && (
+                  <div className="absolute inset-0 bg-black/40 flex items-center justify-center gap-4">
+                    <button 
+                      onClick={() => moveModule(idx, 'up')}
+                      disabled={idx === 0}
+                      className="w-12 h-12 bg-white rounded-full flex items-center justify-center font-bold text-xl hover:bg-[#0371a3] hover:text-white transition-all disabled:opacity-30 disabled:hover:bg-white disabled:hover:text-black"
+                    >
+                      ↑
+                    </button>
+                    <button 
+                      onClick={() => moveModule(idx, 'down')}
+                      disabled={idx === modules.length - 1}
+                      className="w-12 h-12 bg-white rounded-full flex items-center justify-center font-bold text-xl hover:bg-[#0371a3] hover:text-white transition-all disabled:opacity-30 disabled:hover:bg-white disabled:hover:text-black"
+                    >
+                      ↓
+                    </button>
+                  </div>
+                )}
               </div>
               <div className="mb-4">
-                <span className="text-[9px] font-black uppercase tracking-widest text-sky-400">{m.category}</span>
+                <div className="flex justify-between items-start">
+                   <span className="text-[9px] font-black uppercase tracking-widest text-sky-400">{m.category}</span>
+                   {isReorderMode && <span className="bg-slate-900 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">#{idx + 1}</span>}
+                </div>
                 <h3 className="font-bold text-[#0f172a] mt-1">{m.title}</h3>
               </div>
               <div className="mt-auto flex gap-2">
-                <button 
-                  onClick={() => setEditingModule(m)}
-                  className="flex-1 py-2 bg-sky-50 text-[#0371a3] rounded-xl text-xs font-bold hover:bg-sky-100 transition-all"
-                >
-                  Edit
-                </button>
-                <button 
-                  onClick={() => handleDelete(m._id)}
-                  className="py-2 px-3 bg-red-50 text-red-600 rounded-xl text-xs font-bold hover:bg-red-100 transition-all"
-                >
-                  Delete
-                </button>
+                {!isReorderMode ? (
+                  <>
+                    <button 
+                      onClick={() => setEditingModule(m)}
+                      className="flex-1 py-2 bg-sky-50 text-[#0371a3] rounded-xl text-xs font-bold hover:bg-sky-100 transition-all"
+                    >
+                      Edit
+                    </button>
+                    <button 
+                      onClick={() => handleDelete(m._id)}
+                      className="py-2 px-3 bg-red-50 text-red-600 rounded-xl text-xs font-bold hover:bg-red-100 transition-all"
+                    >
+                      Delete
+                    </button>
+                  </>
+                ) : (
+                  <div className="w-full py-2 bg-slate-50 text-slate-400 text-center text-[10px] font-bold uppercase tracking-widest rounded-xl">
+                    Reordering Active
+                  </div>
+                )}
               </div>
             </div>
           ))}

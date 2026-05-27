@@ -4,7 +4,169 @@
 - Always mention the application version number when presenting changes or updates.
 - Versioning follows the format `v1.1.x`.
 - Increment the patch version automatically for every iteration/significant set of changes.
-- Current Version: v1.1.187
+- Current Version: v1.1.215
+
+## Recent Changes (v1.1.215)
+- **Advanced Hero Layout Engine:** Implemented a multi-layout engine for the `HomeHero` and synchronized the Cloud experience.
+    *   **Dynamic Image Sourcing:** Refined the mosaic visual side to strictly use database-driven central images while sourcing satellite cards from unique, varied assets in the `/hero` folder (AWS, NoSky, Tally Logic).
+    *   **Animation Stabilization:** Introduced a distinct `isEntering` state to trigger smooth "Rise Up" entrance effects only *after* the content swap, ensuring animations are always visible and flicker-free.
+    *   **Precision 8s Cycle:** Calibrated the carousel to an exact 8-second interval, providing 7 seconds of stable viewing and 1 second for refined transitions.
+    *   **Intelligent Image Fit:** Maintained the "Blurred Backdrop + Contained Foreground" strategy across all mosaic elements to ensure 100% visibility of uncropped assets.
+- **Version Bump:** Updated application version to v1.1.215.
+
+## Recent Changes (v1.1.214)
+- **Definitive Hero Fix & Optimization:** Resolved all persistent branding, animation, and performance issues in the `HomeHero` centerpiece.
+    *   **Absolute Title Enforcement:** Implemented a hardcoded title whitelist ("Trusted Tally Partner in Navi Mumbai" & "Reliable Cloud & Zero-Loss Backup") that overrides all database strings, permanently eliminating unwanted suffixes.
+    *   **Phase-Based Entry Animations:** Introduced a dedicated `isEntering` state to trigger smooth "Rise Up" entrance effects *after* content swaps, ensuring animations are always visible and stable.
+    *   **Carousel Precision:** Calibrated the cycle to a strict 8-second window with distinct Exit (800ms) and Entry (1000ms) phases.
+    *   **Image Performance:** Resolved all Next.js browser warnings by adding mandatory `sizes` props to all "fill" hero images and optimizing preloading logic.
+    *   **Subtitle Integration:** Properly synchronized the "Why Choose Sarvadnya Infotech LLP?" subtitle with the new animation engine.
+- **Version Bump:** Updated application version to v1.1.213.
+
+## Recent Changes (v1.1.212)
+- **Homepage Motion Upgrade:** Implemented a unified "Rise Up" scroll animation system across all major landing page sections.
+    *   **Intersection Observer Integration:** All sections (Quick Access Hub, Customer Reviews, Home Statistics, FAQ) now utilize the Intersection Observer API for precise scroll-triggered entry.
+    *   **Rise Up Aesthetic:** Applied a smooth `translate-y` and `opacity` transition to sections and their child elements, creating a professional "entering the stage" effect.
+    *   **Staggered Card Entries:** Implemented cumulative delays for grid items (Quick Access cards, Review cards, FAQ items) to provide a sophisticated, sequential reveal as users scroll.
+    *   **Visual Polish:** Refined transition durations (700ms - 1000ms) and easing functions to ensure animations feel premium and responsive across all devices.
+- **Version Bump:** Updated application version to v1.1.214.
+
+## Recent Changes (v1.1.213)
+- **Universal Title Enforcement:** Implemented a robust data-processing layer to strictly enforce clean hero titles across all slides, regardless of the data source (Server or Client).
+    *   **Suffix Stripping:** Forcefully removed all manual branding suffixes (e.g., "- Why Choose Sarvadnya Infotech LLP?") from database strings to prevent redundancy with the permanent JSX subtitle.
+    *   **Branding Consistency:** Locked the Tally slide title to "Trusted Tally Partner in Navi Mumbai" and the Cloud slide title to "Reliable Cloud & Zero-Loss Backup".
+    *   **Unified Processing:** Refactored the `HomeHero` to process both `initialData` (server-fetched) and dynamic updates through a central `processHeroData` helper, ensuring visual consistency across initial load and carousel cycles.
+- **Version Bump:** Updated application version to v1.1.212.
+
+## Recent Changes (v1.1.211)
+- **Branding Enforcement & Title Cleanup:** Enforced a clean, professional title for the `HomeHero` and resolved redundant text issues.
+    *   **Custom Branding:** Overrode all Tally-related database titles with the requested "Trusted Tally Partner in Navi Mumbai" to ensure absolute consistency.
+    *   **Redundancy Removal:** Stripped the manual "Why Choose Sarvadnya Infotech LLP?" suffix from all database strings, as it is now a permanent, standalone UI subtitle.
+    *   **Ecosystem Integrity:** Maintained the "Reliable Cloud & Zero-Loss Backup" title for specialized ecosystem slides to preserve content diversity.
+    *   **Image Fit Optimization:** Verified that all carousel visuals use the "Blurred Backdrop + Contained Foreground" strategy for uncropped, crystal-clear presentation.
+- **Version Bump:** Updated application version to v1.1.210.
+
+## Recent Changes (v1.1.209)
+- **Hero Performance & Content Refinement:** Optimized the carousel experience and enhanced the content structure.
+    *   **Animation Cleanup:** Removed staggered entry animations to prevent mid-transition resets and flickering. Content now appears immediately upon slide change for a crisper feel.
+    *   ** subtitle Integration:** Added the "Why Choose Sarvadnya Infotech LLP?" subtitle in a small, professional font positioned between the badge and main title.
+    *   **Precision Timing Fix:** Recalibrated the entire hero engine to maintain a strict 8-second interval, resolving an issue where transitions were significantly delayed.
+    *   **Cloud Segment Restoration:** Guaranteed the presence of the "Reliable Cloud & Zero-Loss Backup" segment in the hero loop with its specialized ecosystem layout.
+- **Version Bump:** Updated application version to v1.1.207.
+
+## Recent Changes (v1.1.206)
+- **Global Network Scroll Animations:** Implemented a high-performance "Appear on Scroll" effect for the `CertifiedPartners` section.
+    *   **Intersection Observer:** Integrated the native Intersection Observer API to trigger animations precisely when the section enters the viewport.
+    *   **Staggered Entry:** Added cumulative transition delays to partner logos, creating a smooth "wave" entrance effect.
+    *   **Visual Polish:** Enhanced partner cards with subtle scaling, shimmer overlays on hover, and high-contrast shadow elevations.
+- **Database Synchronization:** Updated the primary `site_content` collection via `bootstrap.mjs` to include the "Reliable Cloud & Zero-Loss Backup" hero segment, ensuring its permanent presence in the carousel.
+- **Version Bump:** Updated application version to v1.1.206.
+
+## Recent Changes (v1.1.205)
+- **Critical Hero Calibration:** Fixed carousel timing, resolved animation reset glitches, and restored the Cloud & Backup segment.
+    *   **Precision Timing:** Calibrated the carousel to an exact 8-second (8000ms) interval, with a faster 800ms transition to maximize content visibility.
+    *   **Animation Stability:** Refactored the typing engine and transition states using `useRef` to prevent mid-animation resets and re-render glitches.
+    *   **Content Restoration:** Explicitly ensured the "Reliable Cloud & Zero-Loss Backup" segment is always present in the hero loop, even when fetching dynamic data from the API.
+    *   **Visual Smoothness:** Optimized entry delays and transition easing to provide a professional, flicker-free cross-fade between slides.
+- **Version Bump:** Updated application version to v1.1.205.
+
+## Recent Changes (v1.1.204)
+- **Homepage Streamlining:** Removed the `CloudBackupSection` from the main landing page to ensure a more focused and direct user journey. The component remains active on the dedicated Cloud page to preserve technical depth for interested users.
+- **Version Bump:** Updated application version to v1.1.204.
+
+## Recent Changes (v1.1.203)
+- **Dynamic Hero Pacing:** Adjusted the `HomeHero` slide interval to exactly 8 seconds (8000ms). This provides a faster, more engaging experience for homepage visitors while ensuring sufficient time for entrance animations and core feature readability.
+- **Version Bump:** Updated application version to v1.1.203.
+
+## Recent Changes (v1.1.202)
+- **Hero Type Safety & Stability Fix:** Resolved a critical TypeScript error and improved carousel reliability.
+    *   **Type Assertion:** Explicitly cast the dynamic `layout` property to the union type `'standard' | 'ecosystem'`, resolving the "string not assignable" error.
+    *   **Transition Stability:** Reduced the hero slide duration to 30 seconds (down from 50) to provide a better balance between content retention and interactive feedback, ensuring the carousel feels active and functional.
+    *   **Dependency Optimization:** Updated the transition engine's `useEffect` to depend on `heroContents.length`, preventing unnecessary interval resets and ensuring a smoother loop.
+- **Version Bump:** Updated application version to v1.1.202.
+
+## Recent Changes (v1.1.200)
+- **Advanced Hero Layouts & Cloud Page Sync:** Implemented a multi-layout engine for the `HomeHero` and synchronized the Cloud experience.
+    *   **Dynamic Layout Switching:** Refactored `HomeHero` to support `standard` (Mosaic) and `ecosystem` (Rotation Group) layouts. The hero now automatically switches to the Ecosystem layout for Cloud-related slides.
+    *   **Cloud Page Enrichment:** Transferred the "Cloud & Backup Ecosystem" logic to the dedicated Cloud page, adding a professional infrastructure comparison table and the cinematic ecosystem section.
+    *   **Intelligent Image Fit:** Deployed a "Blurred Backdrop + Contained Foreground" strategy across all hero and ecosystem visuals, ensuring 100% visibility of assets without cropping.
+    *   **Rotation Group Effect:** Implemented a specialized 3-layer rotating visual stack for the ecosystem layout, featuring AWS and NoSky satellite cards with independent motion.
+- **Version Bump:** Updated application version to v1.1.200.
+
+## Recent Changes (v1.1.199)
+- **Cloud & Backup Ecosystem Section:** Implemented a new cinematic section on the homepage to highlight Sarvadnya's advanced cloud capabilities.
+    *   **Strategic Partnerships:** Showcased official AWS and NoSky Cloud infrastructures with dedicated high-contrast visual cards.
+    *   **Feature Integration:** Highlighted Automated Backups (TallyDrive), 100% Uptime, and Zero-Loss security protocols.
+    *   **Visual Mosaic:** Created a complex 3-layer visual side using `dedicated-to-cloud-hosting.jpg`, `AWS.png`, and `brand-nosky.webp` with independent hover rotations.
+    *   **Universal Consistency:** Standardized the section on a pure white foundation to match the new homepage aesthetic.
+- **Version Bump:** Updated application version to v1.1.199.
+
+## Recent Changes (v1.1.198)
+- **Maximized Hero Visibility:** Extended the `HomeHero` slide interval to exactly 50 seconds (50000ms). This provides an expansive, stable window for visitors to engage with the cinematic mosaic and core features, prioritizing content retention and professional presence over frequent transitions.
+- **Version Bump:** Updated application version to v1.1.198.
+
+## Recent Changes (v1.1.197)
+- **Unified White Homepage Foundations:** Standardized all landing page section backgrounds to pure white (#ffffff) to ensure visual consistency across PC and mobile viewports.
+    *   **Certified Partners:** Removed the Slate-50 tint in favor of a solid white foundation.
+    *   **Home Statistics:** Replaced the light blue background with pure white to match the global aesthetic.
+    *   **Quick Access Hub:** Transitioned from a bluish tint foundation to high-contrast white, ensuring all interactive cards "pop" consistently on mobile.
+    *   **Cross-Device Continuity:** Eliminated conditional bluish tints that appeared more prominently on mobile devices, achieving perfect synchronization with the new white Hero foundation.
+- **Version Bump:** Updated application version to v1.1.197.
+
+## Recent Changes (v1.1.196)
+- **Extended Hero Visibility:** Increased the `HomeHero` slide duration to exactly 30 seconds (30000ms). This provides a more deliberate and authoritative pace, ensuring every visitor has ample time to digest the cinematic mosaic, typing animations, and core feature lists before the next transition.
+- **Version Bump:** Updated application version to v1.1.196.
+
+## Recent Changes (v1.1.195)
+- **High-Contrast White Hero:** Transitioned the `HomeHero` background to pure white (#ffffff) while maintaining structural synchronization with the Midnight headers.
+    *   **Typography Overhaul:** Updated titles to Slate-900 and descriptions to Slate-600 for maximum legibility on the light foundation.
+    *   **Midnight CTA Synchronization:** Set the primary "Explore" button to Midnight Black (#131921) with white text, creating a direct visual link to the `Navbar` and `Productbar`.
+    *   **Mosaic Refinement:** Optimized card borders and shadows to ensure the multi-layered mosaic thrives on a white background.
+    *   **Grid Optimization:** Softened the background `ShapeGrid` and `bgggg.png` overlay to provide a clean, modern aesthetic without cluttering the canvas.
+- **Version Bump:** Updated application version to v1.1.195.
+
+## Recent Changes (v1.1.194)
+- **Midnight Palette Synchronization:** Synchronized the `HomeHero` with the high-contrast "Midnight Black" (#131921) brand scheme to match the `Navbar` and `Productbar`.
+    *   **Premium Foundation:** Transitioned hero background to #131921 with white typography and Bright Blue accents.
+    *   **Hero Asset Organization:** Created `/public/hero` folder and moved/renamed core hero images (`hero-main.png`, `hero-sub1.png`, `hero-sub2.png`, `hero-logo.png`) for streamlined management.
+    *   **Visual Polish:** Updated `ShapeGrid` and animated accents to thrive on the dark background with lower opacity and brand-blue borders.
+    *   **Interactive Refinement:** Redesigned hero badges and secondary buttons with glassmorphism and high-contrast dark-mode styling.
+- **Version Bump:** Updated application version to v1.1.194.
+
+## Recent Changes (v1.1.193)
+- **Standardized Hero Timing:** Adjusted the `HomeHero` slide interval to exactly 8 seconds (8000ms). This ensures a consistent and optimized pace for the carousel, allowing sufficient time for all mosaic transitions and typing animations to conclude before the next content cycle.
+- **Version Bump:** Updated application version to v1.1.192.
+
+## Recent Changes (v1.1.191)
+- **Intelligent Hero Image Fit:** Implemented a sophisticated dual-layer fit system for all cards in the `HomeHero` mosaic.
+    *   **Anti-Cropping Logic:** Transitioned from simple `object-cover` to a "Blurred Backdrop + Contained Foreground" strategy, ensuring 100% visibility of all product and service imagery regardless of original aspect ratios.
+    *   **Cinematic Filling:** Used a high-blur (20px+) version of the same image as a subtle background layer to eliminate empty space within the mosaic cards.
+    *   **High-Contrast Foundations:** Updated card backgrounds to ultra-clean white and refined internal inset paddings to provide a "framed" gallery feel for fitted assets.
+- **Version Bump:** Updated application version to v1.1.191.
+
+## Recent Changes (v1.1.190)
+- **Floating Mosaic Hero Visuals:** Overhauled the `HomeHero` visual side with a multi-layered, high-density grid system.
+    *   **Quad-Card Architecture:** Implemented a complex grid featuring a Primary Hero card, a grayscale Secondary card, a Contrast Detail card, and a branded Abstract card.
+    *   **Asynchronous Transitions:** Each card in the mosaic enters and exits with unique staggered delays and independent parallax offsets, creating a deep 3D-depth effect.
+    *   **Creative Presentation:** Integrated grayscale-to-color transitions, orbiting cinematic particles, and floating "Verified Solution" badges for a premium industrial aesthetic.
+    *   **Responsive Fluidity:** Optimized the mosaic layout with `cubic-bezier` easing for ultra-smooth "springy" motions on hover and slide changes.
+- **Version Bump:** Updated application version to v1.1.190.
+
+## Recent Changes (v1.1.189)
+- **Cinematic Double-Stack Hero:** Re-engineered the `HomeHero` visual side with a creative multi-layered stacking effect.
+    *   **Layered Visuals:** Implemented a two-card system featuring a high-contrast primary card (Current Slide) and a stylized ghost card (Next Slide Preview) translated to opposite corners.
+    *   **Dynamic Motion:** Added complex 3D-transform animations where cards "fly" in opposite directions during transitions and reactively drift on hover.
+    *   **Spatial Optimization:** Reduced the hero image container size for a more focused, high-end aesthetic, complemented by an orbiting dashed ring and decorative corner anchors.
+    *   **Advanced Overlays:** Integrated glassmorphism content badges and brand-blue tint overlays into the new card system.
+- **Version Bump:** Updated application version to v1.1.189.
+
+## Recent Changes (v1.1.188)
+- **Homepage Palette Synchronization:** Fully synchronized the landing page and hero section with the "Radiant Sky" brand identity.
+    *   **Hero Overhaul:** Updated the `HomeHero` background to the official Radiant Sky foundation (#dff0f5) and integrated the immersive `bgggg.png` overlay at 10% opacity.
+    *   **Color Correction:** Replaced legacy indigo/purple defaults and fallbacks with official Brand Blue (#0371a3) and Bright Blue (#00ABE4) spectrums site-wide.
+    *   **Section Refinement:** Applied subtle light blue and slate tints to the `CertifiedPartners` and `HomeStat` sections to improve visual hierarchy and section separation while maintaining brand cohesion.
+    *   **Typography & Gradients:** Updated the global `text-highlight-gradient` in `globals.css` to the brand-blue palette for a unified high-impact aesthetic.
+- **Version Bump:** Updated application version to v1.1.188.
 
 ## Recent Changes (v1.1.187)
 - **Standard SEO Implementation:** Deployed production-grade sitemap and crawler instructions.

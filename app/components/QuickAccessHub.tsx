@@ -93,6 +93,24 @@ export default function QuickAccessHub({
   const [dynamicModules, setDynamicModules] = useState<any[]>(initialModules || []);
   const [dbCategories, setDbCategories] = useState<QuickAccessCategory[]>(initialData || []);
   const [loading, setLoading] = useState(!initialData && !initialModules && !initialSettings);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+        ([entry]) => {
+            if (entry.isIntersecting) {
+                setIsVisible(true);
+                observer.disconnect();
+            }
+        },
+        { threshold: 0.1 }
+    );
+
+    const section = document.getElementById('quick-access-hub');
+    if (section) observer.observe(section);
+
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     if (initialData && initialModules && initialSettings) return;
@@ -187,11 +205,11 @@ export default function QuickAccessHub({
   if (loading) return <div className="w-full h-96 bg-white flex items-center justify-center"><div className="w-8 h-8 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin"></div></div>;
 
   return (
-    <section className="w-full bg-[#f0f9ff]/50 py-16 md:py-24 px-5 border-y border-[#E9F1FA]">
+    <section id="quick-access-hub" className="w-full bg-white py-16 md:py-24 px-5 border-y border-[#E9F1FA]">
       <div className="max-w-7xl mx-auto flex flex-col">
         
         {/* Header - Compact */}
-        <div className="flex flex-col md:flex-row items-end justify-between gap-6 mb-12 border-b border-[#E9F1FA] pb-8">
+        <div className={`flex flex-col md:flex-row items-end justify-between gap-6 mb-12 border-b border-[#E9F1FA] pb-8 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
           <div className="max-w-xl text-left">
             <span className="text-[10px] font-black uppercase tracking-[0.3em] text-[#0371a3] block mb-2">
               Solutions Directory
@@ -215,7 +233,7 @@ export default function QuickAccessHub({
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 items-stretch">
           
           {/* Column 1: Core & Cloud (Stacked vertical lists) */}
-          <div className="flex flex-col gap-6 md:col-span-1">
+          <div className={`flex flex-col gap-6 md:col-span-1 transition-all duration-1000 delay-100 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
             {categories.slice(0, 2).map((cat, idx) => (
               <div key={idx} className="group flex flex-col bg-white rounded-[2rem] p-8 border border-[#E9F1FA] hover:shadow-2xl hover:shadow-[#0371a3]/5 transition-all duration-500 relative overflow-hidden h-full hover:bg-[#f0f9ff]">
                 <div className={`absolute top-0 left-0 w-1.5 h-full bg-[#0371a3]`} />
@@ -242,7 +260,7 @@ export default function QuickAccessHub({
           </div>
 
           {/* Column 2: Custom Modules (Full Height Stack) */}
-          <div className="md:col-span-1 h-full">
+          <div className={`md:col-span-1 h-full transition-all duration-1000 delay-200 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
             {categories[2] && (
               <div className="group flex flex-col bg-white rounded-[2.5rem] p-8 border border-[#E9F1FA] hover:shadow-2xl hover:shadow-[#0371a3]/10 transition-all duration-500 relative overflow-hidden h-full min-h-[500px] hover:bg-[#f0f9ff]">
                 <div className={`absolute top-0 left-0 w-full h-2 bg-[#0371a3]`} />
@@ -276,7 +294,7 @@ export default function QuickAccessHub({
           </div>
 
           {/* Column 3: Expert Support (Full Height Stack) */}
-          <div className="md:col-span-1 h-full">
+          <div className={`md:col-span-1 h-full transition-all duration-1000 delay-300 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
             {categories[3] && (
               <div className="group flex flex-col bg-white rounded-[2rem] p-8 border border-[#E9F1FA] hover:shadow-2xl hover:shadow-[#0371a3]/5 transition-all duration-500 relative overflow-hidden h-full min-h-[500px] hover:bg-[#f0f9ff]">
                 <div className={`absolute top-0 right-0 w-2 h-full bg-[#0371a3]`} />
@@ -320,7 +338,7 @@ export default function QuickAccessHub({
 
         {/* Dynamic Extra Sections */}
         {categories.length > 4 && (
-          <div className="mt-16 pt-12 border-t border-[#E9F1FA]">
+          <div className={`mt-16 pt-12 border-t border-[#E9F1FA] transition-all duration-1000 delay-500 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
             <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] mb-10 text-center">Extended Business Capabilities</h4>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {categories.slice(4).map((cat, i) => (

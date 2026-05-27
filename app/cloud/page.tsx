@@ -1,8 +1,10 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import Footer from '../components/Footer';
 import UnifiedContactModal, { FormType } from '../components/UnifiedContactModal';
+import CloudBackupSection from '../components/CloudBackupSection';
 
 interface PopupProps {
   isOpen: boolean;
@@ -177,30 +179,60 @@ export default function CloudPage() {
       />
 
       {/* Hero Section (Radiant Sky Theme) */}
-      <section className="bg-[#f0f8fa] relative pt-12 pb-16 md:pt-20 md:pb-24 px-6 overflow-hidden border-b border-white/5">
+      <section className="bg-[#f2fcff] relative overflow-hidden flex items-center min-h-[300px] md:min-h-[450px] border-b border-[#0371a3]/10">
         {/* Background Image Overlay */}
         <div 
           className="absolute inset-0 z-0 opacity-10 pointer-events-none"
           style={{ backgroundImage: 'url(/bgggg.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}
         />
 
-        {/* Background Effects */}
-        <div className="absolute inset-0 opacity-40 pointer-events-none">
-          <div className="absolute top-0 right-0 w-[60%] h-[60%] bg-white/40 blur-[130px] -mr-32 -mt-32" />
-          <div className="absolute bottom-0 left-0 w-[40%] h-[40%] bg-sky-200/30 blur-[110px] -ml-24 -mb-24" />
+        {/* Cinematic Image Side (Intelligent Fit) */}
+        <div className="hidden lg:block absolute right-0 top-0 bottom-0 w-1/2 z-0">
+          <div className="relative h-full w-full bg-white/20">
+            {/* Blurred Backdrop */}
+            <Image 
+              src="/hero/dedicated-to-cloud-hosting.jpg" 
+              alt="Cloud Backdrop" 
+              fill 
+              className="object-cover opacity-30 blur-2xl"
+            />
+            {/* Full-Fill Foreground Image */}
+            <div className="absolute inset-0">
+              <Image 
+                src="/hero/dedicated-to-cloud-hosting.jpg" 
+                alt="Sarvadnya Cloud Hosting" 
+                fill 
+                className="object-cover transition-transform duration-[10000ms] hover:scale-110"
+                priority
+              />
+            </div>
+            {/* Cinematic Overlay - Soft transition to image */}
+            <div className="absolute inset-0 bg-gradient-to-r from-[#f2fcff] via-[#f2fcff]/60 to-transparent z-10" />
+            <div className="absolute inset-0 bg-gradient-to-tr from-white/20 via-transparent to-transparent z-10" />
+          </div>
         </div>
         
-        <div className="max-w-4xl mx-auto text-center relative z-10">
-          <div className="inline-flex items-center gap-1.5 px-2 py-1 rounded-full bg-slate-900/5 border border-slate-900/10 text-slate-500 text-[10px] font-bold uppercase tracking-[0.2em] mb-8 backdrop-blur-sm">
-            <span className="flex h-1 w-1 rounded-full bg-slate-400"></span>
-            Next-Gen Cloud Infrastructure
+        <div className="max-w-7xl mx-auto w-full px-6 relative z-10 py-12 md:py-20">
+          <div className="max-w-2xl lg:pr-12 text-left">
+            <div className="inline-flex items-center gap-1.5 px-2 py-1 rounded-full bg-slate-900/5 border border-slate-900/10 text-[#0371a3] text-[10px] font-black uppercase tracking-[0.2em] mb-8 backdrop-blur-sm">
+              <span className="flex h-1 w-1 rounded-full bg-[#0371a3]"></span>
+              Next-Gen Cloud Infrastructure
+            </div>
+            <h1 className="text-4xl md:text-7xl font-black text-slate-900 mb-6 leading-tight tracking-tight">
+              Cloud Solutions
+            </h1>
+            <p className="text-slate-600/80 text-sm md:text-xl max-w-2xl leading-relaxed font-semibold mb-8">
+              Experience Tally solutions with official AWS infrastructure and professional Windows cloud management.
+            </p>
+            <div className="flex flex-wrap gap-4">
+               <button 
+                onClick={() => openModal('callback', 'Cloud Consultation')}
+                className="px-8 py-4 bg-[#0371a3] text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-[#00ABE4] transition-all shadow-xl shadow-[#0371a3]/20"
+              >
+                Consult Our Team
+              </button>
+            </div>
           </div>
-          <h1 className="text-4xl md:text-7xl font-black text-slate-900 mb-6 leading-tight tracking-tight">
-            Cloud Solutions
-          </h1>
-          <p className="text-slate-600/80 text-sm md:text-xl max-w-2xl mx-auto leading-relaxed font-semibold">
-            Experience Tally solutions with official AWS infrastructure and professional Windows cloud management.
-          </p>
         </div>
       </section>
 
@@ -292,6 +324,44 @@ export default function CloudPage() {
           </div>
         </div>
       </section>
+
+      {/* Cloud Comparison Table */}
+      <section className="py-24 px-6 max-w-7xl mx-auto overflow-x-auto">
+        <div className="text-center mb-16">
+          <h2 className="text-3xl md:text-5xl font-black text-slate-900 mb-6">Cloud Infrastructure Comparison</h2>
+          <p className="text-slate-500 font-bold max-w-2xl mx-auto">Choose the foundation that best fits your organizational workflow and security requirements.</p>
+        </div>
+        <table className="w-full border-collapse bg-white rounded-3xl overflow-hidden shadow-xl border border-slate-100 min-w-[800px]">
+          <thead>
+            <tr className="bg-slate-900 text-white">
+              <th className="p-8 text-left font-black uppercase tracking-widest text-[10px]">Infrastructure Detail</th>
+              <th className="p-8 text-center font-black uppercase tracking-widest text-[10px]">AWS Cloud Server</th>
+              <th className="p-8 text-center font-black uppercase tracking-widest text-[10px]">Windows Dedicated VM</th>
+              <th className="p-8 text-center font-black uppercase tracking-widest text-[10px]">NoSky Backup Node</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-slate-100">
+            {[
+              { label: "Deployment Type", aws: "Public Cloud (Shared/Reserved)", vm: "Private Virtual Instance", nosky: "Storage optimized Node" },
+              { label: "OS Environment", aws: "Standard Windows Server", vm: "Full Windows 10/11 Desktop", nosky: "Hardened Backup OS" },
+              { label: "Auto-Scalability", aws: "On-Demand (Elastic)", vm: "Fixed (Upgrade Manual)", nosky: "Fixed Storage Quota" },
+              { label: "Remote Protocol", aws: "RDP over HTTPS", vm: "Direct RDP / VPN", nosky: "HTTPS Sync Client" },
+              { label: "Primary Use Case", aws: "High-Traffic Multi-User", vm: "Native Apps & Add-ons", nosky: "Disaster Recovery" },
+              { label: "Security Layer", aws: "AWS IAM & Security Groups", vm: "Windows Defender & Firewall", nosky: "AES-256 Client-Side" }
+            ].map((row, i) => (
+              <tr key={i} className="hover:bg-slate-50 transition-colors">
+                <td className="p-6 text-slate-900 font-black text-sm border-r border-slate-50">{row.label}</td>
+                <td className="p-6 text-center text-slate-600 text-sm font-medium">{row.aws}</td>
+                <td className="p-6 text-center text-slate-600 text-sm font-medium">{row.vm}</td>
+                <td className="p-6 text-center text-slate-600 text-sm font-medium">{row.nosky}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </section>
+
+      {/* Cloud & Backup Ecosystem Section */}
+      <CloudBackupSection />
 
       <UnifiedContactModal 
         isOpen={modalConfig.isOpen} 

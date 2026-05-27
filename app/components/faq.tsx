@@ -7,12 +7,27 @@ const FAQ = ({ initialData, initialSettings }: { initialData?: any[], initialSet
     const [faqData, setFaqData] = useState<any[]>(initialData || []);
     const [loading, setLoading] = useState(!initialData);
     const [activeIndex, setActiveIndex] = useState<number | null>(null);
-    const [isVisible, setIsVisible] = useState(true);
+    const [isVisible, setIsVisible] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
     const [isExpanded, setIsExpanded] = useState(false);
     const [supportPhone, setSupportPhone] = useState(initialSettings?.support_phone || "9821309060");
     const [whatsappPhone, setWhatsappPhone] = useState(initialSettings?.whatsapp_phone || initialSettings?.support_phone || "9821309060");
     const sectionRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    setIsVisible(true);
+                    observer.disconnect();
+                }
+            },
+            { threshold: 0.1 }
+        );
+
+        if (sectionRef.current) observer.observe(sectionRef.current);
+        return () => observer.disconnect();
+    }, []);
 
     useEffect(() => {
         if (initialData && initialSettings) return;
@@ -64,7 +79,7 @@ const FAQ = ({ initialData, initialSettings }: { initialData?: any[], initialSet
         >
             <div className="max-w-4xl mx-auto px-6">
                 {/* Header */}
-                <div className="text-center mb-16 space-y-4">
+                <div className={`text-center mb-16 space-y-4 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
                     <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#f0f9ff] border border-[#E9F1FA]">
                         <span className="text-[10px] font-black uppercase tracking-widest text-[#0371a3]">Common Questions</span>
                     </div>
@@ -77,7 +92,7 @@ const FAQ = ({ initialData, initialSettings }: { initialData?: any[], initialSet
                 </div>
 
                 {/* Search Bar */}
-                <div className="relative mb-12 group">
+                <div className={`relative mb-12 group transition-all duration-1000 delay-100 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
                     <input 
                         type="text" 
                         placeholder="Search for answers..."
@@ -86,7 +101,7 @@ const FAQ = ({ initialData, initialSettings }: { initialData?: any[], initialSet
                         onChange={(e) => setSearchQuery(e.target.value)}
                     />
                     <svg className="absolute left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 group-focus-within:text-[#00ABE4] transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                     </svg>
                 </div>
 
@@ -95,7 +110,8 @@ const FAQ = ({ initialData, initialSettings }: { initialData?: any[], initialSet
                     {displayFaq.map((item, index) => (
                         <div 
                             key={index}
-                            className={`group rounded-3xl transition-all duration-300 border ${activeIndex === index ? 'bg-[#f0f9ff] border-[#00ABE4]/20 shadow-sm' : 'bg-white border-slate-100 hover:border-[#E9F1FA]'}`}
+                            style={{ transitionDelay: isVisible ? `${200 + index * 50}ms` : '0ms' }}
+                            className={`group rounded-3xl transition-all duration-700 border ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'} ${activeIndex === index ? 'bg-[#f0f9ff] border-[#00ABE4]/20 shadow-sm' : 'bg-white border-slate-100 hover:border-[#E9F1FA]'}`}
                         >
                             <button 
                                 onClick={() => toggleIndex(index)}
@@ -140,7 +156,7 @@ const FAQ = ({ initialData, initialSettings }: { initialData?: any[], initialSet
                     ))}
 
                     {filteredFaq.length > 6 && !searchQuery && (
-                        <div className="text-center pt-8">
+                        <div className={`text-center pt-8 transition-all duration-1000 delay-500 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
                             <button 
                                 onClick={() => setIsExpanded(!isExpanded)}
                                 className="px-8 py-3 rounded-2xl bg-[#f0f9ff] text-[#0371a3] text-xs font-black uppercase tracking-widest hover:bg-[#E9F1FA] transition-all active:scale-95 border border-[#E9F1FA]"
@@ -151,7 +167,7 @@ const FAQ = ({ initialData, initialSettings }: { initialData?: any[], initialSet
                     )}
 
                     {filteredFaq.length === 0 && (
-                        <div className="text-center py-20 bg-[#f0f9ff]/50 rounded-[3rem] border border-dashed border-[#E9F1FA]">
+                        <div className={`text-center py-20 bg-[#f0f9ff]/50 rounded-[3rem] border border-dashed border-[#E9F1FA] transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
                             <p className="text-slate-500">No matching questions found. Try different keywords.</p>
                         </div>
                     )}

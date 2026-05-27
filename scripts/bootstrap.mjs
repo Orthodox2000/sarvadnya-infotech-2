@@ -96,6 +96,21 @@ async function run() {
           { text: "Scalable Add-ons" }
         ],
         ctaPrimary: { text: "View Modules", href: "/products#modules" }
+      },
+      {
+        badge: "Certified Cloud Solutions",
+        titleText: "Reliable Cloud & Zero-Loss Backup - Why Choose Sarvadnya Infotech LLP?",
+        colorFrom: "#131921",
+        colorTo: "#00ABE4",
+        description: "Modernize your TallyPrime experience with our certified cloud solutions. From Official AWS hosting to automated TallyDrive backups.",
+        image: "/hero/dedicated-to-cloud-hosting.jpg",
+        features: [
+          { text: "Official AWS Hosting" },
+          { text: "NoSky Cloud Performance" },
+          { text: "24/7 Remote Access" },
+          { text: "Automated Server Backup" }
+        ],
+        ctaPrimary: { text: "View Cloud Plans", href: "/cloud" }
       }
     ];
 

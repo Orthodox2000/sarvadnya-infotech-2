@@ -203,9 +203,9 @@ body {
 .text-highlight-gradient {
   background: linear-gradient(
     90deg, 
-    var(--hero-text-from, #4f46e5) 0%, 
-    var(--hero-text-to, #7c3aed) 50%,
-    var(--hero-text-from, #4f46e5) 100%
+    var(--hero-text-from, #0371a3) 0%, 
+    var(--hero-text-to, #00ABE4) 50%,
+    var(--hero-text-from, #0371a3) 100%
   );
   background-size: 200% auto;
   -webkit-background-clip: text;

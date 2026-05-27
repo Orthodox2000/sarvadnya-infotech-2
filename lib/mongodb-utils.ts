@@ -122,7 +122,8 @@ export async function updateContent(section: string, content: any) {
 // Modules helpers
 async function fetchModules() {
   const col = await getCollection('modules');
-  const data = await col.find({}).sort({ createdAt: -1 }).toArray();
+  // Sort by sequence (ascending), then by createdAt (descending) for items without sequence
+  const data = await col.find({}).sort({ sequence: 1, createdAt: -1 }).toArray();
   return serializeData(data);
 }
 
@@ -139,8 +140,14 @@ export async function getModule(id: string) {
 
 export async function addModule(data: any) {
   const col = await getCollection('modules');
+  
+  // Find the highest sequence number
+  const lastModule = await col.find({}).sort({ sequence: -1 }).limit(1).toArray();
+  const nextSequence = lastModule.length > 0 ? (lastModule[0].sequence || 0) + 1 : 0;
+
   const result = await col.insertOne({
     ...data,
+    sequence: nextSequence,
     createdAt: new Date(),
     updatedAt: new Date()
   });
@@ -157,6 +164,19 @@ export async function updateModule(id: string, data: any) {
     { $set: { ...updateData, updatedAt: new Date() } },
     { upsert: true }
   );
+  revalidateTag('modules', 'default');
+  return result;
+}
+
+export async function reorderModules(orders: { id: string; sequence: number }[]) {
+  const col = await getCollection('modules');
+  const bulkOps = orders.map(order => ({
+    updateOne: {
+      filter: { _id: new ObjectId(order.id) },
+      update: { $set: { sequence: order.sequence, updatedAt: new Date() } }
+    }
+  }));
+  const result = await col.bulkWrite(bulkOps);
   revalidateTag('modules', 'default');
   return result;
 }

@@ -48,7 +48,7 @@ function StatItem({ label, value, suffix, isVisible }: StatItemProps) {
   }, [isVisible, value]);
 
   return (
-    <div className="flex flex-col items-center justify-center p-3 sm:p-8 text-center transition-all duration-700">
+    <div className={`flex flex-col items-center justify-center p-3 sm:p-8 text-center transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
       <div className="text-2xl sm:text-5xl md:text-6xl font-black text-slate-900 mb-1 sm:mb-2 flex items-baseline">
         <span>{count}</span>
         <span className="text-[#00ABE4] ml-0.5 sm:ml-1">{suffix}</span>
@@ -132,8 +132,7 @@ export default function HomeStat({ initialData }: { initialData?: any[] }) {
   return (
     <section 
       ref={sectionRef}
-      className="w-full py-4 sm:py-4 border-y border-[#E9F1FA] transition-colors duration-300"
-      style={{ backgroundColor: '#ffffff' }}
+      className="w-full py-4 sm:py-4 border-y border-[#E9F1FA] transition-colors duration-300 bg-white"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="grid grid-cols-3 gap-1 divide-x divide-[#E9F1FA]">

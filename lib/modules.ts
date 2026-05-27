@@ -10,6 +10,7 @@ export interface Module {
   features: string[];
   benefits: string[];
   category: string;
+  sequence?: number;
 }
 
 export const modules: Module[] = [
