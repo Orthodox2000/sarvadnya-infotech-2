@@ -170,7 +170,7 @@ export default function CloudPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-[#ecf5fa]">
       <DescriptionPopup 
         isOpen={!!activePopup} 
         onClose={() => setActivePopup(null)} 
@@ -233,7 +233,7 @@ export default function CloudPage() {
       </section>
 
       {/* Cloud Products Grid */}
-      <section className="py-20 px-6 max-w-7xl mx-auto">
+      <section className="py-20 px-6 max-w-7xl mx-auto bg-[#ecf5fa]">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
           {cloudProducts.map((p) => (
             <div key={p.name} 

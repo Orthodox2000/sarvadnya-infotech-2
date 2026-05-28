@@ -49,9 +49,9 @@ export default function ModulesPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-[FAFAFA]">
       {/* Compact Hero Section (Radiant Sky Theme) */}
-      <section className="bg-white relative pt-12 pb-16 md:pt-16 md:pb-24 px-6 overflow-hidden border-b border-[#0371a3]/10">
+      <section className="bg-[#ecf5fa] relative pt-12 pb-16 md:pt-16 md:pb-24 px-6 overflow-hidden border-b border-[#0371a3]/10">
         {/* Background Effects */}
         <div className="absolute inset-0 opacity-40 pointer-events-none">
           <div className="absolute top-0 right-0 w-[60%] h-[60%] bg-white/40 blur-[130px] -mr-32 -mt-32" />

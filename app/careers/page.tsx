@@ -58,7 +58,7 @@ export default function CareersPage() {
       </section>
 
       {/* Job Listings Section */}
-      <section className="py-16 md:py-24 px-6 bg-white">
+      <section className="py-16 md:py-24 px-6 bg-[#ecf5fa]">
         <div className="max-w-4xl mx-auto">
           <div className="mb-12">
             <h2 className="text-2xl md:text-3xl font-black text-slate-900 mb-4 tracking-tight">Current Openings</h2>

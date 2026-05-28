@@ -187,7 +187,7 @@ export default function ProductsPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-[#ecf5fa]">
       <DescriptionPopup 
         isOpen={!!activePopup} 
         onClose={() => setActivePopup(null)} 

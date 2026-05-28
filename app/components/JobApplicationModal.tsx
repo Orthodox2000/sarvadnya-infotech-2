@@ -108,45 +108,45 @@ export default function JobApplicationModal({
         onClick={e => e.stopPropagation()}
       >
         {/* Decorative Header */}
-        <div className="bg-[#0371a3] p-8 md:p-10 text-white relative overflow-hidden">
+        <div className="bg-[#0371a3] p-6 md:p-10 text-white relative overflow-hidden">
           <div className="absolute top-0 right-0 w-32 h-32 bg-[#00ABE4] rounded-full blur-[60px] opacity-40 -mr-16 -mt-16" />
           
           <button 
             className="absolute top-6 right-6 text-white/60 hover:text-white transition-colors z-[20]"
             onClick={onClose}
           >
-            <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className="w-6 h-6 md:w-8 md:h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
 
           <div className="relative z-10">
-            <span className="inline-block px-3 py-1 rounded-full bg-white/10 text-[9px] font-black uppercase tracking-[0.2em] text-sky-100 mb-3 border border-white/10">
+            <span className="inline-block px-3 py-1 rounded-full bg-white/10 text-[9px] font-black uppercase tracking-[0.2em] text-sky-100 mb-2 md:mb-3 border border-white/10">
               Apply Now
             </span>
-            <h2 className="text-3xl font-black tracking-tight">{job.title}</h2>
-            <p className="mt-2 text-xs text-sky-100/70 leading-relaxed font-bold">
+            <h2 className="text-2xl md:text-3xl font-black tracking-tight">{job.title}</h2>
+            <p className="mt-1 md:mt-2 text-[10px] md:text-xs text-sky-100/70 leading-relaxed font-bold">
               Join our team at Sarvadnya Infotech. Fill in your details below.
             </p>
           </div>
         </div>
 
         {/* Form Content */}
-        <div className="p-8 md:p-10 bg-white max-h-[70vh] overflow-y-auto">
+        <div className="p-6 md:p-10 bg-white max-h-[75vh] overflow-y-auto">
           {isSuccess ? (
-            <div className="py-12 text-center animate-in fade-in zoom-in-95 duration-500">
-              <div className="w-20 h-20 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-inner border border-emerald-200">
-                <svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div className="py-8 md:py-12 text-center animate-in fade-in zoom-in-95 duration-500">
+              <div className="w-16 h-16 md:w-20 md:h-20 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-4 md:mb-6 shadow-inner border border-emerald-200">
+                <svg className="w-8 h-8 md:w-10 md:h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" />
                 </svg>
               </div>
-              <h3 className="text-2xl font-black text-slate-900 mb-2 tracking-tight">Application Sent!</h3>
-              <p className="text-slate-500 text-sm font-bold opacity-80">Thank you for your interest. Our HR team will review your profile and get back to you shortly.</p>
+              <h3 className="text-xl md:text-2xl font-black text-slate-900 mb-2 tracking-tight">Application Sent!</h3>
+              <p className="text-slate-500 text-xs md:text-sm font-bold opacity-80">Thank you for your interest. Our HR team will review your profile and get back to you shortly.</p>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                <div className="space-y-2">
+            <form onSubmit={handleSubmit} className="sm:space-y-6 space-y-5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
+                <div className="space-y-1.5">
                   <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Full Name *</label>
                   <input
                     required
@@ -154,10 +154,10 @@ export default function JobApplicationModal({
                     value={formData.name}
                     onChange={e => setFormData({...formData, name: e.target.value})}
                     placeholder="Jane Doe"
-                    className="w-full rounded-2xl bg-[#f0f9ff]/50 border border-[#E9F1FA] px-5 py-3 text-sm text-slate-900 placeholder:text-slate-300 focus:outline-none focus:ring-4 focus:ring-[#00ABE4]/5 focus:border-[#00ABE4] transition-all font-bold"
+                    className="w-full rounded-2xl bg-[#f0f9ff]/50 border border-[#E9F1FA] px-5 py-2.5 sm:py-3 text-sm text-slate-900 placeholder:text-slate-300 focus:outline-none focus:ring-4 focus:ring-[#00ABE4]/5 focus:border-[#00ABE4] transition-all font-bold"
                   />
                 </div>
-                <div className="space-y-2">
+                <div className="space-y-1.5">
                   <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Email Address *</label>
                   <input
                     required
@@ -165,13 +165,13 @@ export default function JobApplicationModal({
                     value={formData.email}
                     onChange={e => setFormData({...formData, email: e.target.value})}
                     placeholder="jane@example.com"
-                    className="w-full rounded-2xl bg-[#f0f9ff]/50 border border-[#E9F1FA] px-5 py-3 text-sm text-slate-900 placeholder:text-slate-300 focus:outline-none focus:ring-4 focus:ring-[#00ABE4]/5 focus:border-[#00ABE4] transition-all font-bold"
+                    className="w-full rounded-2xl bg-[#f0f9ff]/50 border border-[#E9F1FA] px-5 py-2.5 sm:py-3 text-sm text-slate-900 placeholder:text-slate-300 focus:outline-none focus:ring-4 focus:ring-[#00ABE4]/5 focus:border-[#00ABE4] transition-all font-bold"
                   />
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                <div className="space-y-2">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
+                <div className="space-y-1.5">
                   <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Phone Number *</label>
                   <input
                     required
@@ -179,10 +179,10 @@ export default function JobApplicationModal({
                     value={formData.phone}
                     onChange={e => setFormData({...formData, phone: e.target.value})}
                     placeholder="+91 00000 00000"
-                    className="w-full rounded-2xl bg-[#f0f9ff]/50 border border-[#E9F1FA] px-5 py-3 text-sm text-slate-900 placeholder:text-slate-300 focus:outline-none focus:ring-4 focus:ring-[#00ABE4]/5 focus:border-[#00ABE4] transition-all font-bold"
+                    className="w-full rounded-2xl bg-[#f0f9ff]/50 border border-[#E9F1FA] px-5 py-2.5 sm:py-3 text-sm text-slate-900 placeholder:text-slate-300 focus:outline-none focus:ring-4 focus:ring-[#00ABE4]/5 focus:border-[#00ABE4] transition-all font-bold"
                   />
                 </div>
-                <div className="space-y-2">
+                <div className="space-y-1.5">
                   <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Experience (Years) *</label>
                   <input
                     required
@@ -190,15 +190,15 @@ export default function JobApplicationModal({
                     value={formData.experience}
                     onChange={e => setFormData({...formData, experience: e.target.value})}
                     placeholder="e.g. 2 years"
-                    className="w-full rounded-2xl bg-[#f0f9ff]/50 border border-[#E9F1FA] px-5 py-3 text-sm text-slate-900 placeholder:text-slate-300 focus:outline-none focus:ring-4 focus:ring-[#00ABE4]/5 focus:border-[#00ABE4] transition-all font-bold"
+                    className="w-full rounded-2xl bg-[#f0f9ff]/50 border border-[#E9F1FA] px-5 py-2.5 sm:py-3 text-sm text-slate-900 placeholder:text-slate-300 focus:outline-none focus:ring-4 focus:ring-[#00ABE4]/5 focus:border-[#00ABE4] transition-all font-bold"
                   />
                 </div>
               </div>
 
-              <div className="space-y-2">
+              <div className="space-y-1.5">
                 <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Resume (PDF only) *</label>
                 <div 
-                  className={`relative border-2 border-dashed rounded-[1.5rem] p-6 transition-all flex flex-col items-center justify-center gap-3 cursor-pointer
+                  className={`relative border-2 border-dashed rounded-[1.5rem] p-5 md:p-6 transition-all flex flex-col items-center justify-center gap-2 sm:gap-3 cursor-pointer
                   ${resume ? 'border-emerald-200 bg-emerald-50/30' : 'border-[#E9F1FA] bg-[#f0f9ff]/30 hover:border-[#00ABE4]/50 hover:bg-[#f0f9ff]/50'}`}
                   onClick={() => fileInputRef.current?.click()}
                 >
@@ -210,39 +210,39 @@ export default function JobApplicationModal({
                     className="hidden"
                   />
                   {resume ? (
-                    <div className="flex flex-col items-center gap-2 text-emerald-600">
-                      <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <div className="flex flex-col items-center gap-1.5 text-emerald-600">
+                      <svg className="w-6 h-6 md:w-8 md:h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
-                      <span className="text-[11px] font-black truncate max-w-[250px] uppercase tracking-widest">{resume.name}</span>
+                      <span className="text-[10px] font-black truncate max-w-[250px] uppercase tracking-widest">{resume.name}</span>
                     </div>
                   ) : (
                     <>
-                      <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center shadow-sm border border-[#E9F1FA]">
-                        <svg className="w-6 h-6 text-[#00ABE4]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white flex items-center justify-center shadow-sm border border-[#E9F1FA]">
+                        <svg className="w-5 h-5 md:w-6 md:h-6 text-[#00ABE4]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
                         </svg>
                       </div>
-                      <span className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Click to upload PDF resume</span>
+                      <span className="text-[9px] md:text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Click to upload PDF resume</span>
                     </>
                   )}
                 </div>
               </div>
 
-              <div className="space-y-2">
+              <div className="space-y-1.5">
                 <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Cover Note (Optional)</label>
                 <textarea
                   value={formData.message}
                   onChange={e => setFormData({...formData, message: e.target.value})}
                   placeholder="Tell us why you're a great fit..."
-                  rows={3}
-                  className="w-full rounded-2xl bg-[#f0f9ff]/50 border border-[#E9F1FA] px-5 py-4 text-sm text-slate-900 placeholder:text-slate-300 focus:outline-none focus:ring-4 focus:ring-[#00ABE4]/5 focus:border-[#00ABE4] transition-all font-bold resize-none"
+                  rows={2}
+                  className="w-full rounded-2xl bg-[#f0f9ff]/50 border border-[#E9F1FA] px-5 py-3.5 sm:py-4 text-sm text-slate-900 placeholder:text-slate-300 focus:outline-none focus:ring-4 focus:ring-[#00ABE4]/5 focus:border-[#00ABE4] transition-all font-bold resize-none"
                 />
               </div>
 
               {error && (
-                <div className="p-4 rounded-2xl bg-rose-50 text-rose-600 text-[11px] font-black uppercase tracking-widest flex items-center gap-3 animate-in slide-in-from-top-2 duration-300 border border-rose-100">
-                  <svg className="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <div className="p-3.5 rounded-2xl bg-rose-50 text-rose-600 text-[10px] font-black uppercase tracking-widest flex items-center gap-3 animate-in slide-in-from-top-2 duration-300 border border-rose-100">
+                  <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                   {error}
@@ -252,7 +252,7 @@ export default function JobApplicationModal({
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="group relative w-full h-14 bg-[#0371a3] text-white rounded-2xl font-black text-xs uppercase tracking-[0.2em] shadow-xl shadow-[#0371a3]/20 hover:bg-[#00ABE4] transition-all flex items-center justify-center gap-3 overflow-hidden active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed"
+                className="group relative w-full h-12 sm:h-14 bg-[#0371a3] text-white rounded-2xl font-black text-xs uppercase tracking-[0.2em] shadow-xl shadow-[#0371a3]/20 hover:bg-[#00ABE4] transition-all flex items-center justify-center gap-3 overflow-hidden active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed"
               >
                 {isSubmitting ? (
                   <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />

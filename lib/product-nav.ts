@@ -130,16 +130,16 @@ export const productItems: ProductItem[] = [
     href: "/tutorials",
     subItems: [
       {
-        id: "r-webinars",
-        label: "Weekly Webinars",
+        id: "l-video",
+        label: "Video Learning",
         href: "/tutorials",
-        description: "Live sessions every Thursday at 3 PM.",
+        description: "Watch and learn with step-by-step guides.",
       },
       {
-        id: "r-tutorials",
-        label: "Interactive Tutorials",
-        href: "/tutorials",
-        description: "Guides and videos to master Tally.",
+        id: "l-capabilities",
+        label: "Capabilities of Tally",
+        href: "/capabilities",
+        description: "Explore the full power of TallyPrime.",
       },
     ],
   },

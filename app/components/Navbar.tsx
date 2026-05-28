@@ -68,7 +68,7 @@ export default function Navbar({ initialSettings }: { initialSettings?: any }) {
   ];
 
   return (
-    <header className="relative z-[1000] w-full border-b border-white/5 bg-[#131921] shadow-sm">
+    <header className="relative z-[1000] w-full border-b border-white/5 bg-[#232F3E]  shadow-sm"> {/*#232F3E*/}
       <nav className="mx-auto flex h-12 lg:h-16 w-full max-w-7xl items-center justify-between px-6">
         <Link
           href="/"

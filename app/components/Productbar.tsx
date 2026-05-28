@@ -156,24 +156,11 @@ const Productbar = ({ initialSettings }: { initialSettings?: any }) => {
 
   return (
     <div 
-      className={`w-full border-b border-white/5 relative z-[30] flex items-center overflow-x-clip no-scrollbar transition-all duration-500 ease-in-out shadow-sm bg-[#232F3E] 
+      className={`w-full border-b border-slate-200 relative z-[30] flex items-center overflow-x-clip no-scrollbar transition-all duration-500 ease-in-out shadow-sm bg-[#fafafa] 
         ${isVisible ? 'h-[28px] lg:h-[40px] opacity-100' : 'h-0 opacity-0 pointer-events-none'}`}
     >
       <div className="mx-auto w-full max-w-7xl px-2 sm:px-4 flex justify-evenly items-stretch h-full">
-        {/* Company Logo & Name */}
-        <Link 
-            href="/capabilities" 
-            className="flex items-center gap-1 pr-1 lg:pr-8 sm:pr-5 transition-opacity hover:opacity-80 shrink-0  mr-1 lg:mr-4" 
-            onClick={handleLinkClick}
-        >
-          <Image 
-            src="/logo.png" 
-            alt="Sarvadnya" 
-            width={20} 
-            height={20} 
-            className="object-contain w-[12px] lg:w-[18px] h-auto brightness-0 invert" 
-          />
-        </Link>
+        
 
         {items.map((item, index) => (
           <div 
@@ -185,7 +172,7 @@ const Productbar = ({ initialSettings }: { initialSettings?: any }) => {
             <button
               onClick={(e) => handleMenuToggle(e, item.label)}
               className={`flex items-center gap-1 lg:gap-2.5 px-1.5 lg:px-7 text-[8.5px] lg:text-[13.5px] font-bold transition-all h-full
-                ${activeMenu === item.label ? 'text-white bg-white/10' : 'text-white hover:bg-white/10'}`}
+                ${activeMenu === item.label ? 'text-[#0371a3] bg-white' : 'text-slate-600 hover:bg-slate-50'}`}
             >
               <span className="opacity-100 scale-90 lg:scale-110">
                 {iconMap[item.label]}

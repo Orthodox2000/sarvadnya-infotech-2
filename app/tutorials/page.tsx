@@ -110,13 +110,13 @@ export default function TutorialsPage() {
                     </div>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 min-h-[400px]">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 min-h-[400px]">
                     {filteredTutorials.map((tutorial) => (
                         <div 
                             key={tutorial._id} 
-                            className="group bg-white rounded-3xl overflow-hidden border border-slate-100 hover:shadow-xl hover:border-[#00ABE4]/20 transition-all duration-500 flex flex-col h-full"
+                            className="group bg-white rounded-3xl overflow-hidden border border-slate-100 hover:shadow-2xl hover:border-[#0371a3]/20 hover:-translate-y-1 transition-all duration-500 flex flex-col h-full lg:h-3/4 shadow-sm"
                         >
-                            <div className="aspect-[4/3] relative overflow-hidden bg-[#f0f9ff]">
+                            <div className="aspect-video relative overflow-hidden bg-slate-100">
                                 {tutorial.type === 'video' ? (
                                     <Image 
                                         src={getYoutubeThumbnail(tutorial.url)} 
@@ -138,34 +138,39 @@ export default function TutorialsPage() {
                                         </div>
                                     )
                                 )}
-                                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center">
-                                    <div className="w-10 h-10 bg-white/95 rounded-full flex items-center justify-center shadow-xl opacity-0 group-hover:opacity-100 scale-90 group-hover:scale-100 transition-all duration-500">
-                                        <svg className="w-5 h-5 text-[#0371a3]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3"><path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" /></svg>
+                                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors flex items-center justify-center">
+                                    <div className="w-12 h-12 bg-white/95 rounded-full flex items-center justify-center shadow-2xl opacity-0 group-hover:opacity-100 scale-90 group-hover:scale-100 transition-all duration-500">
+                                        <svg className="w-6 h-6 text-[#0371a3] ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
                                     </div>
                                 </div>
-                                <div className="absolute top-3 left-3">
-                                    <span className="px-2 py-0.5 bg-white/70 backdrop-blur-md text-[#0371a3] text-[8px] font-black uppercase tracking-widest rounded-full shadow-sm border border-white/50">
+                                <div className="absolute top-4 left-4">
+                                    <span className="px-2.5 py-1 bg-white/90 backdrop-blur-md text-[#0371a3] text-[9px] font-bold uppercase tracking-widest rounded-lg shadow-sm border border-white/50">
                                         {tutorial.folder || 'General'}
                                     </span>
                                 </div>
                             </div>
                             <div className="p-4 flex flex-col flex-1">
                                 <div className="flex items-center justify-between mb-2">
-                                    <span className="text-[#0371a3] text-[8px] font-black uppercase tracking-widest">
-                                        {tutorial.type === 'video' ? 'Webinar' : 'Article'}
-                                    </span>
-                                    <span className="text-slate-400 text-[8px] font-bold">{tutorial.date}</span>
+                                    <div className="flex items-center gap-1.5">
+                                        <div className={`w-1.5 h-1.5 rounded-full ${tutorial.type === 'video' ? 'bg-rose-500' : 'bg-sky-500'}`} />
+                                        <span className="text-slate-400 text-[9px] font-medium uppercase tracking-wider">{tutorial.date}</span>
+                                    </div>
                                 </div>
-                                <h3 className="text-xs font-black text-slate-900 mb-2 group-hover:text-[#00ABE4] transition-colors leading-tight line-clamp-2 tracking-tight">{tutorial.title}</h3>
-                                <p className="text-slate-500 text-[10px] leading-relaxed line-clamp-2 font-medium opacity-80 mb-4">
-                                    {tutorial.description}
-                                </p>
+                                <h3 className="text-sm font-bold text-slate-900 mb-3 group-hover:text-[#0371a3] transition-colors leading-snug line-clamp-2 tracking-tight flex-1">
+                                    {tutorial.title}
+                                </h3>
+                                
+                                <div className="flex flex-wrap gap-1 mb-4">
+                                    {tutorial.tags?.slice(0, 2).map((tag: string) => (
+                                        <span key={tag} className="px-1.5 py-0.5 bg-slate-50 text-slate-400 text-[8px] font-semibold rounded-md border border-slate-100 uppercase tracking-tighter">#{tag}</span>
+                                    ))}
+                                </div>
                                 
                                 <button 
                                     onClick={() => openDetails(tutorial)}
-                                    className="mt-auto w-full py-2 bg-slate-50 text-slate-600 text-[9px] font-black uppercase tracking-widest rounded-xl hover:bg-[#0371a3] hover:text-white transition-all border border-slate-100"
+                                    className="w-full py-2 bg-[#0371a3]/5 text-[#0371a3] text-[9px] font-bold uppercase tracking-widest rounded-lg hover:bg-[#0371a3] hover:text-white transition-all border border-[#0371a3]/10"
                                 >
-                                    View Details
+                                    Explore
                                 </button>
                             </div>
                         </div>

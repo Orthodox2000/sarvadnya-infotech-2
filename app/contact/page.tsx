@@ -214,18 +214,18 @@ export default function ContactPage() {
               </p>
               
               {isSuccess ? (
-                <div className="py-12 text-center animate-in fade-in zoom-in-95 duration-500">
-                  <div className="w-20 h-20 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-inner">
-                    <svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <div className="py-8 sm:py-12 text-center animate-in fade-in zoom-in-95 duration-500">
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6 shadow-inner">
+                    <svg className="w-8 h-8 sm:w-10 sm:h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" />
                     </svg>
                   </div>
-                  <h3 className="text-2xl font-black text-[#0371a3] mb-2">Request Received!</h3>
+                  <h3 className="text-xl sm:text-2xl font-black text-[#0371a3] mb-2">Request Received!</h3>
                   <p className="text-slate-500 font-medium">Our team will call you back within 15 minutes.</p>
                 </div>
               ) : (
-                <form onSubmit={handleSubmit} className="space-y-5">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                <form onSubmit={handleSubmit} className="sm:space-y-5 space-y-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
                     <div className="space-y-1.5">
                       <label className="text-[10px] font-bold uppercase tracking-widest text-slate-400 ml-1">Full Name</label>
                       <input
@@ -234,7 +234,7 @@ export default function ContactPage() {
                         value={formData.name}
                         onChange={e => setFormData({...formData, name: e.target.value})}
                         placeholder="e.g. John Doe"
-                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#00ABE4]/10 focus:border-[#00ABE4] transition-all shadow-sm"
+                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 sm:py-3 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#00ABE4]/10 focus:border-[#00ABE4] transition-all shadow-sm"
                       />
                     </div>
                     <div className="space-y-1.5">
@@ -245,11 +245,11 @@ export default function ContactPage() {
                         value={formData.email}
                         onChange={e => setFormData({...formData, email: e.target.value})}
                         placeholder="john@example.com"
-                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#00ABE4]/10 focus:border-[#00ABE4] transition-all shadow-sm"
+                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 sm:py-3 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#00ABE4]/10 focus:border-[#00ABE4] transition-all shadow-sm"
                       />
                     </div>
                   </div>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
                     <div className="space-y-1.5">
                       <label className="text-[10px] font-bold uppercase tracking-widest text-slate-400 ml-1">Phone Number</label>
                       <input
@@ -258,7 +258,7 @@ export default function ContactPage() {
                         value={formData.contact}
                         onChange={e => setFormData({...formData, contact: e.target.value})}
                         placeholder="+91 00000 00000"
-                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#00ABE4]/10 focus:border-[#00ABE4] transition-all shadow-sm"
+                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 sm:py-3 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#00ABE4]/10 focus:border-[#00ABE4] transition-all shadow-sm"
                       />
                     </div>
                     <div className="space-y-1.5">
@@ -268,7 +268,7 @@ export default function ContactPage() {
                         value={formData.service}
                         onChange={e => setFormData({...formData, service: e.target.value})}
                         placeholder="e.g. TallyPrime Upgrade"
-                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#00ABE4]/10 focus:border-[#00ABE4] transition-all shadow-sm"
+                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 sm:py-3 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#00ABE4]/10 focus:border-[#00ABE4] transition-all shadow-sm"
                       />
                     </div>
                   </div>
@@ -279,13 +279,13 @@ export default function ContactPage() {
                       onChange={e => setFormData({...formData, message: e.target.value})}
                       placeholder="How can we help you today?"
                       rows={3}
-                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#00ABE4]/10 focus:border-[#00ABE4] resize-none transition-all shadow-sm"
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 sm:py-3 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#00ABE4]/10 focus:border-[#00ABE4] resize-none transition-all shadow-sm"
                     />
                   </div>
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="group relative w-full mt-2 py-4 bg-[#00ABE4] text-white rounded-xl font-black text-xs uppercase tracking-[0.2em] shadow-[0_20px_40px_rgba(0,171,228,0.2)] hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-3 overflow-hidden disabled:opacity-70"
+                    className="group relative w-full mt-1 sm:mt-2 py-3.5 sm:py-4 bg-[#00ABE4] text-white rounded-xl font-black text-xs uppercase tracking-[0.2em] shadow-[0_20px_40px_rgba(0,171,228,0.2)] hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-3 overflow-hidden disabled:opacity-70"
                   >
                     {isSubmitting ? (
                       <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
