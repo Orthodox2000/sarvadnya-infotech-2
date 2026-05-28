@@ -179,12 +179,8 @@ export default function CloudPage() {
       />
 
       {/* Hero Section (Radiant Sky Theme) */}
-      <section className="bg-[#f2fcff] relative overflow-hidden flex items-center min-h-[300px] md:min-h-[450px] border-b border-[#0371a3]/10">
-        {/* Background Image Overlay */}
-        <div 
-          className="absolute inset-0 z-0 opacity-10 pointer-events-none"
-          style={{ backgroundImage: 'url(/bgggg.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}
-        />
+      <section className="bg-[#ffffff] relative overflow-hidden flex items-center min-h-[300px] md:min-h-[450px] border-b border-[#0371a3]/10">
+       
 
         {/* Cinematic Image Side (Intelligent Fit) */}
         <div className="hidden lg:block absolute right-0 top-0 bottom-0 w-1/2 z-0">
@@ -207,8 +203,8 @@ export default function CloudPage() {
               />
             </div>
             {/* Cinematic Overlay - Soft transition to image */}
-            <div className="absolute inset-0 bg-gradient-to-r from-[#f2fcff] via-[#f2fcff]/60 to-transparent z-10" />
-            <div className="absolute inset-0 bg-gradient-to-tr from-white/20 via-transparent to-transparent z-10" />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#f8fbfc] via-[#f2fcff]/60 to-transparent z-10" />
+          
           </div>
         </div>
         

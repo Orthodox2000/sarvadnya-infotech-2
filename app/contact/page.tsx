@@ -112,14 +112,8 @@ export default function ContactPage() {
     <div className="min-h-screen bg-white text-slate-900">
       {/* Centered Tighter Hero Section */}
       <section 
-        className="bg-[#f0f8fa] pt-8 pb-8 md:pt-12 md:pb-12 px-6 text-center relative overflow-hidden flex flex-col items-center border-b border-white/5"
+        className="bg-white pt-8 pb-8 md:pt-12 md:pb-12 px-6 text-center relative overflow-hidden flex flex-col items-center border-b border-[#0371a3]/10"
       >
-        {/* Background Image Overlay */}
-        <div 
-          className="absolute inset-0 z-0 opacity-10 pointer-events-none"
-          style={{ backgroundImage: 'url(/bgggg.png)', backgroundSize: 'cover', backgroundPosition: 'center',opacity: 0.2 }}
-        />
-
         <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-40">
           <div className="absolute top-0 right-0 w-[70%] h-[70%] bg-white/10 blur-[130px] -mr-32 -mt-32" />
           <div className="absolute bottom-0 left-0 w-[50%] h-[50%] bg-sky-200/20 blur-[110px] -ml-24 -mb-24" />

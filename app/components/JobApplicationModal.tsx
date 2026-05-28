@@ -271,7 +271,7 @@ export default function JobApplicationModal({
         
         <div className="px-10 pb-6 bg-white">
           <p className="text-center text-[10px] text-slate-300 font-black uppercase tracking-widest opacity-60">
-            Secure recruitment portal • v1.1.139
+            Secure recruitment portal • v1.1.251
           </p>
         </div>
       </div>

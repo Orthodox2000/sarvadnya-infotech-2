@@ -59,13 +59,7 @@ export default function MobileAppBizPage() {
   return (
     <div className="min-h-screen bg-white text-slate-900">
       {/* Cinematic Hero Section (Themed Hero) */}
-      <section className="bg-[#dff0f5] relative overflow-hidden flex items-center min-h-[200px] md:min-h-[350px] border-b border-[#0371a3]/10">
-        {/* Background Image Overlay */}
-        <div 
-          className="absolute inset-0 z-0 opacity-10 pointer-events-none"
-          style={{ backgroundImage: 'url(/bgggg.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}
-        />
-
+      <section className="bg-white relative overflow-hidden flex items-center min-h-[200px] md:min-h-[350px] border-b border-[#0371a3]/10">
         {/* Cinematic Image Side - Hidden on mobile, full height on desktop */}
         <div className="hidden lg:block absolute right-0 top-0 bottom-0 w-1/2 z-0">
           <div className="relative h-full w-full">
@@ -77,7 +71,7 @@ export default function MobileAppBizPage() {
               priority
             />
             {/* Cinematic Overlay - Fades image into the light background */}
-            <div className="absolute inset-0 bg-gradient-to-r from-[#dff0f5] via-[#dff0f5]/60 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-r from-white via-white/80 to-transparent" />
           </div>
         </div>
         
@@ -88,15 +82,7 @@ export default function MobileAppBizPage() {
                 <span className="flex h-0.5 w-0.5 rounded-full bg-[#0371a3]"></span>
                 Mobile Intelligence
               </div>
-              <div className="h-8 w-px bg-[#0371a3]/20" />
-              <div className="relative h-8 w-24">
-                 <Image 
-                    src="/PartnerBrands/BizAnalyst.png" 
-                    alt="Biz Analyst Logo" 
-                    fill
-                    className="object-contain"
-                 />
-              </div>
+              
             </div>
             <h1 className="text-3xl md:text-6xl font-black text-slate-900 mb-6 leading-tight tracking-tight">
               Tally on <br />
@@ -139,9 +125,9 @@ export default function MobileAppBizPage() {
       {/* Analytics Section */}
       <section className="py-24 px-6 bg-slate-50">
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          <div className="relative rounded-[2.5rem] overflow-hidden shadow-2xl aspect-[3/4] max-w-md mx-auto">
+          <div className="relative rounded-[2.5rem] overflow-hidden shadow-2xl aspect-video max-w-md mx-auto">
             <Image 
-              src="/biz-analyst-tally-mobile-app.jpg" 
+              src="/biz.jpg" 
               alt="Mobile App Analytics" 
               fill 
               className="object-cover"

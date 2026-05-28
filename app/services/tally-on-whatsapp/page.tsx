@@ -58,15 +58,9 @@ export default function TallyOnWhatsappPage() {
   return (
     <div className="min-h-screen bg-white text-slate-900">
       {/* Compact Cinematic Hero Section (Themed Hero) */}
-      <section className="bg-[#dff0f5] relative overflow-hidden flex items-center min-h-[200px] md:min-h-[350px] border-b border-[#0371a3]/10">
-        {/* Background Image Overlay */}
-        <div 
-          className="absolute inset-0 z-0 opacity-10 pointer-events-none"
-          style={{ backgroundImage: 'url(/bgggg.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}
-        />
-
+      <section className="bg-white relative overflow-hidden flex items-center min-h-[200px] md:min-h-[350px] border-b border-[#0371a3]/10">
         {/* Cinematic Image Side - Hidden on mobile, full height on desktop */}
-        <div className="hidden lg:block absolute right-0 top-0 bottom-0 w-1/2 z-0">
+        <div className="hidden lg:block absolute right-0 top-0 bottom-0 w-5/9 z-0">
           <div className="relative h-full w-full">
             <Image 
               src="/tally2whatsapp.png" 
@@ -76,7 +70,7 @@ export default function TallyOnWhatsappPage() {
               priority
             />
             {/* Cinematic Overlay - Fades image into the light background */}
-            <div className="absolute inset-0 bg-gradient-to-r from-[#dff0f5] via-[#dff0f5]/60 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-r from-white via-white/80 to-transparent" />
           </div>
         </div>
 
@@ -130,7 +124,7 @@ export default function TallyOnWhatsappPage() {
           <div className="relative rounded-[2.5rem] overflow-hidden shadow-2xl aspect-video bg-white p-8">
              <div className="relative h-full w-full">
                 <Image 
-                  src="/whatsappintegration.png" 
+                  src="/tally2whatsapp.png" 
                   alt="WhatsApp Integration View" 
                   fill 
                   className="object-contain"

@@ -58,13 +58,7 @@ export default function TeamPage() {
   return (
     <main className="min-h-screen bg-white text-slate-900">
       {/* Hero: Team Photo & Common Message (Themed Hero) */}
-      <section className="bg-[#f0f8fa] py-20 px-6 sm:px-12 lg:px-24 relative overflow-hidden flex flex-col items-center border-b border-white/5">
-        {/* Background Image Overlay */}
-        <div 
-          className="absolute inset-0 z-0 opacity-10 pointer-events-none"
-          style={{ backgroundImage: 'url(/bgggg.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}
-        />
-
+      <section className="bg-white py-20 px-6 sm:px-12 lg:px-24 relative overflow-hidden flex flex-col items-center border-b border-[#0371a3]/10">
         <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-40">
           <div className="absolute top-0 right-0 w-[70%] h-[70%] bg-white/10 blur-[130px] -mr-32 -mt-32" />
           <div className="absolute bottom-0 left-0 w-[50%] h-[50%] bg-sky-200/20 blur-[110px] -ml-24 -mb-24" />

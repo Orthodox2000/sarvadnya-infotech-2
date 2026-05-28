@@ -45,15 +45,9 @@ function SearchContent() {
   }, [query]);
 
   return (
-    <div className="min-h-screen bg-white flex flex-col">
-      {/* Search Header / Hero (Radiant Sky Theme) */}
-      <section className="bg-[#f0f8fa] relative pt-12 pb-12 md:pt-16 md:pb-16 px-6 overflow-hidden border-b border-white/5">
-        {/* Background Image Overlay */}
-        <div 
-          className="absolute inset-0 z-0 opacity-10 pointer-events-none"
-          style={{ backgroundImage: 'url(/bgggg.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}
-        />
-
+    <div className="min-h-screen bg-white">
+      {/* Search Header Section (Themed) */}
+      <section className="bg-white relative pt-12 pb-16 md:pt-20 md:pb-24 px-6 overflow-hidden border-b border-[#0371a3]/10">
         {/* Background Effects */}
         <div className="absolute inset-0 opacity-40 pointer-events-none">
           <div className="absolute top-0 right-0 w-[60%] h-[60%] bg-white/40 blur-[130px] -mr-32 -mt-32" />

@@ -12,6 +12,7 @@ interface AdminSidebarProps {
 const AdminSidebar = ({ isOpen, onClose }: AdminSidebarProps) => {
   const pathname = usePathname();
   const [adminLogo, setAdminLogo] = useState<string | null>(null);
+  const [version, setVersion] = useState<string>('v1.1.251');
 
   useEffect(() => {
     const fetchSettings = async () => {
@@ -21,9 +22,12 @@ const AdminSidebar = ({ isOpen, onClose }: AdminSidebarProps) => {
         if (Array.isArray(data)) {
           const logoSetting = data.find((s: any) => s.key === 'NEXT_PUBLIC_ADMIN_LOGO');
           if (logoSetting?.value) setAdminLogo(logoSetting.value);
+          
+          const versionSetting = data.find((s: any) => s.key === 'NEXT_PUBLIC_APP_VERSION');
+          if (versionSetting?.value) setVersion(versionSetting.value);
         }
       } catch (err) {
-        console.error('Failed to fetch admin logo:', err);
+        console.error('Failed to fetch admin settings:', err);
       }
     };
     fetchSettings();
@@ -70,7 +74,7 @@ const AdminSidebar = ({ isOpen, onClose }: AdminSidebarProps) => {
               </h2>
             )}
             <p className="text-[10px] text-slate-400 font-bold uppercase tracking-[0.2em] mt-1">
-              v1.1.187
+              {version}
             </p>
           </div>
           <button 

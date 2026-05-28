@@ -118,13 +118,13 @@ export default function Navbar({ initialSettings }: { initialSettings?: any }) {
           </Link> */}
           <Link
             href="/careers"
-            className="inline-flex items-center justify-center rounded-full bg-white/5 px-5 py-2 text-[11px] font-bold uppercase tracking-wider text-white border border-white/10 transition-all hover:bg-white/10 shadow-sm"
+            className="inline-flex items-center justify-center rounded-full bg-white/5 px-5 py-2 text-[11px] font-bold uppercase tracking-wider text-white border border-white/10 transition-all duration-500 ease-in-out hover:bg-white/10 shadow-sm"
           >
             Careers
           </Link>
           <Link
             href="/contact"
-            className="inline-flex items-center justify-center rounded-full bg-[#00ABE4] text-white px-5 py-2 text-[11px] font-bold uppercase tracking-wider shadow-lg shadow-[#00ABE4]/20 transition-all hover:bg-white hover:text-[#131921] hover:-translate-y-0.5"
+            className="inline-flex items-center justify-center rounded-full bg-[#00ABE4] text-white px-5 py-2 text-[11px] font-bold uppercase tracking-wider shadow-lg shadow-[#00ABE4]/20 transition-all duration-500 ease-in-out hover:bg-white hover:text-[#131921] hover:-translate-y-0.5"
           >
             Support
           </Link>

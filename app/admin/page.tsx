@@ -80,7 +80,7 @@ export default function AdminDashboard() {
             </div>
             <div className="flex justify-between text-xs">
               <span className="text-slate-500">Version</span>
-              <span className="font-bold text-[#0371a3]">{health?.version || 'v1.1.6'}</span>
+              <span className="font-bold text-[#0371a3]">{health?.version || 'v1.1.251'}</span>
             </div>
             <div className="flex justify-between text-xs">
               <span className="text-slate-500">Last Check</span>

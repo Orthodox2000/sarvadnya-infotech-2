@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
 import Footer from '../components/Footer';
 import UnifiedContactModal, { FormType } from '../components/UnifiedContactModal';
@@ -23,16 +22,11 @@ const ServiceDetailPopup = ({ isOpen, onClose, service, onEnquire }: ServicePopu
         </button>
         
         <div className="flex items-center gap-5 mb-8">
-          <div className="w-20 h-20 rounded-2xl relative overflow-hidden shadow-xl border border-slate-100 flex-shrink-0">
-            <Image 
-              src={service.image} 
-              alt={service.title} 
-              fill 
-              className="object-cover"
-            />
+          <div className={`w-16 h-16 rounded-2xl flex items-center justify-center ${service.iconBg} text-white shadow-xl`}>
+             {service.icon}
           </div>
           <div>
-            <span className="px-3 py-1 rounded-full bg-[#dff0f5] text-[#0371a3] text-[9px] font-black uppercase tracking-widest border border-[#0371a3]/10 mb-2 inline-block">
+            <span className="px-3 py-1 rounded-full bg-slate-50 text-[#0371a3] text-[9px] font-black uppercase tracking-widest border border-slate-100 mb-2 inline-block">
               {service.tag}
             </span>
             <h3 className="text-2xl md:text-3xl font-black text-slate-900 leading-tight tracking-tight">{service.title}</h3>
@@ -70,12 +64,12 @@ const ServiceDetailPopup = ({ isOpen, onClose, service, onEnquire }: ServicePopu
               onEnquire(service.title);
               onClose();
             }}
-            className="flex-1 py-4 bg-[#0371a3] text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-[#00ABE4] transition-all shadow-xl shadow-[#0371a3]/20 hover:-translate-y-0.5 active:translate-y-0"
+            className="flex-1 py-4 bg-black text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-white hover:text-black border border-transparent hover:border-black transition-all duration-500 shadow-xl"
           >
             Request Priority Service
           </button>
           <button 
-            className="flex-1 py-4 border border-slate-200 text-slate-500 rounded-2xl font-bold text-xs uppercase tracking-widest hover:bg-slate-50 hover:text-slate-900 transition-all"
+            className="flex-1 py-4 border border-slate-200 text-slate-500 rounded-2xl font-bold text-xs uppercase tracking-widest hover:bg-slate-50 hover:text-slate-900 transition-all duration-500"
             onClick={onClose}
           >
             Close Details
@@ -87,7 +81,6 @@ const ServiceDetailPopup = ({ isOpen, onClose, service, onEnquire }: ServicePopu
 };
 
 export default function ServicesPage() {
-  const [viewMode, setViewMode] = useState<'simple' | 'detailed'>('simple');
   const [selectedService, setSelectedService] = useState<any | null>(null);
   const [modalConfig, setModalConfig] = useState<{isOpen: boolean; type: FormType; service: string}>({
     isOpen: false,
@@ -104,146 +97,101 @@ export default function ServicesPage() {
       title: "Corporate Training",
       simpleDesc: "Master-level TallyPrime skills for your workforce.",
       detailedDesc: "Strategic training programs covering advanced statutory features, audit trails, and management reporting to maximize productivity.",
-      features: [
-        "GST/TDS Statutory mastery",
-        "Advanced MIS Reporting",
-        "Audit Trail implementation",
-        "Automated BRS workflows",
-        "Multi-company management",
-        "Security configuration"
-      ],
-      image: "/trainning.png",
-      color: "#0371a3",
-      tag: "Training"
-    },
-    {
-      title: "System Design",
-      simpleDesc: "Architecting Tally for peak business performance.",
-      detailedDesc: "Complete audit and architecture of your Tally environment to optimize data flow, enhance security, and ensure scalability.",
-      features: [
-        "Process flow mapping",
-        "COA structural design",
-        "Inventory flow mapping",
-        "Data security strategy",
-        "User role definition",
-        "Voucher numbering setup"
-      ],
-      image: "/amc2.png",
-      color: "#0371a3",
-      tag: "Design"
+      features: ["GST/TDS Statutory mastery", "Advanced MIS Reporting", "Audit Trail implementation", "Automated BRS workflows", "Multi-company management", "Security configuration"],
+      tag: "Training",
+      iconBg: "bg-[#0371a3]",
+      link: "/services/corporate-training",
+      icon: (
+        <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+        </svg>
+      )
     },
     {
       title: "Data Integration",
       simpleDesc: "Seamless connectivity with CRM, ERP & E-commerce.",
       detailedDesc: "Break data silos with bidirectional sync between Tally and your custom apps using advanced API and XML techniques.",
-      features: [
-        "Real-time API sync",
-        "Excel bulk migration",
-        "CRM & Marketplace sync",
-        "Database bridge development",
-        "Automated data scheduling",
-        "Error validation logic"
-      ],
-      image: "/ba.png",
-      color: "#0371a3",
-      tag: "Integration"
+      features: ["Real-time API sync", "Excel bulk migration", "CRM & Marketplace sync", "Database bridge development", "Automated data scheduling", "Error validation logic"],
+      tag: "Integration",
+      iconBg: "bg-[#00ABE4]",
+      icon: (
+        <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+        </svg>
+      )
     },
     {
       title: "TSS Renewal",
       simpleDesc: "Latest statutory & product updates.",
       detailedDesc: "Keep your Tally always up-to-date with the latest statutory changes, product enhancements, and remote access features.",
-      features: [
-        "Latest Statutory Updates (GST/TDS)",
-        "Remote Access via Browser/Mobile",
-        "Data Synchronization",
-        "Bank Reconciliation (Auto)",
-        "Latest Product Releases",
-        "Tally.NET Services"
-      ],
-      image: "/tssgold.png",
-      color: "#0371a3",
+      features: ["Latest Statutory Updates", "Remote Access via Browser", "Data Synchronization", "Bank Reconciliation (Auto)", "Latest Product Releases", "Tally.NET Services"],
       tag: "Renewal",
-      link: "/services/tss"
+      iconBg: "bg-[#131921]",
+      link: "/services/tss",
+      icon: (
+        <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+        </svg>
+      )
     },
     {
       title: "TDL Customization",
       simpleDesc: "Bespoke modules tailored to your unique logic.",
       detailedDesc: "Development of custom TDL modules, invoice formats, and specialized reports integrated directly into Tally.",
-      features: [
-        "Industry module design",
-        "Customized Invoices",
-        "Field-level validations",
-        "Analytical reports",
-        "Digital Signatures",
-        "Email/SMS automation"
-      ],
-      image: "/TDLandCustom.jpg",
-      color: "#0371a3",
-      tag: "TDL"
+      features: ["Industry module design", "Customized Invoices", "Field-level validations", "Analytical reports", "Digital Signatures", "Email/SMS automation"],
+      tag: "TDL",
+      iconBg: "bg-[#0371a3]",
+      link: "/services/tdl",
+      icon: (
+        <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 4a2 2 0 114 0v1a2 2 0 002 2h1a2 2 0 110 4h-1a2 2 0 00-2 2v1a2 2 0 11-4 0V4z" />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 8a2 2 0 11-4 0 2 2 0 014 0z" />
+        </svg>
+      )
     },
     {
       title: "Tally on Mobile",
       simpleDesc: "Real-time decision making at your fingertips.",
       detailedDesc: "Secure mobile solutions to view outstandings, sales reports, and inventory status directly on your smartphone.",
-      features: [
-        "Live Sales Dashboards",
-        "WhatsApp sharing",
-        "Ageing & Alert sync",
-        "End-to-end encryption",
-        "Customer info on the go",
-        "Stock status tracking"
-      ],
-      image: "/ba.png",
-      color: "#0371a3",
-      tag: "Mobile"
+      features: ["Live Sales Dashboards", "WhatsApp sharing", "Ageing & Alert sync", "End-to-end encryption", "Customer info on the go", "Stock status tracking"],
+      tag: "Mobile",
+      iconBg: "bg-[#00ABE4]",
+      link: "/services/mobile-app-biz",
+      icon: (
+        <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
+        </svg>
+      )
     },
     {
       title: "AMC Services",
       simpleDesc: "Priority technical support with zero downtime.",
       detailedDesc: "Your safety net for troubleshooting, data recovery, and regular health checkups to ensure business continuity.",
-      features: [
-        "15-min response SLA",
-        "Priority troubleshooting",
-        "System health audits",
-        "Data recovery experts",
-        "Unlimited remote support",
-        "Quarterly health checks"
-      ],
-      image: "/amc.png",
-      color: "#0371a3",
+      features: ["15-min response SLA", "Priority troubleshooting", "System health audits", "Data recovery experts", "Unlimited remote support", "Quarterly health checks"],
       tag: "Support",
-      link: "/services/amc"
+      iconBg: "bg-[#131921]",
+      link: "/services/amc",
+      icon: (
+        <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+        </svg>
+      )
     },
     {
       title: "Tally on WhatsApp",
       simpleDesc: "Automated document sharing via WhatsApp.",
       detailedDesc: "Integrate Tally with WhatsApp to send invoices, reminders, and reports instantly to your customers.",
-      features: [
-        "Automated PDF Sharing",
-        "Payment Reminders",
-        "Ledger Queries",
-        "Bulk Marketing",
-        "24/7 Availability",
-        "Secure Integration"
-      ],
-      image: "/tally2whatsapp.png",
-      color: "#0371a3",
+      features: ["Automated PDF Sharing", "Payment Reminders", "Ledger Queries", "Bulk Marketing", "24/7 Availability", "Secure Integration"],
       tag: "WhatsApp",
-      link: "/services/tally-on-whatsapp"
+      iconBg: "bg-[#25D366]",
+      link: "/services/tally-on-whatsapp",
+      icon: (
+        <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+        </svg>
+      )
     }
   ];
-
-  const getServiceLink = (title: string) => {
-    switch (title) {
-      case "TSS Renewal": return "/services/tss";
-      case "AMC Services": return "/services/amc";
-      case "Corporate Training": return "/services/corporate-training";
-      case "TDL Customization": return "/services/tdl";
-      case "Tally on Mobile": return "/services/mobile-app-biz";
-      case "Tally on WhatsApp": return "/services/tally-on-whatsapp";
-      default: return null;
-    }
-  };
 
   return (
     <div className="min-h-screen bg-white text-slate-900">
@@ -254,166 +202,88 @@ export default function ServicesPage() {
         onEnquire={(title) => openModal('enquire', title)}
       />
 
-      {/* Radiant Sky Hero Section */}
-      <section className="bg-[#dff0f5] pt-12 pb-16 md:pt-20 md:pb-24 px-6 text-center relative overflow-hidden flex flex-col items-center">
-        {/* Background Image Overlay */}
-        <div 
-          className="absolute inset-0 z-0 opacity-10 pointer-events-none"
-          style={{ backgroundImage: 'url(/bgggg.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}
-        />
-
+      {/* Clean Header Section */}
+      <section className="bg-white pt-12 pb-16 md:pt-20 md:pb-24 px-6 text-center relative overflow-hidden flex flex-col items-center">
         <div className="max-w-4xl mx-auto relative z-10 w-full">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/40 border border-[#0371a3]/10 text-[#0371a3] text-[9px] font-black uppercase tracking-widest mb-8 backdrop-blur-sm">
             <span className="flex h-1.5 w-1.5 rounded-full bg-[#0371a3] animate-pulse"></span>
-            Expert Partner Ecosystem
+            Professional Support Directory
           </div>
           <h1 className="text-4xl md:text-7xl font-black text-slate-900 mb-6 leading-tight tracking-tight">
-            Support and <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0371a3] to-[#00ABE4]">Services</span>
+            Expert Tally <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0371a3] to-[#00ABE4]">Services</span>
           </h1>
-          <p className="text-slate-600 text-sm md:text-lg max-w-2xl mx-auto leading-relaxed font-semibold mb-12">
+          <p className="text-slate-600 text-sm md:text-lg max-w-2xl mx-auto leading-relaxed font-semibold mb-0">
             Certified technical expertise to architect and support your TallyPrime environment for maximum business impact and seamless compliance.
           </p>
-
-          {/* Global View Toggle */}
-          <div className="flex justify-center">
-            <div className="bg-white/50 p-1.5 rounded-2xl border border-white/80 backdrop-blur-md flex gap-1.5 shadow-sm">
-              <button 
-                onClick={() => setViewMode('simple')}
-                className={`px-8 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${viewMode === 'simple' ? 'bg-[#0371a3] text-white shadow-xl shadow-[#0371a3]/20' : 'text-slate-400 hover:text-slate-600'}`}
-              >
-                Simple
-              </button>
-              <button 
-                onClick={() => setViewMode('detailed')}
-                className={`px-8 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${viewMode === 'detailed' ? 'bg-[#0371a3] text-white shadow-xl shadow-[#0371a3]/20' : 'text-slate-400 hover:text-slate-600'}`}
-              >
-                Detailed
-              </button>
-            </div>
-          </div>
         </div>
       </section>
 
-      {/* Grid with Conditional Card Styles */}
+      {/* Icon-Driven Service Grid */}
       <section className="py-20 px-6 max-w-7xl mx-auto">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {supportServices.map((s) => (
-            viewMode === 'simple' ? (
-              /* Simple Mode: Immersive Full Card Image */
-              <div 
-                key={s.title} 
-                className="group relative rounded-[2rem] overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-700 flex flex-col border border-slate-100 h-[320px] bg-slate-100"
-              >
-                <div className="absolute inset-0 z-0">
-                  <Image 
-                    src={s.image} 
-                    alt={s.title} 
-                    fill 
-                    className="object-cover transition-transform duration-700 group-hover:scale-110" 
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 400px"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-500" />
-                </div>
-                <div className="relative z-10 flex flex-col h-full p-6 text-white">
-                  <span className="px-3 py-1 rounded-full bg-white/20 backdrop-blur-md border border-white/20 text-white text-[8px] font-black uppercase tracking-widest w-fit mb-auto">
-                    {s.tag}
-                  </span>
-                  <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                    <h3 className="text-base font-black text-white mb-2 leading-tight tracking-tight">{s.title}</h3>
-                    <p className="text-white/80 text-[11px] font-medium leading-relaxed line-clamp-2 mb-6">{s.simpleDesc}</p>
-                    <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                      {getServiceLink(s.title) ? (
-                        <Link href={getServiceLink(s.title)!} className="flex-1 py-2 bg-white text-slate-900 rounded-xl font-black text-[9px] uppercase tracking-widest hover:bg-[#0371a3] hover:text-white transition-all shadow-lg flex items-center justify-center">
-                          Details
-                        </Link>
-                      ) : (
-                        <button onClick={() => setSelectedService(s)} className="flex-1 py-2 bg-white text-slate-900 rounded-xl font-black text-[9px] uppercase tracking-widest hover:bg-[#0371a3] hover:text-white transition-all shadow-lg">Details</button>
-                      )}
-                      <button onClick={() => openModal('enquire', s.title)} className="flex-1 py-2 bg-[#00ABE4] text-white rounded-xl font-black text-[9px] uppercase tracking-widest hover:bg-[#0371a3] transition-all shadow-lg">Enquire</button>
-                    </div>
-                  </div>
-                </div>
+            <div 
+              key={s.title} 
+              className="group relative bg-white rounded-[2rem] p-8 border border-slate-100 shadow-sm hover:shadow-2xl hover:shadow-[#0371a3]/10 transition-all duration-500 flex flex-col h-full hover:-translate-y-2"
+            >
+              {/* Icon Container */}
+              <div className={`w-14 h-14 rounded-2xl flex items-center justify-center ${s.iconBg} text-white mb-8 shadow-lg transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3`}>
+                {s.icon}
               </div>
-            ) : (
-              /* Detailed Mode: Regular Long Card (White Background) */
-              <div 
-                key={s.title} 
-                className="group relative bg-white rounded-[2rem] p-6 border border-slate-100 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col h-full min-h-[460px]"
-              >
-                <div className="flex items-center justify-between mb-6">
-                  <div className="w-12 h-12 rounded-2xl relative overflow-hidden shadow-lg border border-slate-50 transition-transform duration-500 group-hover:scale-110">
-                    <Image 
-                      src={s.image} 
-                      alt={s.title} 
-                      fill 
-                      className="object-cover" 
-                      sizes="48px"
-                    />
-                  </div>
-                  <span className="px-3 py-1 rounded-full bg-slate-50 text-[#0371a3] text-[8px] font-black uppercase tracking-widest border border-slate-100">
-                    {s.tag}
-                  </span>
-                </div>
-                <h3 className="text-lg font-black text-slate-900 mb-3 group-hover:text-[#0371a3] transition-colors leading-tight tracking-tight">{s.title}</h3>
-                <div className="bg-slate-50 p-4 rounded-2xl border-l-4 border-[#0371a3] mb-6">
-                  <p className="text-slate-600 text-[11px] font-semibold leading-relaxed italic">
-                    "{s.detailedDesc}"
-                  </p>
-                </div>
-                <div className="space-y-4 mb-8">
-                  <p className="text-[9px] font-black uppercase tracking-[0.2em] text-[#0371a3]">Technical Scope</p>
-                  <ul className="space-y-2.5">
-                    {s.features.map((f, i) => (
-                      <li key={i} className="text-[11px] font-bold text-slate-600 flex items-center gap-2">
-                        <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0" />
-                        {f}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                <div className="mt-auto pt-6 border-t border-slate-50 flex gap-3">
-                  {getServiceLink(s.title) && (
-                    <Link href={getServiceLink(s.title)!} className="flex-1 py-3 bg-[#dff0f5] text-[#0371a3] rounded-xl font-black text-[9px] uppercase tracking-widest hover:bg-[#ccebf5] transition-all shadow-sm flex items-center justify-center">
-                      Full Details
-                    </Link>
-                  )}
-                  <button onClick={() => openModal('enquire', s.title)} className="flex-1 py-3 bg-slate-900 text-white rounded-xl font-black text-[9px] uppercase tracking-widest hover:bg-[#0371a3] transition-all shadow-md">
-                    Enquire Now
-                  </button>
-                </div>
+
+              {/* Text Content */}
+              <div className="flex-1">
+                <span className="text-[9px] font-black uppercase tracking-widest text-[#0371a3] block mb-3 opacity-60">
+                  {s.tag}
+                </span>
+                <h3 className="text-xl font-black text-slate-900 tracking-tight mb-4 group-hover:text-[#0371a3] transition-colors leading-tight">
+                  {s.title}
+                </h3>
+                <p className="text-[13px] text-slate-500 font-bold leading-relaxed opacity-70 mb-8">
+                  {s.simpleDesc}
+                </p>
               </div>
-            )
+
+              {/* Action Buttons */}
+              <div className="space-y-3">
+                 <button 
+                  onClick={() => setSelectedService(s)}
+                  className="w-full py-3.5 bg-slate-50 text-[#0371a3] rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-[#0371a3] hover:text-white transition-all duration-500 flex items-center justify-center gap-2"
+                >
+                  View Details
+                  <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
+                </button>
+                <button 
+                  onClick={() => openModal('enquire', s.title)}
+                  className="w-full py-3.5 bg-black text-white rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-white hover:text-black border border-transparent hover:border-black transition-all duration-500 shadow-sm"
+                >
+                  Enquire Now
+                </button>
+              </div>
+
+              {/* Decorative Subtle Background Glow */}
+              <div className="absolute -bottom-12 -right-12 w-32 h-32 bg-[#E9F1FA] rounded-full blur-3xl opacity-0 group-hover:opacity-50 transition-opacity duration-500" />
+            </div>
           ))}
         </div>
       </section>
 
-      {/* Professional Brand Footer Banner */}
+      {/* Contact Section */}
       <section className="py-24 px-6 bg-slate-50">
         <div className="max-w-6xl mx-auto rounded-[3.5rem] p-12 bg-slate-900 text-white text-center relative overflow-hidden shadow-2xl">
-          {/* Decorative gradients */}
           <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#0371a3]/20 rounded-full blur-[100px] -mr-64 -mt-64" />
           <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-[#00ABE4]/10 rounded-full blur-[100px] -ml-48 -mb-48" />
           
           <div className="relative z-10 max-w-4xl mx-auto">
-            <h2 className="text-3xl md:text-5xl font-black mb-12 tracking-tight">Verified Expertise. <span className="text-[#00ABE4]">Guaranteed Results.</span></h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-12 mb-12 border-t border-white/10 pt-12">
-              {[
-                { val: "15+", label: "Years Exp." },
-                { val: "2000+", label: "Clients" },
-                { val: "15min", label: "Response" },
-                { val: "100%", label: "Certified" }
-              ].map((stat, i) => (
-                <div key={i} className="text-center">
-                  <div className="text-2xl md:text-4xl font-black text-white mb-2">{stat.val}</div>
-                  <div className="text-[10px] font-black text-sky-400 uppercase tracking-[0.3em]">{stat.label}</div>
-                </div>
-              ))}
-            </div>
+            <h2 className="text-3xl md:text-5xl font-black mb-8 tracking-tight">Need a <span className="text-[#00ABE4]">Custom Solution?</span></h2>
+            <p className="text-slate-400 font-bold mb-12 max-w-2xl mx-auto leading-relaxed">
+              Our technical architects are ready to design a personalized TallyPrime environment tailored to your specific industry requirements.
+            </p>
             <button 
                onClick={() => openModal('general')}
-               className="px-12 py-5 bg-[#00ABE4] text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-white hover:text-slate-900 transition-all shadow-xl shadow-[#00ABE4]/20"
+               className="px-12 py-5 bg-white text-black rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-[#00ABE4] hover:text-white transition-all duration-500 shadow-xl"
             >
-               Talk to our Technical Team
+               Request Professional Consultation
             </button>
           </div>
         </div>

@@ -6,14 +6,14 @@ import Footer from "../components/Footer";
 
 const DEFAULTS = {
   hero_title: 'SARVADNYA INFOTECH LLP',
-  hero_subtitle: 'Your Trusted Solution Partner',
-  hero_description: 'Since 2008, Sarvadnya Infotech LLP, a Certified Tally Partner, has served over 1,500 satisfied clients with top-quality Tally Software solutions and services. We are renowned for transparent consultancy and tailored solutions that drive business growth, delivered swiftly by our expert team who understand client needs and pain points.',
+  hero_subtitle: 'Your Solution Partner',
+  hero_description: 'Certified Tally Partner since 2008, serving 1,500+ clients with transparent consultancy and expert solutions. We specialize in understanding business pain areas quickly to deliver maximum saturation and satisfaction through system automation and right technology adoption.',
   hero_image: '',
   partner1_name: 'Suman Sawant',
-  partner1_quote: 'Suman brings extensive industry experience. Passionate about finance and technology, she helps businesses adopt the right systems for efficient financial management and automates manual processes. She also lectures on Tally technology for ICAI audits.',
+  partner1_quote: 'Suman is the Co-founder of Sarvadnya Infotech LLP. An MBA in HR and Finance, she has rich experience in diversified industries. With a zeal for excellence, she helps businesses bridge the knowledge gap in technology adoption for proper finance management. She specializes in replacing manual workflows with system automation and shares her expertise as an occasional lecturer at ICAI on Tally technology for Audit.',
   partner1_image: '',
   partner2_name: 'Mr. Madhukar Sawant',
-  partner2_quote: 'Madhukar specializes in guiding businesses through seamless technology adoption. His personalized approach ensures solutions aligned with client goals, enhancing efficiency and productivity.',
+  partner2_quote: 'With over 15 years of extensive experience in Computer Hardware and Networking, Madhukar (Founder) has assisted numerous customers in selecting ideal technology solutions. His expertise lies in providing tailored recommendations and expert guidance to ensure seamless technology adoption, enabling businesses of all sizes to enhance their efficiency and productivity.',
   partner2_image: '',
   gallery_badge: 'Inside Sarvadnya',
   gallery_title: 'Our Workspace & Culture',
@@ -59,13 +59,7 @@ export default function AboutPage() {
   return (
     <main className="min-h-screen bg-white text-slate-900">
       {/* Segment 1: Company Information (Themed Hero) */}
-      <section className="bg-[#f0f8fa] pt-12 pb-16 px-6 sm:px-10 lg:px-20 relative overflow-hidden flex flex-col items-center border-b border-white/5">
-        {/* Background Image Overlay */}
-        <div 
-          className="absolute inset-0 z-0 opacity-10 pointer-events-none"
-          style={{ backgroundImage: 'url(/bgggg.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}
-        />
-
+      <section className="bg-white pt-12 pb-16 px-6 sm:px-10 lg:px-20 relative overflow-hidden flex flex-col items-center border-b border-[#0371a3]/10">
         <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-40">
           <div className="absolute top-0 right-0 w-[70%] h-[70%] bg-white/10 blur-[130px] -mr-32 -mt-32" />
           <div className="absolute bottom-0 left-0 w-[50%] h-[50%] bg-sky-200/20 blur-[110px] -ml-24 -mb-24" />

@@ -6,7 +6,7 @@ export async function GET() {
     status: 'ok',
     mongodb: 'disconnected',
     timestamp: new Date().toISOString(),
-    version: 'v1.1.6'
+    version: 'v1.1.251'
   };
 
   try {

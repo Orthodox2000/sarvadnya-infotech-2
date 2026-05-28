@@ -4,15 +4,80 @@
 - Always mention the application version number when presenting changes or updates.
 - Versioning follows the format `v1.1.x`.
 - Increment the patch version automatically for every iteration/significant set of changes.
-- Current Version: v1.1.215
+- Current Version: v1.1.253
 
-## Recent Changes (v1.1.215)
-- **Advanced Hero Layout Engine:** Implemented a multi-layout engine for the `HomeHero` and synchronized the Cloud experience.
-    *   **Dynamic Image Sourcing:** Refined the mosaic visual side to strictly use database-driven central images while sourcing satellite cards from unique, varied assets in the `/hero` folder (AWS, NoSky, Tally Logic).
-    *   **Animation Stabilization:** Introduced a distinct `isEntering` state to trigger smooth "Rise Up" entrance effects only *after* the content swap, ensuring animations are always visible and flicker-free.
-    *   **Precision 8s Cycle:** Calibrated the carousel to an exact 8-second interval, providing 7 seconds of stable viewing and 1 second for refined transitions.
-    *   **Intelligent Image Fit:** Maintained the "Blurred Backdrop + Contained Foreground" strategy across all mosaic elements to ensure 100% visibility of uncropped assets.
-- **Version Bump:** Updated application version to v1.1.215.
+## Recent Changes (v1.1.253)
+- **TypeScript Build Fix:** Resolved a critical 'IntrinsicAttributes' type error in the homepage.
+    *   **Prop Alignment:** Updated the `QuickAccessHub` component to explicitly accept and handle `initialData`, `initialModules`, and `initialSettings` props passed from the server-side home page.
+    *   **Dynamic Synchronization:** Implemented `useState` and `useEffect` hooks within the hub to reactively update navigation cards when database-sourced data is provided.
+- **Version Bump:** Updated application version to v1.1.253.
+
+## Recent Changes (v1.1.252)
+- **Admin Control Restoration:** Re-enabled full text editing capabilities for the About and Team pages.
+    *   **Editing UI:** Replaced the branding restriction notice with high-performance form controls for all descriptive text, including hero titles, subtitles, and detailed partner biographies.
+    *   **Unified Persistence:** Implemented a "Save All Changes" workflow that synchronizes both visual assets and text content with MongoDB in a single action.
+    *   **UX Refinement:** Optimized the admin interface with responsive textareas and real-time state management for a more fluid content management experience.
+- **Version Bump:** Updated application version to v1.1.252.
+
+## Recent Changes (v1.1.251)
+- **About Page Content Update:** Revised the company and partner biographies for better alignment with current branding and leadership history.
+    *   **Strategic Hero Text:** Shortened the main description to focus on the 2008 founding date, 1,500+ client milestone, and core automation expertise.
+    *   **Partner Biographies:** Updated profiles for Suman Sawant and Mr. Madhukar Sawant, highlighting specialized finance automation, ICAI lectures, and 15+ years of infrastructure expertise.
+- **Version Bump:** Updated application version to v1.1.251.
+
+## Recent Changes (v1.1.250)
+- **Site-Wide Visual Standardization:** Completed the transition to pure white foundations across all major public routes.
+    *   **Overlay Elimination:** Removed the `bgggg.png` background overlay from all remaining pages including Modules, Capabilities, Products, About, Careers, Contact, Search, and Team.
+    *   **High-Contrast Branding:** Set all page headers to solid white (#ffffff) and updated border-accents to the official brand-blue spectrum (`border-[#0371a3]/10`).
+    *   **Unified Architecture:** Synchronized the background effects (blurs and glows) across all "use case" related pages for a cohesive, modern professional look.
+- **Version Bump:** Updated application version to v1.1.250.
+
+## Recent Changes (v1.1.249)
+- **Service Route Standardization:** Unified the visual identity of all pages under the `/services` route.
+    *   **Overlay Removal:** Stripped the background image overlay (`bgggg.png`) from all service headers for a cleaner, high-contrast look.
+    *   **Pure White Foundations:** Set all service hero backgrounds to solid white (#ffffff) to ensure perfect legibility and a modern aesthetic.
+    *   **Unified Blending:** Standardized the cinematic image gradients to use a `from-white via-white/80` transition across all specialized service pages.
+- **Version Bump:** Updated application version to v1.1.249.
+
+## Recent Changes (v1.1.248)
+- **TSS Page Visual Refinement:** Transitioned the TSS Renewal page hero to a pure white foundation.
+    *   **Background Overhaul:** Updated the section background to solid white (#ffffff).
+    *   **Seamless Blending:** Re-engineered the cinematic blend gradient to use white anchors (`from-white via-white/80`), ensuring the `/tss-icon.png` asset melts perfectly into the page layout.
+- **Version Bump:** Updated application version to v1.1.248.
+
+## Recent Changes (v1.1.247)
+- **Service Hub Palette Sync:** Synchronized all service routes with a refined light-sky background for improved cinematic depth.
+    *   **Background Optimization:** Updated the primary header background to `#f3fafc` across the main Services directory and all specialized sub-routes (AMC, Training, Mobile, WhatsApp, TDL, TSS).
+    *   **Gradient Calibration:** Recalibrated the cinematic image blend gradients to use `#f3fafc` anchors, ensuring a seamless, professional transition between imagery and brand foundations.
+- **Version Bump:** Updated application version to v1.1.247.
+
+## Recent Changes (v1.1.246)
+- **Mobile App Page Fix:** Resolved an issue where the analytics preview image in the "Data-Driven Decision Making" section was not visible.
+    *   **Class Correction:** Fixed an invalid Tailwind class `object-fit` by replacing it with the standard `object-cover` property, ensuring the `/biz.jpg` asset renders correctly across all viewports.
+- **Version Bump:** Updated application version to v1.1.246.
+
+## Recent Changes (v1.1.245)
+- **Support Hub Remake:** Overhauled the `Learning & Support Hub` for improved content density and user engagement.
+    *   **Compact Grid Architecture:** Transitioned to a high-density 5-column grid (xl) with scaled-down cards for maximum visibility of resources.
+    *   **Detailed View Integration:** Implemented a new modal-based "Detailed View" system for tutorials, allowing users to inspect full descriptions, metadata, and embedded previews before navigating.
+    *   **CTA Optimization:** Streamlined the "Specialized Training" section, reducing its vertical footprint while maintaining high-impact branding and clear action paths.
+- **Version Bump:** Updated application version to v1.1.245.
+
+## Recent Changes (v1.1.244)
+- **FAQ Call Button Fix:** Resolved a visual issue where the 'Call for Details' SVG icon in the FAQ section appeared only half-colored or misaligned.
+    *   **SVG Optimization:** Replaced the legacy phone icon path with a robust, centered solid handset icon and recalibrated the viewBox for perfect alignment.
+    *   **Visual Consistency:** Ensured the icon properly inherits brand-blue and white colors across all interaction states (default, hover, active).
+- **Version Bump:** Updated application version to v1.1.244.
+
+## Recent Changes (v1.1.243)
+- **Services Hub Redesign:** Transitioned the services route to a modern, icon-driven card system.
+    *   **Iconic Navigation:** Replaced large hero imagery with professional SVG icons for all service categories (AMC, Training, WhatsApp, TDL, etc.).
+    *   **Unified Card Model:** Implemented a high-contrast 4-column grid with standardized interaction feedback and persistent "Rise Up" entrance effects.
+    *   **Deep-Link Preservation:** Maintained all specialized routes and detailed deliverable popups, ensuring no loss of technical depth.
+    *   **Branding Synchronization:** Aligned the hub with the Brand Blue and Midnight Black palette for a cohesive ecosystem feel.
+- **Version Bump:** Updated application version to v1.1.243.
+
+## Recent Changes (v1.1.242)
 
 ## Recent Changes (v1.1.214)
 - **Definitive Hero Fix & Optimization:** Resolved all persistent branding, animation, and performance issues in the `HomeHero` centerpiece.

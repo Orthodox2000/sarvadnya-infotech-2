@@ -26,16 +26,18 @@ interface HeroContent {
   layout?: 'standard' | 'ecosystem';
   features: HeroFeature[];
   ctaPrimary: HeroCTA;
+  sub1Img?: string;
+  sub2Img?: string;
 }
 
 const DEFAULT_HERO: HeroContent[] = [
     {
       "badge": "TallyPrime 7.0 Now Available",
-      "titleText": "Trusted Tally Partner in Navi Mumbai",
+      "titleText": "Why Choose Certified Partner?",
       "colorFrom": "#0371a3",
       "colorTo": "#00ABE4",
       "description": "Experience the next level of business automation with PrimeBanking, TallyDrive, and SmartFind. Run your business like a pro with Sarvadnya Infotech LLP.",
-      "image": "/hero/hero-main.png",
+      "image": "/sa2.png",
       "layout": "standard",
       "features": [
         { "text": "PrimeBanking Payments" },
@@ -43,7 +45,9 @@ const DEFAULT_HERO: HeroContent[] = [
         { "text": "SmartFind Global Search" },
         { "text": "Bharat Connect Plug-in" }
       ],
-      "ctaPrimary": { "text": "Explore v7.0 Features", "href": "/products" }
+      "ctaPrimary": { "text": "Know More", "href": "/about" },
+      "sub1Img": "/hero/tssgold.png",
+      "sub2Img": "/hero/hero-main.png"
     },
     {
       "badge": "Certified Cloud Solutions",
@@ -60,6 +64,42 @@ const DEFAULT_HERO: HeroContent[] = [
         { "text": "Automated Server Backup" }
       ],
       "ctaPrimary": { "text": "View Cloud Plans", "href": "/cloud" }
+    },
+    {
+      "badge": "Industry Leading Support",
+      "titleText": "90% First Call Resolution for Tally Support",
+      "colorFrom": "#0371a3",
+      "colorTo": "#00ABE4",
+      "description": "Experience unparalleled technical support. We resolve 90% of TallyPrime queries on the very first call, ensuring zero downtime for your business.",
+      "image": "/trainning.png",
+      "layout": "standard",
+      "features": [
+        { "text": "Instant Remote Support" },
+        { "text": "Expert TDL Debugging" },
+        { "text": "Data Recovery Services" },
+        { "text": "90% FCR Track Record" }
+      ],
+      "ctaPrimary": { "text": "Get Priority Support", "href": "/contact" },
+      "sub1Img": "/hero/Tally-Software.png",
+      "sub2Img": "/sa2.png"
+    },
+    {
+      "badge": "Smart Business Integration",
+      "titleText": "Our Custom Modules & WhatsApp Automation",
+      "colorFrom": "#131921",
+      "colorTo": "#00ABE4",
+      "description": "Send invoices, outstanding reports, and order confirmations directly from Tally to WhatsApp. Save time and improve customer engagement.",
+      "image": "/sa3.png",
+      "layout": "standard",
+      "features": [
+        { "text": "Automated PDF Sending" },
+        { "text": "Real-time Notifications" },
+        { "text": "Customer Support Sync" },
+        { "text": "Bulk Report Sharing" }
+      ],
+      "ctaPrimary": { "text": "Get WhatsApp Sync", "href": "/services/whatsapp" },
+      "sub1Img": "/hero/hero-sub1.png",
+      "sub2Img": "/TDLandCustom.jpg"
     }
 ];
 
@@ -121,14 +161,57 @@ const ECOSYSTEM_SCHEMES = [
 
 const processHeroData = (data: any[]): HeroContent[] => {
   return data.map((item) => {
-    const isCloud = (item.titleText || '').toLowerCase().includes('cloud');
+    const title = (item.titleText || '').toLowerCase();
+    const isCloud = title.includes('cloud');
+    const isSupport = title.includes('support') || title.includes('resolution') || title.includes('90%');
+    const isTraining = title.includes('train') || title.includes('master');
+    const isWhatsApp = title.includes('whatsapp') || title.includes('automation') || title.includes('custom') || title.includes('module');
+    
+    const baseTitle = (item.titleText || '').split(' - ')[0].trim();
+    
+    // Context-Aware Visual Selection
+    let sub1Img = "/hero/hero-sub1.png";
+    let sub2Img = "/hero/hero-sub2.png";
+    let mainImg = item.image;
+
+    // Safety: if image is empty or legacy placeholder, provide a clean default
+    if (!mainImg || mainImg === '/sa.png') {
+        mainImg = isCloud ? "/hero/dedicated-to-cloud-hosting.jpg" : "/sa2.png";
+    }
+    
+    if (isSupport) {
+      sub1Img = "/hero/Tally-Software.png";
+      sub2Img = "/sa2.png";
+      mainImg = "/support.png"; 
+    } else if (isTraining) {
+      sub1Img = "/hero/Tally-Software.png";
+      sub2Img = "/sa2.png";
+      mainImg = "/trainning.png";
+    } else if (isWhatsApp) {
+      // For Custom Modules / WhatsApp: Explicitly force sa3.png and TDLandCustom.jpg
+      mainImg = "/sa3.png";
+      sub1Img = "/hero/hero-sub1.png";
+      sub2Img = "/TDLandCustom.jpg";
+    } else if (!isCloud) { 
+      // For Certified Tally Partner: Use sa2.png for center
+      mainImg = "/sa2.png";
+      sub1Img = "/hero/tssgold.png";
+      sub2Img = "/hero/hero-main.png";
+    }
+
     return {
       ...item,
-      titleText: isCloud ? "Reliable Cloud & Zero-Loss Backup" : "Trusted Tally Partner in Navi Mumbai",
-      image: item.image === '/sa.png' ? '/hero/hero-main.png' : item.image,
+      titleText: baseTitle || (isCloud ? "Reliable Cloud & Zero-Loss Backup" : "Why Choose Certified Partner?"),
+      image: mainImg,
       layout: (isCloud ? 'ecosystem' : 'standard') as 'standard' | 'ecosystem',
       colorFrom: '#131921',
-      colorTo: '#00ABE4'
+      colorTo: '#00ABE4',
+      sub1Img,
+      sub2Img,
+      // Update CTA for Certified Partner slide: Know More -> /about
+      ctaPrimary: (!isCloud && !isSupport && !isTraining && !isWhatsApp) 
+        ? { text: "Know More", href: "/about" } 
+        : item.ctaPrimary
     };
   });
 };
@@ -150,9 +233,7 @@ export default function HomeHero({ initialData }: { initialData?: HeroContent[] 
       try {
         const data = await fetchWithCache('/api/content?section=home_hero');
         if (Array.isArray(data) && data.length > 0) {
-          const brandedData = processHeroData(data);
-          if (!brandedData.some(b => b.layout === 'ecosystem')) brandedData.push(DEFAULT_HERO[1]);
-          setHeroContents(brandedData);
+          setHeroContents(processHeroData(data));
         }
       } catch (err) { console.error('Failed to fetch hero content:', err); }
     };
@@ -210,7 +291,11 @@ export default function HomeHero({ initialData }: { initialData?: HeroContent[] 
 
   const [modalConfig, setModalConfig] = useState<{ isOpen: boolean; type: FormType; service: string; details: string }>({ isOpen: false, type: 'general', service: '', details: '' });
 
-  const scheme = VISUAL_SCHEMES[stableIndex % VISUAL_SCHEMES.length];
+  const scheme = {
+    ...VISUAL_SCHEMES[stableIndex % VISUAL_SCHEMES.length],
+    sub1Img: (current as any).sub1Img || VISUAL_SCHEMES[stableIndex % VISUAL_SCHEMES.length].sub1Img,
+    sub2Img: (current as any).sub2Img || VISUAL_SCHEMES[stableIndex % VISUAL_SCHEMES.length].sub2Img
+  };
   const ecoScheme = ECOSYSTEM_SCHEMES[stableIndex % ECOSYSTEM_SCHEMES.length];
 
   const getAnimationClasses = (delayClass: string) => {
@@ -250,9 +335,26 @@ export default function HomeHero({ initialData }: { initialData?: HeroContent[] 
             <div className={`relative min-h-[90px] md:min-h-[160px] lg:mt-[-20px] ${getAnimationClasses('delay-200')}`}>
               <h1 className="text-4xl md:text-6xl font-black text-slate-900 leading-tight tracking-tight invisible">{current.titleText}</h1>
               <h1 className="absolute top-0 left-0 text-4xl md:text-6xl font-black text-slate-900 leading-tight tracking-tight w-full">
-                {displayText.split(' ').map((word, i) => (
-                  <span key={i} className={i > 2 ? "text-transparent bg-clip-text bg-gradient-to-r from-[#0371a3] to-[#00ABE4]" : ""}>{word}{' '}</span>
-                ))}
+                {displayText.split(' ').map((word, i, arr) => {
+                  const cleanWord = word.replace(/[.,%]/g, '').toLowerCase();
+                  const titleLower = (current.titleText || '').toLowerCase();
+                  const isCloudSlide = titleLower.includes('cloud');
+                  
+                  let isHighlight = false;
+                  if (isCloudSlide) {
+                    // For cloud slide, ONLY highlight "Backup"
+                    isHighlight = cleanWord === 'backup';
+                  } else {
+                    // For other slides, maintain the intelligent highlighting
+                    isHighlight = cleanWord === 'certified' || cleanWord === 'partner' || word.includes('90%') || i > 2;
+                  }
+                  
+                  return (
+                    <span key={i} className={isHighlight ? "text-transparent bg-clip-text bg-gradient-to-r from-[#0371a3] to-[#00ABE4]" : ""}>
+                      {word}{' '}
+                    </span>
+                  );
+                })}
                 {isTyping && <span className="inline-block w-1 h-8 md:h-12 bg-[#0371a3] ml-1 animate-pulse" />}
               </h1>
             </div>
@@ -268,47 +370,51 @@ export default function HomeHero({ initialData }: { initialData?: HeroContent[] 
               ))}
             </div>
             <div className={`flex flex-wrap gap-4 ${getAnimationClasses('delay-700')}`}>
-              <Link href={current.ctaPrimary?.href || '/products'} className="group relative overflow-hidden px-8 py-4 rounded-2xl bg-[#131921] text-white font-black text-xs uppercase tracking-widest shadow-2xl shadow-slate-900/20 transition-all hover:scale-[1.05] active:scale-95">
+              <Link href={current.ctaPrimary?.href || '/products'} className="group relative overflow-hidden px-8 py-4 rounded-2xl bg-black text-white font-black text-xs uppercase tracking-widest shadow-2xl shadow-black/20 transition-all duration-500 ease-in-out hover:bg-white hover:text-black border border-transparent hover:border-black hover:scale-[1.05] active:scale-95">
                 <span className="relative z-10">{current.ctaPrimary?.text || 'Explore'}</span>
-                <div className="absolute inset-0 z-0 translate-y-full transition-transform duration-300 group-hover:translate-y-0 bg-white/10" />
               </Link>
-              <button onClick={() => setModalConfig({ isOpen: true, type: 'demo', service: 'TallyPrime', details: 'Requesting a personalized demo' })} className="group px-8 py-4 rounded-2xl bg-[#E9F1FA] text-[#0371a3] font-black text-xs uppercase tracking-widest shadow-sm transition-all hover:bg-[#d8e8f5] hover:scale-[1.05] active:scale-95 border border-[#00ABE4]/10">Request Free Demo</button>
+              <button 
+                onClick={() => setModalConfig({ isOpen: true, type: 'demo', service: 'TallyPrime', details: 'Requesting a personalized demo' })} 
+                className="group px-8 py-4 rounded-2xl bg-white text-[#38bdf8] font-black text-xs uppercase tracking-widest shadow-sm transition-all duration-500 ease-in-out hover:bg-[#38bdf8] hover:text-white hover:scale-[1.05] active:scale-95 border border-[#38bdf8]/30"
+              >
+                Request Free Demo
+              </button>
             </div>
           </div>
           <div key={`visual-${stableIndex}`} className="relative hidden lg:flex items-center justify-center w-full px-4 xl:px-8">
              <div className="relative w-full max-w-[540px] aspect-square group">
                 {current.layout === 'ecosystem' ? (
                   <div className="relative w-full h-full">
-                    <div className={`absolute top-0 left-[5%] w-[85%] h-full rounded-[3rem] overflow-hidden border-4 border-white shadow-[0_40px_80px_-15px_rgba(0,0,0,0.2)] z-20 transform bg-white
-                      ${isExiting ? 'opacity-0 scale-90 translate-y-12 rotate-3 transition-all duration-[800ms]' : isEntering ? `opacity-100 transition-all duration-[1200ms] ${ecoScheme.main}` : 'opacity-0 translate-y-4'}`}>
+                    <div className={`absolute top-[10%] left-[15%] w-[75%] aspect-square rounded-[3rem] overflow-hidden border border-[#131921]/10 shadow-[0_40px_80px_-15px_rgba(0,0,0,0.2)] z-30 transform bg-white
+                      ${isExiting ? 'opacity-0 scale-90 translate-y-12 transition-all duration-[800ms]' : isEntering ? `opacity-100 transition-all duration-[1200ms] ${ecoScheme.main}` : 'opacity-0 translate-y-4'}`}>
                        <Image src={current.image} alt="Main" fill className="object-cover opacity-20 blur-xl scale-110" sizes="(max-width: 1024px) 100vw, 540px" />
-                       <div className="absolute inset-0"><Image src={current.image} alt="Ecosystem" fill className="object-cover" sizes="(max-width: 1024px) 100vw, 540px" /></div>
+                       <div className="absolute inset-0"><Image src={current.image} alt="Ecosystem" fill className="object-contain" sizes="(max-width: 1024px) 100vw, 540px" /></div>
                     </div>
-                    <div className={`absolute -top-4 -right-4 w-[40%] aspect-square rounded-[2rem] overflow-hidden border-2 border-white shadow-2xl z-30 bg-white p-4
+                    <div className={`absolute top-[-8%] right-[-5%] w-[45%] aspect-square rounded-[2rem] overflow-hidden border border-slate-200/50 shadow-2xl z-50 bg-white p-4
                       ${isExiting ? 'opacity-0 translate-x-12 -translate-y-12 transition-all duration-[800ms]' : isEntering ? `opacity-100 transition-all duration-[1000ms] delay-200 ${ecoScheme.aws}` : 'opacity-0 translate-y-4'}`}>
                       <Image src="/hero/AWS.png" alt="AWS Infrastructure" fill className="object-contain p-4" sizes="200px" />
                     </div>
-                    <div className={`absolute -bottom-8 right-8 w-[45%] h-[25%] rounded-[2rem] overflow-hidden border-2 border-white shadow-2xl z-40 bg-[#131921] p-4
-                      ${isExiting ? 'opacity-0 translate-x-12 translate-y-12 transition-all duration-[800ms]' : isEntering ? `opacity-100 flex items-center justify-center transition-all duration-[1000ms] delay-400 ${ecoScheme.nosky}` : 'opacity-0 translate-y-4'}`}>
+                    <div className={`absolute bottom-[-8%] left-[-5%] w-[40%] aspect-square rounded-[2rem] overflow-hidden border border-slate-200/50 shadow-2xl z-40 bg-[#131921] p-4
+                      ${isExiting ? 'opacity-0 -translate-x-12 translate-y-12 transition-all duration-[800ms]' : isEntering ? `opacity-100 flex items-center justify-center transition-all duration-[1000ms] delay-400 ${ecoScheme.nosky}` : 'opacity-0 translate-y-4'}`}>
                        <div className="relative w-full h-full"><Image src="/hero/brand-nosky-1779439419186.webp" alt="NoSky Node" fill className="object-contain" sizes="250px" /></div>
                     </div>
                   </div>
                 ) : (
                   <div className="relative w-full h-full">
-                    <div className={`absolute top-0 right-[5%] w-[65%] h-full rounded-[3rem] overflow-hidden border-2 border-white shadow-[0_40px_80px_-15px_rgba(3,113_163,0.3)] z-20 transform bg-white
+                    <div className={`absolute top-[10%] right-0 w-[75%] aspect-square rounded-[3rem] overflow-hidden border border-[#0371a3]/20 shadow-[0_40px_80px_-15px_rgba(3,113_163,0.3)] z-40 transform bg-white
                         ${isExiting ? 'opacity-0 scale-90 translate-y-12 transition-all duration-[800ms]' : isEntering ? `opacity-100 transition-all duration-[1200ms] ${scheme.main}` : 'opacity-0 translate-y-4'}`}>
                       <Image src={current.image} alt="Backdrop" fill className="object-cover opacity-20 blur-xl scale-110" sizes="(max-width: 1024px) 100vw, 540px" />
-                      <div className="absolute inset-0"><Image src={current.image} alt={current.titleText} fill priority className="object-cover" sizes="(max-width: 1024px) 100vw, 540px" /></div>
+                      <div className="absolute inset-0"><Image src={current.image} alt={current.titleText} fill priority className="object-contain" sizes="(max-width: 1024px) 100vw, 540px" /></div>
                     </div>
-                    <div className={`absolute top-0 left-[5%] w-[45%] h-[50%] rounded-[2.5rem] overflow-hidden border border-slate-200/50 shadow-2xl z-30 bg-white
+                    <div className={`absolute top-[-5%] left-[-10%] w-[50%] aspect-square rounded-[2.5rem] overflow-hidden border border-slate-200/50 shadow-2xl z-20 bg-white
                         ${isExiting ? 'opacity-0 -translate-x-12 -translate-y-12 transition-all duration-[800ms]' : isEntering ? `opacity-100 transition-all duration-[1400ms] delay-200 ${scheme.sub1}` : 'opacity-0 translate-y-4'}`}>
                       <Image src={scheme.sub1Img} alt="Enterprise Logic" fill className="object-cover opacity-10 blur-lg grayscale" sizes="250px" />
-                      <div className="absolute inset-0"><Image src={scheme.sub1Img} alt="Tally ERP" fill className="object-cover grayscale" sizes="250px" /></div>
+                      <div className="absolute inset-0"><Image src={scheme.sub1Img} alt="Tally ERP" fill className="object-contain grayscale" sizes="250px" /></div>
                     </div>
-                    <div className={`absolute bottom-[10%] left-0 w-[35%] h-[40%] rounded-[2rem] overflow-hidden border border-white/80 shadow-2xl z-40 bg-white
+                    <div className={`absolute bottom-[-10%] left-[-10%] w-[45%] aspect-square rounded-[2rem] overflow-hidden border border-white/80 shadow-2xl z-30 bg-white
                         ${isExiting ? 'opacity-0 -translate-x-16 translate-y-16 transition-all duration-[800ms]' : isEntering ? `opacity-100 transition-all duration-[1600ms] delay-400 ${scheme.sub2}` : 'opacity-0 translate-y-4'}`}>
                       <Image src={scheme.sub2Img} alt="Analytics View" fill className="object-cover opacity-10 blur-md" sizes="200px" />
-                      <div className="absolute inset-0"><Image src={scheme.sub2Img} alt="Business Data" fill className="object-cover" sizes="200px" /></div>
+                      <div className="absolute inset-0"><Image src={scheme.sub2Img} alt="Business Data" fill className="object-contain" sizes="200px" /></div>
                     </div>
                   </div>
                 )}
