@@ -12,8 +12,8 @@ const DEFAULTS = {
   partner1_name: 'Suman Sawant',
   partner1_quote: 'Suman is the Co-founder of Sarvadnya Infotech LLP. An MBA in HR and Finance, she has rich experience in diversified industries. With a zeal for excellence, she helps businesses bridge the knowledge gap in technology adoption for proper finance management. She specializes in replacing manual workflows with system automation and shares her expertise as an occasional lecturer at ICAI on Tally technology for Audit.',
   partner1_image: '',
-  partner2_name: 'Mr. Madhukar Sawant',
-  partner2_quote: 'With over 15 years of extensive experience in Computer Hardware and Networking, Madhukar (Founder) has assisted numerous customers in selecting ideal technology solutions. His expertise lies in providing tailored recommendations and expert guidance to ensure seamless technology adoption, enabling businesses of all sizes to enhance their efficiency and productivity.',
+  partner2_name: 'Mr. Pranit Sawant',
+  partner2_quote: 'Pranit brings a fresh perspective to Sarvadnya Infotech LLP, focusing on modernizing business infrastructures and driving digital transformation. With a deep understanding of evolving technology landscapes, he ensures that our clients stay ahead of the curve through strategic technology adoption and robust networking solutions.',
   partner2_image: '',
   gallery_badge: 'Inside Sarvadnya',
   gallery_title: 'Our Workspace & Culture',
@@ -132,7 +132,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Segment 3: Partner Statement 2 - Mr. Madhukar Sawant */}
+      {/* Segment 3: Partner Statement 2 - Pranit Sawant */}
       <section className="py-20 bg-slate-50/50 animate-rise-up" style={{ animationDelay: '400ms' }}>
         <div className="px-6 sm:px-10 lg:px-20 max-w-6xl mx-auto">
           <div className="flex flex-col md:flex-row items-center gap-12">
@@ -141,7 +141,7 @@ export default function AboutPage() {
                 Strategic Vision
               </div>
               <h2 className="text-2xl md:text-3xl font-black text-slate-900 leading-tight">
-                {content.partner2_name}, <span className="text-[#0371a3]">Partner</span>
+                {content.partner2_name}
               </h2>
               <blockquote className="text-base text-slate-600 border-l-4 border-[#0371a3] pl-6 py-2 leading-relaxed italic font-medium">
                 "{content.partner2_quote}"

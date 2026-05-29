@@ -50,7 +50,7 @@ const HUB_CARDS: HubCard[] = [
     title: "Our Services",
     description: "AMC, Corporate Training, WhatsApp Sync, and Expert Technical Support.",
     href: "/services",
-    color: "bg-[#131921]",
+    color: "bg-[#0371a3]",
     icon: (
       <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
@@ -95,7 +95,7 @@ export default function QuickAccessHub({ initialData, initialModules, initialSet
           <span className="text-[10px] font-black uppercase tracking-[0.3em] text-[#0371a3] block mb-4">
             Ecosystem Directory
           </span>
-          <h2 className="text-3xl lg:text-5xl font-black text-slate-900 tracking-tighter mb-4 leading-tight">
+          <h2 className="text-3xl lg:text-5xl font-black text-[#232F3E] tracking-tighter mb-4 leading-tight">
             Quick Access <span className="text-sky-400">Hub</span>
           </h2>
           <p className="text-sm md:text-base text-slate-500 font-medium leading-relaxed opacity-80">
@@ -120,7 +120,7 @@ export default function QuickAccessHub({ initialData, initialModules, initialSet
 
               {/* Text Content */}
               <div className="flex-1">
-                <h3 className="text-xl font-black text-slate-900 tracking-tight mb-3 group-hover:text-[#0371a3] transition-colors uppercase text-[15px]">
+                <h3 className="text-xl font-black text-[#232F3E] tracking-tight mb-3 group-hover:text-[#0371a3] transition-colors uppercase text-[15px]">
                   {card.title}
                 </h3>
                 <p className="text-[13px] text-slate-500 font-bold leading-relaxed opacity-70">
@@ -146,7 +146,7 @@ export default function QuickAccessHub({ initialData, initialModules, initialSet
         <div className={`mt-20 text-center transition-all duration-1000 delay-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
            <Link 
             href="/contact"
-            className="inline-flex h-14 px-12 items-center justify-center rounded-full bg-[#131921] text-white font-black text-[11px] uppercase tracking-wider border border-transparent hover:bg-white hover:text-black hover:border-black transition-all duration-500 ease-in-out hover:scale-[1.05] active:scale-95 shadow-2xl shadow-black/20"
+            className="inline-flex h-14 px-12 items-center justify-center rounded-full bg-[#0371a3] text-white font-black text-[11px] uppercase tracking-wider border border-transparent hover:bg-white hover:text-[#0371a3] hover:border-[#0371a3] transition-all duration-500 ease-in-out hover:scale-[1.05] active:scale-95 shadow-2xl shadow-[#0371a3]/20"
           >
             Request Professional Consultation
           </Link>

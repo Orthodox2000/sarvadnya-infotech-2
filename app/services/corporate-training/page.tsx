@@ -143,7 +143,7 @@ export default function CorporateTrainingPage() {
                 "Payroll Management"
               ].map((topic, i) => (
                 <div key={i} className="flex items-center gap-3 bg-white p-4 rounded-2xl border border-slate-100 shadow-sm">
-                  <div className="w-2 h-2 rounded-full bg-[#00ABE4]" />
+                  <div className="w-2 h-2 rounded-full bg-[#00ABE4] shrink-0" />
                   <span className="font-bold text-slate-700 text-sm">{topic}</span>
                 </div>
               ))}

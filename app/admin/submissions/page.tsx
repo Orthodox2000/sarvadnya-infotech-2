@@ -78,7 +78,7 @@ export default function AdminSubmissions() {
       enquire: 'bg-blue-50 text-blue-600 border-blue-100',
       support: 'bg-rose-50 text-rose-600 border-rose-100',
       callback: 'bg-emerald-50 text-emerald-600 border-emerald-100',
-      demo: 'bg-violet-50 text-violet-600 border-violet-100',
+      demo: 'bg-sky-50 text-[#0371a3] border-sky-100',
       general: 'bg-slate-50 text-slate-600 border-slate-100'
     };
     return (

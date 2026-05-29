@@ -29,10 +29,46 @@ export default function SupportButton({ initialSettings }: { initialSettings?: a
     ? '91' + whatsappPhone.replace(/\D/g, '') 
     : whatsappPhone.replace(/\D/g, '');
 
+  useEffect(() => {
+    const checkOpen = () => {
+      if (window.location.hash === '#ask-sara' || window.location.search.includes('ask-sara=true')) {
+        setIsOpen(true);
+      }
+    };
+    checkOpen();
+    window.addEventListener('hashchange', checkOpen);
+    return () => window.removeEventListener('hashchange', checkOpen);
+  }, []);
+
   return (
     <>
-      <div className="fixed bottom-6 right-6 z-[3000] flex flex-col gap-2 items-end">
-        {/* WhatsApp Button */}
+      <div className="fixed bottom-24 sm:bottom-6 right-4 sm:right-6 z-[3000] flex flex-col gap-3 items-end">
+        {/* Ask Sara Button (Top) */}
+        <button
+          onClick={() => setIsOpen(true)}
+          aria-label="Ask AI"
+          className="flex items-center gap-2 bg-[#00ABE4] text-white px-4 py-2.5 rounded-full shadow-[0_15px_40px_rgba(0,171,228,0.3)] hover:shadow-[0_20px_50px_rgba(0,171,228,0.4)] transition-all duration-500 ease-in-out transform hover:-translate-y-1 active:scale-95 group relative"
+        >
+          <div className="relative">
+            <span className="absolute -top-1 -right-1 flex h-2.5 w-2.5">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-300 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-blue-500 border-2 border-[#00ABE4]"></span>
+            </span>
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+          </div>
+          <span className="font-bold text-[12px] tracking-tight">Ask Sara</span>
+
+          {/* Tooltip */}
+          <div className="absolute bottom-full right-0 mb-4 w-44 p-3 bg-white text-slate-900 rounded-2xl shadow-2xl opacity-0 group-hover:opacity-100 pointer-events-none transition-all translate-y-2 group-hover:translate-y-0 border border-slate-100">
+            <p className="text-[10px] font-bold leading-tight text-[#00ABE4]">Sara • Smart Assistant</p>
+            <p className="text-[9px] text-slate-500 mt-1 font-medium">Ask Sara about TallyPrime features, hosting, or modules.</p>
+            <div className="absolute top-full right-8 w-2 h-2 bg-white border-b border-r border-slate-100 rotate-45 -translate-y-1" />
+          </div>
+        </button>
+
+        {/* WhatsApp Button (Bottom) */}
         <a
           href={`https://wa.me/${whatsappNumber}`}
           target="_blank"
@@ -44,30 +80,6 @@ export default function SupportButton({ initialSettings }: { initialSettings?: a
           </svg>
           <span className="font-bold text-[12px] tracking-tight">WhatsApp</span>
         </a>
-
-        {/* Ask AI Button */}
-        <button
-          onClick={() => setIsOpen(true)}
-          className="flex items-center gap-2 bg-[#00ABE4] text-white px-4 py-2.5 rounded-full shadow-[0_15px_40px_rgba(0,171,228,0.3)] hover:shadow-[0_20px_50px_rgba(0,171,228,0.4)] transition-all duration-500 ease-in-out transform hover:-translate-y-1 active:scale-95 group"
-        >
-          <div className="relative">
-            <span className="absolute -top-1 -right-1 flex h-2.5 w-2.5">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-300 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-blue-500 border-2 border-[#00ABE4]"></span>
-            </span>
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-            </svg>
-          </div>
-          <span className="font-bold text-[12px] tracking-tight">Ask AI</span>
-          
-          {/* Tooltip */}
-          <div className="absolute bottom-full right-0 mb-4 w-44 p-3 bg-white text-slate-900 rounded-2xl shadow-2xl opacity-0 group-hover:opacity-100 pointer-events-none transition-all translate-y-2 group-hover:translate-y-0 border border-slate-100">
-            <p className="text-[10px] font-bold leading-tight text-[#00ABE4]">Instant Assistant</p>
-            <p className="text-[9px] text-slate-500 mt-1 font-medium">Ask anything about TallyPrime features or licensing.</p>
-            <div className="absolute top-full right-8 w-2 h-2 bg-white border-b border-r border-slate-100 rotate-45 -translate-y-1" />
-          </div>
-        </button>
       </div>
 
       <QuickSupportModal isOpen={isOpen} onClose={() => setIsOpen(false)} />

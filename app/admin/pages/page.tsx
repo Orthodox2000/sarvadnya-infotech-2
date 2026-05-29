@@ -33,7 +33,7 @@ export default function AdminPages() {
             partner1_name: 'Suman Sawant',
             partner1_quote: '',
             partner1_image: '',
-            partner2_name: 'Mr. Madhukar Sawant',
+            partner2_name: 'Mr. Pranit Sawant',
             partner2_quote: '',
             partner2_image: '',
             gallery_badge: 'Inside Sarvadnya',

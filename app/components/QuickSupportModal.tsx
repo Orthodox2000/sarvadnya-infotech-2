@@ -18,28 +18,58 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      text: "Hello! I'm your Sarvadnya AI Assistant. How can I assist you with TallyPrime or business automation today?",
+      text: "Hello! I'm Sara, your Sarvadnya Assistant. How can I help you automate your business with Tally today?",
       sender: 'ai',
-      timestamp: new Date(),
-      showContact: true
+      timestamp: new Date()
     }
   ]);
   const [inputText, setInputText] = useState('');
   const [isTyping, setIsTyping] = useState(false);
+  const [isAiResponding, setIsAiResponding] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   // Auto-scroll to bottom
   useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
-  }, [messages, isTyping]);
+  }, [messages, isTyping, isAiResponding]);
+
+  // Autofocus input when modal opens or response finishes
+  useEffect(() => {
+    if (isOpen && !isAiResponding && !isTyping) {
+      setTimeout(() => {
+        inputRef.current?.focus();
+      }, 100);
+    }
+  }, [isOpen, isAiResponding, isTyping]);
 
   if (!isOpen) return null;
 
+  const typeMessage = async (fullText: string) => {
+    const id = (Date.now() + 1).toString();
+    setIsAiResponding(true);
+    
+    // Add empty message first
+    setMessages(prev => [...prev, { id, text: '', sender: 'ai', timestamp: new Date() }]);
+    
+    let currentText = '';
+    const words = fullText.split(' ');
+    
+    for (let i = 0; i < words.length; i++) {
+      currentText += (i === 0 ? '' : ' ') + words[i];
+      setMessages(prev => prev.map(m => m.id === id ? { ...m, text: currentText } : m));
+      // 50ms delay as requested (0.05s)
+      await new Promise(resolve => setTimeout(resolve, 50));
+    }
+    
+    setIsAiResponding(false);
+  };
+
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!inputText.trim() || isTyping) return;
+    if (!inputText.trim() || isTyping || isAiResponding) return;
 
     const userText = inputText.trim();
     const userMessage: Message = {
@@ -54,7 +84,6 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
     setIsTyping(true);
 
     try {
-      // Map current messages to format expected by Groq/OpenAI API
       const apiMessages = messages.map(m => ({
         role: m.sender === 'ai' ? 'assistant' : 'user',
         content: m.text
@@ -68,29 +97,14 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
       });
 
       const data = await response.json();
-
       if (data && data.error) throw new Error(data.error);
 
-      const aiMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        text: data.message,
-        sender: 'ai',
-        timestamp: new Date(),
-        showContact: true
-      };
-      setMessages(prev => [...prev, aiMessage]);
+      setIsTyping(false);
+      await typeMessage(data.message);
     } catch (err: any) {
       console.error('Chat error:', err);
-      const errorMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        text: err.message || "I'm sorry, I'm having trouble connecting right now. Please try again or contact us directly.",
-        sender: 'ai',
-        timestamp: new Date(),
-        showContact: true
-      };
-      setMessages(prev => [...prev, errorMessage]);
-    } finally {
       setIsTyping(false);
+      await typeMessage(err.message || "I'm sorry, I'm having trouble connecting right now. Please try again later.");
     }
   };
 
@@ -105,16 +119,14 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="relative">
-                <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center border border-white/20">
-                   <svg className="w-6 h-6 text-[#00ABE4]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                  </svg>
+                <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center border border-white/20 overflow-hidden">
+                   <div className="bg-[#70f2f2] w-full h-full flex items-center justify-center font-black text-[#0371a3] text-lg">S</div>
                 </div>
                 <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-[#0371a3] rounded-full"></span>
               </div>
               <div>
-                <h3 className="text-sm font-black tracking-tight">Sarvadnya AI</h3>
-                <p className="text-[10px] text-sky-200 font-bold uppercase tracking-widest">Online</p>
+                <h3 className="text-sm font-black tracking-tight">Ask Sara</h3>
+                <p className="text-[10px] text-sky-200 font-bold uppercase tracking-widest leading-none mt-0.5">Sarvadnya Assistant</p>
               </div>
             </div>
             <button 
@@ -178,26 +190,10 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
                     </span>
                   );
                 })}
-
-                {msg.sender === 'ai' && msg.showContact && (
-                  <div className="mt-3 pt-3 border-t border-slate-50">
-                    <p className="text-[9px] text-slate-400 mb-1.5 font-bold uppercase tracking-widest leading-tight">AI can make mistakes, take expert advice:</p>
-                    <Link 
-                      href="/contact" 
-                      onClick={onClose}
-                      className="flex items-center gap-2 px-3 py-1.5 bg-sky-50 border border-[#00ABE4]/10 rounded-xl hover:bg-[#0371a3] hover:text-white transition-all group w-full justify-center"
-                    >
-                      <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                      </svg>
-                      <span className="text-[9px] font-black uppercase tracking-widest">Contact Our Team</span>
-                    </Link>
-                  </div>
-                )}
               </div>
             </div>
           ))}
-          {isTyping && (
+          {(isTyping || isAiResponding) && (
             <div className="flex justify-start">
               <div className="bg-white px-4 py-3 rounded-2xl rounded-tl-none border border-slate-100 shadow-sm flex gap-1">
                 <span className="w-1.5 h-1.5 bg-[#00ABE4]/40 rounded-full animate-bounce"></span>
@@ -212,24 +208,26 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
         <div className="p-4 bg-white border-t border-slate-100 shrink-0">
           <form onSubmit={handleSendMessage} className="flex items-center gap-2">
             <input 
+              ref={inputRef}
               type="text"
-              placeholder="Ask anything about Tally..."
+              placeholder="Type your message..."
               className="flex-1 bg-slate-50 border border-slate-100 rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-[#00ABE4]/10 focus:border-[#00ABE4] transition-all"
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
+              disabled={isAiResponding}
             />
             <button 
               type="submit"
-              disabled={!inputText.trim() || isTyping}
+              disabled={!inputText.trim() || isTyping || isAiResponding}
               className="w-10 h-10 rounded-xl bg-[#00ABE4] text-white flex items-center justify-center shadow-lg shadow-[#00ABE4]/20 disabled:opacity-50 transition-all active:scale-95"
             >
               <svg className="w-5 h-5 rotate-90" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
               </svg>
             </button>
           </form>
           <p className="mt-3 text-center text-[9px] text-slate-400 font-bold uppercase tracking-widest">
-            Powered by Sarvadnya AI & Groq
+            Sara • Intelligent Assistant
           </p>
         </div>
       </div>

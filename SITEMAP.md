@@ -13,6 +13,7 @@ This document serves as a structured map of the Sarvadnya Infotech LLP website t
 - **Search (`/search`)**: Dedicated results page for finding content across the entire portal.
 - **Privacy Policy (`/privacy`)**: Data protection and privacy standards.
 - **Terms & Conditions (`/terms`)**: Legal terms of service and usage.
+- **Ask Sara (`/ask-sara`)**: Direct access to our AI Assistant for instant Tally help.
 
 ## Services & Expertise
 - **AMC (`/services/amc`)**: Annual Maintenance Contracts for continuous Tally support.

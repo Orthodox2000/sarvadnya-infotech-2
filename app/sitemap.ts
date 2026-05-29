@@ -24,6 +24,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/services/tss',
     '/terms',
     '/tutorials',
+    '/ask-sara',
   ];
 
   return routes.map((route) => ({

@@ -87,6 +87,16 @@ export const SEMANTIC_INDEX: SemanticMapping[] = [
     }
   },
   {
+    keywords: ['sara', 'ask', 'ai', 'chatbot', 'assistant', 'chat', 'help me'],
+    target: {
+      title: 'Ask Sara (AI Assistant)',
+      description: 'Get instant answers to your TallyPrime questions, module queries, and hosting details from our smart AI assistant.',
+      url: '#ask-sara',
+      type: 'Action',
+      icon: 'M13 10V3L4 14h7v7l9-11h-7z'
+    }
+  },
+  {
     keywords: ['info', 'help', 'guide', 'how to', 'documentation', 'manual'],
     target: {
       title: 'Tally Knowledge Hub',

@@ -125,6 +125,7 @@ export async function GET(request: Request) {
 
     const dbResults: any[] = [];
     const siteMap: any[] = [
+        { title: 'Ask Sara (AI Assistant)', url: '#ask-sara', description: 'Ask our AI expert about TallyPrime features, hosting, or custom modules.' },
         { title: 'Products & Editions', url: '/products', description: 'TallyPrime Silver, Gold, and Server editions.' },
         { title: 'Cloud Solutions', url: '/cloud', description: 'TallyPrime Cloud Access and AWS solutions.' },
         { title: 'About Us', url: '/about', description: 'Certified Tally Partner since 2008.' },
@@ -182,6 +183,7 @@ export async function GET(request: Request) {
 
     // Static Pages
     const staticPages = [
+      { title: 'Ask Sara (AI Assistant)', description: 'Instant help with Tally features, modules, and hosting.', url: '#ask-sara', type: 'AI Assistant', icon: 'M13 10V3L4 14h7v7l9-11h-7z' },
       { title: 'Products & Editions', description: 'TallyPrime Silver, Gold, and Server editions.', url: '/products', type: 'Page' },
       { title: 'Cloud Solutions', description: 'TallyPrime Cloud Access and AWS solutions.', url: '/cloud', type: 'Page' },
       { title: 'About Us', description: 'Certified Tally Partner since 2008.', url: '/about', type: 'Page' },
@@ -196,10 +198,10 @@ export async function GET(request: Request) {
     ];
 
     staticPages.forEach(p => {
-      if (p.title.toLowerCase().includes(query) || p.description.toLowerCase().includes(query)) {
+      if (p.title.toLowerCase().includes(query) || p.description.toLowerCase().includes(query) || (p.type === 'AI Assistant' && (query.includes('ai') || query.includes('chat') || query.includes('sara') || query.includes('ask')))) {
         dbResults.push({
           ...p,
-          icon: 'M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z'
+          icon: p.icon || 'M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z'
         });
       }
     });

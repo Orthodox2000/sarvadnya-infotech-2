@@ -142,21 +142,18 @@ function SearchContent() {
 
               {results.length > 0 ? (
                 <div className="space-y-6">
-                  {results.map((result, idx) => (
-                    <Link 
-                      key={idx} 
-                      href={result.url}
-                      className="block bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm hover:shadow-2xl hover:border-[#0371a3]/30 hover:-translate-y-1 transition-all group"
-                    >
+                  {results.map((result, idx) => {
+                    const isAskSara = result.url === '#ask-sara';
+                    const itemContent = (
                       <div className="flex items-start gap-4 md:gap-6">
-                        <div className={`w-14 h-14 rounded-2xl flex items-center justify-center border transition-all duration-500 ${result.type === 'AI Recommend' ? 'bg-[#0371a3] border-[#0371a3] shadow-lg shadow-sky-900/20' : 'bg-sky-50 border-sky-100 group-hover:bg-[#0371a3] group-hover:border-[#0371a3] group-hover:shadow-lg group-hover:shadow-sky-900/20'}`}>
-                          <svg className={`w-7 h-7 transition-colors duration-500 ${result.type === 'AI Recommend' ? 'text-white' : 'text-[#0371a3] group-hover:text-white'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <div className={`w-14 h-14 rounded-2xl flex items-center justify-center border transition-all duration-500 ${result.type === 'AI Recommend' || result.type === 'AI Assistant' ? 'bg-[#0371a3] border-[#0371a3] shadow-lg shadow-sky-900/20' : 'bg-sky-50 border-sky-100 group-hover:bg-[#0371a3] group-hover:border-[#0371a3] group-hover:shadow-lg group-hover:shadow-sky-900/20'}`}>
+                          <svg className={`w-7 h-7 transition-colors duration-500 ${result.type === 'AI Recommend' || result.type === 'AI Assistant' ? 'text-white' : 'text-[#0371a3] group-hover:text-white'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d={result.icon} />
                           </svg>
                         </div>
                         <div className="flex-fill">
                           <div className="flex items-center gap-3 mb-2">
-                            <span className={`text-[10px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full border transition-all ${result.type === 'AI Recommend' ? 'bg-[#0371a3] text-white border-[#0371a3] animate-pulse' : 'bg-slate-50 text-slate-500 border-slate-100 group-hover:bg-sky-50 group-hover:text-[#0371a3] group-hover:border-sky-100'}`}>
+                            <span className={`text-[10px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full border transition-all ${result.type === 'AI Recommend' || result.type === 'AI Assistant' ? 'bg-[#0371a3] text-white border-[#0371a3] animate-pulse' : 'bg-slate-50 text-slate-500 border-slate-100 group-hover:bg-sky-50 group-hover:text-[#0371a3] group-hover:border-sky-100'}`}>
                               {result.type === 'AI Recommend' ? 'Smart Suggestion' : result.type}
                             </span>
                             <span className="text-[10px] text-slate-400 font-black uppercase tracking-widest">
@@ -170,15 +167,40 @@ function SearchContent() {
                             {result.description}
                           </p>
                           <div className="mt-5 flex items-center text-[#0371a3] text-[11px] font-black uppercase tracking-widest gap-2">
-                            View Full Details
+                            {isAskSara ? 'Open AI Chat' : 'View Full Details'}
                             <svg className="w-4 h-4 translate-x-0 group-hover:translate-x-1.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
                               <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
                             </svg>
                           </div>
                         </div>
                       </div>
-                    </Link>
-                  ))}
+                    );
+
+                    if (isAskSara) {
+                      return (
+                        <button 
+                          key={idx} 
+                          onClick={() => {
+                            const btn = document.querySelector('[aria-label="Ask AI"]') as HTMLButtonElement;
+                            btn?.click();
+                          }}
+                          className="w-full text-left block bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm hover:shadow-2xl hover:border-[#0371a3]/30 hover:-translate-y-1 transition-all group"
+                        >
+                          {itemContent}
+                        </button>
+                      );
+                    }
+
+                    return (
+                      <Link 
+                        key={idx} 
+                        href={result.url}
+                        className="block bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm hover:shadow-2xl hover:border-[#0371a3]/30 hover:-translate-y-1 transition-all group"
+                      >
+                        {itemContent}
+                      </Link>
+                    );
+                  })}
                 </div>
               ) : (
                 <div className="text-center py-20 bg-white rounded-[3rem] border border-slate-100 shadow-xl shadow-slate-100/50">

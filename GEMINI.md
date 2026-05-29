@@ -4,7 +4,228 @@
 - Always mention the application version number when presenting changes or updates.
 - Versioning follows the format `v1.1.x`.
 - Increment the patch version automatically for every iteration/significant set of changes.
-- Current Version: v1.1.260
+- Current Version: v1.1.306
+
+## Recent Changes (v1.1.306)
+- **Partner Identity & Display Refinement:** Finalized the correction for Partner 2's identity and visual presentation.
+    *   **Full Name Update:** Updated the name variable to **'Mr. Pranit Sawant'** across the `About` page defaults, `Admin` configuration, and `sync_data` scripts.
+    *   **Display Precision:** Refined the JSX in `app/about/page.tsx` to exactly match the user's request, removing the hardcoded ", Partner" suffix to present the name as a standalone authoritative title.
+- **Version Bump:** Updated application version to v1.1.306.
+
+## Recent Changes (v1.1.305)
+- **AI Chat UX Enhancement (Focus Management):** Optimized the interaction flow for "Ask Sara" to ensure a more seamless and consistent chat experience.
+    *   **Autofocus on Open:** Implemented an `inputRef` and `useEffect` hook in `QuickSupportModal.tsx` to automatically focus the chat input field as soon as the panel is opened.
+    *   **Focus Retention:** Added logic to ensure the input field regains focus immediately after a user sends a message and once the AI assistant finishes its response, allowing for uninterrupted conversation.
+- **Version Bump:** Updated application version to v1.1.305.
+
+## Recent Changes (v1.1.304)
+- **Partner Identity Correction:** Corrected the name and biography of the second partner to reflect the current leadership.
+    *   **Name Correction:** Updated all occurrences of 'Mr. Madhukar Sawant' to **'Pranit Sawant'** across the `About` page, `Admin` configuration, and database synchronization scripts.
+    *   **Biography Refinement:** Overhauled the partner's quote and biography in `app/about/page.tsx` to align with Pranit Sawant's role in driving digital transformation and modernizing business infrastructure.
+    *   **Data Integrity:** Synchronized the default state in `app/admin/pages/page.tsx` and the `scripts/sync_data.mjs` utility to ensure the corrected identity persists across database resets.
+- **Version Bump:** Updated application version to v1.1.304.
+
+## Recent Changes (v1.1.303)
+- **Visual Polish & Theme Synchronization:** Finalized the transition to the "Deep Blue" brand identity across all user-facing forms and interactive elements.
+    *   **Support Button Refinement:** Removed the redundant and "jumping" "Ask Sara" badge from the support button in `SupportButton.tsx` for a cleaner, more stable UI.
+    *   **Unified Submission Theme:** Overhauled `UnifiedContactModal.tsx` to align with the new brand palette, replacing all legacy purple/indigo elements with high-contrast Deep Blue (#0371a3) and Bright Blue (#00ABE4) accents.
+    *   **Admin Dashboard Sync:** Updated the admin submissions dashboard to use theme-consistent sky-blue and deep-blue badges for inquiry types, eliminating remaining violet tones.
+    *   **Hero Wording Optimization:** Enhanced the primary Tally-related hero slides with more sophisticated and diverse messaging, including "Navi Mumbai's Premier Tally Solutions Partner" and "Revolutionizing Business with Smart Tally Automation".
+- **Version Bump:** Updated application version to v1.1.303.
+
+## Recent Changes (v1.1.302)
+- **Ask Sara Search & Sitemap Integration:** Enhanced discoverability and accessibility of the AI Assistant.
+    *   **Search Awareness:** Integrated "Ask Sara" into the Search API (`siteMap` and `staticPages`) and the `SEMANTIC_INDEX`. Search queries for "ai", "chat", or "sara" now directly suggest the AI assistant.
+    *   **Dynamic Interaction:** Updated the search results page to handle "Ask Sara" results by triggering the chat modal instead of standard navigation.
+    *   **Sitemap Expansion:** Added a virtual `/ask-sara` route to the dynamic XML sitemap (`app/sitemap.ts`) and the AI-readable `SITEMAP.md`.
+    *   **Governance & SEO:** Implemented a "not open" strategy by disallowing `/ask-sara` in `robots.txt` and creating a dedicated redirect page that guides users back to the homepage while activating the assistant.
+- **Version Bump:** Updated application version to v1.1.302.
+
+## Recent Changes (v1.1.301)
+- **Hero Component Visibility Enhancement:** Reduced background transparency across all hero elements for a more grounded and solid UI.
+    *   **Opacitiy Recalibration:** Increased the base opacity for background atmospheric blobs and `ShapeGrid` patterns by 100% (from 0.1 to 0.2, and 0.2 to 0.4 respectively).
+    *   **Solid Foundations:** Bumped the glassmorphism opacities for content badges and feature icon containers (`bg-white/20`), ensuring they maintain a clear presence against the high-energy deep blue gradient.
+    *   **Typographic Clarity:** Refined the "Why Choose" subtitle and description text opacities to ensure consistent legibility on the vibrant foundation.
+- **Version Bump:** Updated application version to v1.1.301.
+
+## Recent Changes (v1.1.300)
+- **Deep Blue Hero Overhaul:** Deployed a high-contrast, vibrant deep blue theme across the hero section.
+    *   **Signature Background:** Applied the requested `HSLA(221, 83%, 53%)` to `HSLA(192, 91%, 36%)` gradient as the definitive background for all hero segments.
+    *   **Contrast Optimization:** Transitioned all primary typography to crisp white and light-aqua (#70f2f2) to ensure perfect legibility against the darker, high-energy foundation.
+    *   **Component Sync:** Updated badges, feature icons, and CTA buttons (White primary / Transparent secondary) to align with the new "Electric Blue" visual identity.
+- **Version Bump:** Updated application version to v1.1.300.
+
+## Recent Changes (v1.1.299)
+- **Definitive Hero Accent Unification:** Standardized all visual highlights and atmospheric elements to a single accent color (#00ABE4) for maximum brand clarity.
+    *   **Single-Color Highlighting:** Removed multi-color gradients from title highlights, replacing them with a crisp Bright Blue-to-Sky-Blue shimmer.
+    *   **Unified Atmospheric Glows:** Recalibrated all background blobs and glow effects to use the primary accent color exclusively, eliminating contrasting tints.
+    *   **Component Synchronization:** Updated badge backgrounds, icon colors, and interactive button states to align with the standardized single-color aesthetic.
+- **Version Bump:** Updated application version to v1.1.296.
+
+## Recent Changes (v1.1.295)
+- **Hero Visual Scale Optimization:** Reduced the hero image dimensions by an additional 10% to restore optimal spatial harmony and classic proportions.
+    *   **Geometric Calibration:** Set the standard visual mosaic to `scale-[0.8]` and the cloud ecosystem to `scale-[1.0]`.
+    *   **Layout Integrity:** Maintained the balanced 1:1 grid split while providing more "breathing room" for text and visual separation.
+- **Version Bump:** Updated application version to v1.1.295.
+
+## Recent Changes (v1.1.294)
+- **Hero Visual Scale Refinement:** Reduced the hero image dimensions by 10% to achieve a more sophisticated and balanced spatial composition.
+    *   **Geometric Adjustments:** Recalibrated the standard mosaic scale to `0.9` and the cloud ecosystem to `1.1`.
+    *   **Spatial Integrity:** Maintained the balanced 1:1 grid split while ensuring the larger imagery has enough "breathing room" within the viewport.
+- **Version Bump:** Updated application version to v1.1.294.
+
+## Recent Changes (v1.1.293)
+- **Unified Hero Color Branding:** Standardized the color palette across all hero segments to match the official "Why Choose Certified Partner?" scheme.
+    *   **Palette Synchronization:** Enforced `#232F3E` (Midnight Blue) and `#00ABE4` (Bright Blue) as the global hero colors in the `processHeroData` engine.
+    *   **Demo Route Alignment:** Reverted the demo hero colors from experimental cyan to the official brand palette for site-wide consistency.
+- **Version Bump:** Updated application version to v1.1.293.
+
+## Recent Changes (v1.1.292)
+- **Hero Layout Balancing & Visual Expansion:** Re-engineered the hero section for a symmetrical and prominent presentation.
+    *   **1:1 Grid Split:** Updated the hero grid to a perfectly balanced layout (`lg:col-span-6` for both text and visuals), as requested.
+    *   **20% Visual Upscaling:** Increased the primary visual mosaic scale (Standard: `scale-[1.0]`, Ecosystem: `scale-[1.2]`) while maintaining proportional distancing to maximize brand impact.
+- **Version Bump:** Updated application version to v1.1.292.
+
+## Recent Changes (v1.1.291)
+- **Hero Layout Balancing & Visual Upscaling:** Re-engineered the hero section for a more symmetrical and high-impact presentation.
+    *   **Balanced Grid:** Updated the hero grid to a 1:1 split (`lg:col-span-6` for both text and visuals), providing a perfectly centered aesthetic on desktop viewports.
+    *   **20% Visual Expansion:** Upscaled the image mosaic container and all associated visual layers by 20% (Standard: `scale-[1.0]`, Ecosystem: `scale-[1.2]`) to maximize brand presence while maintaining proportional distancing.
+- **Version Bump:** Updated application version to v1.1.292.
+
+## Recent Changes (v1.1.291)
+- **Hero Layout Restoration:** Reverted the `HomeHero` component to its stable v1.1.277 configuration to resolve "messed up" layout and image sizing.
+    *   **Geometric Stability:** Restored the balanced 8:4 grid split and the reliable `scale-[0.8]` visual container footprint.
+    *   **Preserved Upgrades:** Maintained all functional improvements, including the React reference fix, the "Our Custom Tally Modules" line break, and the aqua-to-sky-blue HSLA gradient background.
+- **Version Bump:** Updated application version to v1.1.291.
+
+## Recent Changes (v1.1.290)
+- **Hero Visual & Typographic Enhancement:** Substantially upscaled the hero section's visual impact and readability.
+    *   **Visual Dominance:** Re-calibrated the hero grid to `lg:col-span-7` (Text) and `lg:col-span-5` (Visuals), increasing the image mosaic's maximum footprint to `640px` for a more cinematic presence.
+    *   **Advanced Text Wrapping:** Integrated Tailwind's `text-balance` for headlines and `text-pretty` for descriptions, ensuring titles wrap elegantly without awkward line breaks.
+- **Version Bump:** Updated application version to v1.1.278.
+
+## Recent Changes (v1.1.277)
+- **Aesthetic Upgrade & Stability Fix:** Resolved a critical runtime error and enhanced the visual palette.
+    *   **Runtime Resolution:** Fixed the "React is not defined" error in `HomeHero.tsx` by transitioning from `React.Fragment` to shorthand fragment syntax (`<span className="contents">`).
+    *   **Custom Signature Background:** Implemented a sophisticated aqua-to-sky-blue gradient (`hsla(180, 79%, 76%, 1)` to `hsla(194, 52%, 92%, 1)`) as the new foundation for the `radiant` hero variant, delivering a fresh and modern "Radiant Sky" aesthetic.
+- **Version Bump:** Updated application version to v1.1.277.
+
+## Recent Changes (v1.1.276)
+- **Mobile & Hero Layout Refinement:** Polished the interactive and structural elements of the homepage.
+    *   **Floating Button Elevation:** Raised the AI and WhatsApp support buttons on mobile viewports (`bottom-24`) to improve visibility and avoid overlap with system-level navigation bars.
+    *   **Strategic Title Breaks:** Implemented a forced line break for the "Our Custom Tally Modules" hero title, ensuring a clean "Our Custom Tally" | "Modules" split for better messaging hierarchy.
+    *   **Grid Stability Fix:** Resolved a grid-wrap issue by strictly calibrating the hero columns to `lg:col-span-8` (text) and `lg:col-span-4` (visuals), ensuring side-by-side presentation on all desktop and laptop displays.
+- **Version Bump:** Updated application version to v1.1.276.
+
+## Recent Changes (v1.1.275)
+- **Definitive 2-Line Hero Constraint:** Achieved a strict 2-line limit for hero descriptions on all desktop viewports.
+    *   **Maximized Text Column:** Further increased the hero text container to `lg:col-span-8` (~66% width), providing ample horizontal space for detailed cloud and backup messaging.
+    *   **Visual Side Calibration:** Synchronized the visual side to `lg:col-span-4` to maintain a balanced, premium composition while prioritizing textual readability.
+- **Version Bump:** Updated application version to v1.1.275.
+
+## Recent Changes (v1.1.274)
+- **Hero Description Compaction:** Enforced a strict 2-line limit for hero descriptions on desktop viewports.
+    *   **Grid Re-proportioning:** Shifted the hero layout to a 12-column grid, increasing the text column width to `lg:col-span-7` (~58% width).
+    *   **Horizontal Expansion:** Upscaled the description paragraph to `max-w-4xl` to utilize the additional column space, successfully preventing text from breaking into a third line.
+- **Version Bump:** Updated application version to v1.1.274.
+
+## Recent Changes (v1.1.273)
+- **Hero Layout Optimization:** Expanded the horizontal footprint of the hero text area to accommodate longer descriptions.
+    *   **Spatial Expansion:** Increased the text container max-width to `800px` and the description paragraph to `max-w-3xl`.
+    *   **Improved Readability:** Reduced premature text wrapping, ensuring that detailed messaging (specifically for cloud and backup solutions) remains authoritative and visually balanced.
+- **Version Bump:** Updated application version to v1.1.273.
+
+## Recent Changes (v1.1.272)
+- **Dynamic Hero Color Engine:** Re-engineered the `HomeHero` component to be fully responsive to database-driven color schemes.
+    *   **Creative Variant Synchronization:** Replaced all hardcoded blue values in the `creative` variant with dynamic `colorFrom` and `colorTo` variables for background effects, gradients, and interactive elements.
+    *   **Demo Hero Customization:** Applied the requested `#70f2f2` (Bright Cyan) color to the `/demo` route hero, achieving a vibrant and distinct visual identity.
+- **Version Bump:** Updated application version to v1.1.272.
+
+## Recent Changes (v1.1.271)
+- **Hero Highlight Refinement:** Isolated specific keywords for improved messaging focus in the cloud segment.
+    *   **Cloud Slide Precision:** Updated the highlighting engine to target **only "Reliable" and "Backup"** in the cloud title, removing the highlight from "Zero-Loss" to align with user branding preferences.
+- **Version Bump:** Updated application version to v1.1.271.
+
+## Recent Changes (v1.1.270)
+- **Mobile UI Fix - Oval Icon Resolution:** Resolved a visual issue where prefix circles and check icons would appear oval on mobile devices due to flex compression.
+    *   **Geometric Stability:** Integrated the `shrink-0` utility into icon containers across `HomeHero`, `Products`, and `Corporate Training` pages.
+    *   **Responsive Integrity:** Ensured that all list indicators maintain their intended round or square aspect ratios regardless of text wrapping or viewport constraints.
+- **Version Bump:** Updated application version to v1.1.270.
+
+## Recent Changes (v1.1.269)
+- **Hero Design Precision Upgrades:** Finalized the aesthetic and interactive patterns for the `HomeHero` component.
+    *   **Isolated Highlighting:** Recalibrated the shimmering gradient engine to highlight **only "90%"** in support slides, ensuring optimal messaging focus.
+    *   **Unified CTA Branding:** Standardized all primary action buttons to the official Midnight Blue (`#232F3E`) to achieve absolute consistency with the site-wide navigation.
+    *   **Imagery Naturalization:** Eliminated all remaining `grayscale` filters from sub-images and backdrop layers, restoring a vibrant and cohesive color palette across the mosaic.
+    *   **Button Typography Sync:** Synchronized font scales (`text-[11px]`) and weights across both primary and secondary button variants.
+- **Version Bump:** Updated application version to v1.1.269.
+
+## Recent Changes (v1.1.268)
+- **Hero Detail & Highlight Refinement:** Fine-tuned the `HomeHero` visual logic and interaction patterns.
+    *   **Precision Highlighting:** Updated the shimmer engine to isolate the "90%" keyword in blue for support slides, improving messaging hierarchy.
+    *   **Button Synchronization:** Unified primary and secondary buttons with consistent dimensions (`px-7 py-3.5`), border radius (`rounded-xl`), and crisp typography (`text-[11px]`).
+    *   **Imagery Restoration:** Removed remaining grayscale filters from all sub-images and backdrop layers to restore natural, vibrant brand colors.
+    *   **Mosaic Layering:** Permanently positioned the secondary image at the top-right with high-priority layering (`z-50`) to appear on top of the central visual.
+- **Version Bump:** Updated application version to v1.1.268.
+
+## Recent Changes (v1.1.267)
+- **Hero Spatial & UI Refinement:** Optimized the `HomeHero` for a more balanced and professional aesthetic site-wide.
+    *   **Vertical Spacing Relaxation:** Slightly increased internal gaps (reverted to `space-y-5`) to eliminate the "squished" feel while preserving the compact, high-density layout.
+    *   **CTA Button Downsizing:** Reduced primary and secondary button dimensions by 15% (`px-7 py-3.5`) and refined typography to `text-[11px]` for a more elegant, "fine-art" presence.
+    *   **Typographic Hierarchy:** Scaled down the brand badges (`text-[9px]`) and sub-text descriptions for improved readability and focus on the main headlines.
+    *   **Elevated Visual Positioning:** Permanently moved the image mosaic container higher on desktop viewports (`lg:-mt-16`) to achieve a more cohesive integration with the site header.
+- **Version Bump:** Updated application version to v1.1.267.
+
+## Recent Changes (v1.1.266)
+- **Site-Wide Creative Hero Upgrade:** Applied the "Creative" formatting and color scheme to the main landing page.
+    *   **Aesthetic Synchronization:** Integrated the sophisticated mesh gradient foundation and floating glassmorphism shapes site-wide.
+    *   **Geometric Refinement:** Applied the 20% size reduction to all visual mosaic cards and logos for a more elegant, premium feel.
+    *   **Factual Preservation:** Maintained all existing database-driven text and data, ensuring the upgrade is purely visual and stylistic.
+- **Version Bump:** Updated application version to v1.1.266.
+
+## Recent Changes (v1.1.265)
+- **Refined Creative Demo Aesthetics:** Fine-tuned the `/demo` route visuals for a more compact and premium feel.
+    *   **Geometric Scaling:** Reduced the size of all visual mosaic cards, floating shapes, and logos by 20%, resulting in a more elegant and less crowded layout.
+    *   **Background Optimization:** Removed the rotating dashed ring and shifted the mesh gradient palette to "cooler" cyan (`#7dd3fc`) and deep blue tones.
+    *   **Subtle Textures:** Lowered the `ShapeGrid` opacity to 20% and reduced animation speeds to create a more sophisticated, low-profile interactive background.
+    *   **Enhanced Depth:** Added unique multi-layer glow effects and refined glassmorphism borders for improved visual hierarchy.
+- **Version Bump:** Updated application version to v1.1.265.
+
+## Recent Changes (v1.1.264)
+- **HomeHero Component Restoration:** Resolved a critical parsing error ("Expected '</', got '<eof>'") caused by truncated file content.
+    *   **Full Implementation:** Restored all logic for `standard`, `radiant`, and `creative` variants, ensuring 100% syntactical integrity.
+    *   **Placeholder Removal:** Eliminated all inadvertent placeholders to prevent future build failures.
+- **Ultra-Creative Finalization:** Solidified the visual identity of the `/demo` route.
+    *   **Vibrant Foundations:** Confirmed the implementation of multi-layer mesh gradients and floating 3D geometry for the `creative` variant.
+    *   **Professional Depth:** Synchronized high-energy visual effects with authoritative brand-blue accents and navbar-consistent palettes.
+- **Version Bump:** Updated application version to v1.1.264.
+
+## Recent Changes (v1.1.263)
+- **Ultra-Creative Demo Experience:** Delivered a high-impact visual overhaul for the `/demo` route.
+    *   **"Creative" Hero Variant:** Implemented a sophisticated multi-layer mesh gradient foundation with moving light leaks and floating glassmorphism geometry (spheres and 3D cards).
+    *   **3D Visual Stack:** Upgraded the visual side with a dynamic parallax stack, including a dashed orbiting ring and enhanced shadow depth for a true "3rd dimension" feel.
+    *   **Vibrant Typography:** Expanded the highlight engine to support "Revolutionize", "Smart", and "Potential" with multi-color shimmering gradients.
+    *   **Interactive Professionalism:** Balanced the high-energy visuals with strict adherence to the Navbar's midnight palette (#232F3E) and high-contrast professional typography.
+- **Version Bump:** Updated application version to v1.1.263.
+
+## Recent Changes (v1.1.262)
+- **Demo Aesthetics Overhaul:** Significantly enhanced the `/demo` route with a premium, high-impact visual identity.
+    *   **Radiant Hero Variant:** Implemented a new `radiant` mode for `HomeHero` featuring a cinematic `#dff0f5` (Radiant Sky) background.
+    *   **Dynamic Visual Depth:** Added pulsing atmospheric glows (Brand Blue/Bright Blue) and increased `ShapeGrid` definition to eliminate "dullness" while preserving the light-theme directive.
+    *   **Typography Precision:** Upgraded the title highlight engine to support "Witness", "Future", and "Automation" keywords with shimmering multi-color gradients.
+    *   **Interaction Refinement:** Synchronized primary CTA buttons with the Navbar's midnight palette (`#232F3E`) for a more authoritative presence.
+- **Version Bump:** Updated application version to v1.1.262.
+
+## Recent Changes (v1.1.261)
+- **Demo Route Hero Synchronization:** Integrated the production-grade `HomeHero` into the `/demo` route.
+    *   **Placement:** Positioned the cinematic hero at the absolute top of the demo page, replacing the legacy dark-themed placeholder.
+    *   **Light Theme Enforcement:** Maintained a pure white background (`bg-white`) with high-contrast typography, adhering to the "light theme only" directive.
+    *   **Navbar Palette Sync:** Synchronized all hero accents and primary text with the navbar's midnight blue (`#232F3E`) and official bright blue (`#00ABE4`).
+    *   **Content Optimization:** Provided attractive, demo-specific content highlighting live dashboards, WhatsApp integration, and cloud simulations.
+- **Global Brand Color Synchronization:** Updated the primary "Midnight" color spectrum site-wide.
+    *   **Palette Alignment:** Transitioned from legacy `#131921` to the official navbar-matching `#232F3E` across the `HomeHero` component logic and visual layers.
+    *   **Dynamic Data Support:** Enhanced `processHeroData` to respect custom `colorFrom` and `colorTo` fields, allowing for slide-specific branding overrides.
+- **Version Bump:** Updated application version to v1.1.261.
 
 ## Recent Changes (v1.1.260)
 - **Finalized Tutorial Card Compaction:** Achieved maximum vertical efficiency for the resource gallery.

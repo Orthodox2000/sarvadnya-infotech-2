@@ -31,7 +31,7 @@ export default async function Home() {
 
   return (
     <main className="bg-white">
-      <HomeHero initialData={heroData} />
+      <HomeHero initialData={heroData} variant="creative" />
       <CertifiedPartners initialData={partnersData} />
       <QuickAccessHub initialData={hubData} initialModules={modulesData} initialSettings={settingsData} />
       <CustomerReviews initialData={reviewsData} />
