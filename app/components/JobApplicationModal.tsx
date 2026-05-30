@@ -102,7 +102,7 @@ export default function JobApplicationModal({
   };
 
   return (
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-[#0371a3]/40 backdrop-blur-md animate-in fade-in duration-300" onClick={onClose}>
+    <div className="fixed inset-0 z-[100000] flex items-center justify-center p-4 bg-[#0371a3]/40 backdrop-blur-md animate-in fade-in duration-300" onClick={onClose}>
       <div 
         className="w-full max-w-xl bg-white rounded-[2.5rem] overflow-hidden shadow-[0_32px_80px_rgba(3,113,163,0.3)] relative animate-in zoom-in-95 duration-300 border border-white/20"
         onClick={e => e.stopPropagation()}

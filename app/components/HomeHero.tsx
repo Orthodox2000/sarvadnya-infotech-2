@@ -176,12 +176,12 @@ const ECOSYSTEM_SCHEMES = [
     nosky: "rotate-6 translate-x-2 -translate-y-2"
   }
 ];
-
+//cahnge this for hero text bg colour
 const processHeroData = (data: any[]): HeroContent[] => {
   return data.map((item) => {
     const title = (item.titleText || '').toLowerCase();
     const isCloud = title.includes('cloud');
-    const isSupport = title.includes('support') || title.includes('resolution') || title.includes('90%');
+    const isSupport = title.includes('Solution') || title.includes('Downtime')  ;
     const isTraining = title.includes('train') || title.includes('master');
     const isWhatsApp = title.includes('whatsapp') || title.includes('automation') || title.includes('custom') || title.includes('module');
     
@@ -326,6 +326,7 @@ export default function HomeHero({ initialData, variant = 'standard' }: { initia
   };
 
   return (
+    <>
     <main className={`relative w-full overflow-hidden opacity-80 md:opacity-90 transition-all duration-1000 ${getVariantBg()} min-h-[550px] md:min-h-[700px] lg:min-h-[650px] lg:-mt-10 flex items-start`}>
       <div className="absolute -z-[100] invisible h-0 w-0 overflow-hidden pointer-events-none">
         {heroContents.map((content, idx) => (
@@ -483,7 +484,8 @@ export default function HomeHero({ initialData, variant = 'standard' }: { initia
           </div>
         </div>
       </div>
-      <UnifiedContactModal isOpen={modalConfig.isOpen} onClose={() => setModalConfig(prev => ({ ...prev, isOpen: false }))} type={modalConfig.type} prefillService={modalConfig.service} prefillDetails={modalConfig.details} />
     </main>
+    <UnifiedContactModal isOpen={modalConfig.isOpen} onClose={() => setModalConfig(prev => ({ ...prev, isOpen: false }))} type={modalConfig.type} prefillService={modalConfig.service} prefillDetails={modalConfig.details} />
+    </>
   );
 }

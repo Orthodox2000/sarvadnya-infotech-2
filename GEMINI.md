@@ -4,7 +4,21 @@
 - Always mention the application version number when presenting changes or updates.
 - Versioning follows the format `v1.1.x`.
 - Increment the patch version automatically for every iteration/significant set of changes.
-- Current Version: v1.1.306
+- Current Version: v1.1.308
+
+## Recent Changes (v1.1.308)
+- **Modal UX Optimization (Scroll Lock):** Implemented a robust scroll-lock mechanism across all primary interactive components.
+    *   **Universal Scroll Prevention:** Integrated `useEffect` hooks in `UnifiedContactModal`, `JobApplicationModal`, `ModuleModal`, and all detail popups (`DescriptionPopup`, `ServiceDetailPopup`) to disable background scrolling when active.
+    *   **Focused Interaction:** Prevents the background content from shifting or scrolling while a user is filling out a form or reading detailed information, ensuring a more stable and focused mobile and desktop experience.
+- **Syntax Resolution:** Fixed a mismatched React Fragment in `HomeHero.tsx` that caused a parsing error after the modal relocation.
+- **Version Bump:** Updated application version to v1.1.308.
+
+## Recent Changes (v1.1.307)
+- **UI Layering & Stacking Context Optimization:** Resolved persistent issues where modals and contact forms appeared behind the navigation header.
+    *   **Universal Modal Elevation:** Standardized the z-index of all primary interactive modals (`UnifiedContactModal`, `JobApplicationModal`, `ModuleModal`, and `DescriptionPopup`) to `z-[100000]`, ensuring they remain on top of all other elements including sticky headers and news tickers.
+    *   **Stacking Context Fix:** Relocated the `UnifiedContactModal` in `HomeHero.tsx` outside of the `main` tag to bypass the container's opacity-driven stacking context, restoring perfect visibility.
+    *   **Cross-Page Synchronization:** Updated all specialized service and product pages to use the new standardized layering architecture.
+- **Version Bump:** Updated application version to v1.1.307.
 
 ## Recent Changes (v1.1.306)
 - **Partner Identity & Display Refinement:** Finalized the correction for Partner 2's identity and visual presentation.

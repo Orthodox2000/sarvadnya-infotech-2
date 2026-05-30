@@ -27,7 +27,7 @@ const HUB_CARDS: HubCard[] = [
     title: "Cloud Products",
     description: "Secure, 24/7 remote access with Official AWS and NoSky infrastructure.",
     href: "/cloud",
-    color: "bg-[#00ABE4]",
+    color: "bg-[#0371a3]",
     icon: (
       <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" />
