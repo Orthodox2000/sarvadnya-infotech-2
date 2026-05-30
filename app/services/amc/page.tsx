@@ -136,7 +136,7 @@ export default function AMCPage() {
                 { title: "Unlimited Remote Support", desc: "No limits on how many times you can call us for help." },
                 { title: "Priority Response", desc: "AMC customers always get jumped to the front of the queue." },
                 { title: "On-Site Visits", desc: "Scheduled visits for complex issues that need in-person attention." },
-                { title: "Free Data Recovery", desc: "Complimentary data recovery services in case of system failure." }
+                { title: "Data Recovery Support", desc: "Advanced data recovery services included in case of system failure." }
               ].map((benefit, i) => (
                 <div key={i} className="flex gap-4">
                   <div className="mt-1 shrink-0 w-5 h-5 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center">

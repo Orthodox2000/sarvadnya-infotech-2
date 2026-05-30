@@ -113,7 +113,7 @@ export default function QuickReference() {
             href="/contact" 
             className="h-10 px-6 flex items-center justify-center rounded-lg bg-indigo-600 text-white font-bold text-[11px] uppercase tracking-wider hover:bg-indigo-700 transition-all shadow-sm active:scale-95"
           >
-            Get Free Consultation
+            Request Consultation
           </Link>
         </div>
 

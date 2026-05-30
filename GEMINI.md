@@ -4,7 +4,20 @@
 - Always mention the application version number when presenting changes or updates.
 - Versioning follows the format `v1.1.x`.
 - Increment the patch version automatically for every iteration/significant set of changes.
-- Current Version: v1.1.308
+- Current Version: v1.1.310
+
+## Recent Changes (v1.1.310)
+- **Video Card Geometry Optimization:** Resolved visual issues where thumbnails appeared squished after adding new content rows.
+    *   **Strict Aspect Ratio:** Enforced a permanent `16/9` aspect ratio for all video and article thumbnails using `aspect-video` and `shrink-0` utilities, preventing compression regardless of content density.
+    *   **Uniform Card Height:** Standardized card heights across the Tutorials hub and Admin Learning panel by removing relative height constraints (`lg:h-3/4`) and implementing `min-h` constraints for title areas to ensure perfect grid alignment.
+- **Version Bump:** Updated application version to v1.1.310.
+
+## Recent Changes (v1.1.309)
+- **Terminology Refinement (Brand Alignment):** Systematically removed the word "free" from all user-facing elements across the application to align with the brand's premium professional positioning.
+    *   **Demo Request Optimization:** Updated all CTA buttons from "Request Free Demo" to "Request Demo" and "Book a Demo" across `HomeHero`, `ModuleModal`, `MobileAppBizPage`, and `UnifiedContactModal`.
+    *   **Consultation Language Upgrade:** Transitioned "Get Free Consultation" to "Get Professional Consultation" and "Request Consultation" in the `QuickReference` and `Corporate Training` sections.
+    *   **Service Description Refinement:** Replaced "Free Data Recovery" with "Data Recovery Support" and "Complimentary" with "Included" in the AMC service deliverables.
+- **Version Bump:** Updated application version to v1.1.309.
 
 ## Recent Changes (v1.1.308)
 - **Modal UX Optimization (Scroll Lock):** Implemented a robust scroll-lock mechanism across all primary interactive components.

@@ -114,9 +114,9 @@ export default function TutorialsPage() {
                     {filteredTutorials.map((tutorial) => (
                         <div 
                             key={tutorial._id} 
-                            className="group bg-white rounded-3xl overflow-hidden border border-slate-100 hover:shadow-2xl hover:border-[#0371a3]/20 hover:-translate-y-1 transition-all duration-500 flex flex-col h-full lg:h-3/4 shadow-sm"
+                            className="group bg-white rounded-3xl overflow-hidden border border-slate-100 hover:shadow-2xl hover:border-[#0371a3]/20 hover:-translate-y-1 transition-all duration-500 flex flex-col h-full shadow-sm"
                         >
-                            <div className="aspect-video relative overflow-hidden bg-slate-100">
+                            <div className="aspect-video relative overflow-hidden bg-slate-100 shrink-0">
                                 {tutorial.type === 'video' ? (
                                     <Image 
                                         src={getYoutubeThumbnail(tutorial.url)} 
@@ -156,7 +156,7 @@ export default function TutorialsPage() {
                                         <span className="text-slate-400 text-[9px] font-medium uppercase tracking-wider">{tutorial.date}</span>
                                     </div>
                                 </div>
-                                <h3 className="text-sm font-bold text-slate-900 mb-3 group-hover:text-[#0371a3] transition-colors leading-snug line-clamp-2 tracking-tight flex-1">
+                                <h3 className="text-sm font-bold text-slate-900 mb-3 group-hover:text-[#0371a3] transition-colors leading-snug line-clamp-2 tracking-tight flex-1 min-h-[2.5rem]">
                                     {tutorial.title}
                                 </h3>
                                 

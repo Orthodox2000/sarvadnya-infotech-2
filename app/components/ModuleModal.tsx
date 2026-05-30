@@ -78,7 +78,7 @@ export default function ModuleModal({ isOpen, onClose, module, onEnquire }: Modu
             onClick={() => onEnquire(module)}
             className="flex-1 py-4 bg-[#0371a3] text-white rounded-2xl font-bold hover:bg-[#00ABE4] transition-all shadow-lg shadow-sky-900/10 flex items-center justify-center gap-2"
           >
-            Request Free Demo
+            Request Demo
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
           </button>
           <button 

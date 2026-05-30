@@ -161,7 +161,7 @@ export default function CorporateTrainingPage() {
           <div className="absolute top-0 right-0 w-64 h-64 bg-[#0371a3]/20 rounded-full blur-[80px]" />
           <div className="relative z-10">
             <h2 className="text-3xl md:text-4xl font-black text-white mb-6">Invest in Your Team's Growth</h2>
-            <p className="text-white/60 mb-10 max-w-xl mx-auto font-medium">Schedule a free consultation to design a training program that fits your company's specific needs.</p>
+            <p className="text-white/60 mb-10 max-w-xl mx-auto font-medium">Schedule a consultation to design a training program that fits your company's specific needs.</p>
             <button 
               onClick={() => openModal('callback')}
               className="px-10 py-4 bg-[#00ABE4] text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:scale-105 transition-all shadow-xl shadow-[#00ABE4]/20"

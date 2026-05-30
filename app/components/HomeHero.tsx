@@ -429,7 +429,7 @@ export default function HomeHero({ initialData, variant = 'standard' }: { initia
                 onClick={() => setModalConfig({ isOpen: true, type: 'demo', service: 'TallyPrime', details: 'Requesting a personalized demo' })} 
                 className={`group px-7 py-3.5 rounded-xl bg-transparent font-black text-[11px] uppercase tracking-[0.2em] transition-all duration-500 ease-in-out text-white hover:bg-white/10 hover:scale-[1.05] active:scale-95 border border-white/30`}
               >
-                Request Free Demo
+                Request Demo
               </button>
             </div>
           </div>

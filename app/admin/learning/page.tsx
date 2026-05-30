@@ -386,8 +386,8 @@ export default function AdminLearning() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {filteredItems.map((item) => (
-            <div key={item._id} className="bg-white p-6 rounded-[2.5rem] border border-[#E9F1FA] shadow-sm flex flex-col group hover:shadow-2xl hover:border-[#00ABE4]/20 transition-all duration-500">
-              <div className="relative aspect-video w-full mb-6 rounded-[1.5rem] overflow-hidden bg-[#f0f9ff] border border-[#E9F1FA]">
+            <div key={item._id} className="bg-white p-6 rounded-[2.5rem] border border-[#E9F1FA] shadow-sm flex flex-col h-full group hover:shadow-2xl hover:border-[#00ABE4]/20 transition-all duration-500">
+              <div className="relative aspect-video w-full mb-6 rounded-[1.5rem] overflow-hidden bg-[#f0f9ff] border border-[#E9F1FA] shrink-0">
                 {item.type === 'video' ? (
                   getYoutubeThumbnail(item.url) ? (
                     <img src={getYoutubeThumbnail(item.url)} alt={item.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
