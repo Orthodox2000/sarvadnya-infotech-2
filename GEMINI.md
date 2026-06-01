@@ -4,7 +4,31 @@
 - Always mention the application version number when presenting changes or updates.
 - Versioning follows the format `v1.1.x`.
 - Increment the patch version automatically for every iteration/significant set of changes.
-- Current Version: v1.1.310
+- Current Version: v1.1.311
+
+## Recent Changes (v1.1.313)
+- **Audio API Graceful Degradation & Stability:** Optimized the "Ask Sara" voice experience for restricted and development environments.
+    *   **Overlay Prevention:** Transitioned from `console.error` to `console.warn` for environmental API checks, successfully preventing unwanted Next.js full-screen error overlays in development mode.
+    *   **Contextual Awareness:** Integrated proactive checks for `window` and `navigator` availability to ensure absolute stability during Server-Side Rendering (SSR).
+    *   **Feature Availability Logic:** Implemented a new `isMediaSupported` state to dynamically detect browser capabilities on mount, providing a foundation for future UI-level graceful degradation.
+    *   **Safety Hardening:** Reinforced the `playVoiceResponse` and `startRecording` logic with comprehensive defensive programming to ensure the application remains stable even in non-secure (HTTP) or legacy contexts.
+- **Version Bump:** Updated application version to v1.1.313.
+
+## Recent Changes (v1.1.312)
+- **Audio API Safety & Permission Handling:** Enhanced the robustness of the "Ask Sara" voice features.
+    *   **Defensive API Checks:** Implemented strict validation for `navigator.mediaDevices` and `MediaRecorder` availability to prevent application crashes in insecure (non-HTTPS) contexts or unsupported browsers.
+    *   **Advanced Error Handling:** Refined the microphone permission logic to distinguish between user denial (`NotAllowedError`) and hardware issues, providing clear and actionable alerts for both scenarios.
+    *   **Stability Optimization:** Resolved a critical `TypeError` that occurred when accessing the microphone in restricted environments, ensuring a smoother experience across all network conditions.
+- **Version Bump:** Updated application version to v1.1.312.
+
+## Recent Changes (v1.1.311)
+- **Audio & Voice Integration (Ask Sara):** Enabled full voice-based interaction with the AI Assistant.
+    *   **Voice Input (STT):** Integrated a new microphone recording system using the `MediaRecorder` API and a dedicated `/api/chat/transcribe` route powered by Groq's Whisper-large-v3 model.
+    *   **Voice Response (TTS):** Implemented real-time voice playback of AI responses using the Web Speech API (`speechSynthesis`).
+    *   **Intelligent Content Filtering:** Added a voice-cleaning engine that automatically strips markdown markers and navigation buttons from the spoken output to ensure a natural and professional "important text only" voice experience.
+    *   **Voice Control UI:** Added a toggle in the chat header to allow users to easily enable/disable voice responses.
+    *   **Permission Governance:** Implemented robust browser permission checks for microphone access with user-friendly fallback messaging.
+- **Version Bump:** Updated application version to v1.1.311.
 
 ## Recent Changes (v1.1.310)
 - **Video Card Geometry Optimization:** Resolved visual issues where thumbnails appeared squished after adding new content rows.

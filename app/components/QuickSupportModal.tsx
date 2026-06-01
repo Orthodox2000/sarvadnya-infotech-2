@@ -7,6 +7,7 @@ interface Message {
   sender: 'ai' | 'user';
   timestamp: Date;
   showContact?: boolean;
+  showAudioPrompt?: boolean;
 }
 
 interface QuickSupportModalProps {
@@ -26,8 +27,26 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
   const [inputText, setInputText] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const [isAiResponding, setIsAiResponding] = useState(false);
+  const [isRecording, setIsRecording] = useState(false);
+  const [isSpeaking, setIsSpeaking] = useState(false);
+  const [showAudioPromptId, setShowAudioPromptId] = useState<string | null>(null);
+  const [voiceEnabled, setVoiceEnabled] = useState(true);
+  const [isMediaSupported, setIsMediaSupported] = useState(true);
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const audioChunksRef = useRef<Blob[]>([]);
+
+  // Check for Media API support on mount
+  useEffect(() => {
+    const supported = !!(
+      typeof navigator !== 'undefined' && 
+      navigator.mediaDevices && 
+      typeof navigator.mediaDevices.getUserMedia === 'function' && 
+      typeof MediaRecorder !== 'undefined'
+    );
+    setIsMediaSupported(supported);
+  }, []);
 
   // Auto-scroll to bottom
   useEffect(() => {
@@ -47,12 +66,144 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
 
   if (!isOpen) return null;
 
+  const playVoiceResponse = (text: string, fullResponse = false) => {
+    if (!voiceEnabled || typeof window === 'undefined' || !window.speechSynthesis) return;
+
+    // Stop any current speech
+    window.speechSynthesis.cancel();
+    setIsSpeaking(true);
+
+    // Clean text: remove buttons [[Label|URL]] and markdown **text**
+    let cleanText = text
+      .replace(/\[\[.*?\|.*?\]\]/g, '') // Remove buttons
+      .replace(/\*\*(.*?)\*\*/g, '$1') // Remove bold markers
+      .replace(/[*#_~]/g, '')           // Remove other markdown
+      .trim();
+
+    if (!fullResponse) {
+      // Truncate to first 3 sentences or bullets
+      const sentences = cleanText.split(/(?<=[.?!])\s+/);
+      if (sentences.length > 3) {
+        cleanText = sentences.slice(0, 3).join(' ');
+      }
+    }
+
+    if (!cleanText) {
+      setIsSpeaking(false);
+      return;
+    }
+
+    const utterance = new SpeechSynthesisUtterance(cleanText);
+    utterance.rate = 0.9; // Slightly slower for better clarity
+    utterance.pitch = 1.0;
+    utterance.volume = 1.0;
+    
+    // Try to find a high-quality professional voice
+    const voices = window.speechSynthesis.getVoices();
+    const preferredVoice = voices.find(v => 
+      (v.name.includes('Google') || v.name.includes('Natural')) && 
+      (v.name.includes('US') || v.name.includes('UK')) && 
+      v.lang.startsWith('en')
+    ) || voices.find(v => v.lang.startsWith('en'));
+    
+    if (preferredVoice) utterance.voice = preferredVoice;
+
+    utterance.onend = () => setIsSpeaking(false);
+    utterance.onerror = () => setIsSpeaking(false);
+
+    window.speechSynthesis.speak(utterance);
+  };
+
+  const startRecording = async () => {
+    // Check if mediaDevices API is available (only available in secure contexts/HTTPS)
+    if (typeof navigator === 'undefined' || !navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      console.warn('MediaDevices API not available in this context');
+      alert('Audio recording is not supported in this browser or context. Please ensure you are using HTTPS.');
+      return;
+    }
+
+    // Check if MediaRecorder is available
+    if (typeof MediaRecorder === 'undefined') {
+      console.warn('MediaRecorder not available');
+      alert('Your browser does not support audio recording.');
+      return;
+    }
+
+    try {
+      // NOTE: MediaDevices API requires a Secure Context (HTTPS or localhost).
+      // If testing remotely over local network (e.g. http://192.168.1.X), 
+      // you must enable the 'unsafely-treat-insecure-origin-as-secure' flag 
+      // in chrome://flags or edge://flags for the specific origin.
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const mediaRecorder = new MediaRecorder(stream);
+      mediaRecorderRef.current = mediaRecorder;
+      audioChunksRef.current = [];
+
+      mediaRecorder.ondataavailable = (event) => {
+        if (event.data.size > 0) {
+          audioChunksRef.current.push(event.data);
+        }
+      };
+
+      mediaRecorder.onstop = async () => {
+        const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
+        await handleVoiceInput(audioBlob);
+        
+        // Stop all tracks to release microphone
+        stream.getTracks().forEach(track => track.stop());
+      };
+
+      mediaRecorder.start();
+      setIsRecording(true);
+    } catch (err: any) {
+      console.error('Microphone permission denied or error:', err);
+      if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
+        alert('Microphone access was denied. Please enable it in your browser settings to use voice input.');
+      } else {
+        alert('Could not access microphone. Please check your device settings.');
+      }
+      setIsRecording(false);
+    }
+  };
+
+  const stopRecording = () => {
+    if (mediaRecorderRef.current && isRecording) {
+      mediaRecorderRef.current.stop();
+      setIsRecording(false);
+    }
+  };
+
+  const handleVoiceInput = async (blob: Blob) => {
+    setIsTyping(true);
+    try {
+      const formData = new FormData();
+      formData.append('file', blob);
+
+      const response = await fetch('/api/chat/transcribe', {
+        method: 'POST',
+        body: formData
+      });
+
+      const data = await response.json();
+      if (data.text) {
+        // Send the transcribed text as a message
+        await processChatMessage(data.text);
+      } else {
+        throw new Error(data.error || 'Transcription failed');
+      }
+    } catch (err) {
+      console.error('Voice input error:', err);
+      setIsTyping(false);
+      await typeMessage("Sorry, I couldn't understand the audio. Please try again.");
+    }
+  };
+
   const typeMessage = async (fullText: string) => {
     const id = (Date.now() + 1).toString();
     setIsAiResponding(true);
     
     // Add empty message first
-    setMessages(prev => [...prev, { id, text: '', sender: 'ai', timestamp: new Date() }]);
+    setMessages(prev => [...prev, { id, text: '', sender: 'ai', timestamp: new Date(), showAudioPrompt: false }]);
     
     let currentText = '';
     const words = fullText.split(' ');
@@ -65,22 +216,21 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
     }
     
     setIsAiResponding(false);
+    
+    // After typing is done, show the audio prompt for this specific message
+    setMessages(prev => prev.map(m => m.id === id ? { ...m, showAudioPrompt: true } : m));
+    setShowAudioPromptId(id);
   };
 
-  const handleSendMessage = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!inputText.trim() || isTyping || isAiResponding) return;
-
-    const userText = inputText.trim();
+  const processChatMessage = async (text: string) => {
     const userMessage: Message = {
       id: Date.now().toString(),
-      text: userText,
+      text: text,
       sender: 'user',
       timestamp: new Date()
     };
 
     setMessages(prev => [...prev, userMessage]);
-    setInputText('');
     setIsTyping(true);
 
     try {
@@ -88,7 +238,7 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
         role: m.sender === 'ai' ? 'assistant' : 'user',
         content: m.text
       }));
-      apiMessages.push({ role: 'user', content: userText });
+      apiMessages.push({ role: 'user', content: text });
 
       const response = await fetch('/api/chat', {
         method: 'POST',
@@ -106,6 +256,15 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
       setIsTyping(false);
       await typeMessage(err.message || "I'm sorry, I'm having trouble connecting right now. Please try again later.");
     }
+  };
+
+  const handleSendMessage = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!inputText.trim() || isTyping || isAiResponding) return;
+
+    const userText = inputText.trim();
+    setInputText('');
+    await processChatMessage(userText);
   };
 
   return (
@@ -129,14 +288,31 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
                 <p className="text-[10px] text-sky-200 font-bold uppercase tracking-widest leading-none mt-0.5">Sarvadnya Assistant</p>
               </div>
             </div>
-            <button 
-              onClick={onClose}
-              className="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center transition-colors"
-            >
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
+            <div className="flex items-center gap-2">
+              <button 
+                onClick={() => setVoiceEnabled(!voiceEnabled)}
+                className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${voiceEnabled ? 'bg-white/20 text-white' : 'bg-white/5 text-sky-300'}`}
+                title={voiceEnabled ? 'Disable Voice Response' : 'Enable Voice Response'}
+              >
+                {voiceEnabled ? (
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+                  </svg>
+                ) : (
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15zm13.172-1.414l-4.242-4.242m4.242 0l-4.242 4.242" />
+                  </svg>
+                )}
+              </button>
+              <button 
+                onClick={onClose}
+                className="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center transition-colors"
+              >
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
           </div>
         </div>
 
@@ -148,7 +324,7 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
           {messages.map((msg) => (
             <div 
               key={msg.id} 
-              className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}
+              className={`flex flex-col ${msg.sender === 'user' ? 'items-end' : 'items-start'}`}
             >
               <div 
                 className={`max-w-[85%] px-4 py-3 rounded-2xl text-xs font-medium shadow-sm leading-relaxed ${
@@ -191,6 +367,39 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
                   );
                 })}
               </div>
+
+              {/* Audio Prompt */}
+              {msg.sender === 'ai' && msg.showAudioPrompt && showAudioPromptId === msg.id && (
+                <div className="mt-2 flex flex-wrap items-center gap-2 animate-in fade-in slide-in-from-top-1 duration-300">
+                  <span className="text-[10px] text-[#0371a3] font-bold uppercase tracking-wider ml-2">Read aloud?</span>
+                  <div className="flex gap-1">
+                    <button 
+                      onClick={() => {
+                        playVoiceResponse(msg.text, false);
+                        setShowAudioPromptId(null);
+                      }}
+                      className="px-2 py-1 bg-white border border-sky-200 text-[#0371a3] text-[9px] font-black uppercase rounded-lg hover:bg-sky-50 transition-colors shadow-sm"
+                    >
+                      Summary
+                    </button>
+                    <button 
+                      onClick={() => {
+                        playVoiceResponse(msg.text, true);
+                        setShowAudioPromptId(null);
+                      }}
+                      className="px-2 py-1 bg-white border border-sky-200 text-[#0371a3] text-[9px] font-black uppercase rounded-lg hover:bg-sky-50 transition-colors shadow-sm"
+                    >
+                      Full Response
+                    </button>
+                    <button 
+                      onClick={() => setShowAudioPromptId(null)}
+                      className="px-2 py-1 bg-white border border-slate-200 text-slate-400 text-[9px] font-black uppercase rounded-lg hover:bg-slate-50 transition-colors shadow-sm"
+                    >
+                      No
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           ))}
           {(isTyping || isAiResponding) && (
@@ -207,18 +416,43 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
         {/* Input Area */}
         <div className="p-4 bg-white border-t border-slate-100 shrink-0">
           <form onSubmit={handleSendMessage} className="flex items-center gap-2">
+            <button 
+              type="button"
+              onClick={isRecording ? stopRecording : startRecording}
+              className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all active:scale-95 shadow-lg ${
+                isRecording 
+                  ? 'bg-red-500 text-white animate-pulse shadow-red-500/20' 
+                  : isSpeaking
+                    ? 'bg-slate-100 text-[#00ABE4] border border-[#00ABE4]/20'
+                    : 'bg-slate-50 text-slate-400 hover:text-[#00ABE4] hover:bg-sky-50 border border-slate-100'
+              }`}
+              disabled={isAiResponding || isTyping || isSpeaking}
+              title={isSpeaking ? "Sara is speaking..." : isRecording ? "Stop Recording" : "Voice Input"}
+            >
+              {isSpeaking ? (
+                <div className="flex items-center gap-0.5">
+                  <span className="w-1 h-3 bg-[#00ABE4] rounded-full animate-[pulse_1s_infinite]"></span>
+                  <span className="w-1 h-4 bg-[#00ABE4] rounded-full animate-[pulse_1s_infinite_0.2s]"></span>
+                  <span className="w-1 h-3 bg-[#00ABE4] rounded-full animate-[pulse_1s_infinite_0.4s]"></span>
+                </div>
+              ) : (
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+                </svg>
+              )}
+            </button>
             <input 
               ref={inputRef}
               type="text"
-              placeholder="Type your message..."
-              className="flex-1 bg-slate-50 border border-slate-100 rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-[#00ABE4]/10 focus:border-[#00ABE4] transition-all"
+              placeholder={isRecording ? "Listening..." : "Type your message..."}
+              className={`flex-1 bg-slate-50 border border-slate-100 rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-[#00ABE4]/10 focus:border-[#00ABE4] transition-all ${isRecording ? 'placeholder-red-400 text-red-500 font-medium' : ''}`}
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
-              disabled={isAiResponding}
+              disabled={isAiResponding || isRecording}
             />
             <button 
               type="submit"
-              disabled={!inputText.trim() || isTyping || isAiResponding}
+              disabled={!inputText.trim() || isTyping || isAiResponding || isRecording}
               className="w-10 h-10 rounded-xl bg-[#00ABE4] text-white flex items-center justify-center shadow-lg shadow-[#00ABE4]/20 disabled:opacity-50 transition-all active:scale-95"
             >
               <svg className="w-5 h-5 rotate-90" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -230,6 +464,7 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
             Sara • Intelligent Assistant
           </p>
         </div>
+
       </div>
     </div>
   );
