@@ -159,6 +159,8 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
       console.error('Microphone permission denied or error:', err);
       if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
         alert('Microphone access was denied. Please enable it in your browser settings to use voice input.');
+      } else if (err.name === 'NotFoundError' || err.name === 'DevicesNotFoundError') {
+        alert('No microphone was found on your device. Please connect a microphone and try again.');
       } else {
         alert('Could not access microphone. Please check your device settings.');
       }

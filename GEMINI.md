@@ -4,7 +4,23 @@
 - Always mention the application version number when presenting changes or updates.
 - Versioning follows the format `v1.1.x`.
 - Increment the patch version automatically for every iteration/significant set of changes.
-- Current Version: v1.1.311
+- Current Version: v1.1.315
+
+## Recent Changes (v1.1.315)
+- **Advanced Media Error Handling:** Enhanced the robustness of microphone access.
+    *   **Hardware Detection:** Implemented specific handling for `NotFoundError` and `DevicesNotFoundError`, providing clear user feedback when no microphone is connected or detected.
+    *   **Logic Stabilization:** Refined Media API checks to use explicit type validation (`typeof ... === 'function'`) for better cross-browser compatibility.
+- **Version Bump:** Updated application version to v1.1.315.
+
+## Recent Changes (v1.1.314)
+- **Enhanced Interactive Voice Flow (Ask Sara):** Re-engineered the voice experience to prioritize user control and UI stability.
+    *   **Text-First Interaction:** AI responses now type out fully without automatic playback, respecting user focus.
+    *   **Interactive Audio Prompts:** Implemented a new "Read aloud?" prompt system offering **[Summary]**, **[Full Response]**, and **[No]** options after every message.
+    *   **Intelligent Truncation:** Summary mode intelligently clips audio at the 3rd sentence or 3rd bullet point to ensure natural, complete-thought audio delivery.
+    *   **High-Fidelity Accents:** Upgraded voice selection to prioritize "Google Natural" and "Google US/UK English" professional accents for a more authoritative persona.
+    *   **UI Playback Safety:** Integrated a new `isSpeaking` state that automatically disables the microphone button and provides a pulsing visual "Sara is speaking..." indicator during audio playback to prevent input collisions.
+    *   **Secure Context Governance:** Integrated proactive developer documentation and user alerts regarding HTTPS/Localhost requirements for media devices.
+- **Version Bump:** Updated application version to v1.1.314.
 
 ## Recent Changes (v1.1.313)
 - **Audio API Graceful Degradation & Stability:** Optimized the "Ask Sara" voice experience for restricted and development environments.
