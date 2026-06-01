@@ -4,13 +4,33 @@
 - Always mention the application version number when presenting changes or updates.
 - Versioning follows the format `v1.1.x`.
 - Increment the patch version automatically for every iteration/significant set of changes.
-- Current Version: v1.1.315
+- Current Version: v1.1.321
+
+## Recent Changes (v1.1.321)
+- **Advanced Microphone Diagnostics & Device Selection (Ask Sara):** significantly enhanced the reliability and transparency of voice input.
+    *   **Real-Time Volume Visualizer:** Integrated a high-precision Web Audio API analyser that provides a reactive volume meter during recording, giving users immediate confidence that their microphone is working.
+    *   **Dynamic Device Selection:** Added a new microphone settings menu (visible when multiple inputs are detected) allowing users to manually switch between headsets, webcams, and internal mics.
+    *   **Constraint-Aware Recording:** Refactored the recording engine to respect user-selected device IDs and apply hardware-level echo cancellation and noise suppression.
+    *   **Persistent Device Discovery:** The system now automatically enumerates and remembers available audio inputs after the first successful permission handshake.
+- **Version Bump:** Updated application version to v1.1.321.
+
+## Recent Changes (v1.1.320)
+## Recent Changes (v1.1.319)
+- **Voice UX Refinement & Auto-Play Persistence (Ask Sara):** Optimized the assistant's vocal behavior for improved usability and continuity.
+    *   **Auto-Play Memory:** Implemented a session-based auto-play mode. Once a user selects "Summary" or "Full Response", subsequent AI messages automatically play in that chosen mode.
+    *   **Voice-to-Voice Continuity:** Voice inputs now automatically trigger voice responses, ensuring a seamless hands-free conversational loop.
+    *   **Clarified Audio Pacing:** Reduced the playback rate to `1.15` for improved clarity while maintaining the professional Indian accent profile.
+    *   **Early Audio Access:** Audio prompt buttons are now visible immediately when the AI starts typing, allowing users to opt-in or stop playback without waiting for text completion.
+    *   **Refined Control Logic:** Individual audio buttons now act as toggles; clicking a currently active "Summary" or "Full" button will instantly silence the playback.
+- **Version Bump:** Updated application version to v1.1.319.
+
+## Recent Changes (v1.1.318)
+
+## Recent Changes (v1.1.317)
+
+## Recent Changes (v1.1.316)
 
 ## Recent Changes (v1.1.315)
-- **Advanced Media Error Handling:** Enhanced the robustness of microphone access.
-    *   **Hardware Detection:** Implemented specific handling for `NotFoundError` and `DevicesNotFoundError`, providing clear user feedback when no microphone is connected or detected.
-    *   **Logic Stabilization:** Refined Media API checks to use explicit type validation (`typeof ... === 'function'`) for better cross-browser compatibility.
-- **Version Bump:** Updated application version to v1.1.315.
 
 ## Recent Changes (v1.1.314)
 - **Enhanced Interactive Voice Flow (Ask Sara):** Re-engineered the voice experience to prioritize user control and UI stability.
