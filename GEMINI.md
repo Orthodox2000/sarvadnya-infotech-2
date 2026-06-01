@@ -4,14 +4,32 @@
 - Always mention the application version number when presenting changes or updates.
 - Versioning follows the format `v1.1.x`.
 - Increment the patch version automatically for every iteration/significant set of changes.
-- Current Version: v1.1.331
+- Current Version: v1.1.340
+
+## Recent Changes (v1.1.340)
+- **Security Context Guidance (Ask Sara):** Implemented high-priority UI feedback for insecure (non-HTTPS) environments to explain missing microphone permissions.
+    *   **Proactive HTTPS Warning:** Added a specialized visual block that appears if `window.isSecureContext` is false. This informs users that modern browsers strip "Microphone" from site settings on non-secure origins for safety.
+    *   **Insecure Status Branding:** Upgraded the "Insecure" badge in the header with a red high-contrast design and descriptive warning to guide users toward HTTPS or localhost testing.
+    *   **Context-Aware Unblocking:** Refined the "How to unblock" instructions to dynamically switch between "HTTPS Required" and "Permission Blocked" based on the actual security state of the connection.
+- **Version Bump:** Updated application version to v1.1.340.
+
+## Recent Changes (v1.1.339)
+
+## Recent Changes (v1.1.338)
+
+## Recent Changes (v1.1.337)
+
+## Recent Changes (v1.1.336)
+
+## Recent Changes (v1.1.335)
+
+## Recent Changes (v1.1.334)
+
+## Recent Changes (v1.1.333)
+
+## Recent Changes (v1.1.332)
 
 ## Recent Changes (v1.1.331)
-- **Project Hygiene & Cleanup:** Removed obsolete legacy scripts following the successful total voice engine reimplementation.
-    *   **Script Deletion:** Permanently removed `public/js/mic-helper.js`.
-    *   **Layout Optimization:** Removed the `<Script>` import for `mic-helper.js` from `app/layout.tsx`, reducing the initial HTML payload and eliminating redundant global objects.
-    *   **Encapsulation:** Confirmed all voice logic is now strictly contained within `QuickSupportModal.tsx` using the `recorder-js` library.
-- **Version Bump:** Updated application version to v1.1.331.
 
 ## Recent Changes (v1.1.329)
 

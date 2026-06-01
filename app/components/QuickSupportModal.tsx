@@ -18,6 +18,16 @@ interface QuickSupportModalProps {
   onClose: () => void;
 }
 
+// Strict interface for recorder-js
+interface VoiceRecorder {
+  init: (stream: MediaStream) => Promise<void>;
+  start: () => Promise<MediaStream | undefined>;
+  stop: () => Promise<{ blob: Blob; buffer: Float32Array[] }>;
+  stream?: MediaStream;
+}
+
+type MicPermissionState = 'prompt' | 'granted' | 'denied' | 'unsupported';
+
 export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModalProps) {
   const [messages, setMessages] = useState<Message[]>([
     {
@@ -41,21 +51,192 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
   const [micDevices, setMicDevices] = useState<MediaDeviceInfo[]>([]);
   const [selectedMicId, setSelectedMicId] = useState<string>('');
   const [volumeLevel, setVolumeLevel] = useState(0);
-  const [permissionStatus, setPermissionStatus] = useState<'prompt' | 'granted' | 'denied' | 'unsupported'>('prompt');
+  const [permissionStatus, setPermissionStatus] = useState<MicPermissionState>('prompt');
   const [isSecure, setIsSecure] = useState(true);
+  const [isInitializingMic, setIsInitializingMic] = useState(false);
   
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const audioContextRef = useRef<AudioContext | null>(null);
   const analyserRef = useRef<AnalyserNode | null>(null);
   const animationFrameRef = useRef<number | null>(null);
-  const audioChunksRef = useRef<Blob[]>([]);
-  const recorderInstanceRef = useRef<any>(null);
+  const recorderInstanceRef = useRef<VoiceRecorder | null>(null);
   const micButtonRef = useRef<HTMLButtonElement>(null);
+
+  /**
+   * ON-DEMAND HARDWARE HANDSHAKE (v1.1.343)
+   * Triggered only when mic is clicked.
+   */
+  async function requestInitialPermission() {
+    setIsInitializingMic(true);
+    const secure = typeof window !== 'undefined' && (window.isSecureContext || window.location.hostname === 'localhost');
+    setIsSecure(secure);
+
+    if (!secure) {
+      setPermissionStatus('denied');
+      setMessages(prev => [...prev, {
+        id: Date.now().toString(),
+        text: "**Security Error: HTTPS Required**\n\nBrowsers block microphone access on standard (HTTP) sites for your safety. Please switch to an **HTTPS** connection or test on **localhost** to use voice features.\n\nPermissions like 'Microphone' will **only appear** on secure sites.",
+        sender: 'ai',
+        timestamp: new Date()
+      }]);
+      setIsInitializingMic(false);
+      return;
+    }
+
+    try {
+      console.log('[Sara Security] Initiating hardware handshake...');
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      stream.getTracks().forEach(t => t.stop()); 
+      setPermissionStatus('granted');
+      setIsRecording(true); // Start recording immediately after grant
+    } catch (err: any) {
+      console.warn('[Sara Security] Handshake rejected:', err.name);
+      setPermissionStatus('denied');
+      
+      setMessages(prev => [...prev, {
+        id: Date.now().toString(),
+        text: "**Microphone Access Required**\n\nTo use voice commands, please enable access in your browser settings:\n\n**Desktop:** Click the **Lock icon** next to the URL and set Microphone to **Allow**.\n\n**Mobile:** Tap **Site Settings** (or â‹® menu), grant **Microphone** access, and **Reload**.",
+        sender: 'ai',
+        timestamp: new Date()
+      }]);
+    } finally {
+      setIsInitializingMic(false);
+    }
+  }
+
+  // Silent check for status on mount (no UI block)
+  useEffect(() => {
+    if (isOpen) {
+      const secure = typeof window !== 'undefined' && (window.isSecureContext || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+      setIsSecure(secure);
+
+      if (typeof navigator !== 'undefined' && navigator.permissions && (navigator.permissions as any).query) {
+        try {
+          (navigator.permissions as any).query({ name: 'microphone' as PermissionName }).then((status: PermissionStatus) => {
+            setPermissionStatus(status.state as MicPermissionState);
+            status.onchange = () => setPermissionStatus(status.state as MicPermissionState);
+          });
+        } catch (e) {
+          console.warn('[Sara Debug] Permissions API mic query not supported');
+        }
+      }
+    }
+  }, [isOpen]);
+
+  /**
+   * CLEANUP AUDIO RESOURCES
+   */
+  function cleanupAudio() {
+    if (recorderInstanceRef.current && recorderInstanceRef.current.stream) {
+      recorderInstanceRef.current.stream.getTracks().forEach((t: MediaStreamTrack) => t.stop());
+    }
+    
+    if (audioContextRef.current) {
+      if (audioContextRef.current.state !== 'closed') {
+        audioContextRef.current.close();
+      }
+      audioContextRef.current = null;
+    }
+
+    if (animationFrameRef.current) {
+      cancelAnimationFrame(animationFrameRef.current);
+      animationFrameRef.current = null;
+    }
+
+    setVolumeLevel(0);
+    analyserRef.current = null;
+    recorderInstanceRef.current = null;
+  }
+
+  /**
+   * VOICE RESPONSE ENGINE (v1.1.333)
+   * Converts AI text response to high-fidelity speech.
+   */
+  function playVoiceResponse(text: string, isFullResponse: boolean) {
+    if (typeof window === 'undefined' || !window.speechSynthesis || !voiceEnabled) return;
+
+    // 1. Interrupt any current speech
+    window.speechSynthesis.cancel();
+
+    // 2. Clean text for natural speech
+    let cleanText = text
+      .replace(/\[\[.*?\|.*?\]\]/g, '') // Remove buttons
+      .replace(/\*\*.*?\*\*/g, (match) => match.slice(2, -2)) // Remove bold
+      .replace(/[\[\]]/g, '') // Remove brackets
+      .replace(/#/g, '') // Remove headings
+      .trim();
+
+    // 3. Intelligent Truncation (Summary Mode)
+    if (!isFullResponse) {
+      const sentences = cleanText.split(/([.!?]+)/).filter(s => s.trim().length > 0);
+      let summaryText = "";
+      let sentenceCount = 0;
+      for (let i = 0; i < sentences.length; i++) {
+        summaryText += sentences[i];
+        if (/[.!?]/.test(sentences[i])) {
+          sentenceCount++;
+          if (sentenceCount >= 3) break;
+        }
+      }
+      cleanText = summaryText;
+    }
+
+    // 4. Utterance Configuration
+    const utterance = new SpeechSynthesisUtterance(cleanText);
+    const preferredVoice = voices.find(v => 
+      v.name.includes('Google') && 
+      (v.name.includes('US') || v.name.includes('UK') || v.name.includes('India'))
+    ) || voices.find(v => v.lang.startsWith('en')) || voices[0];
+    
+    if (preferredVoice) utterance.voice = preferredVoice;
+    utterance.rate = 1.05; // Smoother, more natural pacing
+    utterance.pitch = 1.0;
+    utterance.volume = 1.0;
+
+    utterance.onstart = () => setIsSpeaking(true);
+    utterance.onend = () => setIsSpeaking(false);
+    utterance.onerror = (e) => {
+      console.error('[Sara Voice] TTS Error:', e);
+      setIsSpeaking(false);
+    };
+
+    window.speechSynthesis.speak(utterance);
+  }
+
+  /**
+   * VOICE INPUT HANDLER (v1.1.333)
+   * Sends audio blob to transcription API and processes result.
+   */
+  async function handleVoiceInput(audioBlob: Blob) {
+    setIsTyping(true);
+    try {
+      const formData = new FormData();
+      formData.append('file', audioBlob, 'audio.wav');
+
+      const response = await fetch('/api/chat/transcribe', {
+        method: 'POST',
+        body: formData
+      });
+
+      const data = await response.json();
+      if (data.error) throw new Error(data.error);
+
+      if (data.text && data.text.trim()) {
+        await processChatMessage(data.text, true);
+      }
+    } catch (err) {
+      console.error('[Sara Voice] Transcription Error:', err);
+      alert("I couldn't hear that clearly. Please try again.");
+    } finally {
+      setIsTyping(false);
+    }
+  }
 
   // Load voices on mount and when they change
   useEffect(() => {
     const loadVoices = () => {
+      if (typeof window === 'undefined' || !window.speechSynthesis) return;
       const availableVoices = window.speechSynthesis.getVoices();
       if (availableVoices.length > 0) {
         setVoices(availableVoices);
@@ -83,9 +264,9 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
 
     if (supported && typeof navigator !== 'undefined' && navigator.permissions && (navigator.permissions as any).query) {
       try {
-        (navigator.permissions as any).query({ name: 'microphone' }).then((status: any) => {
-          setPermissionStatus(status.state);
-          status.onchange = () => setPermissionStatus(status.state);
+        (navigator.permissions as any).query({ name: 'microphone' as PermissionName }).then((status: PermissionStatus) => {
+          setPermissionStatus(status.state as MicPermissionState);
+          status.onchange = () => setPermissionStatus(status.state as MicPermissionState);
         });
       } catch (e) {
         console.warn('[Sara Debug] Permissions API mic query not supported');
@@ -93,182 +274,165 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
     }
   }, [isOpen]);
 
-  // Auto-scroll to bottom
-  useEffect(() => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+  function handleCaptureError(err: any) {
+    const isSecure = typeof window !== 'undefined' && (window.isSecureContext || window.location.hostname === 'localhost');
+    
+    if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
+      setPermissionStatus('denied');
+      // No alert here, we show the UI block instead for a better UX
+    } else if (err.name === 'NotFoundError' || err.name === 'DevicesNotFoundError') {
+      alert("HARDWARE: No microphone detected on this device.");
+    } else {
+      alert(`ERROR: ${err.message}`);
     }
-  }, [messages, isTyping, isAiResponding]);
+  }
 
-  // Native Mic Button Listener to preserve user gesture
-  useEffect(() => {
-    if (!isOpen) return;
-    const btn = micButtonRef.current;
-    if (!btn) return;
-
-    const handleMicClick = (e: MouseEvent) => {
-      e.preventDefault();
-      e.stopPropagation();
-      
-      if (isRecording) {
-        stopRecording();
-      } else {
-        // CALL UNIFIED CAPTURE START
-        startRecording();
-      }
-    };
-
-    btn.addEventListener('click', handleMicClick);
-    return () => btn.removeEventListener('click', handleMicClick);
-  }, [isOpen, isRecording, selectedMicId]);
-
-  // Load devices for switching (PC/Advanced users)
-  useEffect(() => {
-    if (isOpen && typeof navigator !== 'undefined' && navigator.mediaDevices && navigator.mediaDevices.enumerateDevices) {
-      navigator.mediaDevices.enumerateDevices().then(devices => {
-        const audioInputs = devices.filter(d => d.kind === 'audioinput');
-        setMicDevices(audioInputs);
-      });
-    }
-  }, [isOpen]);
-
-  const playVoiceResponse = (text: string, fullResponse = false) => {
-    if (!voiceEnabled || typeof window === 'undefined' || !window.speechSynthesis) {
-      console.warn('Speech synthesis not supported or disabled');
+  /**
+   * HARDWARE DIAGNOSTIC (v1.1.341)
+   * Attempts to trigger ANY hardware prompt (Mic or Camera) to verify responsiveness.
+   */
+  async function runHardwareDiagnostic() {
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      alert("DIAGNOSTIC FAILED: Your browser has disabled all hardware access for this connection. You MUST switch to HTTPS.");
       return;
     }
 
     try {
-      // Stop any current speech immediately
-      window.speechSynthesis.cancel();
-      
-      // Short delay to ensure cancel finishes
-      setTimeout(() => {
-        setIsSpeaking(true);
+      console.log('[Sara Diagnostic] Attempting broad hardware handshake...');
+      // Try to ask for both - this is just a test to see if popups work
+      const testStream = await navigator.mediaDevices.getUserMedia({ audio: true, video: true });
+      testStream.getTracks().forEach(t => t.stop());
+      setPermissionStatus('granted');
+      alert("Verification Success: Your browser popups are working correctly!");
+    } catch (err: any) {
+      console.warn('[Sara Diagnostic] Verification failed:', err.name);
+      if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
+        setPermissionStatus('denied');
+        alert("Verification Failed: Permission is still blocked in your settings. Please follow the instructions to Allow.");
+      } else {
+        alert(`Hardware Error: ${err.message}`);
+      }
+    }
+  }
 
-        // Process text based on summary vs full response
-        let cleanText = '';
-        
-        if (!fullResponse) {
-          // SUMMARY MODE: Read 3-4 lines/sentences UNTIL button section
-          const buttonIndex = text.indexOf('[[');
-          const textBeforeButtons = buttonIndex !== -1 ? text.substring(0, buttonIndex) : text;
+  /**
+   * REFACTORED VOICE CAPTURE EFFECT (v1.1.337)
+   * Implements a persistent request loop that keeps asking for permission until granted.
+   */
+  useEffect(() => {
+    if (!isRecording || !isOpen) return;
+
+    let isMounted = true;
+    let activeStream: MediaStream | null = null;
+
+    async function initializeAndStart() {
+      // 1. Interrupt any current speech
+      if (typeof window !== 'undefined' && window.speechSynthesis) {
+        window.speechSynthesis.cancel();
+        setIsSpeaking(false);
+      }
+
+      // 2. PERSISTENT REQUEST LOOP
+      while (isMounted && isRecording && !recorderInstanceRef.current) {
+        try {
+          console.log('[Sara Voice] Requesting microphone access...');
           
-          let processed = textBeforeButtons
-            .replace(/\*\*(.*?)\*\*/g, '$1') // Remove bold markers
-            .replace(/[*#_~]/g, '')           // Remove other markdown
-            .trim();
-
-          // Split by sentences or newlines
-          const segments = processed.split(/(?<=[.?!])\s+|\n+/);
-          if (segments.length > 4) {
-            cleanText = segments.slice(0, 4).join(' ');
-          } else {
-            cleanText = processed;
+          try {
+            activeStream = await navigator.mediaDevices.getUserMedia({ 
+              audio: {
+                echoCancellation: true,
+                noiseSuppression: true,
+                autoGainControl: true,
+                deviceId: selectedMicId ? { exact: selectedMicId } : undefined
+              } 
+            });
+          } catch (innerErr) {
+            activeStream = await navigator.mediaDevices.getUserMedia({ 
+              audio: selectedMicId ? { deviceId: { exact: selectedMicId } } : true 
+            });
           }
-        } else {
-          // FULL RESPONSE: Read everything EXCEPT the buttons
-          cleanText = text
-            .replace(/\[\[.*?\|.*?\]\]/g, '') // Remove buttons
-            .replace(/\*\*(.*?)\*\*/g, '$1') // Remove bold markers
-            .replace(/[*#_~]/g, '')           // Remove other markdown
-            .trim();
+
+          if (!isMounted || !isRecording) {
+            activeStream?.getTracks().forEach(t => t.stop());
+            return;
+          }
+
+          // SUCCESS - Break out of loop
+          setPermissionStatus('granted');
+          break;
+
+        } catch (err: any) {
+          if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
+            console.warn('[Sara Voice] Access denied, retrying in 2s...');
+            setPermissionStatus('denied');
+            
+            // Wait before next attempt to avoid browser spam protection
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            
+            if (!isMounted || !isRecording) return;
+            continue; // Try again
+          } else {
+            // Non-permission errors (hardware/not found) stop the loop
+            console.error('[Sara Voice] Critical capture error:', err);
+            if (isMounted) {
+              handleCaptureError(err);
+              setIsRecording(false);
+            }
+            return;
+          }
+        }
+      }
+
+      if (!activeStream || !isMounted || !isRecording) return;
+
+      try {
+        // 3. AUDIO CONTEXT & ANALYSER SETUP
+        const AudioContextClass = (window.AudioContext || (window as any).webkitAudioContext);
+        const audioContext = new AudioContextClass();
+        
+        if (audioContext.state === 'suspended') {
+          await audioContext.resume();
         }
 
-        if (!cleanText) {
-          setIsSpeaking(false);
+        const analyser = audioContext.createAnalyser();
+        analyser.fftSize = 256;
+        const source = audioContext.createMediaStreamSource(activeStream);
+        source.connect(analyser);
+
+        // 4. RECORDER-JS INITIALIZATION
+        const recorder = new Recorder(audioContext);
+        await recorder.init(activeStream);
+
+        if (!isMounted || !isRecording) {
+          await audioContext.close();
+          activeStream.getTracks().forEach(t => t.stop());
           return;
         }
 
-        const utterance = new SpeechSynthesisUtterance(cleanText);
-        utterance.rate = 1.15; // Slightly slower for better clarity as requested
-        utterance.pitch = 1.0;
-        utterance.volume = 1.0;
+        // 5. START CAPTURE & VISUALS
+        await recorder.start();
         
-        const currentVoices = voices.length > 0 ? voices : window.speechSynthesis.getVoices();
-        const preferredVoice = currentVoices.find(v => 
-          (v.lang === 'en-IN' || v.name.toLowerCase().includes('india') || v.name.includes('IN')) && 
-          (v.name.includes('Google') || v.name.includes('Natural') || v.name.includes('Premium') || v.name.includes('Heera') || v.name.includes('Ravi'))
-        ) || currentVoices.find(v => v.lang === 'en-IN')
-          || currentVoices.find(v => v.lang.startsWith('en') && (v.name.toLowerCase().includes('india') || v.name.includes('IN')))
-          || currentVoices.find(v => 
-          (v.name.includes('Google') || v.name.includes('Natural')) && 
-          (v.name.includes('US') || v.name.includes('UK')) && 
-          v.lang.startsWith('en')
-        ) || currentVoices.find(v => v.lang.startsWith('en'));
-        
-        if (preferredVoice) utterance.voice = preferredVoice;
+        recorderInstanceRef.current = recorder;
+        audioContextRef.current = audioContext;
+        analyserRef.current = analyser;
 
-        utterance.onend = () => setIsSpeaking(false);
-        utterance.onerror = (e) => {
-          console.error('Speech error:', e);
-          setIsSpeaking(false);
-        };
+        startVolumeAnalysis(analyser);
 
-        window.speechSynthesis.speak(utterance);
-      }, 100);
-    } catch (err) {
-      console.error('Speech Synthesis Error:', err);
-      setIsSpeaking(false);
-    }
-  };
-
-  /**
-   * VOICE CAPTURE SYSTEM (v1.1.326)
-   * Using 'recorder-js' for high-fidelity cross-browser WAV recording.
-   */
-
-  async function handleVoiceInput(blob: Blob) {
-    setIsTyping(true);
-    try {
-      const formData = new FormData();
-      formData.append('file', blob);
-
-      const response = await fetch('/api/chat/transcribe', {
-        method: 'POST',
-        body: formData
-      });
-
-      const data = await response.json();
-      if (data.text) {
-        await processChatMessage(data.text, true);
-      } else {
-        throw new Error(data.error || 'Transcription failed');
+      } catch (err: any) {
+        console.error('[Sara Voice] Final Setup Failure:', err);
+        if (isMounted) {
+          setIsRecording(false);
+          cleanupAudio();
+        }
       }
-    } catch (err) {
-      console.error('[Sara Voice] Transcription error:', err);
-      setIsTyping(false);
-      await typeMessage("Sorry, I couldn't understand the audio. Please try again.");
-    }
-  }
-
-  function cleanupAudio() {
-    // 1. Stop all media tracks
-    if (recorderInstanceRef.current && recorderInstanceRef.current.stream) {
-      recorderInstanceRef.current.stream.getTracks().forEach((t: MediaStreamTrack) => t.stop());
-    }
-    
-    // 2. Close AudioContext
-    if (audioContextRef.current) {
-      if (audioContextRef.current.state !== 'closed') {
-        audioContextRef.current.close();
-      }
-      audioContextRef.current = null;
     }
 
-    // 3. Stop animations
-    if (animationFrameRef.current) {
-      cancelAnimationFrame(animationFrameRef.current);
-      animationFrameRef.current = null;
-    }
+    initializeAndStart();
 
-    // 4. Reset states
-    setIsRecording(false);
-    setVolumeLevel(0);
-    analyserRef.current = null;
-    recorderInstanceRef.current = null;
-    audioChunksRef.current = [];
-  }
+    return () => {
+      isMounted = false;
+    };
+  }, [isRecording, isOpen, selectedMicId]);
 
   function startVolumeAnalysis(analyser: AnalyserNode) {
     const bufferLength = analyser.frequencyBinCount;
@@ -292,113 +456,54 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
     updateVolume();
   }
 
-  async function startRecording() {
-    // 0. Manual Permission Check Refresh
-    if (typeof navigator !== 'undefined' && navigator.permissions && (navigator.permissions as any).query) {
-      try {
-        const status = await (navigator.permissions as any).query({ name: 'microphone' });
-        setPermissionStatus(status.state);
-      } catch (e) {}
-    }
+  // Native Mic Button Listener to preserve user gesture
+  useEffect(() => {
+    if (!isOpen) return;
+    const btn = micButtonRef.current;
+    if (!btn) return;
 
-    // 1. ATOMIC GESTURE HANDSHAKE (Absolute first line)
-    // Satisfies Android Chrome's "User Gesture" requirement.
-    let stream: MediaStream;
-    try {
-      // Attempt with high-quality constraints first
-      try {
-        stream = await navigator.mediaDevices.getUserMedia({ 
-          audio: {
-            echoCancellation: true,
-            noiseSuppression: true,
-            autoGainControl: true,
-            deviceId: selectedMicId ? { exact: selectedMicId } : undefined
-          } 
-        });
-      } catch (innerErr) {
-        console.warn('[Sara Voice] Complex constraints failed, retrying simple...');
-        stream = await navigator.mediaDevices.getUserMedia({ 
-          audio: selectedMicId ? { deviceId: { exact: selectedMicId } } : true 
-        });
-      }
+    const handleMicClick = async (e: MouseEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
       
-      // SUCCESS: Permission granted
-      console.log('[Sara Debug] getUserMedia success');
-      setPermissionStatus('granted');
-      
-    } catch (err: any) {
-      console.error('[Sara Voice] Handshake Failure:', err.name, err.message);
-      
-      const isSecure = typeof window !== 'undefined' && (window.isSecureContext || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
-      
-      if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
-        setPermissionStatus('denied');
-        if (!isSecure) {
-          alert("MOBILE SECURITY: Android/iOS strictly block microphone on HTTP connections.\n\nPlease use HTTPS to enable voice features.");
-        } else {
-          alert("PERMISSION DENIED: You have blocked Sara from using your microphone.\n\nTap the 'Lock' icon in your browser's address bar (near the URL) to reset permissions or set Microphone to 'Allow'.");
-        }
-      } else if (err.name === 'NotFoundError' || err.name === 'DevicesNotFoundError') {
-        alert("HARDWARE ERROR: No microphone detected on this device.");
+      if (isRecording) {
+        await stopRecording();
       } else {
-        alert(`MIC ERROR: ${err.message}`);
+        // FORCE PROMPT ON GESTURE (v1.1.338)
+        // This ensures browsers like Safari/Chrome actually show the prompt
+        try {
+          console.log('[Sara Voice] User gesture detected, triggering initial prompt...');
+          const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+          stream.getTracks().forEach(t => t.stop()); // Close immediate test stream
+          setPermissionStatus('granted');
+        } catch (err: any) {
+          console.warn('[Sara Voice] Initial gesture prompt failed or denied:', err.name);
+          if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
+            setPermissionStatus('denied');
+          }
+        }
+        setIsRecording(true);
       }
-      cleanupAudio();
-      return;
-    }
+    };
 
-    // 2. NOW stop any existing speech (Handshake is already in flight/secured)
-    if (typeof window !== 'undefined' && window.speechSynthesis) {
-      window.speechSynthesis.cancel();
-      setIsSpeaking(false);
-    }
-
-    try {
-      // 3. INITIALIZE RECORDER-JS
-      const AudioContextClass = (window.AudioContext || (window as any).webkitAudioContext);
-      const audioContext = new AudioContextClass();
-      
-      // CRITICAL: Force resume for Chrome/Android
-      if (audioContext.state === 'suspended') {
-        await audioContext.resume();
-      }
-
-      const recorder = new Recorder(audioContext);
-      await recorder.init(stream);
-      
-      recorderInstanceRef.current = recorder;
-      audioContextRef.current = audioContext;
-
-      // 4. ATTACH ANALYSER FOR VISUALS
-      const analyser = audioContext.createAnalyser();
-      analyser.fftSize = 256;
-      const source = audioContext.createMediaStreamSource(stream);
-      source.connect(analyser);
-      analyserRef.current = analyser;
-
-      // 5. START CAPTURE
-      await recorder.start();
-      setIsRecording(true);
-      startVolumeAnalysis(analyser);
-      setPermissionStatus('granted');
-
-    } catch (err: any) {
-      console.error('[Sara Voice] Capture Setup Error:', err);
-      cleanupAudio();
-    }
-  }
+    btn.addEventListener('click', handleMicClick);
+    return () => btn.removeEventListener('click', handleMicClick);
+  }, [isOpen, isRecording, selectedMicId]);
 
   async function stopRecording() {
     if (recorderInstanceRef.current) {
       try {
         const { blob } = await recorderInstanceRef.current.stop();
+        setIsRecording(false); 
         await handleVoiceInput(blob);
       } catch (err) {
         console.error('[Sara Voice] Stop error:', err);
+        setIsRecording(false);
       } finally {
         cleanupAudio();
       }
     } else {
+      setIsRecording(false);
       cleanupAudio();
     }
   }
@@ -581,7 +686,7 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
         {/* Chat Messages */}
         <div 
           ref={scrollRef}
-          className="flex-1 overflow-y-auto p-5 space-y-4 no-scrollbar bg-[#f0f9ff]/50"
+          className="flex-1 overflow-y-auto p-5 space-y-4 no-scrollbar bg-[#f0f9ff]/50 relative"
         >
           {messages.map((msg) => (
             <div 
@@ -716,7 +821,7 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
         {/* Input Area */}
         <div className="p-4 bg-white border-t border-slate-100 shrink-0">
           {/* Volume Meter */}
-          {isRecording && (
+          {isRecording && permissionStatus === 'granted' && (
             <div className="mb-2 px-1 animate-in fade-in zoom-in-95 duration-200">
               <div className="flex items-center justify-between mb-1">
                 <span className="text-[8px] font-black text-[#0371a3] uppercase tracking-tighter">Mic Volume</span>
@@ -735,15 +840,20 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
             <button 
               ref={micButtonRef}
               type="button"
+              onClick={() => {
+                if (permissionStatus !== 'granted') {
+                  requestInitialPermission();
+                }
+              }}
               className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all active:scale-95 shadow-lg ${
                 isRecording 
-                  ? 'bg-red-500 text-white animate-pulse shadow-red-500/20' 
+                  ? (permissionStatus === 'granted' ? 'bg-red-500 text-white animate-pulse shadow-red-500/20' : 'bg-amber-500 text-white animate-bounce shadow-amber-500/20') 
                   : isSpeaking
                     ? 'bg-slate-100 text-[#00ABE4] border border-[#00ABE4]/20'
                     : 'bg-slate-50 text-slate-400 hover:text-[#00ABE4] hover:bg-sky-50 border border-slate-100'
               }`}
               disabled={isAiResponding || isTyping || isSpeaking}
-              title={isSpeaking ? "Sara is speaking..." : isRecording ? "Stop Recording" : "Voice Input"}
+              title={isSpeaking ? "Sara is speaking..." : isRecording ? "Stop Recording" : (permissionStatus === 'denied' ? "Microphone Blocked - Click to fix" : "Voice Input")}
             >
               {isSpeaking ? (
                 <div className="flex items-center gap-0.5">
@@ -760,8 +870,8 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
             <input 
               ref={inputRef}
               type="text"
-              placeholder={isRecording ? "Listening..." : "Type your message..."}
-              className={`flex-1 bg-slate-50 border border-slate-100 rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-[#00ABE4]/10 focus:border-[#00ABE4] transition-all ${isRecording ? 'placeholder-red-400 text-red-500 font-medium' : ''}`}
+              placeholder={isRecording ? (permissionStatus === 'granted' ? "Listening..." : "Allow Microphone...") : "Type your message..."}
+              className={`flex-1 bg-slate-50 border border-slate-100 rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-[#00ABE4]/10 focus:border-[#00ABE4] transition-all ${isRecording ? 'placeholder-amber-600 text-amber-700 font-medium' : ''}`}
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
               disabled={isAiResponding || isRecording}
