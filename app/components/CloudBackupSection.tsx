@@ -92,13 +92,15 @@ const CloudBackupSection = () => {
               
               {/* Main Cloud Server Image (Intelligent Fit) */}
               <div className="absolute top-0 left-[5%] w-[85%] h-full rounded-[3rem] overflow-hidden border-4 border-white shadow-[0_40px_80px_-15px_rgba(0,0,0,0.2)] z-20 transform -rotate-3 hover:rotate-0 transition-all duration-700 bg-white">
-                 <Image 
-                   src="/hero/dedicated-to-cloud-hosting.jpg" 
-                   alt="Backdrop" 
-                   fill 
-                   className="object-cover opacity-20 blur-xl scale-110"
-                 />
-                 <div className="absolute inset-8">
+                 <div className="relative w-full h-full">
+                    <Image 
+                      src="/hero/dedicated-to-cloud-hosting.jpg" 
+                      alt="Backdrop" 
+                      fill 
+                      className="object-cover opacity-20 blur-xl scale-110"
+                    />
+                 </div>
+                 <div className="absolute inset-8 relative w-full h-full">
                     <Image 
                       src="/hero/dedicated-to-cloud-hosting.jpg" 
                       alt="Dedicated Cloud Hosting" 
@@ -115,12 +117,14 @@ const CloudBackupSection = () => {
 
               {/* AWS Satellite */}
               <div className="absolute -top-4 -right-4 w-[40%] aspect-square rounded-[2rem] overflow-hidden border-2 border-white shadow-2xl z-30 bg-white p-6 transform rotate-6 hover:rotate-0 transition-transform duration-700">
-                <Image 
-                  src="/hero/AWS.png" 
-                  alt="Amazon Web Services" 
-                  fill 
-                  className="object-contain p-8"
-                />
+                <div className="relative w-full h-full">
+                  <Image 
+                    src="/hero/AWS.png" 
+                    alt="Amazon Web Services" 
+                    fill 
+                    className="object-contain p-8"
+                  />
+                </div>
               </div>
 
               {/* NoSky Satellite */}

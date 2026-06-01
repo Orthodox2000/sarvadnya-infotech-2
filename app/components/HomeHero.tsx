@@ -330,7 +330,9 @@ export default function HomeHero({ initialData, variant = 'standard' }: { initia
     <main className={`relative w-full overflow-hidden opacity-80 md:opacity-90 transition-all duration-1000 ${getVariantBg()} min-h-[550px] md:min-h-[700px] lg:min-h-[650px] lg:-mt-10 flex items-start`}>
       <div className="absolute -z-[100] invisible h-0 w-0 overflow-hidden pointer-events-none">
         {heroContents.map((content, idx) => (
-          <Image key={`preload-${idx}`} src={content.image} alt="preload" fill priority sizes="1px" />
+          <div key={`preload-wrap-${idx}`} className="relative h-1 w-1">
+            <Image key={`preload-${idx}`} src={content.image} alt="preload" fill priority sizes="1px" />
+          </div>
         ))}
       </div>
       
@@ -445,7 +447,7 @@ export default function HomeHero({ initialData, variant = 'standard' }: { initia
                     <div className={`absolute top-[10%] left-[15%] w-[75%] aspect-square rounded-[3.5rem] overflow-hidden border border-[#232F3E]/10 shadow-[0_50px_100px_-20px_rgba(0,0,0,0.3)] z-30 transform bg-white
                       ${isExiting ? 'opacity-0 scale-90 translate-y-12 transition-all duration-[800ms]' : isEntering ? `opacity-100 transition-all duration-[1200ms] ${ecoScheme.main}` : 'opacity-0 translate-y-4'}`}>
                        <Image src={current.image} alt="Main" fill className="object-cover opacity-20 blur-xl scale-110" sizes="(max-width: 1024px) 100vw, 540px" />
-                       <div className="absolute inset-0"><Image src={current.image} alt="Ecosystem" fill className="object-contain p-8" sizes="(max-width: 1024px) 100vw, 540px" /></div>
+                       <div className="absolute inset-0 relative w-full h-full"><Image src={current.image} alt="Ecosystem" fill className="object-contain p-8" sizes="(max-width: 1024px) 100vw, 540px" /></div>
                     </div>
                     <div className={`absolute top-[-8%] right-[-5%] w-[45%] aspect-square rounded-[2rem] overflow-hidden border border-slate-200/50 shadow-2xl z-50 bg-white p-4
                       ${isExiting ? 'opacity-0 translate-x-12 -translate-y-12 transition-all duration-[800ms]' : isEntering ? `opacity-100 transition-all duration-[1000ms] delay-200 ${ecoScheme.aws}` : 'opacity-0 translate-y-4'}`}>
@@ -461,17 +463,17 @@ export default function HomeHero({ initialData, variant = 'standard' }: { initia
                     <div className={`absolute top-[10%] right-0 w-[80%] aspect-square rounded-[4rem] overflow-hidden border-2 border-white shadow-[0_50px_100px_-20px_rgba(3,113_163,0.4)] z-40 transform bg-white
                         ${isExiting ? 'opacity-0 scale-90 translate-y-12 transition-all duration-[800ms]' : isEntering ? `opacity-100 transition-all duration-[1200ms] ${scheme.main}` : 'opacity-0 translate-y-4'}`}>
                       <Image src={current.image} alt="Backdrop" fill className="object-cover opacity-30 blur-2xl scale-110" sizes="(max-width: 1024px) 100vw, 540px" />
-                      <div className="absolute inset-0"><Image src={current.image} alt={current.titleText} fill priority className="object-contain p-10" sizes="(max-width: 1024px) 100vw, 540px" /></div>
+                      <div className="absolute inset-0 relative w-full h-full"><Image src={current.image} alt={current.titleText} fill priority className="object-contain p-10" sizes="(max-width: 1024px) 100vw, 540px" /></div>
                     </div>
                     <div className={`absolute top-[-10%] left-0 w-[50%] aspect-square rounded-[2.5rem] overflow-hidden border border-slate-200/50 shadow-2xl z-50 bg-white
                         ${isExiting ? 'opacity-0 -translate-x-12 -translate-y-12 transition-all duration-[800ms]' : isEntering ? `opacity-100 transition-all duration-[1400ms] delay-200 ${scheme.sub1}` : 'opacity-0 translate-y-4'}`}>
                       <Image src={scheme.sub1Img} alt="Enterprise Logic" fill className="object-cover opacity-10 blur-lg" sizes="250px" />
-                      <div className="absolute inset-0"><Image src={scheme.sub1Img} alt="Tally ERP" fill className="object-contain" sizes="250px" /></div>
+                      <div className="absolute inset-0 relative w-full h-full"><Image src={scheme.sub1Img} alt="Tally ERP" fill className="object-contain" sizes="250px" /></div>
                     </div>
                     <div className={`absolute bottom-[-10%] left-[-10%] w-[45%] aspect-square rounded-[2rem] overflow-hidden border border-white/80 shadow-2xl z-30 bg-white
                         ${isExiting ? 'opacity-0 -translate-x-16 translate-y-16 transition-all duration-[800ms]' : isEntering ? `opacity-100 transition-all duration-[1600ms] delay-400 ${scheme.sub2}` : 'opacity-0 translate-y-4'}`}>
                       <Image src={scheme.sub2Img} alt="Analytics View" fill className="object-cover opacity-10 blur-md" sizes="200px" />
-                      <div className="absolute inset-0"><Image src={scheme.sub2Img} alt="Business Data" fill className="object-contain" sizes="200px" /></div>
+                      <div className="absolute inset-0 relative w-full h-full"><Image src={scheme.sub2Img} alt="Business Data" fill className="object-contain" sizes="200px" /></div>
                     </div>
                   </div>
                 )}

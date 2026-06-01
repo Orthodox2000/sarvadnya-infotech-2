@@ -4,17 +4,28 @@
 - Always mention the application version number when presenting changes or updates.
 - Versioning follows the format `v1.1.x`.
 - Increment the patch version automatically for every iteration/significant set of changes.
-- Current Version: v1.1.321
+- Current Version: v1.1.331
+
+## Recent Changes (v1.1.331)
+- **Project Hygiene & Cleanup:** Removed obsolete legacy scripts following the successful total voice engine reimplementation.
+    *   **Script Deletion:** Permanently removed `public/js/mic-helper.js`.
+    *   **Layout Optimization:** Removed the `<Script>` import for `mic-helper.js` from `app/layout.tsx`, reducing the initial HTML payload and eliminating redundant global objects.
+    *   **Encapsulation:** Confirmed all voice logic is now strictly contained within `QuickSupportModal.tsx` using the `recorder-js` library.
+- **Version Bump:** Updated application version to v1.1.331.
+
+## Recent Changes (v1.1.329)
+
+## Recent Changes (v1.1.328)
+
+## Recent Changes (v1.1.325)
+
+## Recent Changes (v1.1.324)
+
+## Recent Changes (v1.1.323)
+
+## Recent Changes (v1.1.322)
 
 ## Recent Changes (v1.1.321)
-- **Advanced Microphone Diagnostics & Device Selection (Ask Sara):** significantly enhanced the reliability and transparency of voice input.
-    *   **Real-Time Volume Visualizer:** Integrated a high-precision Web Audio API analyser that provides a reactive volume meter during recording, giving users immediate confidence that their microphone is working.
-    *   **Dynamic Device Selection:** Added a new microphone settings menu (visible when multiple inputs are detected) allowing users to manually switch between headsets, webcams, and internal mics.
-    *   **Constraint-Aware Recording:** Refactored the recording engine to respect user-selected device IDs and apply hardware-level echo cancellation and noise suppression.
-    *   **Persistent Device Discovery:** The system now automatically enumerates and remembers available audio inputs after the first successful permission handshake.
-- **Version Bump:** Updated application version to v1.1.321.
-
-## Recent Changes (v1.1.320)
 ## Recent Changes (v1.1.319)
 - **Voice UX Refinement & Auto-Play Persistence (Ask Sara):** Optimized the assistant's vocal behavior for improved usability and continuity.
     *   **Auto-Play Memory:** Implemented a session-based auto-play mode. Once a user selects "Summary" or "Full Response", subsequent AI messages automatically play in that chosen mode.

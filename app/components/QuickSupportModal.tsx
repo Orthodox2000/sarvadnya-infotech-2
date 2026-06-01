@@ -1,4 +1,7 @@
+'use client';
+
 import { useState, useEffect, useRef } from 'react';
+import Recorder from 'recorder-js';
 import Link from 'next/link';
 
 interface Message {
@@ -38,13 +41,17 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
   const [micDevices, setMicDevices] = useState<MediaDeviceInfo[]>([]);
   const [selectedMicId, setSelectedMicId] = useState<string>('');
   const [volumeLevel, setVolumeLevel] = useState(0);
+  const [permissionStatus, setPermissionStatus] = useState<'prompt' | 'granted' | 'denied' | 'unsupported'>('prompt');
+  const [isSecure, setIsSecure] = useState(true);
+  
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
-  const audioChunksRef = useRef<Blob[]>([]);
   const audioContextRef = useRef<AudioContext | null>(null);
   const analyserRef = useRef<AnalyserNode | null>(null);
   const animationFrameRef = useRef<number | null>(null);
+  const audioChunksRef = useRef<Blob[]>([]);
+  const recorderInstanceRef = useRef<any>(null);
+  const micButtonRef = useRef<HTMLButtonElement>(null);
 
   // Load voices on mount and when they change
   useEffect(() => {
@@ -61,25 +68,28 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
     }
   }, []);
 
-  // Check for Media API support on mount
+  // Check for Media API support & Permissions on mount
   useEffect(() => {
-    const isSecure = typeof window !== 'undefined' && (window.isSecureContext || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
-    console.log('[Sara Debug] Secure Context Status:', isSecure);
-    console.log('[Sara Debug] Browser Protocol:', typeof window !== 'undefined' ? window.location.protocol : 'unknown');
+    const secure = typeof window !== 'undefined' && (window.isSecureContext || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+    setIsSecure(secure);
 
     const supported = !!(
       typeof navigator !== 'undefined' && 
       navigator.mediaDevices && 
-      typeof navigator.mediaDevices.getUserMedia === 'function' && 
-      typeof MediaRecorder !== 'undefined'
+      typeof navigator.mediaDevices.getUserMedia === 'function' &&
+      (window.AudioContext || (window as any).webkitAudioContext)
     );
-    console.log('[Sara Debug] Media APIs Supported:', supported);
-    console.log('[Sara Debug] MediaRecorder Available:', typeof MediaRecorder !== 'undefined');
-    
     setIsMediaSupported(supported);
 
-    if (isOpen && typeof window !== 'undefined' && !isSecure) {
-      console.warn('[Sara Warning] INSECURE CONTEXT: Microphone access WILL fail on most mobile browsers.');
+    if (supported && typeof navigator !== 'undefined' && navigator.permissions && (navigator.permissions as any).query) {
+      try {
+        (navigator.permissions as any).query({ name: 'microphone' }).then((status: any) => {
+          setPermissionStatus(status.state);
+          status.onchange = () => setPermissionStatus(status.state);
+        });
+      } catch (e) {
+        console.warn('[Sara Debug] Permissions API mic query not supported');
+      }
     }
   }, [isOpen]);
 
@@ -90,16 +100,37 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
     }
   }, [messages, isTyping, isAiResponding]);
 
-  // Autofocus input when modal opens or response finishes
+  // Native Mic Button Listener to preserve user gesture
   useEffect(() => {
-    if (isOpen && !isAiResponding && !isTyping) {
-      setTimeout(() => {
-        inputRef.current?.focus();
-      }, 100);
-    }
-  }, [isOpen, isAiResponding, isTyping]);
+    if (!isOpen) return;
+    const btn = micButtonRef.current;
+    if (!btn) return;
 
-  if (!isOpen) return null;
+    const handleMicClick = (e: MouseEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      if (isRecording) {
+        stopRecording();
+      } else {
+        // CALL UNIFIED CAPTURE START
+        startRecording();
+      }
+    };
+
+    btn.addEventListener('click', handleMicClick);
+    return () => btn.removeEventListener('click', handleMicClick);
+  }, [isOpen, isRecording, selectedMicId]);
+
+  // Load devices for switching (PC/Advanced users)
+  useEffect(() => {
+    if (isOpen && typeof navigator !== 'undefined' && navigator.mediaDevices && navigator.mediaDevices.enumerateDevices) {
+      navigator.mediaDevices.enumerateDevices().then(devices => {
+        const audioInputs = devices.filter(d => d.kind === 'audioinput');
+        setMicDevices(audioInputs);
+      });
+    }
+  }, [isOpen]);
 
   const playVoiceResponse = (text: string, fullResponse = false) => {
     if (!voiceEnabled || typeof window === 'undefined' || !window.speechSynthesis) {
@@ -182,144 +213,12 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
     }
   };
 
-  const stopRecording = () => {
-    if (mediaRecorderRef.current && isRecording) {
-      mediaRecorderRef.current.stop();
-      setIsRecording(false);
-    }
-    
-    // Stop volume monitoring
-    if (animationFrameRef.current) {
-      cancelAnimationFrame(animationFrameRef.current);
-    }
-    setVolumeLevel(0);
-  };
+  /**
+   * VOICE CAPTURE SYSTEM (v1.1.326)
+   * Using 'recorder-js' for high-fidelity cross-browser WAV recording.
+   */
 
-  const startVolumeMeter = (stream: MediaStream) => {
-    try {
-      const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
-      const analyser = audioContext.createAnalyser();
-      const source = audioContext.createMediaStreamSource(stream);
-      
-      analyser.fftSize = 256;
-      source.connect(analyser);
-      
-      audioContextRef.current = audioContext;
-      analyserRef.current = analyser;
-
-      const bufferLength = analyser.frequencyBinCount;
-      const dataArray = new Uint8Array(bufferLength);
-
-      const updateVolume = () => {
-        if (!analyserRef.current) return;
-        analyserRef.current.getByteFrequencyData(dataArray);
-        
-        let total = 0;
-        for (let i = 0; i < bufferLength; i++) {
-          total += dataArray[i];
-        }
-        const average = total / bufferLength;
-        const volume = Math.min((average / 128) * 100, 100);
-        setVolumeLevel(volume);
-        
-        animationFrameRef.current = requestAnimationFrame(updateVolume);
-      };
-
-      updateVolume();
-    } catch (err) {
-      console.warn('Volume meter failed:', err);
-    }
-  };
-
-  const setupMicrophone = async () => {
-    if (typeof navigator === 'undefined' || !navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-      alert('Your browser or context does not support microphone access. Please ensure you are using HTTPS or localhost.');
-      return false;
-    }
-
-    try {
-      // Trigger the browser's native permission notification popup
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      
-      // Load available microphones with REAL LABELS now that they are unlocked
-      const devices = await navigator.mediaDevices.enumerateDevices();
-      const inputs = devices.filter(d => d.kind === 'audioinput');
-      setMicDevices(inputs);
-      
-      // If no mic selected yet, use the first one
-      if (!selectedMicId && inputs.length > 0) {
-        setSelectedMicId(inputs[0].deviceId);
-      }
-
-      // Always stop the tracks if you are just testing for permission
-      stream.getTracks().forEach(track => track.stop());
-      return true;
-    } catch (err: any) {
-      console.error('Microphone permission error:', err);
-      if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
-        alert('Microphone access was denied. Please unlock your browser microphone settings and try again.');
-      } else if (err.name === 'NotFoundError' || err.name === 'DevicesNotFoundError') {
-        alert('No physical microphone detected on this machine.');
-      } else {
-        alert(`Mic Setup Error: ${err.message}`);
-      }
-      return false;
-    }
-  };
-
-  const startRecording = async () => {
-    // Interrupt any current speech
-    if (typeof window !== 'undefined' && window.speechSynthesis) {
-      window.speechSynthesis.cancel();
-      setIsSpeaking(false);
-    }
-
-    // Ensure we have permission and devices loaded
-    if (micDevices.length === 0) {
-      const success = await setupMicrophone();
-      if (!success) return;
-    }
-
-    try {
-      const constraints = {
-        audio: {
-          deviceId: selectedMicId ? { exact: selectedMicId } : undefined,
-          echoCancellation: true,
-          noiseSuppression: true
-        }
-      };
-
-      const stream = await navigator.mediaDevices.getUserMedia(constraints);
-      const mediaRecorder = new MediaRecorder(stream);
-      mediaRecorderRef.current = mediaRecorder;
-      audioChunksRef.current = [];
-
-      mediaRecorder.ondataavailable = (event) => {
-        if (event.data.size > 0) {
-          audioChunksRef.current.push(event.data);
-        }
-      };
-
-      mediaRecorder.onstop = async () => {
-        const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
-        await handleVoiceInput(audioBlob);
-        
-        // Stop all tracks to release microphone
-        stream.getTracks().forEach(track => track.stop());
-        if (audioContextRef.current) audioContextRef.current.close();
-      };
-
-      mediaRecorder.start();
-      setIsRecording(true);
-      startVolumeMeter(stream);
-    } catch (err: any) {
-      console.error('Microphone recording error:', err);
-      alert(`Could not start recording: ${err.message}`);
-      setIsRecording(false);
-    }
-  };
-
-  const handleVoiceInput = async (blob: Blob) => {
+  async function handleVoiceInput(blob: Blob) {
     setIsTyping(true);
     try {
       const formData = new FormData();
@@ -332,17 +231,177 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
 
       const data = await response.json();
       if (data.text) {
-        // Send the transcribed text as a message and mark it as coming from voice
         await processChatMessage(data.text, true);
       } else {
         throw new Error(data.error || 'Transcription failed');
       }
     } catch (err) {
-      console.error('Voice input error:', err);
+      console.error('[Sara Voice] Transcription error:', err);
       setIsTyping(false);
       await typeMessage("Sorry, I couldn't understand the audio. Please try again.");
     }
-  };
+  }
+
+  function cleanupAudio() {
+    // 1. Stop all media tracks
+    if (recorderInstanceRef.current && recorderInstanceRef.current.stream) {
+      recorderInstanceRef.current.stream.getTracks().forEach((t: MediaStreamTrack) => t.stop());
+    }
+    
+    // 2. Close AudioContext
+    if (audioContextRef.current) {
+      if (audioContextRef.current.state !== 'closed') {
+        audioContextRef.current.close();
+      }
+      audioContextRef.current = null;
+    }
+
+    // 3. Stop animations
+    if (animationFrameRef.current) {
+      cancelAnimationFrame(animationFrameRef.current);
+      animationFrameRef.current = null;
+    }
+
+    // 4. Reset states
+    setIsRecording(false);
+    setVolumeLevel(0);
+    analyserRef.current = null;
+    recorderInstanceRef.current = null;
+    audioChunksRef.current = [];
+  }
+
+  function startVolumeAnalysis(analyser: AnalyserNode) {
+    const bufferLength = analyser.frequencyBinCount;
+    const dataArray = new Uint8Array(bufferLength);
+
+    function updateVolume() {
+      if (!analyserRef.current) return;
+      
+      analyserRef.current.getByteFrequencyData(dataArray);
+      let total = 0;
+      for (let i = 0; i < bufferLength; i++) {
+        total += dataArray[i];
+      }
+      const averageVolume = total / bufferLength;
+      const volumePercentage = Math.min((averageVolume / 128) * 100, 100);
+      setVolumeLevel(volumePercentage);
+      
+      animationFrameRef.current = requestAnimationFrame(updateVolume);
+    }
+
+    updateVolume();
+  }
+
+  async function startRecording() {
+    // 0. Manual Permission Check Refresh
+    if (typeof navigator !== 'undefined' && navigator.permissions && (navigator.permissions as any).query) {
+      try {
+        const status = await (navigator.permissions as any).query({ name: 'microphone' });
+        setPermissionStatus(status.state);
+      } catch (e) {}
+    }
+
+    // 1. ATOMIC GESTURE HANDSHAKE (Absolute first line)
+    // Satisfies Android Chrome's "User Gesture" requirement.
+    let stream: MediaStream;
+    try {
+      // Attempt with high-quality constraints first
+      try {
+        stream = await navigator.mediaDevices.getUserMedia({ 
+          audio: {
+            echoCancellation: true,
+            noiseSuppression: true,
+            autoGainControl: true,
+            deviceId: selectedMicId ? { exact: selectedMicId } : undefined
+          } 
+        });
+      } catch (innerErr) {
+        console.warn('[Sara Voice] Complex constraints failed, retrying simple...');
+        stream = await navigator.mediaDevices.getUserMedia({ 
+          audio: selectedMicId ? { deviceId: { exact: selectedMicId } } : true 
+        });
+      }
+      
+      // SUCCESS: Permission granted
+      console.log('[Sara Debug] getUserMedia success');
+      setPermissionStatus('granted');
+      
+    } catch (err: any) {
+      console.error('[Sara Voice] Handshake Failure:', err.name, err.message);
+      
+      const isSecure = typeof window !== 'undefined' && (window.isSecureContext || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+      
+      if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
+        setPermissionStatus('denied');
+        if (!isSecure) {
+          alert("MOBILE SECURITY: Android/iOS strictly block microphone on HTTP connections.\n\nPlease use HTTPS to enable voice features.");
+        } else {
+          alert("PERMISSION DENIED: You have blocked Sara from using your microphone.\n\nTap the 'Lock' icon in your browser's address bar (near the URL) to reset permissions or set Microphone to 'Allow'.");
+        }
+      } else if (err.name === 'NotFoundError' || err.name === 'DevicesNotFoundError') {
+        alert("HARDWARE ERROR: No microphone detected on this device.");
+      } else {
+        alert(`MIC ERROR: ${err.message}`);
+      }
+      cleanupAudio();
+      return;
+    }
+
+    // 2. NOW stop any existing speech (Handshake is already in flight/secured)
+    if (typeof window !== 'undefined' && window.speechSynthesis) {
+      window.speechSynthesis.cancel();
+      setIsSpeaking(false);
+    }
+
+    try {
+      // 3. INITIALIZE RECORDER-JS
+      const AudioContextClass = (window.AudioContext || (window as any).webkitAudioContext);
+      const audioContext = new AudioContextClass();
+      
+      // CRITICAL: Force resume for Chrome/Android
+      if (audioContext.state === 'suspended') {
+        await audioContext.resume();
+      }
+
+      const recorder = new Recorder(audioContext);
+      await recorder.init(stream);
+      
+      recorderInstanceRef.current = recorder;
+      audioContextRef.current = audioContext;
+
+      // 4. ATTACH ANALYSER FOR VISUALS
+      const analyser = audioContext.createAnalyser();
+      analyser.fftSize = 256;
+      const source = audioContext.createMediaStreamSource(stream);
+      source.connect(analyser);
+      analyserRef.current = analyser;
+
+      // 5. START CAPTURE
+      await recorder.start();
+      setIsRecording(true);
+      startVolumeAnalysis(analyser);
+      setPermissionStatus('granted');
+
+    } catch (err: any) {
+      console.error('[Sara Voice] Capture Setup Error:', err);
+      cleanupAudio();
+    }
+  }
+
+  async function stopRecording() {
+    if (recorderInstanceRef.current) {
+      try {
+        const { blob } = await recorderInstanceRef.current.stop();
+        await handleVoiceInput(blob);
+      } catch (err) {
+        console.error('[Sara Voice] Stop error:', err);
+      } finally {
+        cleanupAudio();
+      }
+    } else {
+      cleanupAudio();
+    }
+  }
 
   const typeMessage = async (fullText: string) => {
     const id = (Date.now() + 1).toString();
@@ -432,24 +491,36 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
     await processChatMessage(userText);
   };
 
+  if (!isOpen) return null;
+
   return (
-    <div className="fixed bottom-24 right-6 z-[3001] w-[calc(100%-3rem)] max-w-sm animate-in slide-in-from-bottom-4 fade-in duration-300 pointer-events-none">
+    <div className="fixed bottom-24 left-0 right-0 px-4 sm:left-auto sm:right-6 sm:px-0 z-[3001] sm:w-[380px] max-w-[380px] animate-in slide-in-from-bottom-4 fade-in duration-300 pointer-events-none">
       <div 
-        className="relative overflow-hidden w-full rounded-[2rem] flex flex-col h-[500px] text-slate-900 shadow-[0_20px_50px_rgba(3,113,163,0.2)] border border-slate-100 bg-white/95 backdrop-blur-md pointer-events-auto"
+        className="relative overflow-hidden w-full mx-auto rounded-[2rem] flex flex-col h-[550px] max-h-[calc(100vh-140px)] text-slate-900 shadow-[0_20px_50px_rgba(3,113,163,0.2)] border border-slate-100 bg-white/95 backdrop-blur-md pointer-events-auto"
         onClick={e => e.stopPropagation()}
       >
         {/* Header */}
         <div className="p-5 border-b border-white/10 bg-[#0371a3] text-white shrink-0">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="relative">
+              <div className="relative w-10 h-10">
                 <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center border border-white/20 overflow-hidden">
                    <div className="bg-[#70f2f2] w-full h-full flex items-center justify-center font-black text-[#0371a3] text-lg">S</div>
                 </div>
                 <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-[#0371a3] rounded-full"></span>
               </div>
               <div>
-                <h3 className="text-sm font-black tracking-tight">Ask Sara</h3>
+                <div className="flex items-center gap-2">
+                  <h3 className="text-sm font-black tracking-tight">Ask Sara</h3>
+                  {/* Status Badges */}
+                  {!isSecure ? (
+                    <span className="px-1.5 py-0.5 bg-red-500/20 border border-red-500/30 rounded text-[7px] font-black uppercase text-red-200">Insecure</span>
+                  ) : permissionStatus === 'denied' ? (
+                    <span className="px-1.5 py-0.5 bg-amber-500/20 border border-amber-500/30 rounded text-[7px] font-black uppercase text-amber-200 tracking-tighter">Mic Locked</span>
+                  ) : permissionStatus === 'granted' ? (
+                    <span className="px-1.5 py-0.5 bg-green-500/20 border border-green-500/30 rounded text-[7px] font-black uppercase text-green-200 tracking-tighter">Mic Ready</span>
+                  ) : null}
+                </div>
                 <p className="text-[10px] text-sky-200 font-bold uppercase tracking-widest leading-none mt-0.5">Sarvadnya Assistant</p>
               </div>
             </div>
@@ -662,8 +733,8 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
           
           <form onSubmit={handleSendMessage} className="flex items-center gap-2">
             <button 
+              ref={micButtonRef}
               type="button"
-              onClick={isRecording ? stopRecording : startRecording}
               className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all active:scale-95 shadow-lg ${
                 isRecording 
                   ? 'bg-red-500 text-white animate-pulse shadow-red-500/20' 

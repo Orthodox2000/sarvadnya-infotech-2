@@ -22,7 +22,7 @@ export async function POST(request: Request) {
     const apiKey = apiKeys[0];
 
     const groqFormData = new FormData();
-    groqFormData.append('file', audioFile, 'audio.webm');
+    groqFormData.append('file', audioFile, 'audio.wav');
     groqFormData.append('model', 'whisper-large-v3');
     groqFormData.append('response_format', 'verbose_json');
 
