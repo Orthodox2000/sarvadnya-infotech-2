@@ -356,7 +356,7 @@ export default function AdminLearning() {
                         <img src={editingItem.thumbnail} alt="Thumbnail" className="w-full h-full object-cover" />
                       ) : (
                         <div className="flex items-center justify-center h-full bg-white">
-                          <img src="/logo.png" alt="Logo" className="w-16 h-auto opacity-30" />
+                          <img src="/logo.svg" alt="Logo" className="w-16 h-auto opacity-30" style={{ filter: 'invert(31%) sepia(94%) saturate(1131%) hue-rotate(167deg) brightness(91%) contrast(98%)' }} />
                         </div>
                       )
                     )}
@@ -399,7 +399,7 @@ export default function AdminLearning() {
                     <img src={item.thumbnail} alt={item.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
                   ) : (
                     <div className="flex items-center justify-center h-full bg-white transition-transform duration-700 group-hover:scale-110">
-                      <img src="/logo.png" alt="Logo" className="w-20 h-auto opacity-30" />
+                      <img src="/logo.svg" alt="Logo" className="w-20 h-auto opacity-30" style={{ filter: 'invert(31%) sepia(94%) saturate(1131%) hue-rotate(167deg) brightness(91%) contrast(98%)' }} />
                     </div>
                   )
                 )}

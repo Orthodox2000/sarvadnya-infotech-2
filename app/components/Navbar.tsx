@@ -85,13 +85,13 @@ export default function Navbar({ initialSettings }: { initialSettings?: any }) {
             />
           </div>
           <div className="flex items-center">
-            <div className="hidden sm:block w-5 h-5 lg:w-7 lg:h-7 rounded-md overflow-hidden shrink-0 bg-white/10 group-hover:scale-110 transition-transform shadow-sm border border-white/10">
+            <div className="block w-5 h-5 lg:w-7 lg:h-7 shrink-0 group-hover:scale-110 transition-transform brightness-0 invert">
               <Image
                 src="/logo.png"
                 alt="Sarvadnya Logo"
                 width={28}
                 height={28}
-                className="object-contain w-full h-full brightness-0 invert"
+                className="object-contain w-full h-full"
               />
             </div>
             <div className="flex flex-col ml-1 sm:ml-1.5 lg:ml-2 leading-none">
@@ -116,6 +116,12 @@ export default function Navbar({ initialSettings }: { initialSettings?: any }) {
           >
             Palette
           </Link> */}
+          <Link
+            href="/find-solution"
+            className="hidden xl:inline-flex items-center justify-center rounded-full bg-emerald-500/10 px-5 py-2 text-[11px] font-black uppercase tracking-wider text-emerald-400 border border-emerald-500/20 transition-all duration-500 ease-in-out hover:bg-emerald-500 hover:text-white shadow-sm"
+          >
+            Find Solution
+          </Link>
           <Link
             href="/careers"
             className="inline-flex items-center justify-center rounded-full bg-white/5 px-5 py-2 text-[11px] font-bold uppercase tracking-wider text-white border border-white/10 transition-all duration-500 ease-in-out hover:bg-white/10 shadow-sm"
@@ -199,6 +205,13 @@ export default function Navbar({ initialSettings }: { initialSettings?: any }) {
           <div className="w-full h-px bg-[#E9F1FA]" />
           
           <div className="flex flex-col gap-3">
+            <Link
+              href="/find-solution"
+              onClick={() => setIsMenuOpen(false)}
+              className="flex items-center justify-center h-12 rounded-xl border border-emerald-500/20 bg-emerald-50 text-[11px] font-black uppercase tracking-widest text-emerald-600 shadow-sm hover:bg-emerald-100"
+            >
+              Find Your Solution
+            </Link>
             <Link
               href="/careers"
               onClick={() => setIsMenuOpen(false)}

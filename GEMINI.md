@@ -4,9 +4,94 @@
 - Always mention the application version number when presenting changes or updates.
 - Versioning follows the format `v1.1.x`.
 - Increment the patch version automatically for every iteration/significant set of changes.
-- Current Version: v1.1.340
+- Current Version: v1.1.369
 
-## Recent Changes (v1.1.340)
+## Recent Changes (v1.1.369)
+- **Architectural Refinement (Routing):** Formally migrated the application's routing and proxying infrastructure.
+    *   **Proxy Pattern Integration:** Transitioned from legacy `middleware.ts` to a centralized `proxy.ts` model, optimizing request handling and proxying logic as per the project's evolution.
+    *   **Memory Update:** Synchronized internal project memory and the Comprehensive System Report to reflect this architectural shift.
+- **Version Bump:** Updated application version to v1.1.369.
+
+## Recent Changes (v1.1.368)
+
+## Recent Changes (v1.1.367)
+
+## Recent Changes (v1.1.366)
+
+## Recent Changes (v1.1.365)
+
+## Recent Changes (v1.1.364)
+
+## Recent Changes (v1.1.363)
+
+## Recent Changes (v1.1.362)
+
+## Recent Changes (v1.1.361)
+
+## Recent Changes (v1.1.360)
+- **Consultation Results Finalization:** Polished the results dashboard for optimal alignment and tone.
+    *   **Action Header Alignment:** Synchronized the 'Restart' and 'Growth' actions to the same horizontal plane as the 'Results' header.
+    *   **Collective Voice Integration:** Updated the reporting engine to use collective language ("We recommend") across all strategic outputs.
+    *   **Table Typographic Refinement:** Downscaled font sizes and reduced typographic weight within the roadmap table for a more professional, "executive" presence.
+- **Version Bump:** Updated application version to v1.1.359.
+
+## Recent Changes (v1.1.358)
+- **Consultation Results Optimization:** Overhauled the `/find-solution` results view for superior readability and mobile performance.
+    *   **Mobile Paragraph View:** Replaced the scrollable table with a vertical paragraph-based layout on mobile viewports, ensuring strategic reasons are fully legible without horizontal scrolling.
+    *   **Executive Summary Downscaling:** Refined the 'Strategic Advisory Summary' with smaller, medium-weight typography and clean centered alignment for a more professional, "executive dashboard" aesthetic.
+    *   **Hardened AI Cleaning:** Upgraded the text-cleaning engine to systematically remove all markdown asterisks (`*`) from both the visual UI and the "Ask Sara" assistant, ensuring perfectly clean data presentation.
+    *   **Action Flow Polish:** Streamlined the top action bar with simplified session controls and growth triggers.
+- **Version Bump:** Updated application version to v1.1.357.
+
+## Recent Changes (v1.1.356)
+- **AI Response & TTS Optimization:** Implemented advanced text-cleaning logic for AI responses across the consultation engine and "Ask Sara" assistant.
+    *   **Markdown Sanitization:** Automatically strips bold markers (`**`), asterisks, and other markdown artifacts from visual text and Text-to-Speech (TTS) buffers.
+    *   **Professional TTS Delivery:** Updated the voice engine to ignore punctuation-based formatting symbols, ensuring a natural and authoritative vocal persona without pronouncing artifacts.
+    *   **Consistent Visuals:** Applied response cleaning to the consultation roadmap and chat interface for a cleaner, unified presentation.
+- **Version Bump:** Updated application version to v1.1.356.
+
+## Recent Changes (v1.1.355)
+- **Consultation Lead Capture (Find Solution):** Integrated a professional lead generation form into the consultation results view.
+    *   **Strategic Lead Capture:** Users can now submit their consultation results directly to the team, including Name, Email, Phone, and Business Name.
+    *   **Unified Admin Integration:** Consultation leads are automatically synchronized with the Admin Submissions dashboard for immediate follow-up.
+    *   **Responsive Table UI:** Standardized the results table to span the full width of the container, maintaining a consistent high-density view across both mobile and desktop.
+    *   **Re-prioritized Actions:** Relocated the 'Restart Session' trigger to the top of the results sidebar for improved UX flow.
+- **Version Bump:** Updated application version to v1.1.355.
+
+## Recent Changes (v1.1.354)
+- **High-Density Consultation UI (Find Solution):** Aggressively downscaled the consultation engine for improved focus and vertical efficiency.
+    *   **Compact Interactive Elements:** Reduced the size of option boxes, icons, and typography by 40% to achieve a high-density "dashboard" aesthetic.
+    *   **Adaptive Navigation:** Relocated the progress tracker to a horizontal mobile-friendly layout, automatically hiding text labels on smaller screens to maximize space.
+    *   **Contextual Awareness:** Implemented an automatic scroll-to-top trigger on phase changes, ensuring users start from the top of every new strategic question.
+    *   **Sleek Action Pill:** Redesigned the "Next Phase" action into a smaller, higher-action pill button with improved touch targets and directional feedback.
+- **Version Bump:** Updated application version to v1.1.354.
+
+## Recent Changes (v1.1.344)
+- **Interactive Solution Finder:** Launched a high-impact consultation engine at `/find-solution` to guide businesses toward the right digital infrastructure.
+    *   **Animated Multi-Step Flow:** Implemented a sophisticated, logic-based questionnaire with smooth "path separation" transitions and 3D-drift entrance effects.
+    *   **Zero-Typing UI:** Designed a pure button-driven experience that captures Industry, Scale, Pain Points, and current Software status without manual input.
+    *   **AI Strategic Consultant:** Integrated a specialized AI persona that analyzes the user's requirement path to provide tailored, realistic product advice (Tally Editions, Cloud, and specialized TDLs).
+    *   **Global Discoverability:** Added a primary "Find Solution" call-to-action in the global Navbar (Desktop and Mobile) with a distinct emerald branding.
+- **Version Bump:** Updated application version to v1.1.344.
+
+## Recent Changes (v1.1.343)
+- **Advanced Mic Diagnostics (Ask Sara):** Integrated the `mic-check` library to provide robust, cross-browser microphone error handling.
+    *   **Detailed Error Reporting:** Replaced generic permission alerts with specific diagnostic feedback for "System Permission Denied" (macOS/Windows level), "User Permission Denied" (Browser level), and "Hardware Busy" scenarios.
+    *   **Cross-Browser Consistency:** Normalized inconsistent error responses from Chrome, Safari, and Firefox into a unified diagnostic flow.
+    *   **Actionable Guidance:** Updated the AI assistant to provide step-by-step instructions for unblocking hardware based on the exact failure type detected.
+- **Microphone Diagnostic Hub:** Overhauled the `/mic-test` route into a dedicated hardware diagnostic utility.
+    *   **Visual Status Tracking:** Implemented a clean, high-contrast UI that tracks diagnostic phases (Checking, Granted, Denied, Error).
+    *   **Context Awareness:** Integrated security context alerts for non-HTTPS environments to proactively warn users of browser-level hardware blocks.
+- **Version Bump:** Updated application version to v1.1.343.
+
+## Recent Changes (v1.1.342)
+- **Concurrent Voice Response (Ask Sara):** Re-engineered the voice playback engine to achieve a "fake sync" experience.
+    *   **Immediate Playback:** Voice responses (auto-play) now initiate immediately when Sara begins typing, rather than waiting for completion.
+    *   **Full-Text Buffer:** Updated the message architecture to store the complete AI response (`fullText`), allowing both automatic and manual vocalization to access the entire content even while it is still being rendered word-by-word.
+    *   **Synchronized Interaction:** Ensures that the assistant's vocal and textual presence are perfectly overlapped, creating a more fluid and responsive hands-free experience.
+- **Version Bump:** Updated application version to v1.1.342.
+
+## Recent Changes (v1.1.341)
 - **Security Context Guidance (Ask Sara):** Implemented high-priority UI feedback for insecure (non-HTTPS) environments to explain missing microphone permissions.
     *   **Proactive HTTPS Warning:** Added a specialized visual block that appears if `window.isSecureContext` is false. This informs users that modern browsers strip "Microphone" from site settings on non-secure origins for safety.
     *   **Insecure Status Branding:** Upgraded the "Insecure" badge in the header with a red high-contrast design and descriptive warning to guide users toward HTTPS or localhost testing.

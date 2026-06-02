@@ -1,12 +1,14 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import { requestMediaPermissions, MediaPermissionsErrorType } from 'mic-check';
 import Recorder from 'recorder-js';
 import Link from 'next/link';
 
 interface Message {
   id: string;
   text: string;
+  fullText?: string; // v1.1.342: Store full response for "fake sync" playback
   sender: 'ai' | 'user';
   timestamp: Date;
   showContact?: boolean;
@@ -85,24 +87,41 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
     }
 
     try {
-      console.log('[Sara Security] Initiating hardware handshake...');
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      stream.getTracks().forEach(t => t.stop()); 
+      console.log('[Sara Security] Initiating hardware handshake using mic-check...');
+      // Using mic-check for cross-browser consistency (v1.1.344)
+      await requestMediaPermissions({ audio: true });
       setPermissionStatus('granted');
       setIsRecording(true); // Start recording immediately after grant
     } catch (err: any) {
-      console.warn('[Sara Security] Handshake rejected:', err.name);
-      setPermissionStatus('denied');
-      
-      setMessages(prev => [...prev, {
-        id: Date.now().toString(),
-        text: "**Microphone Access Required**\n\nTo use voice commands, please enable access in your browser settings:\n\n**Desktop:** Click the **Lock icon** next to the URL and set Microphone to **Allow**.\n\n**Mobile:** Tap **Site Settings** (or â‹® menu), grant **Microphone** access, and **Reload**.",
-        sender: 'ai',
-        timestamp: new Date()
-      }]);
+      console.warn('[Sara Security] Handshake rejected:', err.name || err.type);
+      handleMicCheckError(err);
     } finally {
       setIsInitializingMic(false);
     }
+  }
+
+  /**
+   * CENTRALIZED MIC ERROR HANDLER (v1.1.344)
+   * Provides actionable feedback based on specific 'mic-check' error types.
+   */
+  function handleMicCheckError(err: any) {
+    setPermissionStatus('denied');
+    let errorMessage = "**Microphone Access Required**\n\nTo use voice commands, please enable access in your browser settings:\n\n**Desktop:** Click the **Lock icon** next to the URL and set Microphone to **Allow**.\n\n**Mobile:** Tap **Site Settings** (or ⋮ menu), grant **Microphone** access, and **Reload**.";
+
+    if (err.type === MediaPermissionsErrorType.SystemPermissionDenied) {
+      errorMessage = "**System Permission Denied**\n\nYour operating system (macOS or Windows) has blocked this browser from accessing the microphone. Please check your **System Settings > Privacy & Security > Microphone** and ensure your browser is allowed.";
+    } else if (err.type === MediaPermissionsErrorType.UserPermissionDenied) {
+      errorMessage = "**Microphone Blocked**\n\nYou have denied microphone access for this site. To fix this:\n\n1. Click the **Camera/Lock icon** in the address bar.\n2. Select **'Always allow'** or reset permissions.\n3. **Refresh the page** to try again.";
+    } else if (err.type === MediaPermissionsErrorType.CouldNotStartVideoSource) {
+      errorMessage = "**Microphone Busy or Not Found**\n\nYour microphone could not be started. It might be in use by another application (like Zoom or Teams) or is not properly plugged in.";
+    }
+
+    setMessages(prev => [...prev, {
+      id: Date.now().toString(),
+      text: errorMessage,
+      sender: 'ai',
+      timestamp: new Date()
+    }]);
   }
 
   // Silent check for status on mount (no UI block)
@@ -116,6 +135,8 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
           (navigator.permissions as any).query({ name: 'microphone' as PermissionName }).then((status: PermissionStatus) => {
             setPermissionStatus(status.state as MicPermissionState);
             status.onchange = () => setPermissionStatus(status.state as MicPermissionState);
+          }).catch((err: any) => {
+            console.warn('[Sara Debug] Permissions API mic query failed:', err);
           });
         } catch (e) {
           console.warn('[Sara Debug] Permissions API mic query not supported');
@@ -159,12 +180,14 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
     // 1. Interrupt any current speech
     window.speechSynthesis.cancel();
 
-    // 2. Clean text for natural speech
+    // 2. Clean text for natural speech (v1.1.356: Remove all markdown artifacts)
     let cleanText = text
-      .replace(/\[\[.*?\|.*?\]\]/g, '') // Remove buttons
-      .replace(/\*\*.*?\*\*/g, (match) => match.slice(2, -2)) // Remove bold
-      .replace(/[\[\]]/g, '') // Remove brackets
-      .replace(/#/g, '') // Remove headings
+      .replace(/\[\[.*?\|.*?\]\]/g, '') // Remove navigation buttons
+      .replace(/\*/g, '')               // Remove all asterisks (bold/italic)
+      .replace(/[\[\]]/g, '')           // Remove remaining brackets
+      .replace(/#/g, '')                // Remove heading symbols
+      .replace(/_/g, ' ')               // Replace underscores with spaces
+      .replace(/[`]/g, '')              // Remove code backticks
       .trim();
 
     // 3. Intelligent Truncation (Summary Mode)
@@ -267,6 +290,8 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
         (navigator.permissions as any).query({ name: 'microphone' as PermissionName }).then((status: PermissionStatus) => {
           setPermissionStatus(status.state as MicPermissionState);
           status.onchange = () => setPermissionStatus(status.state as MicPermissionState);
+        }).catch((err: any) => {
+          console.warn('[Sara Debug] Permissions API mic query failed:', err);
         });
       } catch (e) {
         console.warn('[Sara Debug] Permissions API mic query not supported');
@@ -275,15 +300,16 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
   }, [isOpen]);
 
   function handleCaptureError(err: any) {
-    const isSecure = typeof window !== 'undefined' && (window.isSecureContext || window.location.hostname === 'localhost');
-    
-    if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
-      setPermissionStatus('denied');
-      // No alert here, we show the UI block instead for a better UX
-    } else if (err.name === 'NotFoundError' || err.name === 'DevicesNotFoundError') {
-      alert("HARDWARE: No microphone detected on this device.");
+    if (err.type) {
+      handleMicCheckError(err);
     } else {
-      alert(`ERROR: ${err.message}`);
+      if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
+        setPermissionStatus('denied');
+      } else if (err.name === 'NotFoundError' || err.name === 'DevicesNotFoundError') {
+        alert("HARDWARE: No microphone detected on this device.");
+      } else {
+        alert(`ERROR: ${err.message}`);
+      }
     }
   }
 
@@ -298,19 +324,20 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
     }
 
     try {
-      console.log('[Sara Diagnostic] Attempting broad hardware handshake...');
-      // Try to ask for both - this is just a test to see if popups work
-      const testStream = await navigator.mediaDevices.getUserMedia({ audio: true, video: true });
-      testStream.getTracks().forEach(t => t.stop());
+      console.log('[Sara Diagnostic] Attempting hardware handshake via mic-check...');
+      // Using mic-check for cross-browser consistency (v1.1.344)
+      await requestMediaPermissions({ audio: true });
       setPermissionStatus('granted');
-      alert("Verification Success: Your browser popups are working correctly!");
+      alert("Verification Success: Your browser popups and microphone are working correctly!");
     } catch (err: any) {
-      console.warn('[Sara Diagnostic] Verification failed:', err.name);
-      if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
+      console.warn('[Sara Diagnostic] Verification failed:', err.name || err.type);
+      if (err.type === MediaPermissionsErrorType.UserPermissionDenied) {
         setPermissionStatus('denied');
         alert("Verification Failed: Permission is still blocked in your settings. Please follow the instructions to Allow.");
+      } else if (err.type === MediaPermissionsErrorType.SystemPermissionDenied) {
+        alert("Verification Failed: System-level permission is denied. Check your OS privacy settings.");
       } else {
-        alert(`Hardware Error: ${err.message}`);
+        alert(`Hardware Error: ${err.message || 'Unknown error'}`);
       }
     }
   }
@@ -513,8 +540,16 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
     setIsAiResponding(true);
     
     // Add empty message first with audio prompt already enabled to show buttons while typing
-    setMessages(prev => [...prev, { id, text: '', sender: 'ai', timestamp: new Date(), showAudioPrompt: true }]);
+    setMessages(prev => [...prev, { id, text: '', fullText, sender: 'ai', timestamp: new Date(), showAudioPrompt: true }]);
     setShowAudioPromptId(id);
+
+    // AUTO-PLAY LOGIC: If a mode is already selected, play it immediately (v1.1.342)
+    // Start audio as soon as reply starts coming for a "fake sync" feel
+    if (autoPlayMode === 'summary') {
+      playVoiceResponse(fullText, false);
+    } else if (autoPlayMode === 'full') {
+      playVoiceResponse(fullText, true);
+    }
     
     let currentText = '';
     const words = fullText.split(' ');
@@ -531,13 +566,6 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
     // After typing is done, show the audio prompt for this specific message
     setMessages(prev => prev.map(m => m.id === id ? { ...m, showAudioPrompt: true } : m));
     setShowAudioPromptId(id);
-
-    // AUTO-PLAY LOGIC: If a mode is already selected, play it immediately
-    if (autoPlayMode === 'summary') {
-      playVoiceResponse(fullText, false);
-    } else if (autoPlayMode === 'full') {
-      playVoiceResponse(fullText, true);
-    }
   };
 
   const processChatMessage = async (text: string, isFromVoice = false) => {
@@ -579,7 +607,10 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
       if (data && data.error) throw new Error(data.error);
 
       setIsTyping(false);
-      await typeMessage(data.message);
+      
+      // Clean ALL markdown markers (v1.1.357)
+      const cleanMessage = data.message ? data.message.replace(/\*/g, '') : "I'm sorry, I couldn't process that.";
+      await typeMessage(cleanMessage);
     } catch (err: any) {
       console.error('Chat error:', err);
       setIsTyping(false);
@@ -763,7 +794,7 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
                               setIsSpeaking(false);
                             } else {
                               setAutoPlayMode('summary');
-                              playVoiceResponse(msg.text, false);
+                              playVoiceResponse(msg.fullText || msg.text, false);
                             }
                             setShowAudioPromptId(msg.id); 
                           }}
@@ -782,7 +813,7 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
                               setIsSpeaking(false);
                             } else {
                               setAutoPlayMode('full');
-                              playVoiceResponse(msg.text, true);
+                              playVoiceResponse(msg.fullText || msg.text, true);
                             }
                             setShowAudioPromptId(msg.id); 
                           }}

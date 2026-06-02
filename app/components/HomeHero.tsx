@@ -478,9 +478,9 @@ export default function HomeHero({ initialData, variant = 'standard' }: { initia
                   </div>
                 )}
                 
-                <div className={`absolute bottom-[5%] right-[-5%] w-[30%] h-[30%] rounded-[2rem] overflow-hidden border-2 border-white shadow-2xl z-50 scale-[0.8]
+                <div className={`absolute bottom-[5%] right-[-5%] w-[30%] h-[30%] rounded-[2rem] overflow-hidden border-2 border-white shadow-2xl z-50 scale-[0.8] bg-white p-6
                   ${isExiting ? 'opacity-0 translate-x-20 scale-50 transition-all duration-[800ms]' : isEntering ? `opacity-100 transition-all duration-[1800ms] delay-600 ${scheme.logo}` : 'opacity-0 translate-y-4'}`}>
-                  <Image src="/hero/hero-logo.png" alt="Logo" fill className="object-contain p-6 bg-white" sizes="200px" />
+                  <Image src="/logo.svg" alt="Logo" fill className="object-contain" sizes="200px" style={{ filter: 'invert(31%) sepia(94%) saturate(1131%) hue-rotate(167deg) brightness(91%) contrast(98%)' }} />
                 </div>
              </div>
           </div>

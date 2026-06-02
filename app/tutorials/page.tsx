@@ -134,7 +134,7 @@ export default function TutorialsPage() {
                                         />
                                     ) : (
                                         <div className="absolute inset-0 flex items-center justify-center bg-white transition-transform duration-700 group-hover:scale-110">
-                                            <img src="/logo.png" alt="Logo" className="w-12 h-auto opacity-30" />
+                                            <img src="/logo.svg" alt="Logo" className="w-12 h-auto opacity-30" style={{ filter: 'invert(31%) sepia(94%) saturate(1131%) hue-rotate(167deg) brightness(91%) contrast(98%)' }} />
                                         </div>
                                     )
                                 )}
@@ -233,10 +233,11 @@ export default function TutorialsPage() {
                             ) : (
                                 <div className="aspect-video w-full relative bg-[#f0f9ff] flex items-center justify-center">
                                      <Image 
-                                        src={selectedTutorial.thumbnail || '/logo.png'} 
+                                        src={selectedTutorial.thumbnail || '/logo.svg'} 
                                         alt={selectedTutorial.title}
                                         fill
                                         className="object-cover opacity-20"
+                                        style={{ filter: selectedTutorial.thumbnail ? 'none' : 'invert(31%) sepia(94%) saturate(1131%) hue-rotate(167deg) brightness(91%) contrast(98%)' }}
                                     />
                                     <div className="relative z-10 flex flex-col items-center gap-4">
                                         <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-xl">
