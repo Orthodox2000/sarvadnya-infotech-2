@@ -1,6 +1,6 @@
 {
   "name": "sarvadnya-infotech",
-  "version": "1.1.343",
+  "version": "1.1.370",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -34,6 +34,7 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "babel-plugin-react-compiler": "1.0.0",
+    "puppeteer": "^25.1.0",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

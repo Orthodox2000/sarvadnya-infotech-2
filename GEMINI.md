@@ -4,15 +4,16 @@
 - Always mention the application version number when presenting changes or updates.
 - Versioning follows the format `v1.1.x`.
 - Increment the patch version automatically for every iteration/significant set of changes.
-- Current Version: v1.1.369
+- Current Version: v1.1.370
+
+## Recent Changes (v1.1.370)
+- **Automated Visual Snapshot System:** Implemented a high-fidelity visual capture engine for quality assurance and design review.
+    *   **Puppeteer Integration:** Integrated Puppeteer to automate headless browser interactions, including scrolling, waiting for animations, and capturing interactive states.
+    *   **Comprehensive Coverage:** Created a specialized script (`scripts/capture_snapshots.mjs`) that captures all HomeHero carousel slides, full-page homepage sections, the products gallery, and individual product detail popups.
+    *   **High-Density Snapshots:** Generated 1440p desktop-quality screenshots ensuring "pixel-perfect" review of typography, brand colors, and layouts.
+- **Version Bump:** Updated application version to v1.1.370.
 
 ## Recent Changes (v1.1.369)
-- **Architectural Refinement (Routing):** Formally migrated the application's routing and proxying infrastructure.
-    *   **Proxy Pattern Integration:** Transitioned from legacy `middleware.ts` to a centralized `proxy.ts` model, optimizing request handling and proxying logic as per the project's evolution.
-    *   **Memory Update:** Synchronized internal project memory and the Comprehensive System Report to reflect this architectural shift.
-- **Version Bump:** Updated application version to v1.1.369.
-
-## Recent Changes (v1.1.368)
 
 ## Recent Changes (v1.1.367)
 

@@ -5,7 +5,7 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: '*',
       allow: '/',
-      disallow: ['/admin/', '/api/admin/', '/ask-sara'],
+      disallow: ['/admin/', '/api/admin/', '/ask-sara','/products','cloud'],
     },
     sitemap: 'https://sarvdnya-infotech.vercel.app/sitemap.xml',
   };
