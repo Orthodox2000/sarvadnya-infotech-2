@@ -8,6 +8,7 @@ import QuickSupportModal from './QuickSupportModal';
 
 export default function SplitScreenLandingPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [formData, setFormData] = useState({ name: '', phone: '' });
 
   return (
     <main className="flex min-h-[calc(100svh-7rem)] w-full items-stretch justify-start">
@@ -63,6 +64,8 @@ export default function SplitScreenLandingPage() {
                     <input
                       type="text"
                       placeholder="Your name"
+                      value={formData.name}
+                      onChange={e => setFormData({...formData, name: e.target.value})}
                       className="w-full bg-slate-50 border border-slate-100 rounded-2xl px-4 py-2.5 text-[11px] text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#7338a0]/10 focus:border-[#7338a0] transition-all shadow-sm"
                     />
                   </div>
@@ -70,11 +73,21 @@ export default function SplitScreenLandingPage() {
                     <input
                       type="tel"
                       placeholder="Phone number"
+                      value={formData.phone}
+                      onChange={e => setFormData({...formData, phone: e.target.value.replace(/[^0-9+]/g, '')})}
                       className="w-full bg-slate-50 border border-slate-100 rounded-2xl px-4 py-2.5 text-[11px] text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#7338a0]/10 focus:border-[#7338a0] transition-all shadow-sm"
                     />
                   </div>
                   <button
-                    onClick={() => {}}
+                    onClick={() => {
+                       if (!formData.name || !formData.phone) {
+                         alert('Please enter your name and phone number.');
+                         return;
+                       }
+                       // Here you would typically send the request
+                       alert('Thank you! We will call you back shortly.');
+                       setFormData({ name: '', phone: '' });
+                    }}
                     className="flex w-full items-center justify-center rounded-2xl bg-[#7338a0] px-4 py-3 text-[11px] font-black uppercase tracking-widest text-white shadow-lg shadow-[#7338a0]/20 transition-all duration-300 hover:bg-[#4a2574] hover:scale-[1.02] active:scale-[0.98]"
                   >
                     Send Request

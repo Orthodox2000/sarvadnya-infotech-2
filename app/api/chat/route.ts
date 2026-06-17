@@ -57,11 +57,12 @@ export async function POST(request: Request) {
       - Feature Capabilities: /capabilities
       
       OUR PRODUCTS & EXPERTISE (v7.0):
-      - **TallyPrime Silver**: Single User Edition. What You Get: Perpetual License, GST/E-Way Bill, TallyDrive Basic, SmartFind.
-      - **TallyPrime Gold**: Multi-User (LAN). What You Get: Unlimited Users, PrimeBanking, Bharat Connect, Remote Edit.
-      - **TallyPrime Server**: Enterprise. What You Get: High-Speed Concurrency, Hidden Data Folders, Advanced User Logs.
+      - **TallyPrime Silver**: Single User Edition. What You Get: Perpetual License, GST/E-Way Bill, TallyDrive Basic (1GB), SmartFind.
+      - **TallyPrime Gold**: Multi-User (LAN). What You Get: Unlimited Users, PrimeBanking, Bharat Connect, TallyDrive Pro (5GB), Remote Edit.
+      - **TallyPrime Server**: Enterprise. What You Get: High-Speed Concurrency, Hidden Data Folders, TallyDrive Enterprise (25GB+), Advanced User Logs.
+      - **TallyDrive (Cloud Backup)**: v7.0 Integrated Encrypted Backup. Tiers: Basic (Silver), Pro (Gold), Enterprise (Server).
       - **TallyPrime 7.0 Features**: PrimeBanking, TallyDrive (Encrypted Cloud Backup), SmartFind (Global Fuzzy Search), Bharat Connect.
-      - **Cloud Solutions**: TallyPrime Cloud Access (Official), NoSky Backup.
+      - **Cloud Solutions**: TallyPrime Cloud Access (Official), NoSky Backup, [[TallyDrive|/products#tallydrive]].
       - **Add-on Services**: Tally to WhatsApp, Tally on Mobile (Biz Analyst), TDL Customization, AMC, Corporate Training.
       
       BUSINESS CAPABILITIES:

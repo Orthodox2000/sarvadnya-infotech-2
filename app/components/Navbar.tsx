@@ -42,15 +42,15 @@ export default function Navbar({ initialSettings }: { initialSettings?: any }) {
     }
   };
 
-    const formatPhoneDisplay = (phone: string) => {
-        const cleaned = phone.trim();
-        if (cleaned.startsWith('+')) return cleaned;
-        if (cleaned.startsWith('91') && cleaned.length === 12) return `+${cleaned}`;
-        if (cleaned.length === 10) return `+91${cleaned}`;
-        return cleaned;
-    };
+  const formatPhoneDisplay = (phone: string) => {
+    const cleaned = phone.trim();
+    if (cleaned.startsWith('+')) return cleaned;
+    if (cleaned.startsWith('91') && cleaned.length === 12) return `+${cleaned}`;
+    if (cleaned.length === 10) return `+91${cleaned}`;
+    return cleaned;
+  };
 
-    const supportPhone = settings?.support_phone || process.env.NEXT_PUBLIC_SUPPORT_PHONE || "9821309060";
+  const supportPhone = settings?.support_phone || process.env.NEXT_PUBLIC_SUPPORT_PHONE || "9821309060";
 
   const navLinks: { label: string; href: string }[] = [];
 
@@ -69,23 +69,23 @@ export default function Navbar({ initialSettings }: { initialSettings?: any }) {
 
   return (
     <header className="relative z-[1000] w-full border-b border-white/5 bg-[#232F3E]  shadow-sm"> {/*#232F3E*/}
-      <nav className="mx-auto flex h-12 lg:h-16 w-full max-w-7xl items-center justify-between px-6">
+      <nav className="mx-auto flex h-12 lg:h-16 w-full max-w-full items-center justify-between px-1">
         <Link
           href="/"
-          className="flex items-center gap-2 lg:gap-3 group transition-transform hover:scale-[1.02]"
+          className="flex items-center justify-start group transition-transform hover:scale-[1.01] "
         >
-          <div className="relative block w-20 lg:w-32 h-7 lg:h-12 shrink-0 opacity-90 group-hover:opacity-100 transition-opacity">
+          <div className="relative block w-40 lg:w-[270px] h-12 lg:h-12 shrink-0 opacity-90  group-hover:opacity-100 transition-opacity">
             <Image
               src="/TallyCertificate.png"
               alt="Sarvadnya Infotech logo"
               fill
-              sizes="(max-width: 768px) 80px, 128px"
+              sizes=""
               className="object-contain brightness-0 invert"
               priority
             />
           </div>
           <div className="flex items-center">
-            <div className="block w-5 h-5 lg:w-7 lg:h-7 shrink-0 group-hover:scale-110 transition-transform brightness-0 invert">
+            <div className="block w-7 h-7 lg:w-8 lg:h-8 shrink-0 group-hover:scale-105 transition-transform brightness-0 invert">
               <Image
                 src="/logo.png"
                 alt="Sarvadnya Logo"
@@ -95,10 +95,10 @@ export default function Navbar({ initialSettings }: { initialSettings?: any }) {
               />
             </div>
             <div className="flex flex-col ml-1 sm:ml-1.5 lg:ml-2 leading-none">
-              <span className="text-[11px] lg:text-[15px] font-bold tracking-tight text-white">
+              <span className="text-[14px] lg:text-[18px] font-bold tracking-tight text-white">
                 Sarvadnya
               </span>
-              <span className="text-[7px] lg:text-[10px] font-medium uppercase tracking-[0.2em] text-sky-400">
+              <span className="text-[9px] lg:text-[13px] font-medium uppercase tracking-[0.2em] text-sky-400">
                 Infotech LLP
               </span>
             </div>
@@ -138,7 +138,7 @@ export default function Navbar({ initialSettings }: { initialSettings?: any }) {
 
         {/* Mobile Toggle */}
         <div className="flex items-center gap-4 lg:hidden">
-          <button 
+          <button
             className="p-2 text-white/70 hover:text-white transition-colors"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
@@ -157,7 +157,7 @@ export default function Navbar({ initialSettings }: { initialSettings?: any }) {
 
       {/* Mobile Menu Backdrop */}
       {isMenuOpen && (
-        <div 
+        <div
           className="lg:hidden fixed inset-0 bg-[#0371a3]/10 backdrop-blur-sm z-[998]"
           onClick={() => setIsMenuOpen(false)}
         />
@@ -168,7 +168,7 @@ export default function Navbar({ initialSettings }: { initialSettings?: any }) {
         <div className="flex flex-col gap-6 px-6">
           {/* Close Button at top of drawer for mobile */}
           <div className="flex justify-end">
-            <button 
+            <button
               onClick={() => setIsMenuOpen(false)}
               className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white border border-[#0371a3]/10 text-[9px] font-black uppercase tracking-widest text-slate-400 hover:text-[#0371a3] transition-colors shadow-sm"
             >
@@ -187,8 +187,8 @@ export default function Navbar({ initialSettings }: { initialSettings?: any }) {
             </div>
             <div className="grid grid-cols-1 gap-2">
               {adminLinks.map((link) => (
-                <Link 
-                  key={link.label} 
+                <Link
+                  key={link.label}
                   href={link.href}
                   onClick={() => setIsMenuOpen(false)}
                   className="flex items-center gap-4 h-12 px-4 rounded-xl border border-[#0371a3]/5 bg-white text-[11px] font-bold uppercase tracking-widest text-slate-700 hover:bg-[#E9F1FA] hover:text-[#0371a3] transition-all shadow-sm"
@@ -201,9 +201,9 @@ export default function Navbar({ initialSettings }: { initialSettings?: any }) {
               ))}
             </div>
           </div>
-          
+
           <div className="w-full h-px bg-[#E9F1FA]" />
-          
+
           <div className="flex flex-col gap-3">
             <Link
               href="/find-solution"
@@ -239,7 +239,7 @@ export default function Navbar({ initialSettings }: { initialSettings?: any }) {
           </a>
 
           {/* Explicit Unexpand Button at very bottom */}
-          <button 
+          <button
             onClick={() => setIsMenuOpen(false)}
             className="w-full py-4 text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 hover:text-[#0371a3] transition-colors border-t border-[#E9F1FA] mt-4"
           >

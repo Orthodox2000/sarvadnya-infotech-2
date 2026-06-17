@@ -256,7 +256,7 @@ export default function ContactPage() {
                         required
                         type="tel"
                         value={formData.contact}
-                        onChange={e => setFormData({...formData, contact: e.target.value})}
+                        onChange={e => setFormData({...formData, contact: e.target.value.replace(/[^0-9+]/g, '')})}
                         placeholder="+91 00000 00000"
                         className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 sm:py-3 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#00ABE4]/10 focus:border-[#00ABE4] transition-all shadow-sm"
                       />

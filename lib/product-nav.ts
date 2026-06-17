@@ -26,6 +26,7 @@ export const productItems: ProductItem[] = [
           { id: "tp-silver", label: "TallyPrime Silver", href: "/products#compare" },
           { id: "tp-gold", label: "TallyPrime Gold", href: "/products#compare" },
           { id: "tp-server", label: "TallyPrime Server", href: "/products#compare" },
+          { id: "tallydrive", label: "TallyDrive Backup", href: "/products#tallydrive" },
         ]
       },
       {

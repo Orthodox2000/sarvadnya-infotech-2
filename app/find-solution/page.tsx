@@ -649,7 +649,7 @@ BUSINESS NAME: ${formData.businessName || 'Not Provided'}
                       type="tel"
                       placeholder="e.g. +91 98765 43210"
                       value={formData.phone}
-                      onChange={e => setFormData(prev => ({ ...prev, phone: e.target.value }))}
+                      onChange={e => setFormData(prev => ({ ...prev, phone: e.target.value.replace(/[^0-9+]/g, '') }))}
                       className="w-full bg-slate-50 border border-slate-100 rounded-xl lg:rounded-2xl px-5 py-4 text-sm font-semibold focus:outline-none focus:border-[#00ABE4] focus:bg-white transition-all"
                     />
                   </div>

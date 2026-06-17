@@ -14,10 +14,6 @@ The application has undergone a significant transformation in its consultation e
 - **Scope:** Covers Core Tally Products, Cloud Solutions (AWS/NoSky), Vertical Modules (Logistics, C&F, Society), and Professional Services.
 - **Integration:** Directly injected into the AI Strategic Unit's prompt to ensure factual accuracy and product-aligned advice.
 
-### 2.3 Mic Test & Diagnostics
-- **Route:** `/mic-test`
-- **Feature:** Dedicated hardware diagnostic utility for "Ask Sara" voice features. Handles system-level permissions, browser blocks, and secure-context (HTTPS) validation.
-
 ## 3. Issues & Solutions
 | Issue | Solution |
 | :--- | :--- |

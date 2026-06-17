@@ -177,7 +177,7 @@ export default function JobApplicationModal({
                     required
                     type="tel"
                     value={formData.phone}
-                    onChange={e => setFormData({...formData, phone: e.target.value})}
+                    onChange={e => setFormData({...formData, phone: e.target.value.replace(/[^0-9+]/g, '')})}
                     placeholder="+91 00000 00000"
                     className="w-full rounded-2xl bg-[#f0f9ff]/50 border border-[#E9F1FA] px-5 py-2.5 sm:py-3 text-sm text-slate-900 placeholder:text-slate-300 focus:outline-none focus:ring-4 focus:ring-[#00ABE4]/5 focus:border-[#00ABE4] transition-all font-bold"
                   />

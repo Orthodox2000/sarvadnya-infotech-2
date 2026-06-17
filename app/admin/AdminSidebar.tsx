@@ -12,7 +12,7 @@ interface AdminSidebarProps {
 const AdminSidebar = ({ isOpen, onClose }: AdminSidebarProps) => {
   const pathname = usePathname();
   const [adminLogo, setAdminLogo] = useState<string | null>(null);
-  const [version, setVersion] = useState<string>('v1.1.251');
+  const [version, setVersion] = useState<string>('v1.1.379');
 
   useEffect(() => {
     const fetchSettings = async () => {

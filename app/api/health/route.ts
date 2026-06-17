@@ -6,7 +6,7 @@ export async function GET() {
     status: 'ok',
     mongodb: 'disconnected',
     timestamp: new Date().toISOString(),
-    version: 'v1.1.251'
+    version: 'v1.1.379'
   };
 
   try {
@@ -15,6 +15,13 @@ export async function GET() {
     const db = client.db();
     await db.command({ ping: 1 });
     status.mongodb = 'connected';
+
+    // Try to get version from settings
+    const settingsCol = db.collection('settings');
+    const versionSetting = await settingsCol.findOne({ key: 'NEXT_PUBLIC_APP_VERSION' });
+    if (versionSetting?.value) {
+      status.version = versionSetting.value;
+    }
   } catch (error) {
     console.error('MongoDB Health check failed:', error);
     status.status = 'error';

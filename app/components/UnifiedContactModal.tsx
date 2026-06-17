@@ -191,7 +191,7 @@ export default function UnifiedContactModal({
                     required
                     type="tel"
                     value={formData.contact}
-                    onChange={e => setFormData({...formData, contact: e.target.value})}
+                    onChange={e => setFormData({...formData, contact: e.target.value.replace(/[^0-9+]/g, '')})}
                     placeholder="+91 00000 00000"
                     className="w-full rounded-xl bg-white border border-slate-200 px-4 py-2 sm:py-2.5 text-sm text-slate-900 placeholder:text-slate-300 focus:outline-none focus:ring-2 focus:ring-[#0371a3]/20 focus:border-[#0371a3] transition-all shadow-sm"
                   />

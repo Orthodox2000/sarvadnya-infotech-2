@@ -4,7 +4,75 @@
 - Always mention the application version number when presenting changes or updates.
 - Versioning follows the format `v1.1.x`.
 - Increment the patch version automatically for every iteration/significant set of changes.
-- Current Version: v1.1.370
+- Current Version: v1.1.380
+
+## Recent Changes (v1.1.380)
+- **Consultation Logic Documentation (Find Solution):** Codified the entire strategic consultation flow into a comprehensive technical master document.
+    *   **Questionnaire Tree Mapping:** Documented all 4 phases of the consultation questionnaire, including branching logic, industry-specific triggers (Logistics, Manufacturing, Garments), and modernization endpoints.
+    *   **Knowledge Base Formalization:** Cataloged the complete mapping between user requirements and Sarvadnya's product/service portfolio (Core Tally, Cloud, Vertical Modules, and TDLs).
+    *   **Strategic Rule Engine:** Documented the AI analyst's internal rules for priority assignment, category distribution, and industry-specific TDL descriptive naming.
+    *   **Architecture Traceability:** Linked the logical flow to the technical implementation in `app/find-solution/page.tsx`, providing a clear path for future logic audits or expansions.
+- **Version Bump:** Updated application version to v1.1.380.
+
+## Recent Changes (v1.1.379)
+
+## Recent Changes (v1.1.378)
+- **Form Constraint Hardening:** Implemented strict numeric validation for phone number fields across all contact and application forms.
+    *   **Numeric Enforcement:** Updated `onChange` handlers to systematically strip alphabets and special characters, allowing only digits and the '+' symbol.
+    *   **String Type Safety:** Maintained phone numbers as strings in the state to ensure compatibility with international formats while enforcing strict character constraints.
+    *   **Global Coverage:** Applied these validations to the Contact Page, Unified Contact Modal, Job Application Modal, Solution Finder, and Landing Page callback forms.
+- **Version Bump:** Updated application version to v1.1.378.
+
+## Recent Changes (v1.1.377)
+- **Chat UX Smart Interaction:** Implemented sophisticated focus and scroll-lock logic for "Ask Sara".
+    *   **Intelligent Auto-Focus:** The chatbot now automatically returns focus to the text input field once an AI reply is finished, ensuring a seamless "type-read-type" loop on desktop viewports.
+    *   **Manual Scroll-Lock:** Integrated a smart scroll detection engine. If a user manually scrolls up to read previous messages while Sara is typing, the auto-scroll intelligently pauses, preventing the UI from "jumping" away from the user's focus.
+    *   **Contextual Resumption:** Auto-scroll automatically resumes when the user scrolls back to the bottom or sends a new message.
+- **Version Bump:** Updated application version to v1.1.377.
+
+## Recent Changes (v1.1.376)
+- **Chat API Stability Hardening:** Resolved intermittent "Failed to fetch" errors and improved network resilience for "Ask Sara".
+    *   **Intelligent Retry Logic:** Implemented an automatic retry mechanism (max 2 attempts) for chat requests, mitigating temporary network blips.
+    *   **Advanced Error Handling:** Added specific detection for "Failed to fetch" scenarios, providing descriptive troubleshooting guidance to users instead of generic error logs.
+    *   **Service Guard:** Integrated proactive handling for restricted service states, ensuring users receive polite fallback instructions if the AI engine is temporarily unavailable.
+- **Version Bump:** Updated application version to v1.1.376.
+
+## Recent Changes (v1.1.375)
+- **Navigation Architecture Synchronization:** Optimized the Productbar hierarchy to align with content locations.
+    *   **TallyDrive Relocation:** Moved 'TallyDrive Backup' from the Cloud Solutions menu to the TallyPrime Editions menu, ensuring users find details grouped with related licensing options (Silver/Gold/Server).
+    *   **Enhanced Discoverability:** Synchronized the link to target the specific `#tallydrive` section on the products page for immediate access to feature tiers and storage details.
+- **Version Bump:** Updated application version to v1.1.375.
+
+## Recent Changes (v1.1.374)
+- **AI Voice Engine Restoration:** Re-implemented the Text-to-Speech (TTS) system for "Ask Sara" with improved persistence logic.
+    *   **Persistent Audio Modes:** Implemented a session-sticky audio mode. Once a user selects "Summary" or "Full", subsequent AI replies automatically vocalize in that mode until manually deselected.
+    *   **Clean TTS Output:** Restored the voice-cleaning engine that strips markdown markers and navigation syntax for natural speech delivery.
+    *   **User Control:** Maintained the global mute toggle in the chat header and the interactive mode buttons below each AI message.
+    *   **Microphone-Free Architecture:** Kept the user voice input (STT) disabled as per current requirements, focusing exclusively on AI-to-user vocalization.
+- **Version Bump:** Updated application version to v1.1.374.
+
+## Recent Changes (v1.1.373)
+- **UI Refinement & Chat Optimization:** Polished the TallyDrive presentation and resolved chat interaction issues.
+    *   **Professional TallyDrive Showcase:** Removed emojis from the feature grid, replacing them with professional medical-blue SVG icons.
+    *   **Tiered Card Overhaul:** Re-designed the "TallyDrive Tiers" card with a high-contrast white foundation, refined slate typography, and consistent brand-blue accents.
+    *   **Dynamic Chat Scrolling:** Implemented a robust auto-scroll mechanism in "Ask Sara" that tracks the typing animation in real-time, ensuring new content is always visible.
+- **Version Bump:** Updated application version to v1.1.373.
+
+## Recent Changes (v1.1.372)
+- **Voice Feature Removal:** Streamlined the "Ask Sara" AI Assistant by removing all microphone and voice-related functionality.
+    *   **UI Simplification:** Removed the microphone button, mute/unmute toggles, and audio playback controls from the chat interface.
+    *   **Cleanup:** Deleted the `/mic-test` diagnostic route and the `/api/chat/transcribe` transcription API.
+    *   **Codebase Hardening:** Removed all voice-related states (STT/TTS), refs, and logic from `QuickSupportModal.tsx`.
+    *   **Dependency Optimization:** Uninstalled `recorder-js`, `@types/recorder-js`, and `mic-check` libraries to reduce bundle size.
+- **Version Bump:** Updated application version to v1.1.372.
+
+## Recent Changes (v1.1.371)
+- **TallyDrive Integration & Showcase:** Enhanced the Products ecosystem with a comprehensive TallyDrive cloud backup integration.
+    *   **Products Page Expansion:** Added a dedicated 'TallyDrive v7.0' section to the Products page, showcasing key features like automated scheduling, AES-256 encryption, and ransomware protection.
+    *   **Tiered Pricing Implementation:** Defined and displayed TallyDrive tiers (Basic, Pro, Enterprise) integrated directly into TallyPrime Silver, Gold, and Server editions.
+    *   **Global Navigation Sync:** Integrated TallyDrive into the global Productbar navigation and the AI-readable Sitemap.
+    *   **AI Knowledge Upgrade:** Updated the 'Ask Sara' assistant with deep context on TallyDrive capabilities and edition-specific inclusions.
+- **Version Bump:** Updated application version to v1.1.371.
 
 ## Recent Changes (v1.1.370)
 - **Automated Visual Snapshot System:** Implemented a high-fidelity visual capture engine for quality assurance and design review.
