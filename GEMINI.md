@@ -4,7 +4,20 @@
 - Always mention the application version number when presenting changes or updates.
 - Versioning follows the format `v1.1.x`.
 - Increment the patch version automatically for every iteration/significant set of changes.
-- Current Version: v1.1.386
+- Current Version: v1.1.388
+
+## Recent Changes (v1.1.388)
+- **Vercel Performance Integration:** Enabled Vercel Speed Insights and Analytics to monitor site performance and user engagement.
+    *   **Package Integration:** Installed `@vercel/analytics` and `@vercel/speed-insights` dependencies.
+    *   **Global Layout Sync:** Integrated `<Analytics />` and `<SpeedInsights />` components into the `RootLayout` (`app/layout.tsx`) for comprehensive site-wide tracking.
+- **Version Bump:** Updated application version to v1.1.388.
+
+## Recent Changes (v1.1.387)
+- **Consultation Engine Mobile UI Optimization:** Enhanced the consultation results and lead capture flow for mobile users.
+    *   **Button Visibility:** Improved "Back" button contrast and theme synchronization in the solution finder.
+    *   **Modal UX:** Increased padding in the lead capture modal to resolve overlap between the close button and form content on mobile viewports.
+    *   **Vertical Spacing:** Optimized vertical gaps in the action sidebar to ensure primary CTAs remain within the viewport on small screens.
+- **Version Bump:** Updated application version to v1.1.387.
 
 ## Recent Changes (v1.1.386)
 - **AI Strategic Insight Integration:** Enhanced the Solution Finder (/find-solution) with dynamic, AI-generated strategic advisory summaries.

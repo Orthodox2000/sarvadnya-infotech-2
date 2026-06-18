@@ -10,6 +10,8 @@ import { palettes } from "@/lib/palettes";
 import "./globals.css";
 import { Geist } from "next/font/google";
 import { cn } from "@/lib/utils";
+import { Analytics } from "@vercel/analytics/next"
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
@@ -121,6 +123,8 @@ export default async function RootLayout({
         {children}
         <SupportButton initialSettings={settings} />
         <NotificationToast />
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
