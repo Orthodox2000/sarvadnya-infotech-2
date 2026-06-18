@@ -1,162 +1,300 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
+
+// --- CONFIGURATION ---
 
 interface Option {
   label: string;
   value: string;
   icon?: string;
-  nextId?: string; // Branching logic
+  scores?: Record<string, number>;
+  nextId?: string;
 }
 
 interface Question {
   id: string;
+  phase: string;
   title: string;
   subtitle: string;
   options: Option[];
 }
 
-const QUESTIONS_TREE: Record<string, Question> = {
-  'business_status': {
-    id: 'business_status',
-    title: 'Business Status',
-    subtitle: 'Where are you in your Tally journey?',
+const QUESTIONS: Question[] = [
+  // PHASE 1: BUSINESS PROFILE
+  {
+    id: 'business_type',
+    phase: 'Business Profile',
+    title: 'What best describes your business?',
+    subtitle: 'This helps us understand your organizational complexity.',
     options: [
-      { label: 'Starting New Business', value: 'New Business', icon: 'M12 4v16m8-8H4', nextId: 'industry' },
-      { label: 'Existing Tally User', value: 'Existing User', icon: 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z', nextId: 'tss_status' },
-      { label: 'Using Other Software', value: 'Migration', icon: 'M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4', nextId: 'industry' }
+      { label: 'New Business', value: 'New', icon: 'M12 4v16m8-8H4', scores: { tallySilver: 20, growth: 10 } },
+      { label: 'Existing Business', value: 'Existing', icon: 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z', scores: { amc: 10, tallyGold: 10 } },
+      { label: 'Growing Business', value: 'Growing', icon: 'M13 7h8m0 0v8m0-8l-8 8-4-4-6 6', scores: { tallyGold: 20, cloud: 10, growth: 20 } },
+      { label: 'Multi-Branch Business', value: 'Multi-Branch', icon: 'M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9', scores: { cloud: 30, tallyGold: 20 } },
+      { label: 'Enterprise Business', value: 'Enterprise', icon: 'M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4', scores: { tallyServer: 30, amc: 20 } }
     ]
   },
-  'tss_status': {
-    id: 'tss_status',
-    title: 'TSS Maintenance',
-    subtitle: 'Is your Tally Software Services (TSS) currently active?',
-    options: [
-      { label: 'Yes, Active', value: 'Active', icon: 'M5 13l4 4L19 7', nextId: 'industry' },
-      { label: 'No, Expired', value: 'Expired', icon: 'M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z', nextId: 'industry' },
-      { label: 'I am not sure', value: 'Unknown', icon: 'M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z', nextId: 'industry' }
-    ]
-  },
-  'industry': {
+  {
     id: 'industry',
-    title: 'Industry Vertical',
-    subtitle: 'Select your primary business sector for specialized logic.',
+    phase: 'Business Profile',
+    title: 'Which industry best matches your operations?',
+    subtitle: 'Industry-specific tools can solve 80% of manual overhead.',
     options: [
-      { label: 'Logistics & Transport', value: 'Logistics', icon: 'M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8h4l3 3v5a1 1 0 01-1 1h-1m-6 0h-2', nextId: 'logistics_focus' },
-      { label: 'Manufacturing / ERP', value: 'Manufacturing', icon: 'M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4', nextId: 'manufacturing_focus' },
-      { label: 'Garment / Fashion', value: 'Garments', icon: 'M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z', nextId: 'garment_focus' },
-      { label: 'Retail / Trading', value: 'Retail', icon: 'M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z', nextId: 'user_scale' },
-      { label: 'C&F Agency', value: 'CF Agency', icon: 'M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4', nextId: 'user_scale' }
+      { label: 'Trading & Distribution', value: 'Trading', icon: 'M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z', scores: { whatsapp: 10, mobile: 10 } },
+      { label: 'Manufacturing', value: 'Manufacturing', icon: 'M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4', scores: { industryModule: 30, manufacturing: 30, automation: 20 } },
+      { label: 'Logistics & Transport', value: 'Logistics', icon: 'M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8h4l3 3v5a1 1 0 01-1 1h-1m-6 0h-2', scores: { industryModule: 30, logistics: 30, mobile: 20 } },
+      { label: 'Garments & Fashion', value: 'Garments', icon: 'M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z', scores: { industryModule: 30, garments: 30, automation: 10 } },
+      { label: 'Services & Others', value: 'Services', icon: 'M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4', scores: { training: 10, amc: 10 } }
     ]
   },
-  'logistics_focus': {
-    id: 'logistics_focus',
-    title: 'Fleet Operations',
-    subtitle: 'Identify your primary operational focus.',
+  {
+    id: 'users',
+    phase: 'Business Profile',
+    title: 'How many people need access to your system?',
+    subtitle: 'Concurrency requirements determine the ideal Tally edition.',
     options: [
-      { label: 'Own Fleet Mgt', value: 'Own Fleet', icon: 'M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8h4l3 3v5a1 1 0 01-1 1h-1m-6 0h-2', nextId: 'user_scale' },
-      { label: 'Brokerage / Booking', value: 'Brokerage', icon: 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2', nextId: 'user_scale' }
+      { label: '1 User', value: '1', icon: 'M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z', scores: { tallySilver: 50, efficiency: 10 } },
+      { label: '2-5 Users', value: '2-5', icon: 'M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857', scores: { tallyGold: 50, efficiency: 20 } },
+      { label: '6-15 Users', value: '6-15', icon: 'M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857', scores: { tallyGold: 60, cloud: 10, efficiency: 30 } },
+      { label: '15-50 Users', value: '15-50', icon: 'M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4', scores: { tallyGold: 30, tallyServer: 40, cloud: 20, automation: 20, risk: 20 } },
+      { label: '50+ Users', value: '50+', icon: 'M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4', scores: { tallyServer: 70, cloud: 30, automation: 30, risk: 30 } }
     ]
   },
-  'manufacturing_focus': {
-    id: 'manufacturing_focus',
-    title: 'Production Detail',
-    subtitle: 'What level of material tracking do you require?',
+
+  // PHASE 2: CURRENT SYSTEM ANALYSIS
+  {
+    id: 'current_setup',
+    phase: 'System Analysis',
+    title: 'How are you currently managing accounts?',
+    subtitle: 'Transition paths vary based on your legacy foundation.',
     options: [
-      { label: 'Strict Wastage Tracking', value: 'Wastage Mgt', icon: 'M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10', nextId: 'user_scale' },
-      { label: 'Basic BOM / Finished Goods', value: 'Standard Production', icon: 'M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4', nextId: 'user_scale' }
+      { label: 'TallyPrime', value: 'TallyPrime', icon: 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z', nextId: 'tss', scores: { efficiency: 40, growth: 20 } },
+      { label: 'Other Software', value: 'Other', icon: 'M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4', scores: { training: 20, growth: 10, efficiency: -20 } },
+      { label: 'Excel & Manual Work', value: 'Manual', icon: 'M9 17v-2m3 2v-4m3 2v6M21 12a9 9 0 11-18 0 9 9 0 0118 0z', scores: { tdl: 20, automation: 50, training: 10, risk: 40, efficiency: -40, growth: -20 } },
+      { label: 'Multiple Systems', value: 'Multiple', icon: 'M4 6h16M4 10h16M4 14h16M4 18h16', scores: { automation: 40, cloud: 10, risk: 20, efficiency: -30, growth: -10 } },
+      { label: 'Starting Fresh', value: 'Fresh', icon: 'M12 4v16m8-8H4', scores: { training: 20, growth: 20, efficiency: -10 } }
     ]
   },
-  'garment_focus': {
-    id: 'garment_focus',
-    title: 'Inventory Logic',
-    subtitle: 'Do you need to track stock by Size and Color?',
+  {
+    id: 'tss',
+    phase: 'System Analysis',
+    title: 'What is your TSS status?',
+    subtitle: 'Tally Software Services (TSS) unlocks cloud and mobile features.',
     options: [
-      { label: 'Multi-Dimension (Size/Color)', value: 'Matrix Inventory', icon: 'M4 6h16M4 10h16M4 14h16M4 18h16', nextId: 'user_scale' },
-      { label: 'Standard SKU Tracking', value: 'Simple SKU', icon: 'M7 7h10M7 12h10M7 17h10', nextId: 'user_scale' }
+      { label: 'Active', value: 'Active', icon: 'M5 13l4 4L19 7', scores: { efficiency: 20 } },
+      { label: 'Expired', value: 'Expired', icon: 'M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z', scores: { tss: 40, risk: 20, efficiency: -10 } },
+      { label: 'Not Sure', value: 'Unknown', icon: 'M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z', scores: { tss: 20, risk: 10, efficiency: -5 } }
     ]
   },
-  'user_scale': {
-    id: 'user_scale',
-    title: 'User Capacity',
-    subtitle: 'How many people will use Tally simultaneously?',
+  {
+    id: 'data_location',
+    phase: 'System Analysis',
+    title: 'Where is your business data stored?',
+    subtitle: 'Data location significantly impacts security and accessibility.',
     options: [
-      { label: 'Single User', value: '1 User', icon: 'M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z', nextId: 'employee_count' },
-      { label: 'Small Team (2-5)', value: 'Multi-User (2-5)', icon: 'M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z', nextId: 'employee_count' },
-      { label: 'Large Dept (6-15)', value: 'Multi-User (6-15)', icon: 'M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z', nextId: 'employee_count' },
-      { label: 'Enterprise (15+)', value: 'Tally Server', icon: 'M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4', nextId: 'employee_count' }
+      { label: 'Single Computer', value: 'Local', icon: 'M9.75 17L9 21h6l-.75-4M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z', scores: { cloud: 20, backup: 20, risk: 30 } },
+      { label: 'Office Server', value: 'Server', icon: 'M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4', scores: { backup: 30, cloud: 10, risk: 20 } },
+      { label: 'Multiple Locations', value: 'Branches', icon: 'M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9', scores: { cloud: 50, efficiency: -10 } },
+      { label: 'Cloud', value: 'Cloud', icon: 'M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z', scores: { efficiency: 30, growth: 20 } },
+      { label: 'Not Sure', value: 'Unknown', icon: 'M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z', scores: { risk: 40, backup: 20 } }
     ]
   },
-  'employee_count': {
-    id: 'employee_count',
-    title: 'Organization Strength',
-    subtitle: 'Total employee count including all departments.',
+
+  // PHASE 3: BUSINESS CHALLENGES
+  {
+    id: 'challenge',
+    phase: 'Business Challenges',
+    title: 'What is your biggest challenge today?',
+    subtitle: 'Every friction point is an opportunity for automation.',
     options: [
-      { label: '< 20 Employees', value: 'Small', icon: 'M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0', nextId: 'infrastructure' },
-      { label: '20 - 100 Employees', value: 'Medium', icon: 'M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16', nextId: 'infrastructure' },
-      { label: '100+ Employees', value: 'Large', icon: 'M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4', nextId: 'infrastructure' }
+      { label: 'Too Much Manual Work', value: 'Manual', icon: 'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z', scores: { automation: 40, tdl: 30 } },
+      { label: 'Inventory Management', value: 'Inventory', icon: 'M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4', scores: { industryModule: 20, automation: 20 } },
+      { label: 'Reporting & Visibility', value: 'Visibility', icon: 'M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z', scores: { mobile: 30, training: 10 } },
+      { label: 'Multi-Branch Operations', value: 'Branches', icon: 'M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064', scores: { cloud: 40, efficiency: -20 } },
+      { label: 'Data Security & Backup', value: 'Security', icon: 'M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04', scores: { backup: 50, cloud: 10, risk: 50 } }
     ]
   },
-  'infrastructure': {
-    id: 'infrastructure',
-    title: 'Work Model',
-    subtitle: 'How does your team need to access data?',
+  {
+    id: 'excel_dependency',
+    phase: 'Business Challenges',
+    title: 'How often do you rely on Excel?',
+    subtitle: 'Frequent manual entry into Excel indicates a need for TDL automation.',
     options: [
-      { label: 'Local Office Only', value: 'On-Premise', icon: 'M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16', nextId: 'modernization' },
-      { label: 'Hybrid (Remote Work)', value: 'Hybrid Cloud', icon: 'M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z', nextId: 'modernization' },
-      { label: 'Multi-Branch Sync', value: 'Multi-Location Cloud', icon: 'M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9', nextId: 'modernization' }
+      { label: 'Daily', value: 'Daily', icon: 'M9 17v-2m3 2v-4m3 2v6M21 12a9 9 0 11-18 0 9 9 0 0118 0z', scores: { automation: 50, tdl: 40, efficiency: -30 } },
+      { label: 'Frequently', value: 'Frequent', icon: 'M9 17v-2m3 2v-4m3 2v6M21 12a9 9 0 11-18 0 9 9 0 0118 0z', scores: { automation: 30, tdl: 20, efficiency: -10 } },
+      { label: 'Sometimes', value: 'Sometimes', icon: 'M9 17v-2m3 2v-4m3 2v6', scores: { automation: 10 } },
+      { label: 'Rarely', value: 'Rarely', icon: 'M5 13l4 4L19 7', scores: { efficiency: 20 } },
+      { label: 'Never', value: 'Never', icon: 'M5 13l4 4L19 7', scores: { efficiency: 40 } }
     ]
   },
-  'modernization': {
-    id: 'modernization',
-    title: 'Growth Priority',
-    subtitle: 'Which upgrade will impact your business most?',
+
+  // PHASE 4: GROWTH & AUTOMATION
+  {
+    id: 'growth_focus',
+    phase: 'Growth & Automation',
+    title: 'What would help your business grow faster?',
+    subtitle: 'Strategic digital tools can accelerate operational velocity.',
     options: [
-      { label: 'WhatsApp Automation', value: 'WhatsApp', icon: 'M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20', nextId: 'timeline' },
-      { label: 'Mobile Business Dashboard', value: 'Mobile App', icon: 'M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z', nextId: 'timeline' },
-      { label: 'Excel Data Automation', value: 'Excel Tool', icon: 'M9 17v-2m3 2v-4m3 2v6M21 12a9 9 0 11-18 0 9 9 0 0118 0z', nextId: 'timeline' },
-      { label: 'Data Security & Backup', value: 'Backup', icon: 'M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04', nextId: 'timeline' }
+      { label: 'Mobile Access', value: 'Mobile', icon: 'M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z', scores: { mobile: 50, growth: 30 } },
+      { label: 'WhatsApp Automation', value: 'WhatsApp', icon: 'M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20', scores: { whatsapp: 50, automation: 20, growth: 30 } },
+      { label: 'Process Automation', value: 'Automation', icon: 'M13 10V3L4 14h7v7l9-11h-7z', scores: { tdl: 50, automation: 40, growth: 20 } },
+      { label: 'Better Reports', value: 'Reporting', icon: 'M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z', scores: { mobile: 20, training: 20, efficiency: 20 } },
+      { label: 'Secure Remote Access', value: 'Remote', icon: 'M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z', scores: { cloud: 50, growth: 20, risk: -10 } }
     ]
   },
-  'timeline': {
+  {
+    id: 'industry_module',
+    phase: 'Growth & Automation',
+    title: 'Do you require industry specific functionality?',
+    subtitle: 'Vertical specialization eliminates the need for external trackers.',
+    options: [
+      { label: 'Logistics', value: 'Logistics', icon: 'M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8h4l3 3v5a1 1 0 01-1 1h-1m-6 0h-2', scores: { industryModule: 50, logistics: 50 } },
+      { label: 'Manufacturing', value: 'Manufacturing', icon: 'M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4', scores: { industryModule: 50, manufacturing: 50 } },
+      { label: 'Garments', value: 'Garments', icon: 'M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z', scores: { industryModule: 50, garments: 50 } },
+      { label: 'C&F Agency', value: 'CF', icon: 'M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4', scores: { industryModule: 50, cf: 50 } },
+      { label: 'Not Required', value: 'None', icon: 'M5 13l4 4L19 7', scores: { efficiency: 10 } }
+    ]
+  },
+
+  // PHASE 5: IMPLEMENTATION READINESS
+  {
     id: 'timeline',
-    title: 'Modernization Timeline',
-    subtitle: 'When do you wish to initiate these upgrades?',
+    phase: 'Implementation Readiness',
+    title: 'When are you planning improvements?',
+    subtitle: 'Identifying your window for transition ensures resource availability.',
     options: [
-      { label: 'Immediate (This Week)', value: 'ASAP', icon: 'M13 10V3L4 14h7v7l9-11h-7z' },
-      { label: 'Planning (This Month)', value: 'Evaluation', icon: 'M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z' }
+      { label: 'Immediately', value: 'ASAP', icon: 'M13 10V3L4 14h7v7l9-11h-7z', scores: { lead: 30 } },
+      { label: 'Within 30 Days', value: '30 Days', icon: 'M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z', scores: { lead: 20 } },
+      { label: 'Within 3 Months', value: '3 Months', icon: 'M8 7V3m8 4V3m-9 8h10', scores: { lead: 10 } },
+      { label: 'Exploring Options', value: 'Exploring', icon: 'M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z', scores: { lead: 0 } }
+    ]
+  },
+  {
+    id: 'support_level',
+    phase: 'Implementation Readiness',
+    title: 'What type of support do you expect?',
+    subtitle: 'Service levels define our ongoing commitment to your success.',
+    options: [
+      { label: 'Basic Support', value: 'Basic', icon: 'M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z', scores: { efficiency: 10 } },
+      { label: 'Priority Support', value: 'Priority', icon: 'M5 13l4 4L19 7', scores: { amc: 50 } },
+      { label: 'Dedicated Assistance', value: 'Dedicated', icon: 'M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z', scores: { amc: 70, training: 20 } },
+      { label: 'Staff Training', value: 'Training', icon: 'M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253', scores: { training: 50 } },
+      { label: 'Fully Managed Service', value: 'Managed', icon: 'M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04', scores: { amc: 80, cloud: 30, tss: 20 } }
     ]
   }
+];
+
+const RECOMMENDATION_MAP: Record<string, { label: string, category: string }> = {
+  tallySilver: { label: 'TallyPrime Silver', category: 'CORE SOFTWARE' },
+  tallyGold: { label: 'TallyPrime Gold', category: 'CORE SOFTWARE' },
+  tallyServer: { label: 'TallyPrime Server', category: 'CORE SOFTWARE' },
+  tss: { label: 'TSS Renewal', category: 'SERVICES' },
+  cloud: { label: 'AWS Cloud for Tally', category: 'CLOUD' },
+  backup: { label: 'TallyDrive Backup', category: 'SECURITY' },
+  amc: { label: 'Priority AMC Support', category: 'SERVICES' },
+  tdl: { label: 'Process Automation (TDL)', category: 'AUTOMATION' },
+  mobile: { label: 'BizAnalyst Mobile App', category: 'MOBILE' },
+  whatsapp: { label: 'Tally on WhatsApp', category: 'AUTOMATION' },
+  training: { label: 'Corporate Staff Training', category: 'SERVICES' },
+  industryModule: { label: 'Industry Vertical Module', category: 'SPECIALIZATION' }
 };
 
+// --- MAIN COMPONENT ---
+
 export default function FindSolutionPage() {
-  const [history, setHistory] = useState<string[]>(['business_status']);
+  const [history, setHistory] = useState<string[]>(['business_type']);
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [isFinished, setIsFinished] = useState(false);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const [aiResponse, setAiResponse] = useState<string | null>(null);
   const [isEntering, setIsEntering] = useState(false);
 
+  const [showLeadModal, setShowLeadModal] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [showLeadModal, setShowLeadModal] = useState(false);
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    businessName: ''
-  });
+  const [formData, setFormData] = useState({ name: '', email: '', phone: '', company: '' });
+
+  const [aiInsight, setAiInsight] = useState<string>('');
+  const [isLoadingInsight, setIsLoadingInsight] = useState(false);
 
   const currentId = history[history.length - 1];
-  const currentQuestion = QUESTIONS_TREE[currentId];
+  const currentQuestion = QUESTIONS.find(q => q.id === currentId);
+
+  // --- SCORING ENGINE ---
+
+  const scores = useMemo(() => {
+    const s = {
+      tallySilver: 0, tallyGold: 0, tallyServer: 0, tss: 0, cloud: 0, backup: 0,
+      amc: 0, tdl: 0, mobile: 0, whatsapp: 0, training: 0, industryModule: 0,
+      efficiency: 50, growth: 30, automation: 20, risk: 10, lead: 0
+    };
+
+    Object.entries(answers).forEach(([qId, val]) => {
+      const q = QUESTIONS.find(q => q.id === qId);
+      const opt = q?.options.find(o => o.value === val);
+      if (opt?.scores) {
+        Object.entries(opt.scores).forEach(([key, points]) => {
+          if (key in s) (s as any)[key] += points;
+        });
+      }
+    });
+
+    return s;
+  }, [answers]);
+
+  const topRecommendations = useMemo(() => {
+    const items = Object.entries(RECOMMENDATION_MAP).map(([key, info]) => ({
+      key,
+      ...info,
+      score: (scores as any)[key]
+    }));
+    return items.sort((a, b) => b.score - a.score).slice(0, 3);
+  }, [scores]);
+
+  const businessScores = useMemo(() => {
+    const normalize = (val: number) => Math.min(Math.max(val, 0), 100);
+    return {
+      efficiency: normalize(scores.efficiency),
+      growth: normalize(scores.growth),
+      automation: scores.automation > 60 ? 'High' : scores.automation > 30 ? 'Medium' : 'Low',
+      risk: scores.risk > 60 ? 'High' : scores.risk > 30 ? 'Medium' : 'Low'
+    };
+  }, [scores]);
+
+  // --- AI STRATEGIC INSIGHT ---
+
+  useEffect(() => {
+    if (isFinished && !aiInsight && !isLoadingInsight) {
+      const fetchInsight = async () => {
+        setIsLoadingInsight(true);
+        try {
+          const response = await fetch('/api/ai/strategic-insight', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              answers,
+              scores: businessScores,
+              recommendations: topRecommendations
+            })
+          });
+          const data = await response.json();
+          if (data.insight) setAiInsight(data.insight);
+        } catch (err) {
+          console.error('Failed to fetch AI insight:', err);
+        } finally {
+          setIsLoadingInsight(false);
+        }
+      };
+      fetchInsight();
+    }
+  }, [isFinished, answers, businessScores, topRecommendations, aiInsight, isLoadingInsight]);
+
+  // --- ACTIONS ---
 
   useEffect(() => {
     setIsEntering(true);
-    if (typeof window !== 'undefined') {
-      window.scrollTo(0, 0);
-      document.body.scrollTo(0, 0);
-    }
+    if (typeof window !== 'undefined') window.scrollTo(0, 0);
     const timer = setTimeout(() => setIsEntering(false), 500);
     return () => clearTimeout(timer);
   }, [currentId, isFinished]);
@@ -169,520 +307,336 @@ export default function FindSolutionPage() {
     const selectedValue = answers[currentId];
     if (!selectedValue) return;
 
-    const selectedOption = currentQuestion.options.find(o => o.value === selectedValue);
-    if (selectedOption?.nextId) {
-      setHistory(prev => [...prev, selectedOption.nextId!]);
+    const opt = currentQuestion?.options.find(o => o.value === selectedValue);
+    if (opt?.nextId) {
+      setHistory(prev => [...prev, opt.nextId!]);
+      return;
+    }
+
+    const currentIndex = QUESTIONS.findIndex(q => q.id === currentId);
+    if (currentIndex < QUESTIONS.length - 1) {
+      // Logic for conditional phases could go here
+      const nextQ = QUESTIONS[currentIndex + 1];
+      
+      // Skip logic: if current setup is not TallyPrime, skip TSS question
+      if (nextQ.id === 'tss' && answers['current_setup'] !== 'TallyPrime') {
+        setHistory(prev => [...prev, QUESTIONS[currentIndex + 2].id]);
+      } else {
+        setHistory(prev => [...prev, nextQ.id]);
+      }
     } else {
-      setIsFinished(true);
-      generateAIAdvice({ ...answers, [currentId]: selectedValue });
+      setIsAnalyzing(true);
+      setTimeout(() => {
+        setIsFinished(true);
+        setIsAnalyzing(false);
+      }, 2000);
     }
   };
 
   const back = () => {
-    if (history.length > 1) {
-      setHistory(prev => prev.slice(0, -1));
-    }
+    if (history.length > 1) setHistory(prev => prev.slice(0, -1));
   };
 
-  const generateAIAdvice = async (finalAnswers: any) => {
-    setIsAnalyzing(true);
-    try {
-      const summaryParts = Object.entries(finalAnswers).map(([key, val]) => `${key}: ${val}`);
-      const summary = summaryParts.join(', ');
-
-      const knowledgeMap = `
-      SARVADNYA INFOTECH OFFERINGS MAP:
-      - CORE PRODUCTS: TallyPrime Silver (Single User), TallyPrime Gold (Multi-User), TallyPrime Server (Enterprise/50+ Users).
-      - CLOUD SOLUTIONS: AWS Cloud for Tally (Official Partnership), Windows Dedicated VM (Full Desktop), NoSky Backup (Automated Encrypted Cloud).
-      - VERTICAL MODULES: Logistics & Transport (Fleet/Trip Sheets), C&F Agencies (Container Tracking), Housing Societies (Maintenance Billing), Garment Module (Size/Color/Fabric Matrix).
-      - UTILITY MODULES: Excel to Tally Import, Sales & Commission Automation.
-      - SERVICES: Tally AMC (Priority Annual Support), TDL Customization (Bespoke Feature Development), Corporate Training, Tally on Mobile (Real-time Reporting), Tally to WhatsApp (Direct Document Sharing).
-      `;
-
-      const prompt = `Act as the Senior Strategic Unit for Sarvadnya Infotech LLP. 
-      Analyze this comprehensive user profile: "${summary}". 
-
-      OUR KNOWLEDGE BASE:
-      ${knowledgeMap}
-
-      Provide an exhaustive, prioritized strategic roadmap tailored EXCLUSIVELY to their needs. 
-      Recommend multiple integrated solutions per category from our OFFERINGS MAP to provide a complete digital ecosystem.
-
-      PRECISION RULE:
-      If recommending "TDL Customization" or "AUTOMATION (TDL)", you MUST specify a descriptive, industry-specific name for the customization (e.g., "Brokerage Commission Reconciliation TDL" or "Fleet Performance Dashboard TDL") based on their industry (${finalAnswers.industry}) and modernization goals.
-
-      STRICT FORMAT RULES:
-      1. Start with exactly "TABLE_START"
-      2. Provide 6-10 rows using "|" separator. 
-         Format: [CATEGORY] | [PRIORITY (CRITICAL/HIGH/STRATEGIC)] | [Product Recommendations] | [Reasoning based on answers like "${finalAnswers.industry}" and "${finalAnswers.modernization}"]
-      3. Categories: CORE SOFTWARE, CLOUD, SECURITY, AUTOMATION (TDL), MOBILE, COMPLIANCE, TRAINING.
-      4. End with exactly "TABLE_END"
-      5. Conclude with "SUMMARY: [A deep, 3-4 sentence strategic assessment. Start with 'Based on our assessment of your ${finalAnswers.industry} operations, we recommend...']"
-
-      Use collective language: "We recommend", "Our Unit suggests".`;
-
-      const res = await fetch('/api/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: [{ role: 'user', content: prompt }] })
-      });
-
-      const data = await res.json();
-      const rawText = data.message || data.content;
-      // Clean ALL markdown markers (v1.1.357)
-      const aiText = rawText ? rawText.replace(/\*/g, '') : null;
-      setAiResponse(aiText || "Analysis complete.");
-
-      if (typeof window !== 'undefined' && aiText) {
-        sessionStorage.setItem('last_consultation', JSON.stringify({
-          answers: finalAnswers,
-          advice: aiText
-        }));
-      }
-    } catch (err) {
-      setAiResponse("TABLE_START\nCORE SOFTWARE | CRITICAL | TallyPrime Gold | High priority for your multi-user requirements.\nCLOUD | HIGH | AWS Cloud | Required for your branch synchronization focus.\nAUTOMATION | STRATEGIC | WhatsApp TDL | Enhances customer engagement.\nTABLE_END\nSUMMARY: Based on our assessment, we recommend prioritizing your license upgrade to Gold to support your team scale.");
-    } finally {
-      setIsAnalyzing(false);
-    }
+  const restart = () => {
+    setHistory(['business_type']);
+    setAnswers({});
+    setIsFinished(false);
+    setIsSubmitted(false);
+    setShowLeadModal(false);
+    setAiInsight('');
   };
-
-  const parseReportData = (text: string | null) => {
-    if (!text) return { table: [], summary: '' };
-
-    const tableRows: Array<{ type: string, priority: string, product: string, reason: string }> = [];
-    let summary = '';
-
-    const lines = text.split('\n');
-    let inTable = false;
-
-    lines.forEach(line => {
-      const cleanLine = line.trim();
-      if (cleanLine.includes('TABLE_START')) { inTable = true; return; }
-      if (cleanLine.includes('TABLE_END')) { inTable = false; return; }
-
-      if (inTable && cleanLine.includes('|')) {
-        const parts = cleanLine.split('|').map(p => p.trim());
-        if (parts.length >= 4) {
-          tableRows.push({ type: parts[0], priority: parts[1], product: parts[2], reason: parts[3] });
-        } else if (parts.length === 3) {
-          tableRows.push({ type: parts[0], priority: 'HIGH', product: parts[1], reason: parts[2] });
-        }
-      }
-
-      if (cleanLine.startsWith('SUMMARY:')) {
-        summary = cleanLine.replace('SUMMARY:', '').trim();
-      }
-    });
-
-    if (tableRows.length === 0 && text) {
-      summary = text.replace(/TABLE_START|TABLE_END|CORE SOFTWARE|CLOUD|SECURITY|AUTOMATION|MOBILE|COMPLIANCE|TRAINING/g, '').trim();
-    }
-
-    return { table: tableRows, summary };
-  };
-
-  const reportData = parseReportData(aiResponse);
 
   const handleSubmitLead = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.name || !formData.email || !formData.phone) return;
-
     setIsSubmitting(true);
     try {
-      const consultationSummary = `
-CONSULTATION RESULTS:
---------------------
-${Object.entries(answers).map(([k, v]) => `${k}: ${v}`).join('\n')}
+      const summary = `
+  BUSINESS CONSULTATION V2 REPORT:
+  -------------------------------
+  EFFICIENCY: ${businessScores.efficiency}%
+  GROWTH READINESS: ${businessScores.growth}%
+  AUTOMATION POTENTIAL: ${businessScores.automation}
+  RISK LEVEL: ${businessScores.risk}
 
-AI ADVICE:
----------
-${aiResponse}
+  TOP RECOMMENDATIONS:
+  1. ${topRecommendations[0]?.label}
+  2. ${topRecommendations[1]?.label}
+  3. ${topRecommendations[2]?.label}
 
-BUSINESS NAME: ${formData.businessName || 'Not Provided'}
+  STRATEGIC AI INSIGHT:
+  ${aiInsight || 'Processing...'}
+
+  USER ANSWERS:
+  ${Object.entries(answers).map(([k, v]) => `${k}: ${v}`).join('\n')}
       `;
 
-      const res = await fetch('/api/contact', {
+      await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           name: formData.name,
           email: formData.email,
           contact: formData.phone,
-          service: 'Strategic Consultation',
+          service: 'V2 Strategic Consultation',
           formType: 'demo',
-          description: consultationSummary
+          description: summary
         })
       });
-
-      if (res.ok) {
-        setIsSubmitted(true);
-      }
-    } catch (error) {
-      console.error('Submission error:', error);
+      setIsSubmitted(true);
+    } catch (err) {
+      console.error(err);
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  const restart = () => {
-    setHistory(['business_status']);
-    setAnswers({});
-    setIsFinished(false);
-    setAiResponse(null);
-    setIsSubmitted(false);
-    setShowLeadModal(false);
-    setFormData({ name: '', email: '', phone: '', businessName: '' });
-  };
+  if (!currentQuestion && !isFinished) return null;
 
   return (
-    <div className="min-h-0 bg-white flex flex-col items-center justify-start p-0 font-sans overflow-hidden">
-      {/* Radiant Atmosphere */}
+    <div className="min-h-screen bg-white flex flex-col font-sans overflow-hidden">
+      {/* Radiant Atmosphere (Radiant Sky Theme) */}
       <div className="fixed inset-0 pointer-events-none opacity-40">
         <div className="absolute top-0 left-0 w-[50%] h-[50%] bg-[#f0f9ff] rounded-full blur-[140px]" />
         <div className="absolute bottom-0 right-0 w-[50%] h-[50%] bg-[#e0f2fe] rounded-full blur-[140px]" />
       </div>
 
-      <div className={`w-full flex flex-col lg:flex-row flex-1 transition-all duration-700 ${isEntering ? 'opacity-0 translate-y-2' : 'opacity-100 translate-y-0'}`}>
+      {!isFinished ? (
+        <div className={`w-full flex flex-col lg:flex-row flex-1 transition-all duration-700 ${isEntering ? 'opacity-0 translate-y-2' : 'opacity-100 translate-y-0'}`}>
 
-        {!isFinished ? (
-          <>
-            {/* LEFT SIDEBAR: Nav Tracker */}
-            <div className="lg:w-64 bg-white border-b lg:border-r border-slate-100 flex flex-row lg:flex-col justify-between py-4 lg:py-12 px-6 lg:px-8 shrink-0 relative z-10">
-              <div className="space-y-12 flex flex-row lg:flex-col items-center lg:items-start gap-4 lg:gap-12 w-full lg:w-auto overflow-x-auto no-scrollbar">
-                <div className="space-y-1 hidden lg:block shrink-0">
-                  <div className="text-[11px] font-black uppercase tracking-[0.5em] text-[#00ABE4]">Strategic Path</div>
-                  <div className="text-xl font-black text-slate-900 tracking-tight leading-none">Consultation</div>
-                </div>
+          {/* LEFT SIDEBAR: Tracker */}
+          <div className="lg:w-56 bg-white border-b lg:border-r border-slate-100 flex flex-row lg:flex-col justify-between py-4 lg:py-8 px-5 shrink-0 relative z-10">
+            <div className="space-y-8 w-full">
+              <div className="space-y-1 hidden lg:block">
+                <div className="text-[9px] font-black uppercase tracking-[0.4em] text-[#00ABE4]">Solution Engine V2</div>
+                <div className="text-lg font-black text-slate-900 tracking-tight leading-none">Consultation</div>
+              </div>
 
-                <div className="flex flex-row lg:flex-col gap-3 lg:space-y-6 shrink-0">
-                  {history.map((id, i) => (
-                    <div key={id} className="flex items-center gap-3 lg:gap-4 group shrink-0">
-                      <div className={`w-7 h-7 lg:w-9 lg:h-9 rounded-lg lg:rounded-xl border flex items-center justify-center text-[10px] lg:text-xs font-black transition-all duration-500 bg-[#00ABE4] border-[#00ABE4] text-white shadow-lg`}>
+              <div className="flex flex-row lg:flex-col gap-2 lg:space-y-4 overflow-x-auto no-scrollbar">
+                {['Profile', 'Analysis', 'Challenges', 'Growth', 'Readiness'].map((phase, i) => {
+                  const isActive = currentQuestion?.phase.includes(phase);
+                  return (
+                    <div key={phase} className={`flex items-center gap-3 transition-all duration-500 ${isActive ? 'opacity-100 scale-105' : 'opacity-30'}`}>
+                      <div className={`w-6 h-6 lg:w-7 lg:h-7 rounded-lg border flex items-center justify-center text-[9px] font-black ${isActive ? 'bg-[#00ABE4] border-[#00ABE4] text-white shadow-lg' : 'border-slate-200 text-slate-400'}`}>
                         {i + 1}
                       </div>
-                      <div className={`text-[10px] font-black uppercase tracking-widest hidden lg:block text-slate-900`}>
-                        {id.replace('_', ' ')}
+                      <div className="text-[9px] font-black uppercase tracking-widest hidden lg:block text-slate-900">
+                        {phase}
                       </div>
                     </div>
-                  ))}
-                  {!isFinished && (
-                     <div className="flex items-center gap-3 lg:gap-4 group shrink-0 opacity-40">
-                        <div className={`w-7 h-7 lg:w-9 lg:h-9 rounded-lg lg:rounded-xl border border-slate-200 flex items-center justify-center text-[10px] lg:text-xs font-black text-slate-300`}>
-                          {history.length + 1}
-                        </div>
-                        <div className="text-[10px] font-black uppercase tracking-widest hidden lg:block text-slate-300">
-                          Next Step
-                        </div>
-                     </div>
-                  )}
-                </div>
-              </div>
-
-              <button
-                onClick={back}
-                disabled={history.length === 1}
-                className="group flex items-center gap-3 py-3 text-[10px] font-black uppercase tracking-[0.4em] text-slate-400 hover:text-[#0371a3] disabled:opacity-0 transition-all shrink-0 ml-auto lg:ml-0"
-              >
-                <span className="group-hover:-translate-x-1 transition-transform">←</span> <span className="hidden lg:inline">Go Back</span>
-              </button>
-            </div>
-
-            {/* MAIN CONTENT AREA */}
-            <div className="flex-1 bg-white flex flex-col justify-start px-6 lg:px-20 py-6 lg:py-10 relative z-10 overflow-y-auto">
-              <div className="max-w-4xl w-full mx-auto space-y-6 lg:space-y-8">
-                <div className="space-y-2">
-                  <div className="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-[#f0f9ff] border border-blue-100 text-[#00ABE4] text-[10px] font-black uppercase tracking-[0.3em]">
-                    Assessment Step {history.length}
-                  </div>
-                  <h1 className="text-2xl lg:text-4xl font-black text-slate-900 tracking-tighter leading-none">
-                    {currentQuestion.title}
-                  </h1>
-                  <p className="text-slate-500 text-xs lg:text-base font-medium leading-relaxed max-w-2xl">
-                    {currentQuestion.subtitle}
-                  </p>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 lg:gap-5">
-                  {currentQuestion.options.map((option, idx) => {
-                    const isSelected = answers[currentId] === option.value;
-                    return (
-                      <button
-                        key={idx}
-                        onClick={() => handleOptionSelect(option.value)}
-                        className={`group relative flex items-center gap-4 lg:gap-6 p-4 lg:p-7 rounded-xl lg:rounded-3xl border-2 transition-all duration-500 bg-white ${
-                          isSelected 
-                            ? 'border-[#00ABE4] bg-[#f0f9ff] shadow-xl shadow-blue-900/5 -translate-y-0.5' 
-                            : 'border-slate-50 hover:border-[#00ABE4]/20 hover:bg-slate-50 hover:-translate-y-0.5'
-                        }`}
-                      >
-                        <div className={`w-10 h-10 lg:w-14 lg:h-14 shrink-0 rounded-lg lg:rounded-2xl flex items-center justify-center transition-all duration-500 ${
-                          isSelected ? 'bg-[#00ABE4] text-white shadow-lg' : 'bg-[#f1f5f9] text-slate-400 group-hover:bg-white group-hover:text-[#00ABE4]'
-                        }`}>
-                          <svg className="w-5 h-5 lg:w-8 lg:h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d={option.icon} />
-                          </svg>
-                        </div>
-                        <div className="text-left">
-                          <span className={`block text-sm lg:text-base font-black tracking-tight transition-colors ${
-                            isSelected ? 'text-[#0371a3]' : 'text-slate-900'
-                          }`}>
-                            {option.label}
-                          </span>
-                        </div>
-                        {isSelected && (
-                          <div className="absolute top-4 right-4 w-1.5 h-1.5 rounded-full bg-[#00ABE4] shadow-sm" />
-                        )}
-                      </button>
-                    );
-                  })}
-                </div>
+                  );
+                })}
               </div>
             </div>
 
-            {/* RIGHT SIDEBAR: Action Control */}
-            <div className="lg:w-80 bg-[#f8fafc] border-t lg:border-l border-slate-100 flex flex-col justify-center px-10 shrink-0 relative z-10">
-              <div className="space-y-8">
-                <div className="space-y-1 text-center lg:text-left hidden lg:block">
-                  <div className="text-[10px] font-black uppercase tracking-[0.4em] text-slate-300">Phase Completion</div>
-                  <h4 className="text-xl font-black text-slate-900 tracking-tight">Confirm Move</h4>
+            <button onClick={back} disabled={history.length === 1} className="group flex items-center gap-2 px-5 py-2.5 bg-[#f0f9ff] border border-blue-100 rounded-full text-[10px] font-black uppercase tracking-[0.3em] text-[#00ABE4] shadow-md hover:bg-white hover:border-[#00ABE4]/30 disabled:opacity-0 transition-all shrink-0">
+              <span className="group-hover:-translate-x-1 transition-transform">←</span> <span>Back</span>
+            </button>
+          </div>
+
+          {/* MAIN CONTENT AREA */}
+          <div className="flex-1 bg-white flex flex-col justify-start px-4 lg:px-12 py-4 lg:py-10 relative z-10 overflow-y-auto">
+            <div className="max-w-3xl w-full mx-auto space-y-6 lg:space-y-8">
+              <div className="space-y-2">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#f0f9ff] border border-blue-100 text-[#00ABE4] text-[9px] font-black uppercase tracking-[0.2em]">
+                  {currentQuestion?.phase}
                 </div>
-                
-                <button
-                  onClick={next}
-                  disabled={!answers[currentId]}
-                  className="group relative w-full py-4 lg:py-6 bg-[#00ABE4] text-white rounded-xl lg:rounded-2xl font-black uppercase tracking-[0.3em] text-[10px] lg:text-[11px] shadow-xl shadow-blue-500/10 hover:bg-[#0371a3] hover:shadow-blue-500/20 disabled:bg-slate-200 disabled:text-slate-400 transition-all duration-500 active:scale-[0.98] flex items-center justify-center gap-3 overflow-hidden"
-                >
-                  <span className="relative z-10">{!currentQuestion.options.find(o => o.value === answers[currentId])?.nextId ? 'Analyze Path' : 'Next Step'}</span>
-                  <svg className="w-4 h-4 lg:w-5 lg:h-5 relative z-10 group-hover:translate-x-1.5 transition-transform duration-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                  </svg>
-                </button>
-
-                <div className="hidden lg:block pt-8 border-t border-slate-200/60 text-center">
-                  <p className="text-[9px] font-bold text-slate-300 uppercase tracking-widest leading-loose">
-                    Analysis Protocol <br/> v1.1.361
-                  </p>
-                </div>
-              </div>
-            </div>
-          </>
-        ) : (
-          <div className="w-full bg-white flex flex-col min-h-screen overflow-y-auto relative z-20 p-6 lg:p-20">
-            <div className="max-w-7xl w-full mx-auto space-y-12 lg:space-y-16 animate-in fade-in slide-in-from-bottom-8 duration-1000">
-
-              {/* Report Header & Actions */}
-              <div className="flex flex-col md:flex-row items-center md:items-end justify-between gap-6 border-b border-slate-100 pb-5">
-                <div className="space-y-1 text-center md:text-left">
-                  <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-[#f0f9ff] text-[#00ABE4] text-[9px] font-black uppercase tracking-[0.4em]">
-                    Strategic Roadmap
-                  </div>
-                  <h2 className="text-3xl lg:text-5xl font-black text-slate-900 tracking-tighter leading-none italic">Results.</h2>
-                </div>
-
-                <div className="flex items-center gap-2.5 mb-1">
-                  <button
-                    onClick={restart}
-                    className="px-5 py-2.5 bg-slate-50 text-slate-500 rounded-full font-bold uppercase tracking-widest text-[9px] hover:bg-slate-100 hover:text-slate-900 transition-all border border-slate-200 flex items-center gap-2 shadow-sm"
-                  >
-                    <span>↺</span> <span className="hidden sm:inline">Restart</span>
-                  </button>
-
-                  {!isSubmitted ? (
-                    <button
-                      onClick={() => setShowLeadModal(true)}
-                      className="px-5 py-2.5 bg-[#00ABE4] text-white rounded-full font-bold uppercase tracking-widest text-[9px] hover:bg-[#0371a3] transition-all shadow-lg shadow-blue-500/10 flex items-center gap-2 group"
-                    >
-                      <span>Ready for Growth?</span>
-                      <span className="group-hover:translate-x-0.5 transition-transform">→</span>
-                    </button>
-                  ) : (
-                    <div className="px-5 py-2.5 bg-emerald-50 text-emerald-600 rounded-full font-bold uppercase tracking-widest text-[9px] border border-emerald-100 flex items-center gap-2">
-                      <span className="w-3 h-3 rounded-full bg-emerald-500 flex items-center justify-center text-[7px] text-white font-black">✓</span>
-                      <span>Initiated</span>
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              {isAnalyzing ? (
-                <div className="flex flex-col items-center justify-center py-24 lg:py-40 space-y-6 lg:space-y-10">
-                  <div className="w-16 h-16 lg:w-24 lg:h-24 border-[8px] lg:border-[12px] border-[#f0f9ff] border-t-[#00ABE4] rounded-full animate-spin shadow-xl lg:shadow-2xl shadow-blue-500/20" />
-                  <p className="text-xl lg:text-3xl font-black uppercase tracking-[0.6em] text-slate-900 animate-pulse text-center">Building Strategy...</p>
-                </div>
-              ) : (
-                <div className="space-y-10 lg:space-y-14">
-
-                  {/* RESULTS DISPLAY */}
-                  <div className="space-y-6 lg:space-y-10">
-                    {/* DESKTOP TABLE VIEW */}
-                    <div className="hidden md:block overflow-hidden rounded-[2.5rem] lg:rounded-[4rem] border-2 border-slate-900 shadow-2xl bg-white w-full">
-                      <table className="w-full text-left border-collapse">
-                        <thead>
-                          <tr className="bg-slate-900 text-white">
-                            <th className="px-8 lg:px-10 py-6 lg:py-8 text-[10px] font-black uppercase tracking-[0.4em]">Layer</th>
-                            <th className="px-8 lg:px-10 py-6 lg:py-8 text-[10px] font-black uppercase tracking-[0.4em]">Priority</th>
-                            <th className="px-8 lg:px-10 py-6 lg:py-8 text-[10px] font-black uppercase tracking-[0.4em]">Recommendation(s)</th>
-                            <th className="px-8 lg:px-10 py-6 lg:py-8 text-[10px] font-black uppercase tracking-[0.4em]">Strategic Reason</th>
-                          </tr>
-                        </thead>
-                        <tbody className="divide-y divide-slate-100">
-                          {reportData.table.length > 0 ? reportData.table.map((row, i) => (
-                            <tr key={i} className="hover:bg-slate-50 transition-colors">
-                              <td className="px-8 lg:px-10 py-6 lg:py-8 text-[11px] font-bold text-[#00ABE4] uppercase tracking-widest align-top whitespace-nowrap">{row.type}</td>
-                              <td className="px-8 lg:px-10 py-6 lg:py-8 align-top">
-                                <span className={`px-4 py-1.5 rounded-full text-[9px] font-bold uppercase tracking-widest ${
-                                  row.priority === 'CRITICAL' ? 'bg-red-50 text-red-500 border border-red-100' :
-                                  row.priority === 'HIGH' ? 'bg-amber-50 text-amber-600 border border-amber-100' : 'bg-emerald-50 text-emerald-600 border border-emerald-100'
-                                }`}>
-                                  {row.priority}
-                                </span>
-                              </td>
-                              <td className="px-8 lg:px-10 py-6 lg:py-8 text-[16px] font-bold text-slate-900 tracking-tight leading-tight align-top">{row.product}</td>
-                              <td className="px-8 lg:px-10 py-6 lg:py-8 text-[13px] font-medium text-slate-500 italic leading-relaxed align-top">"{row.reason}"</td>
-                            </tr>
-                          )) : (
-                            <tr>
-                              <td colSpan={4} className="px-10 py-32 text-center text-slate-300 font-black text-2xl uppercase tracking-[0.5em]">Strategizing...</td>
-                            </tr>
-                          )}
-                        </tbody>
-                      </table>
-                    </div>
-
-                    {/* MOBILE PARAGRAPH VIEW */}
-                    <div className="md:hidden space-y-12 px-2">
-                       {reportData.table.map((row, i) => (
-                         <div key={i} className="space-y-4">
-                            <div className="flex items-center gap-3">
-                               <div className="text-[11px] font-bold text-[#00ABE4] uppercase tracking-widest whitespace-nowrap">{row.type}</div>
-                               <div className="h-px flex-1 bg-slate-100" />
-                               <span className={`px-3 py-1 rounded-full text-[8px] font-bold uppercase tracking-widest ${
-                                  row.priority === 'CRITICAL' ? 'text-red-500 bg-red-50 border border-red-100' :
-                                  row.priority === 'HIGH' ? 'text-amber-600 bg-amber-50 border border-amber-100' : 'text-emerald-600 bg-emerald-50 border border-emerald-100'
-                                }`}>
-                                  {row.priority}
-                                </span>
-                            </div>
-                            <div className="text-2xl font-bold text-slate-900 tracking-tighter leading-tight">{row.product}</div>
-                            <p className="text-[14px] font-medium text-slate-500 italic leading-relaxed border-l-4 border-slate-100 pl-6">
-                               {row.reason}
-                            </p>
-                         </div>
-                       ))}
-                    </div>
-                  </div>
-
-                  {/* Advisory Summary: Executive Refinement */}
-                  <div className="max-w-4xl mx-auto text-center space-y-6 pt-8 lg:pt-12">
-                    <div className="inline-flex items-center gap-3 px-6 py-2 rounded-full bg-slate-50 border border-slate-100 text-slate-400 text-[10px] font-bold uppercase tracking-[0.4em]">
-                      Strategic Advisory Summary
-                    </div>
-
-                    <p className="text-[16px] lg:text-[20px] font-medium text-slate-600 leading-relaxed max-w-3xl mx-auto italic px-4">
-                      {reportData.summary || "Strategizing your growth path..."}
-                    </p>
-
-                    <div className="flex flex-col items-center gap-2 pt-4">
-                       <div className="w-8 h-px bg-slate-100" />
-                       <div className="text-[9px] font-bold uppercase tracking-[0.6em] text-slate-300">Sarvadnya Strategic Unit</div>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              <div className="pt-4 lg:pt-6 text-center">
-                <p className="text-[10px] lg:text-[11px] text-slate-300 font-bold uppercase tracking-[1em]">
-                  Sarvadnya Strategic Protocol • MMXXVI
+                <h1 className="text-2xl lg:text-3xl font-black text-slate-900 tracking-tighter leading-none">
+                  {currentQuestion?.title}
+                </h1>
+                <p className="text-slate-500 text-xs lg:text-sm font-medium leading-relaxed max-w-xl">
+                  {currentQuestion?.subtitle}
                 </p>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 lg:gap-4">
+                {currentQuestion?.options.map((option, idx) => {
+                  const isSelected = answers[currentId] === option.value;
+                  return (
+                    <button
+                      key={idx}
+                      onClick={() => handleOptionSelect(option.value)}
+                      className={`group relative flex items-center gap-3 p-3 lg:p-4 rounded-xl lg:rounded-2xl border-2 transition-all duration-500 bg-white ${
+                        isSelected 
+                          ? 'border-[#00ABE4] bg-[#f0f9ff] shadow-lg shadow-blue-900/5 -translate-y-0.5' 
+                          : 'border-slate-50 hover:border-[#00ABE4]/20 hover:bg-slate-50 hover:-translate-y-0.5'
+                      }`}
+                    >
+                      <div className={`w-8 h-8 lg:w-10 lg:h-10 shrink-0 rounded-xl flex items-center justify-center transition-all duration-500 ${
+                        isSelected ? 'bg-[#00ABE4] text-white shadow-md' : 'bg-[#f1f5f9] text-slate-400 group-hover:bg-white group-hover:text-[#00ABE4]'
+                      }`}>
+                        <svg className="w-4 h-4 lg:w-5 lg:h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d={option.icon} />
+                        </svg>
+                      </div>
+                      <div className="text-left">
+                        <span className={`block text-xs lg:text-sm font-black tracking-tight transition-colors ${
+                          isSelected ? 'text-[#0371a3]' : 'text-slate-900'
+                        }`}>
+                          {option.label}
+                        </span>
+                      </div>
+                    </button>
+                  );
+                })}
               </div>
             </div>
           </div>
-        )}
 
-        {/* LEAD CAPTURE MODAL */}
-        {showLeadModal && !isSubmitted && (
-          <div className="fixed inset-0 z-[100000] flex items-center justify-center p-4 lg:p-6 bg-slate-900/80 backdrop-blur-md animate-in fade-in duration-300">
-            <div className="w-full max-w-xl bg-white rounded-[2.5rem] lg:rounded-[3.5rem] shadow-2xl overflow-hidden animate-in zoom-in-95 duration-500 relative">
-              <button 
-                onClick={() => setShowLeadModal(false)}
-                className="absolute top-8 right-8 p-3 hover:bg-slate-100 rounded-full transition-colors text-slate-400 group"
-              >
-                <svg className="w-6 h-6 group-hover:rotate-90 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12" /></svg>
-              </button>
-
-              <div className="p-10 lg:p-14 space-y-8 lg:space-y-10">
-                <div className="space-y-4">
-                  <div className="w-12 h-12 lg:w-16 lg:h-16 bg-[#00ABE4] rounded-2xl lg:rounded-3xl flex items-center justify-center shadow-xl shadow-blue-500/20">
-                    <svg className="w-6 h-6 lg:w-8 lg:h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
-                  </div>
-                  <h4 className="text-3xl lg:text-4xl font-black text-slate-900 tracking-tight leading-none">Ready for Growth?</h4>
-                  <p className="text-slate-500 text-sm lg:text-base font-medium leading-relaxed">Submit this strategic roadmap to our senior consultants to initiate implementation.</p>
+          {/* RIGHT SIDEBAR: Action */}
+          <div className="lg:w-64 bg-white lg:bg-[#f8fafc] border-t lg:border-t-0 lg:border-l border-slate-100 flex flex-col justify-center px-4 lg:px-8 py-4 lg:py-0 shrink-0 relative z-10">
+            <div className="space-y-6">
+              {isAnalyzing ? (
+                <div className="flex flex-col items-center gap-3 py-6">
+                   <div className="w-8 h-8 border-3 border-slate-200 border-t-[#00ABE4] rounded-full animate-spin" />
+                   <div className="text-[9px] font-black uppercase tracking-widest text-slate-400">Processing...</div>
                 </div>
-
-                <form onSubmit={handleSubmitLead} className="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-6">
-                  <div className="space-y-2">
-                    <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Full Name *</label>
-                    <input
-                      required
-                      type="text"
-                      placeholder="e.g. John Doe"
-                      value={formData.name}
-                      onChange={e => setFormData(prev => ({ ...prev, name: e.target.value }))}
-                      className="w-full bg-slate-50 border border-slate-100 rounded-xl lg:rounded-2xl px-5 py-4 text-sm font-semibold focus:outline-none focus:border-[#00ABE4] focus:bg-white transition-all"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Work Email *</label>
-                    <input
-                      required
-                      type="email"
-                      placeholder="e.g. john@company.com"
-                      value={formData.email}
-                      onChange={e => setFormData(prev => ({ ...prev, email: e.target.value }))}
-                      className="w-full bg-slate-50 border border-slate-100 rounded-xl lg:rounded-2xl px-5 py-4 text-sm font-semibold focus:outline-none focus:border-[#00ABE4] focus:bg-white transition-all"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Phone Number *</label>
-                    <input
-                      required
-                      type="tel"
-                      placeholder="e.g. +91 98765 43210"
-                      value={formData.phone}
-                      onChange={e => setFormData(prev => ({ ...prev, phone: e.target.value.replace(/[^0-9+]/g, '') }))}
-                      className="w-full bg-slate-50 border border-slate-100 rounded-xl lg:rounded-2xl px-5 py-4 text-sm font-semibold focus:outline-none focus:border-[#00ABE4] focus:bg-white transition-all"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Business Name</label>
-                    <input
-                      type="text"
-                      placeholder="e.g. Acme Corp"
-                      value={formData.businessName}
-                      onChange={e => setFormData(prev => ({ ...prev, businessName: e.target.value }))}
-                      className="w-full bg-slate-50 border border-slate-100 rounded-xl lg:rounded-2xl px-5 py-4 text-sm font-semibold focus:outline-none focus:border-[#00ABE4] focus:bg-white transition-all"
-                    />
-                  </div>
+              ) : (
+                <>
                   <button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className="sm:col-span-2 w-full py-5 lg:py-6 bg-[#00ABE4] text-white rounded-2xl lg:rounded-3xl font-black uppercase tracking-[0.3em] text-[11px] lg:text-[12px] hover:bg-[#0371a3] transition-all shadow-2xl shadow-blue-500/30 flex items-center justify-center gap-3 mt-4 active:scale-[0.98]"
+                    onClick={next}
+                    disabled={!answers[currentId]}
+                    className="group relative w-full py-4 lg:py-5 bg-[#00ABE4] text-white rounded-xl font-black uppercase tracking-[0.2em] text-[10px] shadow-lg shadow-blue-500/10 hover:bg-[#0371a3] hover:shadow-blue-500/20 disabled:bg-slate-200 disabled:text-slate-400 transition-all duration-500 active:scale-[0.98] flex items-center justify-center gap-3 overflow-hidden"
                   >
-                    {isSubmitting ? (
-                      <div className="w-5 h-5 border-2 border-white/20 border-t-white rounded-full animate-spin" />
-                    ) : (
-                      <>
-                        <span>Initiate Implementation Protocol</span>
-                        <span className="text-xl leading-none mt-[-2px]">→</span>
-                      </>
-                    )}
+                    <span>{history.length === QUESTIONS.length ? 'Analyze Results' : 'Continue'}</span>
+                    <svg className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform duration-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M13 7l5 5m0 0l-5 5m5-5H6" /></svg>
+                  </button>
+                  <div className="hidden lg:block pt-6 border-t border-slate-200/60 text-center">
+                    <p className="text-[8px] font-bold text-slate-300 uppercase tracking-widest leading-loose">
+                      Strategic Protocol <br/> v1.1.381
+                    </p>
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+      ) : (
+        // --- RESULT PAGE ---
+        <div className="w-full bg-white flex flex-col min-h-screen overflow-y-auto relative z-20 p-4 lg:p-12">
+          <div className="max-w-6xl w-full mx-auto space-y-10 animate-in fade-in slide-in-from-bottom-8 duration-1000">
+
+            {/* Header */}
+            <div className="flex flex-col md:flex-row items-center md:items-end justify-between gap-6 border-b border-slate-100 pb-8">
+              <div className="space-y-2 text-center md:text-left">
+                <div className="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-[#f0f9ff] text-[#00ABE4] text-[9px] font-black uppercase tracking-[0.3em]">
+                  Analysis Complete
+                </div>
+                <h2 className="text-3xl lg:text-5xl font-black text-slate-900 tracking-tighter leading-none italic">Your Recommendations.</h2>
+              </div>
+              <button onClick={restart} className="px-5 py-2.5 bg-slate-50 text-slate-500 rounded-full font-bold uppercase tracking-widest text-[9px] hover:bg-slate-100 hover:text-slate-900 transition-all border border-slate-200 shadow-sm">
+                ↺ Restart
+              </button>
+            </div>
+
+            {/* Metrics Dashboard */}
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+              {[
+                { label: 'Efficiency', val: `${businessScores.efficiency}%`, color: 'text-[#00ABE4]' },
+                { label: 'Growth', val: `${businessScores.growth}%`, color: 'text-emerald-500' },
+                { label: 'Automation', val: businessScores.automation, color: 'text-blue-600' },
+                { label: 'Risk Level', val: businessScores.risk, color: businessScores.risk === 'High' ? 'text-red-500' : 'text-amber-500' }
+              ].map((m, i) => (
+                <div key={i} className="bg-[#f8fafc] p-5 lg:p-6 rounded-2xl border border-slate-100 space-y-0.5 text-center">
+                  <div className="text-[9px] font-black uppercase tracking-widest text-slate-400">{m.label}</div>
+                  <div className={`text-2xl font-black ${m.color}`}>{m.val}</div>
+                </div>
+              ))}
+            </div>
+
+            {/* Recommendations */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              <div className="lg:col-span-2 space-y-6">
+                <h3 className="text-xl font-black text-slate-900 tracking-tight flex items-center gap-4">
+                  <span className="w-6 h-px bg-[#00ABE4]" /> Top Recommendations
+                </h3>
+                <div className="space-y-3">
+                  {topRecommendations.map((rec, i) => (
+                    <div key={i} className="group bg-[#f8fafc] border border-slate-100 p-5 lg:p-6 rounded-2xl hover:border-[#00ABE4]/20 hover:shadow-lg transition-all duration-500 flex items-center justify-between">
+                      <div className="space-y-0.5">
+                        <div className="text-[9px] font-black text-[#00ABE4] uppercase tracking-[0.2em]">{rec.category}</div>
+                        <div className="text-xl font-black text-slate-900 tracking-tight">{rec.label}</div>
+                      </div>
+                      <div className="text-3xl font-black text-slate-200 group-hover:text-[#00ABE4]/20 transition-colors">0{i+1}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Personalized Insight */}
+              <div className="bg-[#f0f9ff] p-6 lg:p-8 rounded-[2rem] border border-blue-100 space-y-6 relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-24 h-24 bg-[#00ABE4]/5 rounded-full -translate-y-12 translate-x-12 blur-2xl" />
+                <h3 className="text-lg font-black tracking-tight text-[#0371a3] flex items-center gap-3">
+                   <svg className="w-5 h-5 text-[#00ABE4]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                   Strategic Insight
+                </h3>
+                {isLoadingInsight ? (
+                  <div className="space-y-3 animate-pulse">
+                    <div className="h-4 bg-blue-200/50 rounded-full w-full" />
+                    <div className="h-4 bg-blue-200/50 rounded-full w-[90%]" />
+                    <div className="h-4 bg-blue-200/50 rounded-full w-[80%]" />
+                  </div>
+                ) : (
+                  <p className="text-slate-600 text-sm lg:text-base font-medium leading-relaxed italic animate-in fade-in duration-1000">
+                    "{aiInsight || `Because your business requires ${answers.users} user access, identifies ${answers.challenge} as a major bottleneck, and targets ${answers.growth_focus} for expansion, we highly recommend a transition to ${topRecommendations[0]?.label}.`}"
+                  </p>
+                )}
+                <div className="pt-4 border-t border-blue-200/50">
+                   <button onClick={() => setShowLeadModal(true)} className="w-full py-4 bg-[#0371a3] text-white rounded-xl font-black uppercase tracking-widest text-[10px] hover:bg-[#00ABE4] transition-all shadow-lg shadow-blue-900/10">
+                     Get Implementation Roadmap
+                   </button>
+                </div>
+              </div>
+            </div>
+
+            <div className="pt-10 text-center">
+              <p className="text-[10px] text-slate-300 font-bold uppercase tracking-[1em]">
+                Sarvadnya Infotech LLP • Strategic Analysis Unit
+              </p>
+            </div>
+          </div>
+        </div>
+      )
+}
+
+      {/* LEAD CAPTURE MODAL */}
+      {showLeadModal && (
+        <div className="fixed inset-0 z-[100000] flex items-center justify-center p-6 bg-slate-900/80 backdrop-blur-md animate-in fade-in duration-300">
+          <div className="w-full max-w-xl bg-white rounded-[3.5rem] shadow-2xl overflow-hidden relative">
+            <button onClick={() => setShowLeadModal(false)} className="absolute top-8 right-8 p-3 text-slate-400 hover:bg-slate-50 rounded-full transition-all">
+              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12" /></svg>
+            </button>
+
+            {!isSubmitted ? (
+              <div className="p-8 pt-20 pb-10 lg:p-12 space-y-6">
+                <div className="space-y-2">
+                  <h4 className="text-2xl lg:text-3xl font-black text-slate-900 tracking-tight leading-none">Complete Your Profile</h4>
+                  <p className="text-slate-500 text-sm font-medium">Get a full implementation blueprint and costing for your business.</p>
+                </div>
+                <form onSubmit={handleSubmitLead} className="space-y-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <input required type="text" placeholder="Full Name" value={formData.name} onChange={e => setFormData(prev => ({ ...prev, name: e.target.value }))} className="w-full bg-slate-50 border border-slate-100 rounded-xl px-5 py-3 text-sm font-semibold focus:outline-none focus:border-[#00ABE4] focus:bg-white transition-all" />
+                    <input required type="email" placeholder="Work Email" value={formData.email} onChange={e => setFormData(prev => ({ ...prev, email: e.target.value }))} className="w-full bg-slate-50 border border-slate-100 rounded-xl px-5 py-3 text-sm font-semibold focus:outline-none focus:border-[#00ABE4] focus:bg-white transition-all" />
+                    <input required type="tel" placeholder="Mobile Number" value={formData.phone} onChange={e => setFormData(prev => ({ ...prev, phone: e.target.value.replace(/[^0-9+]/g, '') }))} className="w-full bg-slate-50 border border-slate-100 rounded-xl px-5 py-3 text-sm font-semibold focus:outline-none focus:border-[#00ABE4] focus:bg-white transition-all" />
+                    <input type="text" placeholder="Company Name" value={formData.company} onChange={e => setFormData(prev => ({ ...prev, company: e.target.value }))} className="w-full bg-slate-50 border border-slate-100 rounded-xl px-5 py-3 text-sm font-semibold focus:outline-none focus:border-[#00ABE4] focus:bg-white transition-all" />
+                  </div>
+                  <button type="submit" disabled={isSubmitting} className="w-full py-4 bg-[#00ABE4] text-white rounded-2xl font-black uppercase tracking-[0.2em] text-[10px] hover:bg-[#0371a3] transition-all shadow-xl shadow-blue-500/20 flex items-center justify-center gap-2 active:scale-[0.98]">
+                    {isSubmitting ? <div className="w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin" /> : 'Get Solution Blueprint →'}
                   </button>
                 </form>
               </div>
-            </div>
+            ) : (
+              <div className="p-10 pt-20 pb-12 text-center space-y-4">
+                 <div className="w-16 h-16 bg-emerald-500 rounded-full flex items-center justify-center mx-auto shadow-xl shadow-emerald-500/20">
+                    <svg className="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="4" d="M5 13l4 4L19 7" /></svg>
+                 </div>
+                 <h4 className="text-3xl font-black text-slate-900">Protocol Initiated.</h4>
+                 <p className="text-slate-500 text-sm font-medium">Our senior consultant will contact you shortly with your detailed roadmap.</p>
+                 <button onClick={() => setShowLeadModal(false)} className="px-6 py-2.5 bg-slate-900 text-white rounded-full font-bold uppercase tracking-widest text-[9px]">Close Portal</button>
+              </div>
+            )}
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 }

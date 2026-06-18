@@ -69,36 +69,28 @@ export default function Navbar({ initialSettings }: { initialSettings?: any }) {
 
   return (
     <header className="relative z-[1000] w-full border-b border-white/5 bg-[#232F3E]  shadow-sm"> {/*#232F3E*/}
-      <nav className="mx-auto flex h-12 lg:h-16 w-full max-w-full items-center justify-between px-1">
+      <nav className="mx-auto flex h-12 lg:h-16 w-full max-w-full items-center justify-between px-3">
         <Link
           href="/"
-          className="flex items-center justify-start group transition-transform hover:scale-[1.01] "
+          className="flex items-center h-full justify-start group transition-transform hover:scale-[1.01]  "
         >
-          <div className="relative block w-40 lg:w-[270px] h-12 lg:h-12 shrink-0 opacity-90  group-hover:opacity-100 transition-opacity">
+          <div className="relative block w-40 lg:w-[230px] h-full  shrink-0 opacity-90  group-hover:opacity-100 transition-opacity ">
             <Image
               src="/TallyCertificate.png"
               alt="Sarvadnya Infotech logo"
               fill
               sizes=""
-              className="object-contain brightness-0 invert"
+              className="object-contain "
               priority
             />
           </div>
           <div className="flex items-center">
-            <div className="block w-7 h-7 lg:w-8 lg:h-8 shrink-0 group-hover:scale-105 transition-transform brightness-0 invert">
-              <Image
-                src="/logo.png"
-                alt="Sarvadnya Logo"
-                width={28}
-                height={28}
-                className="object-contain w-full h-full"
-              />
-            </div>
-            <div className="flex flex-col ml-1 sm:ml-1.5 lg:ml-2 leading-none">
-              <span className="text-[14px] lg:text-[18px] font-bold tracking-tight text-white">
+
+            <div className="flex flex-col ml-2 sm:ml-1.5 lg:ml-3 leading-none">
+              <span className="text-[18px] lg:text-[27px] mb-1 lg:mb-[1px] font-bold tracking-tight text-white">
                 Sarvadnya
               </span>
-              <span className="text-[9px] lg:text-[13px] font-medium uppercase tracking-[0.2em] text-sky-400">
+              <span className="text-[8px] font-bold lg:text-[11px] uppercase tracking-[0.2em] text-sky-400">
                 Infotech LLP
               </span>
             </div>
@@ -106,7 +98,7 @@ export default function Navbar({ initialSettings }: { initialSettings?: any }) {
         </Link>
 
         {/* Desktop Navigation */}
-        <div className="hidden lg:flex items-center gap-6 xl:gap-8">
+        <div className="hidden lg:flex items-center gap-5 xl:gap-6">
           <div className="hidden lg:block">
             <SearchBar />
           </div>
@@ -118,7 +110,7 @@ export default function Navbar({ initialSettings }: { initialSettings?: any }) {
           </Link> */}
           <Link
             href="/find-solution"
-            className="hidden xl:inline-flex items-center justify-center rounded-full bg-emerald-500/10 px-5 py-2 text-[11px] font-black uppercase tracking-wider text-emerald-400 border border-emerald-500/20 transition-all duration-500 ease-in-out hover:bg-emerald-500 hover:text-white shadow-sm"
+            className="hidden xl:inline-flex items-center justify-center rounded-full bg-[#00ABE4]-500/10 px-5 py-2 text-[11px] font-black uppercase tracking-wider text-[#00ABE4] border border-[#00ABE4]/20 transition-all duration-500 ease-in-out hover:bg-[#00ABE4] hover:text-white shadow-sm"
           >
             Find Solution
           </Link>
@@ -166,20 +158,9 @@ export default function Navbar({ initialSettings }: { initialSettings?: any }) {
       {/* Mobile Menu Drawer */}
       <div className={`lg:hidden absolute top-full left-0 right-0 bg-[#f0f9ff] border-b border-[#0371a3]/10 z-[999] transition-all duration-300 overflow-y-auto ${isMenuOpen ? 'max-h-[85vh] opacity-100 py-6 shadow-xl' : 'max-h-0 opacity-0 py-0'}`}>
         <div className="flex flex-col gap-6 px-6">
-          {/* Close Button at top of drawer for mobile */}
-          <div className="flex justify-end">
-            <button
-              onClick={() => setIsMenuOpen(false)}
-              className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white border border-[#0371a3]/10 text-[9px] font-black uppercase tracking-widest text-slate-400 hover:text-[#0371a3] transition-colors shadow-sm"
-            >
-              <span>Close Menu</span>
-              <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-          </div>
 
-          {/* Admin Section */}
+
+          {/* Admin Section 
           <div className="space-y-3">
             <div className="flex items-center gap-2 px-2">
               <span className="h-1.5 w-1.5 rounded-full bg-[#0371a3]" />
@@ -201,6 +182,7 @@ export default function Navbar({ initialSettings }: { initialSettings?: any }) {
               ))}
             </div>
           </div>
+          */}
 
           <div className="w-full h-px bg-[#E9F1FA]" />
 
@@ -228,15 +210,6 @@ export default function Navbar({ initialSettings }: { initialSettings?: any }) {
             </Link>
           </div>
 
-          <a
-            href={`tel:${supportPhone}`}
-            className="flex items-center justify-center gap-3 text-slate-500 hover:text-[#0371a3] transition-colors py-2 border border-[#0371a3]/10 rounded-xl bg-white shadow-sm"
-          >
-            <svg className="w-4 h-4 text-[#0371a3]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1.031.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-            </svg>
-            <span className="text-[10px] font-black uppercase tracking-widest">{formatPhoneDisplay(supportPhone.split(',')[0])}</span>
-          </a>
 
           {/* Explicit Unexpand Button at very bottom */}
           <button

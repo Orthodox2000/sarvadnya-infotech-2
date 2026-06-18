@@ -235,63 +235,107 @@ export default function AdminSubmissions() {
 
       {/* Detail Modal */}
       {selectedItem && (
-        <div className="fixed inset-0 z-[2000] flex items-center justify-center p-6 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-300" onClick={() => setSelectedItem(null)}>
+        <div className="fixed inset-0 z-[2000] flex items-start justify-center p-4 sm:p-6 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-300 overflow-y-auto" onClick={() => setSelectedItem(null)}>
           <div 
-            className="w-full max-w-2xl bg-white rounded-[3rem] shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300"
+            className="w-full max-w-2xl bg-white rounded-[2.5rem] shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300 mt-12 mb-12 flex flex-col max-h-[calc(100vh-8rem)]"
             onClick={e => e.stopPropagation()}
           >
-            <div className="p-8 md:p-10 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
-              <div>
-                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#0371a3] mb-1 block">Submission Detail</span>
-                <h2 className="text-2xl font-bold text-slate-900 tracking-tight">
-                  {selectedItem.name}
-                </h2>
+            {/* Header */}
+            <div className="p-8 md:p-10 border-b border-slate-100 flex items-center justify-between bg-slate-50/50 shrink-0">
+              <div className="flex items-center gap-4">
+                <div className={`p-3 rounded-2xl bg-white shadow-sm border border-slate-100`}>
+                   <svg className="w-6 h-6 text-[#0371a3]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                   </svg>
+                </div>
+                <div>
+                  <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#0371a3] mb-1 block">Inquiry Detail</span>
+                  <h2 className="text-2xl font-bold text-slate-900 tracking-tight leading-none">
+                    {selectedItem.name}
+                  </h2>
+                </div>
               </div>
               <button 
                 onClick={() => setSelectedItem(null)}
-                className="p-2 hover:bg-white rounded-full transition-colors text-slate-400"
+                className="p-2 hover:bg-white rounded-full transition-colors text-slate-400 hover:text-slate-900 shadow-sm border border-transparent hover:border-slate-100"
               >
                 <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12" /></svg>
               </button>
             </div>
             
-            <div className="p-8 md:p-10 space-y-8">
-               <div className="grid grid-cols-2 gap-8">
-                  <div>
+            <div className="p-8 md:p-10 space-y-10 overflow-y-auto grow">
+               {/* Contact Grid */}
+               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div className="group relative">
                     <p className="text-[9px] font-bold uppercase tracking-widest text-slate-400 mb-2">Email Address</p>
-                    <p className="text-sm font-semibold text-slate-700">{selectedItem.email}</p>
+                    <div className="flex items-center justify-between bg-slate-50 px-4 py-3 rounded-2xl border border-slate-100">
+                        <span className="text-sm font-semibold text-slate-700 truncate">{selectedItem.email}</span>
+                    </div>
                   </div>
-                  <div>
+
+                  <div className="group relative">
                     <p className="text-[9px] font-bold uppercase tracking-widest text-slate-400 mb-2">Phone Number</p>
-                    <p className="text-sm font-bold text-[#0371a3] tabular-nums">{selectedItem.contact}</p>
+                    <div className="flex items-center justify-between bg-sky-50/50 px-4 py-3 rounded-2xl border border-sky-100">
+                        <span className="text-sm font-bold text-[#0371a3] tabular-nums">{selectedItem.contact}</span>
+                    </div>
                   </div>
+
                   <div>
-                    <p className="text-[9px] font-bold uppercase tracking-widest text-slate-400 mb-2">Submitted On</p>
-                    <p className="text-sm font-semibold text-slate-700">{new Date(selectedItem.createdAt).toLocaleString()}</p>
+                    <p className="text-[9px] font-bold uppercase tracking-widest text-slate-400 mb-2">Submission Date</p>
+                    <div className="bg-slate-50 px-4 py-3 rounded-2xl border border-slate-100">
+                        <p className="text-sm font-semibold text-slate-700">{new Date(selectedItem.createdAt).toLocaleDateString()} at {new Date(selectedItem.createdAt).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</p>
+                    </div>
                   </div>
+
                   <div>
-                    <p className="text-[9px] font-bold uppercase tracking-widest text-slate-400 mb-2">Inquiry Type</p>
-                    <div className="flex items-center gap-2">
+                    <p className="text-[9px] font-bold uppercase tracking-widest text-slate-400 mb-2">Inquiry Metadata</p>
+                    <div className="flex items-center gap-2 mt-1">
                       {getFormTypeBadge(selectedItem.formType)}
+                      <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest ml-1">ID: {selectedItem._id.slice(-8)}</span>
                     </div>
                   </div>
                </div>
 
-               {selectedItem.service && (
-                 <div>
-                    <p className="text-[9px] font-bold uppercase tracking-widest text-slate-400 mb-2">Service / Product</p>
-                    <p className="text-sm font-semibold text-[#0371a3] bg-sky-50 px-4 py-2 rounded-xl inline-block border border-sky-100">
-                      {selectedItem.service}
-                    </p>
-                 </div>
-               )}
+               <div className="h-px bg-slate-100 w-full"></div>
 
-               <div>
-                  <p className="text-[9px] font-bold uppercase tracking-widest text-slate-400 mb-2">Additional Requirements</p>
-                  <div className="bg-slate-50 p-6 rounded-3xl border border-slate-100 italic text-slate-600 text-sm leading-relaxed font-medium">
-                    "{selectedItem.description || 'No additional requirements.'}"
-                  </div>
+               <div className="grid grid-cols-1 gap-8">
+                    {selectedItem.service && (
+                        <div>
+                            <p className="text-[9px] font-bold uppercase tracking-widest text-slate-400 mb-3">Targeted Service / Product</p>
+                            <div className="inline-flex items-center gap-3 bg-[#0371a3] text-white px-5 py-3 rounded-2xl shadow-md shadow-sky-900/10">
+                                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" /></svg>
+                                <span className="text-sm font-bold tracking-tight">{selectedItem.service}</span>
+                            </div>
+                        </div>
+                    )}
+
+                    <div>
+                        <p className="text-[9px] font-bold uppercase tracking-widest text-slate-400 mb-3">Business Requirements</p>
+                        <div className="bg-slate-50 p-8 rounded-[2rem] border border-slate-100 relative group min-h-[120px]">
+                            <svg className="absolute top-4 right-6 w-10 h-10 text-slate-100 group-hover:text-slate-200 transition-colors" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" /></svg>
+                            <p className="relative z-10 text-slate-600 text-[15px] leading-relaxed font-medium italic">
+                                {selectedItem.description || 'The user did not provide any specific additional requirements or comments.'}
+                            </p>
+                        </div>
+                    </div>
                </div>
+            </div>
+
+            {/* Footer Actions */}
+            <div className="p-6 bg-slate-50/80 border-t border-slate-100 flex items-center justify-end gap-3 shrink-0">
+                <button 
+                   onClick={() => setSelectedItem(null)}
+                   className="px-6 py-2.5 rounded-xl text-xs font-bold text-slate-400 hover:text-slate-600 transition-all uppercase tracking-widest"
+                >
+                   Close Detail
+                </button>
+                <a 
+                   href={`mailto:${selectedItem.email}`}
+                   className="bg-[#0371a3] text-white px-8 py-3 rounded-xl font-bold text-xs hover:shadow-xl transition-all flex items-center gap-2 shadow-lg shadow-sky-900/20"
+                >
+                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+                   Reply via Email
+                </a>
             </div>
           </div>
         </div>

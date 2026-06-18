@@ -12,6 +12,9 @@ const options = {
     strict: true,
     deprecationErrors: true,
   },
+  connectTimeoutMS: 10000,
+  socketTimeoutMS: 45000,
+  maxPoolSize: 10,
 };
 
 let client: MongoClient;
@@ -21,16 +24,11 @@ const globalForMongo = globalThis as typeof globalThis & {
   _mongoClientPromise?: Promise<MongoClient>;
 };
 
-if (process.env.NODE_ENV === "development") {
-  if (!globalForMongo._mongoClientPromise) {
-    client = new MongoClient(uri, options);
-    globalForMongo._mongoClientPromise = client.connect();
-  }
-
-  clientPromise = globalForMongo._mongoClientPromise;
-} else {
+if (!globalForMongo._mongoClientPromise) {
   client = new MongoClient(uri, options);
-  clientPromise = client.connect();
+  globalForMongo._mongoClientPromise = client.connect();
 }
+
+clientPromise = globalForMongo._mongoClientPromise;
 
 export default clientPromise;

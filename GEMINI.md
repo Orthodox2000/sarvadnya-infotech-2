@@ -4,17 +4,26 @@
 - Always mention the application version number when presenting changes or updates.
 - Versioning follows the format `v1.1.x`.
 - Increment the patch version automatically for every iteration/significant set of changes.
-- Current Version: v1.1.380
+- Current Version: v1.1.386
+
+## Recent Changes (v1.1.386)
+- **AI Strategic Insight Integration:** Enhanced the Solution Finder (/find-solution) with dynamic, AI-generated strategic advisory summaries.
+    *   **Specialized AI Route:** Created `/api/ai/strategic-insight` powered by Groq's Llama-3.3-70B model, utilizing a "Senior Strategic Business Consultant" persona for authoritative, growth-oriented analysis.
+    *   **Dynamic Insight Generation:** Replaced static template-based strings with personalized, data-driven insights that analyze user answers, business scores, and recommended products in real-time.
+    *   **UX Optimization:** Implemented a sophisticated loading pulse state for the "Strategic Insight" card, ensuring a smooth transition while the AI analyzes the consultation results.
+    *   **Data Capture Sync:** Integrated the AI-generated strategic insight into the lead capture summary sent to the administration panel, providing the team with deeper context for follow-ups.
+- **Version Bump:** Updated application version to v1.1.386.
+
+## Recent Changes (v1.1.385)
+- **Admin Modal Layout & Stability Fixes:** Resolved reported issues with the detail modals in the administration panel.
+    *   **Error Resolution:** Removed the "Copy to Clipboard" functionality from Submissions and Applications detail views to prevent script errors in non-secure or restricted environments.
+    *   **Clipping Prevention:** Shortened the modals and transitioned from `items-center` to `items-start` positioning with an explicit top margin (`mt-12`). This ensures the header and content are never cut off by the viewport top edge.
+    *   **Geometry Calibration:** Implemented `max-h-[calc(100vh-8rem)]` with `overflow-y-auto` to ensure modals fit perfectly within the window while remaining fully scrollable.
+- **Version Bump:** Updated application version to v1.1.384.
+
+## Recent Changes (v1.1.383)
 
 ## Recent Changes (v1.1.380)
-- **Consultation Logic Documentation (Find Solution):** Codified the entire strategic consultation flow into a comprehensive technical master document.
-    *   **Questionnaire Tree Mapping:** Documented all 4 phases of the consultation questionnaire, including branching logic, industry-specific triggers (Logistics, Manufacturing, Garments), and modernization endpoints.
-    *   **Knowledge Base Formalization:** Cataloged the complete mapping between user requirements and Sarvadnya's product/service portfolio (Core Tally, Cloud, Vertical Modules, and TDLs).
-    *   **Strategic Rule Engine:** Documented the AI analyst's internal rules for priority assignment, category distribution, and industry-specific TDL descriptive naming.
-    *   **Architecture Traceability:** Linked the logical flow to the technical implementation in `app/find-solution/page.tsx`, providing a clear path for future logic audits or expansions.
-- **Version Bump:** Updated application version to v1.1.380.
-
-## Recent Changes (v1.1.379)
 
 ## Recent Changes (v1.1.378)
 - **Form Constraint Hardening:** Implemented strict numeric validation for phone number fields across all contact and application forms.

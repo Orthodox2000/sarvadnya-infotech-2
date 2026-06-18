@@ -5,8 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
-    "temp": "next dev --experimental-https"
+    "start": "next start"
   },
   "dependencies": {
     "@vercel/blob": "^2.4.0",

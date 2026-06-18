@@ -10,10 +10,11 @@ This document serves as a structured map of the Sarvadnya Infotech LLP website t
 - **Contact Support (`/contact`)**: Primary hub for priority technical support and callback requests.
 - **Capabilities (`/capabilities`)**: Breakdown of our core technical and industrial competencies.
 - **Careers (`/careers`)**: Job openings and culture at Sarvadnya Infotech.
-- **Search (`/search`)**: Dedicated results page for finding content across the entire portal.
+- **Find Solution (`/find-solution`)**: Multi-step strategic consultation engine for personalized product roadmaps.
+- **Search (`/search`)**: Dedicated results page with AI-powered quick summaries.
 - **Privacy Policy (`/privacy`)**: Data protection and privacy standards.
 - **Terms & Conditions (`/terms`)**: Legal terms of service and usage.
-- **Ask Sara (`/ask-sara`)**: Direct access to our AI Assistant for instant Tally help.
+- **Ask Sara (`/ask-sara`)**: Direct access to our AI Assistant for instant Tally help with TTS support.
 
 ## Services & Expertise
 - **AMC (`/services/amc`)**: Annual Maintenance Contracts for continuous Tally support.
@@ -35,10 +36,11 @@ This document serves as a structured map of the Sarvadnya Infotech LLP website t
 - **Specialized Admin**: Dedicated routes for **Modules**, **Learning**, **FAQ**, and **Reviews**.
 
 ## Support & Interaction
-- **AI Chatbot**: Available on the bottom-right of every page for instant detailed answers.
+- **Find Solution Engine**: logic-based questionnaire for guided infrastructure discovery.
+- **AI Chatbot (Ask Sara)**: Available on the bottom-right of every page with Text-to-Speech vocalization.
 - **WhatsApp Support**: Direct connection via the dedicated floating button.
 - **Priority Callbacks**: Request a call back from our technical team via the Home or Contact pages.
 
 ---
-*Version: v1.1.185*
-*Last Updated: May 2026*
+*Version: v1.1.380*
+*Last Updated: June 18, 2026*
