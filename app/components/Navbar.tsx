@@ -74,7 +74,7 @@ export default function Navbar({ initialSettings }: { initialSettings?: any }) {
           href="/"
           className="flex items-center h-full justify-start group transition-transform hover:scale-[1.01]  "
         >
-          <div className="relative block w-40 lg:w-[230px] h-full  shrink-0 opacity-90  group-hover:opacity-100 transition-opacity ">
+          <div className="relative block w-72 lg:w-90 h-full  shrink-0 opacity-90 group-hover:opacity-100 transition-opacity ">
             <Image
               src="/TallyCertificate.png"
               alt="Sarvadnya Infotech logo"
@@ -83,7 +83,7 @@ export default function Navbar({ initialSettings }: { initialSettings?: any }) {
               className="object-contain "
               priority
             />
-          </div>
+          {/* </div>
           <div className="flex items-center">
 
             <div className="flex flex-col ml-2 sm:ml-1.5 lg:ml-3 leading-none">
@@ -94,7 +94,8 @@ export default function Navbar({ initialSettings }: { initialSettings?: any }) {
                 Infotech LLP
               </span>
             </div>
-          </div>
+            */}
+          </div> 
         </Link>
 
         {/* Desktop Navigation */}
