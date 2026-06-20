@@ -74,7 +74,7 @@ export default function Navbar({ initialSettings }: { initialSettings?: any }) {
           href="/"
           className="flex items-center h-full justify-start group transition-transform hover:scale-[1.01]  "
         >
-          <div className="relative block w-72 lg:w-90 h-full  shrink-0 opacity-90 group-hover:opacity-100 transition-opacity ">
+          <div className="relative block w-72 lg:w-100 h-full  shrink-0 opacity-90 group-hover:opacity-100 transition-opacity ">
             <Image
               src="/TallyCertificate.png"
               alt="Sarvadnya Infotech logo"
