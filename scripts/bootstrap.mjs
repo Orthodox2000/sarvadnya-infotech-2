@@ -38,7 +38,7 @@ async function run() {
 
     const heroContents = [
       {
-        badge: "Upgraded to Tally 7.0",
+        badge: "Upgraded to latest Tally version",
         titleText: "Trusted Tally Partner in Navi Mumbai - Why Choose Sarvadnya Infotech LLP?",
         colorFrom: "#4f46e5",
         colorTo: "#7c3aed",

@@ -6,6 +6,10 @@
 - Increment the patch version automatically for every iteration/significant set of changes.
 - Current Version: v1.1.388
 
+## Recent Changes (v1.1.389)
+- **Branding Convention:** Deprecated explicit "Tally 7.0" references in favor of "latest Tally version" across all UI labels, scripts, and documentation for improved longevity and brand clarity.
+- **Version Bump:** Updated application version to v1.1.389.
+
 ## Recent Changes (v1.1.388)
 - **Vercel Performance Integration:** Enabled Vercel Speed Insights and Analytics to monitor site performance and user engagement.
     *   **Package Integration:** Installed `@vercel/analytics` and `@vercel/speed-insights` dependencies.

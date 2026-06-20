@@ -4,7 +4,7 @@ import { updateContent } from '@/lib/mongodb-utils';
 export async function GET() {
   const heroContents = [
     {
-      badge: "Upgraded to Tally 7.0",
+      badge: "Upgraded to latest Tally version",
       titleText: "Trusted Tally Partner in Navi Mumbai",
       colorFrom: "#4f46e5",
       colorTo: "#7c3aed",

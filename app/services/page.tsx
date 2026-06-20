@@ -27,7 +27,7 @@ const ServiceDetailPopup = ({ isOpen, onClose, service, onEnquire }: ServicePopu
   if (!isOpen || !service) return null;
   return (
     <div className="fixed inset-0 z-[100000] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200" onClick={onClose}>
-      <div className="bg-white rounded-[2.5rem] p-6 md:p-10 max-w-2xl w-full shadow-2xl relative animate-in zoom-in-95 duration-200 max-h-[90vh] overflow-y-auto border border-slate-100" onClick={e => e.stopPropagation()}>
+      <div className="bg-white rounded-2xl p-6 md:p-8 max-w-2xl w-full shadow-2xl relative animate-in zoom-in-95 duration-200 max-h-[90vh] overflow-y-auto border border-slate-100" onClick={e => e.stopPropagation()}>
         <button className="absolute top-6 right-6 text-slate-400 hover:text-[#0371a3] transition-colors" onClick={onClose}>
           <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
         </button>
@@ -106,8 +106,8 @@ export default function ServicesPage() {
   const supportServices = [
     {
       title: "Corporate Training",
-      simpleDesc: "Master-level TallyPrime skills for your workforce.",
-      detailedDesc: "Strategic training programs covering advanced statutory features, audit trails, and management reporting to maximize productivity.",
+      simpleDesc: "Advanced certification programs designed to transform your accounting staff into TallyPrime power users. We focus on statutory compliance and high-efficiency workflows.",
+      detailedDesc: "Our Corporate Training is a strategic investment in your human capital. We move beyond basic entries to teach advanced statutory features, audit trails, and complex management reporting. The program includes hands-on workshops on multi-company management and security configurations, ensuring your team can maximize TallyPrime's potential to drive business growth.",
       features: ["GST/TDS Statutory mastery", "Advanced MIS Reporting", "Audit Trail implementation", "Automated BRS workflows", "Multi-company management", "Security configuration"],
       tag: "Training",
       iconBg: "bg-[#0371a3]",
@@ -120,8 +120,8 @@ export default function ServicesPage() {
     },
     {
       title: "Data Integration",
-      simpleDesc: "Seamless connectivity with CRM, ERP & E-commerce.",
-      detailedDesc: "Break data silos with bidirectional sync between Tally and your custom apps using advanced API and XML techniques.",
+      simpleDesc: "Eliminate manual data entry with bidirectional sync between Tally and your CRM, ERP, or E-commerce platforms using secure API bridges.",
+      detailedDesc: "Break down data silos across your organization. We architect custom integration layers that allow real-time data flow between TallyPrime and external applications. Whether it is syncing sales from Shopify, leads from Salesforce, or payroll from an external HRMS, our integration services ensure data integrity and eliminate the risk of human error.",
       features: ["Real-time API sync", "Excel bulk migration", "CRM & Marketplace sync", "Database bridge development", "Automated data scheduling", "Error validation logic"],
       tag: "Integration",
       iconBg: "bg-[#00ABE4]",
@@ -133,8 +133,8 @@ export default function ServicesPage() {
     },
     {
       title: "TSS Renewal",
-      simpleDesc: "Latest statutory & product updates.",
-      detailedDesc: "Keep your Tally always up-to-date with the latest statutory changes, product enhancements, and remote access features.",
+      simpleDesc: "Ensure zero-day access to the latest statutory updates and product enhancements with priority Tally Software Services (TSS) management.",
+      detailedDesc: "TSS is the heartbeat of your Tally ecosystem. We handle the entire renewal lifecycle, ensuring you never miss a critical statutory update or a new product feature. Beyond renewal, we help you activate and utilize Tally.NET services for remote access and synchronized data, keeping your business compliant and agile.",
       features: ["Latest Statutory Updates", "Remote Access via Browser", "Data Synchronization", "Bank Reconciliation (Auto)", "Latest Product Releases", "Tally.NET Services"],
       tag: "Renewal",
       iconBg: "bg-[#131921]",
@@ -147,8 +147,8 @@ export default function ServicesPage() {
     },
     {
       title: "TDL Customization",
-      simpleDesc: "Bespoke modules tailored to your unique logic.",
-      detailedDesc: "Development of custom TDL modules, invoice formats, and specialized reports integrated directly into Tally.",
+      simpleDesc: "Bespoke business logic developed via Tally Definition Language (TDL) to automate your unique industry workflows and reporting.",
+      detailedDesc: "Every business has a unique DNA. We build custom TDL modules that extend Tally's core functionality to match your specific operational needs. From specialized invoice formats and field-level validations to complex analytical reports, we ensure Tally works exactly the way your business does, not the other way around.",
       features: ["Industry module design", "Customized Invoices", "Field-level validations", "Analytical reports", "Digital Signatures", "Email/SMS automation"],
       tag: "TDL",
       iconBg: "bg-[#0371a3]",
@@ -162,8 +162,8 @@ export default function ServicesPage() {
     },
     {
       title: "Tally on Mobile",
-      simpleDesc: "Real-time decision making at your fingertips.",
-      detailedDesc: "Secure mobile solutions to view outstandings, sales reports, and inventory status directly on your smartphone.",
+      simpleDesc: "Enterprise-grade mobile dashboards providing real-time visibility into sales, outstandings, and inventory from any device.",
+      detailedDesc: "Empower your leadership with data-driven decision making on the go. Our mobile solutions bridge the gap between the office and the field, allowing secure access to critical Tally reports. With end-to-end encryption and real-time sync, you can monitor business health and approve transactions without being tied to a desk.",
       features: ["Live Sales Dashboards", "WhatsApp sharing", "Ageing & Alert sync", "End-to-end encryption", "Customer info on the go", "Stock status tracking"],
       tag: "Mobile",
       iconBg: "bg-[#00ABE4]",
@@ -176,8 +176,8 @@ export default function ServicesPage() {
     },
     {
       title: "AMC Services",
-      simpleDesc: "Priority technical support with zero downtime.",
-      detailedDesc: "Your safety net for troubleshooting, data recovery, and regular health checkups to ensure business continuity.",
+      simpleDesc: "Premium annual maintenance contracts ensuring 99.9% uptime with priority technical support and proactive system health audits.",
+      detailedDesc: "Our AMC is more than just a support contract; it is a business continuity guarantee. We provide a rigorous safety net involving 15-minute response SLAs, unlimited remote troubleshooting, and quarterly health checkups. From emergency data recovery to performance tuning, we ensure your Tally environment remains stable and secure.",
       features: ["15-min response SLA", "Priority troubleshooting", "System health audits", "Data recovery experts", "Unlimited remote support", "Quarterly health checks"],
       tag: "Support",
       iconBg: "bg-[#131921]",
@@ -190,8 +190,8 @@ export default function ServicesPage() {
     },
     {
       title: "Tally on WhatsApp",
-      simpleDesc: "Automated document sharing via WhatsApp.",
-      detailedDesc: "Integrate Tally with WhatsApp to send invoices, reminders, and reports instantly to your customers.",
+      simpleDesc: "Automated document delivery and customer communication integrated directly with your TallyPrime data for instant engagement.",
+      detailedDesc: "Transform your customer experience by automating the flow of invoices, payment reminders, and ledger statements via WhatsApp. By integrating Tally with the world's most popular messaging app, you reduce payment cycles and improve transparency, all while maintaining a professional and secure communication channel.",
       features: ["Automated PDF Sharing", "Payment Reminders", "Ledger Queries", "Bulk Marketing", "24/7 Availability", "Secure Integration"],
       tag: "WhatsApp",
       iconBg: "bg-[#25D366]",
@@ -235,10 +235,10 @@ export default function ServicesPage() {
           {supportServices.map((s) => (
             <div 
               key={s.title} 
-              className="group relative bg-white rounded-[2rem] p-8 border border-slate-100 shadow-sm hover:shadow-2xl hover:shadow-[#0371a3]/10 transition-all duration-500 flex flex-col h-full hover:-translate-y-2"
+              className="group relative bg-white rounded-xl p-6 border border-slate-100 shadow-sm hover:shadow-2xl hover:shadow-[#0371a3]/10 transition-all duration-500 flex flex-col h-full hover:-translate-y-2"
             >
               {/* Icon Container */}
-              <div className={`w-14 h-14 rounded-2xl flex items-center justify-center ${s.iconBg} text-white mb-8 shadow-lg transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3`}>
+              <div className={`w-14 h-14 rounded-lg flex items-center justify-center ${s.iconBg} text-white mb-8 shadow-lg transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3`}>
                 {s.icon}
               </div>
 
@@ -259,14 +259,14 @@ export default function ServicesPage() {
               <div className="space-y-3">
                  <button 
                   onClick={() => setSelectedService(s)}
-                  className="w-full py-3.5 bg-slate-50 text-[#0371a3] rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-[#0371a3] hover:text-white transition-all duration-500 flex items-center justify-center gap-2"
+                  className="w-full py-3.5 bg-slate-50 text-[#0371a3] rounded-lg font-black text-[10px] uppercase tracking-widest hover:bg-[#0371a3] hover:text-white transition-all duration-500 flex items-center justify-center gap-2"
                 >
                   View Details
                   <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
                 </button>
                 <button 
                   onClick={() => openModal('enquire', s.title)}
-                  className="w-full py-3.5 bg-black text-white rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-white hover:text-black border border-transparent hover:border-black transition-all duration-500 shadow-sm"
+                  className="w-full py-3.5 bg-black text-white rounded-lg font-black text-[10px] uppercase tracking-widest hover:bg-white hover:text-black border border-transparent hover:border-black transition-all duration-500 shadow-sm"
                 >
                   Enquire Now
                 </button>

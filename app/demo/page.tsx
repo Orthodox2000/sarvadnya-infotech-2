@@ -10,7 +10,7 @@ import QuickAccessHubDemo from '../components/QuickAccessHubDemo';
 
 const demoHeroData = [
   {
-    badge: "Upgraded to Tally 7.0",
+    badge: "Upgraded to latest Tally version",
     titleText: "Trusted Tally Partner in Navi Mumbai",
     colorFrom: "#232F3E",
     colorTo: "#00ABE4",
