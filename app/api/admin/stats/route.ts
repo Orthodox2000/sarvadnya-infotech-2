@@ -5,6 +5,7 @@ export async function GET() {
   try {
     const stats: any = {
       submissions: 0,
+      problemReports: 0,
       applications: 0,
       modules: 0,
       learning: 0,
@@ -17,6 +18,10 @@ export async function GET() {
     // Submissions count
     const submissionsCol = await getCollection('form_submissions');
     stats.submissions = await submissionsCol.countDocuments();
+
+    // Problem reports count
+    const problemReportsCol = await getCollection('problem_reports');
+    stats.problemReports = await problemReportsCol.countDocuments();
 
     // Applications count
     const applicationsCol = await getCollection('job_applications');

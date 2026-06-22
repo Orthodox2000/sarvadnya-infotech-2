@@ -13,6 +13,7 @@ type HealthStatus = {
 
 type AdminStats = {
   submissions: number;
+  problemReports: number;
   applications: number;
   modules: number;
   learning: number;
@@ -58,6 +59,7 @@ export default function AdminDashboard() {
       title: 'Leads & Inquiries',
       items: [
         { label: 'Submissions', value: stats?.submissions || 0, href: '/admin/submissions', icon: 'M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z', color: 'bg-blue-50 text-blue-600' },
+        { label: 'Problem Reports', value: stats?.problemReports || 0, href: '/admin/problem-reports', icon: 'M12 9v2m0 4h.01M4.75 20h14.5a2.25 2.25 0 001.95-3.38L14.2 4.62a2.25 2.25 0 00-3.9 0L2.8 16.62A2.25 2.25 0 004.75 20z', color: 'bg-amber-50 text-amber-600' },
         { label: 'Applications', value: stats?.applications || 0, href: '/admin/careers', icon: 'M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z', color: 'bg-emerald-50 text-emerald-600' },
       ]
     },

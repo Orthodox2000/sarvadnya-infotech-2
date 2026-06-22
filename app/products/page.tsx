@@ -5,6 +5,17 @@ import Footer from '../components/Footer';
 import UnifiedContactModal, { FormType } from '../components/UnifiedContactModal';
 import Link from 'next/link';
 
+type ComparisonCard = {
+  name: string;
+  type: string;
+  summary: string;
+  includes: string;
+  tags: string[];
+  link: string;
+  cardClass: string;
+  stripClass: string;
+};
+
 export default function ProductsPage() {
   const [modalConfig, setModalConfig] = useState<{isOpen: boolean; type: FormType; service: string; details: string}>({
     isOpen: false,
@@ -17,36 +28,41 @@ export default function ProductsPage() {
     setModalConfig({ isOpen: true, type, service, details });
   };
 
-  const products = [
+  const products: ComparisonCard[] = [
     {
       name: "TallyPrime Silver",
-      type: "Essential",
-      price: "Single User",
-      summary: "Perfect for sole proprietors and small businesses, TallyPrime Silver offers complete accounting, inventory, and compliance management on a single computer.",
-      color: "#0371a3",
+      type: "For one user",
+      summary: "Core accounting, inventory, GST, and reporting for one workstation.",
+      includes: "Best for a single owner or operator who manages everything alone.",
+      tags: ["1 user", "Single PC"],
+      cardClass: "bg-white border-slate-200",
+      stripClass: "bg-slate-200",
       link: "/products/silver"
     },
     {
       name: "TallyPrime Gold",
-      type: "Professional",
-      price: "Multi-User",
-      summary: "The industry standard for growing businesses. Allows unlimited users on a local network (LAN) and concurrent access to data.",
-      color: "#0371a3",
-      popular: true,
+      type: "For shared teams",
+      summary: "All Silver features plus shared LAN access for teams working on the same data.",
+      includes: "Best for small offices where sales, accounts, and purchase teams share one company file.",
+      tags: ["Silver included", "Shared LAN"],
+      cardClass: "bg-[#f8fbff] border-sky-200",
+      stripClass: "bg-sky-200",
       link: "/products/gold"
     },
     {
       name: "TallyPrime Server",
-      type: "Enterprise",
-      price: "Large Business",
-      summary: "Enterprise-class product that provides high data concurrency and security for organizations with large user bases.",
-      color: "#0371a3",
+      type: "For bigger teams",
+      summary: "All Gold and Silver features plus faster shared access, tighter control, and user logs.",
+      includes: "Best for larger MSMEs that need more control across users and branches.",
+      tags: ["Gold included", "Access logs"],
+      cardClass: "bg-white border-slate-200",
+      stripClass: "bg-slate-300",
       link: "/products/server"
     }
   ];
 
   return (
-    <div className="min-h-screen bg-[#ecf5fa]">
+    <div className="min-h-screen bg-[#f2f1f0]">
       {/* Hero Section (Radiant Sky Theme) */}
       <section className="bg-white relative pt-12 pb-16 md:pt-20 md:pb-24 px-6 overflow-hidden border-b border-[#0371a3]/10"> 
         <div className="absolute inset-0 opacity-40 pointer-events-none">
@@ -71,37 +87,60 @@ export default function ProductsPage() {
 
       {/* Comparison Grid */}
       <section id="compare" className="py-20 px-6 max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {products.map((p) => (
-            <div 
-              key={p.name} 
-              className={`relative bg-white rounded-[32px] p-8 border border-slate-100 flex flex-col shadow-sm hover:shadow-2xl transition-all duration-500 group overflow-hidden`}
-              style={p.popular ? { borderColor: p.color } : {}}
-            >
-              {p.popular && (
-                <div className="absolute top-6 right-6 bg-[#0371a3] text-white text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest shadow-lg">
-                  Most Popular
-                </div>
-              )}
+        <h2 className="text-3xl md:text-5xl font-black text-slate-900 tracking-tight mb-10">
+          TallyPrime Edition Comparison
+        </h2>
 
-              <div className="mb-6">
-                <span className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2 block">{p.type} Edition</span>
-                <h3 className="text-2xl font-black text-slate-900 mb-1 group-hover:text-[#0371a3] transition-colors">{p.name}</h3>
-                <div className="text-[#0371a3] font-bold text-sm">{p.price}</div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 lg:gap-4">
+          {products.map((p) => (
+            <div
+              key={p.name}
+              className={`relative overflow-hidden rounded-[1.5rem] border p-4 md:p-[18px] flex flex-col shadow-sm hover:shadow-lg transition-all duration-300 ${p.cardClass} min-h-[19rem] md:min-h-[20.5rem]`}
+            >
+              <div className={`absolute inset-x-0 top-0 h-1 ${p.stripClass}`} />
+
+              <div className="relative mb-4">
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white border border-slate-200 text-[10px] font-black uppercase tracking-[0.18em] text-slate-500">
+                  {p.type}
+                </span>
+                <h3 className="mt-3 text-lg md:text-xl font-black text-slate-900 tracking-tight">
+                  {p.name}
+                </h3>
+                <p className="mt-2 text-[13px] leading-snug text-slate-600">
+                  {p.summary}
+                </p>
               </div>
 
-              <p className="text-slate-600 text-sm leading-relaxed mb-8 flex-grow">{p.summary}</p>
+              <div className="rounded-2xl bg-slate-50 border border-slate-100 p-3 mb-3.5">
+                <div className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-1.5">
+                  Includes
+                </div>
+                <p className="text-[13px] text-slate-700 leading-snug">
+                  {p.includes}
+                </p>
+              </div>
 
-              <div className="flex gap-3 mt-auto">
-                <button 
-                  onClick={() => openModal('enquire', p.name)}
-                  className="flex-1 py-3 bg-slate-900 text-white rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-[#0371a3] transition-all shadow-md"
+              <div className="flex flex-wrap gap-1.5 mb-4">
+                {p.tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="inline-flex items-center rounded-full border border-slate-200 bg-white px-2 py-1 text-[10px] font-bold uppercase tracking-[0.12em] text-slate-500"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+
+              <div className="mt-auto flex gap-3">
+                <button
+                  onClick={() => openModal('quote', p.name, p.summary)}
+                  className="flex-1 rounded-xl bg-[#0371a3] py-2.5 text-[10px] font-black uppercase tracking-[0.14em] text-white transition-colors hover:bg-[#00ABE4]"
                 >
-                  Get License
+                  Request Quote
                 </button>
-                <Link 
+                <Link
                   href={p.link}
-                  className="flex-1 py-3 bg-slate-50 text-slate-600 rounded-xl font-bold text-[10px] uppercase tracking-widest hover:bg-slate-100 transition-all border border-slate-100 block text-center"
+                  className="flex-1 rounded-xl border border-slate-200 bg-white py-2.5 text-center text-[10px] font-black uppercase tracking-[0.14em] text-slate-700 transition-colors hover:bg-slate-50"
                 >
                   Know More
                 </Link>
@@ -112,94 +151,77 @@ export default function ProductsPage() {
       </section>
 
       {/* TallyDrive Detailed Features Section */}
-      <section id="tallydrive" className="py-24 px-6 bg-white border-y border-slate-100 overflow-hidden relative">
-        <div className="absolute top-0 right-0 w-1/3 h-full bg-sky-50/50 -skew-x-12 transform translate-x-1/2" />
-        
-        <div className="max-w-7xl mx-auto relative z-10">
-          <div className="flex flex-col lg:flex-row gap-16 items-center">
-            <div className="flex-1">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#0371a3]/10 text-[#0371a3] text-[10px] font-black uppercase tracking-widest mb-6">
-                Integrated Cloud Backup
-              </div>
-              <h2 className="text-3xl md:text-5xl font-black text-slate-900 mb-6 leading-tight">
-                Secure Your Data with <br />
-                <span className="text-[#0371a3]">TallyDrive v7.0</span>
-              </h2>
-              <p className="text-slate-600 text-lg leading-relaxed mb-10 font-medium max-w-2xl">
-                TallyDrive is the official encrypted cloud backup solution for TallyPrime. It ensures your business data is always safe, accessible, and recoverable, protecting you against hardware failure and ransomware.
-              </p>
+      <section id="tallydrive" className="py-20 px-6 bg-white border-y border-slate-100 overflow-hidden relative">
+        <div className="absolute top-0 right-0 w-1/3 h-full bg-sky-50/60 -skew-x-12 transform translate-x-1/2" />
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {[
-                  { title: "Automated Scheduling", desc: "Set it once and forget it. Backups run automatically without manual intervention.", icon: (
-                    <svg className="w-6 h-6 text-[#0371a3]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                  )},
-                  { title: "Military-Grade Encryption", desc: "AES-256 bit encryption ensures your financial data remains private and secure.", icon: (
-                    <svg className="w-6 h-6 text-[#0371a3]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                    </svg>
-                  )},
-                  { title: "Instant Restoration", desc: "Download and restore your data in minutes in case of local system failure.", icon: (
-                    <svg className="w-6 h-6 text-[#0371a3]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                    </svg>
-                  )},
-                  { title: "Ransomware Protection", desc: "Secure cloud vault prevents unauthorized access and data corruption.", icon: (
-                    <svg className="w-6 h-6 text-[#0371a3]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                    </svg>
-                  )}
-                ].map((item, i) => (
-                  <div key={i} className="p-6 bg-[#ecf5fa] rounded-2xl border border-sky-100 hover:shadow-xl hover:shadow-sky-900/5 transition-all">
-                    <div className="w-12 h-12 rounded-xl bg-white flex items-center justify-center shadow-sm mb-4">
-                      {item.icon}
-                    </div>
-                    <h4 className="font-black text-slate-900 mb-2">{item.title}</h4>
-                    <p className="text-sm text-slate-500 leading-relaxed font-bold">{item.desc}</p>
-                  </div>
-                ))}
-              </div>
+        <div className="max-w-7xl mx-auto relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
+          <div>
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#0371a3]/10 text-[#0371a3] text-[10px] font-black uppercase tracking-widest mb-6">
+              Secure cloud backup
             </div>
+            <h2 className="text-3xl md:text-5xl font-black text-slate-900 mb-6 leading-tight">
+              Secure Your Data with <br />
+              <span className="text-[#0371a3]">TallyDrive</span>
+            </h2>
+            <p className="text-slate-600 text-lg leading-relaxed mb-8 font-medium max-w-2xl">
+              TallyDrive is TallyPrime&apos;s secure cloud storage for company backups. It stores backups online, helps protect against local system failures, and supports automatic scheduling.
+            </p>
 
-            <div className="flex-1 w-full lg:max-w-md">
-              <div className="bg-white rounded-[2.5rem] p-10 text-slate-900 relative overflow-hidden shadow-2xl border border-slate-100">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-[#0371a3]/5 blur-[80px]" />
-                
-                <h3 className="text-2xl font-black mb-8 relative z-10 border-b border-slate-100 pb-4">TallyDrive Tiers</h3>
-                <div className="space-y-6 relative z-10">
-                  <div className="pb-6 border-b border-slate-50">
-                    <div className="flex justify-between items-center mb-2">
-                      <span className="font-black text-lg text-slate-900">Basic Edition</span>
-                      <span className="px-2 py-1 bg-slate-100 text-slate-500 rounded text-[9px] font-black uppercase tracking-widest">Free for Silver</span>
-                    </div>
-                    <p className="text-xs text-slate-500 font-bold leading-relaxed">Daily automated backups for single-user businesses. 1GB Secure Storage.</p>
-                  </div>
-                  <div className="pb-6 border-b border-slate-50">
-                    <div className="flex justify-between items-center mb-2">
-                      <span className="font-black text-lg text-[#0371a3]">Professional</span>
-                      <span className="px-2 py-1 bg-[#0371a3]/10 text-[#0371a3] rounded text-[9px] font-black uppercase tracking-widest">Free for Gold</span>
-                    </div>
-                    <p className="text-xs text-slate-500 font-bold leading-relaxed">Hourly incremental backups for multi-user networks. 5GB Secure Storage.</p>
-                  </div>
-                  <div>
-                    <div className="flex justify-between items-center mb-2">
-                      <span className="font-black text-lg text-slate-900">Enterprise</span>
-                      <span className="px-2 py-1 bg-slate-900 text-white rounded text-[9px] font-black uppercase tracking-widest">Included in Server</span>
-                    </div>
-                    <p className="text-xs text-slate-500 font-bold leading-relaxed">Real-time sync and version control. Unlimited companies. 25GB+ Storage.</p>
-                  </div>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              {[
+                {
+                  title: 'Automatic backups',
+                  desc: 'Schedule regular backups to TallyDrive, even when TallyPrime is not running.',
+                },
+                {
+                  title: 'Encrypted backup',
+                  desc: 'Use a Backup Password and Recovery Key to protect your backups.',
+                },
+                {
+                  title: 'Restore data',
+                  desc: 'Restore the latest backup or any previous version stored on TallyDrive.',
+                },
+              ].map((item) => (
+                <div key={item.title} className="p-5 bg-[#ecf5fa] rounded-2xl border border-sky-100">
+                  <h4 className="font-black text-slate-900 mb-2">{item.title}</h4>
+                  <p className="text-sm text-slate-500 leading-relaxed font-semibold">{item.desc}</p>
                 </div>
+              ))}
+            </div>
+          </div>
 
-                <button 
-                  onClick={() => openModal('callback', 'TallyDrive Upgrade')}
-                  className="mt-10 w-full py-4 bg-[#0371a3] text-white rounded-xl font-black text-xs uppercase tracking-widest hover:bg-slate-900 transition-all shadow-lg"
-                >
-                  Consult Backup Strategy
-                </button>
+          <div className="bg-white rounded-[2rem] p-7 md:p-8 text-slate-900 relative overflow-hidden shadow-xl border border-slate-100">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-[#0371a3]/5 blur-[80px]" />
+
+            <h3 className="text-2xl font-black mb-6 relative z-10 border-b border-slate-100 pb-4">Storage with active TSS</h3>
+            <div className="space-y-4 relative z-10">
+              <div className="flex items-center justify-between gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-100">
+                <div>
+                  <span className="block font-black text-slate-900">Single-User TallyPrime</span>
+                  <span className="text-xs text-slate-500 font-medium">Free storage with active TSS</span>
+                </div>
+                <span className="font-black text-[#0371a3]">1 GB</span>
+              </div>
+              <div className="flex items-center justify-between gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-100">
+                <div>
+                  <span className="block font-black text-slate-900">Multi-User TallyPrime</span>
+                  <span className="text-xs text-slate-500 font-medium">Free storage with active TSS</span>
+                </div>
+                <span className="font-black text-[#0371a3]">3 GB</span>
+              </div>
+              <div className="p-4 rounded-2xl bg-[#f0f9ff] border border-[#0371a3]/10">
+                <p className="text-sm text-slate-600 leading-relaxed font-medium">
+                  Use the TallyDrive Management report to monitor, download, and delete company backups, and manage storage and user rights.
+                </p>
               </div>
             </div>
+
+            <button 
+              onClick={() => openModal('callback', 'TallyDrive Backup')}
+              className="mt-8 w-full py-4 bg-[#0371a3] text-white rounded-xl font-black text-xs uppercase tracking-widest hover:bg-[#00ABE4] transition-all shadow-lg"
+            >
+              Consult Backup Strategy
+            </button>
           </div>
         </div>
       </section>

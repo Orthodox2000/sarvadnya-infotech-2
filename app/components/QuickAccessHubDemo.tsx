@@ -137,10 +137,10 @@ export default function QuickAccessHubDemo() {
       iconName: "cloud",
       theme: { accent: "bg-indigo-500", bg: "bg-indigo-50", text: "text-indigo-600", hoverBg: "hover:bg-indigo-600", border: "border-indigo-100" },
       links: [
-        { label: "Cloud Hosting", href: "/cloud" },
+        { label: "Cloud Hosting", href: "/cloud/aws" },
         { label: "Mobile App", href: "/services/mobile-app-biz" },
-        { label: "Remote Access", href: "/cloud#remote" },
-        { label: "Data Security", href: "/cloud#security" }
+        { label: "Remote Access", href: "/cloud/windows" },
+        { label: "Data Security", href: "/cloud/nosky" }
       ]
     },
     {
@@ -149,14 +149,14 @@ export default function QuickAccessHubDemo() {
       iconName: "custom",
       theme: { accent: "bg-purple-500", bg: "bg-purple-50", text: "text-purple-600", hoverBg: "hover:bg-purple-600", border: "border-purple-100" },
       links: dynamicModules.length > 0 
-        ? dynamicModules.map(m => ({ label: m.title, href: `/modules?id=${m._id}` }))
+        ? dynamicModules.map(m => ({ label: m.title, href: `/modules?id=${m.id || m._id}` }))
         : [
-            { label: "Logistics & Transport", href: "/modules#logistics" },
-            { label: "Retail & Garment", href: "/modules#retail" },
-            { label: "Housing Societies", href: "/modules#housing" },
-            { label: "Excel to Tally Tool", href: "/modules#excel" },
-            { label: "C&F Agencies", href: "/modules#cf" },
-            { label: "Sales Commission", href: "/modules#sales" }
+            { label: "Logistics & Transport", href: "/modules?id=logistics-transport" },
+            { label: "Retail & Garment", href: "/modules?id=garment-retail" },
+            { label: "Housing Societies", href: "/modules?id=housing-societies" },
+            { label: "Excel to Tally Tool", href: "/modules?id=excel-to-tally" },
+            { label: "C&F Agencies", href: "/modules?id=cf-agencies" },
+            { label: "Sales Commission", href: "/modules?id=sales-commission" }
           ]
     },
     {

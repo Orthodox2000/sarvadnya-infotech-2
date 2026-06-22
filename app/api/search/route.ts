@@ -145,7 +145,8 @@ export async function GET(request: Request) {
 
     // Search Modules
     modules.forEach((m: any) => {
-      const moduleUrl = `/modules?id=${m._id}`;
+      const moduleId = m.id || m._id;
+      const moduleUrl = `/modules?id=${moduleId}`;
       siteMap.push({ title: m.title, url: moduleUrl, description: m.description });
       if (m.title?.toLowerCase().includes(query) || m.description?.toLowerCase().includes(query)) {
         dbResults.push({

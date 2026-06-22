@@ -5,58 +5,47 @@ import Link from 'next/link';
 import Footer from '../../components/Footer';
 import UnifiedContactModal, { FormType } from '../../components/UnifiedContactModal';
 
-type ModalConfig = {
-  isOpen: boolean;
-  type: FormType;
-  service: string;
-  details: string;
-};
-
-type IconName = 'users' | 'shield' | 'logs' | 'branches' | 'zap' | 'chart';
-
-const buildContactHref = (service: string, message: string) =>
-  `/contact?service=${encodeURIComponent(service)}&message=${encodeURIComponent(message)}`;
+type IconName = 'monitor' | 'printer' | 'grid' | 'settings' | 'signal' | 'sliders';
 
 function FeatureIcon({ name }: { name: IconName }) {
   const common = 'w-6 h-6';
-  // Standard brand blue for all icons, no gold accents
   const iconColor = "text-[#0371a3]";
-
   switch (name) {
-    case 'users':
+    case 'monitor':
       return (
         <svg className={`${common} ${iconColor}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 20h5v-1a4 4 0 00-4-4h-1m0 5H7m10 0v-1a4 4 0 00-4-4H11a4 4 0 00-4 4v1m10 0H7m4-11a4 4 0 100-8 4 4 0 000 8zm6 3a3 3 0 10-6 0 3 3 0 006 0zm-12 0a3 3 0 116 0 3 3 0 01-6 0z" />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
         </svg>
       );
-    case 'shield':
+    case 'printer':
       return (
         <svg className={`${common} ${iconColor}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 3l7 3v5c0 5-3.1 9.4-7 11-3.9-1.6-7-6-7-11V6l7-3z" />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
         </svg>
       );
-    case 'logs':
+    case 'grid':
       return (
         <svg className={`${common} ${iconColor}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
         </svg>
       );
-    case 'branches':
+    case 'settings':
       return (
         <svg className={`${common} ${iconColor}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
         </svg>
       );
-    case 'zap':
+    case 'signal':
       return (
         <svg className={`${common} ${iconColor}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071a10 10 0 0114.14 0M4.929 8.93a15 15 0 0114.142 0" />
         </svg>
       );
-    case 'chart':
+    case 'sliders':
       return (
         <svg className={`${common} ${iconColor}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
         </svg>
       );
     default:
@@ -65,159 +54,95 @@ function FeatureIcon({ name }: { name: IconName }) {
 }
 
 const features = [
-  {
-    title: 'Multi-User Collaboration',
-    desc: 'Multiple users access the same company simultaneously over a local network with no data conflicts.',
-    icon: 'users' as IconName,
-  },
-  {
-    title: 'Role-Based Access Control',
-    desc: 'Assign user-level permissions to control who views, edits, or reports on sensitive company data.',
-    icon: 'shield' as IconName,
-  },
-  {
-    title: 'Centralised Audit Trail',
-    desc: 'Track every user action with detailed logs for accountability and simplified compliance audits.',
-    icon: 'logs' as IconName,
-  },
-  {
-    title: 'Multi-Branch Consolidation',
-    desc: 'Centralise data from multiple branches into one source of truth with zero duplication.',
-    icon: 'branches' as IconName,
-  },
-  {
-    title: 'Real-Time Sync',
-    desc: 'Changes made by any user reflect instantly across all connected workstations on the network.',
-    icon: 'zap' as IconName,
-  },
-  {
-    title: 'Cross-Branch Reporting',
-    desc: 'Generate consolidated financial reports across branches without manual data merging.',
-    icon: 'chart' as IconName,
-  },
+  { title: 'Native Desktop Feel', desc: 'A dedicated Windows virtual machine that keeps the familiar desktop workflow your team already knows.', icon: 'monitor' as IconName },
+  { title: 'Direct Printer Access', desc: 'Print directly from the VM to local printers, making it practical for office environments.', icon: 'printer' as IconName },
+  { title: 'Office Integration', desc: 'Seamlessly work with Excel, Word, and other Microsoft tools alongside TallyPrime.', icon: 'grid' as IconName },
+  { title: 'Full Admin Control', desc: 'Customise the VM environment to match your IT policies and business preferences.', icon: 'settings' as IconName },
+  { title: 'Remote Desktop Access', desc: 'Access the Windows desktop from anywhere using standard remote desktop protocols.', icon: 'signal' as IconName },
+  { title: 'Custom VM Sizing', desc: 'Right-sized virtual machine resources based on your team size and workload.', icon: 'sliders' as IconName },
+];
+
+const benefits = [
+  'Feels close to a local Windows desktop',
+  'Useful for printer-heavy office workflows',
+  'Good fit for Excel-based reporting tasks',
+  'Customisable to your IT preferences',
+  'No dedicated hardware required',
+  'Familiar environment reduces training time',
 ];
 
 const useCases = [
-  'Medium-sized businesses with multiple departments needing simultaneous access',
-  'Companies with branch offices requiring one source of truth',
-  'Wholesalers managing large transaction volumes across team members',
-  'Businesses prioritizing centralized data management and strict user-access control',
+  'Teams that rely on desktop add-ons and peripherals',
+  'Companies with printer-based invoice and report workflows',
+  'IT-managed business environments needing central control',
+  'Power users who prefer native Windows tools',
+  'Offices transitioning from local servers to cloud access',
 ];
 
-const differentiators = [
-  {
-    title: 'Team access',
-    desc: 'Multiple users work on the same company data at the same time over a local network.',
-  },
-  {
-    title: 'Central control',
-    desc: 'Data stays on one machine with user-level permissions, keeping access clean and auditable.',
-  },
-];
+export default function WindowsVMPage() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalType, setModalType] = useState<FormType>('quote');
+  const [modalService, setModalService] = useState('Windows VM');
+  const [modalDetails, setModalDetails] = useState('');
 
-const pricingRows = [
-  {
-    plan: 'TallyPrime Server',
-    bestFor: 'Larger teams needing tighter control',
-    price: 'Contact for pricing',
-  },
-  {
-    plan: 'TallyPrime Gold',
-    bestFor: 'Shared teams on one local network',
-    price: 'Contact for pricing',
-  },
-  {
-    plan: 'TallyPrime Silver',
-    bestFor: 'One user on one workstation',
-    price: 'Contact for pricing',
-  },
-];
-
-const ctaGroups = [
-  {
-    title: 'Sales and Demo',
-    buttons: [
-      { label: 'Get Price', type: 'quote' as FormType },
-      { label: 'Book Demo', type: 'demo' as FormType },
-      {
-        label: 'Contact Sales',
-        href: buildContactHref(
-          'TallyPrime Gold',
-          'Please share pricing and deployment details for TallyPrime Gold.'
-        ),
-      },
-    ],
-  },
-  {
-    title: 'Compare and Explore',
-    buttons: [
-      { label: 'Compare Editions', href: '/products#compare' },
-      { label: 'Know Silver', href: '/products/silver' },
-      { label: 'Know Server', href: '/products/server' },
-    ],
-  },
-  {
-    title: 'Support and Setup',
-    buttons: [
-      { label: 'Technical Support', type: 'support' as FormType },
-      { label: 'AMC Services', href: '/services/amc' },
-      { label: 'Corporate Training', href: '/services/corporate-training' },
-    ],
-  },
-];
-
-export default function TallyGoldPage() {
-  const [modalConfig, setModalConfig] = useState<ModalConfig>({
-    isOpen: false,
-    type: 'quote',
-    service: 'TallyPrime Gold',
-    details: '',
-  });
-
-  const openModal = (type: FormType, service = 'TallyPrime Gold', details = '') => {
-    setModalConfig({
-      isOpen: true,
-      type,
-      service,
-      details,
-    });
+  const openModal = (type: FormType, service = 'Windows VM', details = '') => {
+    setModalType(type);
+    setModalService(service);
+    setModalDetails(details);
+    setIsModalOpen(true);
   };
 
-  const scrollToPricing = () => {
-    document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' });
-  };
+  const ctaGroups = [
+    {
+      title: 'Sales and Demo',
+      buttons: [
+        { label: 'Get Price', type: 'quote' as FormType },
+        { label: 'Book Demo', type: 'demo' as FormType },
+        {
+          label: 'Contact Sales',
+          href: '/contact?service=Windows%20VM&message=Please%20share%20pricing%20and%20deployment%20details%20for%20Windows%20VM.',
+        },
+      ],
+    },
+    {
+      title: 'Support and Setup',
+      buttons: [
+        { label: 'Technical Support', type: 'support' as FormType },
+        { label: 'Backup Guidance', type: 'quote' as FormType },
+        { label: 'Corporate Training', href: '/services/corporate-training' },
+      ],
+    },
+  ];
 
   return (
-    <div className="min-h-screen bg-[#f3fafc] text-slate-900 font-sans">
+    <div className="min-h-screen bg-[#f3fafc] text-slate-900">
       <section className="relative overflow-hidden bg-gradient-to-br from-[#0371a3] to-[#0f172a] text-white">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_rgba(255,255,255,0.16),_transparent_30%),radial-gradient(circle_at_bottom_left,_rgba(0,171,228,0.1),_transparent_32%)]" />
-        
         <div className="relative z-10 max-w-7xl mx-auto px-6 py-20 md:py-24">
           <div className="max-w-4xl">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/15 text-white/80 text-[10px] font-black uppercase tracking-[0.25em] mb-6 backdrop-blur-sm">
               <span className="flex h-1.5 w-1.5 rounded-full bg-white" />
-              Multi-user edition
+              Native desktop
             </div>
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-black tracking-tight leading-[0.95] mb-6 text-white">
-              TallyPrime <span className='text-[#e2e8f0]'>Gold</span>
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-black tracking-tight leading-[0.95] mb-6">
+              Windows <span className="text-[#e2e8f0]">VM</span>
             </h1>
-            <p className="text-lg md:text-xl text-white/80 max-w-3xl leading-relaxed font-medium mb-8">
-              The multi-user edition for growing teams that need simultaneous access, centralized data, and branch-ready control on a local network.
+            <p className="text-lg md:text-xl text-white/85 max-w-3xl leading-relaxed font-medium mb-8">
+              A dedicated Windows virtual machine for teams that want the familiar desktop feel with remote access and full peripheral support.
             </p>
-
             <div className="flex flex-col sm:flex-row gap-3">
               <button
-                onClick={() => openModal('quote', 'TallyPrime Gold', 'Need pricing and deployment guidance.')}
+                onClick={() => openModal('quote', 'Windows VM', 'Please share pricing, sizing guidance, and setup details for Windows VM.')}
                 className="px-8 py-4 bg-white text-[#0371a3] rounded-2xl font-black text-xs uppercase tracking-[0.2em] hover:scale-[1.02] transition-transform shadow-xl"
               >
                 Enquire Now
               </button>
-              <button
-                onClick={scrollToPricing}
-                className="px-8 py-4 bg-transparent border-2 border-white text-white rounded-2xl font-black text-xs uppercase tracking-[0.2em] hover:bg-white hover:text-[#0371a3] transition-all shadow-xl text-center"
+              <a
+                href="#pricing"
+                className="px-8 py-4 rounded-2xl border border-white/20 text-white font-black text-xs uppercase tracking-[0.2em] hover:bg-white/10 transition-colors text-center"
               >
                 Get Price
-              </button>
+              </a>
             </div>
           </div>
         </div>
@@ -227,23 +152,23 @@ export default function TallyGoldPage() {
         <section>
           <div className="max-w-3xl mb-8">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-slate-200 text-[#0371a3] text-[10px] font-black uppercase tracking-[0.2em] mb-4 shadow-sm">
-              What Gold includes
+              What Windows VM includes
             </div>
             <h2 className="text-3xl md:text-5xl font-black text-slate-900 tracking-tight">
-              Powerful collaboration for growing teams.
+              The desktop experience, now remote.
             </h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2.5">
-            {features.map((item) => (
+            {features.map((feature) => (
               <article
-                key={item.title}
+                key={feature.title}
                 className="group bg-white p-3 rounded-lg border border-slate-100 shadow-sm hover:shadow-md transition-all duration-300"
               >
                 <div className="w-9 h-9 rounded-lg bg-[#f3fafc] text-[#0371a3] flex items-center justify-center mb-2 group-hover:scale-105 transition-transform">
-                  <FeatureIcon name={item.icon} />
+                  <FeatureIcon name={feature.icon} />
                 </div>
-                <h3 className="text-sm font-black text-slate-900 mb-1">{item.title}</h3>
-                <p className="text-sm text-slate-600 leading-relaxed">{item.desc}</p>
+                <h3 className="text-sm font-black text-slate-900 mb-1">{feature.title}</h3>
+                <p className="text-sm text-slate-600 leading-relaxed">{feature.desc}</p>
               </article>
             ))}
           </div>
@@ -252,11 +177,11 @@ export default function TallyGoldPage() {
         <section className="grid lg:grid-cols-2 gap-8">
           <div className="bg-white rounded-[2rem] p-7 md:p-8 border border-slate-100 shadow-sm">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#f0f9ff] border border-[#0371a3]/15 text-[#0371a3] text-[10px] font-black uppercase tracking-[0.2em] mb-5">
-              Best fit
+              Key benefits
             </div>
-            <h2 className="text-2xl md:text-3xl font-black tracking-tight mb-5">When Gold is the right choice</h2>
+            <h2 className="text-2xl md:text-3xl font-black tracking-tight mb-5">Why teams choose Windows VM</h2>
             <ul className="space-y-3">
-              {useCases.map((item) => (
+              {benefits.map((item) => (
                 <li key={item} className="flex items-start gap-3 text-sm text-slate-700">
                   <span className="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-50 text-emerald-600 border border-emerald-100">
                     <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="4">
@@ -273,16 +198,15 @@ export default function TallyGoldPage() {
             <div className="absolute top-0 right-0 w-40 h-40 bg-[#00ABE4]/15 rounded-full blur-[80px] -mr-16 -mt-16" />
             <div className="relative z-10">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/10 text-white/75 text-[10px] font-black uppercase tracking-[0.2em] mb-5">
-                How Gold helps
+                Best fit
               </div>
               <h2 className="text-2xl md:text-3xl font-black tracking-tight mb-5">
-                Purpose-built for shared teams.
+                When Windows VM is the right choice
               </h2>
               <div className="space-y-4">
-                {differentiators.map((item) => (
-                  <div key={item.title} className="rounded-2xl bg-white/5 border border-white/10 p-4">
-                    <h3 className="text-sm font-black uppercase tracking-[0.2em] text-[#00ABE4] mb-2">{item.title}</h3>
-                    <p className="text-sm leading-relaxed text-white/85">{item.desc}</p>
+                {useCases.map((item) => (
+                  <div key={item} className="rounded-2xl bg-white/5 border border-white/10 p-4">
+                    <p className="text-sm leading-relaxed text-white/85">{item}</p>
                   </div>
                 ))}
               </div>
@@ -294,10 +218,10 @@ export default function TallyGoldPage() {
           <div className="flex flex-col lg:flex-row items-start lg:items-end justify-between gap-6 mb-8">
             <div>
               <div className="text-[10px] font-black uppercase tracking-[0.3em] text-[#0371a3] mb-3">Help Menu</div>
-              <h2 className="text-2xl md:text-3xl font-black tracking-tight">How can we help with TallyPrime Gold?</h2>
+              <h2 className="text-2xl md:text-3xl font-black tracking-tight">How can we help with Windows VM?</h2>
             </div>
             <p className="text-slate-500 max-w-2xl leading-relaxed">
-              We can help you understand if Gold is the right fit for your team size and workflow.
+              We can help you get started with a Windows VM for your TallyPrime setup.
             </p>
           </div>
 
@@ -310,7 +234,7 @@ export default function TallyGoldPage() {
                     'type' in button ? (
                       <button
                         key={button.label}
-                        onClick={() => openModal(button.type as FormType, 'TallyPrime Gold')}
+                        onClick={() => openModal(button.type as FormType, 'Windows VM')}
                         className="text-left text-sm text-slate-600 hover:text-[#0371a3] transition-colors py-1"
                       >
                         {button.label}{' ->'}
@@ -335,10 +259,10 @@ export default function TallyGoldPage() {
           <div className="flex flex-col lg:flex-row items-start lg:items-end justify-between gap-6 mb-8">
             <div>
               <div className="text-[10px] font-black uppercase tracking-[0.3em] text-[#0371a3] mb-3">Pricing</div>
-              <h2 className="text-2xl md:text-3xl font-black tracking-tight">Choose the edition that fits your team.</h2>
+              <h2 className="text-2xl md:text-3xl font-black tracking-tight">Predictable pricing for dedicated VMs.</h2>
             </div>
             <p className="text-slate-500 max-w-2xl leading-relaxed">
-              Gold is built for teams that need shared access. Compare options to see what fits your setup.
+              Windows VM pricing is based on the resources allocated. Contact us for a quote tailored to your team.
             </p>
           </div>
 
@@ -347,13 +271,19 @@ export default function TallyGoldPage() {
               <div className="rounded-2xl bg-slate-50 border border-slate-100 p-5">
                 <div className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-2">Structure</div>
                 <p className="text-sm leading-relaxed text-slate-700">
-                  Multi-user access on a local network with centralized data and user-level permissions.
+                  Dedicated Windows VM with remote desktop access, peripheral support, and custom sizing.
                 </p>
               </div>
               <div className="rounded-2xl bg-slate-50 border border-slate-100 p-5">
                 <div className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-2">Best fit</div>
                 <p className="text-sm leading-relaxed text-slate-700">
-                  Growing businesses that need multiple people working on the same company at once.
+                  Office teams that rely on desktop tools, printers, and a familiar Windows environment.
+                </p>
+              </div>
+              <div className="rounded-2xl bg-slate-50 border border-slate-100 p-5">
+                <div className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-2">Next step</div>
+                <p className="text-sm leading-relaxed text-slate-700">
+                  Tell us about your current setup, peripheral needs, and team size for a custom VM recommendation.
                 </p>
               </div>
             </div>
@@ -368,13 +298,11 @@ export default function TallyGoldPage() {
                   </tr>
                 </thead>
                 <tbody>
-                  {pricingRows.map((row, index) => (
-                    <tr key={row.plan} className={index < pricingRows.length - 1 ? 'border-b border-slate-100' : ''}>
-                      <td className="px-5 py-4 font-black text-slate-900">{row.plan}</td>
-                      <td className="px-5 py-4 text-sm text-slate-600">{row.bestFor}</td>
-                      <td className="px-5 py-4 text-sm font-black text-[#0371a3]">{row.price}</td>
-                    </tr>
-                  ))}
+                  <tr>
+                    <td className="px-5 py-4 font-black text-slate-900">Windows VM</td>
+                    <td className="px-5 py-4 text-sm text-slate-600">Dedicated desktop-style remote access</td>
+                    <td className="px-5 py-4 text-sm font-black text-[#0371a3]">Dedicated VM quote</td>
+                  </tr>
                 </tbody>
               </table>
             </div>
@@ -385,11 +313,11 @@ export default function TallyGoldPage() {
       <Footer />
 
       <UnifiedContactModal
-        isOpen={modalConfig.isOpen}
-        onClose={() => setModalConfig((prev) => ({ ...prev, isOpen: false }))}
-        type={modalConfig.type}
-        prefillService={modalConfig.service}
-        prefillDetails={modalConfig.details}
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        type={modalType}
+        prefillService={modalService}
+        prefillDetails={modalDetails}
       />
     </div>
   );

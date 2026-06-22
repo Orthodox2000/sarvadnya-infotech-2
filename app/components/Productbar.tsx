@@ -90,9 +90,9 @@ const Productbar = ({ initialSettings }: { initialSettings?: any }) => {
         const data = await fetchWithCache('/api/modules');
         if (Array.isArray(data)) {
           setDynamicModules(data.map(m => ({
-            id: m._id,
+            id: m.id || m._id,
             label: m.title,
-            href: `/modules?id=${m._id}`,
+            href: `/modules?id=${m.id || m._id}`,
             description: m.shortDescription
           })));
         }

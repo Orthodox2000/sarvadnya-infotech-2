@@ -6,12 +6,11 @@
 - Increment the patch version automatically for every iteration/significant set of changes.
 - Current Version: v1.1.388
 
-## Recent Changes (v1.1.395)
-- **TallyPrime Gold Page Redesign & Synchronization:**
-    *   **Visual Standardization:** Synchronized Gold hero background gradient with TallyPrime Silver.
-    *   **Content Alignment:** Added standardized 'Target Audience & Use Cases' section to both Silver and Gold pages for improved clarity.
-    *   **UX Consistency:** Integrated identical CTA navigation and `UnifiedContactModal` behavior as the Silver edition for a uniform enterprise experience.
-- **Version Bump:** Updated application version to v1.1.395.
+## Recent Changes (v1.1.399)
+- **TallyPrime Gold Page Refactoring:**
+    *   **Structure Synchronization:** Fully refactored the Gold product page (`app/products/gold/page.tsx`) to match the Server edition's structure, styling, and pricing table implementation.
+    *   **Terminology & Content:** Optimized content to highlight multi-user/large business capabilities and ensured no 'Enterprise' terminology is used, while including Silver/Gold/Server comparison.
+- **Version Bump:** Updated application version to v1.1.399.
 
 ## Recent Changes (v1.1.388)
 - **Vercel Performance Integration:** Enabled Vercel Speed Insights and Analytics to monitor site performance and user engagement.

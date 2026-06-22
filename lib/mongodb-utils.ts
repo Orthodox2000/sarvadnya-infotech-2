@@ -380,3 +380,24 @@ export async function deleteSubmission(id: string) {
   const col = await getCollection('form_submissions');
   return await col.deleteOne({ _id: new ObjectId(id) });
 }
+
+// Problem report helpers
+export async function saveProblemReport(data: any) {
+  const col = await getCollection('problem_reports');
+  return await col.insertOne({
+    ...data,
+    status: data.status || 'open',
+    createdAt: new Date()
+  });
+}
+
+export async function getProblemReports() {
+  const col = await getCollection('problem_reports');
+  const data = await col.find({}).sort({ createdAt: -1 }).toArray();
+  return serializeData(data);
+}
+
+export async function deleteProblemReport(id: string) {
+  const col = await getCollection('problem_reports');
+  return await col.deleteOne({ _id: new ObjectId(id) });
+}

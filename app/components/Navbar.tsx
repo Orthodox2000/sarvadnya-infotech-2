@@ -72,30 +72,18 @@ export default function Navbar({ initialSettings }: { initialSettings?: any }) {
       <nav className="mx-auto flex h-12 lg:h-16 w-full max-w-full items-center justify-between px-3">
         <Link
           href="/"
-          className="flex items-center h-full justify-start group transition-transform hover:scale-[1.01]  "
+          className="flex items-center h-full justify-start gap-3 group transition-transform hover:scale-[1.01]"
         >
-          <div className="relative block w-72 lg:w-100 h-full  shrink-0 opacity-90 group-hover:opacity-100 transition-opacity ">
+          <div className="relative block w-72 lg:w-100 h-full shrink-0 opacity-90 group-hover:opacity-100 transition-opacity">
             <Image
               src="/TallyCertificate.png"
-              alt="Sarvadnya Infotech logo"
+              alt="e-consultation logo"
               fill
               sizes=""
-              className="object-contain "
+              className="object-contain"
               priority
             />
-          {/* </div>
-          <div className="flex items-center">
-
-            <div className="flex flex-col ml-2 sm:ml-1.5 lg:ml-3 leading-none">
-              <span className="text-[18px] lg:text-[27px] mb-1 lg:mb-[1px] font-bold tracking-tight text-white">
-                Sarvadnya
-              </span>
-              <span className="text-[8px] font-bold lg:text-[11px] uppercase tracking-[0.2em] text-sky-400">
-                Infotech LLP
-              </span>
-            </div>
-            */}
-          </div> 
+          </div>  
         </Link>
 
         {/* Desktop Navigation */}
@@ -113,7 +101,7 @@ export default function Navbar({ initialSettings }: { initialSettings?: any }) {
             href="/find-solution"
             className="hidden xl:inline-flex items-center justify-center rounded-full bg-[#00ABE4]-500/10 px-5 py-2 text-[11px] font-black uppercase tracking-wider text-[#00ABE4] border border-[#00ABE4]/20 transition-all duration-500 ease-in-out hover:bg-[#00ABE4] hover:text-white shadow-sm"
           >
-            Find Solution
+            Smart-suggest
           </Link>
           <Link
             href="/careers"

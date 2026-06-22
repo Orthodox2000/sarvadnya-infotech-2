@@ -4,7 +4,11 @@ import { getModules, addModule, updateModule, deleteModule } from '@/lib/mongodb
 export async function GET() {
   try {
     const modules = await getModules();
-    return NextResponse.json(modules);
+    return NextResponse.json(modules, {
+      headers: {
+        'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=120',
+      },
+    });
   } catch (error) {
     console.error('Error fetching modules:', error);
     return NextResponse.json({ error: 'Failed to fetch modules' }, { status: 500 });

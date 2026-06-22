@@ -35,9 +35,9 @@ const categories = [
       </svg>
     ),
     links: [
-      { label: "AWS Tally", href: "/products#cloud" },
-      { label: "Windows", href: "/products#cloud" },
-      { label: "NoSky", href: "/services#nosky-backup" },
+      { label: "AWS Tally", href: "/cloud/aws" },
+      { label: "Windows", href: "/cloud/windows" },
+      { label: "NoSky", href: "/cloud/nosky" },
       { label: "Recovery", href: "/contact" }
     ],
     theme: {
@@ -57,12 +57,12 @@ const categories = [
       </svg>
     ),
     links: [
-      { label: "C&F Agency", href: "/products#modules" },
-      { label: "Transport", href: "/products#modules" },
-      { label: "Society", href: "/products#modules" },
-      { label: "Garment", href: "/products#modules" },
-      { label: "Sales", href: "/products#modules" },
-      { label: "Excel Tool", href: "/products#modules" }
+      { label: "C&F Agency", href: "/modules?id=cf-agencies" },
+      { label: "Transport", href: "/modules?id=logistics-transport" },
+      { label: "Society", href: "/modules?id=housing-societies" },
+      { label: "Garment", href: "/modules?id=garment-retail" },
+      { label: "Sales", href: "/modules?id=sales-commission" },
+      { label: "Excel Tool", href: "/modules?id=excel-to-tally" }
     ],
     theme: {
       bg: "bg-emerald-50",

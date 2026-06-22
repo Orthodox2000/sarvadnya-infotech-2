@@ -36,21 +36,23 @@ export async function POST(request: Request) {
       - Output should be a single paragraph of pure text.`
     };
 
+    const safe = (v: string | undefined, fallback = 'Not specified') => v || fallback;
+
     const userPrompt = {
       role: "user",
-      content: `Please provide a strategic insight for a business with the following profile:
-      - Scale: ${answers.users} users
-      - Industry: ${answers.industry}
-      - Current Setup: ${answers.current_setup}
-      - Primary Challenge: ${answers.challenge}
-      - Growth Focus: ${answers.growth_focus}
+      content: `Provide a strategic insight for a business with this profile:
+      - Scale: ${safe(answers.users)} 
+      - Industry: ${safe(answers.industry)}
+      - Current Setup: ${safe(answers.current_setup)}
+      - Primary Challenge: ${safe(answers.challenge)}
+      - Growth Focus: ${safe(answers.growth_focus)}
       - Efficiency Score: ${scores.efficiency}%
       - Growth Readiness: ${scores.growth}%
       - Automation Potential: ${scores.automation}
       - Risk Level: ${scores.risk}
       - Recommended Solution: ${recommendations[0]?.label}
       
-      The insight should explain why ${recommendations[0]?.label} is the critical next step for their ${answers.growth_focus} goals.`
+      Explain why ${recommendations[0]?.label || 'the recommended solution'} fits this business based on available data.`
     };
 
     let lastError: any = null;

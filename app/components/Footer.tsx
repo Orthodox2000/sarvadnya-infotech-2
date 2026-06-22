@@ -48,7 +48,7 @@ export default function Footer({ settings: initialSettings }: { settings?: SiteS
             if (Array.isArray(data)) {
                 setDynamicModules(data.slice(0, 6).map(m => ({
                     name: m.title,
-                    href: `/modules?id=${m._id}`
+                    href: `/modules?id=${m.id || m._id}`
                 })));
             }
         } catch (err) {
@@ -98,20 +98,21 @@ export default function Footer({ settings: initialSettings }: { settings?: SiteS
     ];
 
     const products = [
-        { name: 'TallyPrime Silver', href: '/products#compare' },
-        { name: 'TallyPrime Gold', href: '/products#compare' },
-        { name: 'TallyPrime Server', href: '/products#compare' },
-        { name: 'AWS Cloud Server', href: '/products#cloud' },
-        { name: 'NoSky Backup', href: '/services#nosky-backup' }
+        { name: 'TallyPrime Silver', href: '/products/silver' },
+        { name: 'TallyPrime Gold', href: '/products/gold' },
+        { name: 'TallyPrime Server', href: '/products/server' },
+        { name: 'AWS Cloud Server', href: '/cloud/aws' },
+        { name: 'Windows VM', href: '/cloud/windows' },
+        { name: 'NoSky Backup', href: '/cloud/nosky' }
     ];
 
     const customizedModules = dynamicModules.length > 0 ? dynamicModules : [
-        { name: 'Logistics & Transport', href: '/modules' },
-        { name: 'C&F Agencies', href: '/modules' },
-        { name: 'Housing Societies', href: '/modules' },
-        { name: 'Excel to Tally Import', href: '/modules' },
-        { name: 'Garment Module', href: '/modules' },
-        { name: 'Sales & Commission', href: '/modules' }
+        { name: 'Logistics & Transport', href: '/modules?id=logistics-transport' },
+        { name: 'C&F Agencies', href: '/modules?id=cf-agencies' },
+        { name: 'Housing Societies', href: '/modules?id=housing-societies' },
+        { name: 'Excel to Tally Import', href: '/modules?id=excel-to-tally' },
+        { name: 'Garment Module', href: '/modules?id=garment-retail' },
+        { name: 'Sales & Commission', href: '/modules?id=sales-commission' }
     ];
 
     const supportOnTally = [
@@ -121,7 +122,8 @@ export default function Footer({ settings: initialSettings }: { settings?: SiteS
         { name: 'Tally Consultation Services', href: '/services' },
         { name: 'Tally Customization (TDL)', href: '/services' },
         { name: 'Tally on Mobile', href: '/services' },
-        { name: 'Tally AMC Services', href: '/services' }
+        { name: 'Tally AMC Services', href: '/services' },
+        { name: 'Report a Problem', href: '/report-problem' }
     ];
 
     return (
