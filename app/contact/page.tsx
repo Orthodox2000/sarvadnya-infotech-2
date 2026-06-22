@@ -34,6 +34,20 @@ export default function ContactPage() {
     fetchSettings();
   }, []);
 
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const service = params.get('service') || params.get('reason') || '';
+    const message = params.get('message') || params.get('details') || '';
+
+    if (!service && !message) return;
+
+    setFormData(prev => ({
+      ...prev,
+      service: prev.service || service,
+      message: prev.message || message
+    }));
+  }, []);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
