@@ -1,82 +1,50 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Footer from '../../components/Footer';
 import UnifiedContactModal, { FormType } from '../../components/UnifiedContactModal';
 
-type IconName = 'shield' | 'clock' | 'refresh' | 'layers' | 'eye' | 'heart';
-
-function FeatureIcon({ name }: { name: IconName }) {
-  const common = 'w-6 h-6';
-  const iconColor = "text-[#0371a3]";
-  switch (name) {
-    case 'shield':
-      return (
-        <svg className={`${common} ${iconColor}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 3l7 3v5c0 5-3.1 9.4-7 11-3.9-1.6-7-6-7-11V6l7-3z" />
-        </svg>
-      );
-    case 'clock':
-      return (
-        <svg className={`${common} ${iconColor}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-        </svg>
-      );
-    case 'refresh':
-      return (
-        <svg className={`${common} ${iconColor}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-        </svg>
-      );
-    case 'layers':
-      return (
-        <svg className={`${common} ${iconColor}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-        </svg>
-      );
-    case 'eye':
-      return (
-        <svg className={`${common} ${iconColor}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-        </svg>
-      );
-    case 'heart':
-      return (
-        <svg className={`${common} ${iconColor}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-        </svg>
-      );
-    default:
-      return null;
-  }
-}
+const BRAND_PRIMARY = '#00ABE4';
+const BRAND_SECONDARY = '#0371a3';
 
 const features = [
-  { title: 'AES-256 Encryption', desc: 'All backup data is encrypted with industry-standard AES-256 to keep financial records secure.', icon: 'shield' as IconName },
-  { title: 'Scheduled Tasks', desc: 'Automate backups on a schedule that fits your business rhythm no manual intervention needed.', icon: 'clock' as IconName },
-  { title: 'One-Click Restore', desc: 'Restore your data quickly when something goes wrong with a simple recovery process.', icon: 'refresh' as IconName },
-  { title: 'Incremental Backups', desc: 'Only changed data is backed up after the first full backup, saving time and storage.', icon: 'layers' as IconName },
-  { title: 'Status Visibility', desc: 'Monitor backup health and status at a glance so you always know your data is protected.', icon: 'eye' as IconName },
-  { title: 'Disaster Recovery', desc: 'Be ready for hardware failures, accidental deletions, or ransomware events with reliable recovery points.', icon: 'heart' as IconName },
+  { title: 'AES-256 Encryption', desc: 'All backup data is encrypted with industry-standard AES-256 to keep financial records secure.' },
+  { title: 'Scheduled Tasks', desc: 'Automate backups on a schedule that fits your business rhythm no manual intervention needed.' },
+  { title: 'One-Click Restore', desc: 'Restore your data quickly when something goes wrong with a simple recovery process.' },
+  { title: 'Incremental Backups', desc: 'Only changed data is backed up after the first full backup, saving time and storage.' },
+  { title: 'Status Visibility', desc: 'Monitor backup health and status at a glance so you always know your data is protected.' },
+  { title: 'Disaster Recovery', desc: 'Be ready for hardware failures, accidental deletions, or ransomware events with reliable recovery points.' },
 ];
 
-const benefits = [
-  'Helps reduce the risk of data loss',
-  'Suitable for scheduled backup routines',
-  'Recovery is easy to explain to teams',
-  'Works well as a business continuity layer',
-  'Encrypted storage keeps data private',
-  'Minimal impact on daily operations',
+const faqs = [
+  {
+    q: 'What is NoSky Backup for TallyPrime?',
+    a: 'NoSky Backup is a secure cloud backup service designed specifically for TallyPrime data. It automates backups with strong encryption and provides one-click restore.',
+  },
+  {
+    q: 'How often will my data be backed up?',
+    a: 'You can configure backups on a schedule that works for you - daily, hourly, or custom intervals depending on your plan.',
+  },
+  {
+    q: 'Is my backup data encrypted?',
+    a: 'Yes. All backup data is encrypted using AES-256 encryption both during transfer and while stored.',
+  },
+  {
+    q: 'How do I restore my data if something goes wrong?',
+    a: 'NoSky Backup provides a one-click restore process. Our team can also assist with full recovery if needed.',
+  },
+  {
+    q: 'Can I backup to a local drive as well?',
+    a: 'Yes. NoSky Backup supports both cloud storage (AWS S3) and local/network drive destinations for flexibility.',
+  },
 ];
 
-const useCases = [
-  'Owners who want regular backup protection without manual processes',
-  'Teams planning for quick recovery after a hardware or software failure',
-  'Businesses that must protect financial records for compliance',
-  'MSMEs looking for a simple, backup-first data protection setup',
-  'Organisations wanting to complement their existing cloud hosting',
+const navSections = [
+  { id: 'overview', label: 'Product Information' },
+  { id: 'features', label: 'Features' },
+  { id: 'faqs', label: 'FAQ' },
+  { id: 'pricing', label: 'Pricing' },
 ];
 
 export default function NoSkyBackupPage() {
@@ -84,6 +52,21 @@ export default function NoSkyBackupPage() {
   const [modalType, setModalType] = useState<FormType>('quote');
   const [modalService, setModalService] = useState('NoSky Backup');
   const [modalDetails, setModalDetails] = useState('');
+  const [activeNav, setActiveNav] = useState('overview');
+  const [openFaq, setOpenFaq] = useState<number | null>(0);
+  const [stickyNav, setStickyNav] = useState(false);
+  const [showPricing, setShowPricing] = useState(false);
+  const [formName, setFormName] = useState('');
+  const [formEmail, setFormEmail] = useState('');
+  const [formPhone, setFormPhone] = useState('');
+  const [formLoading, setFormLoading] = useState(false);
+  const [formMsg, setFormMsg] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+  const [inquiryName, setInquiryName] = useState('');
+  const [inquiryContact, setInquiryContact] = useState('');
+  const [inquiryMsg, setInquiryMsg] = useState('');
+  const [inquiryLoading, setInquiryLoading] = useState(false);
+  const [inquiryStatus, setInquiryStatus] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+  const navRef = useRef<HTMLDivElement>(null);
 
   const openModal = (type: FormType, service = 'NoSky Backup', details = '') => {
     setModalType(type);
@@ -92,223 +75,659 @@ export default function NoSkyBackupPage() {
     setIsModalOpen(true);
   };
 
-  const ctaGroups = [
-    {
-      title: 'Sales and Demo',
-      buttons: [
-        { label: 'Get Price', type: 'quote' as FormType },
-        { label: 'Book Demo', type: 'demo' as FormType },
-        {
-          label: 'Contact Sales',
-          href: '/contact?service=NoSky%20Backup&message=Please%20share%20pricing%20and%20setup%20details%20for%20NoSky%20Backup.',
-        },
-      ],
-    },
-    {
-      title: 'Support and Setup',
-      buttons: [
-        { label: 'Technical Support', type: 'support' as FormType },
-        { label: 'Backup Help', type: 'quote' as FormType },
-        { label: 'Corporate Training', href: '/services/corporate-training' },
-      ],
-    },
-  ];
+  const handleInquirySubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!inquiryName || !inquiryContact || !inquiryMsg) {
+      setInquiryStatus({ type: 'error', text: 'Please fill all required fields.' });
+      return;
+    }
+    setInquiryLoading(true);
+    setInquiryStatus(null);
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: inquiryName,
+          email: inquiryContact,
+          contact: inquiryContact,
+          service: 'NoSky Backup',
+          formType: 'inquiry',
+          description: inquiryMsg,
+        }),
+      });
+      if (!res.ok) throw new Error('Submission failed');
+      setInquiryStatus({ type: 'success', text: 'Thank you! We will get back to you soon.' });
+      setInquiryName('');
+      setInquiryContact('');
+      setInquiryMsg('');
+    } catch {
+      setInquiryStatus({ type: 'error', text: 'Something went wrong. Please try again.' });
+    } finally {
+      setInquiryLoading(false);
+    }
+  };
+
+  const handleSidebarSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!formName || !formEmail || !formPhone) {
+      setFormMsg({ type: 'error', text: 'Please fill all required fields.' });
+      return;
+    }
+    setFormLoading(true);
+    setFormMsg(null);
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: formName,
+          email: formEmail,
+          contact: formPhone,
+          service: 'NoSky Backup',
+          formType: 'callback',
+          description: 'Requesting a call back for NoSky Backup pricing.',
+        }),
+      });
+      if (!res.ok) throw new Error('Submission failed');
+      setFormMsg({ type: 'success', text: 'Thank you! We will call you back shortly.' });
+      setFormName('');
+      setFormEmail('');
+      setFormPhone('');
+    } catch {
+      setFormMsg({ type: 'error', text: 'Something went wrong. Please try again.' });
+    } finally {
+      setFormLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const navEl = navRef.current;
+      if (navEl) {
+        const navTop = navEl.getBoundingClientRect().top;
+        setStickyNav(navTop <= 0);
+      }
+
+      const scrollY = window.scrollY + 120;
+      for (let i = navSections.length - 1; i >= 0; i--) {
+        const el = document.getElementById(navSections[i].id);
+        if (el && el.offsetTop <= scrollY) {
+          setActiveNav(navSections[i].id);
+          break;
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const scrollToSection = (id: string) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+  };
 
   return (
-    <div className="min-h-screen bg-[#f3fafc] text-slate-900">
-      <section className="relative overflow-hidden bg-gradient-to-br from-[#0371a3] to-[#0f172a] text-white">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_rgba(255,255,255,0.16),_transparent_30%),radial-gradient(circle_at_bottom_left,_rgba(0,171,228,0.1),_transparent_32%)]" />
-        <div className="relative z-10 max-w-7xl mx-auto px-6 py-20 md:py-24">
-          <div className="max-w-4xl">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/15 text-white/80 text-[10px] font-black uppercase tracking-[0.25em] mb-6 backdrop-blur-sm">
-              <span className="flex h-1.5 w-1.5 rounded-full bg-white" />
-              Data protection
+    <div className="min-h-screen bg-[#f5f7fa] text-slate-900 font-sans">
+      {/* Breadcrumb */}
+      <div className="bg-white border-b border-slate-200">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="py-2.5">
+            <ul className="flex items-center gap-1.5 text-[11px] font-medium text-slate-500">
+              <li><Link href="/" className="hover:text-[#00ABE4] transition-colors">Home</Link></li>
+              <li className="text-slate-300 mx-0.5">/</li>
+              <li><Link href="/cloud" className="hover:text-[#00ABE4] transition-colors">Cloud</Link></li>
+              <li className="text-slate-300 mx-0.5">/</li>
+              <li className="text-slate-800 font-semibold">NoSky Backup</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      {/* Product Header */}
+      <div className="bg-white border-b border-slate-200">
+        <div className="max-w-7xl mx-auto px-6 py-5">
+          <div className="flex items-start gap-5">
+            {/* Logo */}
+            <div className="w-[72px] h-[72px] shrink-0 rounded-xl border border-slate-200 bg-white flex items-center justify-center shadow-sm">
+              <div
+                className="w-11 h-11 rounded-lg flex items-center justify-center text-white font-black text-lg"
+                style={{ backgroundColor: BRAND_PRIMARY }}
+              >
+                N
+              </div>
             </div>
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-black tracking-tight leading-[0.95] mb-6">
-              NoSky <span className="text-[#e2e8f0]">Backup</span>
-            </h1>
-            <p className="text-lg md:text-xl text-white/85 max-w-3xl leading-relaxed font-medium mb-8">
-              Secure backup and recovery for MSMEs that want quick restore, strong encryption, and scheduled protection without complexity.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-3">
+
+            {/* Info */}
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center flex-wrap gap-x-3 gap-y-1">
+                <h1 className="text-xl md:text-2xl font-bold text-slate-900">NoSky Backup</h1>
+                <span
+                  className="inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider border"
+                  style={{
+                    backgroundColor: `${BRAND_PRIMARY}10`,
+                    borderColor: `${BRAND_PRIMARY}25`,
+                    color: BRAND_PRIMARY,
+                  }}
+                >
+                  <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: BRAND_PRIMARY }} />
+                  Data Protection
+                </span>
+              </div>
+              <div className="flex items-center flex-wrap gap-x-4 gap-y-1 mt-1.5"></div>
+              <p className="text-[13px] text-slate-500 mt-1.5 leading-relaxed max-w-3xl">
+                Secure backup and recovery for TallyPrime users who want quick restore, strong encryption, and scheduled protection without complexity.
+              </p>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="hidden md:flex flex-col gap-2 shrink-0">
               <button
-                onClick={() => openModal('quote', 'NoSky Backup', 'Please share pricing, setup guidance, and backup planning details for NoSky Backup.')}
-                className="px-8 py-4 bg-white text-[#0371a3] rounded-2xl font-black text-xs uppercase tracking-[0.2em] hover:scale-[1.02] transition-transform shadow-xl"
+                onClick={() => openModal('demo', 'NoSky Backup')}
+                className="px-6 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider text-white shadow-lg transition-all hover:scale-[1.02]"
+                style={{ backgroundColor: BRAND_PRIMARY }}
               >
-                Enquire Now
+                Free Demo
               </button>
-              <a
-                href="#pricing"
-                className="px-8 py-4 rounded-2xl border border-white/20 text-white font-black text-xs uppercase tracking-[0.2em] hover:bg-white/10 transition-colors text-center"
+              <button
+                onClick={() => scrollToSection('pricing')}
+                className="px-6 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider border transition-all hover:scale-[1.02]"
+                style={{ borderColor: BRAND_PRIMARY, color: BRAND_PRIMARY }}
               >
-                Get Price
-              </a>
+                Get Pricing
+              </button>
             </div>
           </div>
         </div>
-      </section>
 
-      <main className="max-w-7xl mx-auto px-6 py-16 space-y-16">
-        <section>
-          <div className="max-w-3xl mb-8">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-slate-200 text-[#0371a3] text-[10px] font-black uppercase tracking-[0.2em] mb-4 shadow-sm">
-              What NoSky Backup includes
-            </div>
-            <h2 className="text-3xl md:text-5xl font-black text-slate-900 tracking-tight">
-              Backup that works when you need it.
-            </h2>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2.5">
-            {features.map((feature) => (
-              <article
-                key={feature.title}
-                className="group bg-white p-3 rounded-lg border border-slate-100 shadow-sm hover:shadow-md transition-all duration-300"
+        {/* Mobile action buttons */}
+        <div className="md:hidden flex gap-2 px-6 pb-4">
+          <button
+            onClick={() => openModal('demo', 'NoSky Backup')}
+            className="flex-1 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider text-white shadow-lg transition-all"
+            style={{ backgroundColor: BRAND_PRIMARY }}
+          >
+            Free Demo
+          </button>
+          <button
+            onClick={() => scrollToSection('pricing')}
+            className="flex-1 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider border transition-all"
+            style={{ borderColor: BRAND_PRIMARY, color: BRAND_PRIMARY }}
+          >
+            Get Pricing
+          </button>
+        </div>
+      </div>
+
+      {/* Sticky Navigation */}
+      <div
+        ref={navRef}
+        className={`bg-white border-b border-slate-200 transition-all duration-200 ${
+          stickyNav ? 'sticky top-0 z-[100] shadow-sm' : ''
+        }`}
+      >
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="flex items-center gap-1 overflow-x-auto no-scrollbar">
+            {navSections.map((section) => (
+              <button
+                key={section.id}
+                onClick={() => scrollToSection(section.id)}
+                className="relative shrink-0 px-4 py-3 text-[11px] font-bold uppercase tracking-wider transition-colors"
+                style={{ color: activeNav === section.id ? BRAND_PRIMARY : '#64748b' }}
               >
-                <div className="w-9 h-9 rounded-lg bg-[#f3fafc] text-[#0371a3] flex items-center justify-center mb-2 group-hover:scale-105 transition-transform">
-                  <FeatureIcon name={feature.icon} />
-                </div>
-                <h3 className="text-sm font-black text-slate-900 mb-1">{feature.title}</h3>
-                <p className="text-sm text-slate-600 leading-relaxed">{feature.desc}</p>
-              </article>
+                {section.label}
+                {activeNav === section.id && (
+                  <span
+                    className="absolute bottom-0 left-0 right-0 h-0.5"
+                    style={{ backgroundColor: BRAND_PRIMARY }}
+                  />
+                )}
+              </button>
             ))}
           </div>
-        </section>
+        </div>
+      </div>
 
-        <section className="grid lg:grid-cols-2 gap-8">
-          <div className="bg-white rounded-[2rem] p-7 md:p-8 border border-slate-100 shadow-sm">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#f0f9ff] border border-[#0371a3]/15 text-[#0371a3] text-[10px] font-black uppercase tracking-[0.2em] mb-5">
-              Key benefits
-            </div>
-            <h2 className="text-2xl md:text-3xl font-black tracking-tight mb-5">Why teams choose NoSky Backup</h2>
-            <ul className="space-y-3">
-              {benefits.map((item) => (
-                <li key={item} className="flex items-start gap-3 text-sm text-slate-700">
-                  <span className="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-50 text-emerald-600 border border-emerald-100">
-                    <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="4">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                    </svg>
-                  </span>
-                  <span className="leading-relaxed">{item}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
+      {/* Main Content + Sidebar */}
+      <div className="max-w-7xl mx-auto px-6 py-6">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
 
-          <div className="bg-slate-900 text-white rounded-[2rem] p-7 md:p-8 shadow-2xl relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-40 h-40 bg-[#00ABE4]/15 rounded-full blur-[80px] -mr-16 -mt-16" />
-            <div className="relative z-10">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/10 text-white/75 text-[10px] font-black uppercase tracking-[0.2em] mb-5">
-                Best fit
+          {/* ========== LEFT CONTENT (9/12) ========== */}
+          <div className="lg:col-span-8 xl:col-span-9 space-y-6">
+
+            {/* Overview */}
+            <section id="overview" className="scroll-mt-16 bg-white rounded-xl border border-slate-200 p-6">
+              <h2 className="text-lg font-bold text-slate-900 mb-3">What is NoSky Backup?</h2>
+              <div className="text-sm text-slate-600 leading-relaxed space-y-3">
+                <p>
+                  NoSky Backup is a secure cloud backup and recovery solution built for TallyPrime users.
+                  It provides automated, encrypted backups with one-click restore so your financial data
+                  is always protected and quickly recoverable.
+                </p>
+                <p>
+                  Designed for MSMEs that need reliable data protection without complexity, NoSky Backup
+                  handles scheduling, encryption, and recovery management so you can focus on your business.
+                  With support for multiple storage destinations and incremental backups, it is a cost-effective
+                  disaster recovery layer for your TallyPrime environment.
+                </p>
               </div>
-              <h2 className="text-2xl md:text-3xl font-black tracking-tight mb-5">
-                When NoSky Backup is the right choice
-              </h2>
-              <div className="space-y-4">
-                {useCases.map((item) => (
-                  <div key={item} className="rounded-2xl bg-white/5 border border-white/10 p-4">
-                    <p className="text-sm leading-relaxed text-white/85">{item}</p>
+              {/* Hero stats */}
+              <div className="mt-5 grid grid-cols-2 sm:grid-cols-4 gap-3">
+                {[
+                  { label: 'Type', value: 'Backup' },
+                  { label: 'Access', value: 'Automated' },
+                  { label: 'Security', value: 'Encrypted' },
+                  { label: 'Recovery', value: 'One-Click' },
+                ].map((stat) => (
+                  <div
+                    key={stat.label}
+                    className="rounded-lg border p-3 text-center"
+                    style={{
+                      backgroundColor: `${BRAND_PRIMARY}06`,
+                      borderColor: `${BRAND_PRIMARY}15`,
+                    }}
+                  >
+                    <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400">{stat.label}</div>
+                    <div className="text-lg font-black mt-0.5" style={{ color: BRAND_PRIMARY }}>{stat.value}</div>
                   </div>
                 ))}
               </div>
-            </div>
-          </div>
-        </section>
+            </section>
 
-        <section className="bg-white rounded-[2rem] p-7 md:p-8 border border-slate-100 shadow-sm">
-          <div className="flex flex-col lg:flex-row items-start lg:items-end justify-between gap-6 mb-8">
-            <div>
-              <div className="text-[10px] font-black uppercase tracking-[0.3em] text-[#0371a3] mb-3">Help Menu</div>
-              <h2 className="text-2xl md:text-3xl font-black tracking-tight">How can we help with NoSky Backup?</h2>
-            </div>
-            <p className="text-slate-500 max-w-2xl leading-relaxed">
-              We can help you set up NoSky Backup to protect your TallyPrime data.
-            </p>
-          </div>
+            {/* Features */}
+            <section id="features" className="scroll-mt-16 bg-white rounded-xl border border-slate-200 p-6">
+              <h2 className="text-lg font-bold text-slate-900 mb-1">Key Features of NoSky Backup</h2>
+              <p className="text-sm text-slate-500 mb-5">
+                Here are the powerful features that make NoSky Backup stand out. Packed with essential tools for data protection and recovery.
+              </p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                {features.map((feature) => (
+                  <div
+                    key={feature.title}
+                    className="rounded-lg border border-slate-100 p-4 hover:shadow-sm transition-shadow"
+                    style={{ backgroundColor: `${BRAND_PRIMARY}03` }}
+                  >
+                    <div className="flex items-center gap-2 mb-2">
+                      <span
+                        className="w-2 h-2 rounded-full shrink-0"
+                        style={{ backgroundColor: BRAND_PRIMARY }}
+                      />
+                      <h3 className="text-sm font-bold text-slate-900">{feature.title}</h3>
+                    </div>
+                    <p className="text-[13px] text-slate-600 leading-relaxed">{feature.desc}</p>
+                  </div>
+                ))}
+              </div>
+            </section>
 
-          <div className="grid md:grid-cols-3 gap-4">
-            {ctaGroups.map((group) => (
-              <div key={group.title} className="space-y-4">
-                <h3 className="font-black text-slate-900">{group.title}</h3>
-                <div className="flex flex-col gap-2">
-                  {group.buttons.map((button) =>
-                    'type' in button ? (
-                      <button
-                        key={button.label}
-                        onClick={() => openModal(button.type as FormType, 'NoSky Backup')}
-                        className="text-left text-sm text-slate-600 hover:text-[#0371a3] transition-colors py-1"
+            {/* When NoSky Backup is the right choice + Compatible Systems */}
+            <section className="grid sm:grid-cols-2 gap-6">
+              <div className="bg-white rounded-xl border border-slate-200 p-6">
+                <h2 className="text-lg font-bold text-slate-900 mb-4">When NoSky Backup is the right choice</h2>
+                <ul className="space-y-3">
+                  {[
+                    'Owners who want regular backup protection without manual processes',
+                    'Teams planning for quick recovery after a hardware or software failure',
+                    'Businesses that must protect financial records for compliance',
+                    'MSMEs looking for a simple, backup-first data protection setup',
+                  ].map((item) => (
+                    <li key={item} className="flex items-start gap-2.5 text-sm text-slate-600">
+                      <span
+                        className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full"
+                        style={{ backgroundColor: `${BRAND_PRIMARY}15` }}
                       >
-                        {button.label}{' ->'}
-                      </button>
-                    ) : (
-                      <Link
-                        key={button.label}
-                        href={button.href}
-                        className="text-left text-sm text-slate-600 hover:text-[#0371a3] transition-colors py-1"
-                      >
-                        {button.label}{' ->'}
-                      </Link>
-                    )
-                  )}
+                        <svg className="w-2.5 h-2.5" viewBox="0 0 24 24" fill={BRAND_PRIMARY}>
+                          <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" />
+                        </svg>
+                      </span>
+                      <span className="leading-relaxed">{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className="bg-white rounded-xl border border-slate-200 p-6">
+                <h2 className="text-lg font-bold text-slate-900 mb-4">Compatible Systems</h2>
+                <div className="space-y-4">
+                  <div>
+                    <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Supported OS</h3>
+                    <div className="flex flex-wrap gap-2">
+                      {['Windows 7', 'Windows 8', 'Windows 10', 'Windows 11', 'Windows Server'].map((os) => (
+                        <span key={os} className="inline-flex rounded-md px-2.5 py-1 text-[12px] font-medium border" style={{ borderColor: `${BRAND_PRIMARY}25`, backgroundColor: `${BRAND_PRIMARY}06`, color: BRAND_PRIMARY }}>
+                          {os}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                  <div>
+                    <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Backup Sources</h3>
+                    <div className="flex flex-wrap gap-2">
+                      {['TallyPrime Data', 'Local Files'].map((src) => (
+                        <span key={src} className="inline-flex rounded-md px-2.5 py-1 text-[12px] font-medium text-slate-600 bg-slate-50 border border-slate-200">
+                          {src}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                  <div>
+                    <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Storage Destinations</h3>
+                    <div className="flex flex-wrap gap-2">
+                      {['AWS S3', 'Local Drive', 'Network Drive'].map((storage) => (
+                        <span key={storage} className="inline-flex rounded-md px-2.5 py-1 text-[12px] font-medium border" style={{ borderColor: `${BRAND_PRIMARY}25`, backgroundColor: `${BRAND_PRIMARY}06`, color: BRAND_PRIMARY }}>
+                          {storage}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                  <div>
+                    <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Integrations</h3>
+                    <div className="flex flex-wrap gap-2">
+                      {['TallyDrive', 'Email Notifications'].map((item) => (
+                        <span key={item} className="inline-flex rounded-md px-2.5 py-1 text-[12px] font-medium border" style={{ borderColor: `${BRAND_PRIMARY}25`, backgroundColor: `${BRAND_PRIMARY}06`, color: BRAND_PRIMARY }}>
+                          {item}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
                 </div>
               </div>
-            ))}
-          </div>
-        </section>
+            </section>
 
-        <section id="pricing" className="bg-white rounded-[2rem] p-7 md:p-8 border border-slate-100 shadow-sm">
-          <div className="flex flex-col lg:flex-row items-start lg:items-end justify-between gap-6 mb-8">
-            <div>
-              <div className="text-[10px] font-black uppercase tracking-[0.3em] text-[#0371a3] mb-3">Pricing</div>
-              <h2 className="text-2xl md:text-3xl font-black tracking-tight">Simple backup pricing for MSMEs.</h2>
-            </div>
-            <p className="text-slate-500 max-w-2xl leading-relaxed">
-              NoSky Backup pricing depends on your data volume and retention needs. Contact us for a custom quote.
-            </p>
+            {/* FAQ */}
+            <section id="faqs" className="scroll-mt-16 bg-white rounded-xl border border-slate-200 p-6">
+              <h2 className="text-lg font-bold text-slate-900 mb-1">NoSky Backup FAQs</h2>
+              <p className="text-sm text-slate-500 mb-5">Frequently asked questions about NoSky Backup.</p>
+              <div className="space-y-0 divide-y divide-slate-100">
+                {faqs.map((faq, idx) => (
+                  <div key={idx}>
+                    <button
+                      type="button"
+                      onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
+                      className="flex items-center justify-between w-full py-3.5 text-left transition-colors"
+                    >
+                      <h3 className="text-sm font-bold text-slate-900 pr-4">{faq.q}</h3>
+                      <span
+                        className="shrink-0 w-5 h-5 rounded-full flex items-center justify-center transition-transform duration-200"
+                        style={{
+                          backgroundColor: openFaq === idx ? BRAND_PRIMARY : '#f1f5f9',
+                          transform: openFaq === idx ? 'rotate(45deg)' : 'rotate(0deg)',
+                        }}
+                      >
+                        <svg className="w-3 h-3" viewBox="0 0 24 24" fill={openFaq === idx ? '#fff' : '#94a3b8'}>
+                          <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
+                        </svg>
+                      </span>
+                    </button>
+                    {openFaq === idx && (
+                      <div className="pb-3.5 text-sm text-slate-600 leading-relaxed pr-8">
+                        {faq.a}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </section>
+
+            {/* Still not satisfied? */}
+            <section className="bg-white rounded-xl border border-slate-200 p-6">
+              <div className="text-center mb-5">
+                <h2 className="text-lg font-bold text-slate-900">Still not satisfied?</h2>
+                <p className="text-sm text-slate-500 mt-1">Tell us your requirements and we will find the right solution for you.</p>
+              </div>
+              <form onSubmit={handleInquirySubmit} className="max-w-xl mx-auto space-y-3">
+                <input
+                  type="text"
+                  placeholder="Your Name *"
+                  value={inquiryName}
+                  onChange={(e) => setInquiryName(e.target.value)}
+                  className="w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm outline-none transition-all focus:ring-2 bg-slate-50"
+                  style={{ '--tw-ring-color': BRAND_PRIMARY } as React.CSSProperties}
+                  required
+                />
+                <input
+                  type="text"
+                  placeholder="Email or Phone *"
+                  value={inquiryContact}
+                  onChange={(e) => setInquiryContact(e.target.value)}
+                  className="w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm outline-none transition-all focus:ring-2 bg-slate-50"
+                  style={{ '--tw-ring-color': BRAND_PRIMARY } as React.CSSProperties}
+                  required
+                />
+                <textarea
+                  placeholder="Describe your requirement *"
+                  value={inquiryMsg}
+                  onChange={(e) => setInquiryMsg(e.target.value)}
+                  rows={3}
+                  className="w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm outline-none transition-all focus:ring-2 bg-slate-50 resize-none"
+                  style={{ '--tw-ring-color': BRAND_PRIMARY } as React.CSSProperties}
+                  required
+                />
+                <button
+                  type="submit"
+                  disabled={inquiryLoading}
+                  className="w-full py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider text-white shadow-lg transition-all hover:scale-[1.01] disabled:opacity-60"
+                  style={{ backgroundColor: BRAND_PRIMARY }}
+                >
+                  {inquiryLoading ? 'Sending...' : 'Submit Requirement'}
+                </button>
+                {inquiryStatus && (
+                  <p
+                    className={`text-[11px] text-center leading-relaxed font-medium ${
+                      inquiryStatus.type === 'success' ? 'text-emerald-600' : 'text-red-500'
+                    }`}
+                  >
+                    {inquiryStatus.text}
+                  </p>
+                )}
+              </form>
+            </section>
+
+            {/* Pricing - Hidden reveal */}
+            <section id="pricing" className="scroll-mt-16 bg-white rounded-xl border border-slate-200 p-6">
+              <h2 className="text-lg font-bold text-slate-900 mb-1">NoSky Backup Pricing</h2>
+              <p className="text-sm text-slate-500 mb-5">View pricing plans for NoSky Backup.</p>
+              <button
+                type="button"
+                onClick={() => setShowPricing(!showPricing)}
+                className="inline-flex items-center gap-2 rounded-lg px-5 py-2.5 text-xs font-bold uppercase tracking-wider text-white shadow-lg transition-all hover:scale-[1.02]"
+                style={{ backgroundColor: BRAND_PRIMARY }}
+              >
+                {showPricing ? 'Hide Pricing' : 'View Price'}
+                <svg className={`w-3.5 h-3.5 transition-transform duration-200 ${showPricing ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              {showPricing && (
+                <div className="mt-5 overflow-x-auto rounded-lg border border-slate-200">
+                  <table className="w-full text-left text-sm">
+                    <thead>
+                      <tr className="bg-slate-50 text-[10px] font-bold uppercase tracking-wider text-slate-500">
+                        <th className="px-4 py-3">Subscription</th>
+                        <th className="px-4 py-3">Storage</th>
+                        <th className="px-4 py-3">Features</th>
+                        <th className="px-4 py-3">Price</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr className="border-b border-slate-100">
+                        <td className="px-4 py-3 font-bold text-slate-900">Monthly Rental</td>
+                        <td className="px-4 py-3 text-slate-600">50GB</td>
+                        <td className="px-4 py-3 text-slate-600">Encrypted, scheduled, one-click restore</td>
+                        <td className="px-4 py-3 font-bold" style={{ color: BRAND_PRIMARY }}>NoSky Monthly — Contact Sales</td>
+                      </tr>
+                      <tr>
+                        <td className="px-4 py-3 font-bold text-slate-900">1 Year Rental</td>
+                        <td className="px-4 py-3 text-slate-600">50GB</td>
+                        <td className="px-4 py-3 text-slate-600">Encrypted, scheduled, one-click restore</td>
+                        <td className="px-4 py-3 font-bold" style={{ color: BRAND_PRIMARY }}>NoSky Yearly — Contact Sales</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <div className="px-4 py-3 bg-slate-50 border-t border-slate-200">
+                    <p className="text-[11px] text-slate-500">
+                      Prices are subject to change. Contact our sales team for the latest pricing and discounts.
+                    </p>
+                    <button
+                      type="button"
+                      onClick={() => openModal('quote', 'NoSky Backup', 'Please share pricing details for NoSky Backup.')}
+                      className="mt-2 inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-[10px] font-bold uppercase tracking-wider text-white transition-all hover:scale-[1.02]"
+                      style={{ backgroundColor: BRAND_PRIMARY }}
+                    >
+                      Get Custom Quote
+                      <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              )}
+            </section>
+
           </div>
 
-          <div className="grid xl:grid-cols-[1fr_1.35fr] gap-6">
-            <div className="grid gap-4">
-              <div className="rounded-2xl bg-slate-50 border border-slate-100 p-5">
-                <div className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-2">Structure</div>
-                <p className="text-sm leading-relaxed text-slate-700">
-                  Encrypted cloud backup with automated scheduling, incremental backups, and one-click restore.
+          {/* ========== RIGHT SIDEBAR (3/12) ========== */}
+          <div className="lg:col-span-4 xl:col-span-3 space-y-6">
+
+            {/* Get Best Quote */}
+            <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
+              <div className="px-5 py-4 text-white" style={{ backgroundColor: BRAND_SECONDARY }}>
+                <h3 className="text-sm font-bold">Get Best Quote for NoSky Backup</h3>
+                <p className="text-[12px] text-white/75 mt-1 leading-relaxed">
+                  Connect with our experts to get the best quote for your business.
                 </p>
               </div>
-              <div className="rounded-2xl bg-slate-50 border border-slate-100 p-5">
-                <div className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-2">Best fit</div>
-                <p className="text-sm leading-relaxed text-slate-700">
-                  MSMEs that want practical disaster recovery and a simple restore process.
+              <form onSubmit={handleSidebarSubmit} className="p-5 space-y-3">
+                <input
+                  type="text"
+                  placeholder="Name *"
+                  value={formName}
+                  onChange={(e) => setFormName(e.target.value)}
+                  className="w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm outline-none transition-all focus:ring-2 bg-slate-50"
+                  style={{ '--tw-ring-color': BRAND_PRIMARY } as React.CSSProperties}
+                  required
+                />
+                <input
+                  type="email"
+                  placeholder="Business Email *"
+                  value={formEmail}
+                  onChange={(e) => setFormEmail(e.target.value)}
+                  className="w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm outline-none transition-all focus:ring-2 bg-slate-50"
+                  style={{ '--tw-ring-color': BRAND_PRIMARY } as React.CSSProperties}
+                  required
+                />
+                <input
+                  type="tel"
+                  placeholder="Phone Number *"
+                  value={formPhone}
+                  onChange={(e) => setFormPhone(e.target.value)}
+                  className="w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm outline-none transition-all focus:ring-2 bg-slate-50"
+                  style={{ '--tw-ring-color': BRAND_PRIMARY } as React.CSSProperties}
+                  required
+                />
+                <button
+                  type="submit"
+                  disabled={formLoading}
+                  className="w-full py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider text-white shadow-lg transition-all hover:scale-[1.01] disabled:opacity-60"
+                  style={{ backgroundColor: BRAND_PRIMARY }}
+                >
+                  {formLoading ? 'Sending...' : 'Request a Call Back'}
+                </button>
+                {formMsg && (
+                  <p
+                    className={`text-[11px] text-center leading-relaxed font-medium ${
+                      formMsg.type === 'success' ? 'text-emerald-600' : 'text-red-500'
+                    }`}
+                  >
+                    {formMsg.text}
+                  </p>
+                )}
+                <p className="text-[10px] text-slate-400 text-center leading-relaxed">
+                  By submitting, you agree to our Terms of Use and Privacy Policy.
                 </p>
+              </form>
+            </div>
+
+            {/* Most Popular Software */}
+            <div className="bg-white rounded-xl border border-slate-200 p-5">
+              <h3 className="text-sm font-bold text-slate-900 mb-4">Most Popular Software</h3>
+              <div className="space-y-4">
+                {[
+                  { name: 'TallyPrime Gold', slug: '/products/gold', rating: '4.8', reviews: '120' },
+                  { name: 'TallyPrime Server', slug: '/products/server', rating: '4.7', reviews: '85' },
+                  { name: 'Tally on WhatsApp', slug: '/services/tally-on-whatsapp', rating: '4.9', reviews: '200' },
+                  { name: 'Cloud AWS', slug: '/cloud/aws', rating: '4.6', reviews: '65' },
+                ].map((item) => (
+                  <Link
+                    key={item.name}
+                    href={item.slug}
+                    className="flex items-center gap-3 group"
+                  >
+                    <div
+                      className="w-9 h-9 rounded-lg flex items-center justify-center text-white font-bold text-xs shrink-0"
+                      style={{ backgroundColor: BRAND_PRIMARY }}
+                    >
+                      {item.name.charAt(0)}
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <p className="text-sm font-bold text-slate-700 group-hover:text-[#00ABE4] transition-colors truncate">
+                        {item.name}
+                      </p>
+                      <span className="inline-flex items-center gap-1 text-[11px] text-slate-400">
+                        <svg className="w-3 h-3" viewBox="0 0 20 20" fill="#f59e0b">
+                          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                        </svg>
+                        {item.rating}
+                        <span className="text-slate-300">({item.reviews} reviews)</span>
+                      </span>
+                    </div>
+                  </Link>
+                ))}
               </div>
-              <div className="rounded-2xl bg-slate-50 border border-slate-100 p-5">
-                <div className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-2">Next step</div>
-                <p className="text-sm leading-relaxed text-slate-700">
-                  Share your data size and backup frequency needs. We will configure a plan that fits.
-                </p>
+              <Link
+                href="/products"
+                className="block mt-4 pt-3 border-t border-slate-100 text-[11px] font-bold uppercase tracking-wider text-center"
+                style={{ color: BRAND_PRIMARY }}
+              >
+                View All Products
+              </Link>
+            </div>
+
+            {/* Quick Links */}
+            <div className="bg-white rounded-xl border border-slate-200 p-5">
+              <h3 className="text-sm font-bold text-slate-900 mb-3">Quick Links</h3>
+              <div className="space-y-2">
+                {[
+                  { label: 'Cloud Solutions Guide', href: '/cloud' },
+                  { label: 'Book a Demo', type: 'demo' as FormType },
+                  { label: 'Technical Support', type: 'support' as FormType },
+                  { label: 'Cloud Backup Guidance', href: '/cloud/nosky' },
+                  { label: 'Corporate Training', href: '/services/corporate-training' },
+                ].map((link) =>
+                  'href' in link ? (
+                    <Link
+                      key={link.label}
+                      href={link.href!}
+                      className="block text-sm text-slate-600 hover:text-[#00ABE4] transition-colors py-1"
+                    >
+                      {link.label}
+                    </Link>
+                  ) : (
+                    <button
+                      key={link.label}
+                      type="button"
+                      onClick={() => openModal(link.type!, 'NoSky Backup')}
+                      className="block w-full text-left text-sm text-slate-600 hover:text-[#00ABE4] transition-colors py-1"
+                    >
+                      {link.label}
+                    </button>
+                  )
+                )}
               </div>
             </div>
 
-            <div className="overflow-x-auto rounded-[1.5rem] border border-slate-100">
-              <table className="w-full text-left">
-                <thead className="bg-slate-50">
-                  <tr className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">
-                    <th className="px-5 py-4">Plan</th>
-                    <th className="px-5 py-4">Best for</th>
-                    <th className="px-5 py-4">Price</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td className="px-5 py-4 font-black text-slate-900">NoSky Backup</td>
-                    <td className="px-5 py-4 text-sm text-slate-600">Backup and recovery planning</td>
-                    <td className="px-5 py-4 text-sm font-black text-[#0371a3]">Contact for pricing</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
           </div>
-        </section>
-      </main>
+        </div>
+      </div>
 
       <Footer />
 

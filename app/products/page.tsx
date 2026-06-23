@@ -58,6 +58,16 @@ export default function ProductsPage() {
       cardClass: "bg-white border-slate-200",
       stripClass: "bg-slate-300",
       link: "/products/server"
+    },
+    {
+      name: "TallyDrive",
+      type: "Cloud backup",
+      summary: "Automated encrypted cloud backups for TallyPrime with scheduling, restore, and management.",
+      includes: "Best for any TallyPrime user who wants automatic, encrypted backup protection.",
+      tags: ["AES-256", "Scheduled"],
+      cardClass: "bg-white border-slate-200",
+      stripClass: "bg-[#00ABE4]",
+      link: "/products/tallydrive"
     }
   ];
 
@@ -91,7 +101,7 @@ export default function ProductsPage() {
           TallyPrime Edition Comparison
         </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 lg:gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-4">
           {products.map((p) => (
             <div
               key={p.name}

@@ -28,10 +28,9 @@ const QUESTIONS: Question[] = [
     title: 'What best describes your business today?',
     hint: 'Choose the option that most closely reflects how your business operates right now.',
     options: [
-      { label: 'Startup', value: 'Startup', hint: 'You are validating a new idea or preparing to scale.', scores: { tallySilver: 20, growth: 10 } },
       { label: 'New business', value: 'New', hint: 'Recently launched and building your operating rhythm.', scores: { tallySilver: 25, growth: 10 } },
-      { label: 'Established business', value: 'Established', hint: 'Running steadily with regular accounting and reporting needs.', scores: { tallyGold: 15, amc: 10 } },
-      { label: 'Growing business', value: 'Growing', hint: 'Expanding your team, volume, or process complexity.', scores: { tallyGold: 20, cloud: 10, growth: 20 } }
+      { label: 'Startup', value: 'Startup', hint: 'You are validating a new idea or preparing to scale.', scores: { tallySilver: 20, growth: 10 } },
+      { label: 'Established business', value: 'Established', hint: 'Running steadily with regular accounting and reporting needs.', scores: { tallyGold: 15, amc: 10 } }
     ]
   },
   {

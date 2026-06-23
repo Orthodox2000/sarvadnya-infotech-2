@@ -275,7 +275,7 @@ export default function HomeHero({ initialData, variant = 'standard' }: { initia
             runCarousel();
           }, 150);
         }, 800);
-      }, 150050); 
+      }, 9050); 
     };
     const initialEntry = setTimeout(() => setIsEntering(true), 100);
     runCarousel();

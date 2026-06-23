@@ -91,12 +91,12 @@ export default function Navbar({ initialSettings }: { initialSettings?: any }) {
           <div className="hidden lg:block">
             <SearchBar />
           </div>
-          {/* <Link
-            href="/admin/palette"
+           <Link
+            href="/colour"
             className="text-[11px] font-bold uppercase tracking-widest text-emerald-400 hover:text-emerald-300 transition-colors"
           >
             Palette
-          </Link> */}
+          </Link> 
           <Link
             href="/find-solution"
             className="hidden xl:inline-flex items-center justify-center rounded-full bg-[#00ABE4]-500/10 px-5 py-2 text-[11px] font-black uppercase tracking-wider text-[#00ABE4] border border-[#00ABE4]/20 transition-all duration-500 ease-in-out hover:bg-[#00ABE4] hover:text-white shadow-sm"

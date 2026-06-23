@@ -9,34 +9,34 @@ const BRAND_PRIMARY = '#00ABE4';
 const BRAND_SECONDARY = '#0371a3';
 
 const features = [
-  { title: 'Concurrent Work', desc: 'Let multiple users work at the same time on one live company dataset.' },
-  { title: 'Hidden Data Folders', desc: 'Add a stronger layer of privacy around company files on the server.' },
-  { title: 'Advanced User Logs', desc: 'Track who changed what and when for better review and accountability.' },
-  { title: 'Branch Control', desc: 'Keep head office and branch teams on one consistent data source.' },
-  { title: 'High-Speed Access', desc: 'Stay responsive when many users search, view, and post transactions.' },
-  { title: 'Backup Readiness', desc: 'Pair Server with structured backups and TallyDrive storage.' },
+  { title: 'AES-256 Encryption', desc: 'All backup data is encrypted with industry-standard AES-256, with an optional Backup Password and Recovery Key for extra protection.' },
+  { title: 'Automatic Scheduling', desc: 'Schedule regular backups to TallyDrive even when TallyPrime is not running — set it and forget it.' },
+  { title: 'One-Click Restore', desc: 'Restore the latest backup or any previous version stored on TallyDrive with a single click.' },
+  { title: 'Incremental Backups', desc: 'After the first full backup, only changed data is uploaded — saving time and bandwidth.' },
+  { title: 'TallyDrive Management', desc: 'Use the Management report to monitor, download, and delete company backups, and manage storage and user rights.' },
+  { title: 'Cross-Edition Compatibility', desc: 'Works seamlessly with TallyPrime Silver, Gold, and Server editions.' },
 ];
 
 const faqs = [
   {
-    q: 'What type of support is available for TallyPrime Server?',
-    a: 'We provide Phone and Email support for TallyPrime Server. Our certified Tally experts can assist with installation, network deployment, server configuration, audit setup, and team training.',
+    q: 'What is TallyDrive?',
+    a: 'TallyDrive is TallyPrime\'s integrated cloud backup service that automatically stores encrypted backups of your company data to the cloud. It is available with TallyPrime v7.0 and later.',
   },
   {
-    q: 'Who is TallyPrime Server best suited for?',
-    a: 'Server is designed for larger MSMEs with multiple departments, branch operations, or audit-sensitive workflows that need controlled access and full visibility.',
+    q: 'How much storage do I get?',
+    a: 'Storage depends on your TallyPrime edition: Silver includes 1 GB, Gold includes 5 GB, and Server includes 25 GB or more. All require an active TSS.',
   },
   {
-    q: 'How many concurrent users does TallyPrime Server support?',
-    a: 'TallyPrime Server supports higher concurrency than Gold, making it suitable for larger teams with simultaneous data entry and reporting needs.',
+    q: 'Is my backup data encrypted?',
+    a: 'Yes. TallyDrive uses AES-256 encryption. You can also set a Backup Password and Recovery Key for additional protection.',
   },
   {
-    q: 'What are the system requirements for TallyPrime Server?',
-    a: 'TallyPrime Server runs on Windows Server 2016 and above or Windows 10/11 Pro. A dedicated server machine with minimum 8GB RAM and SSD storage is recommended for optimal performance.',
+    q: 'Can I schedule backups automatically?',
+    a: 'Yes. You can configure automatic backups to run on a schedule, even when TallyPrime is not actively open.',
   },
   {
-    q: 'Can I integrate TallyPrime Server with other business tools?',
-    a: 'Yes. Server supports TallyDrive, Excel Import/Export, TallyReports, and various third-party integrations including LDAP for user authentication.',
+    q: 'How do I restore my data?',
+    a: 'Use the one-click restore feature in TallyDrive. You can restore the latest backup or browse previous versions stored in the cloud.',
   },
 ];
 
@@ -47,10 +47,10 @@ const navSections = [
   { id: 'pricing', label: 'Pricing' },
 ];
 
-export default function TallyServerPage() {
+export default function TallyDrivePage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalType, setModalType] = useState<FormType>('quote');
-  const [modalService, setModalService] = useState('TallyPrime Server');
+  const [modalService, setModalService] = useState('TallyDrive Backup');
   const [modalDetails, setModalDetails] = useState('');
   const [activeNav, setActiveNav] = useState('overview');
   const [openFaq, setOpenFaq] = useState<number | null>(0);
@@ -68,7 +68,7 @@ export default function TallyServerPage() {
   const [inquiryStatus, setInquiryStatus] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
   const navRef = useRef<HTMLDivElement>(null);
 
-  const openModal = (type: FormType, service = 'TallyPrime Server', details = '') => {
+  const openModal = (type: FormType, service = 'TallyDrive Backup', details = '') => {
     setModalType(type);
     setModalService(service);
     setModalDetails(details);
@@ -91,7 +91,7 @@ export default function TallyServerPage() {
           name: inquiryName,
           email: inquiryContact,
           contact: inquiryContact,
-          service: 'TallyPrime Server',
+          service: 'TallyDrive Backup',
           formType: 'inquiry',
           description: inquiryMsg,
         }),
@@ -124,9 +124,9 @@ export default function TallyServerPage() {
           name: formName,
           email: formEmail,
           contact: formPhone,
-          service: 'TallyPrime Server',
+          service: 'TallyDrive Backup',
           formType: 'callback',
-          description: 'Requesting a call back for TallyPrime Server pricing.',
+          description: 'Requesting a call back for TallyDrive Backup pricing.',
         }),
       });
       if (!res.ok) throw new Error('Submission failed');
@@ -178,7 +178,7 @@ export default function TallyServerPage() {
               <li className="text-slate-300 mx-0.5">/</li>
               <li><Link href="/products" className="hover:text-[#00ABE4] transition-colors">Products</Link></li>
               <li className="text-slate-300 mx-0.5">/</li>
-              <li className="text-slate-800 font-semibold">TallyPrime Server</li>
+              <li className="text-slate-800 font-semibold">TallyDrive</li>
             </ul>
           </div>
         </div>
@@ -194,14 +194,14 @@ export default function TallyServerPage() {
                 className="w-11 h-11 rounded-lg flex items-center justify-center text-white font-black text-lg"
                 style={{ backgroundColor: BRAND_PRIMARY }}
               >
-                S
+                T
               </div>
             </div>
 
             {/* Info */}
             <div className="flex-1 min-w-0">
               <div className="flex items-center flex-wrap gap-x-3 gap-y-1">
-                <h1 className="text-xl md:text-2xl font-bold text-slate-900">TallyPrime Server</h1>
+                <h1 className="text-xl md:text-2xl font-bold text-slate-900">TallyDrive</h1>
                 <span
                   className="inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider border"
                   style={{
@@ -211,19 +211,19 @@ export default function TallyServerPage() {
                   }}
                 >
                   <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: BRAND_PRIMARY }} />
-                  High-Control Edition
+                  Cloud Backup
                 </span>
               </div>
               <div className="flex items-center flex-wrap gap-x-4 gap-y-1 mt-1.5"></div>
               <p className="text-[13px] text-slate-500 mt-1.5 leading-relaxed max-w-3xl">
-                Server is built for larger teams that need higher concurrency, audit-friendly logs, hidden data folders, and branch-level control across the organisation.
+                TallyDrive is TallyPrime's secure cloud backup service. It stores encrypted company backups online, automates scheduling, and lets you restore data instantly if local hardware fails.
               </p>
             </div>
 
             {/* Action Buttons */}
             <div className="hidden md:flex flex-col gap-2 shrink-0">
               <button
-                onClick={() => openModal('demo', 'TallyPrime Server')}
+                onClick={() => openModal('demo', 'TallyDrive Backup')}
                 className="px-6 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider text-white shadow-lg transition-all hover:scale-[1.02]"
                 style={{ backgroundColor: BRAND_PRIMARY }}
               >
@@ -243,7 +243,7 @@ export default function TallyServerPage() {
         {/* Mobile action buttons */}
         <div className="md:hidden flex gap-2 px-6 pb-4">
           <button
-            onClick={() => openModal('demo', 'TallyPrime Server')}
+            onClick={() => openModal('demo', 'TallyDrive Backup')}
             className="flex-1 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider text-white shadow-lg transition-all"
             style={{ backgroundColor: BRAND_PRIMARY }}
           >
@@ -297,27 +297,26 @@ export default function TallyServerPage() {
 
             {/* Overview */}
             <section id="overview" className="scroll-mt-16 bg-white rounded-xl border border-slate-200 p-6">
-              <h2 className="text-lg font-bold text-slate-900 mb-3">What is TallyPrime Server?</h2>
+              <h2 className="text-lg font-bold text-slate-900 mb-3">What is TallyDrive?</h2>
               <div className="text-sm text-slate-600 leading-relaxed space-y-3">
                 <p>
-                  TallyPrime Server is the high-control edition of TallyPrime, built for larger teams
-                  that need higher concurrency, audit-friendly logs, hidden data folders, and
-                  branch-level control across the organisation.
+                  TallyDrive is TallyPrime v7.0's integrated encrypted cloud backup service. It automatically stores
+                  encrypted backups of your company data to secure cloud storage, eliminating the risk of data loss
+                  from local hardware failure, theft, or corruption.
                 </p>
                 <p>
-                  With a server-based architecture, Server lets multiple users work simultaneously on
-                  live data while maintaining full visibility into who changed what and when. When your
-                  organisation needs centralised control with branch operations, Server delivers the
-                  structure and accountability you need.
+                  With automated scheduling, incremental backups, and one-click restore, TallyDrive ensures your
+                  critical business data is always safe and recoverable. It is available across all TallyPrime
+                  editions — Silver, Gold, and Server — with storage tiers tailored to your business size.
                 </p>
               </div>
               {/* Hero stats */}
               <div className="mt-5 grid grid-cols-2 sm:grid-cols-4 gap-3">
                 {[
-                  { label: 'Users', value: 'Many' },
-                  { label: 'Focus', value: 'Controlled' },
-                  { label: 'Access', value: 'Centralized' },
-                  { label: 'Setup', value: 'Server-Based' },
+                  { label: 'Type', value: 'Backup' },
+                  { label: 'Security', value: 'Encrypted' },
+                  { label: 'Access', value: 'Automated' },
+                  { label: 'Storage', value: 'Cloud' },
                 ].map((stat) => (
                   <div
                     key={stat.label}
@@ -334,11 +333,13 @@ export default function TallyServerPage() {
               </div>
             </section>
 
+
+
             {/* Features */}
             <section id="features" className="scroll-mt-16 bg-white rounded-xl border border-slate-200 p-6">
-              <h2 className="text-lg font-bold text-slate-900 mb-1">Key Features of TallyPrime Server</h2>
+              <h2 className="text-lg font-bold text-slate-900 mb-1">Key Features of TallyDrive</h2>
               <p className="text-sm text-slate-500 mb-5">
-                Here are the powerful features that make TallyPrime Server stand out. Packed with essential tools for multi-user control and accountability.
+                Here are the powerful features that make TallyDrive the go-to cloud backup for TallyPrime users. Enterprise-grade protection with one-click simplicity.
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                 {features.map((feature) => (
@@ -360,16 +361,16 @@ export default function TallyServerPage() {
               </div>
             </section>
 
-            {/* When Server is the right choice + Compatible Systems */}
+            {/* When TallyDrive is the right choice + Compatible Systems */}
             <section className="grid sm:grid-cols-2 gap-6">
               <div className="bg-white rounded-xl border border-slate-200 p-6">
-                <h2 className="text-lg font-bold text-slate-900 mb-4">When Server is the right choice</h2>
+                <h2 className="text-lg font-bold text-slate-900 mb-4">When TallyDrive is the right choice</h2>
                 <ul className="space-y-3">
                   {[
-                    'Distribution and wholesale teams handling orders, dispatch, billing, and collections together',
-                    'Multi-branch companies that need one source of truth across locations',
-                    'Audit-sensitive finance teams that want clearer accountability',
-                    'Shared service centres processing a high volume of vouchers and approvals',
+                    'Solo practitioners who want automated backup protection without manual processes',
+                    'Growing teams that need centralized backup management across users',
+                    'Businesses that must protect financial records for compliance and audit',
+                    'Any TallyPrime user wanting a simple, encrypted, cloud-first backup solution',
                   ].map((item) => (
                     <li key={item} className="flex items-start gap-2.5 text-sm text-slate-600">
                       <span
@@ -390,21 +391,21 @@ export default function TallyServerPage() {
                 <h2 className="text-lg font-bold text-slate-900 mb-4">Compatible Systems</h2>
                 <div className="space-y-4">
                   <div>
-                    <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Supported OS</h3>
+                    <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Backup Sources</h3>
                     <div className="flex flex-wrap gap-2">
-                      {['Windows Server 2016+', 'Windows 10', 'Windows 11'].map((os) => (
-                        <span key={os} className="inline-flex rounded-md px-2.5 py-1 text-[12px] font-medium border" style={{ borderColor: `${BRAND_PRIMARY}25`, backgroundColor: `${BRAND_PRIMARY}06`, color: BRAND_PRIMARY }}>
-                          {os}
+                      {['TallyPrime Company Data', 'Local Files'].map((src) => (
+                        <span key={src} className="inline-flex rounded-md px-2.5 py-1 text-[12px] font-medium border" style={{ borderColor: `${BRAND_PRIMARY}25`, backgroundColor: `${BRAND_PRIMARY}06`, color: BRAND_PRIMARY }}>
+                          {src}
                         </span>
                       ))}
                     </div>
                   </div>
                   <div>
-                    <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Network</h3>
+                    <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Security</h3>
                     <div className="flex flex-wrap gap-2">
-                      {['LAN', 'VPN', 'WAN'].map((net) => (
-                        <span key={net} className="inline-flex rounded-md px-2.5 py-1 text-[12px] font-medium text-slate-600 bg-slate-50 border border-slate-200">
-                          {net}
+                      {['AES-256 Encryption', 'Backup Password', 'Recovery Key'].map((sec) => (
+                        <span key={sec} className="inline-flex rounded-md px-2.5 py-1 text-[12px] font-medium border" style={{ borderColor: `${BRAND_PRIMARY}25`, backgroundColor: `${BRAND_PRIMARY}06`, color: BRAND_PRIMARY }}>
+                          {sec}
                         </span>
                       ))}
                     </div>
@@ -412,7 +413,7 @@ export default function TallyServerPage() {
                   <div>
                     <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Integrations</h3>
                     <div className="flex flex-wrap gap-2">
-                      {['TallyDrive', 'Excel Import/Export', 'TallyReports', 'Cloud Backup', 'LDAP/Auth'].map((item) => (
+                      {['TallyPrime Silver', 'TallyPrime Gold', 'TallyPrime Server', 'TallyDrive Management Report'].map((item) => (
                         <span key={item} className="inline-flex rounded-md px-2.5 py-1 text-[12px] font-medium border" style={{ borderColor: `${BRAND_PRIMARY}25`, backgroundColor: `${BRAND_PRIMARY}06`, color: BRAND_PRIMARY }}>
                           {item}
                         </span>
@@ -425,8 +426,8 @@ export default function TallyServerPage() {
 
             {/* FAQ */}
             <section id="faqs" className="scroll-mt-16 bg-white rounded-xl border border-slate-200 p-6">
-              <h2 className="text-lg font-bold text-slate-900 mb-1">TallyPrime Server FAQs</h2>
-              <p className="text-sm text-slate-500 mb-5">Frequently asked questions about TallyPrime Server.</p>
+              <h2 className="text-lg font-bold text-slate-900 mb-1">TallyDrive FAQs</h2>
+              <p className="text-sm text-slate-500 mb-5">Frequently asked questions about TallyDrive cloud backup.</p>
               <div className="space-y-0 divide-y divide-slate-100">
                 {faqs.map((faq, idx) => (
                   <div key={idx}>
@@ -462,7 +463,7 @@ export default function TallyServerPage() {
             <section className="bg-white rounded-xl border border-slate-200 p-6">
               <div className="text-center mb-5">
                 <h2 className="text-lg font-bold text-slate-900">Still not satisfied?</h2>
-                <p className="text-sm text-slate-500 mt-1">Tell us your requirements and we will find the right solution for you.</p>
+                <p className="text-sm text-slate-500 mt-1">Tell us your requirements and we will find the right backup solution for you.</p>
               </div>
               <form onSubmit={handleInquirySubmit} className="max-w-xl mx-auto space-y-3">
                 <input
@@ -514,15 +515,15 @@ export default function TallyServerPage() {
 
             {/* Pricing - Hidden reveal */}
             <section id="pricing" className="scroll-mt-16 bg-white rounded-xl border border-slate-200 p-6">
-              <h2 className="text-lg font-bold text-slate-900 mb-1">TallyPrime Server Pricing</h2>
-              <p className="text-sm text-slate-500 mb-5">View pricing plans for TallyPrime Server.</p>
+              <h2 className="text-lg font-bold text-slate-900 mb-1">TallyDrive Storage Plans</h2>
+              <p className="text-sm text-slate-500 mb-5">Storage is tied to your TallyPrime edition. All plans require an active TSS.</p>
               <button
                 type="button"
                 onClick={() => setShowPricing(!showPricing)}
                 className="inline-flex items-center gap-2 rounded-lg px-5 py-2.5 text-xs font-bold uppercase tracking-wider text-white shadow-lg transition-all hover:scale-[1.02]"
                 style={{ backgroundColor: BRAND_PRIMARY }}
               >
-                {showPricing ? 'Hide Pricing' : 'View Price'}
+                {showPricing ? 'Hide Plans' : 'View Plans'}
                 <svg className={`w-3.5 h-3.5 transition-transform duration-200 ${showPricing ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
                 </svg>
@@ -532,31 +533,40 @@ export default function TallyServerPage() {
                   <table className="w-full text-left text-sm">
                     <thead>
                       <tr className="bg-slate-50 text-[10px] font-bold uppercase tracking-wider text-slate-500">
-                        <th className="px-4 py-3">License Type</th>
+                        <th className="px-4 py-3">Plan</th>
+                        <th className="px-4 py-3">Storage</th>
                         <th className="px-4 py-3">Validity</th>
-                        <th className="px-4 py-3">Price (INR)</th>
+                        <th className="px-4 py-3">Price</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr className="border-b border-slate-100">
-                        <td className="px-4 py-3 font-bold text-slate-900">1 Year Rental</td>
-                        <td className="px-4 py-3 text-slate-600">1 Year</td>
-                        <td className="px-4 py-3 font-bold" style={{ color: BRAND_PRIMARY }}>Server 1 Year Rental — Contact Sales</td>
+                        <td className="px-4 py-3 font-bold text-slate-900">TallyDrive Basic (Free)</td>
+                        <td className="px-4 py-3 text-slate-600">1 GB</td>
+                        <td className="px-4 py-3 text-slate-600">Active TSS required</td>
+                        <td className="px-4 py-3 font-bold" style={{ color: BRAND_PRIMARY }}>Included with Silver</td>
+                      </tr>
+                      <tr className="border-b border-slate-100">
+                        <td className="px-4 py-3 font-bold text-slate-900">TallyDrive Pro</td>
+                        <td className="px-4 py-3 text-slate-600">5 GB</td>
+                        <td className="px-4 py-3 text-slate-600">Active TSS required</td>
+                        <td className="px-4 py-3 font-bold" style={{ color: BRAND_PRIMARY }}>Included with Gold</td>
                       </tr>
                       <tr>
-                        <td className="px-4 py-3 font-bold text-slate-900">Perpetual License</td>
-                        <td className="px-4 py-3 text-slate-600">Lifetime</td>
-                        <td className="px-4 py-3 font-bold" style={{ color: BRAND_PRIMARY }}>Server Perpetual — Contact Sales</td>
+                        <td className="px-4 py-3 font-bold text-slate-900">TallyDrive Enterprise</td>
+                        <td className="px-4 py-3 text-slate-600">25 GB+</td>
+                        <td className="px-4 py-3 text-slate-600">Active TSS required</td>
+                        <td className="px-4 py-3 font-bold" style={{ color: BRAND_PRIMARY }}>Included with Server</td>
                       </tr>
                     </tbody>
                   </table>
                   <div className="px-4 py-3 bg-slate-50 border-t border-slate-200">
                     <p className="text-[11px] text-slate-500">
-                      Prices are subject to change. Contact our sales team for the latest pricing and discounts.
+                      TallyDrive storage is included with your TallyPrime edition at no extra cost. Contact our team if you need additional storage or have questions.
                     </p>
                     <button
                       type="button"
-                      onClick={() => openModal('quote', 'TallyPrime Server', 'Please share pricing details for TallyPrime Server.')}
+                      onClick={() => openModal('quote', 'TallyDrive Backup', 'Please share pricing details for TallyDrive Backup.')}
                       className="mt-2 inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-[10px] font-bold uppercase tracking-wider text-white transition-all hover:scale-[1.02]"
                       style={{ backgroundColor: BRAND_PRIMARY }}
                     >
@@ -570,6 +580,7 @@ export default function TallyServerPage() {
               )}
             </section>
 
+
           </div>
 
           {/* ========== RIGHT SIDEBAR (3/12) ========== */}
@@ -578,7 +589,7 @@ export default function TallyServerPage() {
             {/* Get Best Quote */}
             <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
               <div className="px-5 py-4 text-white" style={{ backgroundColor: BRAND_SECONDARY }}>
-                <h3 className="text-sm font-bold">Get Best Quote for TallyPrime Server</h3>
+                <h3 className="text-sm font-bold">Get Best Quote for TallyDrive Backup</h3>
                 <p className="text-[12px] text-white/75 mt-1 leading-relaxed">
                   Connect with our experts to get the best quote for your business.
                 </p>
@@ -639,9 +650,9 @@ export default function TallyServerPage() {
               <h3 className="text-sm font-bold text-slate-900 mb-4">Most Popular Software</h3>
               <div className="space-y-4">
                 {[
+                  { name: 'TallyPrime Silver', slug: '/products/silver', rating: '4.8', reviews: '120' },
                   { name: 'TallyPrime Gold', slug: '/products/gold', rating: '4.8', reviews: '120' },
                   { name: 'TallyPrime Server', slug: '/products/server', rating: '4.7', reviews: '85' },
-                  { name: 'Tally on WhatsApp', slug: '/services/tally-on-whatsapp', rating: '4.9', reviews: '200' },
                   { name: 'Cloud AWS', slug: '/cloud/aws', rating: '4.6', reviews: '65' },
                 ].map((item) => (
                   <Link
@@ -702,7 +713,7 @@ export default function TallyServerPage() {
                     <button
                       key={link.label}
                       type="button"
-                      onClick={() => openModal(link.type!, 'TallyPrime Server')}
+                      onClick={() => openModal(link.type!, 'TallyDrive Backup')}
                       className="block w-full text-left text-sm text-slate-600 hover:text-[#00ABE4] transition-colors py-1"
                     >
                       {link.label}

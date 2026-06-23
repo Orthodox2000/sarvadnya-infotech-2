@@ -39,11 +39,6 @@ export default function AdminReviews() {
 
   const handleAddReview = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (reviews.length >= 4) {
-      setMessage({ text: 'Maximum 4 reviews allowed.', type: 'error' });
-      return;
-    }
-
     setSubmitting(true);
     try {
       const response = await fetch('/api/admin/reviews', {
@@ -84,7 +79,7 @@ export default function AdminReviews() {
     <div>
       <header className="mb-10">
         <h1 className="text-3xl font-black text-slate-900">Google Reviews</h1>
-        <p className="text-slate-500 text-sm mt-1">Manage reviews displayed on the homepage (Max 4).</p>
+        <p className="text-slate-500 text-sm mt-1">Manage reviews displayed on the homepage in an infinite scrolling marquee.</p>
       </header>
 
       {message.text && (
@@ -130,17 +125,17 @@ export default function AdminReviews() {
             />
             <button 
               type="submit" 
-              disabled={submitting || reviews.length >= 4}
+              disabled={submitting}
               className="w-full bg-[#0371a3] text-white p-4 rounded-2xl font-bold hover:shadow-lg transition-all disabled:opacity-50"
             >
-              {submitting ? 'Adding...' : reviews.length >= 4 ? 'Limit Reached' : 'Add Review'}
+              {submitting ? 'Adding...' : 'Add Review'}
             </button>
           </form>
         </div>
 
         {/* List Reviews */}
         <div className="space-y-4">
-          <h2 className="text-xl font-bold text-slate-900 mb-6">Current Reviews ({reviews.length}/4)</h2>
+          <h2 className="text-xl font-bold text-slate-900 mb-6">Current Reviews ({reviews.length})</h2>
           {reviews.map(review => (
             <div key={review._id} className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm flex justify-between items-start group">
               <div className="space-y-1">

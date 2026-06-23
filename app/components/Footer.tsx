@@ -122,8 +122,7 @@ export default function Footer({ settings: initialSettings }: { settings?: SiteS
         { name: 'Tally Consultation Services', href: '/services' },
         { name: 'Tally Customization (TDL)', href: '/services' },
         { name: 'Tally on Mobile', href: '/services' },
-        { name: 'Tally AMC Services', href: '/services' },
-        { name: 'Report a Problem', href: '/report-problem' }
+        { name: 'Tally AMC Services', href: '/services' }
     ];
 
     return (
@@ -186,7 +185,12 @@ export default function Footer({ settings: initialSettings }: { settings?: SiteS
                             <span className="w-1.5 h-1.5 rounded-full bg-[#00ABE4] opacity-0 group-hover/link:opacity-100 transition-opacity" />
                             Terms & Conditions
                         </Link>
+                        <Link href="/report-problem" className="text-[10px] font-black uppercase tracking-widest text-white/40 hover:text-[#00ABE4] transition-colors flex items-center gap-2 group/link">
+                            <span className="w-1.5 h-1.5 rounded-full bg-[#00ABE4] opacity-0 group-hover/link:opacity-100 transition-opacity" />
+                            Report a Problem
+                        </Link>
                     </div>
+         
                 </div>
 
                 {/* Products */}

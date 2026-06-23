@@ -5,7 +5,6 @@ import { useEffect, useState, type FormEvent } from 'react';
 
 type ReportForm = {
   name: string;
-  email: string;
   contact: string;
   pageUrl: string;
   issueType: string;
@@ -17,13 +16,11 @@ const issueOptions = [
   { value: 'form-issue', label: 'Form issue' },
   { value: 'content-mismatch', label: 'Wrong content' },
   { value: 'layout-issue', label: 'Layout issue' },
-  { value: 'login-issue', label: 'Login issue' },
   { value: 'other', label: 'Other' }
 ];
 
 const initialForm: ReportForm = {
   name: '',
-  email: '',
   contact: '',
   pageUrl: '',
   issueType: 'other',
@@ -86,9 +83,9 @@ export default function ReportProblemPage() {
         <div>
           <p className="text-[10px] font-black uppercase tracking-[0.35em] text-[#0371a3] mb-2">Support</p>
           <h1 className="text-3xl sm:text-4xl font-black text-[#0f172a] tracking-tight">Report a Problem</h1>
-          <p className="mt-2 text-sm text-slate-500 max-w-2xl leading-relaxed">
-            Share the page, the issue type, and a short description. We keep it simple so your report reaches the team quickly.
-          </p>
+           <p className="mt-2 text-sm text-slate-500 max-w-2xl leading-relaxed">
+              Tell us what went wrong — no technical details needed. We&apos;ll figure out the rest.
+            </p>
         </div>
         <Link
           href="/"
@@ -104,37 +101,24 @@ export default function ReportProblemPage() {
             <form onSubmit={handleSubmit} className="space-y-5">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <label className="block">
-                  <span className="block text-[10px] font-black uppercase tracking-[0.22em] text-slate-400 mb-2">Full Name</span>
+                  <span className="block text-[10px] font-black uppercase tracking-[0.22em] text-slate-400 mb-2">Name <span className="text-slate-300 font-normal normal-case tracking-normal">(optional)</span></span>
                   <input
                     value={form.name}
                     onChange={(e) => updateField('name', e.target.value)}
                     type="text"
-                    required
                     className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition-colors focus:border-sky-300 focus:bg-white"
                     placeholder="Your name"
                   />
                 </label>
 
                 <label className="block">
-                  <span className="block text-[10px] font-black uppercase tracking-[0.22em] text-slate-400 mb-2">Email Address</span>
-                  <input
-                    value={form.email}
-                    onChange={(e) => updateField('email', e.target.value)}
-                    type="email"
-                    required
-                    className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition-colors focus:border-sky-300 focus:bg-white"
-                    placeholder="you@company.com"
-                  />
-                </label>
-
-                <label className="block">
-                  <span className="block text-[10px] font-black uppercase tracking-[0.22em] text-slate-400 mb-2">Contact Number</span>
+                  <span className="block text-[10px] font-black uppercase tracking-[0.22em] text-slate-400 mb-2">Contact <span className="text-slate-300 font-normal normal-case tracking-normal">(optional)</span></span>
                   <input
                     value={form.contact}
                     onChange={(e) => updateField('contact', e.target.value)}
-                    type="tel"
+                    type="text"
                     className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition-colors focus:border-sky-300 focus:bg-white"
-                    placeholder="+91 98xxxxxx"
+                    placeholder="Email or phone so we can reach you"
                   />
                 </label>
 
@@ -152,18 +136,18 @@ export default function ReportProblemPage() {
                     ))}
                   </select>
                 </label>
-              </div>
 
-              <label className="block">
-                <span className="block text-[10px] font-black uppercase tracking-[0.22em] text-slate-400 mb-2">Page / Link</span>
-                <input
-                  value={form.pageUrl}
-                  onChange={(e) => updateField('pageUrl', e.target.value)}
-                  type="text"
-                  className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition-colors focus:border-sky-300 focus:bg-white"
-                  placeholder="Paste the page URL where the issue happened"
-                />
-              </label>
+                <label className="block">
+                  <span className="block text-[10px] font-black uppercase tracking-[0.22em] text-slate-400 mb-2">Page / Link <span className="text-slate-300 font-normal normal-case tracking-normal">(optional)</span></span>
+                  <input
+                    value={form.pageUrl}
+                    onChange={(e) => updateField('pageUrl', e.target.value)}
+                    type="text"
+                    className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition-colors focus:border-sky-300 focus:bg-white"
+                    placeholder="Paste the page URL where the issue happened"
+                  />
+                </label>
+              </div>
 
               <label className="block">
                 <span className="block text-[10px] font-black uppercase tracking-[0.22em] text-slate-400 mb-2">What happened?</span>
@@ -220,16 +204,6 @@ export default function ReportProblemPage() {
         </section>
 
         <aside className="space-y-4">
-          <div className="rounded-[2rem] border border-slate-100 bg-slate-50 p-5 shadow-sm">
-            <p className="text-[10px] font-black uppercase tracking-[0.28em] text-[#0371a3] mb-3">What to include</p>
-            <ul className="space-y-3 text-sm text-slate-600 leading-relaxed">
-              <li>• The exact page where the issue happened.</li>
-              <li>• A short note on what you expected to see.</li>
-              <li>• Any browser or device detail if it matters.</li>
-              <li>• A screenshot or screenshot link if available.</li>
-            </ul>
-          </div>
-
           <div className="rounded-[2rem] border border-slate-100 bg-white p-5 shadow-sm">
             <p className="text-[10px] font-black uppercase tracking-[0.28em] text-slate-400 mb-3">Need help faster?</p>
             <div className="space-y-3">
@@ -248,13 +222,6 @@ export default function ReportProblemPage() {
                 <span className="text-[11px] text-slate-400">{supportPhone}</span>
               </a>
             </div>
-          </div>
-
-          <div className="rounded-[2rem] border border-sky-100 bg-sky-50/70 p-5 shadow-sm">
-            <p className="text-[10px] font-black uppercase tracking-[0.28em] text-sky-700 mb-3">Review location</p>
-            <p className="text-sm text-slate-600 leading-relaxed">
-              Submitted reports appear in the admin panel under Problem Reports so the team can review them in one place.
-            </p>
           </div>
         </aside>
       </div>
