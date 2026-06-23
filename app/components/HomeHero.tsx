@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import UnifiedContactModal, { FormType } from './UnifiedContactModal';
@@ -23,7 +23,7 @@ interface HeroContent {
   colorTo: string;
   description: string;
   image: string;
-  layout?: 'standard' | 'ecosystem';
+  layout?: 'standard' | 'ecosystem' | 'single';
   features: HeroFeature[];
   ctaPrimary: HeroCTA;
   sub1Img?: string;
@@ -32,22 +32,20 @@ interface HeroContent {
 
 const DEFAULT_HERO: HeroContent[] = [
     {
-      "badge": "15+ Years of Excellence",
-      "titleText": "Navi Mumbai's Premier Tally Solutions Partner",
+      "badge": "Most Trusted Tally Partner in India",
+      "titleText": "Mumbai's Premier Tally Solutions Partner",
       "colorFrom": "#232F3E",
       "colorTo": "#00ABE4",
       "description": "Join 1,500+ enterprises scaling with the gold standard of automation. 15 years of certified excellence, delivering nationwide support and innovation.",
-      "image": "/sa2.png",
-      "layout": "standard",
+      "image": "/certified partner person.png",
+      "layout": "single",
       "features": [
         { "text": "Certified Tally Expertise" },
         { "text": "1,500+ Active Clients" },
         { "text": "Pan-India Remote Support" },
         { "text": "Custom TDL Solutions" }
       ],
-      "ctaPrimary": { "text": "Why Choose Us", "href": "/about" },
-      "sub1Img": "/hero/tssgold.png",
-      "sub2Img": "/hero/hero-main.png"
+      "ctaPrimary": { "text": "Why Choose Us", "href": "/about" }
     },
     {
       "badge": "TallyPrime 7.0 Now Available",
@@ -178,7 +176,13 @@ const ECOSYSTEM_SCHEMES = [
 ];
 //cahnge this for hero text bg colour
 const processHeroData = (data: any[]): HeroContent[] => {
-  return data.map((item) => {
+  const hasSingle = data.some((item: any) => item.layout === 'single');
+  const merged = hasSingle ? data : [DEFAULT_HERO[0], ...data];
+  return merged.map((item: any) => {
+    if (item.layout === 'single') {
+      return { ...item, colorFrom: '#232F3E', colorTo: '#00ABE4' };
+    }
+
     const title = (item.titleText || '').toLowerCase();
     const isCloud = title.includes('cloud');
     const isSupport = title.includes('Solution') || title.includes('Downtime')  ;
@@ -217,7 +221,7 @@ const processHeroData = (data: any[]): HeroContent[] => {
       ...item,
       titleText: baseTitle || (isCloud ? "Reliable Cloud & Zero-Loss Backup" : "Why Choose Certified Partner?"),
       image: mainImg,
-      layout: (isCloud ? 'ecosystem' : 'standard') as 'standard' | 'ecosystem',
+      layout: isCloud ? 'ecosystem' : 'standard',
       colorFrom: '#232F3E',
       colorTo: '#00ABE4',
       sub1Img,
@@ -248,7 +252,7 @@ export default function HomeHero({ initialData, variant = 'standard' }: { initia
         if (Array.isArray(data) && data.length > 0) {
           setHeroContents(processHeroData(data));
         }
-      } catch (err) { console.error('Failed to fetch hero content:', err); }
+      } catch (_err) { /* Server fetch failed; DEFAULT_HERO is already rendered */ }
     };
     fetchHero();
   }, [initialData]);
@@ -275,7 +279,7 @@ export default function HomeHero({ initialData, variant = 'standard' }: { initia
             runCarousel();
           }, 150);
         }, 800);
-      }, 9050); 
+      }, 150050); 
     };
     const initialEntry = setTimeout(() => setIsEntering(true), 100);
     runCarousel();
@@ -325,9 +329,32 @@ export default function HomeHero({ initialData, variant = 'standard' }: { initia
     return 'bg-[linear-gradient(45deg,hsla(221,83%,53%,1)_0%,hsla(192,91%,36%,1)_100%)]';
   };
 
+  const addDevSlide = useCallback(() => {
+    const n = heroContents.length + 1;
+    const newSlide: HeroContent = {
+      badge: `DEV SLIDE #${n}`,
+      titleText: `Development Slide ${n} — New Feature Set`,
+      colorFrom: '#232F3E',
+      colorTo: '#00ABE4',
+      description: `Temporary dev slide for testing. Edit DEFAULT_HERO or push via API to finalize this group (Slide ${n}).`,
+      image: '/sa2.png',
+      layout: 'standard',
+      features: [
+        { text: 'Feature A' },
+        { text: 'Feature B' },
+        { text: 'Feature C' },
+        { text: 'Feature D' },
+      ],
+      ctaPrimary: { text: 'Explore Dev Slide', href: '/products' },
+      sub1Img: '/hero/tssgold.png',
+      sub2Img: '/hero/hero-main.png',
+    };
+    setHeroContents(prev => [...prev, newSlide]);
+  }, [heroContents.length]);
+
   return (
     <>
-    <main className={`relative w-full overflow-hidden opacity-80 md:opacity-90 transition-all duration-1000 ${getVariantBg()} min-h-[550px] md:min-h-[700px] lg:min-h-[650px] lg:-mt-10 flex items-start`}>
+    <main className={`relative w-full overflow-hidden opacity-80 md:opacity-90 transition-all duration-1000 ${getVariantBg()} min-h-137.5 md:min-h-[700px] lg:min-h-[650px] lg:-mt-10 flex items-start`}>
       <div className="absolute -z-[100] invisible h-0 w-0 overflow-hidden pointer-events-none">
         {heroContents.map((content, idx) => (
           <div key={`preload-wrap-${idx}`} className="relative h-1 w-1">
@@ -442,50 +469,78 @@ export default function HomeHero({ initialData, variant = 'standard' }: { initia
                   <div className="absolute -inset-10 rounded-full blur-[80px] animate-pulse" style={{ background: `linear-gradient(to top right, rgba(255,255,255,0.2), transparent, rgba(255,255,255,0.2))` }} />
                 )}
                 
-                {current.layout === 'ecosystem' ? (
+                {current.layout === 'single' ? (
+                  <div className={`relative w-full h-full
+                      ${isExiting ? 'opacity-0 scale-90 translate-y-12 transition-all duration-[800ms]' : isEntering ? 'opacity-100 transition-all duration-1200' : 'opacity-0 translate-y-4'}`}>
+                    <Image src={current.image} alt={current.titleText} fill className="object-contain p-4" sizes="(max-width: 1024px) 100vw, 480px" priority />
+                  </div>
+                ) : current.layout === 'ecosystem' ? (
                    <div className="relative w-full h-full scale-[1.0]">
                     <div className={`absolute top-[10%] left-[15%] w-[75%] aspect-square rounded-[3.5rem] overflow-hidden border border-[#232F3E]/10 shadow-[0_50px_100px_-20px_rgba(0,0,0,0.3)] z-30 transform bg-white
-                      ${isExiting ? 'opacity-0 scale-90 translate-y-12 transition-all duration-[800ms]' : isEntering ? `opacity-100 transition-all duration-[1200ms] ${ecoScheme.main}` : 'opacity-0 translate-y-4'}`}>
+                      ${isExiting ? 'opacity-0 scale-90 translate-y-12 transition-all duration-800' : isEntering ? `opacity-100 transition-all duration-1200 ${ecoScheme.main}` : 'opacity-0 translate-y-4'}`}>
                        <Image src={current.image} alt="Main" fill className="object-cover opacity-20 blur-xl scale-110" sizes="(max-width: 1024px) 100vw, 540px" />
-                       <div className="absolute inset-0 relative w-full h-full"><Image src={current.image} alt="Ecosystem" fill className="object-contain p-8" sizes="(max-width: 1024px) 100vw, 540px" /></div>
+                       <div className="absolute inset-0 w-full h-full"><Image src={current.image} alt="Ecosystem" fill className="object-contain p-8" sizes="(max-width: 1024px) 100vw, 540px" /></div>
                     </div>
                     <div className={`absolute top-[-8%] right-[-5%] w-[45%] aspect-square rounded-[2rem] overflow-hidden border border-slate-200/50 shadow-2xl z-50 bg-white p-4
-                      ${isExiting ? 'opacity-0 translate-x-12 -translate-y-12 transition-all duration-[800ms]' : isEntering ? `opacity-100 transition-all duration-[1000ms] delay-200 ${ecoScheme.aws}` : 'opacity-0 translate-y-4'}`}>
+                      ${isExiting ? 'opacity-0 translate-x-12 -translate-y-12 transition-all duration-800' : isEntering ? `opacity-100 transition-all duration-1000 delay-200 ${ecoScheme.aws}` : 'opacity-0 translate-y-4'}`}>
                       <Image src="/hero/AWS.png" alt="AWS Infrastructure" fill className="object-contain p-4" sizes="200px" />
                     </div>
                     <div className={`absolute bottom-[-8%] left-[-5%] w-[40%] aspect-square rounded-[2rem] overflow-hidden border border-slate-200/50 shadow-2xl z-40 bg-[#232F3E] p-4
-                      ${isExiting ? 'opacity-0 -translate-x-12 translate-y-12 transition-all duration-[800ms]' : isEntering ? `opacity-100 flex items-center justify-center transition-all duration-[1000ms] delay-400 ${ecoScheme.nosky}` : 'opacity-0 translate-y-4'}`}>
+                      ${isExiting ? 'opacity-0 -translate-x-12 translate-y-12 transition-all duration-800' : isEntering ? `opacity-100 flex items-center justify-center transition-all duration-1000 delay-400 ${ecoScheme.nosky}` : 'opacity-0 translate-y-4'}`}>
                        <div className="relative w-full h-full"><Image src="/hero/brand-nosky-1779439419186.webp" alt="NoSky Node" fill className="object-contain" sizes="250px" /></div>
                     </div>
                   </div>
                 ) : (
                   <div className="relative w-full h-full scale-[0.8]">
                     <div className={`absolute top-[10%] right-0 w-[80%] aspect-square rounded-[4rem] overflow-hidden border-2 border-white shadow-[0_50px_100px_-20px_rgba(3,113_163,0.4)] z-40 transform bg-white
-                        ${isExiting ? 'opacity-0 scale-90 translate-y-12 transition-all duration-[800ms]' : isEntering ? `opacity-100 transition-all duration-[1200ms] ${scheme.main}` : 'opacity-0 translate-y-4'}`}>
+                        ${isExiting ? 'opacity-0 scale-90 translate-y-12 transition-all duration-[800ms]' : isEntering ? `opacity-100 transition-all duration-1200 ${scheme.main}` : 'opacity-0 translate-y-4'}`}>
                       <Image src={current.image} alt="Backdrop" fill className="object-cover opacity-30 blur-2xl scale-110" sizes="(max-width: 1024px) 100vw, 540px" />
-                      <div className="absolute inset-0 relative w-full h-full"><Image src={current.image} alt={current.titleText} fill priority className="object-contain p-10" sizes="(max-width: 1024px) 100vw, 540px" /></div>
+                      <div className="absolute inset-0 w-full h-full"><Image src={current.image} alt={current.titleText} fill priority className="object-contain p-10" sizes="(max-width: 1024px) 100vw, 540px" /></div>
                     </div>
                     <div className={`absolute top-[-10%] left-0 w-[50%] aspect-square rounded-[2.5rem] overflow-hidden border border-slate-200/50 shadow-2xl z-50 bg-white
-                        ${isExiting ? 'opacity-0 -translate-x-12 -translate-y-12 transition-all duration-[800ms]' : isEntering ? `opacity-100 transition-all duration-[1400ms] delay-200 ${scheme.sub1}` : 'opacity-0 translate-y-4'}`}>
+                        ${isExiting ? 'opacity-0 -translate-x-12 -translate-y-12 transition-all duration-800' : isEntering ? `opacity-100 transition-all duration-1400 delay-200 ${scheme.sub1}` : 'opacity-0 translate-y-4'}`}>
                       <Image src={scheme.sub1Img} alt="Enterprise Logic" fill className="object-cover opacity-10 blur-lg" sizes="250px" />
-                      <div className="absolute inset-0 relative w-full h-full"><Image src={scheme.sub1Img} alt="Tally ERP" fill className="object-contain" sizes="250px" /></div>
+                      <div className="absolute inset-0 w-full h-full"><Image src={scheme.sub1Img} alt="Tally ERP" fill className="object-contain" sizes="250px" /></div>
                     </div>
                     <div className={`absolute bottom-[-10%] left-[-10%] w-[45%] aspect-square rounded-[2rem] overflow-hidden border border-white/80 shadow-2xl z-30 bg-white
-                        ${isExiting ? 'opacity-0 -translate-x-16 translate-y-16 transition-all duration-[800ms]' : isEntering ? `opacity-100 transition-all duration-[1600ms] delay-400 ${scheme.sub2}` : 'opacity-0 translate-y-4'}`}>
+                        ${isExiting ? 'opacity-0 -translate-x-16 translate-y-16 transition-all duration-800' : isEntering ? `opacity-100 transition-all duration-1600 delay-400 ${scheme.sub2}` : 'opacity-0 translate-y-4'}`}>
                       <Image src={scheme.sub2Img} alt="Analytics View" fill className="object-cover opacity-10 blur-md" sizes="200px" />
-                      <div className="absolute inset-0 relative w-full h-full"><Image src={scheme.sub2Img} alt="Business Data" fill className="object-contain" sizes="200px" /></div>
+                      <div className="absolute inset-0 w-full h-full"><Image src={scheme.sub2Img} alt="Business Data" fill className="object-contain" sizes="200px" /></div>
                     </div>
                   </div>
                 )}
                 
-                <div className={`absolute bottom-[5%] right-[-5%] w-[30%] h-[30%] rounded-[2rem] overflow-hidden border-2 border-white shadow-2xl z-50 scale-[0.8] bg-white p-6
-                  ${isExiting ? 'opacity-0 translate-x-20 scale-50 transition-all duration-[800ms]' : isEntering ? `opacity-100 transition-all duration-[1800ms] delay-600 ${scheme.logo}` : 'opacity-0 translate-y-4'}`}>
-                  <Image src="/logo.svg" alt="Logo" fill className="object-contain" sizes="200px" style={{ filter: 'invert(31%) sepia(94%) saturate(1131%) hue-rotate(167deg) brightness(91%) contrast(98%)' }} />
-                </div>
+                {current.layout !== 'single' && (
+                  <div className={`absolute bottom-[5%] right-[-5%] w-[30%] h-[30%] rounded-[2rem] overflow-hidden border-2 border-white shadow-2xl z-50 scale-[0.8] bg-white p-6
+                    ${isExiting ? 'opacity-0 translate-x-20 scale-50 transition-all duration-800' : isEntering ? `opacity-100 transition-all duration-1800 delay-600 ${scheme.logo}` : 'opacity-0 translate-y-4'}`}>
+                    <Image src="/logo.svg" alt="Logo" fill className="object-contain" sizes="200px" style={{ filter: 'invert(31%) sepia(94%) saturate(1131%) hue-rotate(167deg) brightness(91%) contrast(98%)' }} />
+                  </div>
+                )}
              </div>
           </div>
         </div>
       </div>
+      <button
+        onClick={() => setStableIndex(prev => (prev - 1 + heroContents.length) % heroContents.length)}
+        className="absolute left-2 top-1/2 -translate-y-1/2 z-50 w-8 h-8 flex items-center justify-center rounded-full bg-white/20 backdrop-blur-md text-white border border-white/30 hover:bg-white/40 active:scale-90 transition-all"
+        title="Previous slide"
+      >
+        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3"><path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" /></svg>
+      </button>
+      <button
+        onClick={() => setStableIndex(prev => (prev + 1) % heroContents.length)}
+        className="absolute right-2 top-1/2 -translate-y-1/2 z-50 w-8 h-8 flex items-center justify-center rounded-full bg-white/20 backdrop-blur-md text-white border border-white/30 hover:bg-white/40 active:scale-90 transition-all"
+        title="Next slide"
+      >
+        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
+      </button>
+      <button
+        onClick={addDevSlide}
+        className="fixed top-2 right-12 z-[999] px-2 py-1 text-[9px] font-bold uppercase tracking-wider bg-yellow-400 text-black rounded-md shadow-lg hover:bg-yellow-300 active:scale-95 border border-yellow-500/50"
+        title="Add a new dev hero slide"
+      >
+        + Dev
+      </button>
     </main>
     <UnifiedContactModal isOpen={modalConfig.isOpen} onClose={() => setModalConfig(prev => ({ ...prev, isOpen: false }))} type={modalConfig.type} prefillService={modalConfig.service} prefillDetails={modalConfig.details} />
     </>

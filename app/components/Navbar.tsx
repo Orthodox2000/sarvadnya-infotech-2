@@ -68,7 +68,7 @@ export default function Navbar({ initialSettings }: { initialSettings?: any }) {
   ];
 
   return (
-    <header className="relative z-[1000] w-full border-b border-white/5 bg-[#232F3E]  shadow-sm"> {/*#232F3E*/}
+    <header className="relative z-1000 w-full border-b border-white/5 bg-[#232F3E]  shadow-sm"> {/*#232F3E*/}
       <nav className="mx-auto flex h-12 lg:h-16 w-full max-w-full items-center justify-between px-3">
         <Link
           href="/"
@@ -139,13 +139,13 @@ export default function Navbar({ initialSettings }: { initialSettings?: any }) {
       {/* Mobile Menu Backdrop */}
       {isMenuOpen && (
         <div
-          className="lg:hidden fixed inset-0 bg-[#0371a3]/10 backdrop-blur-sm z-[998]"
+          className="lg:hidden fixed inset-0 bg-[#0371a3]/10 backdrop-blur-sm z-998"
           onClick={() => setIsMenuOpen(false)}
         />
       )}
 
       {/* Mobile Menu Drawer */}
-      <div className={`lg:hidden absolute top-full left-0 right-0 bg-[#f0f9ff] border-b border-[#0371a3]/10 z-[999] transition-all duration-300 overflow-y-auto ${isMenuOpen ? 'max-h-[85vh] opacity-100 py-6 shadow-xl' : 'max-h-0 opacity-0 py-0'}`}>
+      <div className={`lg:hidden absolute top-full left-0 right-0 bg-[#f0f9ff] border-b border-[#0371a3]/10 z-999 transition-all duration-300 overflow-y-auto ${isMenuOpen ? 'max-h-[85vh] opacity-100 py-6 shadow-xl' : 'max-h-0 opacity-0 py-0'}`}>
         <div className="flex flex-col gap-6 px-6">
 
 
