@@ -17,7 +17,11 @@ export async function GET() {
       linkedin_handle: settingsMap['NEXT_PUBLIC_LINKEDIN_HANDLE'] || 'Sarvadnya Infotech LLP',
       map_iframe_url: settingsMap['NEXT_PUBLIC_MAP_IFRAME_URL'] || process.env.NEXT_PUBLIC_MAP_IFRAME_URL || '',
     };
-    return NextResponse.json(settings);
+    return NextResponse.json(settings, {
+      headers: {
+        'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=600',
+      },
+    });
   } catch (error) {
     console.error('Error fetching settings:', error);
     return NextResponse.json({ error: 'Failed to fetch settings' }, { status: 500 });

@@ -48,15 +48,9 @@ export default function SupportButton({ initialSettings }: { initialSettings?: a
         aria-label="Ask AI"
         className="fixed bottom-32 right-6 sm:bottom-6 z-3000 flex items-center gap-2 bg-[#00ABE4] text-white px-4 py-2.5 rounded-full shadow-[0_15px_40px_rgba(0,171,228,0.3)] hover:shadow-[0_20px_50px_rgba(0,171,228,0.4)] transition-all duration-500 ease-in-out hover:-translate-y-1 active:scale-95 group"
       >
-        <div className="relative">
-          <span className="absolute -top-1 -right-1 flex h-2.5 w-2.5">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-300 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-blue-500 border-2 border-[#00ABE4]"></span>
-          </span>
-          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-          </svg>
-        </div>
+        <svg className="w-5 h-5 animate-lightning-glow" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+        </svg>
         <span className="font-bold text-[12px] tracking-tight">Ask Sara</span>
 
         {/* Tooltip */}

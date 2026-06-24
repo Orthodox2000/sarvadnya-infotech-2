@@ -576,7 +576,7 @@ export default function FindSolutionPage() {
 
       {/* LEAD CAPTURE MODAL */}
       {showLeadModal && (
-        <div className="fixed inset-0 z-[100000] flex items-center justify-center p-6 bg-slate-900/80 backdrop-blur-md animate-in fade-in duration-300">
+        <div className="fixed inset-0 z-100000 flex items-center justify-center p-6 bg-slate-900/80 backdrop-blur-md animate-in fade-in duration-300">
           <div className="w-full max-w-xl bg-white rounded-[3.5rem] shadow-2xl overflow-hidden relative">
             <button onClick={() => setShowLeadModal(false)} className="absolute top-8 right-8 p-3 text-slate-400 hover:bg-slate-50 rounded-full transition-all">
               <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12" /></svg>

@@ -500,3 +500,12 @@ main > div:first-of-type {
 .group:hover .group-hover\:pause-marquee-infinite {
   animation-play-state: paused !important;
 }
+
+@keyframes lightning-glow {
+  0%, 100% { opacity: 1; filter: drop-shadow(0 0 3px rgba(255,255,255,0.6)); }
+  50% { opacity: 0.75; filter: drop-shadow(0 0 8px rgba(255,255,255,0.9)); }
+}
+
+.animate-lightning-glow {
+  animation: lightning-glow 2.5s ease-in-out infinite;
+}

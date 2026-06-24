@@ -98,7 +98,7 @@ export default function ProductsPage() {
       {/* Comparison Grid */}
       <section id="compare" className="py-20 px-6 max-w-7xl mx-auto">
         <h2 className="text-3xl md:text-5xl font-black text-slate-900 tracking-tight mb-10">
-          TallyPrime Edition Comparison
+          Official Tally Products
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-4">
@@ -157,82 +157,6 @@ export default function ProductsPage() {
               </div>
             </div>
           ))}
-        </div>
-      </section>
-
-      {/* TallyDrive Detailed Features Section */}
-      <section id="tallydrive" className="py-20 px-6 bg-white border-y border-slate-100 overflow-hidden relative">
-        <div className="absolute top-0 right-0 w-1/3 h-full bg-sky-50/60 -skew-x-12 transform translate-x-1/2" />
-
-        <div className="max-w-7xl mx-auto relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
-          <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#0371a3]/10 text-[#0371a3] text-[10px] font-black uppercase tracking-widest mb-6">
-              Secure cloud backup
-            </div>
-            <h2 className="text-3xl md:text-5xl font-black text-slate-900 mb-6 leading-tight">
-              Secure Your Data with <br />
-              <span className="text-[#0371a3]">TallyDrive</span>
-            </h2>
-            <p className="text-slate-600 text-lg leading-relaxed mb-8 font-medium max-w-2xl">
-              TallyDrive is TallyPrime&apos;s secure cloud storage for company backups. It stores backups online, helps protect against local system failures, and supports automatic scheduling.
-            </p>
-
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              {[
-                {
-                  title: 'Automatic backups',
-                  desc: 'Schedule regular backups to TallyDrive, even when TallyPrime is not running.',
-                },
-                {
-                  title: 'Encrypted backup',
-                  desc: 'Use a Backup Password and Recovery Key to protect your backups.',
-                },
-                {
-                  title: 'Restore data',
-                  desc: 'Restore the latest backup or any previous version stored on TallyDrive.',
-                },
-              ].map((item) => (
-                <div key={item.title} className="p-5 bg-[#ecf5fa] rounded-2xl border border-sky-100">
-                  <h4 className="font-black text-slate-900 mb-2">{item.title}</h4>
-                  <p className="text-sm text-slate-500 leading-relaxed font-semibold">{item.desc}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="bg-white rounded-[2rem] p-7 md:p-8 text-slate-900 relative overflow-hidden shadow-xl border border-slate-100">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-[#0371a3]/5 blur-[80px]" />
-
-            <h3 className="text-2xl font-black mb-6 relative z-10 border-b border-slate-100 pb-4">Storage with active TSS</h3>
-            <div className="space-y-4 relative z-10">
-              <div className="flex items-center justify-between gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-100">
-                <div>
-                  <span className="block font-black text-slate-900">Single-User TallyPrime</span>
-                  <span className="text-xs text-slate-500 font-medium">Free storage with active TSS</span>
-                </div>
-                <span className="font-black text-[#0371a3]">1 GB</span>
-              </div>
-              <div className="flex items-center justify-between gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-100">
-                <div>
-                  <span className="block font-black text-slate-900">Multi-User TallyPrime</span>
-                  <span className="text-xs text-slate-500 font-medium">Free storage with active TSS</span>
-                </div>
-                <span className="font-black text-[#0371a3]">3 GB</span>
-              </div>
-              <div className="p-4 rounded-2xl bg-[#f0f9ff] border border-[#0371a3]/10">
-                <p className="text-sm text-slate-600 leading-relaxed font-medium">
-                  Use the TallyDrive Management report to monitor, download, and delete company backups, and manage storage and user rights.
-                </p>
-              </div>
-            </div>
-
-            <button 
-              onClick={() => openModal('callback', 'TallyDrive Backup')}
-              className="mt-8 w-full py-4 bg-[#0371a3] text-white rounded-xl font-black text-xs uppercase tracking-widest hover:bg-[#00ABE4] transition-all shadow-lg"
-            >
-              Consult Backup Strategy
-            </button>
-          </div>
         </div>
       </section>
 

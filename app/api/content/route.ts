@@ -12,7 +12,11 @@ export async function GET(request: Request) {
     }
 
     const content = await getContent(section);
-    return NextResponse.json(content);
+    return NextResponse.json(content, {
+      headers: {
+        'Cache-Control': 'public, s-maxage=120, stale-while-revalidate=300',
+      },
+    });
   } catch (error) {
     console.error('Error fetching content:', error);
     return NextResponse.json({ error: 'Failed to fetch content' }, { status: 500 });

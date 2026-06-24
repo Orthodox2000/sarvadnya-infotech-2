@@ -134,13 +134,13 @@ export default function ContactPage() {
         </div>
         
         <div className="max-w-4xl mx-auto relative z-10 w-full flex flex-col items-center">
-          <div className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-slate-900/5 border border-slate-900/10 text-slate-600 text-[6px] font-bold uppercase tracking-widest mb-3 backdrop-blur-sm">
-            <span className="flex h-0.5 w-0.5 rounded-full bg-slate-400"></span>
+          <div className="inline-flex items-center gap-1.5 px-2 py-1 rounded-full bg-slate-900/5 border border-slate-900/10 text-slate-500 text-[10px] font-bold uppercase tracking-[0.2em] mb-4 backdrop-blur-sm">
+            <span className="flex h-1 w-1 rounded-full bg-slate-400"></span>
             Contact Us
           </div>
           <div className="relative inline-block mb-4 text-center">
             <h1 className="text-4xl md:text-6xl font-black text-slate-900 leading-tight tracking-tight">
-              Get in <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0371a3] via-[#4b91ca] to-[#0371a3] drop-shadow-[0_2px_15px_rgba(0,171,228,0.3)]">Touch</span>
+              Get in <span className="text-transparent bg-clip-text bg-linear-to-r from-[#0371a3] via-[#4b91ca] to-[#0371a3] drop-shadow-[0_2px_15px_rgba(0,171,228,0.3)]">Touch</span>
             </h1>
           </div>
           <p className="text-slate-600/80 text-[10px] md:text-sm max-w-xl mx-auto leading-relaxed font-semibold text-center">
@@ -189,9 +189,9 @@ export default function ContactPage() {
             <a 
               key={social.name}
               href={social.url}
-              className={`p-5 min-h-[80px] rounded-2xl ${social.bgColor} border border-transparent hover:border-slate-200 transition-all duration-300 group shadow-sm flex items-center gap-4`}
+              className={`p-5 min-h-20 rounded-2xl ${social.bgColor} border border-transparent hover:border-slate-200 transition-all duration-300 group shadow-sm flex items-center gap-4`}
             >
-              <div className={`flex-shrink-0 ${social.iconColor} group-hover:scale-110 transition-transform duration-300`}>
+              <div className={`shrink-0 ${social.iconColor} group-hover:scale-110 transition-transform duration-300`}>
                 {social.name === 'WhatsApp' && <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.414 0 .004 5.411.002 12.048c0 2.12.54 4.19 1.563 6.024L0 24l6.135-1.608a11.81 11.81 0 005.908 1.567h.005c6.635 0 12.045-5.411 12.047-12.047 0-3.217-1.252-6.242-3.525-8.514z"/></svg>}
                 {social.name === 'Facebook' && <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>}
                 {social.name === 'Instagram' && <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37zM17.5 6.5h.01"/></svg>}
@@ -311,7 +311,7 @@ export default function ContactPage() {
                         </svg>
                       </>
                     )}
-                    <div className="absolute inset-0 bg-gradient-to-r from-[#00ABE4] via-[#0371a3] to-[#00ABE4] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    <div className="absolute inset-0 bg-linear-to-r from-[#00ABE4] via-[#0371a3] to-[#00ABE4] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                   </button>
                 </form>
               )}
@@ -328,7 +328,7 @@ export default function ContactPage() {
                       </div>
                     ))}
                   </div>
-                  <span className="text-[9px] text-slate-500 font-bold">50+ Support Team Online</span>
+                  <span className="text-[9px] text-slate-500 font-bold">10+ Support Team Online</span>
                 </div>
               </div>
             </div>
@@ -344,7 +344,7 @@ export default function ContactPage() {
                   </svg>
                   Our Location
                </h3>
-               <div className="flex-1 min-h-[300px] rounded-3xl overflow-hidden border border-slate-100 relative group">
+               <div className="flex-1 min-h-75 rounded-3xl overflow-hidden border border-slate-100 relative group">
                   {mapSrc ? (
                     <iframe 
                       src={mapSrc}

@@ -47,17 +47,17 @@ function SearchContent() {
   return (
     <div className="min-h-screen bg-white">
       {/* Search Header Section (Themed) */}
-      <section className="bg-white relative pt-12 pb-16 md:pt-20 md:pb-24 px-6 overflow-hidden border-b border-[#0371a3]/10">
+      <section className="bg-white relative pt-12 pb-16 px-6 overflow-hidden border-b border-[#0371a3]/10">
         {/* Background Effects */}
         <div className="absolute inset-0 opacity-40 pointer-events-none">
-          <div className="absolute top-0 right-0 w-[60%] h-[60%] bg-white/40 blur-[130px] -mr-32 -mt-32" />
-          <div className="absolute bottom-0 left-0 w-[40%] h-[40%] bg-sky-200/30 blur-[110px] -ml-24 -mb-24" />
+          <div className="absolute top-0 right-0 w-[60%] h-[40%] bg-white/40 blur-[130px] -mr-32 -mt-32" />
+          <div className="absolute bottom-0 left-0 w-[40%] h-[20%] bg-sky-200/30 blur-[110px] -ml-24 -mb-24" />
         </div>
 
         <div className="relative z-10 max-w-4xl mx-auto text-center">
-          <div className="inline-flex items-center gap-1.5 px-2 py-1 rounded-full bg-slate-900/5 border border-slate-900/10 text-slate-500 text-[10px] font-bold uppercase tracking-[0.2em] mb-8 backdrop-blur-sm">
+          <div className="inline-flex items-center gap-1.5 px-2 py-1 rounded-full bg-slate-900/5 border border-slate-900/10 text-slate-500 text-[10px] font-bold uppercase tracking-[0.2em] mb-4 backdrop-blur-sm">
             <span className="flex h-1 w-1 rounded-full bg-slate-400"></span>
-            Intelligence Search
+            Intelligent Search
           </div>
           <h1 className="text-3xl md:text-5xl font-black text-slate-900 mb-4 leading-tight tracking-tight">
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0371a3] via-[#4b91ca] to-[#0371a3] drop-shadow-[0_2px_15px_rgba(0,171,228,0.2)]">Search Results</span>
@@ -131,14 +131,22 @@ function SearchContent() {
               )}
 
               {/* Exact Match Status */}
-              {results.length > 0 && !results.some(r => r.title.toLowerCase() === query.toLowerCase()) && (
-                <div className="px-6 py-3 rounded-full bg-amber-50 border border-amber-200 inline-flex items-center gap-2 text-amber-700 text-[11px] font-black uppercase tracking-wider">
-                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                  </svg>
-                  Note: I cannot find an exact match, but here are the most relevant results:
-                </div>
-              )}
+              {(() => {
+                const q = query.toLowerCase();
+                const hasGoodMatch = results.some(r =>
+                  r.title.toLowerCase().includes(q) ||
+                  r.title.toLowerCase().split(/\s+/).some((w: string) => w === q) ||
+                  r.description?.toLowerCase().includes(q)
+                );
+                return !hasGoodMatch ? (
+                  <div className="px-6 py-3 rounded-full bg-amber-50 border border-amber-200 inline-flex items-center gap-2 text-amber-700 text-[11px] font-black uppercase tracking-wider">
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                    </svg>
+                    Note: I cannot find an exact match, but here are the most relevant results:
+                  </div>
+                ) : null;
+              })()}
 
               {results.length > 0 ? (
                 <div className="space-y-6">

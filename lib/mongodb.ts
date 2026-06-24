@@ -12,9 +12,11 @@ const options = {
     strict: true,
     deprecationErrors: true,
   },
-  connectTimeoutMS: 10000,
-  socketTimeoutMS: 45000,
-  maxPoolSize: 10,
+  connectTimeoutMS: 5000,
+  socketTimeoutMS: 30000,
+  maxPoolSize: 25,
+  serverSelectionTimeoutMS: 5000,
+  heartbeatFrequencyMS: 10000,
 };
 
 let client: MongoClient;

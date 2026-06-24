@@ -1,14 +1,70 @@
 import { NextResponse } from 'next/server';
 import { getSettings } from '@/lib/mongodb-utils';
 
-const MODEL = "llama-3.3-70b-versatile";
+const PRIMARY_MODEL = "llama-3.3-70b-versatile";
+const FALLBACK_MODEL = "llama-3.1-8b-instant";
+const TIMEOUT_MS = 25_000;
+
+const responseCache = new Map<string, { data: any; ts: number }>();
+const CACHE_TTL = 10_000;
+
+function cacheKey(messages: any[]): string {
+  return JSON.stringify(messages.slice(-3));
+}
+
+async function callGroq(apiKey: string, messages: any[], model: string, signal: AbortSignal) {
+  const systemPrompt = {
+    role: "system",
+    content: `You are Sara (Sarvadnya Assistant), the Expert Tally Assistant for Sarvadnya Infotech LLP (Est. 2008), a Certified Tally Partner.
+
+    TONE: Be polite and courteous. Be helpful without being interrogatory. Focus on solutions.
+
+    RULES: Never mention prices. Suggest products based on needs. Short point-based responses (max 3-4 bullets).
+
+    NAVIGATION: Use [[Button Label|/url]] when suggesting pages.
+
+    SITEMAP: Home:/, Products:/products, Cloud:/cloud, About:/about, Contact:/contact,
+    AMC:/services/amc, Training:/services/corporate-training, Mobile:/services/mobile-app-biz,
+    WhatsApp:/services/tally-on-whatsapp, TDL:/services/tdl, TSS:/services/tss,
+    Tutorials:/tutorials, Modules:/modules, News:/news, Capabilities:/capabilities
+
+    PRODUCTS: **TallyPrime Silver** (Single User), **TallyPrime Gold** (Multi-User LAN), **TallyPrime Server** (Enterprise).
+    FEATURES: PrimeBanking, TallyDrive, SmartFind, Bharat Connect, e-Invoicing, GSTR-1.
+
+    Use **bold** for product names. [[Contact Page|/contact]] for expert consulting.`
+  };
+
+  return fetch('https://api.groq.com/openai/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${apiKey}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      model,
+      messages: [systemPrompt, ...messages],
+      temperature: 0.5,
+      max_tokens: 500,
+    }),
+    signal
+  });
+}
 
 export async function POST(request: Request) {
   try {
     const { messages } = await request.json();
+
+    if (!messages || !Array.isArray(messages) || messages.length === 0) {
+      return NextResponse.json({ error: 'Messages array required' }, { status: 400 });
+    }
+
+    const key = cacheKey(messages);
+    const cached = responseCache.get(key);
+    if (cached && Date.now() - cached.ts < CACHE_TTL) {
+      return NextResponse.json({ message: cached.data });
+    }
+
     const settings = await getSettings();
-    
-    // Support single key or comma-separated list for rotation
     const rawKeys = settings.GROQ_API_KEYS || process.env.GROQ_API_KEY || '';
     const apiKeys = rawKeys.split(',').map((k: string) => k.trim()).filter(Boolean);
 
@@ -16,120 +72,47 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Groq API Keys not configured' }, { status: 500 });
     }
 
-    // Shuffle keys to ensure fair distribution during retries
     const shuffledKeys = [...apiKeys].sort(() => Math.random() - 0.5);
-
-    const systemPrompt = {
-      role: "system",
-      content: `You are Sara (Sarvadnya Assistant), the Expert Tally Assistant for Sarvadnya Infotech LLP (Est. 2008), a Certified Tally Partner. 
-      
-      TONE & BEHAVIOR:
-      1. Be extremely POLITE and COURTEOUS. Use professional greetings.
-      2. Be helpful without being interrogatory. You don't have to ask a question on every response. 
-      3. Asking one or two targeted questions throughout the conversation is okay to understand their needs better.
-      4. Focus on providing value and solutions.
-      
-      CORE RULES:
-      1. NEVER mention specific prices. If asked, politely tell the user to "**Contact our sales team for the latest pricing and best deals.**"
-      2. ALWAYS promote our products or services subtly and helpfully.
-      3. SUGGEST specific products (e.g., TallyPrime v7.0, Tally on WhatsApp, Cloud Solutions, or specialized Modules) based on their needs.
-      4. Short, point-based responses ONLY (Max 3-4 bullet points).
-      
-      NAVIGATION BUTTONS:
-      - Whenever you suggest a page, service, or product from the map below, you MUST include a navigation button using the exact format: [[Button Label|/url]]
-      - Example: "You can explore our [[Modules Gallery|/modules]] for specialized add-ons."
-      
-      SITEMAP / NAVIGATION MAP:
-      - Home: /
-      - Products & Licensing: /products
-      - Cloud Solutions: /cloud
-      - About Us: /about
-      - Contact Support: /contact
-      - AMC Services: /services/amc
-      - Corporate Training: /services/corporate-training
-      - Tally on Mobile: /services/mobile-app-biz
-      - Tally to WhatsApp: /services/tally-on-whatsapp
-      - TDL Customization: /services/tdl
-      - TSS Renewal: /services/tss
-      - Learning Hub: /tutorials
-      - Modules Gallery: /modules
-      - Latest News: /news
-      - Feature Capabilities: /capabilities
-      
-      OUR PRODUCTS & EXPERTISE (v7.0):
-      - **TallyPrime Silver**: Single User Edition. What You Get: Perpetual License, GST/E-Way Bill, TallyDrive Basic (1GB), SmartFind.
-      - **TallyPrime Gold**: Multi-User (LAN). What You Get: Unlimited Users, PrimeBanking, Bharat Connect, TallyDrive Pro (5GB), Remote Edit.
-      - **TallyPrime Server**: Enterprise. What You Get: High-Speed Concurrency, Hidden Data Folders, TallyDrive Enterprise (25GB+), Advanced User Logs.
-      - **TallyDrive (Cloud Backup)**: v7.0 Integrated Encrypted Backup. Tiers: Basic (Silver), Pro (Gold), Enterprise (Server).
-      - **TallyPrime 7.0 Features**: PrimeBanking, TallyDrive (Encrypted Cloud Backup), SmartFind (Global Fuzzy Search), Bharat Connect.
-      - **Cloud Solutions**: TallyPrime Cloud Access (Official), NoSky Backup, [[TallyDrive|/products#tallydrive]].
-      - **Add-on Services**: Tally to WhatsApp, Tally on Mobile (Biz Analyst), TDL Customization, AMC, Corporate Training.
-      
-      BUSINESS CAPABILITIES:
-      - **Accounting & GST**: e-Invoicing, GSTR-1 direct upload, e-Way bills, multi-currency.
-      - **Inventory**: Multi-godown, batch tracking, Manufacturing (BOM), Job costing.
-      - **Payroll**: Statutory PF/ESI, professional pay slips, employee profile management.
-      
-      FORMATTING:
-      - Use **bold** for product names and calls to action.
-      - Use bullet points for readability.
-      
-      CLOSING:
-      - If the user needs expert consulting, suggest they visit our [[Contact Page|/contact]].`
-    };
-
     let lastError: any = null;
 
-    // Try each key until success or all fail
-    for (const apiKey of shuffledKeys) {
+    for (const [idx, apiKey] of shuffledKeys.entries()) {
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
+
       try {
-        const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${apiKey}`,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            model: MODEL,
-            messages: [systemPrompt, ...messages],
-            temperature: 0.5,
-            max_tokens: 500,
-          })
-        });
+        const model = idx === 0 ? PRIMARY_MODEL : FALLBACK_MODEL;
+        const response = await callGroq(apiKey, messages, model, controller.signal);
+        clearTimeout(timer);
 
         const data = await response.json();
-        
-        if (response.ok && data.choices && data.choices[0]) {
-          return NextResponse.json({ 
-            message: data.choices[0].message.content 
-          });
+
+        if (response.ok && data.choices?.[0]) {
+          const content = data.choices[0].message.content;
+          responseCache.set(key, { data: content, ts: Date.now() });
+          return NextResponse.json({ message: content });
         }
 
-        if (data && data.error) {
-          console.error(`Groq API Error with key ${apiKey.substring(0, 8)}...:`, data.error);
+        if (data?.error) {
+          console.error(`Groq Error [${apiKey.substring(0, 8)}..]:`, data.error);
           lastError = data.error;
-          
-          // If the error is not retriable (like organization restricted), 
-          // we continue to the next key.
-          if (data.error.code === 'organization_restricted' || response.status === 401 || response.status === 429) {
-            continue;
-          }
-          
-          // For other errors, we might want to stop or continue. 
-          // For now, let's be aggressive and try all keys.
+          if ([401, 429].includes(response.status)) continue;
+        }
+      } catch (err: any) {
+        clearTimeout(timer);
+        if (err.name === 'AbortError') {
+          console.error(`Groq timeout [${apiKey.substring(0, 8)}..]`);
+          lastError = { code: 'timeout' };
           continue;
         }
-      } catch (err) {
-        console.error(`Fetch error with key ${apiKey.substring(0, 8)}...:`, err);
+        console.error(`Fetch error [${apiKey.substring(0, 8)}..]:`, err);
         lastError = err;
       }
     }
 
-    // If we get here, all keys failed
-    const errorMsg = lastError?.code === 'organization_restricted' 
-      ? 'AI service restricted by provider. Please check API account status.'
-      : 'AI service temporarily unavailable after multiple attempts.';
-      
+    const errorMsg = lastError?.code === 'organization_restricted'
+      ? 'AI service restricted by provider.'
+      : 'AI service temporarily unavailable. Please try again.';
+
     return NextResponse.json({ error: errorMsg }, { status: 503 });
 
   } catch (error) {
