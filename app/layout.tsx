@@ -5,7 +5,7 @@ import type { CSSProperties } from "react";
 import Navbar from "./components/Navbar";
 import Productbar from "./components/Productbar";
 import { theme as defaultTheme } from "@/lib/theme";
-import { getSettings } from "@/lib/mongodb-utils";
+import { getSettings, getNews } from "@/lib/mongodb-utils";
 import { palettes } from "@/lib/palettes";
 import "./globals.css";
 import { Geist } from "next/font/google";
@@ -92,7 +92,10 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const settings = await getSettingsData();
+  const [settings, newsData] = await Promise.all([
+    getSettingsData(),
+    getNews().catch(() => [])
+  ]);
   const theme = await getTheme();
 
   return (
@@ -115,7 +118,7 @@ export default async function RootLayout({
         }
       >
         <div className="sticky top-0 z-[2000] w-full flex flex-col">
-          <NewsFeed />
+          <NewsFeed initialData={newsData} />
           <Navbar initialSettings={settings} />
           <Productbar initialSettings={settings} />
         </div>

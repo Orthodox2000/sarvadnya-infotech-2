@@ -32,11 +32,11 @@ interface HeroContent {
 
 const DEFAULT_HERO: HeroContent[] = [
     {
-      "badge": "Most Trusted Tally Partner in India",
-      "titleText": "Mumbai's Premier Tally Solutions Partner",
+      "badge": "3 star Tally Partner",
+      "titleText": "Fueling MSME Ambition Through Smarter Tally Systems",
       "colorFrom": "#232F3E",
       "colorTo": "#00ABE4",
-      "description": "Join 1,500+ enterprises scaling with the gold standard of automation. 15 years of certified excellence, delivering nationwide support and innovation.",
+      "description": "We don't just implement software; we clear the path for your growth. Maximize your Tally investment with certified experts who care about your bottom line as much as you do.",
       "image": "/certified partner person.png",
       "layout": "single",
       "features": [
@@ -48,7 +48,7 @@ const DEFAULT_HERO: HeroContent[] = [
       "ctaPrimary": { "text": "Why Choose Us", "href": "/about" }
     },
     {
-      "badge": "TallyPrime 7.0 Now Available",
+      "badge": "TallyPrime 7.1 Now Available",
       "titleText": "Revolutionizing Business with Smart Tally Automation",
       "colorFrom": "#232F3E",
       "colorTo": "#00ABE4",
@@ -244,18 +244,18 @@ export default function HomeHero({ initialData, variant = 'standard' }: { initia
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const typingIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
-  useEffect(() => {
-    if (initialData) return;
-    const fetchHero = async () => {
-      try {
-        const data = await fetchWithCache('/api/content?section=home_hero');
-        if (Array.isArray(data) && data.length > 0) {
-          setHeroContents(processHeroData(data));
-        }
-      } catch (_err) { /* Server fetch failed; DEFAULT_HERO is already rendered */ }
-    };
-    fetchHero();
-  }, [initialData]);
+  // useEffect(() => {
+  //   if (initialData) return;
+  //   const fetchHero = async () => {
+  //     try {
+  //       const data = await fetchWithCache('/api/content?section=home_hero');
+  //       if (Array.isArray(data) && data.length > 0) {
+  //         setHeroContents(processHeroData(data));
+  //       }
+  //     } catch (_err) { /* Server fetch failed; DEFAULT_HERO is already rendered */ }
+  //   };
+  //   fetchHero();
+  // }, [initialData]);
 
   useEffect(() => {
     const handleResize = () => setGridSize(window.innerWidth >= 1024 ? 40 : 25);
@@ -397,11 +397,12 @@ export default function HomeHero({ initialData, variant = 'standard' }: { initia
             </div>
             
             <div className={`${getAnimationClasses('delay-100')}`}>
-               <p className={`text-[10px] font-black uppercase tracking-[0.3em] -mb-1 text-white/90`}>Why Choose Sarvadnya Infotech LLP?</p>
+               <p className={`text-[10px] font-black uppercase tracking-[0.3em] mb-1 text-white/90`}>Why Choose Sarvadnya Infotech LLP?</p>
             </div>
 
             <div className={`relative min-h-[80px] md:min-h-[140px] lg:mt-[-5px] ${getAnimationClasses('delay-200')}`}>
-              <h1 className="text-3xl md:text-5xl font-black text-white leading-[1.15] tracking-tight invisible">{current.titleText}</h1>
+              <h1 className="text-3xl md:text-5xl w-1/2 font-black text-white leading-[1.15] tracking-tight invisible">{current.titleText}</h1>
+
               <h1 className="absolute top-0 left-0 text-3xl md:text-5xl font-black text-white leading-[1.15] tracking-tight w-full drop-shadow-lg flex flex-wrap items-baseline">
                 {displayText.split(' ').map((word, i, arr) => {
                   const cleanWord = word.replace(/[.,%]/g, '').toLowerCase();

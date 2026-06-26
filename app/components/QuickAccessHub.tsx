@@ -47,13 +47,13 @@ const HUB_CARDS: HubCard[] = [
     )
   },
   {
-    title: "Our Services",
-    description: "AMC, Corporate Training, WhatsApp Sync, and Expert Technical Support.",
-    href: "/services",
+    title: "HRMS",
+    description: "Human Resource Management System — payroll, attendance, employee lifecycle & more.",
+    href: "/hrms",
     color: "bg-[#0371a3]",
     icon: (
       <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
       </svg>
     )
   }

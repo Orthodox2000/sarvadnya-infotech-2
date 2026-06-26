@@ -12,10 +12,10 @@ const options = {
     strict: true,
     deprecationErrors: true,
   },
-  connectTimeoutMS: 5000,
-  socketTimeoutMS: 30000,
+  connectTimeoutMS: 15000,
+  socketTimeoutMS: 60000,
   maxPoolSize: 25,
-  serverSelectionTimeoutMS: 5000,
+  serverSelectionTimeoutMS: 15000,
   heartbeatFrequencyMS: 10000,
 };
 

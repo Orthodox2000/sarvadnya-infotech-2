@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { fetchWithCache, prefetchData } from "@/lib/client-api";
+import { fetchWithCache } from "@/lib/client-api";
 import SearchBar from "./SearchBar";
 
 export type SiteSettings = {
@@ -25,10 +25,6 @@ export default function Navbar({ initialSettings }: { initialSettings?: any }) {
 
   useEffect(() => {
     if (!initialSettings) fetchSettings();
-    // Prefetch common data to improve perceived speed and reduce background error rate
-    prefetchData('/api/modules');
-    prefetchData('/api/content?section=home_hero');
-    prefetchData('/api/content?section=home_stats');
   }, [initialSettings]);
 
   const fetchSettings = async () => {
@@ -68,7 +64,7 @@ export default function Navbar({ initialSettings }: { initialSettings?: any }) {
   ];
 
   return (
-    <header className="relative z-1000 w-full border-b border-white/5 bg-[#232F3E]  shadow-sm"> {/*#232F3E*/}
+    <header className="relative z-1000 w-full border-b border-white/5 bg-[#012150] shadow-sm">
       <nav className="mx-auto flex h-12 lg:h-16 w-full max-w-full items-center justify-between px-3">
         <Link
           href="/"

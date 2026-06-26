@@ -4,13 +4,14 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { NewsItem } from '@/lib/news';
 
-export default function NewsFeed() {
-  const [newsItems, setNewsItems] = useState<NewsItem[]>([]);
+export default function NewsFeed({ initialData }: { initialData?: NewsItem[] }) {
+  const [newsItems, setNewsItems] = useState<NewsItem[]>(initialData || []);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [popoverPos, setPopoverPos] = useState({ top: 0, left: 0 });
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(!initialData);
 
   useEffect(() => {
+    if (initialData) return;
     const fetchNews = async () => {
       try {
         const res = await fetch('/api/news');
@@ -23,7 +24,7 @@ export default function NewsFeed() {
       }
     };
     fetchNews();
-  }, []);
+  }, [initialData]);
 
   const handleMouseEnter = (e: React.MouseEvent, index: number) => {
     const rect = e.currentTarget.getBoundingClientRect();

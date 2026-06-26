@@ -40,6 +40,15 @@ export const productItems: ProductItem[] = [
           { id: "nosky-backup", label: "NoSky Backup", href: "/cloud/nosky" },
         ]
       },
+      {
+        id: "tp-hrms",
+        label: "HRMS",
+        href: "/hrms",
+        description: "Complete HR ecosystem for modern businesses.",
+        subItems: [
+          { id: "hr-otu", label: "OTU HRplus", href: "/hrms#features" },
+        ]
+      },
     ],
   },
   {

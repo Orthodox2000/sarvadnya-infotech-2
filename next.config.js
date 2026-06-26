@@ -1,10 +1,7 @@
-import type { NextConfig } from "next";
-
-const nextConfig: NextConfig = {
-  /* config options here */
-  reactCompiler: false,
+/** @type {import('next').NextConfig} */
+const nextConfig = {
   experimental: {
-    // Disable the compiler to suppress animation-related warnings and reduce overhead
+    reactCompiler: false,
   },
   allowedDevOrigins: ['26.186.62.193','192.168.7.7','192.168.1.245'],
   images: {
@@ -67,4 +64,4 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+module.exports = nextConfig;
