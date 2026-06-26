@@ -32,7 +32,7 @@ export async function POST(request: Request) {
     }
 
     await updateContent(section, content);
-    revalidateTag('content', 'default');
+    revalidateTag('content');
     revalidatePath('/', 'layout');
     return NextResponse.json({ message: 'Content updated successfully' });
   } catch (error) {
