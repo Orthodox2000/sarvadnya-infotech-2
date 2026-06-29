@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 
 interface HubCard {
@@ -16,45 +17,36 @@ const HUB_CARDS: HubCard[] = [
     title: "Tally Products",
     description: "Explore TallyPrime Editions, Licensing, and specialized business modules.",
     href: "/products",
-    color: "bg-[#0371a3]",
+    color: "bg-white",
     icon: (
-      <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-      </svg>
+      <Image src="/PartnerBrands/Tally-Software.png" alt="Tally Products" width={40} height={40} className="object-contain" />
     )
   },
   {
     title: "Cloud Products",
     description: "Secure, 24/7 remote access with Official AWS and NoSky infrastructure.",
     href: "/cloud",
-    color: "bg-[#0371a3]",
+    color: "bg-white",
     icon: (
-      <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" />
-      </svg>
+      <Image src="/tally on cloud.png" alt="Cloud Products" width={40} height={40} className="object-contain" />
     )
   },
   {
     title: "Customizations",
     description: "Industry-specific TDL solutions tailored to your unique business logic.",
     href: "/modules",
-    color: "bg-[#0371a3]",
+    color: "bg-white",
     icon: (
-      <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 4a2 2 0 114 0v1a2 2 0 002 2h1a2 2 0 110 4h-1a2 2 0 00-2 2v1a2 2 0 11-4 0V4z" />
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 8a2 2 0 11-4 0 2 2 0 014 0z" />
-      </svg>
+      <Image src="/customization icon.png" alt="Customizations" width={40} height={40} className="object-contain" />
     )
   },
   {
     title: "HRMS",
     description: "Human Resource Management System — payroll, attendance, employee lifecycle & more.",
     href: "/hrms",
-    color: "bg-[#0371a3]",
+    color: "bg-white",
     icon: (
-      <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
-      </svg>
+      <Image src="/hrms.png" alt="HRMS" width={40} height={40} className="object-contain" />
     )
   }
 ];
@@ -110,12 +102,15 @@ export default function QuickAccessHub({ initialData, initialModules, initialSet
               key={idx} 
               href={card.href}
               className={`group relative flex flex-col bg-white rounded-[2rem] p-8 border border-slate-100 shadow-sm transition-all duration-[1000ms] ease-[cubic-bezier(0.2,0.8,0.2,1)] hover:shadow-2xl hover:shadow-[#0371a3]/10 hover:-translate-y-2 hover:border-[#0371a3]/30
+                before:absolute before:inset-0 before:rounded-[2rem] before:bg-gradient-to-r before:from-transparent before:via-white/20 before:to-transparent before:-translate-x-full before:opacity-0 group-hover:before:translate-x-full group-hover:before:opacity-100 before:transition-all before:duration-700 before:pointer-events-none
                 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'}`}
               style={{ transitionDelay: `${idx * 150}ms` }}
             >
+              {/* Top border shine */}
+              <div className="absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r from-transparent via-[#0371a3]/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-t-[2rem]" />
               {/* Icon Container */}
-              <div className={`w-14 h-14 rounded-2xl flex items-center justify-center ${card.color} text-white mb-8 shadow-lg shadow-black/5 transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3`}>
-                {card.icon}
+              <div className={`w-14 h-14 rounded-2xl flex items-center justify-center ${card.color} text-white mb-8 shadow-lg shadow-black/5 transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3 overflow-hidden`}>
+                <span className="transition-transform duration-500 group-hover:scale-125">{card.icon}</span>
               </div>
 
               {/* Text Content */}

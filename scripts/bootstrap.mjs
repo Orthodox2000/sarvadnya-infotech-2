@@ -38,72 +38,47 @@ async function run() {
 
     const heroContents = [
       {
-        badge: "Upgraded to latest Tally version",
-        titleText: "Trusted Tally Partner in Navi Mumbai - Why Choose Sarvadnya Infotech LLP?",
-        colorFrom: "#4f46e5",
-        colorTo: "#7c3aed",
-        description: "Beyond Software Sales — Guiding You to Maximize Your Tally Investment with Certified Support.",
-        image: "/sa.png",
+        badge: "3 star Tally Partner",
+        titleText: "Fueling MSME Ambition Through Smarter Tally Systems",
+        colorFrom: "#232F3E",
+        colorTo: "#00ABE4",
+        description: "We don't just implement software; we clear the path for your growth. Maximize your Tally investment with certified experts who care about your bottom line as much as you do.",
+        image: "/certified partner person.png",
+        layout: "single",
         features: [
-          { text: "TallyPrime v7.0 Ready" },
-          { text: "Certified Expert Support" },
-          { text: "Custom Module Design" },
-          { text: "Seamless Data Integrity" }
+          { text: "Certified Tally Expertise" },
+          { text: "1,500+ Active Clients" },
+          { text: "Pan-India Remote Support" },
+          { text: "Custom TDL Solutions" }
         ],
-        ctaPrimary: { text: "Explore Capabilities", href: "/products" }
+        ctaPrimary: { text: "Why Choose Us", href: "/about" }
       },
       {
-        badge: "Support Excellence",
-        titleText: "90% First-Call Resolution - Why Choose Sarvadnya Infotech LLP?",
-        colorFrom: "#f97316",
-        colorTo: "#e11d48",
-        description: "15min Avg. Response Time | 5000+ Queries Resolved | 99% Client Satisfaction. Reliable support that keeps your business running smoothly.",
-        image: "/sa.png",
+        badge: "TallyPrime 7.1 Now Available",
+        titleText: "Revolutionizing Business with Smart Tally Automation",
+        colorFrom: "#232F3E",
+        colorTo: "#00ABE4",
+        description: "Unleash TallyPrime 7.0 with PrimeBanking and SmartFind. We build the financial engine that turns your accounting into a growth machine.",
+        image: "/sa2.png",
+        layout: "standard",
         features: [
-          { text: "Certified Technical Experts" },
-          { text: "Dedicated Account Managers" },
-          { text: "On-site & Remote Assistance" },
-          { text: "15min Avg. Response" }
+          { text: "PrimeBanking Payments" },
+          { text: "TallyDrive Cloud Backup" },
+          { text: "SmartFind Global Search" },
+          { text: "Bharat Connect Plug-in" }
         ],
-        ctaPrimary: { text: "Get Support", href: "/contact" }
-      },
-      {
-        badge: "Certified Expertise",
-        titleText: "Why Choose Certified Partner? - Why Choose Sarvadnya Infotech LLP?",
-        colorFrom: "#2563eb",
-        colorTo: "#0891b2",
-        description: "Experience unparalleled reliability with Tally Certified Partners. We ensure your business software is always optimized, secure, and compliant.",
-        image: "/certified.png",
-        features: [
-          { text: "Authorized Sales & Service" },
-          { text: "Certified Technical Team" },
-          { text: "Deep Industry Knowledge" },
-          { text: "Priority Support Access" }
-        ],
-        ctaPrimary: { text: "Verify Certification", href: "/contact" }
-      },
-      {
-        badge: "Vertical Solutions",
-        titleText: "Custom Tally Modules - Why Choose Sarvadnya Infotech LLP?",
-        colorFrom: "#059669",
-        colorTo: "#0d9488",
-        description: "Tailored solutions built directly into Tally to optimize your unique industry workflows and reporting.",
-        image: "/sa.png",
-        features: [
-          { text: "Industry-Specific Logic" },
-          { text: "Automated Reporting" },
-          { text: "Reduced Manual Entry" },
-          { text: "Scalable Add-ons" }
-        ],
-        ctaPrimary: { text: "View Modules", href: "/products#modules" }
+        ctaPrimary: { text: "Know More", href: "/about" },
+        sub1Img: "/hero/tssgold.png",
+        sub2Img: "/hero/hero-main.png"
       },
       {
         badge: "Certified Cloud Solutions",
-        titleText: "Reliable Cloud & Zero-Loss Backup - Why Choose Sarvadnya Infotech LLP?",
-        colorFrom: "#131921",
+        titleText: "Tally on Cloud: Absolute Freedom.",
+        colorFrom: "#232F3E",
         colorTo: "#00ABE4",
-        description: "Modernize your TallyPrime experience with our certified cloud solutions. From Official AWS hosting to automated TallyDrive backups.",
+        description: "Your office, now in your pocket. Secure AWS-powered hosting with 100% uptime and zero-loss military encryption for your business data.",
         image: "/hero/dedicated-to-cloud-hosting.jpg",
+        layout: "ecosystem",
         features: [
           { text: "Official AWS Hosting" },
           { text: "NoSky Cloud Performance" },
@@ -111,6 +86,42 @@ async function run() {
           { text: "Automated Server Backup" }
         ],
         ctaPrimary: { text: "View Cloud Plans", href: "/cloud" }
+      },
+      {
+        badge: "Industry Leading Support",
+        titleText: "Instant Solutions. Zero Downtime.",
+        colorFrom: "#232F3E",
+        colorTo: "#00ABE4",
+        description: "Stop waiting for answers. Our 90% First Call Resolution standard means your technical hurdles disappear before you hang up.",
+        image: "/trainning.png",
+        layout: "standard",
+        features: [
+          { text: "Instant Remote Support" },
+          { text: "Expert TDL Debugging" },
+          { text: "Data Recovery Services" },
+          { text: "90% FCR Track Record" }
+        ],
+        ctaPrimary: { text: "Get Priority Support", href: "/contact" },
+        sub1Img: "/PartnerBrands/Tally-Software.png",
+        sub2Img: "/sa2.png"
+      },
+      {
+        badge: "Smart Business Integration",
+        titleText: "WhatsApp Sync: Real-Time Growth.",
+        colorFrom: "#232F3E",
+        colorTo: "#00ABE4",
+        description: "Bridge the gap between accounting and communication. Send invoices and collection alerts directly to your customers instantly.",
+        image: "/sa3.png",
+        layout: "standard",
+        features: [
+          { text: "Automated PDF Sending" },
+          { text: "Real-time Notifications" },
+          { text: "Customer Support Sync" },
+          { text: "Bulk Report Sharing" }
+        ],
+        ctaPrimary: { text: "Get WhatsApp Sync", href: "/services/whatsapp" },
+        sub1Img: "/hero/hero-sub1.png",
+        sub2Img: "/TDLandCustom.jpg"
       }
     ];
 
@@ -124,7 +135,6 @@ async function run() {
       "/PartnerBrands/Tally-Software.png",
       "/PartnerBrands/AWS.png",
       "/PartnerBrands/BizAnalyst.png",
-      "/PartnerBrands/CredFlow.png",
     ];
 
     const faqData = [
@@ -232,14 +242,14 @@ async function run() {
 
     const quickAccess = [
       {
-        title: "Tally Core",
+        title: "Tally Products",
         iconName: "core",
-        description: "Official TallyPrime solutions for diverse business needs.",
+        description: "Explore TallyPrime Editions, Licensing, and specialized business modules.",
         links: [
-          { label: "Silver", href: "/products#compare" },
-          { label: "Gold", href: "/products#compare" },
-          { label: "Server", href: "/products#compare" },
-          { label: "Renewal", href: "/products#tss" }
+          { label: "TallyPrime Silver", href: "/products/silver" },
+          { label: "TallyPrime Gold", href: "/products/gold" },
+          { label: "TallyPrime Server", href: "/products/server" },
+          { label: "TallyDrive", href: "/products/tallydrive" }
         ],
         theme: {
           bg: "bg-indigo-50",
@@ -250,14 +260,13 @@ async function run() {
         }
       },
       {
-        title: "Cloud & Data",
+        title: "Cloud Products",
         iconName: "cloud",
-        description: "Secure hosting and automated cloud backup services.",
+        description: "Secure, 24/7 remote access with Official AWS and NoSky infrastructure.",
         links: [
-          { label: "AWS Tally", href: "/products#cloud" },
-          { label: "Windows", href: "/products#cloud" },
-          { label: "NoSky", href: "/services#nosky-backup" },
-          { label: "Recovery", href: "/contact" }
+          { label: "AWS Cloud Server", href: "/cloud/aws" },
+          { label: "Windows VM", href: "/cloud/windows" },
+          { label: "NoSky Backup", href: "/cloud/nosky" }
         ],
         theme: {
           bg: "bg-blue-50",
@@ -268,16 +277,16 @@ async function run() {
         }
       },
       {
-        title: "Customization",
+        title: "Customizations",
         iconName: "custom",
-        description: "Tailored vertical modules for specific industries.",
+        description: "Industry-specific TDL solutions tailored to your unique business logic.",
         links: [
-          { label: "C&F Agency", href: "/products#modules" },
-          { label: "Transport", href: "/products#modules" },
-          { label: "Society", href: "/products#modules" },
-          { label: "Garment", href: "/products#modules" },
-          { label: "Sales", href: "/products#modules" },
-          { label: "Excel Tool", href: "/products#modules" }
+          { label: "Logistics & Transport", href: "/modules?id=logistics-transport" },
+          { label: "Retail & Garment", href: "/modules?id=garment-retail" },
+          { label: "Housing Societies", href: "/modules?id=housing-societies" },
+          { label: "Excel to Tally Tool", href: "/modules?id=excel-to-tally" },
+          { label: "C&F Agencies", href: "/modules?id=cf-agencies" },
+          { label: "Sales Commission", href: "/modules?id=sales-commission" }
         ],
         theme: {
           bg: "bg-emerald-50",
@@ -288,14 +297,12 @@ async function run() {
         }
       },
       {
-        title: "Support",
+        title: "HRMS",
         iconName: "support",
-        description: "Certified expert technical help and staff training.",
+        description: "Human Resource Management System — payroll, attendance, employee lifecycle & more.",
         links: [
-          { label: "AMC Plan", href: "/services/amc" },
-          { label: "Staff Training", href: "/contact" },
-          { label: "Mobile App", href: "/services#biz-analyst" },
-          { label: "WhatsApp", href: "/services#whatsapp" }
+          { label: "HRMS Overview", href: "/hrms" },
+          { label: "OTU HRplus", href: "https://otuhrplus.com/" }
         ],
         theme: {
           bg: "bg-purple-50",

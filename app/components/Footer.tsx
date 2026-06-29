@@ -126,13 +126,10 @@ export default function Footer({ settings: initialSettings }: { settings?: SiteS
     ];
 
     return (
-        <footer className="relative bg-[#025b8a] text-white pt-20 pb-8 px-6 overflow-hidden border-t border-white/10">
-            {/* Subtle Gradient Overlays */}
+        <footer className="relative text-white pt-20 pb-8 px-6 overflow-hidden border-t border-white/10" style={{ background: 'linear-gradient(0deg, hsla(236, 100%, 8%, 1) 0%, hsla(211, 100%, 28%, 1) 100%)' }}>
+            {/* Background Orbs */}
             <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#00ABE4]/10 rounded-full blur-[120px] -mr-64 -mt-64 pointer-events-none" />
             <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-[#E9F1FA]/5 rounded-full blur-[100px] -ml-48 -mb-48 pointer-events-none" />
-            
-            {/* Main Gradient Background */}
-            <div className="absolute inset-0 bg-gradient-to-b from-[#025b8a] via-[#014a6e] to-[#001a29] opacity-100 pointer-events-none" />
 
             <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 mb-16 relative z-10">
                 {/* Company Info */}

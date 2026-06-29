@@ -7,7 +7,7 @@ import { revalidateTag, revalidatePath } from 'next/cache';
 export const dynamic = 'force-dynamic';
 
 async function flushCache() {
-  revalidateTag('partners', 'default');
+  revalidateTag('partners');
   revalidatePath('/', 'layout');
 }
 
@@ -31,7 +31,7 @@ export async function GET(request: Request) {
       await collection.insertMany(partnersToInsert as any);
       
       // Invalidate cache and fetch fresh
-      revalidateTag('partners', 'default');
+  revalidateTag('partners');
       partners = await collection.find(type ? { type } : {}).sort({ createdAt: 1 }).toArray() as any;
     }
     

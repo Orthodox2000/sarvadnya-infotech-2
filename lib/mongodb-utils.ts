@@ -76,7 +76,7 @@ export async function updateSetting(key: string, value: string) {
     { $set: { value, updatedAt: new Date() } },
     { upsert: true }
   );
-  revalidateTag('settings', 'default');
+  revalidateTag('settings');
 }
 
 // Applications helpers - No caching for submissions/admin views
@@ -116,7 +116,7 @@ export async function updateContent(section: string, content: any) {
     { $set: { content, updatedAt: new Date() } },
     { upsert: true }
   );
-  revalidateTag('content', 'default');
+  revalidateTag('content');
 }
 
 // Modules helpers
@@ -151,7 +151,7 @@ export async function addModule(data: any) {
     createdAt: new Date(),
     updatedAt: new Date()
   });
-  revalidateTag('modules', 'default');
+  revalidateTag('modules');
   return result;
 }
 
@@ -164,7 +164,7 @@ export async function updateModule(id: string, data: any) {
     { $set: { ...updateData, updatedAt: new Date() } },
     { upsert: true }
   );
-  revalidateTag('modules', 'default');
+  revalidateTag('modules');
   return result;
 }
 
@@ -177,7 +177,7 @@ export async function reorderModules(orders: { id: string; sequence: number }[])
     }
   }));
   const result = await col.bulkWrite(bulkOps);
-  revalidateTag('modules', 'default');
+  revalidateTag('modules');
   return result;
 }
 
@@ -185,7 +185,7 @@ export async function deleteModule(id: string) {
   const col = await getCollection('modules');
   const query = ObjectId.isValid(id) ? { _id: new ObjectId(id) } : { id };
   const result = await col.deleteOne(query);
-  revalidateTag('modules', 'default');
+  revalidateTag('modules');
   return result;
 }
 
@@ -209,7 +209,7 @@ export async function addTutorial(data: any) {
     createdAt: new Date(),
     updatedAt: new Date()
   });
-  revalidateTag('tutorials', 'default');
+  revalidateTag('tutorials');
   return result;
 }
 
@@ -220,14 +220,14 @@ export async function updateTutorial(id: string, data: any) {
     { _id: new ObjectId(id) },
     { $set: { ...updateData, updatedAt: new Date() } }
   );
-  revalidateTag('tutorials', 'default');
+  revalidateTag('tutorials');
   return result;
 }
 
 export async function deleteTutorial(id: string) {
   const col = await getCollection('learning_content');
   const result = await col.deleteOne({ _id: new ObjectId(id) });
-  revalidateTag('tutorials', 'default');
+  revalidateTag('tutorials');
   return result;
 }
 
@@ -254,14 +254,14 @@ export async function addReview(data: any) {
     ...data,
     createdAt: new Date()
   });
-  revalidateTag('reviews', 'default');
+  revalidateTag('reviews');
   return result;
 }
 
 export async function deleteReview(id: string) {
   const col = await getCollection('reviews');
   const result = await col.deleteOne({ _id: new ObjectId(id) });
-  revalidateTag('reviews', 'default');
+  revalidateTag('reviews');
   return result;
 }
 
@@ -292,7 +292,7 @@ export async function addPartner(data: any) {
     ...data,
     createdAt: new Date()
   });
-  revalidateTag('partners', 'default');
+  revalidateTag('partners');
   return result;
 }
 
@@ -306,7 +306,7 @@ export async function updatePartner(id: string, data: any) {
     { _id: new ObjectId(id) },
     { $set: { ...updateData, updatedAt: new Date() } }
   );
-  revalidateTag('partners', 'default');
+  revalidateTag('partners');
   return result;
 }
 
@@ -316,7 +316,7 @@ export async function deletePartner(id: string) {
   }
   const col = await getCollection('partners');
   const result = await col.deleteOne({ _id: new ObjectId(id) });
-  revalidateTag('partners', 'default');
+  revalidateTag('partners');
   return result;
 }
 
@@ -339,7 +339,7 @@ export async function addNews(data: any) {
     ...data,
     createdAt: new Date()
   });
-  revalidateTag('news', 'default');
+  revalidateTag('news');
   return result;
 }
 
@@ -350,14 +350,14 @@ export async function updateNews(id: string, data: any) {
     { _id: new ObjectId(id) },
     { $set: { ...updateData, updatedAt: new Date() } }
   );
-  revalidateTag('news', 'default');
+  revalidateTag('news');
   return result;
 }
 
 export async function deleteNews(id: string) {
   const col = await getCollection('news');
   const result = await col.deleteOne({ _id: new ObjectId(id) });
-  revalidateTag('news', 'default');
+  revalidateTag('news');
   return result;
 }
 

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import Footer from '../components/Footer';
 import UnifiedContactModal, { FormType } from '../components/UnifiedContactModal';
 import Link from 'next/link';
@@ -81,6 +82,11 @@ export default function ProductsPage() {
         </div>
         
         <div className="max-w-4xl mx-auto text-center relative z-10">
+          <div className="flex justify-center mb-6">
+            <div className="w-16 h-16 rounded-2xl bg-white border border-slate-200 shadow-sm flex items-center justify-center p-3">
+              <Image src="/PartnerBrands/Tally-Software.png" alt="Tally Products" width={44} height={44} className="object-contain" />
+            </div>
+          </div>
           <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-yellow-400/10 border border-yellow-500/20 text-yellow-600 text-[10px] font-black uppercase tracking-[0.2em] mb-8 backdrop-blur-sm">
             <span className="flex h-1.5 w-1.5 rounded-full bg-yellow-500 animate-pulse"></span>
             Official TallyPrime Partner

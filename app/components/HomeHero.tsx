@@ -396,12 +396,12 @@ export default function HomeHero({ initialData, variant = 'standard' }: { initia
               <span className={`text-[9px] font-black uppercase tracking-[0.2em] text-white`}>{current.badge}</span>
             </div>
             
-            <div className={`${getAnimationClasses('delay-100')}`}>
+            {/* <div className={`${getAnimationClasses('delay-100')}`}>
                <p className={`text-[10px] font-black uppercase tracking-[0.3em] mb-1 text-white/90`}>Why Choose Sarvadnya Infotech LLP?</p>
-            </div>
+            </div> */}
 
-            <div className={`relative min-h-[80px] md:min-h-[140px] lg:mt-[-5px] ${getAnimationClasses('delay-200')}`}>
-              <h1 className="text-3xl md:text-5xl w-1/2 font-black text-white leading-[1.15] tracking-tight invisible">{current.titleText}</h1>
+            <div className={`relative min-h-[70px] md:min-h-[80px] lg:mt-[-5px] ${getAnimationClasses('delay-200')}`}>
+              <h1 className="text-3xl md:text-5xl font-black text-white leading-[1.15] tracking-tight invisible">{current.titleText}</h1>
 
               <h1 className="absolute top-0 left-0 text-3xl md:text-5xl font-black text-white leading-[1.15] tracking-tight w-full drop-shadow-lg flex flex-wrap items-baseline">
                 {displayText.split(' ').map((word, i, arr) => {
@@ -419,7 +419,7 @@ export default function HomeHero({ initialData, variant = 'standard' }: { initia
                   } else if (isModuleSlide) {
                     isHighlight = cleanWord === 'modules' || cleanWord === 'custom' || cleanWord === 'tally';
                   } else {
-                    isHighlight = word.includes('90%') || cleanWord === 'certified' || cleanWord === 'partner' || cleanWord === 'trusted';
+                    isHighlight = word.includes('90%') || cleanWord === 'certified' || cleanWord === 'partner' || cleanWord === 'trusted' || cleanWord === 'msme' || cleanWord === 'smarter';
                   }
 
                   const shouldBreak = isModuleSlide && cleanWord === 'modules';
@@ -437,7 +437,7 @@ export default function HomeHero({ initialData, variant = 'standard' }: { initia
               </h1>
             </div>
 
-            <p className={`text-sm md:text-lg text-white/90 max-w-4xl leading-relaxed font-semibold min-h-[50px] lg:-mt-6 ${getAnimationClasses('delay-300')}`}>{current.description}</p>
+            <p className={`text-sm md:text-lg text-white/90 max-w-4xl leading-relaxed font-semibold min-h-[50px] lg:-mt-4 ${getAnimationClasses('delay-300')}`}>{current.description}</p>
             
             <div className={`grid grid-cols-2 gap-5 ${getAnimationClasses('delay-500')}`}>
               {(current.features || []).map((f, i) => (
@@ -450,14 +450,14 @@ export default function HomeHero({ initialData, variant = 'standard' }: { initia
               ))}
             </div>
 
-            <div className={`flex flex-wrap gap-4 pt-2 ${getAnimationClasses('delay-700')}`}>
-              <Link href={current.ctaPrimary?.href || '/products'} className={`group relative overflow-hidden px-7 py-3.5 rounded-xl bg-white text-[#232F3E] font-black text-[11px] uppercase tracking-[0.2em] transition-all duration-500 ease-in-out hover:scale-[1.05] active:scale-95 shadow-xl`}>
-                <span className="relative z-10">{current.ctaPrimary?.text || 'Explore'}</span>
+            <div className={`flex flex-row gap-3 pt-2 ${getAnimationClasses('delay-700')}`}>
+              <Link href="/#quick-access-hub" className={`group relative overflow-hidden px-5 md:px-7 py-3 md:py-3.5 rounded-xl bg-white text-[#232F3E] font-black text-[11px] uppercase tracking-[0.2em] transition-all duration-500 ease-in-out hover:scale-[1.05] active:scale-95 shadow-xl`}>
+                <span className="relative z-10">View Solutions</span>
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#70f2f2]/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
               </Link>
               <button 
                 onClick={() => setModalConfig({ isOpen: true, type: 'demo', service: 'TallyPrime', details: 'Requesting a personalized demo' })} 
-                className={`group px-7 py-3.5 rounded-xl bg-transparent font-black text-[11px] uppercase tracking-[0.2em] transition-all duration-500 ease-in-out text-white hover:bg-white/10 hover:scale-[1.05] active:scale-95 border border-white/30`}
+                className={`group px-5 md:px-7 py-3 md:py-3.5 rounded-xl bg-transparent font-black text-[11px] uppercase tracking-[0.2em] transition-all duration-500 ease-in-out text-white hover:bg-white/10 hover:scale-[1.05] active:scale-95 border border-white/30`}
               >
                 Request Demo
               </button>
