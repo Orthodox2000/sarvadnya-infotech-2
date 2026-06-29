@@ -1,154 +1,393 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
-import { ChevronLeft, ChevronRight, CheckCircle2 } from 'lucide-react';
+import UnifiedContactModal, { FormType } from './UnifiedContactModal';
+import { fetchWithCache } from '@/lib/client-api';
+import ShapeGrid from './ShapeGrid';
 
-interface HeroSlide {
-  badge: string;
-  titleText: string;
-  description: string;
-  image: string;
-  features: { text: string }[];
-  ctaPrimary: { text: string; href: string };
+interface HeroCTA {
+  text: string;
+  href: string;
 }
 
-const DEFAULT_HERO: HeroSlide[] = [
+interface HeroFeature {
+  text: string;
+}
+
+interface HeroContent {
+  badge: string;
+  titleText: string;
+  colorFrom: string;
+  colorTo: string;
+  description: string;
+  image: string;
+  layout?: 'standard' | 'ecosystem' | 'single';
+  features: HeroFeature[];
+  ctaPrimary: HeroCTA;
+  sub1Img?: string;
+  sub2Img?: string;
+}
+
+const DEFAULT_HERO: HeroContent[] = [
+    {
+      "badge": "3 star Tally Partner",
+      "titleText": "Fueling MSME Ambition Through Smarter Tally Systems",
+      "colorFrom": "#232F3E",
+      "colorTo": "#00ABE4",
+      "description": "We don't just implement software; we clear the path for your growth. Maximize your Tally investment with certified experts who care about your bottom line as much as you do.",
+      "image": "/certified partner person.png",
+      "layout": "single",
+      "features": [
+        { "text": "Certified Tally Expertise" },
+        { "text": "1,500+ Active Clients" },
+        { "text": "Pan-India Remote Support" },
+        { "text": "Custom TDL Solutions" }
+      ],
+      "ctaPrimary": { "text": "Why Choose Us", "href": "/about" }
+    },
+    {
+      "badge": "TallyPrime 7.1 Now Available",
+      "titleText": "Revolutionizing Business with Smart Tally Automation",
+      "colorFrom": "#232F3E",
+      "colorTo": "#00ABE4",
+      "description": "Unleash TallyPrime 7.0 with PrimeBanking and SmartFind. We build the financial engine that turns your accounting into a growth machine.",
+      "image": "/sa2.png",
+      "layout": "standard",
+      "features": [
+        { "text": "PrimeBanking Payments" },
+        { "text": "TallyDrive Cloud Backup" },
+        { "text": "SmartFind Global Search" },
+        { "text": "Bharat Connect Plug-in" }
+      ],
+      "ctaPrimary": { "text": "Know More", "href": "/about" },
+      "sub1Img": "/hero/tssgold.png",
+      "sub2Img": "/hero/hero-main.png"
+    },
+    {
+      "badge": "Certified Cloud Solutions",
+      "titleText": "Tally on Cloud: Absolute Freedom.",
+      "colorFrom": "#232F3E",
+      "colorTo": "#00ABE4",
+      "description": "Your office, now in your pocket. Secure AWS-powered hosting with 100% uptime and zero-loss military encryption for your business data.",
+      "image": "/hero/dedicated-to-cloud-hosting.jpg",
+      "layout": "ecosystem",
+      "features": [
+        { "text": "Official AWS Hosting" },
+        { "text": "NoSky Cloud Performance" },
+        { "text": "24/7 Remote Access" },
+        { "text": "Automated Server Backup" }
+      ],
+      "ctaPrimary": { "text": "View Cloud Plans", "href": "/cloud" }
+    },
+    {
+      "badge": "Industry Leading Support",
+      "titleText": "Instant Solutions. Zero Downtime.",
+      "colorFrom": "#232F3E",
+      "colorTo": "#00ABE4",
+      "description": "Stop waiting for answers. Our 90% First Call Resolution standard means your technical hurdles disappear before you hang up.",
+      "image": "/trainning.png",
+      "layout": "standard",
+      "features": [
+        { "text": "Instant Remote Support" },
+        { "text": "Expert TDL Debugging" },
+        { "text": "Data Recovery Services" },
+        { "text": "90% FCR Track Record" }
+      ],
+      "ctaPrimary": { "text": "Get Priority Support", "href": "/contact" },
+      "sub1Img": "/PartnerBrands/Tally-Software.png",
+      "sub2Img": "/sa2.png"
+    },
+    {
+      "badge": "Smart Business Integration",
+      "titleText": "WhatsApp Sync: Real-Time Growth.",
+      "colorFrom": "#232F3E",
+      "colorTo": "#00ABE4",
+      "description": "Bridge the gap between accounting and communication. Send invoices and collection alerts directly to your customers instantly.",
+      "image": "/sa3.png",
+      "layout": "standard",
+      "features": [
+        { "text": "Automated PDF Sending" },
+        { "text": "Real-time Notifications" },
+        { "text": "Customer Support Sync" },
+        { "text": "Bulk Report Sharing" }
+      ],
+      "ctaPrimary": { "text": "Get WhatsApp Sync", "href": "/services/whatsapp" },
+      "sub1Img": "/hero/hero-sub1.png",
+      "sub2Img": "/TDLandCustom.jpg"
+    }
+];
+
+const VISUAL_SCHEMES = [
   {
-    badge: "3 Star Tally Partner",
-    titleText: "Fueling MSME Ambition Through Smarter Tally Systems",
-    description: "We don't just implement software; we clear the path for your growth. Maximize your Tally investment with certified experts who care about your bottom line as much as you do.",
-    image: "/certified partner person.png",
-    features: [{ text: "Certified Tally Expertise" }, { text: "1,500+ Active Clients" }, { text: "Pan-India Remote Support" }],
-    ctaPrimary: { text: "Why Choose Us", href: "/about" }
+    main: "scale-105 -rotate-2 -translate-x-2 hover:rotate-0",
+    sub1: "rotate-6 -translate-y-8 hover:rotate-0",
+    sub2: "-rotate-6 translate-x-8 hover:rotate-0",
+    logo: "rotate-12 translate-y-6 hover:rotate-0",
+    sub1Img: "/hero/hero-sub1.png",
+    sub2Img: "/hero/hero-sub2.png"
   },
   {
-    badge: "TallyPrime 7.1 Available",
-    titleText: "Revolutionizing Business with Smart Tally Automation",
-    description: "Unleash TallyPrime 7.1 with PrimeBanking and SmartFind. We build the financial engine that turns your accounting into a growth machine.",
-    image: "/sa2.png",
-    features: [{ text: "PrimeBanking Payments" }, { text: "TallyDrive Cloud Backup" }, { text: "SmartFind Search" }],
-    ctaPrimary: { text: "Know More", href: "/about" }
+    main: "scale-100 rotate-2 translate-x-2 hover:rotate-0",
+    sub1: "-rotate-12 translate-y-8 hover:rotate-0",
+    sub2: "rotate-12 -translate-x-8 hover:rotate-0",
+    logo: "-rotate-12 -translate-y-6 hover:rotate-0",
+    sub1Img: "/hero/tssgold.png",
+    sub2Img: "/hero/brand-nosky-1779439419186.webp"
   },
   {
-    badge: "Certified Cloud Solutions",
-    titleText: "Tally on Cloud: Absolute Business Freedom",
-    description: "Your office, now in your pocket. Secure hosting with 100% uptime and zero-loss encryption for your business data.",
-    image: "/hero/dedicated-to-cloud-hosting.jpg",
-    features: [{ text: "Official Secure Hosting" }, { text: "High Performance Nodes" }, { text: "24/7 Remote Access" }],
-    ctaPrimary: { text: "View Cloud Plans", href: "/cloud" }
+    main: "scale-110 rotate-0 translate-y-2 hover:scale-100",
+    sub1: "rotate-3 -translate-x-12 -translate-y-4 hover:rotate-0",
+    sub2: "-rotate-3 translate-x-12 translate-y-4 hover:rotate-0",
+    logo: "rotate-0 translate-x-6 hover:scale-110",
+    sub1Img: "/PartnerBrands/Tally-Software.png",
+    sub2Img: "/hero/tssgold.png"
+  },
+  {
+    main: "scale-105 rotate-1 translate-x-1 hover:rotate-0",
+    sub1: "rotate-12 translate-x-8 hover:rotate-0",
+    sub2: "-rotate-12 -translate-y-8 hover:rotate-0",
+    logo: "rotate-6 -translate-x-6 hover:rotate-0",
+    sub1Img: "/hero/brand-nosky-1779439419186.webp",
+    sub2Img: "/hero/hero-sub1.png"
+  },
+  {
+    main: "scale-100 -rotate-1 -translate-y-1 hover:scale-105",
+    sub1: "-rotate-6 -translate-x-8 hover:rotate-0",
+    sub2: "rotate-6 translate-y-8 hover:rotate-0",
+    logo: "-rotate-3 translate-x-4 hover:rotate-0",
+    sub1Img: "/hero/hero-sub2.png",
+    sub2Img: "/PartnerBrands/Tally-Software.png"
   }
 ];
 
-const HIGHLIGHT_WORDS = ["smarter", "tally", "systems", "revolutionizing", "automation", "absolute", "freedom", "growth", "business"];
+const ECOSYSTEM_SCHEMES = [
+  {
+    main: "-rotate-3 translate-x-2 translate-y-2",
+    aws: "rotate-6 translate-x-0 translate-y-0",
+    nosky: "-rotate-2 translate-x-0 translate-y-0"
+  },
+  {
+    main: "rotate-3 -translate-x-2 -translate-y-2",
+    aws: "-rotate-6 -translate-x-2 translate-y-2",
+    nosky: "rotate-6 translate-x-2 -translate-y-2"
+  }
+];
+//cahnge this for hero text bg colour
+const processHeroData = (data: any[]): HeroContent[] => {
+  const hasSingle = data.some((item: any) => item.layout === 'single');
+  const merged = hasSingle ? data : [DEFAULT_HERO[0], ...data];
+  return merged.map((item: any) => {
+    if (item.layout === 'single') {
+      return { ...item, colorFrom: '#232F3E', colorTo: '#00ABE4' };
+    }
 
-export default function HomeHero({ initialData, variant = 'standard' }: { initialData?: HeroSlide[], variant?: string }) {
-  const [slides] = useState<HeroSlide[]>(DEFAULT_HERO);
-  const [index, setIndex] = useState(0);
+    const title = (item.titleText || '').toLowerCase();
+    const isCloud = title.includes('cloud');
+    const isSupport = title.includes('Solution') || title.includes('Downtime')  ;
+    const isTraining = title.includes('train') || title.includes('master');
+    const isWhatsApp = title.includes('whatsapp') || title.includes('automation') || title.includes('custom') || title.includes('module');
+    
+    const baseTitle = (item.titleText || '').split(' - ')[0].trim();
+    
+    let sub1Img = "/hero/hero-sub1.png";
+    let sub2Img = "/hero/hero-sub2.png";
+    let mainImg = item.image;
+
+    if (!mainImg || mainImg === '/sa.png') {
+        mainImg = isCloud ? "/hero/dedicated-to-cloud-hosting.jpg" : "/sa2.png";
+    }
+    
+    if (isSupport) {
+      sub1Img = "/PartnerBrands/Tally-Software.png";
+      sub2Img = "/sa2.png";
+      mainImg = "/support.png"; 
+    } else if (isTraining) {
+      sub1Img = "/PartnerBrands/Tally-Software.png";
+      sub2Img = "/sa2.png";
+      mainImg = "/trainning.png";
+    } else if (isWhatsApp) {
+      mainImg = "/sa3.png";
+      sub1Img = "/hero/hero-sub1.png";
+      sub2Img = "/TDLandCustom.jpg";
+    } else if (!isCloud) { 
+      mainImg = "/sa2.png";
+      sub1Img = "/hero/tssgold.png";
+      sub2Img = "/hero/hero-main.png";
+    }
+
+    return {
+      ...item,
+      titleText: baseTitle || (isCloud ? "Reliable Cloud & Zero-Loss Backup" : "Why Choose Certified Partner?"),
+      image: mainImg,
+      layout: isCloud ? 'ecosystem' : 'standard',
+      colorFrom: '#232F3E',
+      colorTo: '#00ABE4',
+      sub1Img,
+      sub2Img,
+      ctaPrimary: (!isCloud && !isSupport && !isTraining && !isWhatsApp) 
+        ? { text: "Know More", href: "/about" } 
+        : item.ctaPrimary
+    };
+  });
+};
+
+export default function HomeHero({ initialData, variant = 'standard' }: { initialData?: HeroContent[], variant?: 'standard' | 'radiant' | 'creative' }) {
+  const [heroContents, setHeroContents] = useState<HeroContent[]>(processHeroData(initialData || DEFAULT_HERO));
+  const [stableIndex, setStableIndex] = useState(0); 
+  const [isExiting, setIsExiting] = useState(false); 
+  const [isEntering, setIsEntering] = useState(false); 
   const [displayText, setDisplayText] = useState('');
   const [isTyping, setIsTyping] = useState(false);
+  const [gridSize, setGridSize] = useState(40);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
   const typingIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
-  const current = slides[index];
-
-  const totalSlides = slides.length;
+  // useEffect(() => {
+  //   if (initialData) return;
+  //   const fetchHero = async () => {
+  //     try {
+  //       const data = await fetchWithCache('/api/content?section=home_hero');
+  //       if (Array.isArray(data) && data.length > 0) {
+  //         setHeroContents(processHeroData(data));
+  //       }
+  //     } catch (_err) { /* Server fetch failed; DEFAULT_HERO is already rendered */ }
+  //   };
+  //   fetchHero();
+  // }, [initialData]);
 
   useEffect(() => {
-    if (totalSlides <= 1) return;
-    const timer = setInterval(() => {
-      setIndex((prev) => (prev + 1) % totalSlides);
-    }, 15000);
-    return () => clearInterval(timer);
-  }, [totalSlides]);
+    const handleResize = () => setGridSize(window.innerWidth >= 1024 ? 40 : 25);
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
-    const text = current.titleText;
-    let i = 0;
-    setDisplayText('');
-    setIsTyping(true);
-    if (typingIntervalRef.current) clearInterval(typingIntervalRef.current);
-
-    typingIntervalRef.current = setInterval(() => {
-      setDisplayText(text.slice(0, i));
-      i++;
-      if (i > text.length) { clearInterval(typingIntervalRef.current!); setIsTyping(false); }
-    }, 120);
-
-    return () => {
-      if (typingIntervalRef.current) clearInterval(typingIntervalRef.current);
+    if (heroContents.length <= 1) return;
+    const runCarousel = () => {
+      timerRef.current = setTimeout(() => {
+        if (document.hidden) { runCarousel(); return; }
+        setIsExiting(true);
+        setIsEntering(false);
+        setTimeout(() => {
+          setStableIndex((prev) => (prev + 1) % heroContents.length);
+          setTimeout(() => {
+            setIsExiting(false);
+            setIsEntering(true);
+            runCarousel();
+          }, 150);
+        }, 800);
+      }, 150050); 
     };
-  }, [index, current.titleText]);
+    const initialEntry = setTimeout(() => setIsEntering(true), 100);
+    runCarousel();
+    return () => { if (timerRef.current) clearTimeout(timerRef.current); clearTimeout(initialEntry); };
+  }, [heroContents.length]);
 
-  const goPrev = () => setIndex((prev) => (prev - 1 + totalSlides) % totalSlides);
-  const goNext = () => setIndex((prev) => (prev + 1) % totalSlides);
+  const current = heroContents[stableIndex] || DEFAULT_HERO[0];
+
+  useEffect(() => {
+    if (!current?.titleText || !isEntering || isExiting) { setDisplayText(''); return; }
+    if (typingIntervalRef.current) clearInterval(typingIntervalRef.current);
+    const startTyping = () => {
+      setIsTyping(true);
+      let i = 0;
+      const text = current.titleText;
+      setDisplayText('');
+      typingIntervalRef.current = setInterval(() => {
+        setDisplayText(text.slice(0, i));
+        i++;
+        if (i > text.length) { if (typingIntervalRef.current) clearInterval(typingIntervalRef.current); setIsTyping(false); }
+      }, 40); 
+    };
+    const initialDelay = setTimeout(startTyping, 700);
+    return () => { clearTimeout(initialDelay); if (typingIntervalRef.current) clearInterval(typingIntervalRef.current); };
+  }, [stableIndex, isEntering, isExiting, current.titleText]);
+
+  const [modalConfig, setModalConfig] = useState<{ isOpen: boolean; type: FormType; service: string; details: string }>({ isOpen: false, type: 'general', service: '', details: '' });
+
+  const scheme = {
+    ...VISUAL_SCHEMES[stableIndex % VISUAL_SCHEMES.length],
+    sub1Img: (current as any).sub1Img || VISUAL_SCHEMES[stableIndex % VISUAL_SCHEMES.length].sub1Img,
+    sub2Img: (current as any).sub2Img || VISUAL_SCHEMES[stableIndex % VISUAL_SCHEMES.length].sub2Img
+  };
+  const ecoScheme = ECOSYSTEM_SCHEMES[stableIndex % ECOSYSTEM_SCHEMES.length];
+
+  const getAnimationClasses = (delayClass: string) => {
+    if (isExiting) return 'opacity-0 translate-y-4 blur-sm transition-all duration-[800ms]';
+    if (!isEntering) return 'opacity-0 translate-y-4 blur-sm';
+    const motionPaths = ['translate-y-0', '-translate-x-0', 'translate-x-0', 'scale-100'];
+    const initialStates = ['translate-y-8', '-translate-x-12', 'translate-x-12', 'scale-90'];
+    const pathIdx = stableIndex % motionPaths.length;
+    const isActive = isEntering && !isExiting;
+    return `transition-all duration-[1000ms] ${delayClass} ${isActive ? `opacity-100 ${motionPaths[pathIdx]} blur-0` : `opacity-0 ${initialStates[pathIdx]} blur-sm`}`;
+  };
+
+  const getVariantBg = () => {
+    return 'bg-[linear-gradient(45deg,hsla(221,83%,53%,1)_0%,hsla(192,91%,36%,1)_100%)]';
+  };
+
+  const addDevSlide = useCallback(() => {
+    const n = heroContents.length + 1;
+    const newSlide: HeroContent = {
+      badge: `DEV SLIDE #${n}`,
+      titleText: `Development Slide ${n} — New Feature Set`,
+      colorFrom: '#232F3E',
+      colorTo: '#00ABE4',
+      description: `Temporary dev slide for testing. Edit DEFAULT_HERO or push via API to finalize this group (Slide ${n}).`,
+      image: '/sa2.png',
+      layout: 'standard',
+      features: [
+        { text: 'Feature A' },
+        { text: 'Feature B' },
+        { text: 'Feature C' },
+        { text: 'Feature D' },
+      ],
+      ctaPrimary: { text: 'Explore Dev Slide', href: '/products' },
+      sub1Img: '/hero/tssgold.png',
+      sub2Img: '/hero/hero-main.png',
+    };
+    setHeroContents(prev => [...prev, newSlide]);
+  }, [heroContents.length]);
 
   return (
-    <main className="relative min-h-[550px] md:min-h-[620px] bg-[#F8FAFC] flex items-center p-4 md:p-8 lg:p-10 overflow-hidden font-sans">
-      {/* Corner Orbs */}
-      <div className="absolute top-0 left-0 w-96 h-96 bg-[#0371a3]/10 rounded-full blur-[128px]" />
-      <div className="absolute bottom-0 right-0 w-96 h-96 bg-[#00ABE4]/10 rounded-full blur-[128px]" />
-      <div className="absolute top-1/2 left-1/3 w-64 h-64 bg-[#0371a3]/5 rounded-full blur-[128px]" />
-
-      <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10">
-
-        {/* Left Content */}
-        <div className="lg:col-span-7 flex flex-col items-center lg:items-start text-center lg:text-left space-y-8">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#0371a3]/10 border border-[#0371a3]/20 text-[#0371a3] text-[10px] font-black uppercase tracking-[0.2em]">
-            <span className="flex h-1.5 w-1.5 rounded-full bg-[#0371a3] animate-pulse" />
-            {current.badge}
+    <>
+    <main className={`relative w-full overflow-hidden opacity-80 md:opacity-90 transition-all duration-1000 ${getVariantBg()} min-h-137.5 md:min-h-[700px] lg:min-h-[650px] lg:-mt-10 flex items-start`}>
+      <div className="absolute -z-[100] invisible h-0 w-0 overflow-hidden pointer-events-none">
+        {heroContents.map((content, idx) => (
+          <div key={`preload-wrap-${idx}`} className="relative h-1 w-1">
+            <Image key={`preload-${idx}`} src={content.image} alt="preload" fill priority sizes="1px" />
           </div>
+        ))}
+      </div>
+      
+      <div className="absolute inset-0 z-0 overflow-hidden">
+        {variant === 'creative' ? (
+          <>
+            <div className="absolute top-[-15%] left-[-15%] w-[70%] h-[70%] rounded-full blur-[140px] animate-[pulse_10s_infinite]" style={{ backgroundColor: `rgba(255,255,255,0.2)` }} />
+            <div className="absolute bottom-[-15%] right-[-15%] w-[70%] h-[70%] rounded-full blur-[140px] animate-[pulse_12s_infinite_2s]" style={{ backgroundColor: `rgba(255,255,255,0.1)` }} />
+            
+            <div className="absolute top-[18%] left-[8%] w-24 h-24 bg-white/20 backdrop-blur-xl border border-white/20 rounded-3xl rotate-12 animate-[bounce_10s_infinite] shadow-xl z-10 hidden lg:block" />
+            <div className="absolute bottom-[22%] right-[38%] w-20 h-20 bg-white/20 backdrop-blur-lg border border-white/20 rounded-full -rotate-12 animate-[bounce_12s_infinite_1s] shadow-xl z-10 hidden lg:block" />
+          </>
+        ) : (
+          <>
+            <div className={`absolute inset-0 opacity-[0.2] pointer-events-none`} style={{ backgroundImage: 'url("/bgggg.png")', backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }} />
+            <div className={`absolute inset-0 opacity-40`}>
+              <ShapeGrid speed={0.25} squareSize={gridSize} direction="diagonal" borderColor={'rgba(255,255,255,0.2)'} hoverFillColor={'#70f2f2'} shape="hexagon" hoverTrailAmount={4} enableColorFlow={true} />
+            </div>
+          </>
+        )}
 
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-black leading-[1.1] tracking-tight w-full min-h-[120px] md:min-h-[160px]">
-            {displayText.split(' ').map((word, i) => (
-              <span key={i} className={HIGHLIGHT_WORDS.includes(word.replace(/[^a-z]/g, '').toLowerCase()) ? "text-[#00ABE4]" : "text-[#232F3E]"}>
-                {word}{' '}
-              </span>
-            ))}
-            {isTyping && <span className="inline-block w-1 h-8 md:h-10 ml-1 bg-[#00ABE4] animate-pulse" />}
-          </h1>
+        {variant === 'creative' && (
+           <div className="absolute inset-0 opacity-20">
+              <ShapeGrid speed={0.15} squareSize={gridSize} direction="diagonal" borderColor={'rgba(255,255,255,0.3)'} hoverFillColor={'#70f2f2'} shape="hexagon" hoverTrailAmount={2} enableColorFlow={true} />
+           </div>
+        )}
+      </div>
 
-<<<<<<< HEAD
-          <p className="text-base md:text-lg text-slate-600 max-w-xl leading-relaxed font-medium">
-            {current.description}
-          </p>
-
-          {/* Tickmark Features */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 w-full">
-            {current.features.map((f, i) => (
-              <div key={i} className="flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5 text-[#00ABE4] shrink-0" />
-                <span className="text-sm font-bold text-slate-700">{f.text}</span>
-              </div>
-            ))}
-          </div>
-
-          <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto justify-center lg:justify-start pt-4">
-            <Link
-              href="/contact"
-              className="px-8 py-4 bg-[#0371a3] text-white font-black uppercase tracking-[0.2em] text-xs rounded-xl hover:bg-[#00ABE4] transition-all hover:scale-105 active:scale-95 shadow-lg shadow-[#0371a3]/20 text-center"
-            >
-              Explore Solutions
-            </Link>
-            <Link
-              href={current.ctaPrimary.href}
-              className="px-8 py-4 bg-slate-100 hover:bg-slate-200 text-[#232F3E] font-black uppercase tracking-[0.2em] text-xs rounded-xl transition-all text-center"
-            >
-              {current.ctaPrimary.text}
-            </Link>
-          </div>
-
-          {/* Slide Indicators */}
-          {totalSlides > 1 && (
-            <div className="flex items-center gap-3 pt-2">
-              {slides.map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => setIndex(i)}
-                  className={`h-2 rounded-full transition-all duration-500 ${
-                    i === index ? 'w-8 bg-[#0371a3]' : 'w-2 bg-slate-300 hover:bg-slate-400'
-                  }`}
-                />
-=======
       <div className="w-full relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 items-center">
           <div key={`content-${stableIndex}`} className="lg:col-span-6 lg:justify-self-end w-full px-6 lg:px-12 pt-12 lg:pt-16 pb-12 lg:pb-24 space-y-5 lg:space-y-5 min-h-[350px] md:min-h-[450px] flex flex-col justify-start relative z-30">
@@ -208,23 +447,9 @@ export default function HomeHero({ initialData, variant = 'standard' }: { initia
                   </div>
                   <span className={`text-sm font-black text-white/90 group-hover:text-[#70f2f2] transition-colors`}>{f.text}</span>
                 </div>
->>>>>>> temp
               ))}
             </div>
-          )}
-        </div>
 
-<<<<<<< HEAD
-        {/* Right Visual */}
-        <div className="lg:col-span-5 hidden lg:flex justify-center items-center">
-          {index === 0 ? (
-            <div className="relative w-full max-w-[500px]">
-              <img
-                src={current.image}
-                alt={current.badge}
-                className="w-full h-auto"
-              />
-=======
             <div className={`flex flex-row gap-3 pt-2 ${getAnimationClasses('delay-700')}`}>
               <Link href="/#quick-access-hub" className={`group relative overflow-hidden px-5 md:px-7 py-3 md:py-3.5 rounded-xl bg-white text-[#232F3E] font-black text-[11px] uppercase tracking-[0.2em] transition-all duration-500 ease-in-out hover:scale-[1.05] active:scale-95 shadow-xl`}>
                 <span className="relative z-10">View Solutions</span>
@@ -236,43 +461,89 @@ export default function HomeHero({ initialData, variant = 'standard' }: { initia
               >
                 Request Demo
               </button>
->>>>>>> temp
             </div>
-          ) : (
-            <div className="relative w-full max-w-[450px] aspect-square">
-              <div className="absolute inset-0 bg-white shadow-2xl rounded-[2rem] border border-slate-100 p-4 transform rotate-3 hover:rotate-0 transition-transform duration-500">
-                <div className="relative w-full h-full rounded-[1.5rem] overflow-hidden">
-                  <img
-                    src={current.image}
-                    alt={current.badge}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-              </div>
-            </div>
-          )}
+          </div>
+
+          <div key={`visual-${stableIndex}`} className="lg:col-span-6 relative hidden lg:flex items-center justify-center w-full px-8 xl:px-16 lg:-mt-16 z-10">
+             <div className="relative w-full max-w-[640px] aspect-square group">
+                {variant === 'creative' && (
+                  <div className="absolute -inset-10 rounded-full blur-[80px] animate-pulse" style={{ background: `linear-gradient(to top right, rgba(255,255,255,0.2), transparent, rgba(255,255,255,0.2))` }} />
+                )}
+                
+                {current.layout === 'single' ? (
+                  <div className={`relative w-full h-full
+                      ${isExiting ? 'opacity-0 scale-90 translate-y-12 transition-all duration-[800ms]' : isEntering ? 'opacity-100 transition-all duration-1200' : 'opacity-0 translate-y-4'}`}>
+                    <Image src={current.image} alt={current.titleText} fill className="object-contain p-4" sizes="(max-width: 1024px) 100vw, 480px" priority />
+                  </div>
+                ) : current.layout === 'ecosystem' ? (
+                   <div className="relative w-full h-full scale-[1.0]">
+                    <div className={`absolute top-[10%] left-[15%] w-[75%] aspect-square rounded-[3.5rem] overflow-hidden border border-[#232F3E]/10 shadow-[0_50px_100px_-20px_rgba(0,0,0,0.3)] z-30 transform bg-white
+                      ${isExiting ? 'opacity-0 scale-90 translate-y-12 transition-all duration-800' : isEntering ? `opacity-100 transition-all duration-1200 ${ecoScheme.main}` : 'opacity-0 translate-y-4'}`}>
+                       <Image src={current.image} alt="Main" fill className="object-cover opacity-20 blur-xl scale-110" sizes="(max-width: 1024px) 100vw, 540px" />
+                       <div className="absolute inset-0 w-full h-full"><Image src={current.image} alt="Ecosystem" fill className="object-contain p-8" sizes="(max-width: 1024px) 100vw, 540px" /></div>
+                    </div>
+                    <div className={`absolute top-[-8%] right-[-5%] w-[45%] aspect-square rounded-[2rem] overflow-hidden border border-slate-200/50 shadow-2xl z-50 bg-white p-4
+                      ${isExiting ? 'opacity-0 translate-x-12 -translate-y-12 transition-all duration-800' : isEntering ? `opacity-100 transition-all duration-1000 delay-200 ${ecoScheme.aws}` : 'opacity-0 translate-y-4'}`}>
+                      <Image src="/hero/AWS.png" alt="AWS Infrastructure" fill className="object-contain p-4" sizes="200px" />
+                    </div>
+                    <div className={`absolute bottom-[-8%] left-[-5%] w-[40%] aspect-square rounded-[2rem] overflow-hidden border border-slate-200/50 shadow-2xl z-40 bg-[#232F3E] p-4
+                      ${isExiting ? 'opacity-0 -translate-x-12 translate-y-12 transition-all duration-800' : isEntering ? `opacity-100 flex items-center justify-center transition-all duration-1000 delay-400 ${ecoScheme.nosky}` : 'opacity-0 translate-y-4'}`}>
+                       <div className="relative w-full h-full"><Image src="/hero/brand-nosky-1779439419186.webp" alt="NoSky Node" fill className="object-contain" sizes="250px" /></div>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="relative w-full h-full scale-[0.8]">
+                    <div className={`absolute top-[10%] right-0 w-[80%] aspect-square rounded-[4rem] overflow-hidden border-2 border-white shadow-[0_50px_100px_-20px_rgba(3,113_163,0.4)] z-40 transform bg-white
+                        ${isExiting ? 'opacity-0 scale-90 translate-y-12 transition-all duration-[800ms]' : isEntering ? `opacity-100 transition-all duration-1200 ${scheme.main}` : 'opacity-0 translate-y-4'}`}>
+                      <Image src={current.image} alt="Backdrop" fill className="object-cover opacity-30 blur-2xl scale-110" sizes="(max-width: 1024px) 100vw, 540px" />
+                      <div className="absolute inset-0 w-full h-full"><Image src={current.image} alt={current.titleText} fill priority className="object-contain p-10" sizes="(max-width: 1024px) 100vw, 540px" /></div>
+                    </div>
+                    <div className={`absolute top-[-10%] left-0 w-[50%] aspect-square rounded-[2.5rem] overflow-hidden border border-slate-200/50 shadow-2xl z-50 bg-white
+                        ${isExiting ? 'opacity-0 -translate-x-12 -translate-y-12 transition-all duration-800' : isEntering ? `opacity-100 transition-all duration-1400 delay-200 ${scheme.sub1}` : 'opacity-0 translate-y-4'}`}>
+                      <Image src={scheme.sub1Img} alt="Enterprise Logic" fill className="object-cover opacity-10 blur-lg" sizes="250px" />
+                      <div className="absolute inset-0 w-full h-full"><Image src={scheme.sub1Img} alt="Tally ERP" fill className="object-contain" sizes="250px" /></div>
+                    </div>
+                    <div className={`absolute bottom-[-10%] left-[-10%] w-[45%] aspect-square rounded-[2rem] overflow-hidden border border-white/80 shadow-2xl z-30 bg-white
+                        ${isExiting ? 'opacity-0 -translate-x-16 translate-y-16 transition-all duration-800' : isEntering ? `opacity-100 transition-all duration-1600 delay-400 ${scheme.sub2}` : 'opacity-0 translate-y-4'}`}>
+                      <Image src={scheme.sub2Img} alt="Analytics View" fill className="object-cover opacity-10 blur-md" sizes="200px" />
+                      <div className="absolute inset-0 w-full h-full"><Image src={scheme.sub2Img} alt="Business Data" fill className="object-contain" sizes="200px" /></div>
+                    </div>
+                  </div>
+                )}
+                
+                {current.layout !== 'single' && (
+                  <div className={`absolute bottom-[5%] right-[-5%] w-[30%] h-[30%] rounded-[2rem] overflow-hidden border-2 border-white shadow-2xl z-50 scale-[0.8] bg-white p-6
+                    ${isExiting ? 'opacity-0 translate-x-20 scale-50 transition-all duration-800' : isEntering ? `opacity-100 transition-all duration-1800 delay-600 ${scheme.logo}` : 'opacity-0 translate-y-4'}`}>
+                    <Image src="/logo.svg" alt="Logo" fill className="object-contain" sizes="200px" style={{ filter: 'invert(31%) sepia(94%) saturate(1131%) hue-rotate(167deg) brightness(91%) contrast(98%)' }} />
+                  </div>
+                )}
+             </div>
+          </div>
         </div>
       </div>
-
-      {/* Navigation Arrows */}
-      {totalSlides > 1 && (
-        <>
-          <button
-            onClick={goPrev}
-            className="absolute left-3 top-1/2 -translate-y-1/2 z-20 w-10 h-10 flex items-center justify-center rounded-full bg-white/80 backdrop-blur-md text-slate-600 border border-slate-200 shadow-lg hover:bg-white hover:scale-110 active:scale-90 transition-all"
-            aria-label="Previous slide"
-          >
-            <ChevronLeft className="w-5 h-5" />
-          </button>
-          <button
-            onClick={goNext}
-            className="absolute right-3 top-1/2 -translate-y-1/2 z-20 w-10 h-10 flex items-center justify-center rounded-full bg-white/80 backdrop-blur-md text-slate-600 border border-slate-200 shadow-lg hover:bg-white hover:scale-110 active:scale-90 transition-all"
-            aria-label="Next slide"
-          >
-            <ChevronRight className="w-5 h-5" />
-          </button>
-        </>
-      )}
+      <button
+        onClick={() => setStableIndex(prev => (prev - 1 + heroContents.length) % heroContents.length)}
+        className="absolute left-2 top-1/2 -translate-y-1/2 z-50 w-8 h-8 flex items-center justify-center rounded-full bg-white/20 backdrop-blur-md text-white border border-white/30 hover:bg-white/40 active:scale-90 transition-all"
+        title="Previous slide"
+      >
+        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3"><path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" /></svg>
+      </button>
+      <button
+        onClick={() => setStableIndex(prev => (prev + 1) % heroContents.length)}
+        className="absolute right-2 top-1/2 -translate-y-1/2 z-50 w-8 h-8 flex items-center justify-center rounded-full bg-white/20 backdrop-blur-md text-white border border-white/30 hover:bg-white/40 active:scale-90 transition-all"
+        title="Next slide"
+      >
+        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
+      </button>
+      <button
+        onClick={addDevSlide}
+        className="fixed top-2 right-12 z-[999] px-2 py-1 text-[9px] font-bold uppercase tracking-wider bg-yellow-400 text-black rounded-md shadow-lg hover:bg-yellow-300 active:scale-95 border border-yellow-500/50"
+        title="Add a new dev hero slide"
+      >
+        + Dev
+      </button>
     </main>
+    <UnifiedContactModal isOpen={modalConfig.isOpen} onClose={() => setModalConfig(prev => ({ ...prev, isOpen: false }))} type={modalConfig.type} prefillService={modalConfig.service} prefillDetails={modalConfig.details} />
+    </>
   );
 }
