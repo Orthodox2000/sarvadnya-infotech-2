@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { Module } from '@/lib/modules';
 import ModuleCard from '../components/ModuleCard';
 import ModuleModal from '../components/ModuleModal';
@@ -59,6 +60,11 @@ export default function ModulesPage() {
         </div>
 
         <div className="relative z-10 max-w-7xl mx-auto text-center">
+          <div className="flex justify-center mb-6">
+            <div className="w-16 h-16 rounded-2xl bg-white border border-slate-200 shadow-sm flex items-center justify-center p-3">
+              <Image src="/customization icon.png" alt="Custom Modules" width={44} height={44} className="object-contain" />
+            </div>
+          </div>
           <div className="inline-flex items-center gap-1.5 px-2 py-1 rounded-full bg-slate-900/5 border border-slate-900/10 text-slate-500 text-[10px] font-bold uppercase tracking-[0.2em] mb-8 backdrop-blur-sm">
             <span className="flex h-1 w-1 rounded-full bg-slate-400"></span>
             Specialized Solutions

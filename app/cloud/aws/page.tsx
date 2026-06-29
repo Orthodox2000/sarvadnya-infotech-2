@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import Footer from '../../components/Footer';
 import UnifiedContactModal, { FormType } from '../../components/UnifiedContactModal';
@@ -189,13 +190,8 @@ export default function AWSCloudPage() {
         <div className="max-w-7xl mx-auto px-6 py-5">
           <div className="flex items-start gap-5">
             {/* Logo */}
-            <div className="w-[72px] h-[72px] shrink-0 rounded-xl border border-slate-200 bg-white flex items-center justify-center shadow-sm">
-              <div
-                className="w-11 h-11 rounded-lg flex items-center justify-center text-white font-black text-lg"
-                style={{ backgroundColor: BRAND_PRIMARY }}
-              >
-                A
-              </div>
+            <div className="w-[72px] h-[72px] shrink-0 rounded-xl border border-slate-200 bg-white flex items-center justify-center shadow-sm p-2.5">
+              <Image src="/PartnerBrands/AWS.png" alt="AWS Cloud Server" width={48} height={48} className="object-contain" />
             </div>
 
             {/* Info */}
@@ -227,7 +223,7 @@ export default function AWSCloudPage() {
                 className="px-6 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider text-white shadow-lg transition-all hover:scale-[1.02]"
                 style={{ backgroundColor: BRAND_PRIMARY }}
               >
-                Free Demo
+                Get Demo
               </button>
               <button
                 onClick={() => scrollToSection('pricing')}
@@ -247,7 +243,7 @@ export default function AWSCloudPage() {
             className="flex-1 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider text-white shadow-lg transition-all"
             style={{ backgroundColor: BRAND_PRIMARY }}
           >
-            Free Demo
+            Get Demo
           </button>
           <button
             onClick={() => scrollToSection('pricing')}

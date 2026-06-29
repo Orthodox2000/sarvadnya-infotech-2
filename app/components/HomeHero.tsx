@@ -107,6 +107,7 @@ export default function HomeHero({ initialData, variant = 'standard' }: { initia
             {isTyping && <span className="inline-block w-1 h-8 md:h-10 ml-1 bg-[#00ABE4] animate-pulse" />}
           </h1>
 
+<<<<<<< HEAD
           <p className="text-base md:text-lg text-slate-600 max-w-xl leading-relaxed font-medium">
             {current.description}
           </p>
@@ -147,11 +148,73 @@ export default function HomeHero({ initialData, variant = 'standard' }: { initia
                     i === index ? 'w-8 bg-[#0371a3]' : 'w-2 bg-slate-300 hover:bg-slate-400'
                   }`}
                 />
+=======
+      <div className="w-full relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 items-center">
+          <div key={`content-${stableIndex}`} className="lg:col-span-6 lg:justify-self-end w-full px-6 lg:px-12 pt-12 lg:pt-16 pb-12 lg:pb-24 space-y-5 lg:space-y-5 min-h-[350px] md:min-h-[450px] flex flex-col justify-start relative z-30">
+            <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/30 backdrop-blur-md w-fit ${getAnimationClasses('delay-0')} bg-white/20`}>
+              <span className={`flex h-2 w-2 rounded-full animate-pulse bg-white`} />
+              <span className={`text-[9px] font-black uppercase tracking-[0.2em] text-white`}>{current.badge}</span>
+            </div>
+            
+            {/* <div className={`${getAnimationClasses('delay-100')}`}>
+               <p className={`text-[10px] font-black uppercase tracking-[0.3em] mb-1 text-white/90`}>Why Choose Sarvadnya Infotech LLP?</p>
+            </div> */}
+
+            <div className={`relative min-h-[70px] md:min-h-[80px] lg:mt-[-5px] ${getAnimationClasses('delay-200')}`}>
+              <h1 className="text-3xl md:text-5xl font-black text-white leading-[1.15] tracking-tight invisible">{current.titleText}</h1>
+
+              <h1 className="absolute top-0 left-0 text-3xl md:text-5xl font-black text-white leading-[1.15] tracking-tight w-full drop-shadow-lg flex flex-wrap items-baseline">
+                {displayText.split(' ').map((word, i, arr) => {
+                  const cleanWord = word.replace(/[.,%]/g, '').toLowerCase();
+                  const titleLower = (current.titleText || '').toLowerCase();
+                  const isCloudSlide = titleLower.includes('cloud');
+                  const isDemoSlide = titleLower.includes('demo') || titleLower.includes('future') || titleLower.includes('witness');
+                  const isModuleSlide = titleLower.includes('module');
+                  
+                  let isHighlight = false;
+                  if (isCloudSlide) {
+                    isHighlight = cleanWord === 'backup' || cleanWord === 'reliable';
+                  } else if (isDemoSlide) {
+                    isHighlight = cleanWord === 'automation' || cleanWord === 'future' || cleanWord === 'witness' || cleanWord === 'explore' || cleanWord === 'business' || cleanWord === 'modules';
+                  } else if (isModuleSlide) {
+                    isHighlight = cleanWord === 'modules' || cleanWord === 'custom' || cleanWord === 'tally';
+                  } else {
+                    isHighlight = word.includes('90%') || cleanWord === 'certified' || cleanWord === 'partner' || cleanWord === 'trusted' || cleanWord === 'msme' || cleanWord === 'smarter';
+                  }
+
+                  const shouldBreak = isModuleSlide && cleanWord === 'modules';
+                  
+                  return (
+                    <span key={i} className="contents">
+                      {shouldBreak && <div className="basis-full h-0" />}
+                      <span className={isHighlight ? "text-transparent bg-clip-text bg-gradient-to-r from-[#70f2f2] via-white to-[#70f2f2] animate-shimmer inline-block" : ""}>
+                        {word}&nbsp;
+                      </span>
+                    </span>
+                  );
+                })}
+                {isTyping && <span className={`inline-block w-1 h-7 md:h-10 ml-0.5 animate-pulse bg-white`} />}
+              </h1>
+            </div>
+
+            <p className={`text-sm md:text-lg text-white/90 max-w-4xl leading-relaxed font-semibold min-h-[50px] lg:-mt-4 ${getAnimationClasses('delay-300')}`}>{current.description}</p>
+            
+            <div className={`grid grid-cols-2 gap-5 ${getAnimationClasses('delay-500')}`}>
+              {(current.features || []).map((f, i) => (
+                <div key={i} className="flex items-center gap-4 group">
+                  <div className={`h-7 w-7 rounded-xl flex items-center justify-center border border-white/20 transition-transform group-hover:scale-110 shrink-0 bg-white/20`}>
+                    <svg className={`w-4 h-4 text-[#70f2f2]`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3.5"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+                  </div>
+                  <span className={`text-sm font-black text-white/90 group-hover:text-[#70f2f2] transition-colors`}>{f.text}</span>
+                </div>
+>>>>>>> temp
               ))}
             </div>
           )}
         </div>
 
+<<<<<<< HEAD
         {/* Right Visual */}
         <div className="lg:col-span-5 hidden lg:flex justify-center items-center">
           {index === 0 ? (
@@ -161,6 +224,19 @@ export default function HomeHero({ initialData, variant = 'standard' }: { initia
                 alt={current.badge}
                 className="w-full h-auto"
               />
+=======
+            <div className={`flex flex-row gap-3 pt-2 ${getAnimationClasses('delay-700')}`}>
+              <Link href="/#quick-access-hub" className={`group relative overflow-hidden px-5 md:px-7 py-3 md:py-3.5 rounded-xl bg-white text-[#232F3E] font-black text-[11px] uppercase tracking-[0.2em] transition-all duration-500 ease-in-out hover:scale-[1.05] active:scale-95 shadow-xl`}>
+                <span className="relative z-10">View Solutions</span>
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#70f2f2]/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+              </Link>
+              <button 
+                onClick={() => setModalConfig({ isOpen: true, type: 'demo', service: 'TallyPrime', details: 'Requesting a personalized demo' })} 
+                className={`group px-5 md:px-7 py-3 md:py-3.5 rounded-xl bg-transparent font-black text-[11px] uppercase tracking-[0.2em] transition-all duration-500 ease-in-out text-white hover:bg-white/10 hover:scale-[1.05] active:scale-95 border border-white/30`}
+              >
+                Request Demo
+              </button>
+>>>>>>> temp
             </div>
           ) : (
             <div className="relative w-full max-w-[450px] aspect-square">

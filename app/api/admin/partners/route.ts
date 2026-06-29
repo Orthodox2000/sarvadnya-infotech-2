@@ -31,7 +31,11 @@ export async function GET(request: Request) {
       await collection.insertMany(partnersToInsert as any);
       
       // Invalidate cache and fetch fresh
+<<<<<<< HEAD
       revalidateTag('partners');
+=======
+  revalidateTag('partners');
+>>>>>>> temp
       partners = await collection.find(type ? { type } : {}).sort({ createdAt: 1 }).toArray() as any;
     }
     

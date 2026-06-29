@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import Footer from '../components/Footer';
 import UnifiedContactModal, { FormType } from '../components/UnifiedContactModal';
@@ -93,14 +94,14 @@ export default function CloudPage() {
   return (
     <div className="min-h-screen bg-[#f2f1f0]">
       {/* Hero Section */}
-      <section className="bg-white relative pt-12 pb-16 md:pt-20 md:pb-24 px-6 overflow-hidden border-b border-[#0371a3]/10">
+      <section className="bg-white relative pt-12 pb-16 md:pt-16 px-6 overflow-hidden border-b border-[#0371a3]/10">
         <div className="absolute inset-0 opacity-40 pointer-events-none">
-          <div className="absolute top-0 right-0 w-[60%] h-[60%] bg-white/40 blur-[130px] -mr-32 -mt-32" />
+          <div className="absolute top-0 right-0 w-[60%] h-[60%] bg-white/40 blur-[130px] -mr-16 -mt-16" />
           <div className="absolute bottom-0 left-0 w-[40%] h-[40%] bg-sky-200/30 blur-[110px] -ml-24 -mb-24" />
         </div>
 
-        <div className="max-w-4xl mx-auto text-center relative z-10">
-          <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#0371a3]/10 border border-[#0371a3]/20 text-[#0371a3] text-[10px] font-black uppercase tracking-[0.2em] mb-8">
+        <div className="max-w-7xl mx-auto text-center relative z-10">
+        <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#0371a3]/10 border border-[#0371a3]/20 text-[#0371a3] text-[10px] font-black uppercase tracking-[0.2em] mb-8">
             <span className="flex h-1.5 w-1.5 rounded-full bg-[#0371a3] animate-pulse"></span>
             Cloud products
           </div>

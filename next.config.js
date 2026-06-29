@@ -1,5 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+<<<<<<< HEAD
+=======
+  
+>>>>>>> temp
   allowedDevOrigins: ['26.186.62.193','192.168.7.7','192.168.1.245'],
   images: {
     remotePatterns: [

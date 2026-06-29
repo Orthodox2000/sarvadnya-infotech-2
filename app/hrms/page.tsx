@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import Footer from '../components/Footer';
 import UnifiedContactModal, { FormType } from '../components/UnifiedContactModal';
@@ -187,13 +188,8 @@ export default function HRMSPage() {
         <div className="max-w-7xl mx-auto px-6 py-5">
           <div className="flex items-start gap-5">
             {/* Logo */}
-            <div className="w-[72px] h-[72px] shrink-0 rounded-xl border border-slate-200 bg-white flex items-center justify-center shadow-sm">
-              <div
-                className="w-11 h-11 rounded-lg flex items-center justify-center text-white font-black text-lg"
-                style={{ backgroundColor: BRAND_PRIMARY }}
-              >
-                H
-              </div>
+            <div className="w-[72px] h-[72px] shrink-0 rounded-xl border border-slate-200 bg-white flex items-center justify-center shadow-sm p-2.5">
+              <Image src="/hrms.png" alt="HRMS" width={48} height={48} className="object-contain" />
             </div>
 
             {/* Info */}
@@ -226,7 +222,7 @@ export default function HRMSPage() {
                 className="px-6 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider text-white shadow-lg transition-all hover:scale-[1.02]"
                 style={{ backgroundColor: BRAND_PRIMARY }}
               >
-                Free Demo
+                Get Demo
               </button>
               <button
                 onClick={() => scrollToSection('pricing')}
@@ -246,7 +242,7 @@ export default function HRMSPage() {
             className="flex-1 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider text-white shadow-lg transition-all"
             style={{ backgroundColor: BRAND_PRIMARY }}
           >
-            Free Demo
+            Get Demo
           </button>
           <button
             onClick={() => scrollToSection('pricing')}
@@ -362,11 +358,8 @@ export default function HRMSPage() {
             {/* OTU HRplus Reference */}
             <div className="bg-white rounded-xl border border-slate-200 p-5">
               <div className="flex items-start gap-4">
-                <div
-                  className="w-10 h-10 rounded-lg flex items-center justify-center text-white font-black shrink-0"
-                  style={{ backgroundColor: BRAND_PRIMARY }}
-                >
-                  O
+                <div className="w-14 h-14 rounded-xl flex items-center justify-center shrink-0 p-1.5 bg-white border border-slate-200 shadow-sm">
+                  <Image src="/uploads/brand-otu-hrplus-1779435427064.png" alt="OTU HRplus" width={44} height={44} className="object-contain" />
                 </div>
                 <div>
                   <h3 className="text-sm font-bold text-slate-900">We recommend OTU HRplus</h3>
@@ -374,7 +367,7 @@ export default function HRMSPage() {
                     OTU HRplus is our recommended HRMS solution — it offers seamless TallyPrime integration,
                     automated compliance, and employee self-service. Built for Indian businesses, it handles
                     everything from payroll to statutory returns in one platform.
-                    <Link href="/hrms#features" className="font-bold ml-1 hover:underline" style={{ color: BRAND_PRIMARY }}>Learn more →</Link>
+                    <Link href="https://otuhrplus.com/" target="_blank" rel="noopener noreferrer" className="font-bold ml-1 hover:underline" style={{ color: BRAND_PRIMARY }}>Learn more →</Link>
                   </p>
                 </div>
               </div>
