@@ -1,7 +1,7 @@
 'use client';
 
 import Image from "next/image";
-import { memo, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Partner } from "@/lib/partners";
 import { fetchWithCache } from "@/lib/client-api";
 
@@ -93,4 +93,4 @@ const CertifiedPartners = ({ initialData }: { initialData?: Partner[] }) => {
     );
 };
 
-export default memo(CertifiedPartners);
+export default CertifiedPartners;

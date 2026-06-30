@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef, useMemo, memo } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { fetchWithCache } from '@/lib/client-api';
 
 const CATEGORIES = ['All', 'Products', 'Services', 'Technical', 'Contact'];
@@ -27,10 +27,7 @@ const FAQ = ({ initialData, initialSettings }: { initialData?: any[], initialSet
         fetchData();
     }, [initialData]);
 
-    const filteredFaq = useMemo(() => {
-        if (activeCategory === 'All') return faqData;
-        return faqData.filter(item => item.category === activeCategory);
-    }, [faqData, activeCategory]);
+    const filteredFaq = activeCategory === 'All' ? faqData : faqData.filter(item => item.category === activeCategory);
 
     const toggleIndex = (index: number) => {
         setActiveIndex(activeIndex === index ? null : index);
@@ -119,4 +116,4 @@ const FAQ = ({ initialData, initialSettings }: { initialData?: any[], initialSet
     );
 };
 
-export default memo(FAQ);
+export default FAQ;

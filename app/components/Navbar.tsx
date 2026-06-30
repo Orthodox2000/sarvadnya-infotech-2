@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 import { fetchWithCache } from "@/lib/client-api";
 import SearchBar from "./SearchBar";
 
@@ -22,6 +23,8 @@ export type SiteSettings = {
 export default function Navbar({ initialSettings }: { initialSettings?: any }) {
   const [settings, setSettings] = useState<any>(initialSettings || null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const pathname = usePathname();
 
   useEffect(() => {
     if (!initialSettings) fetchSettings();
@@ -50,6 +53,8 @@ export default function Navbar({ initialSettings }: { initialSettings?: any }) {
 
   const navLinks: { label: string; href: string }[] = [];
 
+  const isActive = (href: string) => pathname === href;
+
   const adminLinks = [
     { label: 'Dashboard', href: '/admin', icon: 'M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6' },
     { label: 'Careers', href: '/admin/careers', icon: 'M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z' },
@@ -64,7 +69,7 @@ export default function Navbar({ initialSettings }: { initialSettings?: any }) {
   ];
 
   return (
-    <header className="relative z-1000 w-full border-b border-white/5 shadow-sm" style={{ background: 'linear-gradient(90deg, hsla(236, 100%, 8%, 1) 10%, hsla(211, 100%, 28%, 1) 100%)' }}>
+    <header className="relative z-1000 w-full border-b border-[#E5E2D9] shadow-sm bg-[#F7F6F2]">
       <nav className="mx-auto flex h-12 lg:h-16 w-full max-w-full items-center justify-between px-3">
         <Link
           href="/"
@@ -89,34 +94,40 @@ export default function Navbar({ initialSettings }: { initialSettings?: any }) {
           </div>
            <Link
             href="/colour"
-            className="text-[11px] font-bold uppercase tracking-widest text-emerald-400 hover:text-emerald-300 transition-colors"
+            className={`text-[11px] font-bold uppercase tracking-widest transition-colors ${isActive('/colour') ? 'text-[#4A4A4A] underline underline-offset-8 decoration-[#316852] decoration-2' : 'text-[#4A4A4A] hover:text-[#316852]'}`}
           >
             Palette
           </Link> 
           <Link
             href="/find-solution"
-            className="hidden xl:inline-flex items-center justify-center rounded-full bg-[#00ABE4]-500/10 px-5 py-2 text-[11px] font-black uppercase tracking-wider text-[#00ABE4] border border-[#00ABE4]/20 transition-all duration-500 ease-in-out hover:bg-[#00ABE4] hover:text-white shadow-sm"
+            className={`hidden xl:inline-flex items-center justify-center rounded-full border px-5 py-2 text-[11px] font-black uppercase tracking-wider transition-all duration-500 ease-in-out shadow-sm ${isActive('/find-solution') ? 'text-[#4A4A4A] underline underline-offset-8 decoration-[#316852] decoration-2 border-gray-300 bg-gray-50' : 'text-[#4A4A4A] border-gray-200 bg-white hover:bg-gray-100'}`}
           >
             Smart-suggest
           </Link>
           <Link
             href="/careers"
-            className="inline-flex items-center justify-center rounded-full bg-white/5 px-5 py-2 text-[11px] font-bold uppercase tracking-wider text-white border border-white/10 transition-all duration-500 ease-in-out hover:bg-white/10 shadow-sm"
+            className={`inline-flex items-center justify-center rounded-full border px-5 py-2 text-[11px] font-bold uppercase tracking-wider transition-all duration-500 ease-in-out shadow-sm ${isActive('/careers') ? 'text-[#4A4A4A] underline underline-offset-8 decoration-[#316852] decoration-2 border-gray-300 bg-gray-50' : 'text-[#4A4A4A] border-gray-200 bg-white hover:bg-gray-100'}`}
           >
             Careers
           </Link>
           <Link
-            href="/contact"
-            className="inline-flex items-center justify-center rounded-full bg-[#00ABE4] text-white px-5 py-2 text-[11px] font-bold uppercase tracking-wider shadow-lg shadow-[#00ABE4]/20 transition-all duration-500 ease-in-out hover:bg-white hover:text-[#131921] hover:-translate-y-0.5"
+            href="/login"
+            className="text-[11px] font-bold uppercase tracking-widest text-[#4B6780] hover:text-[#4B6780]/80 transition-colors"
           >
-            Support
+            Login
+          </Link>
+          <Link
+            href="/contact"
+            className="inline-flex items-center justify-center rounded-full bg-[#4B6780] text-white px-5 py-2 text-[11px] font-bold uppercase tracking-wider shadow-lg shadow-[#4B6780]/20 transition-all duration-500 ease-in-out hover:bg-white hover:text-[#4B6780] hover:-translate-y-0.5 hover:border hover:border-[#4B6780]"
+          >
+            Contact
           </Link>
         </div>
 
         {/* Mobile Toggle */}
         <div className="flex items-center gap-4 lg:hidden">
           <button
-            className="p-2 text-white/70 hover:text-white transition-colors"
+            className="p-2 text-[#4A4A4A]/70 hover:text-[#4A4A4A] transition-colors"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
             {isMenuOpen ? (
@@ -135,13 +146,13 @@ export default function Navbar({ initialSettings }: { initialSettings?: any }) {
       {/* Mobile Menu Backdrop */}
       {isMenuOpen && (
         <div
-          className="lg:hidden fixed inset-0 bg-[#0371a3]/10 backdrop-blur-sm z-998"
+          className="lg:hidden fixed inset-0 bg-black/10 backdrop-blur-sm z-998"
           onClick={() => setIsMenuOpen(false)}
         />
       )}
 
       {/* Mobile Menu Drawer */}
-      <div className={`lg:hidden absolute top-full left-0 right-0 bg-[#f0f9ff] border-b border-[#0371a3]/10 z-999 transition-all duration-300 overflow-y-auto ${isMenuOpen ? 'max-h-[85vh] opacity-100 py-6 shadow-xl' : 'max-h-0 opacity-0 py-0'}`}>
+      <div className={`lg:hidden absolute top-full left-0 right-0 bg-[#F7F6F2] border-b border-[#E5E2D9] z-999 transition-all duration-300 overflow-y-auto ${isMenuOpen ? 'max-h-[85vh] opacity-100 py-6 shadow-xl' : 'max-h-0 opacity-0 py-0'}`}>
         <div className="flex flex-col gap-6 px-6">
 
 
@@ -169,27 +180,34 @@ export default function Navbar({ initialSettings }: { initialSettings?: any }) {
           </div>
           */}
 
-          <div className="w-full h-px bg-[#E9F1FA]" />
+          <div className="w-full h-px bg-[#E5E2D9]" />
 
           <div className="flex flex-col gap-3">
             <Link
+              href="/login"
+              onClick={() => setIsMenuOpen(false)}
+              className="flex items-center justify-center h-12 rounded-xl border border-[#E5E2D9] bg-[#F7F6F2] text-[11px] font-black uppercase tracking-widest text-[#4B6780] shadow-sm hover:bg-gray-50"
+            >
+              Login
+            </Link>
+            <Link
               href="/find-solution"
               onClick={() => setIsMenuOpen(false)}
-              className="flex items-center justify-center h-12 rounded-xl border border-emerald-500/20 bg-emerald-50 text-[11px] font-black uppercase tracking-widest text-emerald-600 shadow-sm hover:bg-emerald-100"
+              className="flex items-center justify-center h-12 rounded-xl border border-[#E5E2D9] bg-[#F7F6F2] text-[11px] font-black uppercase tracking-widest text-[#4A4A4A] shadow-sm hover:bg-gray-50"
             >
               Find Your Solution
             </Link>
             <Link
               href="/careers"
               onClick={() => setIsMenuOpen(false)}
-              className="flex items-center justify-center h-12 rounded-xl border border-[#0371a3]/10 bg-white text-[11px] font-black uppercase tracking-widest text-slate-900 shadow-sm hover:bg-[#E9F1FA]"
+              className="flex items-center justify-center h-12 rounded-xl border border-[#E5E2D9] bg-[#F7F6F2] text-[11px] font-black uppercase tracking-widest text-[#4A4A4A] shadow-sm hover:bg-gray-50"
             >
               Join Our Team
             </Link>
             <Link
               href="/contact"
               onClick={() => setIsMenuOpen(false)}
-              className="flex items-center justify-center h-12 rounded-xl bg-[#0371a3] text-white text-[11px] font-black uppercase tracking-widest shadow-xl shadow-[#0371a3]/20"
+              className="flex items-center justify-center h-12 rounded-xl bg-[#4B6780] text-white text-[11px] font-black uppercase tracking-widest shadow-xl shadow-[#4B6780]/20"
             >
               Get Priority Support
             </Link>
@@ -199,7 +217,7 @@ export default function Navbar({ initialSettings }: { initialSettings?: any }) {
           {/* Explicit Unexpand Button at very bottom */}
           <button
             onClick={() => setIsMenuOpen(false)}
-            className="w-full py-4 text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 hover:text-[#0371a3] transition-colors border-t border-[#E9F1FA] mt-4"
+            className="w-full py-4 text-[10px] font-black uppercase tracking-[0.3em] text-[#4A4A4A]/50 hover:text-[#4A4A4A] transition-colors border-t border-gray-200 mt-4"
           >
             ↑ Collapse Navigation ↑
           </button>

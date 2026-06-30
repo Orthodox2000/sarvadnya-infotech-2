@@ -1,6 +1,6 @@
 import clientPromise from './mongodb';
 import { ObjectId } from 'mongodb';
-import { unstable_cache, revalidateTag } from 'next/cache';
+// Caching disabled
 
 export async function getDb() {
   const client = await clientPromise;
@@ -58,11 +58,7 @@ async function fetchSettings() {
   return serializeData(map);
 }
 
-export const getSettings = unstable_cache(
-  async () => fetchSettings(),
-  ['settings-map'],
-  { revalidate: 60, tags: ['settings'] }
-);
+export const getSettings = async () => fetchSettings();
 
 export async function getSetting(key: string, defaultValue: string = '') {
   const settings = await getSettings();
@@ -76,7 +72,6 @@ export async function updateSetting(key: string, value: string) {
     { $set: { value, updatedAt: new Date() } },
     { upsert: true }
   );
-  revalidateTag('settings');
 }
 
 // Applications helpers - No caching for submissions/admin views
@@ -102,11 +97,7 @@ async function fetchContent(section: string) {
 }
 
 export async function getContent(section: string) {
-  return unstable_cache(
-    async () => fetchContent(section),
-    [`content-${section}`],
-    { revalidate: 60, tags: ['content'] }
-  )();
+  return fetchContent(section);
 }
 
 export async function updateContent(section: string, content: any) {
@@ -116,7 +107,6 @@ export async function updateContent(section: string, content: any) {
     { $set: { content, updatedAt: new Date() } },
     { upsert: true }
   );
-  revalidateTag('content');
 }
 
 // Modules helpers
@@ -127,11 +117,7 @@ async function fetchModules() {
   return serializeData(data);
 }
 
-export const getModules = unstable_cache(
-  async () => fetchModules(),
-  ['modules-list'],
-  { revalidate: 60, tags: ['modules'] }
-);
+export const getModules = async () => fetchModules();
 
 export async function getModule(id: string) {
   const modules = await getModules();
@@ -151,7 +137,6 @@ export async function addModule(data: any) {
     createdAt: new Date(),
     updatedAt: new Date()
   });
-  revalidateTag('modules');
   return result;
 }
 
@@ -164,7 +149,6 @@ export async function updateModule(id: string, data: any) {
     { $set: { ...updateData, updatedAt: new Date() } },
     { upsert: true }
   );
-  revalidateTag('modules');
   return result;
 }
 
@@ -177,7 +161,6 @@ export async function reorderModules(orders: { id: string; sequence: number }[])
     }
   }));
   const result = await col.bulkWrite(bulkOps);
-  revalidateTag('modules');
   return result;
 }
 
@@ -185,7 +168,6 @@ export async function deleteModule(id: string) {
   const col = await getCollection('modules');
   const query = ObjectId.isValid(id) ? { _id: new ObjectId(id) } : { id };
   const result = await col.deleteOne(query);
-  revalidateTag('modules');
   return result;
 }
 
@@ -196,11 +178,7 @@ async function fetchTutorials() {
   return serializeData(data);
 }
 
-export const getTutorials = unstable_cache(
-  async () => fetchTutorials(),
-  ['tutorials-list'],
-  { revalidate: 60, tags: ['tutorials'] }
-);
+export const getTutorials = async () => fetchTutorials();
 
 export async function addTutorial(data: any) {
   const col = await getCollection('learning_content');
@@ -209,7 +187,6 @@ export async function addTutorial(data: any) {
     createdAt: new Date(),
     updatedAt: new Date()
   });
-  revalidateTag('tutorials');
   return result;
 }
 
@@ -220,14 +197,12 @@ export async function updateTutorial(id: string, data: any) {
     { _id: new ObjectId(id) },
     { $set: { ...updateData, updatedAt: new Date() } }
   );
-  revalidateTag('tutorials');
   return result;
 }
 
 export async function deleteTutorial(id: string) {
   const col = await getCollection('learning_content');
   const result = await col.deleteOne({ _id: new ObjectId(id) });
-  revalidateTag('tutorials');
   return result;
 }
 
@@ -238,11 +213,7 @@ async function fetchReviews() {
   return serializeData(data);
 }
 
-export const getReviews = unstable_cache(
-  async () => fetchReviews(),
-  ['reviews-list'],
-  { revalidate: 60, tags: ['reviews'] }
-);
+export const getReviews = async () => fetchReviews();
 
 export async function addReview(data: any) {
   const col = await getCollection('reviews');
@@ -254,14 +225,12 @@ export async function addReview(data: any) {
     ...data,
     createdAt: new Date()
   });
-  revalidateTag('reviews');
   return result;
 }
 
 export async function deleteReview(id: string) {
   const col = await getCollection('reviews');
   const result = await col.deleteOne({ _id: new ObjectId(id) });
-  revalidateTag('reviews');
   return result;
 }
 
@@ -274,11 +243,7 @@ async function fetchPartners(type?: string) {
 }
 
 export async function getPartners(type?: string) {
-  return unstable_cache(
-    async () => fetchPartners(type),
-    [`partners-list-${type || 'all'}`],
-    { revalidate: 60, tags: ['partners'] }
-  )();
+  return fetchPartners(type);
 }
 
 export async function getPartnersByType(type: string) {
@@ -292,7 +257,6 @@ export async function addPartner(data: any) {
     ...data,
     createdAt: new Date()
   });
-  revalidateTag('partners');
   return result;
 }
 
@@ -306,7 +270,6 @@ export async function updatePartner(id: string, data: any) {
     { _id: new ObjectId(id) },
     { $set: { ...updateData, updatedAt: new Date() } }
   );
-  revalidateTag('partners');
   return result;
 }
 
@@ -316,7 +279,6 @@ export async function deletePartner(id: string) {
   }
   const col = await getCollection('partners');
   const result = await col.deleteOne({ _id: new ObjectId(id) });
-  revalidateTag('partners');
   return result;
 }
 
@@ -327,11 +289,7 @@ async function fetchNews() {
   return serializeData(data);
 }
 
-export const getNews = unstable_cache(
-  async () => fetchNews(),
-  ['news-list'],
-  { revalidate: 60, tags: ['news'] }
-);
+export const getNews = async () => fetchNews();
 
 export async function addNews(data: any) {
   const col = await getCollection('news');
@@ -339,7 +297,6 @@ export async function addNews(data: any) {
     ...data,
     createdAt: new Date()
   });
-  revalidateTag('news');
   return result;
 }
 
@@ -350,14 +307,12 @@ export async function updateNews(id: string, data: any) {
     { _id: new ObjectId(id) },
     { $set: { ...updateData, updatedAt: new Date() } }
   );
-  revalidateTag('news');
   return result;
 }
 
 export async function deleteNews(id: string) {
   const col = await getCollection('news');
   const result = await col.deleteOne({ _id: new ObjectId(id) });
-  revalidateTag('news');
   return result;
 }
 

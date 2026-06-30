@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef, memo } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 
 interface Review {
@@ -11,7 +11,7 @@ interface Review {
     text: string;
 }
 
-const StarRating = memo(function StarRating({ rating, size = "w-4 h-4" }: { rating: number, size?: string }) {
+function StarRating({ rating, size = "w-4 h-4" }: { rating: number, size?: string }) {
     return (
         <div className="flex gap-0.5">
             {[...Array(5)].map((_, i) => (
@@ -26,7 +26,7 @@ const StarRating = memo(function StarRating({ rating, size = "w-4 h-4" }: { rati
             ))}
         </div>
     );
-});
+}
 
 function ReviewCard({ review }: { review: Review }) {
     return (
@@ -135,4 +135,4 @@ const CustomerReviews = ({ initialData }: { initialData?: Review[] }) => {
     );
 };
 
-export default memo(CustomerReviews);
+export default CustomerReviews;

@@ -40,10 +40,10 @@ export default function NewsFeed({ initialData }: { initialData?: NewsItem[] }) 
 
   if (loading || newsItems.length === 0) {
     return (
-      <div className="relative w-full bg-[#131921] h-[20px] flex items-center border-b border-white/10 z-[50]">
+      <div className="relative w-full bg-[#316852] h-[20px] flex items-center border-b border-white/10 z-[50]">
         <div className="px-6 flex items-center gap-2">
-           <div className="h-1.5 w-1.5 rounded-full bg-slate-700 animate-pulse" />
-           <div className="h-2 w-32 bg-slate-800 rounded animate-pulse" />
+           <div className="h-1.5 w-1.5 rounded-full bg-white/30 animate-pulse" />
+           <div className="h-2 w-32 bg-white/20 rounded animate-pulse" />
         </div>
       </div>
     );
@@ -51,10 +51,10 @@ export default function NewsFeed({ initialData }: { initialData?: NewsItem[] }) 
 
   return (
     <div
-      className="relative w-full bg-[#131921] h-[20px] flex items-center border-b border-white/10 group overflow-visible z-[2100]"
+      className="relative w-full bg-[#316852] h-[20px] flex items-center border-b border-white/10 group overflow-visible z-[2100]"
     >
       {/* Label Section */}
-      <div className="absolute left-0 top-0 bottom-0 z-[1010] flex items-center bg-gradient-to-r from-[#131921] via-[#131921] to-transparent px-6 pr-12 pointer-events-none">
+      <div className="absolute left-0 top-0 bottom-0 z-[1010] flex items-center bg-gradient-to-r from-[#316852] via-[#316852] to-transparent px-6 pr-12 pointer-events-none">
         <div className="flex items-center gap-2">
           <span className="relative flex h-2 w-2">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
@@ -136,7 +136,7 @@ export default function NewsFeed({ initialData }: { initialData?: NewsItem[] }) 
             </p>
             <Link
               href="/news"
-              className="inline-flex items-center gap-1.5 px-4 py-2 bg-[#7338a0] text-white text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-[#4a2574] transition-all shadow-lg shadow-indigo-100"
+              className="inline-flex items-center gap-1.5 px-4 py-2 bg-[#316852] text-white text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-[#1e4a3a] transition-all shadow-lg shadow-indigo-100"
             >
               Read Full Story
               <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">

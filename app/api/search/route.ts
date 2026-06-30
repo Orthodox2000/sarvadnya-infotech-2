@@ -5,7 +5,7 @@ import { findSemanticResults } from '@/lib/search-indexer';
 const AI_TIMEOUT = 10_000;
 const SUMMARY_CACHE_TTL = 300_000;
 
-const aiCache = new Map<string, { data: any; ts: number }>();
+// const aiCache = new Map<string, { data: any; ts: number }>();
 
 async function fetchWithTimeout(url: string, options: RequestInit & { timeout?: number }) {
   const { timeout = AI_TIMEOUT, ...fetchOptions } = options;
@@ -19,16 +19,16 @@ async function fetchWithTimeout(url: string, options: RequestInit & { timeout?: 
   }
 }
 
-function getCachedOrFetch<T>(key: string, ttl: number, fetcher: () => Promise<T>): Promise<T> {
-  const cached = aiCache.get(key);
-  if (cached && Date.now() - cached.ts < ttl) {
-    return Promise.resolve(cached.data as T);
-  }
-  return fetcher().then(data => {
-    aiCache.set(key, { data, ts: Date.now() });
-    return data;
-  });
-}
+// function getCachedOrFetch<T>(key: string, ttl: number, fetcher: () => Promise<T>): Promise<T> {
+//   const cached = aiCache.get(key);
+//   if (cached && Date.now() - cached.ts < ttl) {
+//     return Promise.resolve(cached.data as T);
+//   }
+//   return fetcher().then(data => {
+//     aiCache.set(key, { data, ts: Date.now() });
+//     return data;
+//   });
+// }
 
 async function getAIRecommendations(query: string, siteMap: any[]) {
   try {
@@ -40,7 +40,7 @@ async function getAIRecommendations(query: string, siteMap: any[]) {
     const apiKey = apiKeys[0];
     const cacheKey = `ai-rec-${query.toLowerCase().trim()}`;
 
-    return getCachedOrFetch(cacheKey, SUMMARY_CACHE_TTL, async () => {
+    // return getCachedOrFetch(cacheKey, SUMMARY_CACHE_TTL, async () => {
       const response = await fetchWithTimeout('https://api.groq.com/openai/v1/chat/completions', {
         method: 'POST',
         headers: {
@@ -71,7 +71,7 @@ async function getAIRecommendations(query: string, siteMap: any[]) {
         return Array.isArray(parsed) ? parsed : (parsed.recommendations || []);
       }
       return [];
-    });
+    // });
   } catch (err) {
     console.error('AI Search Error:', err);
     return [];
@@ -90,7 +90,7 @@ async function generateSearchSummary(query: string, results: any[]) {
     const apiKey = apiKeys[0];
     const cacheKey = `ai-sum-${query.toLowerCase().trim()}`;
 
-    return getCachedOrFetch(cacheKey, SUMMARY_CACHE_TTL, async () => {
+    // return getCachedOrFetch(cacheKey, SUMMARY_CACHE_TTL, async () => {
       const response = await fetchWithTimeout('https://api.groq.com/openai/v1/chat/completions', {
         method: 'POST',
         headers: {
@@ -118,7 +118,7 @@ async function generateSearchSummary(query: string, results: any[]) {
         return data.choices[0].message.content.trim();
       }
       return null;
-    });
+    // });
   } catch (err) {
     console.error('AI Summary Error:', err);
     return null;

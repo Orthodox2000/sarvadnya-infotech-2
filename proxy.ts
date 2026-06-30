@@ -51,9 +51,9 @@ export function proxy(request: NextRequest) {
   }
 
   // Cache headers for GET API routes
-  if (pathname.startsWith('/api/') && request.method === 'GET') {
-    response.headers.set('Cache-Control', 'public, s-maxage=60, stale-while-revalidate=300');
-  }
+  // if (pathname.startsWith('/api/') && request.method === 'GET') {
+  //   response.headers.set('Cache-Control', 'public, s-maxage=60, stale-while-revalidate=300');
+  // }
 
   // Response time header
   response.headers.set('X-Response-Time', `${(performance.now() - start).toFixed(1)}ms`);

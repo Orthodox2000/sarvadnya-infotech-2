@@ -5,12 +5,12 @@ const PRIMARY_MODEL = "llama-3.3-70b-versatile";
 const FALLBACK_MODEL = "llama-3.1-8b-instant";
 const TIMEOUT_MS = 25_000;
 
-const responseCache = new Map<string, { data: any; ts: number }>();
-const CACHE_TTL = 10_000;
+// const responseCache = new Map<string, { data: any; ts: number }>();
+// const CACHE_TTL = 10_000;
 
-function cacheKey(messages: any[]): string {
-  return JSON.stringify(messages.slice(-3));
-}
+// function cacheKey(messages: any[]): string {
+//   return JSON.stringify(messages.slice(-3));
+// }
 
 async function callGroq(apiKey: string, messages: any[], model: string, signal: AbortSignal) {
   const systemPrompt = {
@@ -58,11 +58,11 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Messages array required' }, { status: 400 });
     }
 
-    const key = cacheKey(messages);
-    const cached = responseCache.get(key);
-    if (cached && Date.now() - cached.ts < CACHE_TTL) {
-      return NextResponse.json({ message: cached.data });
-    }
+    // const key = cacheKey(messages);
+    // const cached = responseCache.get(key);
+    // if (cached && Date.now() - cached.ts < CACHE_TTL) {
+    //   return NextResponse.json({ message: cached.data });
+    // }
 
     const settings = await getSettings();
     const rawKeys = settings.GROQ_API_KEYS || process.env.GROQ_API_KEY || '';
@@ -88,7 +88,7 @@ export async function POST(request: Request) {
 
         if (response.ok && data.choices?.[0]) {
           const content = data.choices[0].message.content;
-          responseCache.set(key, { data: content, ts: Date.now() });
+          // responseCache.set(key, { data: content, ts: Date.now() });
           return NextResponse.json({ message: content });
         }
 

@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getContent, updateContent } from '@/lib/mongodb-utils';
-import { revalidatePath, revalidateTag } from 'next/cache';
+// Caching disabled
 
 export async function GET(request: Request) {
   try {
@@ -12,11 +12,7 @@ export async function GET(request: Request) {
     }
 
     const content = await getContent(section);
-    return NextResponse.json(content, {
-      headers: {
-        'Cache-Control': 'public, s-maxage=120, stale-while-revalidate=300',
-      },
-    });
+    return NextResponse.json(content);
   } catch (error) {
     console.error('Error fetching content:', error);
     return NextResponse.json({ error: 'Failed to fetch content' }, { status: 500 });
@@ -32,8 +28,6 @@ export async function POST(request: Request) {
     }
 
     await updateContent(section, content);
-    revalidateTag('content');
-    revalidatePath('/', 'layout');
     return NextResponse.json({ message: 'Content updated successfully' });
   } catch (error) {
     console.error('Error updating content:', error);
