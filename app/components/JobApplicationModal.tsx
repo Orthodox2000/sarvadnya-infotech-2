@@ -102,14 +102,14 @@ export default function JobApplicationModal({
   };
 
   return (
-    <div className="fixed inset-0 z-[100000] flex items-center justify-center p-4 bg-[#0371a3]/40 backdrop-blur-md animate-in fade-in duration-300" onClick={onClose}>
+    <div className="fixed inset-0 z-[100000] flex items-center justify-center p-4 bg-[#316852]/40 backdrop-blur-md animate-in fade-in duration-300" onClick={onClose}>
       <div 
         className="w-full max-w-xl bg-white rounded-[2.5rem] overflow-hidden shadow-[0_32px_80px_rgba(3,113,163,0.3)] relative animate-in zoom-in-95 duration-300 border border-white/20"
         onClick={e => e.stopPropagation()}
       >
         {/* Decorative Header */}
-        <div className="bg-[#0371a3] p-6 md:p-10 text-white relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-32 h-32 bg-[#00ABE4] rounded-full blur-[60px] opacity-40 -mr-16 -mt-16" />
+        <div className="bg-[#316852] p-6 md:p-10 text-white relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-[#316852] rounded-full blur-[60px] opacity-40 -mr-16 -mt-16" />
           
           <button 
             className="absolute top-6 right-6 text-white/60 hover:text-white transition-colors z-[20]"
@@ -154,7 +154,7 @@ export default function JobApplicationModal({
                     value={formData.name}
                     onChange={e => setFormData({...formData, name: e.target.value})}
                     placeholder="Jane Doe"
-                    className="w-full rounded-2xl bg-[#f0f9ff]/50 border border-[#E9F1FA] px-5 py-2.5 sm:py-3 text-sm text-slate-900 placeholder:text-slate-300 focus:outline-none focus:ring-4 focus:ring-[#00ABE4]/5 focus:border-[#00ABE4] transition-all font-bold"
+                    className="w-full rounded-2xl bg-[#f0f9ff]/50 border border-[#E9F1FA] px-5 py-2.5 sm:py-3 text-sm text-slate-900 placeholder:text-slate-300 focus:outline-none focus:ring-4 focus:ring-[#316852]/5 focus:border-[#316852] transition-all font-bold"
                   />
                 </div>
                 <div className="space-y-1.5">
@@ -165,7 +165,7 @@ export default function JobApplicationModal({
                     value={formData.email}
                     onChange={e => setFormData({...formData, email: e.target.value})}
                     placeholder="jane@example.com"
-                    className="w-full rounded-2xl bg-[#f0f9ff]/50 border border-[#E9F1FA] px-5 py-2.5 sm:py-3 text-sm text-slate-900 placeholder:text-slate-300 focus:outline-none focus:ring-4 focus:ring-[#00ABE4]/5 focus:border-[#00ABE4] transition-all font-bold"
+                    className="w-full rounded-2xl bg-[#f0f9ff]/50 border border-[#E9F1FA] px-5 py-2.5 sm:py-3 text-sm text-slate-900 placeholder:text-slate-300 focus:outline-none focus:ring-4 focus:ring-[#316852]/5 focus:border-[#316852] transition-all font-bold"
                   />
                 </div>
               </div>
@@ -179,7 +179,7 @@ export default function JobApplicationModal({
                     value={formData.phone}
                     onChange={e => setFormData({...formData, phone: e.target.value.replace(/[^0-9+]/g, '')})}
                     placeholder="+91 00000 00000"
-                    className="w-full rounded-2xl bg-[#f0f9ff]/50 border border-[#E9F1FA] px-5 py-2.5 sm:py-3 text-sm text-slate-900 placeholder:text-slate-300 focus:outline-none focus:ring-4 focus:ring-[#00ABE4]/5 focus:border-[#00ABE4] transition-all font-bold"
+                    className="w-full rounded-2xl bg-[#f0f9ff]/50 border border-[#E9F1FA] px-5 py-2.5 sm:py-3 text-sm text-slate-900 placeholder:text-slate-300 focus:outline-none focus:ring-4 focus:ring-[#316852]/5 focus:border-[#316852] transition-all font-bold"
                   />
                 </div>
                 <div className="space-y-1.5">
@@ -190,7 +190,7 @@ export default function JobApplicationModal({
                     value={formData.experience}
                     onChange={e => setFormData({...formData, experience: e.target.value})}
                     placeholder="e.g. 2 years"
-                    className="w-full rounded-2xl bg-[#f0f9ff]/50 border border-[#E9F1FA] px-5 py-2.5 sm:py-3 text-sm text-slate-900 placeholder:text-slate-300 focus:outline-none focus:ring-4 focus:ring-[#00ABE4]/5 focus:border-[#00ABE4] transition-all font-bold"
+                    className="w-full rounded-2xl bg-[#f0f9ff]/50 border border-[#E9F1FA] px-5 py-2.5 sm:py-3 text-sm text-slate-900 placeholder:text-slate-300 focus:outline-none focus:ring-4 focus:ring-[#316852]/5 focus:border-[#316852] transition-all font-bold"
                   />
                 </div>
               </div>
@@ -199,7 +199,7 @@ export default function JobApplicationModal({
                 <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Resume (PDF only) *</label>
                 <div 
                   className={`relative border-2 border-dashed rounded-[1.5rem] p-5 md:p-6 transition-all flex flex-col items-center justify-center gap-2 sm:gap-3 cursor-pointer
-                  ${resume ? 'border-emerald-200 bg-emerald-50/30' : 'border-[#E9F1FA] bg-[#f0f9ff]/30 hover:border-[#00ABE4]/50 hover:bg-[#f0f9ff]/50'}`}
+                  ${resume ? 'border-emerald-200 bg-emerald-50/30' : 'border-[#E9F1FA] bg-[#f0f9ff]/30 hover:border-[#316852]/50 hover:bg-[#f0f9ff]/50'}`}
                   onClick={() => fileInputRef.current?.click()}
                 >
                   <input
@@ -219,7 +219,7 @@ export default function JobApplicationModal({
                   ) : (
                     <>
                       <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white flex items-center justify-center shadow-sm border border-[#E9F1FA]">
-                        <svg className="w-5 h-5 md:w-6 md:h-6 text-[#00ABE4]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg className="w-5 h-5 md:w-6 md:h-6 text-[#316852]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
                         </svg>
                       </div>
@@ -236,7 +236,7 @@ export default function JobApplicationModal({
                   onChange={e => setFormData({...formData, message: e.target.value})}
                   placeholder="Tell us why you're a great fit..."
                   rows={2}
-                  className="w-full rounded-2xl bg-[#f0f9ff]/50 border border-[#E9F1FA] px-5 py-3.5 sm:py-4 text-sm text-slate-900 placeholder:text-slate-300 focus:outline-none focus:ring-4 focus:ring-[#00ABE4]/5 focus:border-[#00ABE4] transition-all font-bold resize-none"
+                  className="w-full rounded-2xl bg-[#f0f9ff]/50 border border-[#E9F1FA] px-5 py-3.5 sm:py-4 text-sm text-slate-900 placeholder:text-slate-300 focus:outline-none focus:ring-4 focus:ring-[#316852]/5 focus:border-[#316852] transition-all font-bold resize-none"
                 />
               </div>
 
@@ -252,7 +252,7 @@ export default function JobApplicationModal({
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="group relative w-full h-12 sm:h-14 bg-[#0371a3] text-white rounded-2xl font-black text-xs uppercase tracking-[0.2em] shadow-xl shadow-[#0371a3]/20 hover:bg-[#00ABE4] transition-all flex items-center justify-center gap-3 overflow-hidden active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed"
+                className="group relative w-full h-12 sm:h-14 bg-[#316852] text-white rounded-2xl font-black text-xs uppercase tracking-[0.2em] shadow-xl shadow-[#316852]/20 hover:bg-[#316852] transition-all flex items-center justify-center gap-3 overflow-hidden active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed"
               >
                 {isSubmitting ? (
                   <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />

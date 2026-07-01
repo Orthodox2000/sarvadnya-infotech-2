@@ -1533,6 +1533,37 @@
 - **Dynamic Portal:** Refactored the public Tutorials page to be entirely database-driven with folder-based tabs and search filters.
 - **Auto-Thumbnails:** Integrated automatic YouTube thumbnail generation for video content.
 
+## Recent Changes (v1.1.400) — 01-07-2026 — Global Green Theme Rebrand
+
+Completed a comprehensive green theme rebrand across the entire codebase (23 files), replacing all blue brand colors (`#00ABE4`, `#0371a3`) with forest green (`#316852`) and dark green (`#1e4d3a`).
+
+### Product Pages (6 pages)
+- **HRMS** (`/hrms`), **Silver** (`/products/silver`), **Gold** (`/products/gold`), **Server** (`/products/server`), **TallyDrive** (`/products/tallydrive`), **Products Main** (`/products`)
+- All `BRAND_PRIMARY`/`BRAND_SECONDARY` → green
+- All buttons, badges, stat cards, feature icons, breadcrumbs, sticky navs, FAQ toggles, pricing tables, sidebar headers, input focus rings, link hovers → green
+
+### Cloud Pages (4 pages)
+- **Cloud Main** (`/cloud`), **AWS** (`/cloud/aws`), **Windows** (`/cloud/windows`), **NoSky** (`/cloud/nosky`)
+- Cloud Main: unified all 3 product cards with consistent white bg + green top strip; added hover lift effects (`hover:-translate-y-1 hover:border-[#316852]/30 hover:shadow-xl`); applied `#EFEBE3` secondary color
+- All blue-tinted backgrounds replaced with green tints (`bg-[#f0f7f3]`, `border-[#316852]/10`)
+
+### Footer
+- Background gradient changed from dark navy/blue → dark green
+- All blue icons, link hovers, decorative orbs → green
+
+### Homepage Components (4 components)
+- **CertifiedPartners**, **QuickAccessHub**, **HomeStat**, **FAQ** → all blue accents replaced with green
+
+### Shared Components (10 components)
+- **Navbar**, **SupportButton**, **UnifiedContactModal**, **QuickSupportModal**, **ModuleModal**, **ModuleCard**, **CloudBackupSection**, **JobAccordion**, **JobApplicationModal** → all blue replaced with green
+
+### New Color Palette
+| Token | Hex | Usage |
+|-------|-----|-------|
+| Forest Green | `#316852` | Primary brand color |
+| Dark Green | `#1e4d3a` | Button hovers, sidebar headers |
+| Beige | `#EFEBE3` | Secondary decorative surfaces |
+
 ## Recent Changes (v1.1.18)
 
 ## Recent Changes (v1.1.17)

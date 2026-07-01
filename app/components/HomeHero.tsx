@@ -243,6 +243,8 @@ export default function HomeHero({ initialData, variant = 'standard' }: { initia
   const [gridSize, setGridSize] = useState(40);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const typingIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const typingIndexRef = useRef(0);
+  const typingTextRef = useRef('');
 
   // useEffect(() => {
   //   if (initialData) return;
@@ -291,19 +293,32 @@ export default function HomeHero({ initialData, variant = 'standard' }: { initia
   useEffect(() => {
     if (!current?.titleText || !isEntering || isExiting) { setDisplayText(''); return; }
     if (typingIntervalRef.current) clearInterval(typingIntervalRef.current);
-    const startTyping = () => {
-      setIsTyping(true);
-      let i = 0;
-      const text = current.titleText;
-      setDisplayText('');
+
+    typingIndexRef.current = 0;
+    typingTextRef.current = current.titleText;
+    setIsTyping(true);
+    setDisplayText('');
+
+    const initialDelay = setTimeout(() => {
       typingIntervalRef.current = setInterval(() => {
-        setDisplayText(text.slice(0, i));
-        i++;
-        if (i > text.length) { if (typingIntervalRef.current) clearInterval(typingIntervalRef.current); setIsTyping(false); }
-      }, 40); 
+        typingIndexRef.current++;
+        if (typingIndexRef.current > typingTextRef.current.length) {
+          if (typingIntervalRef.current) clearInterval(typingIntervalRef.current);
+          typingIntervalRef.current = null;
+          setIsTyping(false);
+          return;
+        }
+        setDisplayText(typingTextRef.current.slice(0, typingIndexRef.current));
+      }, 40);
+    }, 700);
+
+    return () => {
+      clearTimeout(initialDelay);
+      if (typingIntervalRef.current) {
+        clearInterval(typingIntervalRef.current);
+        typingIntervalRef.current = null;
+      }
     };
-    const initialDelay = setTimeout(startTyping, 700);
-    return () => { clearTimeout(initialDelay); if (typingIntervalRef.current) clearInterval(typingIntervalRef.current); };
   }, [stableIndex, isEntering, isExiting, current.titleText]);
 
   const [modalConfig, setModalConfig] = useState<{ isOpen: boolean; type: FormType; service: string; details: string }>({ isOpen: false, type: 'general', service: '', details: '' });
@@ -354,7 +369,7 @@ export default function HomeHero({ initialData, variant = 'standard' }: { initia
 
   return (
     <>
-    <main className={`relative w-full overflow-hidden opacity-80 md:opacity-90 transition-all duration-1000 ${getVariantBg()} min-h-137.5 md:min-h-[700px] lg:min-h-[650px] lg:-mt-10 flex items-start`}>
+    <main suppressHydrationWarning className={`relative w-full overflow-hidden opacity-80 md:opacity-90 transition-all duration-1000 ${getVariantBg()} min-h-137.5 md:min-h-[700px] lg:min-h-[650px] lg:-mt-10 flex items-start`}>
       <div className="absolute -z-[100] invisible h-0 w-0 overflow-hidden pointer-events-none">
         {heroContents.map((content, idx) => (
           <div key={`preload-wrap-${idx}`} className="relative h-1 w-1">
@@ -374,7 +389,7 @@ export default function HomeHero({ initialData, variant = 'standard' }: { initia
           </>
         ) : (
           <>
-            <div className={`absolute inset-0 opacity-[0.2] pointer-events-none`} style={{ backgroundImage: 'url("/bgggg.png")', backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }} />
+            <div className={`absolute inset-0 opacity-[0.2] pointer-events-none`} />
             <div className={`absolute inset-0 opacity-40`}>
               <ShapeGrid speed={0.25} squareSize={gridSize} direction="diagonal" borderColor={'#E5E2D9'} hoverFillColor={'#316852'} shape="hexagon" hoverTrailAmount={4} enableColorFlow={true} />
             </div>
@@ -457,7 +472,7 @@ export default function HomeHero({ initialData, variant = 'standard' }: { initia
               </Link>
               <button 
                 onClick={() => setModalConfig({ isOpen: true, type: 'demo', service: 'TallyPrime', details: 'Requesting a personalized demo' })} 
-                className={`group px-5 md:px-7 py-3 md:py-3.5 rounded-xl bg-[#4B6780] font-black text-[11px] uppercase tracking-[0.2em] transition-all duration-500 ease-in-out text-white hover:bg-[#4B6780]/80 hover:scale-[1.05] active:scale-95`}
+                className={`group px-5 md:px-7 py-3 md:py-3.5 rounded-xl bg-[#224879] font-black text-[11px] uppercase tracking-[0.2em] transition-all duration-500 ease-in-out text-white hover:bg-[#4B6780]/80 hover:scale-[1.05] active:scale-95`}
               >
                 Request Demo
               </button>
@@ -473,7 +488,7 @@ export default function HomeHero({ initialData, variant = 'standard' }: { initia
                 {current.layout === 'single' ? (
                   <div className={`relative w-full h-full
                       ${isExiting ? 'opacity-0 scale-90 translate-y-12 transition-all duration-[800ms]' : isEntering ? 'opacity-100 transition-all duration-1200' : 'opacity-0 translate-y-4'}`}>
-                    <Image src={current.image} alt={current.titleText} fill className="object-contain p-4" sizes="(max-width: 1024px) 100vw, 480px" priority />
+                    <Image src={current.image} alt={current.titleText} fill className="object-contain" sizes="(max-width: 1024px) 100vw, 480px" priority />
                   </div>
                 ) : current.layout === 'ecosystem' ? (
                    <div className="relative w-full h-full scale-[1.0]">

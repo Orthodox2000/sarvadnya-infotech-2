@@ -69,7 +69,7 @@ export default function Navbar({ initialSettings }: { initialSettings?: any }) {
   ];
 
   return (
-    <header className="relative z-1000 w-full border-b border-[#E5E2D9] shadow-sm bg-[#F7F6F2]">
+    <header className="relative z-1000 w-full border-b border-[#E5E2D9] shadow-sm bg-[#FAFAFA]">
       <nav className="mx-auto flex h-12 lg:h-16 w-full max-w-full items-center justify-between px-3">
         <Link
           href="/"
@@ -110,15 +110,10 @@ export default function Navbar({ initialSettings }: { initialSettings?: any }) {
           >
             Careers
           </Link>
-          <Link
-            href="/login"
-            className="text-[11px] font-bold uppercase tracking-widest text-[#4B6780] hover:text-[#4B6780]/80 transition-colors"
-          >
-            Login
-          </Link>
+           
           <Link
             href="/contact"
-            className="inline-flex items-center justify-center rounded-full bg-[#4B6780] text-white px-5 py-2 text-[11px] font-bold uppercase tracking-wider shadow-lg shadow-[#4B6780]/20 transition-all duration-500 ease-in-out hover:bg-white hover:text-[#4B6780] hover:-translate-y-0.5 hover:border hover:border-[#4B6780]"
+            className="inline-flex items-center justify-center rounded-full bg-[#316852] text-white px-5 py-2 text-[11px] font-bold uppercase tracking-wider shadow-lg shadow-[#4B6780]/20 transition-all duration-500 ease-in-out hover:bg-white hover:text-[#4B6780] hover:-translate-y-0.5 hover:border hover:border-[#4B6780]"
           >
             Contact
           </Link>
@@ -159,8 +154,8 @@ export default function Navbar({ initialSettings }: { initialSettings?: any }) {
           {/* Admin Section 
           <div className="space-y-3">
             <div className="flex items-center gap-2 px-2">
-              <span className="h-1.5 w-1.5 rounded-full bg-[#0371a3]" />
-              <span className="text-[10px] font-black uppercase tracking-[0.2em] text-[#0371a3]">Admin Management</span>
+              <span className="h-1.5 w-1.5 rounded-full bg-[#316852]" />
+              <span className="text-[10px] font-black uppercase tracking-[0.2em] text-[#316852]">Admin Management</span>
             </div>
             <div className="grid grid-cols-1 gap-2">
               {adminLinks.map((link) => (
@@ -168,9 +163,9 @@ export default function Navbar({ initialSettings }: { initialSettings?: any }) {
                   key={link.label}
                   href={link.href}
                   onClick={() => setIsMenuOpen(false)}
-                  className="flex items-center gap-4 h-12 px-4 rounded-xl border border-[#0371a3]/5 bg-white text-[11px] font-bold uppercase tracking-widest text-slate-700 hover:bg-[#E9F1FA] hover:text-[#0371a3] transition-all shadow-sm"
+                  className="flex items-center gap-4 h-12 px-4 rounded-xl border border-[#316852]/5 bg-white text-[11px] font-bold uppercase tracking-widest text-slate-700 hover:bg-[#E9F1FA] hover:text-[#316852] transition-all shadow-sm"
                 >
-                  <svg className="w-4 h-4 text-[#0371a3]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg className="w-4 h-4 text-[#316852]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d={link.icon} />
                   </svg>
                   {link.label}
@@ -183,13 +178,7 @@ export default function Navbar({ initialSettings }: { initialSettings?: any }) {
           <div className="w-full h-px bg-[#E5E2D9]" />
 
           <div className="flex flex-col gap-3">
-            <Link
-              href="/login"
-              onClick={() => setIsMenuOpen(false)}
-              className="flex items-center justify-center h-12 rounded-xl border border-[#E5E2D9] bg-[#F7F6F2] text-[11px] font-black uppercase tracking-widest text-[#4B6780] shadow-sm hover:bg-gray-50"
-            >
-              Login
-            </Link>
+         
             <Link
               href="/find-solution"
               onClick={() => setIsMenuOpen(false)}
@@ -207,7 +196,7 @@ export default function Navbar({ initialSettings }: { initialSettings?: any }) {
             <Link
               href="/contact"
               onClick={() => setIsMenuOpen(false)}
-              className="flex items-center justify-center h-12 rounded-xl bg-[#4B6780] text-white text-[11px] font-black uppercase tracking-widest shadow-xl shadow-[#4B6780]/20"
+              className="flex items-center justify-center h-12 rounded-xl bg-[#244777] text-white text-[11px] font-black uppercase tracking-widest shadow-xl shadow-[#4B6780]/20"
             >
               Get Priority Support
             </Link>

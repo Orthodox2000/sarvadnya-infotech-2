@@ -38,7 +38,7 @@ export default function CloudPage() {
       tags: ["AWS infra", "Auto backups", "Remote access", "Scalable"],
       link: "/cloud/aws",
       cardClass: "bg-white border-slate-200",
-      stripClass: "bg-slate-200",
+      stripClass: "bg-[#316852]",
     },
     {
       name: "Windows VM",
@@ -47,8 +47,8 @@ export default function CloudPage() {
       includes: "Best for teams that need a full Windows experience alongside their Tally operations.",
       tags: ["Desktop feel", "Printer access", "Office integration", "Admin control"],
       link: "/cloud/windows",
-      cardClass: "bg-[#f8fbff] border-sky-200",
-      stripClass: "bg-sky-200",
+      cardClass: "bg-white border-slate-200",
+      stripClass: "bg-[#316852]",
     },
     {
       name: "NoSky Backup",
@@ -58,7 +58,7 @@ export default function CloudPage() {
       tags: ["AES-256", "Scheduled", "One-click restore", "Incremental"],
       link: "/cloud/nosky",
       cardClass: "bg-white border-slate-200",
-      stripClass: "bg-[#00ABE4]",
+      stripClass: "bg-[#316852]",
     },
   ];
 
@@ -92,21 +92,21 @@ export default function CloudPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#f2f1f0]">
+    <div className="min-h-screen bg-[#EFEBE3]/60">
       {/* Hero Section */}
-      <section className="bg-white relative pt-12 pb-16 md:pt-16 px-6 overflow-hidden border-b border-[#0371a3]/10">
+      <section className="bg-white relative pt-12 pb-16 md:pt-16 px-6 overflow-hidden border-b border-[#316852]/10">
         <div className="absolute inset-0 opacity-40 pointer-events-none">
           <div className="absolute top-0 right-0 w-[60%] h-[60%] bg-white/40 blur-[130px] -mr-16 -mt-16" />
-          <div className="absolute bottom-0 left-0 w-[40%] h-[40%] bg-sky-200/30 blur-[110px] -ml-24 -mb-24" />
+          <div className="absolute bottom-0 left-0 w-[40%] h-[40%] bg-[#316852]/10 blur-[110px] -ml-24 -mb-24" />
         </div>
 
         <div className="max-w-7xl mx-auto text-center relative z-10">
-        <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#0371a3]/10 border border-[#0371a3]/20 text-[#0371a3] text-[10px] font-black uppercase tracking-[0.2em] mb-8">
-            <span className="flex h-1.5 w-1.5 rounded-full bg-[#0371a3] animate-pulse"></span>
+        <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#316852]/10 border border-[#316852]/20 text-[#316852] text-[10px] font-black uppercase tracking-[0.2em] mb-8">
+            <span className="flex h-1.5 w-1.5 rounded-full bg-[#316852] animate-pulse"></span>
             Cloud products
           </div>
           <h1 className="text-4xl md:text-6xl font-black text-slate-900 mb-6 leading-tight tracking-tight">
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0371a3] via-[#4b91ca] to-[#0371a3] drop-shadow-[0_2px_15px_rgba(0,171,228,0.2)]">TallyPrime</span> <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#316852] via-[#4a9e7a] to-[#316852] drop-shadow-[0_2px_15px_rgba(49,104,82,0.2)]">TallyPrime</span> <br />
             Cloud & Hosting
           </h1>
           <p className="text-slate-600/80 text-sm md:text-xl max-w-xl mx-auto leading-relaxed font-semibold">
@@ -128,7 +128,7 @@ export default function CloudPage() {
           {cloudCards.map((p) => (
             <div
               key={p.name}
-              className={`relative overflow-hidden rounded-[1.5rem] border p-4 md:p-[18px] flex flex-col shadow-sm hover:shadow-lg transition-all duration-300 ${p.cardClass} min-h-[19rem] md:min-h-[20.5rem]`}
+              className={`relative overflow-hidden rounded-[1.5rem] border p-4 md:p-[18px] flex flex-col shadow-sm hover:shadow-xl hover:border-[#316852]/30 hover:-translate-y-1 transition-all duration-300 ${p.cardClass} min-h-[19rem] md:min-h-[20.5rem]`}
             >
               <div className={`absolute inset-x-0 top-0 h-1 ${p.stripClass}`} />
 
@@ -167,7 +167,7 @@ export default function CloudPage() {
               <div className="mt-auto flex gap-3">
                 <button
                   onClick={() => openModal('quote', p.name, p.summary)}
-                  className="flex-1 rounded-xl bg-[#0371a3] py-2.5 text-[10px] font-black uppercase tracking-[0.14em] text-white transition-colors hover:bg-[#00ABE4]"
+                  className="flex-1 rounded-xl bg-[#316852] py-2.5 text-[10px] font-black uppercase tracking-[0.14em] text-white transition-colors hover:bg-[#1e4d3a]"
                 >
                   Request Quote
                 </button>
@@ -186,7 +186,7 @@ export default function CloudPage() {
       {/* Why Cloud Section */}
       <section className="bg-white py-20 px-6 border-y border-slate-100">
         <div className="max-w-7xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#0371a3]/10 text-[#0371a3] text-[10px] font-black uppercase tracking-widest mb-6">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#316852]/10 text-[#316852] text-[10px] font-black uppercase tracking-widest mb-6">
             Why cloud
           </div>
           <h2 className="text-3xl md:text-4xl font-black text-slate-900 mb-3 leading-tight">
@@ -209,7 +209,7 @@ export default function CloudPage() {
               { title: 'Lower IT cost', desc: 'No server hardware or maintenance.' },
               { title: 'Team sync', desc: 'Multi-user access without VPN setups.' },
             ].map((item) => (
-              <div key={item.title} className="p-5 bg-[#f2f1f0] rounded-2xl border border-slate-200">
+              <div key={item.title} className="p-5 bg-[#EFEBE3]/60 rounded-2xl border border-slate-200">
                 <h3 className="font-black text-slate-900 mb-2">{item.title}</h3>
                 <p className="text-sm text-slate-500 leading-relaxed font-semibold">{item.desc}</p>
               </div>
@@ -223,7 +223,7 @@ export default function CloudPage() {
         <div className="bg-white rounded-[2rem] p-7 md:p-8 border border-slate-100 shadow-sm">
           <div className="flex flex-col lg:flex-row items-start lg:items-end justify-between gap-6 mb-8">
             <div>
-              <div className="text-[10px] font-black uppercase tracking-[0.3em] text-[#0371a3] mb-3">Help Menu</div>
+              <div className="text-[10px] font-black uppercase tracking-[0.3em] text-[#316852] mb-3">Help Menu</div>
               <h2 className="text-2xl md:text-3xl font-black tracking-tight">How can we help with TallyPrime Cloud?</h2>
             </div>
             <p className="text-slate-500 max-w-2xl leading-relaxed">
@@ -235,7 +235,7 @@ export default function CloudPage() {
             {ctaGroups.map((group) => (
               <div key={group.title} className="space-y-4">
                 <div className="flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#0371a3]" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#316852]" />
                   <h3 className="font-black text-slate-900 text-sm">{group.title}</h3>
                 </div>
                 <div className="flex flex-col gap-1.5">
@@ -244,7 +244,7 @@ export default function CloudPage() {
                       <button
                         key={button.label}
                         onClick={() => openModal(button.type as FormType, 'Cloud Consultation')}
-                        className="text-left text-sm text-slate-600 hover:text-[#0371a3] transition-colors py-1.5 px-3 rounded-xl hover:bg-slate-50"
+                        className="text-left text-sm text-slate-600 hover:text-[#316852] transition-colors py-1.5 px-3 rounded-xl hover:bg-slate-50"
                       >
                         {button.label}{' ->'}
                       </button>
@@ -252,7 +252,7 @@ export default function CloudPage() {
                       <Link
                         key={button.label}
                         href={button.href}
-                        className="text-left text-sm text-slate-600 hover:text-[#0371a3] transition-colors py-1.5 px-3 rounded-xl hover:bg-slate-50"
+                        className="text-left text-sm text-slate-600 hover:text-[#316852] transition-colors py-1.5 px-3 rounded-xl hover:bg-slate-50"
                       >
                         {button.label}{' ->'}
                       </Link>
@@ -267,16 +267,16 @@ export default function CloudPage() {
 
       {/* TallyDrive Detailed Features Section */}
       <section id="tallydrive" className="py-20 px-6 bg-white border-y border-slate-100 overflow-hidden relative">
-        <div className="absolute top-0 right-0 w-1/3 h-full bg-sky-50/60 -skew-x-12 transform translate-x-1/2" />
+        <div className="absolute top-0 right-0 w-1/3 h-full bg-[#316852]/5 -skew-x-12 transform translate-x-1/2" />
 
         <div className="max-w-7xl mx-auto relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#0371a3]/10 text-[#0371a3] text-[10px] font-black uppercase tracking-widest mb-6">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#316852]/10 text-[#316852] text-[10px] font-black uppercase tracking-widest mb-6">
               Secure cloud backup
             </div>
             <h2 className="text-3xl md:text-5xl font-black text-slate-900 mb-6 leading-tight">
               Secure Your Data with <br />
-              <span className="text-[#0371a3]">NoSky Backup</span>
+              <span className="text-[#316852]">NoSky Backup</span>
             </h2>
             <p className="text-slate-600 text-lg leading-relaxed mb-8 font-medium max-w-2xl">
               NoSky Backup provides secure cloud storage for TallyPrime company backups. It stores backups online, helps protect against local system failures, and supports automatic scheduling.
@@ -297,7 +297,7 @@ export default function CloudPage() {
                   desc: 'Restore the latest backup or any previous version stored on cloud.',
                 },
               ].map((item) => (
-                <div key={item.title} className="p-5 bg-[#ecf5fa] rounded-2xl border border-sky-100">
+                <div key={item.title} className="p-5 bg-[#f0f7f3] rounded-2xl border border-[#316852]/10">
                   <h4 className="font-black text-slate-900 mb-2">{item.title}</h4>
                   <p className="text-sm text-slate-500 leading-relaxed font-semibold">{item.desc}</p>
                 </div>
@@ -306,7 +306,7 @@ export default function CloudPage() {
           </div>
 
           <div className="bg-white rounded-[2rem] p-7 md:p-8 text-slate-900 relative overflow-hidden shadow-xl border border-slate-100">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-[#0371a3]/5 blur-[80px]" />
+            <div className="absolute top-0 right-0 w-32 h-32 bg-[#316852]/5 blur-[80px]" />
 
             <h3 className="text-2xl font-black mb-6 relative z-10 border-b border-slate-100 pb-4">Storage with active TSS</h3>
             <div className="space-y-4 relative z-10">
@@ -315,16 +315,16 @@ export default function CloudPage() {
                   <span className="block font-black text-slate-900">Single-User TallyPrime</span>
                   <span className="text-xs text-slate-500 font-medium">Free storage with active TSS</span>
                 </div>
-                <span className="font-black text-[#0371a3]">1 GB</span>
+                <span className="font-black text-[#316852]">1 GB</span>
               </div>
               <div className="flex items-center justify-between gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-100">
                 <div>
                   <span className="block font-black text-slate-900">Multi-User TallyPrime</span>
                   <span className="text-xs text-slate-500 font-medium">Free storage with active TSS</span>
                 </div>
-                <span className="font-black text-[#0371a3]">3 GB</span>
+                <span className="font-black text-[#316852]">3 GB</span>
               </div>
-              <div className="p-4 rounded-2xl bg-[#f0f9ff] border border-[#0371a3]/10">
+              <div className="p-4 rounded-2xl bg-[#f0f7f3] border border-[#316852]/10">
                 <p className="text-sm text-slate-600 leading-relaxed font-medium">
                   Use the backup management report to monitor, download, and delete company backups, and manage storage and user rights.
                 </p>
@@ -333,7 +333,7 @@ export default function CloudPage() {
 
             <button
               onClick={() => openModal('callback', 'NoSky Backup')}
-              className="mt-8 w-full py-4 bg-[#0371a3] text-white rounded-xl font-black text-xs uppercase tracking-widest hover:bg-[#00ABE4] transition-all shadow-lg"
+              className="mt-8 w-full py-4 bg-[#316852] text-white rounded-xl font-black text-xs uppercase tracking-widest hover:bg-[#1e4d3a] transition-all shadow-lg"
             >
               Consult Backup Strategy
             </button>

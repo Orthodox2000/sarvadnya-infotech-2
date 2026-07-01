@@ -126,16 +126,16 @@ export default function Footer({ settings: initialSettings }: { settings?: SiteS
     ];
 
     return (
-        <footer className="relative text-white pt-20 pb-8 px-6 overflow-hidden border-t border-white/10" style={{ background: 'linear-gradient(0deg, hsla(236, 100%, 8%, 1) 0%, hsla(211, 100%, 28%, 1) 100%)' }}>
+        <footer className="relative text-white pt-20 pb-8 px-6 overflow-hidden border-t border-white/10" style={{ background: 'linear-gradient(0deg, hsla(154, 60%, 6%, 1) 0%, hsla(154, 40%, 18%, 1) 100%)' }}>
             {/* Background Orbs */}
-            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#00ABE4]/10 rounded-full blur-[120px] -mr-64 -mt-64 pointer-events-none" />
+            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#316852]/10 rounded-full blur-[120px] -mr-64 -mt-64 pointer-events-none" />
             <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-[#E9F1FA]/5 rounded-full blur-[100px] -ml-48 -mb-48 pointer-events-none" />
 
             <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 mb-16 relative z-10">
                 {/* Company Info */}
                 <div className="lg:col-span-1 space-y-6">
                     <Link href="/" className="flex items-center gap-3 group">
-                        <div className="w-10 h-10 shrink-0 overflow-hidden rounded-lg bg-white p-1.5 flex items-center justify-center text-[#0371a3]">
+                        <div className="w-10 h-10 shrink-0 overflow-hidden rounded-lg bg-white p-1.5 flex items-center justify-center text-[#316852]">
                             <svg 
                                 viewBox="0 0 50 50" 
                                 className="w-full h-full fill-current"
@@ -174,16 +174,16 @@ export default function Footer({ settings: initialSettings }: { settings?: SiteS
                     </div>
 
                     <div className="pt-4 flex flex-col gap-3">
-                        <Link href="/privacy" className="text-[10px] font-black uppercase tracking-widest text-white/40 hover:text-[#00ABE4] transition-colors flex items-center gap-2 group/link">
-                            <span className="w-1.5 h-1.5 rounded-full bg-[#00ABE4] opacity-0 group-hover/link:opacity-100 transition-opacity" />
+                        <Link href="/privacy" className="text-[10px] font-black uppercase tracking-widest text-white/40 hover:text-[#316852] transition-colors flex items-center gap-2 group/link">
+                            <span className="w-1.5 h-1.5 rounded-full bg-[#316852] opacity-0 group-hover/link:opacity-100 transition-opacity" />
                             Privacy Policy
                         </Link>
-                        <Link href="/terms" className="text-[10px] font-black uppercase tracking-widest text-white/40 hover:text-[#00ABE4] transition-colors flex items-center gap-2 group/link">
-                            <span className="w-1.5 h-1.5 rounded-full bg-[#00ABE4] opacity-0 group-hover/link:opacity-100 transition-opacity" />
+                        <Link href="/terms" className="text-[10px] font-black uppercase tracking-widest text-white/40 hover:text-[#316852] transition-colors flex items-center gap-2 group/link">
+                            <span className="w-1.5 h-1.5 rounded-full bg-[#316852] opacity-0 group-hover/link:opacity-100 transition-opacity" />
                             Terms & Conditions
                         </Link>
-                        <Link href="/report-problem" className="text-[10px] font-black uppercase tracking-widest text-white/40 hover:text-[#00ABE4] transition-colors flex items-center gap-2 group/link">
-                            <span className="w-1.5 h-1.5 rounded-full bg-[#00ABE4] opacity-0 group-hover/link:opacity-100 transition-opacity" />
+                        <Link href="/report-problem" className="text-[10px] font-black uppercase tracking-widest text-white/40 hover:text-[#316852] transition-colors flex items-center gap-2 group/link">
+                            <span className="w-1.5 h-1.5 rounded-full bg-[#316852] opacity-0 group-hover/link:opacity-100 transition-opacity" />
                             Report a Problem
                         </Link>
                     </div>
@@ -237,13 +237,13 @@ export default function Footer({ settings: initialSettings }: { settings?: SiteS
                     <h3 className="text-white font-black uppercase tracking-widest text-xs mb-8">Get In Touch</h3>
                     <ul className="space-y-5 text-sm mb-6 text-white/90">
                         <li className="flex items-center gap-3">
-                            <svg className="w-5 h-5 text-[#00ABE4] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <svg className="w-5 h-5 text-[#316852] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                             </svg>
                             <a href={`mailto:${supportEmail}`} className="hover:text-[#E9F1FA] transition-colors font-bold">{supportEmail}</a>
                         </li>
                         <li className="flex items-start gap-3">
-                            <svg className="w-5 h-5 text-[#00ABE4] shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <svg className="w-5 h-5 text-[#316852] shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                             </svg>
                             <div className="flex flex-col gap-3">

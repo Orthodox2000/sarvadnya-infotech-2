@@ -6,8 +6,8 @@ import Link from 'next/link';
 import Footer from '../../components/Footer';
 import UnifiedContactModal, { FormType } from '../../components/UnifiedContactModal';
 
-const BRAND_PRIMARY = '#00ABE4';
-const BRAND_SECONDARY = '#0371a3';
+const BRAND_PRIMARY = '#316852';
+const BRAND_SECONDARY = '#1e4d3a';
 
 const features = [
   { title: 'AWS Infrastructure', desc: 'Hosted on official AWS cloud infrastructure for strong uptime and broad availability.' },
@@ -175,9 +175,9 @@ export default function AWSCloudPage() {
         <div className="max-w-7xl mx-auto px-6">
           <div className="py-2.5">
             <ul className="flex items-center gap-1.5 text-[11px] font-medium text-slate-500">
-              <li><Link href="/" className="hover:text-[#00ABE4] transition-colors">Home</Link></li>
+              <li><Link href="/" className="hover:text-[#316852] transition-colors">Home</Link></li>
               <li className="text-slate-300 mx-0.5">/</li>
-              <li><Link href="/cloud" className="hover:text-[#00ABE4] transition-colors">Cloud</Link></li>
+              <li><Link href="/cloud" className="hover:text-[#316852] transition-colors">Cloud</Link></li>
               <li className="text-slate-300 mx-0.5">/</li>
               <li className="text-slate-800 font-semibold">AWS Cloud Server</li>
             </ul>
@@ -649,7 +649,7 @@ export default function AWSCloudPage() {
                       {item.name.charAt(0)}
                     </div>
                     <div className="min-w-0 flex-1">
-                      <p className="text-sm font-bold text-slate-700 group-hover:text-[#00ABE4] transition-colors truncate">
+                      <p className="text-sm font-bold text-slate-700 group-hover:text-[#316852] transition-colors truncate">
                         {item.name}
                       </p>
                       <span className="inline-flex items-center gap-1 text-[11px] text-slate-400">
@@ -687,7 +687,7 @@ export default function AWSCloudPage() {
                     <Link
                       key={link.label}
                       href={link.href!}
-                      className="block text-sm text-slate-600 hover:text-[#00ABE4] transition-colors py-1"
+                      className="block text-sm text-slate-600 hover:text-[#316852] transition-colors py-1"
                     >
                       {link.label}
                     </Link>
@@ -696,7 +696,7 @@ export default function AWSCloudPage() {
                       key={link.label}
                       type="button"
                       onClick={() => openModal(link.type!, 'AWS Cloud Server')}
-                      className="block w-full text-left text-sm text-slate-600 hover:text-[#00ABE4] transition-colors py-1"
+                      className="block w-full text-left text-sm text-slate-600 hover:text-[#316852] transition-colors py-1"
                     >
                       {link.label}
                     </button>

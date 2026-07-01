@@ -159,7 +159,7 @@ const Productbar = ({ initialSettings }: { initialSettings?: any }) => {
       className={`w-full border-b border-[#E5E2D9] relative z-[30] flex items-center overflow-x-clip no-scrollbar transition-all duration-500 ease-in-out shadow-sm bg-[#EFEBE3] 
         ${isVisible ? 'h-[28px] lg:h-[40px] opacity-100' : 'h-0 opacity-0 pointer-events-none'}`}
     >
-      <div className="mx-auto w-full max-w-7xl px-2 sm:px-4 flex justify-evenly items-stretch h-full">
+      <div className="mx-auto w-full max-w-7xl px-2 sm:px-4 flex justify-center items-stretch h-full">
         
 
         {items.map((item, index) => (
@@ -171,8 +171,8 @@ const Productbar = ({ initialSettings }: { initialSettings?: any }) => {
           >
             <button
               onClick={(e) => handleMenuToggle(e, item.label)}
-              className={`flex items-center gap-1 lg:gap-2.5 px-1.5 lg:px-7 text-[8.5px] lg:text-[13.5px] font-bold transition-all h-full
-                ${activeMenu === item.label ? 'text-[#0371a3] bg-white' : 'text-slate-600 hover:bg-slate-50'}`}
+              className={`flex items-center gap-1 lg:gap-3.5 px-1.5 lg:px-7 text-[8.5px] lg:text-[13.5px] font-bold transition-all h-full
+                ${activeMenu === item.label ? 'text-[#316852] bg-white' : 'text-gray-800 hover:bg-slate-50'}`}
             >
               <span className="opacity-100 scale-90 lg:scale-110">
                 {iconMap[item.label]}

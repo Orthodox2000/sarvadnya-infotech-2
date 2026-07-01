@@ -37,7 +37,7 @@ export default function ProductsPage() {
       includes: "Best for a single owner or operator who manages everything alone.",
       tags: ["1 user", "Single PC"],
       cardClass: "bg-white border-slate-200",
-      stripClass: "bg-slate-200",
+      stripClass: "bg-[#316852]",
       link: "/products/silver"
     },
     {
@@ -46,8 +46,8 @@ export default function ProductsPage() {
       summary: "All Silver features plus shared LAN access for teams working on the same data.",
       includes: "Best for small offices where sales, accounts, and purchase teams share one company file.",
       tags: ["Silver included", "Shared LAN"],
-      cardClass: "bg-[#f8fbff] border-sky-200",
-      stripClass: "bg-sky-200",
+      cardClass: "bg-white border-slate-200",
+      stripClass: "bg-[#316852]",
       link: "/products/gold"
     },
     {
@@ -57,7 +57,7 @@ export default function ProductsPage() {
       includes: "Best for larger MSMEs that need more control across users and branches.",
       tags: ["Gold included", "Access logs"],
       cardClass: "bg-white border-slate-200",
-      stripClass: "bg-slate-300",
+      stripClass: "bg-[#316852]",
       link: "/products/server"
     },
     {
@@ -67,32 +67,28 @@ export default function ProductsPage() {
       includes: "Best for any TallyPrime user who wants automatic, encrypted backup protection.",
       tags: ["AES-256", "Scheduled"],
       cardClass: "bg-white border-slate-200",
-      stripClass: "bg-[#00ABE4]",
+      stripClass: "bg-[#316852]",
       link: "/products/tallydrive"
     }
   ];
 
   return (
-    <div className="min-h-screen bg-[#f2f1f0]">
+    <div className="min-h-screen bg-[#EFEBE3]/80">
       {/* Hero Section (Radiant Sky Theme) */}
-      <section className="bg-white relative pt-12 pb-16 md:pt-20 md:pb-24 px-6 overflow-hidden border-b border-[#0371a3]/10"> 
+      <section className="bg-white relative pt-12 pb-16 px-6 overflow-hidden border-b border-[#316852]/10"> 
         <div className="absolute inset-0 opacity-40 pointer-events-none">
           <div className="absolute top-0 right-0 w-[60%] h-[60%] bg-white/40 blur-[130px] -mr-32 -mt-32" />
-          <div className="absolute bottom-0 left-0 w-[40%] h-[40%] bg-sky-200/30 blur-[110px] -ml-24 -mb-24" />
+          <div className="absolute bottom-0 left-0 w-[40%] h-[40%] bg-[#316852]/10 blur-[110px] -ml-24 -mb-24" />
         </div>
         
         <div className="max-w-4xl mx-auto text-center relative z-10">
-          <div className="flex justify-center mb-6">
-            <div className="w-16 h-16 rounded-2xl bg-white border border-slate-200 shadow-sm flex items-center justify-center p-3">
-              <Image src="/PartnerBrands/Tally-Software.png" alt="Tally Products" width={44} height={44} className="object-contain" />
-            </div>
-          </div>
+          
           <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-yellow-400/10 border border-yellow-500/20 text-yellow-600 text-[10px] font-black uppercase tracking-[0.2em] mb-8 backdrop-blur-sm">
             <span className="flex h-1.5 w-1.5 rounded-full bg-yellow-500 animate-pulse"></span>
             Official TallyPrime Partner
           </div>
           <h1 className="text-4xl md:text-6xl font-black text-slate-900 mb-6 leading-tight tracking-tight">
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0371a3] via-[#4b91ca] to-[#0371a3] drop-shadow-[0_2px_15px_rgba(0,171,228,0.2)]">TallyPrime</span> <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#316852] via-[#4a9e7a] to-[#316852] drop-shadow-[0_2px_15px_rgba(49,104,82,0.2)]">TallyPrime</span> <br />
             Editions & Licensing
           </h1>
           <p className="text-slate-600/80 text-sm md:text-xl max-w-xl mx-auto leading-relaxed font-semibold">
@@ -111,7 +107,7 @@ export default function ProductsPage() {
           {products.map((p) => (
             <div
               key={p.name}
-              className={`relative overflow-hidden rounded-[1.5rem] border p-4 md:p-[18px] flex flex-col shadow-sm hover:shadow-lg transition-all duration-300 ${p.cardClass} min-h-[19rem] md:min-h-[20.5rem]`}
+              className={`relative overflow-hidden rounded-[1.5rem] border p-4 md:p-[18px] flex flex-col shadow-sm hover:shadow-xl hover:border-[#316852]/30 hover:-translate-y-1 transition-all duration-300 ${p.cardClass} min-h-[19rem] md:min-h-[20.5rem]`}
             >
               <div className={`absolute inset-x-0 top-0 h-1 ${p.stripClass}`} />
 
@@ -150,7 +146,7 @@ export default function ProductsPage() {
               <div className="mt-auto flex gap-3">
                 <button
                   onClick={() => openModal('quote', p.name, p.summary)}
-                  className="flex-1 rounded-xl bg-[#0371a3] py-2.5 text-[10px] font-black uppercase tracking-[0.14em] text-white transition-colors hover:bg-[#00ABE4]"
+                  className="flex-1 rounded-xl bg-[#316852] py-2.5 text-[10px] font-black uppercase tracking-[0.14em] text-white transition-colors hover:bg-[#1e4d3a]"
                 >
                   Request Quote
                 </button>

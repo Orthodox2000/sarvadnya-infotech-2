@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "clean": "node -e \"require('fs').rmSync('.next',{recursive:true,force:true});console.log('.next cleaned')\""
   },
   "dependencies": {
     "@vercel/analytics": "^2.0.1",

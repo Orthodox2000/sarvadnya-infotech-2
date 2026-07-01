@@ -47,12 +47,12 @@ const CloudBackupSection = () => {
           {/* Left Side: Content */}
           <div className="space-y-10">
             <div>
-              <span className="text-[10px] font-black uppercase tracking-[0.3em] text-[#0371a3] block mb-4">
+              <span className="text-[10px] font-black uppercase tracking-[0.3em] text-[#316852] block mb-4">
                 Enterprise Ecosystem
               </span>
               <h2 className="text-4xl md:text-5xl font-black text-slate-900 leading-[1.1] tracking-tighter mb-6">
                 Reliable Cloud & <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0371a3] to-[#00ABE4]">Zero-Loss Backup</span>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#316852] to-[#316852]">Zero-Loss Backup</span>
               </h2>
               <p className="text-lg text-slate-600 font-medium leading-relaxed max-w-xl">
                 Modernize your TallyPrime experience with our certified cloud solutions. From Official AWS hosting to automated TallyDrive backups, we keep your business running 24/7.
@@ -62,13 +62,13 @@ const CloudBackupSection = () => {
             <div className="grid grid-cols-1 gap-8">
               {features.map((f, i) => (
                 <div key={i} className="group flex gap-6 p-6 rounded-[2rem] border border-slate-100 bg-slate-50/30 hover:bg-white hover:shadow-2xl hover:shadow-slate-200/50 transition-all duration-500">
-                  <div className="w-14 h-14 shrink-0 rounded-2xl bg-white border border-slate-100 flex items-center justify-center text-[#0371a3] shadow-sm group-hover:scale-110 transition-transform">
+                  <div className="w-14 h-14 shrink-0 rounded-2xl bg-white border border-slate-100 flex items-center justify-center text-[#316852] shadow-sm group-hover:scale-110 transition-transform">
                     {f.icon}
                   </div>
                   <div>
                     <div className="flex items-center gap-3 mb-1">
                       <h3 className="text-lg font-black text-slate-900 tracking-tight">{f.title}</h3>
-                      <span className="text-[9px] font-black uppercase px-2 py-0.5 rounded-full bg-[#E9F1FA] text-[#0371a3] tracking-widest">{f.tag}</span>
+                      <span className="text-[9px] font-black uppercase px-2 py-0.5 rounded-full bg-[#E9F1FA] text-[#316852] tracking-widest">{f.tag}</span>
                     </div>
                     <p className="text-sm text-slate-500 font-bold leading-relaxed">{f.desc}</p>
                   </div>
@@ -140,7 +140,7 @@ const CloudBackupSection = () => {
               </div>
 
               {/* Decorative Blur */}
-              <div className="absolute -z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-gradient-to-tr from-[#0371a3]/10 via-[#00ABE4]/5 to-transparent rounded-full blur-3xl pointer-events-none" />
+              <div className="absolute -z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-gradient-to-tr from-[#316852]/10 via-[#316852]/5 to-transparent rounded-full blur-3xl pointer-events-none" />
 
             </div>
           </div>

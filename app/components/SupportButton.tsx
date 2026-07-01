@@ -46,7 +46,7 @@ export default function SupportButton({ initialSettings }: { initialSettings?: a
       <button
         onClick={() => setIsOpen(true)}
         aria-label="Ask AI"
-        className="fixed bottom-32 right-6 sm:bottom-6 z-3000 flex items-center gap-2 bg-[#00ABE4] text-white px-4 py-2.5 rounded-full shadow-[0_15px_40px_rgba(0,171,228,0.3)] hover:shadow-[0_20px_50px_rgba(0,171,228,0.4)] transition-all duration-500 ease-in-out hover:-translate-y-1 active:scale-95 group"
+        className="fixed bottom-32 right-6 sm:bottom-6 z-3000 flex items-center gap-2 bg-[#316852] text-white px-4 py-2.5 rounded-full shadow-[0_15px_40px_rgba(49,104,82,0.3)] hover:shadow-[0_20px_50px_rgba(49,104,82,0.4)] transition-all duration-500 ease-in-out hover:-translate-y-1 active:scale-95 group"
       >
         <svg className="w-5 h-5 animate-lightning-glow" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
@@ -55,7 +55,7 @@ export default function SupportButton({ initialSettings }: { initialSettings?: a
 
         {/* Tooltip */}
         <div className="absolute bottom-full right-0 mb-4 w-44 p-3 bg-white text-slate-900 rounded-2xl shadow-2xl opacity-0 group-hover:opacity-100 pointer-events-none transition-all translate-y-2 group-hover:translate-y-0 border border-slate-100">
-          <p className="text-[10px] font-bold leading-tight text-[#00ABE4]">Sara • Smart Assistant</p>
+          <p className="text-[10px] font-bold leading-tight text-[#316852]">Sara • Smart Assistant</p>
           <p className="text-[9px] text-slate-500 mt-1 font-medium">Ask Sara about TallyPrime features, hosting, or modules.</p>
           <div className="absolute top-full right-8 w-2 h-2 bg-white border-b border-r border-slate-100 rotate-45 -translate-y-1" />
         </div>

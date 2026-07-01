@@ -84,7 +84,7 @@ export default function QuickAccessHub({ initialData, initialModules, initialSet
         
         {/* Header - Centered & Clean */}
         <div className={`text-center max-w-2xl mx-auto mb-16 transition-all duration-[1000ms] ease-[cubic-bezier(0.2,0.8,0.2,1)] ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-          <span className="text-[10px] font-black uppercase tracking-[0.3em] text-[#0371a3] block mb-4">
+          <span className="text-[10px] font-black uppercase tracking-[0.3em] text-[#316852] block mb-4">
             Ecosystem Directory
           </span>
           <h2 className="text-3xl lg:text-5xl font-black text-[#232F3E] tracking-tighter mb-4 leading-tight">
@@ -101,13 +101,13 @@ export default function QuickAccessHub({ initialData, initialModules, initialSet
             <Link 
               key={idx} 
               href={card.href}
-              className={`group relative flex flex-col bg-white rounded-[2rem] p-8 border border-slate-100 shadow-sm transition-all duration-[1000ms] ease-[cubic-bezier(0.2,0.8,0.2,1)] hover:shadow-2xl hover:shadow-[#0371a3]/10 hover:-translate-y-2 hover:border-[#0371a3]/30
+              className={`group relative flex flex-col bg-white rounded-[2rem] p-8 border border-slate-100 shadow-sm transition-all duration-[1000ms] ease-[cubic-bezier(0.2,0.8,0.2,1)] hover:shadow-2xl hover:shadow-[#316852]/10 hover:-translate-y-2 hover:border-[#316852]/30
                 before:absolute before:inset-0 before:rounded-[2rem] before:bg-gradient-to-r before:from-transparent before:via-white/20 before:to-transparent before:-translate-x-full before:opacity-0 group-hover:before:translate-x-full group-hover:before:opacity-100 before:transition-all before:duration-700 before:pointer-events-none
                 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'}`}
               style={{ transitionDelay: `${idx * 150}ms` }}
             >
               {/* Top border shine */}
-              <div className="absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r from-transparent via-[#0371a3]/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-t-[2rem]" />
+              <div className="absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r from-transparent via-[#316852]/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-t-[2rem]" />
               {/* Icon Container */}
               <div className={`w-14 h-14 rounded-2xl flex items-center justify-center ${card.color} text-white mb-8 shadow-lg shadow-black/5 transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3 overflow-hidden`}>
                 <span className="transition-transform duration-500 group-hover:scale-125">{card.icon}</span>
@@ -115,7 +115,7 @@ export default function QuickAccessHub({ initialData, initialModules, initialSet
 
               {/* Text Content */}
               <div className="flex-1">
-                <h3 className="text-xl font-black text-[#232F3E] tracking-tight mb-3 group-hover:text-[#0371a3] transition-colors uppercase text-[15px]">
+                <h3 className="text-xl font-black text-[#232F3E] tracking-tight mb-3 group-hover:text-[#316852] transition-colors uppercase text-[15px]">
                   {card.title}
                 </h3>
                 <p className="text-[13px] text-slate-500 font-bold leading-relaxed opacity-70">
@@ -124,7 +124,7 @@ export default function QuickAccessHub({ initialData, initialModules, initialSet
               </div>
 
               {/* Action Indicator */}
-              <div className="mt-8 flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-400 group-hover:text-[#0371a3] transition-colors">
+              <div className="mt-8 flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-400 group-hover:text-[#316852] transition-colors">
                 Explore Page
                 <svg className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -141,7 +141,7 @@ export default function QuickAccessHub({ initialData, initialModules, initialSet
         <div className={`mt-20 text-center transition-all duration-1000 delay-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
            <Link 
             href="/contact"
-            className="inline-flex h-14 px-12 items-center justify-center rounded-full bg-[#0371a3] text-white font-black text-[11px] uppercase tracking-wider border border-transparent hover:bg-white hover:text-[#0371a3] hover:border-[#0371a3] transition-all duration-500 ease-in-out hover:scale-[1.05] active:scale-95 shadow-2xl shadow-[#0371a3]/20"
+            className="inline-flex h-14 px-12 items-center justify-center rounded-full bg-[#316852] text-white font-black text-[11px] uppercase tracking-wider border border-transparent hover:bg-white hover:text-[#316852] hover:border-[#316852] transition-all duration-500 ease-in-out hover:scale-[1.05] active:scale-95 shadow-2xl shadow-[#316852]/20"
           >
             Request Professional Consultation
           </Link>

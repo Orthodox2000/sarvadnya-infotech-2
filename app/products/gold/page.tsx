@@ -6,8 +6,8 @@ import Link from 'next/link';
 import Footer from '../../components/Footer';
 import UnifiedContactModal, { FormType } from '../../components/UnifiedContactModal';
 
-const BRAND_PRIMARY = '#00ABE4';
-const BRAND_SECONDARY = '#0371a3';
+const BRAND_PRIMARY = '#316852';
+const BRAND_SECONDARY = '#1e4d3a';
 
 const features = [
   { title: 'Multi-User Collaboration', desc: 'Multiple users access the same company simultaneously over a local network with no data conflicts.' },
@@ -175,9 +175,9 @@ export default function TallyGoldPage() {
         <div className="max-w-7xl mx-auto px-6">
           <div className="py-2.5">
             <ul className="flex items-center gap-1.5 text-[11px] font-medium text-slate-500">
-              <li><Link href="/" className="hover:text-[#00ABE4] transition-colors">Home</Link></li>
+              <li><Link href="/" className="hover:text-[#316852] transition-colors">Home</Link></li>
               <li className="text-slate-300 mx-0.5">/</li>
-              <li><Link href="/products" className="hover:text-[#00ABE4] transition-colors">Products</Link></li>
+              <li><Link href="/products" className="hover:text-[#316852] transition-colors">Products</Link></li>
               <li className="text-slate-300 mx-0.5">/</li>
               <li className="text-slate-800 font-semibold">TallyPrime Gold</li>
             </ul>
@@ -655,7 +655,7 @@ export default function TallyGoldPage() {
                       {item.name.charAt(0)}
                     </div>
                     <div className="min-w-0 flex-1">
-                      <p className="text-sm font-bold text-slate-700 group-hover:text-[#00ABE4] transition-colors truncate">
+                      <p className="text-sm font-bold text-slate-700 group-hover:text-[#316852] transition-colors truncate">
                         {item.name}
                       </p>
                       <span className="inline-flex items-center gap-1 text-[11px] text-slate-400">
@@ -693,7 +693,7 @@ export default function TallyGoldPage() {
                     <Link
                       key={link.label}
                       href={link.href!}
-                      className="block text-sm text-slate-600 hover:text-[#00ABE4] transition-colors py-1"
+                      className="block text-sm text-slate-600 hover:text-[#316852] transition-colors py-1"
                     >
                       {link.label}
                     </Link>
@@ -702,7 +702,7 @@ export default function TallyGoldPage() {
                       key={link.label}
                       type="button"
                       onClick={() => openModal(link.type!, 'TallyPrime Gold')}
-                      className="block w-full text-left text-sm text-slate-600 hover:text-[#00ABE4] transition-colors py-1"
+                      className="block w-full text-left text-sm text-slate-600 hover:text-[#316852] transition-colors py-1"
                     >
                       {link.label}
                     </button>

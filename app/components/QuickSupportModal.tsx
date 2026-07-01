@@ -267,14 +267,14 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
         onClick={e => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="p-5 border-b border-white/10 bg-[#0371a3] text-white shrink-0">
+        <div className="p-5 border-b border-white/10 bg-[#316852] text-white shrink-0">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="relative w-10 h-10">
                 <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center border border-white/20 overflow-hidden">
-                   <div className="bg-[#70f2f2] w-full h-full flex items-center justify-center font-black text-[#0371a3] text-lg">S</div>
+                   <div className="bg-[#70f2f2] w-full h-full flex items-center justify-center font-black text-[#316852] text-lg">S</div>
                 </div>
-                <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-[#0371a3] rounded-full"></span>
+                <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-[#316852] rounded-full"></span>
               </div>
               <div>
                 <h3 className="text-sm font-black tracking-tight">Ask Sara</h3>
@@ -330,7 +330,7 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
               <div 
                 className={`max-w-[85%] px-4 py-3 rounded-2xl text-xs font-medium shadow-sm leading-relaxed ${
                   msg.sender === 'user' 
-                    ? 'bg-[#00ABE4] text-white rounded-tr-none' 
+                    ? 'bg-[#316852] text-white rounded-tr-none' 
                     : 'bg-white text-slate-700 border border-slate-100 rounded-tl-none'
                 }`}
               >
@@ -347,7 +347,7 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
                               key={j}
                               href={url}
                               onClick={onClose}
-                              className="inline-flex items-center gap-1.5 px-3 py-1 bg-sky-100 text-[#0371a3] rounded-lg font-bold hover:bg-[#0371a3] hover:text-white transition-all my-1.5 border border-sky-200 shadow-sm mx-1"
+                              className="inline-flex items-center gap-1.5 px-3 py-1 bg-sky-100 text-[#316852] rounded-lg font-bold hover:bg-[#316852] hover:text-white transition-all my-1.5 border border-sky-200 shadow-sm mx-1"
                             >
                               <span className="text-[10px] uppercase tracking-wider">{label}</span>
                               <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3"><path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" /></svg>
@@ -357,7 +357,7 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
 
                         return part.split(/(\*\*.*?\*\*)/).map((subPart, k) => {
                           if (subPart.startsWith('**') && subPart.endsWith('**')) {
-                            return <strong key={k} className={`font-black ${msg.sender === 'user' ? 'text-sky-200' : 'text-[#0371a3]'}`}>{subPart.slice(2, -2)}</strong>;
+                            return <strong key={k} className={`font-black ${msg.sender === 'user' ? 'text-sky-200' : 'text-[#316852]'}`}>{subPart.slice(2, -2)}</strong>;
                           }
                           return subPart;
                         });
@@ -371,7 +371,7 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
               {/* Audio Prompt */}
               {msg.sender === 'ai' && msg.showAudioPrompt && showAudioPromptId === msg.id && (
                 <div className="mt-2 flex flex-wrap items-center gap-2 animate-in fade-in slide-in-from-top-1 duration-300">
-                  <span className="text-[10px] text-[#0371a3] font-bold uppercase tracking-wider ml-2">
+                  <span className="text-[10px] text-[#316852] font-bold uppercase tracking-wider ml-2">
                     {isSpeaking ? "Speaking..." : "Read aloud?"}
                   </span>
                   <div className="flex gap-1">
@@ -397,8 +397,8 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
                           }}
                           className={`px-2 py-1 border text-[9px] font-black uppercase rounded-lg transition-colors shadow-sm ${
                             autoPlayMode === 'summary' 
-                              ? 'bg-[#0371a3] border-[#0371a3] text-white' 
-                              : 'bg-white border-sky-200 text-[#0371a3] hover:bg-sky-50'
+                              ? 'bg-[#316852] border-[#316852] text-white' 
+                              : 'bg-white border-sky-200 text-[#316852] hover:bg-sky-50'
                           }`}
                         >
                           Summary
@@ -411,8 +411,8 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
                           }}
                           className={`px-2 py-1 border text-[9px] font-black uppercase rounded-lg transition-colors shadow-sm ${
                             autoPlayMode === 'full' 
-                              ? 'bg-[#0371a3] border-[#0371a3] text-white' 
-                              : 'bg-white border-sky-200 text-[#0371a3] hover:bg-sky-50'
+                              ? 'bg-[#316852] border-[#316852] text-white' 
+                              : 'bg-white border-sky-200 text-[#316852] hover:bg-sky-50'
                           }`}
                         >
                           Full
@@ -436,9 +436,9 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
           {(isTyping || isAiResponding) && (
             <div className="flex justify-start">
               <div className="bg-white px-4 py-3 rounded-2xl rounded-tl-none border border-slate-100 shadow-sm flex gap-1">
-                <span className="w-1.5 h-1.5 bg-[#00ABE4]/40 rounded-full animate-bounce"></span>
-                <span className="w-1.5 h-1.5 bg-[#00ABE4]/40 rounded-full animate-bounce [animation-delay:0.2s]"></span>
-                <span className="w-1.5 h-1.5 bg-[#00ABE4]/40 rounded-full animate-bounce [animation-delay:0.4s]"></span>
+                <span className="w-1.5 h-1.5 bg-[#316852]/40 rounded-full animate-bounce"></span>
+                <span className="w-1.5 h-1.5 bg-[#316852]/40 rounded-full animate-bounce [animation-delay:0.2s]"></span>
+                <span className="w-1.5 h-1.5 bg-[#316852]/40 rounded-full animate-bounce [animation-delay:0.4s]"></span>
               </div>
             </div>
           )}
@@ -451,7 +451,7 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
               ref={inputRef}
               type="text"
               placeholder="Type your message..."
-              className="flex-1 bg-slate-50 border border-slate-100 rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-[#00ABE4]/10 focus:border-[#00ABE4] transition-all"
+              className="flex-1 bg-slate-50 border border-slate-100 rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-[#316852]/10 focus:border-[#316852] transition-all"
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
               disabled={isAiResponding}
@@ -459,7 +459,7 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
             <button 
               type="submit"
               disabled={!inputText.trim() || isTyping || isAiResponding}
-              className="w-10 h-10 rounded-xl bg-[#00ABE4] text-white flex items-center justify-center shadow-lg shadow-[#00ABE4]/20 disabled:opacity-50 transition-all active:scale-95"
+              className="w-10 h-10 rounded-xl bg-[#316852] text-white flex items-center justify-center shadow-lg shadow-[#316852]/20 disabled:opacity-50 transition-all active:scale-95"
             >
               <svg className="w-5 h-5 rotate-90" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
