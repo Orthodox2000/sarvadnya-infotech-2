@@ -5,24 +5,56 @@ const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
 const RATE_LIMIT = 60;
 const RATE_WINDOW = 60_000;
 
+function base64Decode(str: string): string {
+  try { return Buffer.from(str, 'base64url').toString('utf-8'); } catch { return ''; }
+}
+
+function verifyAdminToken(token: string): boolean {
+  try {
+    const masterKey = process.env.ADMIN_ACCESS_KEY;
+    if (!masterKey) return false;
+    const payload = JSON.parse(base64Decode(token));
+    return payload.s === masterKey && Date.now() - payload.t < 86400000;
+  } catch { return false; }
+}
+
+function isAdminRequest(request: NextRequest): boolean {
+  const masterKey = process.env.ADMIN_ACCESS_KEY;
+  if (!masterKey) return true;
+
+  const headerKey = request.headers.get('x-admin-key');
+  if (headerKey === masterKey) return true;
+
+  const cookieKey = request.cookies.get('admin_key')?.value;
+  if (cookieKey === masterKey) return true;
+
+  const token = request.cookies.get('__admin_token')?.value;
+  if (token && verifyAdminToken(token)) return true;
+
+  return false;
+}
+
 export function proxy(request: NextRequest) {
   const start = performance.now();
   const { pathname } = request.nextUrl;
 
-  // Admin route protection
+  // --- Admin route protection ---
   if (pathname.startsWith('/admin') || pathname.startsWith('/api/admin')) {
-    const adminKey = request.headers.get('x-admin-key') || request.cookies.get('admin_key')?.value;
-    const masterKey = process.env.ADMIN_ACCESS_KEY;
-    if (masterKey && adminKey !== masterKey) {
+    if (!isAdminRequest(request)) {
       if (pathname.startsWith('/api/')) {
         return NextResponse.json({ error: 'Unauthorized Access' }, { status: 401 });
       }
+      // For page routes, redirect to login (or let the page handle it)
     }
   }
 
   const response = NextResponse.next();
 
-  // Rate limiting for API routes
+  // --- Security Headers ---
+  response.headers.set('X-Frame-Options', 'DENY');
+  response.headers.set('X-Content-Type-Options', 'nosniff');
+
+  // --- Rate limiting for non-admin API routes ---
   if (pathname.startsWith('/api/') && !pathname.startsWith('/api/admin')) {
     const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
       || request.headers.get('x-real-ip')
@@ -42,6 +74,7 @@ export function proxy(request: NextRequest) {
       rateLimitMap.set(ip, { count: 1, resetAt: now + RATE_WINDOW });
     }
 
+    // Cleanup stale entries
     if (rateLimitMap.size > 1000) {
       const threshold = Date.now();
       for (const [key, val] of rateLimitMap) {
@@ -50,10 +83,13 @@ export function proxy(request: NextRequest) {
     }
   }
 
-  // Cache headers for GET API routes
-  // if (pathname.startsWith('/api/') && request.method === 'GET') {
-  //   response.headers.set('Cache-Control', 'public, s-maxage=60, stale-while-revalidate=300');
-  // }
+  // --- Content-Type validation for write API operations ---
+  if (pathname.startsWith('/api/') && ['POST', 'PUT', 'PATCH'].includes(request.method)) {
+    const contentType = request.headers.get('content-type') || '';
+    if (!contentType.includes('multipart/form-data') && !contentType.includes('application/json')) {
+      return NextResponse.json({ error: 'Unsupported Media Type' }, { status: 415 });
+    }
+  }
 
   // Response time header
   response.headers.set('X-Response-Time', `${(performance.now() - start).toFixed(1)}ms`);

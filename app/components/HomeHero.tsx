@@ -42,7 +42,7 @@ const DEFAULT_HERO: HeroContent[] = [
       "features": [
         { "text": "Certified Tally Expertise" },
         { "text": "1,500+ Active Clients" },
-        { "text": "Pan-India Remote Support" },
+        { "text": "Unrestricted Remote Support" },
         { "text": "Custom TDL Solutions" }
       ],
       "ctaPrimary": { "text": "Why Choose Us", "href": "/about" }
@@ -369,7 +369,7 @@ export default function HomeHero({ initialData, variant = 'standard' }: { initia
 
   return (
     <>
-    <main suppressHydrationWarning className={`relative w-full overflow-hidden opacity-80 md:opacity-90 transition-all duration-1000 ${getVariantBg()} min-h-137.5 md:min-h-[700px] lg:min-h-[650px] lg:-mt-10 flex items-start`}>
+    <main suppressHydrationWarning className={`relative w-full overflow-hidden opacity-80 md:opacity-90 transition-all duration-1000 ${getVariantBg()} min-h-[20rem] sm:min-h-[26rem] md:min-h-[calc(100svh-7rem)] lg:min-h-[650px] lg:-mt-10 flex items-center`}>
       <div className="absolute -z-[100] invisible h-0 w-0 overflow-hidden pointer-events-none">
         {heroContents.map((content, idx) => (
           <div key={`preload-wrap-${idx}`} className="relative h-1 w-1">
@@ -402,10 +402,10 @@ export default function HomeHero({ initialData, variant = 'standard' }: { initia
            </div>
         )}
       </div>
-
+          {/*here starts hero content */}
       <div className="w-full relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 items-center">
-          <div key={`content-${stableIndex}`} className="lg:col-span-6 lg:justify-self-end w-full px-6 lg:px-12 pt-12 lg:pt-16 pb-12 lg:pb-24 space-y-5 lg:space-y-5 min-h-[350px] md:min-h-[450px] flex flex-col justify-start relative z-30">
+          <div key={`content-${stableIndex}`} className="lg:col-span-6 lg:justify-self-end w-full px-6 lg:px-12 pt-8 lg:pt-16 pb-8 lg:pb-24 space-y-4 lg:space-y-5 min-h-[auto] md:min-h-[450px] flex flex-col justify-start relative z-30">
             <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[#316852]/30 w-fit ${getAnimationClasses('delay-0')} bg-[#316852]`}>
               <span className={`flex h-2 w-2 rounded-full animate-pulse bg-white/60`} />
               <span className={`text-[9px] font-black uppercase tracking-[0.2em] text-white`}>{current.badge}</span>
@@ -535,24 +535,24 @@ export default function HomeHero({ initialData, variant = 'standard' }: { initia
              </div>
           </div>
         </div>
-      </div>
-      <button
+</div>
+<button
         onClick={() => setStableIndex(prev => (prev - 1 + heroContents.length) % heroContents.length)}
-        className="absolute left-2 top-1/2 -translate-y-1/2 z-50 w-8 h-8 flex items-center justify-center rounded-full bg-[#316852]/10 backdrop-blur-md text-[#316852] border border-[#316852]/20 hover:bg-[#316852]/20 active:scale-90 transition-all"
+        className="absolute left-4 sm:left-2 top-1/2 -translate-y-1/2 z-50 w-8 h-8 flex items-center justify-center rounded-full bg-[#316852]/10 backdrop-blur-md text-[#316852] border border-[#316852]/20 hover:bg-[#316852]/20 active:scale-90 transition-all"
         title="Previous slide"
       >
         <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3"><path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" /></svg>
       </button>
       <button
         onClick={() => setStableIndex(prev => (prev + 1) % heroContents.length)}
-        className="absolute right-2 top-1/2 -translate-y-1/2 z-50 w-8 h-8 flex items-center justify-center rounded-full bg-[#316852]/10 backdrop-blur-md text-[#316852] border border-[#316852]/20 hover:bg-[#316852]/20 active:scale-90 transition-all"
+        className="absolute right-4 sm:right-2 top-1/2 -translate-y-1/2 z-50 w-8 h-8 flex items-center justify-center rounded-full bg-[#316852]/10 backdrop-blur-md text-[#316852] border border-[#316852]/20 hover:bg-[#316852]/20 active:scale-90 transition-all"
         title="Next slide"
       >
         <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
       </button>
       <button
         onClick={addDevSlide}
-        className="fixed top-2 right-12 z-[999] px-2 py-1 text-[9px] font-bold uppercase tracking-wider bg-yellow-400 text-black rounded-md shadow-lg hover:bg-yellow-300 active:scale-95 border border-yellow-500/50"
+        className="fixed top-2 right-4 sm:right-12 z-[999] px-2 py-1 text-[9px] font-bold uppercase tracking-wider bg-yellow-400 text-black rounded-md shadow-lg hover:bg-yellow-300 active:scale-95 border border-yellow-500/50"
         title="Add a new dev hero slide"
       >
         + Dev

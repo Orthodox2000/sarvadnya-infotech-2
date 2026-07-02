@@ -34,7 +34,7 @@ export default function ProductsPage() {
       name: "TallyPrime Silver",
       type: "For one user",
       summary: "Core accounting, inventory, GST, and reporting for one workstation.",
-      includes: "Best for a single owner or operator who manages everything alone.",
+      includes: "a single owner or operator who manages everything alone.",
       tags: ["1 user", "Single PC"],
       cardClass: "bg-white border-slate-200",
       stripClass: "bg-[#316852]",
@@ -44,7 +44,7 @@ export default function ProductsPage() {
       name: "TallyPrime Gold",
       type: "For shared teams",
       summary: "All Silver features plus shared LAN access for teams working on the same data.",
-      includes: "Best for small offices where sales, accounts, and purchase teams share one company file.",
+      includes: "small offices where sales, accounts, and purchase teams share one company file.",
       tags: ["Silver included", "Shared LAN"],
       cardClass: "bg-white border-slate-200",
       stripClass: "bg-[#316852]",
@@ -54,7 +54,7 @@ export default function ProductsPage() {
       name: "TallyPrime Server",
       type: "For bigger teams",
       summary: "All Gold and Silver features plus faster shared access, tighter control, and user logs.",
-      includes: "Best for larger MSMEs that need more control across users and branches.",
+      includes: "larger MSMEs that need more control across users and branches.",
       tags: ["Gold included", "Access logs"],
       cardClass: "bg-white border-slate-200",
       stripClass: "bg-[#316852]",
@@ -64,7 +64,7 @@ export default function ProductsPage() {
       name: "TallyDrive",
       type: "Cloud backup",
       summary: "Automated encrypted cloud backups for TallyPrime with scheduling, restore, and management.",
-      includes: "Best for any TallyPrime user who wants automatic, encrypted backup protection.",
+      includes: "any TallyPrime user who wants automatic, encrypted backup protection.",
       tags: ["AES-256", "Scheduled"],
       cardClass: "bg-white border-slate-200",
       stripClass: "bg-[#316852]",
@@ -73,7 +73,7 @@ export default function ProductsPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#EFEBE3]/80">
+    <div className="min-h-screen bg-[#C0C0C0]/15">
       {/* Hero Section (Radiant Sky Theme) */}
       <section className="bg-white relative pt-12 pb-16 px-6 overflow-hidden border-b border-[#316852]/10"> 
         <div className="absolute inset-0 opacity-40 pointer-events-none">
@@ -118,14 +118,14 @@ export default function ProductsPage() {
                 <h3 className="mt-3 text-lg md:text-xl font-black text-slate-900 tracking-tight">
                   {p.name}
                 </h3>
-                <p className="mt-2 text-[13px] leading-snug text-slate-600">
+                {/* <p className="mt-2 text-[13px] leading-snug text-slate-600">
                   {p.summary}
-                </p>
+                </p> */}
               </div>
 
               <div className="rounded-2xl bg-slate-50 border border-slate-100 p-3 mb-3.5">
                 <div className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-1.5">
-                  Includes
+                  Suited for
                 </div>
                 <p className="text-[13px] text-slate-700 leading-snug">
                   {p.includes}

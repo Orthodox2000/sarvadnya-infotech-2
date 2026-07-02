@@ -78,7 +78,7 @@ export default function NewsFeed({ initialData }: { initialData?: NewsItem[] }) 
                 onMouseEnter={(e) => handleMouseEnter(e, index)}
                 onMouseLeave={() => setHoveredIndex(null)}
               >
-                <span className="text-[10px] md:text-xs font-bold text-slate-400">
+                <span className="text-[10px] md:text-xs font-bold text-white">
                   {String(index + 1).padStart(2, '0')}
                 </span>
                 <Link
@@ -87,7 +87,7 @@ export default function NewsFeed({ initialData }: { initialData?: NewsItem[] }) 
                 >
                   {item.title}
                 </Link>
-                <span className="h-1 w-1 rounded-full bg-slate-600" />
+                <span className="h-1 w-1 rounded-full bg-white" />
               </div>
             ))}
           </div>
@@ -100,7 +100,7 @@ export default function NewsFeed({ initialData }: { initialData?: NewsItem[] }) 
                 onMouseEnter={(e) => handleMouseEnter(e, index + newsItems.length)}
                 onMouseLeave={() => setHoveredIndex(null)}
               >
-                <span className="text-[10px] md:text-xs font-bold text-slate-400">
+                <span className="text-[10px] md:text-xs font-bold text-white">
                   {String(index + 1).padStart(2, '0')}
                 </span>
                 <Link
@@ -109,7 +109,7 @@ export default function NewsFeed({ initialData }: { initialData?: NewsItem[] }) 
                 >
                   {item.title}
                 </Link>
-                <span className="h-1 w-1 rounded-full bg-slate-600" />
+                <span className="h-1 w-1 rounded-full bg-white" />
               </div>
             ))}
           </div>

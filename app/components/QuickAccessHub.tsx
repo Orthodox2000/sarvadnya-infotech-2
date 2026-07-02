@@ -88,7 +88,7 @@ export default function QuickAccessHub({ initialData, initialModules, initialSet
             Ecosystem Directory
           </span>
           <h2 className="text-3xl lg:text-5xl font-black text-[#232F3E] tracking-tighter mb-4 leading-tight">
-            Quick Access <span className="text-sky-400">Hub</span>
+            Quick Access <span className="text-[#316852]">Hub</span>
           </h2>
           <p className="text-sm md:text-base text-slate-500 font-medium leading-relaxed opacity-80">
             A unified dashboard designed for professional business management, instant access, and technical excellence.

@@ -169,7 +169,7 @@ export default function TallyGoldPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#f5f7fa] text-slate-900 font-sans">
+    <div className="min-h-screen bg-[#C0C0C0]/15 text-slate-900 font-sans">
       {/* Breadcrumb */}
       <div className="bg-white border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-6">

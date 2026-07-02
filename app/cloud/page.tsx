@@ -92,7 +92,7 @@ export default function CloudPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#EFEBE3]/60">
+    <div className="min-h-screen bg-[#C0C0C0]/15">
       {/* Hero Section */}
       <section className="bg-white relative pt-12 pb-16 md:pt-16 px-6 overflow-hidden border-b border-[#316852]/10">
         <div className="absolute inset-0 opacity-40 pointer-events-none">

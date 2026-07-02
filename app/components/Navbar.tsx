@@ -69,13 +69,13 @@ export default function Navbar({ initialSettings }: { initialSettings?: any }) {
   ];
 
   return (
-    <header className="relative z-1000 w-full border-b border-[#E5E2D9] shadow-sm bg-[#FAFAFA]">
+    <header className="relative z-1000 w-full border-b border-[#E5E2D9] bg-[#FAFAFA]">
       <nav className="mx-auto flex h-12 lg:h-16 w-full max-w-full items-center justify-between px-3">
         <Link
           href="/"
           className="flex items-center h-full justify-start gap-3 group transition-transform hover:scale-[1.01]"
         >
-          <div className="relative block w-72 lg:w-100 h-full shrink-0 opacity-90 group-hover:opacity-100 transition-opacity">
+          <div className="relative block  w-72 lg:w-100 h-full shrink-0 opacity-90 group-hover:opacity-100 transition-opacity">
             <Image
               src="/TallyCertificate.png"
               alt="e-consultation logo"
@@ -113,7 +113,7 @@ export default function Navbar({ initialSettings }: { initialSettings?: any }) {
            
           <Link
             href="/contact"
-            className="inline-flex items-center justify-center rounded-full bg-[#316852] text-white px-5 py-2 text-[11px] font-bold uppercase tracking-wider shadow-lg shadow-[#4B6780]/20 transition-all duration-500 ease-in-out hover:bg-white hover:text-[#4B6780] hover:-translate-y-0.5 hover:border hover:border-[#4B6780]"
+            className="inline-flex items-center justify-center rounded-full bg-[#316852] text-white px-5 py-2 text-[11px] font-bold uppercase tracking-wider shadow-lg shadow-[#4B6780]/20 transition-all duration-500 ease-in-out border border-transparent hover:bg-white hover:text-[#4B6780] hover:border-[#4B6780]"
           >
             Contact
           </Link>

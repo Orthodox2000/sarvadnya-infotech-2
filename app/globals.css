@@ -37,7 +37,6 @@
 
 html {
   scroll-behavior: smooth;
-  overflow-x: clip;
   max-width: 100%;
   position: relative;
   scroll-padding-top: 130px;
@@ -146,7 +145,6 @@ html {
 body {
   forced-color-adjust: none;
   font-family: var(--font-sans);
-  overflow-x: clip;
   max-width: 100%;
   position: relative;
   touch-action: pan-y;

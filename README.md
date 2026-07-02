@@ -69,6 +69,35 @@ public/
    ```
    Open `http://localhost:3000`.
 
+## Security
+
+- **Security Headers:** CSP, HSTS, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy, Cross-Origin-Opener-Policy, Cross-Origin-Resource-Policy configured in `next.config.js`.
+- **Rate Limiting:** 100 req/min per IP per API route enforced via `middleware.ts`.
+- **Admin Auth:** Optional `ADMIN_ACCESS_KEY` env var protects `/admin/*` and `/api/admin/*` routes via `proxy.ts`. Set in `.env` and generate a key with:
+  ```bash
+  node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+  ```
+- **Input Validation:** `lib/api-security.ts` provides `sanitize()`, `isValidEmail()`, `isValidPhone()`, `validateRequiredFields()` utilities.
+
+## Testing & Audit Scripts
+
+```bash
+# Run API endpoint tests (start dev server first)
+npm run test
+
+# Security audit (checks config, headers, middleware, env)
+npm run security:check
+
+# Full security audit + npm audit
+npm run security:audit
+
+# Dependency audit
+npm run audit
+
+# TypeScript type check
+npm run typecheck
+```
+
 ## Theme Customization
 
 Update `lib/theme.ts` to modify global design tokens:

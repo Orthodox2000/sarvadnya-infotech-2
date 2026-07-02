@@ -403,6 +403,39 @@ export default function ColourDemoPage() {
                   placeholder="Type your sample text..."
                 />
               </div>
+                  
+                {/* Text on color backgrounds */}
+                <div>
+                  <p className="mb-3 text-[9px] font-bold uppercase tracking-widest opacity-40">Text on Colored Backgrounds</p>
+                  <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+                    {[
+                      { bg: primary, label: 'On Primary' },
+                      { bg: secondary, label: 'On Secondary' },
+                      { bg: containerBg, label: 'On Container' },
+                    ].map((item) => (
+                      <div
+                        key={item.label}
+                        className="rounded-xl p-4 text-center"
+                        style={{ backgroundColor: item.bg }}
+                      >
+                        <p
+                          className="text-xs font-black uppercase tracking-wider"
+                          style={{ color: getContrastText(item.bg) }}
+                        >
+                          {item.label}
+                        </p>
+                        <p
+                          className="mt-2 text-sm font-bold"
+                          style={{ color: getContrastText(item.bg) }}
+                        >
+                          {textSample}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="h-px w-full" style={{ backgroundColor: `${primary}15` }} />
 
               <div className="space-y-6">
                 {/* Size ladder */}
@@ -453,39 +486,6 @@ export default function ColourDemoPage() {
                     <span className="font-bold" style={{ color: getContrastText(containerBg), backgroundColor: containerBg, padding: '0 6px', borderRadius: 4 }}>text on container bg</span>
                     {' '}mixed with default text color.
                   </p>
-                </div>
-
-                <div className="h-px w-full" style={{ backgroundColor: `${primary}15` }} />
-
-                {/* Text on color backgrounds */}
-                <div>
-                  <p className="mb-3 text-[9px] font-bold uppercase tracking-widest opacity-40">Text on Colored Backgrounds</p>
-                  <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-                    {[
-                      { bg: primary, label: 'On Primary' },
-                      { bg: secondary, label: 'On Secondary' },
-                      { bg: containerBg, label: 'On Container' },
-                    ].map((item) => (
-                      <div
-                        key={item.label}
-                        className="rounded-xl p-4 text-center"
-                        style={{ backgroundColor: item.bg }}
-                      >
-                        <p
-                          className="text-xs font-black uppercase tracking-wider"
-                          style={{ color: getContrastText(item.bg) }}
-                        >
-                          {item.label}
-                        </p>
-                        <p
-                          className="mt-2 text-sm font-bold"
-                          style={{ color: getContrastText(item.bg) }}
-                        >
-                          {textSample}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
                 </div>
 
                 <div className="h-px w-full" style={{ backgroundColor: `${primary}15` }} />
