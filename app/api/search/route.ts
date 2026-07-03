@@ -48,7 +48,7 @@ async function getAIRecommendations(query: string, siteMap: any[]) {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          model: "llama-3.1-8b-instant",
+          model: "qwen/qwen3-32b",
           messages: [
             {
               role: "system",
@@ -67,7 +67,8 @@ async function getAIRecommendations(query: string, siteMap: any[]) {
 
       const data = await response.json();
       if (data.choices?.[0]) {
-        const parsed = JSON.parse(data.choices[0].message.content);
+        const raw = data.choices[0].message.content.replace(/<think>[\s\S]*?<\/think>/g, '').trim();
+        const parsed = JSON.parse(raw);
         return Array.isArray(parsed) ? parsed : (parsed.recommendations || []);
       }
       return [];
@@ -98,7 +99,7 @@ async function generateSearchSummary(query: string, results: any[]) {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          model: "llama-3.1-8b-instant",
+          model: "qwen/qwen3-32b",
           messages: [
             {
               role: "system",
@@ -115,7 +116,7 @@ async function generateSearchSummary(query: string, results: any[]) {
 
       const data = await response.json();
       if (data.choices?.[0]) {
-        return data.choices[0].message.content.trim();
+        return data.choices[0].message.content.replace(/<think>[\s\S]*?<\/think>/g, '').trim();
       }
       return null;
     // });

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 
 interface Message {
@@ -148,30 +148,33 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
   const typeMessage = async (fullText: string) => {
     const id = Date.now().toString();
     setIsAiResponding(true);
-    setAutoScrollEnabled(true); // Reset auto-scroll when a new message starts
-    
+    setAutoScrollEnabled(true);
+
     setMessages(prev => [...prev, { id, text: '', fullText, sender: 'ai', timestamp: new Date(), showAudioPrompt: true }]);
     setShowAudioPromptId(id);
 
-    // PERSISTENT AUTO-PLAY: If a mode is selected, start audio immediately
     if (autoPlayMode === 'summary') {
       playVoiceResponse(fullText, false);
     } else if (autoPlayMode === 'full') {
       playVoiceResponse(fullText, true);
     }
 
-    let currentText = '';
-    const words = fullText.split(' ');
+    const lines = fullText.split('\n');
     
-    for (let i = 0; i < words.length; i++) {
-      currentText += (i === 0 ? '' : ' ') + words[i];
-      setMessages(prev => prev.map(m => m.id === id ? { ...m, text: currentText } : m));
-      await new Promise(resolve => setTimeout(resolve, 40));
+    for (let i = 0; i < lines.length; i++) {
+      let partial = '';
+      const chunk = 4;
+      for (let c = 0; c < lines[i].length; c += chunk) {
+        partial += lines[i].slice(c, c + chunk);
+        const prevText = lines.slice(0, i).join('\n');
+        const displayed = prevText + (i > 0 ? '\n' : '') + partial;
+        setMessages(prev => prev.map(m => m.id === id ? { ...m, text: displayed } : m));
+        await new Promise(resolve => setTimeout(resolve, 7));
+      }
     }
     
     setIsAiResponding(false);
     
-    // Focus back on input after typing (Desktop only)
     if (window.matchMedia('(hover: hover)').matches) {
       inputRef.current?.focus();
     }
@@ -355,12 +358,18 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
                           );
                         }
 
-                        return part.split(/(\*\*.*?\*\*)/).map((subPart, k) => {
+                        return <React.Fragment key={j}>{part.split(/(\*\*.*?\*\*)/).map((subPart, k) => {
                           if (subPart.startsWith('**') && subPart.endsWith('**')) {
                             return <strong key={k} className={`font-black ${msg.sender === 'user' ? 'text-sky-200' : 'text-[#316852]'}`}>{subPart.slice(2, -2)}</strong>;
                           }
-                          return subPart;
-                        });
+                          return msg.sender === 'ai'
+                            ? subPart.split('').map((char, ci) => (
+                                <span key={ci} className="letter-animate">
+                                  {char === ' ' ? '\u00A0' : char}
+                                </span>
+                              ))
+                            : subPart;
+                        })}</React.Fragment>;
                       })}
                       {i < msg.text.split('\n').length - 1 && <br />}
                     </span>

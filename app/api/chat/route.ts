@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server';
 import { getSettings } from '@/lib/mongodb-utils';
 
-const PRIMARY_MODEL = "llama-3.3-70b-versatile";
-const FALLBACK_MODEL = "llama-3.1-8b-instant";
+const PRIMARY_MODEL = "openai/gpt-oss-120b";
+const FALLBACK_MODEL = "qwen/qwen3-32b";
 const TIMEOUT_MS = 25_000;
 
 // const responseCache = new Map<string, { data: any; ts: number }>();
@@ -19,7 +19,7 @@ async function callGroq(apiKey: string, messages: any[], model: string, signal: 
 
     TONE: Be polite and courteous. Be helpful without being interrogatory. Focus on solutions.
 
-    RULES: Never mention prices. Suggest products based on needs. Short point-based responses (max 3-4 bullets).
+    RULES: Never mention prices. Never mention free consultations, contact us, or promotional CTAs. Never use emojis. Suggest products based on needs. Short point-based responses (max 3-4 bullets).
 
     NAVIGATION: Use [[Button Label|/url]] when suggesting pages.
 
@@ -31,7 +31,7 @@ async function callGroq(apiKey: string, messages: any[], model: string, signal: 
     PRODUCTS: **TallyPrime Silver** (Single User), **TallyPrime Gold** (Multi-User LAN), **TallyPrime Server** (Enterprise).
     FEATURES: PrimeBanking, TallyDrive, SmartFind, Bharat Connect, e-Invoicing, GSTR-1.
 
-    Use **bold** for product names. [[Contact Page|/contact]] for expert consulting.`
+    Use **bold** for product names.`
   };
 
   return fetch('https://api.groq.com/openai/v1/chat/completions', {
@@ -87,8 +87,8 @@ export async function POST(request: Request) {
         const data = await response.json();
 
         if (response.ok && data.choices?.[0]) {
-          const content = data.choices[0].message.content;
-          // responseCache.set(key, { data: content, ts: Date.now() });
+          let content = data.choices[0].message.content;
+          content = content.replace(/<think>[\s\S]*?<\/think>/g, '').trim();
           return NextResponse.json({ message: content });
         }
 

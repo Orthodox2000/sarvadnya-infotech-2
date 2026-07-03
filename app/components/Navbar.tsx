@@ -70,18 +70,18 @@ export default function Navbar({ initialSettings }: { initialSettings?: any }) {
 
   return (
     <header className="relative z-1000 w-full border-b border-[#E5E2D9] bg-[#FAFAFA]">
-      <nav className="mx-auto flex h-12 lg:h-16 w-full max-w-full items-center justify-between px-3">
+      <nav className="mx-auto flex h-12 lg:h-16 w-full max-w-full items-center justify-between pr-3">
         <Link
           href="/"
-          className="flex items-center h-full justify-start gap-3 group transition-transform hover:scale-[1.01]"
+          className="flex items-center h-full justify-start group transition-transform hover:scale-[1.01]"
         >
-          <div className="relative block  w-72 lg:w-100 h-full shrink-0 opacity-90 group-hover:opacity-100 transition-opacity">
+          <div className="relative block h-[90%] shrink-0 ml-2 lg:ml-3 opacity-90 group-hover:opacity-100 transition-opacity">
             <Image
               src="/TallyCertificate.png"
               alt="e-consultation logo"
-              fill
-              sizes=""
-              className="object-contain"
+              width={300}
+              height={80}
+              className="h-full w-auto object-contain"
               priority
             />
           </div>  

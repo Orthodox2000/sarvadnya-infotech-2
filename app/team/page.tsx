@@ -14,9 +14,7 @@ const DEFAULTS = {
     { title: 'Collaborative Spirit', desc: 'Success is a team effort. We foster an environment where every voice matters.' },
     { title: 'Client-First Mindset', desc: 'Our team\'s primary goal is to ensure client satisfaction through efficient support.' }
   ],
-  testimonial: '"Working at Sarvadnya Infotech LLP has been an incredible journey of growth. The leadership truly cares about our professional development and work-life balance."',
-  testimonial_author: 'JD',
-  testimonial_role: 'Senior Tally Consultant'
+
 };
 
 export default function TeamPage() {
@@ -154,27 +152,7 @@ export default function TeamPage() {
         </div>
       </section>
 
-      {/* Team Review Section */}
-      <section className="py-12 px-6 sm:px-12 lg:px-24 max-w-7xl mx-auto animate-rise-up" style={{ animationDelay: '400ms' }}>
-        <div className="bg-slate-900 rounded-[2rem] p-8 md:p-12 text-white relative overflow-hidden shadow-xl">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-[#0371a3]/30 rounded-full -mr-24 -mt-24 blur-[80px]" />
-          <div className="relative z-10 max-w-2xl mx-auto text-center lg:text-left">
-            <h2 className="text-xl md:text-2xl font-black mb-6 tracking-tight text-[#0371a3]">What our team says</h2>
-            <blockquote className="text-lg md:text-xl font-medium leading-tight opacity-95 mb-6 italic">
-              {content.testimonial}
-            </blockquote>
-            <div className="flex flex-col lg:flex-row items-center gap-4">
-              <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center font-black text-sm border border-white/10 backdrop-blur-sm">
-                {content.testimonial_author.substring(0, 2).toUpperCase()}
-              </div>
-              <div className="text-center lg:text-left">
-                <p className="font-black text-base tracking-tight">{content.testimonial_role}</p>
-                <p className="text-[10px] font-bold opacity-60 uppercase tracking-widest">{content.testimonial_author}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+
 
       <Footer />
     </main>

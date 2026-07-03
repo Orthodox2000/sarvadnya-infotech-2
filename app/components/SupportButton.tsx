@@ -45,7 +45,7 @@ export default function SupportButton({ initialSettings }: { initialSettings?: a
 
   return (
     <>
-      <div className={`fixed bottom-[10%] ${isHomePage ? 'right-[30px] sm:right-0' : 'right-0'} left-auto z-[3000] flex flex-col items-end gap-[8px]`}>
+      <div className={`fixed bottom-[10%] ${isHomePage ? 'right-7.5 sm:right-0' : 'right-0'} left-auto z-[3000] flex flex-col items-end gap-[8px]`}>
         {/* Ask Sara */}
         <button
           onClick={() => setIsOpen(true)}

@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getSettings } from '@/lib/mongodb-utils';
 
-const MODEL = "llama-3.3-70b-versatile";
+const MODEL = "openai/gpt-oss-120b";
 
 export async function POST(request: Request) {
   try {
@@ -76,9 +76,8 @@ export async function POST(request: Request) {
         const data = await response.json();
         
         if (response.ok && data.choices && data.choices[0]) {
-          return NextResponse.json({ 
-            insight: data.choices[0].message.content 
-          });
+          const insight = data.choices[0].message.content.replace(/<think>[\s\S]*?<\/think>/g, '').trim();
+          return NextResponse.json({ insight });
         }
 
         if (data && data.error) {
