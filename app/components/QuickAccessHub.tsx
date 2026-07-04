@@ -79,7 +79,7 @@ export default function QuickAccessHub({ initialData, initialModules, initialSet
   }, []);
 
   return (
-    <section id="quick-access-hub" className="w-full bg-white py-16 md:py-24 px-5 border-y border-slate-100">
+    <section id="quick-access-hub" className="w-full bg-white py-16 md:py-24 px-5 border-y border-slate-100 overflow-hidden">
       <div className="max-w-7xl mx-auto">
         
         {/* Header - Centered & Clean */}

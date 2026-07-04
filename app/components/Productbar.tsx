@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, type CSSProperties } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -33,40 +33,36 @@ const Productbar = ({ initialSettings }: { initialSettings?: any }) => {
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
   const [dynamicModules, setDynamicModules] = useState<ProductSubItem[]>([]);
   const [isVisible, setIsVisible] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
+  const lastScrollYRef = useRef(0);
+  const scrollThresholdRef = useRef(0);
 
-  // Handle Scroll Behavior (Event Driven)
+  // Scroll-based hide/show with threshold — only 2 states: visible or hidden
   useEffect(() => {
-    const handleWheel = (e: WheelEvent) => {
-      if (e.deltaY > 0) {
-        setIsVisible(false);
-      } else if (e.deltaY < 0) {
-        setIsVisible(true);
-      }
-    };
-
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (['ArrowDown', 'PageDown', ' '].includes(e.key)) {
-        setIsVisible(false);
-      } else if (['ArrowUp', 'PageUp', 'Home'].includes(e.key)) {
-        setIsVisible(true);
-      }
-    };
-
-    // Keep visible at top
     const handleScroll = () => {
-      if (window.scrollY < 10) setIsVisible(true);
+      const currentScrollY = window.scrollY;
+
+      if (currentScrollY < 10) {
+        setIsVisible(true);
+        scrollThresholdRef.current = 0;
+        lastScrollYRef.current = currentScrollY;
+        return;
+      }
+
+      const diff = currentScrollY - lastScrollYRef.current;
+      scrollThresholdRef.current += Math.abs(diff);
+
+      if (scrollThresholdRef.current < 30) {
+        lastScrollYRef.current = currentScrollY;
+        return;
+      }
+
+      setIsVisible(diff <= 0);
+      scrollThresholdRef.current = 0;
+      lastScrollYRef.current = currentScrollY;
     };
 
-    window.addEventListener('wheel', handleWheel, { passive: true });
-    window.addEventListener('keydown', handleKeyDown);
     window.addEventListener('scroll', handleScroll, { passive: true });
-
-    return () => {
-      window.removeEventListener('wheel', handleWheel);
-      window.removeEventListener('keydown', handleKeyDown);
-      window.removeEventListener('scroll', handleScroll);
-    };
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   useEffect(() => {
@@ -156,10 +152,10 @@ const Productbar = ({ initialSettings }: { initialSettings?: any }) => {
 
   return (
     <div 
-      className={`w-full border-b border-[#E5E2D9] relative z-[30] flex items-center overflow-x-clip no-scrollbar transition-all duration-500 ease-in-out shadow-sm bg-[#EFEBE3] 
-        ${isVisible ? 'h-[28px] lg:h-[28px] opacity-100' : 'h-0 opacity-0 pointer-events-none'}`}
+      className={`w-full border-b border-[#E5E2D9] relative z-30 flex items-center overflow-x-clip no-scrollbar transition-all duration-500 ease-in-out shadow-sm bg-[#EFEBE3]/90 
+        ${isVisible ? 'h-7 lg:h-10 opacity-100' : 'h-0 opacity-0 pointer-events-none'}`}
     >
-      <div className="mx-auto w-full max-w-7xl px-2 sm:px-4 flex justify-center items-stretch h-full">
+      <div className="w-full max-w-7xl  flex justify-around items-stretch h-full">
         
 
         {items.map((item, index) => (
@@ -171,7 +167,7 @@ const Productbar = ({ initialSettings }: { initialSettings?: any }) => {
           >
             <button
               onClick={(e) => handleMenuToggle(e, item.label)}
-              className={`flex items-center gap-1 lg:gap-3.5 px-1.5 lg:px-7 text-[8.5px] lg:text-[13.5px] font-bold transition-all h-full
+              className={`flex items-center gap-1 lg:gap-3.5 px-1.5 lg:px-5 text-[8.5px] lg:text-[13.5px] font-bold transition-all h-full
                 ${activeMenu === item.label ? 'text-[#316852] bg-white' : 'text-gray-800 hover:bg-slate-50'}`}
             >
               <span className="opacity-100 scale-90 lg:scale-110">
@@ -190,7 +186,7 @@ const Productbar = ({ initialSettings }: { initialSettings?: any }) => {
             {/* Megamenu Content */}
             {activeMenu === item.label && item.subItems && (
               <div 
-                className={`absolute top-full w-[90vw] sm:w-screen max-w-[280px] sm:max-w-[480px] animate-in fade-in slide-in-from-top-1 duration-200 pointer-events-auto
+                className={`absolute top-full w-[90vw] sm:w-screen max-w-70 sm:max-w-120 animate-in fade-in slide-in-from-top-1 duration-200 pointer-events-auto
                   ${index <= 1 ? '-left-2 sm:left-0' : index >= 3 ? '-right-2 sm:right-0' : 'left-1/2 -translate-x-1/2'}
                 `}
                 onClick={(e) => e.stopPropagation()}

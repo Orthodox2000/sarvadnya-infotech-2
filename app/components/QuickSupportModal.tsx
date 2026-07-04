@@ -22,7 +22,7 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      text: "Hello! I'm Sara, your Sarvadnya Assistant. I can help you automate your business with Tally—feel free to ask your questions!",
+      text: "Hello! I'm Sara, your Sarvadnya Infotech LLP Assistant. I can help you automate your business with Tally—feel free to ask your questions!",
       sender: 'ai',
       timestamp: new Date(),
       showAudioPrompt: true
@@ -160,16 +160,18 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
     }
 
     const lines = fullText.split('\n');
-    
+    const isMobile = window.innerWidth < 640;
+    const revealDelay = isMobile ? 15 : 10;
+    const chunkSize = isMobile ? 3 : 4;
+
     for (let i = 0; i < lines.length; i++) {
       let partial = '';
-      const chunk = 4;
-      for (let c = 0; c < lines[i].length; c += chunk) {
-        partial += lines[i].slice(c, c + chunk);
+      for (let c = 0; c < lines[i].length; c += chunkSize) {
+        partial += lines[i].slice(c, c + chunkSize);
         const prevText = lines.slice(0, i).join('\n');
         const displayed = prevText + (i > 0 ? '\n' : '') + partial;
         setMessages(prev => prev.map(m => m.id === id ? { ...m, text: displayed } : m));
-        await new Promise(resolve => setTimeout(resolve, 7));
+        await new Promise(resolve => setTimeout(resolve, revealDelay));
       }
     }
     
@@ -257,6 +259,20 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
     if (!inputText.trim() || isTyping || isAiResponding) return;
 
     const userText = inputText.trim();
+
+    const injectionPatterns = [
+      /ignore\s+(all\s+)?previous/i, /ignore\s+(all\s+)?instructions/i,
+      /reveal\s+(your\s+)?(system\s+)?prompt/i,
+      /output\s+(your\s+)?(system\s+)?(instructions|prompt)/i,
+      /act\s+as\s+(?!sara)/i, /pretend\s+(you\s+are|to\s+be)/i,
+      /forget\s+(all\s+)?(previous|instructions)/i,
+      /new\s+(instructions|prompt)/i,
+    ];
+    if (injectionPatterns.some(p => p.test(userText))) {
+      await typeMessage("I'm here to help with Tally and business solutions. How can I assist you with your TallyPrime setup, features, or services today?");
+      return;
+    }
+
     setInputText('');
     await processChatMessage(userText);
   };
