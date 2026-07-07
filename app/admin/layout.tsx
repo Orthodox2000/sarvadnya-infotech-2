@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useRouter, usePathname } from 'next/navigation';
 import AdminSidebar from './AdminSidebar';
 
 export default function AdminLayout({
@@ -8,7 +9,51 @@ export default function AdminLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const router = useRouter();
+  const pathname = usePathname();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [checking, setChecking] = useState(true);
+
+  useEffect(() => {
+    if (pathname === '/admin/login') {
+      setChecking(false);
+      return;
+    }
+
+    const checkSession = async () => {
+      try {
+        const res = await fetch('/api/admin/session');
+        if (!res.ok) {
+          router.replace('/admin/login');
+        }
+      } catch {
+        router.replace('/admin/login');
+      } finally {
+        setChecking(false);
+      }
+    };
+
+    checkSession();
+  }, [pathname, router]);
+
+  if (pathname === '/admin/login') {
+    return <>{children}</>;
+  }
+
+  if (checking) {
+    return (
+      <div className="min-h-screen bg-slate-950 flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-black tracking-tighter text-white">
+            ADMIN<span className="text-[#00ABE4]">PANEL</span>
+          </h1>
+          <p className="text-slate-400 text-xs font-bold uppercase tracking-widest mt-2">
+            Checking session...
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex min-h-screen bg-slate-50 relative overflow-hidden">

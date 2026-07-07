@@ -1,49 +1,51 @@
 import { cookies } from 'next/headers';
+import crypto from 'crypto';
 
-const COOKIE_NAME = '__admin_token';
-const TOKEN_EXPIRY = 24 * 60 * 60 * 1000; // 24 hours
+const COOKIE_NAME = '__admin_session';
+const ADMIN_USERNAME = 'admin';
+const ADMIN_PASSWORD = 'admin';
 
-function getSecret(): string {
-  return process.env.ADMIN_ACCESS_KEY || process.env.NEXTAUTH_SECRET || 'fallback-dev-key-change-in-production';
+const sessions = new Map<string, { username: string; createdAt: number }>();
+
+export function validateCredentials(username: string, password: string): boolean {
+  return username === ADMIN_USERNAME && password === ADMIN_PASSWORD;
 }
 
-function base64Encode(str: string): string {
-  return Buffer.from(str).toString('base64url');
+export function createSession(): string {
+  const sessionId = crypto.randomUUID();
+  sessions.set(sessionId, { username: ADMIN_USERNAME, createdAt: Date.now() });
+  return sessionId;
 }
 
-function base64Decode(str: string): string {
-  return Buffer.from(str, 'base64url').toString('utf-8');
+export function verifySession(sessionId: string): boolean {
+  return sessions.has(sessionId);
 }
 
-export function generateToken(): string {
-  const secret = getSecret();
-  const payload = JSON.stringify({ t: Date.now(), s: secret });
-  return base64Encode(payload);
+export function destroySession(sessionId: string): void {
+  sessions.delete(sessionId);
 }
 
-export function verifyToken(token: string): boolean {
-  try {
-    const secret = getSecret();
-    const payload = JSON.parse(base64Decode(token));
-    if (payload.s !== secret) return false;
-    if (Date.now() - payload.t > TOKEN_EXPIRY) return false;
-    return true;
-  } catch {
-    return false;
-  }
-}
-
-export function getAdminKey(): string | null {
-  return process.env.ADMIN_ACCESS_KEY || null;
-}
-
-export async function setAdminCookie() {
+export async function setSessionCookie(sessionId: string) {
   const cookieStore = await cookies();
-  cookieStore.set(COOKIE_NAME, generateToken(), {
+  cookieStore.set(COOKIE_NAME, sessionId, {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'strict',
     path: '/',
-    maxAge: TOKEN_EXPIRY / 1000,
+    maxAge: 86400,
   });
+}
+
+export async function clearSessionCookie() {
+  const cookieStore = await cookies();
+  cookieStore.delete(COOKIE_NAME);
+}
+
+export async function getSessionFromCookie(): Promise<string | null> {
+  const cookieStore = await cookies();
+  const sessionId = cookieStore.get(COOKIE_NAME)?.value;
+  if (sessionId && verifySession(sessionId)) {
+    return sessionId;
+  }
+  return null;
 }

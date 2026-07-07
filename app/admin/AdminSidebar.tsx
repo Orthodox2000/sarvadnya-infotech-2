@@ -112,7 +112,7 @@ const AdminSidebar = ({ isOpen, onClose }: AdminSidebarProps) => {
           ))}
         </nav>
 
-        <div className="mt-auto pt-6 border-t border-white/5">
+        <div className="mt-auto pt-6 border-t border-white/5 space-y-1.5">
           <Link
             href="/"
             className="flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-[#00ABE4] transition-colors group"
@@ -122,6 +122,18 @@ const AdminSidebar = ({ isOpen, onClose }: AdminSidebarProps) => {
             </svg>
             <span className="font-black text-[10px] uppercase tracking-widest">Exit Admin</span>
           </Link>
+          <button
+            onClick={async () => {
+              await fetch('/api/admin/logout', { method: 'POST' });
+              window.location.href = '/admin/login';
+            }}
+            className="w-full flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-red-400 transition-colors group"
+          >
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+            </svg>
+            <span className="font-black text-[10px] uppercase tracking-widest">Sign Out</span>
+          </button>
         </div>
       </aside>
     </>

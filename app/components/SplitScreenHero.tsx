@@ -10,7 +10,7 @@ export default function SplitScreenHero() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
-    <main className="flex min-h-[calc(100svh-7rem)] w-full items-stretch justify-start bg-[#f9fafb]">
+    <main className="flex min-h-[calc(100svh-7rem)] w-full items-stretch justify-start bg-[#f9fafb] bg-[url('/bg.png')] bg-cover bg-center bg-no-repeat">
       <QuickSupportModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
       
       <section className="relative min-h-[calc(100svh-7rem)] w-full overflow-hidden border-b border-slate-200 shadow-[0_24px_70px_rgba(15,23,42,0.08)]">

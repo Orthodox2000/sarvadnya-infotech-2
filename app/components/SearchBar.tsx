@@ -27,19 +27,27 @@ export default function SearchBar() {
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
           placeholder="Search Sarvadnya..."
-          className="w-full bg-gray-100 border border-gray-300 rounded-lg py-2 pl-9 pr-4 text-[11px] text-[#4A4A4A] placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#316852]/30 focus:border-[#316852] transition-all"
+          className={`w-full bg-white border border-[#316852]/30 rounded-lg py-2 text-[11px] text-[#4A4A4A] placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#316852]/30 focus:border-[#316852] transition-all shadow-sm focus:placeholder:text-transparent ${isFocused ? 'pl-9 pr-20' : 'pl-4 pr-20'}`}
         />
         <button 
           type="submit"
           title="Search"
-          className={`absolute left-2.5 top-1/2 -translate-y-1/2 transition-all duration-200 flex items-center gap-1 ${isFocused ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-3 pointer-events-none'}`}
+          className={`absolute left-2.5 top-1/2 -translate-y-1/2 transition-all duration-200 flex items-center ${isFocused ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-3 pointer-events-none'}`}
         >
-          <span className="w-4 h-4 text-gray-400 hover:text-[#316852]">
+          <span className="w-4 h-4 text-[#316852]">
             <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
           </span>
-          <span className="text-[10px] font-black uppercase tracking-wider text-[#316852]">Search</span>
+        </button>
+        <button 
+          type="submit"
+          className="absolute right-1.5 top-1/2 -translate-y-1/2 bg-[#316852] text-white rounded-md px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider hover:bg-[#245a40] transition-all shadow-sm flex items-center gap-1"
+        >
+          <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+          Search
         </button>
       </div>
     </form>

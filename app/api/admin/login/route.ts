@@ -1,21 +1,17 @@
 import { NextResponse } from 'next/server';
-import { setAdminCookie } from '@/lib/admin-auth';
+import { validateCredentials, createSession, setSessionCookie } from '@/lib/admin-auth';
 
 export async function POST(request: Request) {
   try {
-    const { key } = await request.json();
-    const adminKey = process.env.ADMIN_ACCESS_KEY;
+    const { username, password } = await request.json();
 
-    if (!adminKey) {
-      return NextResponse.json({ error: 'Admin API key not configured on server' }, { status: 500 });
+    if (!validateCredentials(username, password)) {
+      return NextResponse.json({ error: 'Invalid username or password' }, { status: 401 });
     }
 
-    if (!key || key !== adminKey) {
-      return NextResponse.json({ error: 'Invalid API key' }, { status: 401 });
-    }
-
-    await setAdminCookie();
-    return NextResponse.json({ success: true, message: 'Admin session set' });
+    const sessionId = createSession();
+    await setSessionCookie(sessionId);
+    return NextResponse.json({ success: true, message: 'Logged in', sessionId });
   } catch {
     return NextResponse.json({ error: 'Invalid request' }, { status: 400 });
   }

@@ -152,8 +152,8 @@ const Productbar = ({ initialSettings }: { initialSettings?: any }) => {
 
   return (
     <div 
-      className={`w-full border-b border-[#E5E2D9] relative z-30 flex items-center overflow-x-clip no-scrollbar transition-all duration-500 ease-in-out shadow-sm bg-[#EFEBE3]/90 
-        ${isVisible ? 'h-7 lg:h-10 opacity-100' : 'h-0 opacity-0 pointer-events-none'}`}
+      className={`w-full border-b border-[#E5E2D9] relative z-30 flex items-center no-scrollbar transition-opacity duration-300 ease-in-out shadow-sm bg-[#EFEBE3] h-7 lg:h-10
+        ${isVisible ? 'opacity-100' : 'opacity-0 pointer-events-none invisible'}`}
     >
       <div className="w-full max-w-7xl  flex justify-around items-stretch h-full">
         

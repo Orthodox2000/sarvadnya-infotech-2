@@ -181,7 +181,7 @@ export default function Navbar({ initialSettings }: { initialSettings?: any }) {
           </div>
           */}
 
-          <div className="block lg:hidden">
+          <div className="block lg:hidden bg-white border border-[#E5E2D9] rounded-lg p-2">
             <SearchBar />
           </div>
 

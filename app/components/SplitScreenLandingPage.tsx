@@ -11,10 +11,10 @@ export default function SplitScreenLandingPage() {
   const [formData, setFormData] = useState({ name: '', phone: '' });
 
   return (
-    <main className="flex min-h-[calc(100svh-7rem)] w-full items-stretch justify-start">
+    <main className="flex min-h-[calc(100svh-7rem)] w-full items-stretch justify-start bg-[url('/bg.png')] bg-cover bg-center bg-no-repeat bg-white">
       <QuickSupportModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
       
-      <section className="relative min-h-[calc(100svh-7rem)] w-full overflow-hidden border border-slate-200 bg-white shadow-[0_24px_70px_rgba(15,23,42,0.16)]">        
+      <section className="relative min-h-[calc(100svh-7rem)] w-full overflow-hidden border border-slate-200 bg-white bg-[url('/bg.png')] bg-cover bg-center bg-no-repeat shadow-[0_24px_70px_rgba(15,23,42,0.16)]">        
         <div className="relative min-h-[26rem] sm:min-h-[30rem] md:min-h-[calc(100svh-7rem)]">
           <HeroPolygonLeft />
           <HeroPolygonRight />

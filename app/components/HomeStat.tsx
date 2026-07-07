@@ -132,7 +132,7 @@ export default function HomeStat({ initialData }: { initialData?: any[] }) {
   return (
     <section 
       ref={sectionRef}
-      className="w-full py-4 sm:py-4 border-y border-[#E9F1FA] transition-colors duration-300 bg-[#f7f8f8]"
+      className="w-full  border-y border-[#E9F1FA] transition-colors duration-300 bg-[#f7f8f8]"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="grid grid-cols-3 gap-1 divide-x divide-[#E9F1FA]">
