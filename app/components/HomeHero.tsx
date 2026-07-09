@@ -274,27 +274,33 @@ export default function HomeHero({ initialData, variant = 'standard' }: { initia
   const typingIndexRef = useRef(0);
   const typingTextRef = useRef('');
 
+  // [CAROUSEL DISABLED] Auto-slide logic commented out — single slide only
+  // useEffect(() => {
+  //   if (heroContents.length <= 1) return;
+  //   const runCarousel = () => {
+  //     timerRef.current = setTimeout(() => {
+  //       if (document.hidden) { runCarousel(); return; }
+  //       setIsExiting(true);
+  //       setIsEntering(false);
+  //       setTimeout(() => {
+  //         setStableIndex((prev) => (prev + 1) % heroContents.length);
+  //         setTimeout(() => {
+  //           setIsExiting(false);
+  //           setIsEntering(true);
+  //           runCarousel();
+  //         }, 150);
+  //       }, 800);
+  //     }, 1500050);
+  //   };
+  //   const initialEntry = setTimeout(() => setIsEntering(true), 100);
+  //   runCarousel();
+  //   return () => { if (timerRef.current) clearTimeout(timerRef.current); clearTimeout(initialEntry); };
+  // }, [heroContents.length]);
+
   useEffect(() => {
-    if (heroContents.length <= 1) return;
-    const runCarousel = () => {
-      timerRef.current = setTimeout(() => {
-        if (document.hidden) { runCarousel(); return; }
-        setIsExiting(true);
-        setIsEntering(false);
-        setTimeout(() => {
-          setStableIndex((prev) => (prev + 1) % heroContents.length);
-          setTimeout(() => {
-            setIsExiting(false);
-            setIsEntering(true);
-            runCarousel();
-          }, 150);
-        }, 800);
-      }, 150050);
-    };
-    const initialEntry = setTimeout(() => setIsEntering(true), 100);
-    runCarousel();
-    return () => { if (timerRef.current) clearTimeout(timerRef.current); clearTimeout(initialEntry); };
-  }, [heroContents.length]);
+    const t = setTimeout(() => setIsEntering(true), 100);
+    return () => clearTimeout(t);
+  }, []);
 
   const current = heroContents[stableIndex] || DEFAULT_HERO[0];
 
@@ -373,7 +379,7 @@ export default function HomeHero({ initialData, variant = 'standard' }: { initia
 
   return (
     <>
-    <main suppressHydrationWarning className={`relative w-full bg-[#fbfaf8] bg-[url('/bg.png')] bg-cover bg-center bg-no-repeat min-h-[20rem] sm:min-h-[26rem] md:min-h-[calc(100svh-7rem)] lg:min-h-[700px]  flex flex-col`}>
+    <main suppressHydrationWarning className={`relative w-full bg-[#fbfaf8] bg-[url('/bg.png')] bg-cover bg-center bg-no-repeat min-h-[20rem] sm:min-h-[26rem] md:min-h-[400px] lg:min-h-[500px]  flex flex-col`}>
       <div className="absolute -z-[100] invisible h-0 w-0 overflow-hidden pointer-events-none">
         {heroContents.map((content, idx) => (
           <div key={`preload-wrap-${idx}`} className="relative h-1 w-1">
@@ -389,20 +395,20 @@ export default function HomeHero({ initialData, variant = 'standard' }: { initia
       </div>
 
       {/* Hero main row */}
-      <div className="relative z-10 flex items-center">
+      <div className="relative z-10 flex items-center h-[400px]">
         <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-0 pb-6 lg:pb-0">
-          <div className="flex flex-col lg:flex-row items-end lg:pb-4 gap-8 lg:gap-16">
+          <div className="flex flex-col lg:flex-row items-center lg:mt-8 lg:pb-4 gap-8 lg:gap-16">
             
             {/* Left: Content */}
-            <div key={`content-${stableIndex}`} className="w-full lg:w-1/2 space-y-5 lg:space-y-6">
-              <div className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#558273] shadow-sm ${getAnimationClasses('delay-0')}`}>
+            <div key={`content-${stableIndex}`} className="w-full lg:w-1/2 space-y-3 lg:space-y-4">
+              <div className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#316852] shadow-sm ${getAnimationClasses('delay-0')}`}>
                 <span className="flex h-2 w-2 rounded-full animate-pulse bg-white/60" />
                 <span className="text-[9px] font-black uppercase tracking-[0.2em] text-white">{current.badge}</span>
               </div>
 
               <div className={`relative min-h-[70px] md:min-h-[60px] ${getAnimationClasses('delay-200')}`}>
-                <h1 className="text-4xl md:text-5xl lg:text-5xl font-black text-[#2a2d34] leading-tight tracking-tight invisible">{current.titleText}</h1>
-                <h1 className="absolute top-0 left-0 text-4xl md:text-5xl lg:text-5xl font-black text-[#2a2d34] leading-tight tracking-tight w-full flex flex-wrap items-baseline">
+                <h1 className="text-4xl font-[900] text-[#2a2d34] leading-tight tracking-tight invisible">{current.titleText}</h1>
+                <h1 className="absolute top-0 left-0 text-4xl font-[900] text-[#2a2d34] leading-tight tracking-tight w-full flex flex-wrap items-baseline">
                   {displayText.split(' ').map((word, i) => {
                     const cleanWord = word.replace(/[.,%]/g, '').toLowerCase();
                     const titleLower = (current.titleText || '').toLowerCase();
@@ -426,20 +432,20 @@ export default function HomeHero({ initialData, variant = 'standard' }: { initia
                     return (
                       <span key={i} className="contents">
                         {shouldBreak && <div className="basis-full h-0" />}
-                        <span className={isHighlight ? "text-[#558273]" : ""}>
+                        <span className={isHighlight ? "text-[#316852]" : ""}>
                           {word}&nbsp;
                         </span>
                       </span>
                     );
                   })}
-                  {isTyping && <span className="inline-block w-1 h-7 md:h-10 ml-0.5 animate-pulse bg-[#558273]" />}
+                  {isTyping && <span className="inline-block w-1 h-7 md:h-10 ml-0.5 animate-pulse bg-[#316852]" />}
                 </h1>
               </div>
 
-              <p className={`text-sm md:text-base text-[#4a5056] max-w-xl leading-relaxed font-medium ${getAnimationClasses('delay-300')}`}>{current.description}</p>
+              <p className={`text-sm md:text-[15px] text-[#4a5056] max-w-xl leading-relaxed font-medium ${getAnimationClasses('delay-300')}`}>{current.description}</p>
 
               <div className={`flex flex-wrap gap-3 pt-1 ${getAnimationClasses('delay-500')}`}>
-                <Link href="/#quick-access-hub" className="group relative overflow-hidden px-6 py-3 rounded-xl bg-[#558273] text-white font-bold text-xs uppercase tracking-wide transition-all duration-500 ease-in-out hover:bg-[#4a7a6a] hover:scale-[1.03] active:scale-95 shadow-md">
+                <Link href="/#quick-access-hub" className="group relative overflow-hidden px-6 py-3 rounded-xl bg-[#316852] text-white font-bold text-xs uppercase tracking-wide transition-all duration-500 ease-in-out hover:bg-[#4a7a6a] hover:scale-[1.03] active:scale-95 shadow-md">
                   <span className="relative z-10">View Solutions</span>
                   <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
                 </Link>
@@ -459,10 +465,10 @@ export default function HomeHero({ initialData, variant = 'standard' }: { initia
             </div>
 
             {/* Right: Image */}
-            <div key={`visual-${stableIndex}`} className="hidden lg:flex lg:w-1/2 relative items-center justify-center px-4 xl:px-8 lg:-mt-8 z-10">
+            <div key={`visual-${stableIndex}`} className="hidden lg:flex lg:w-1/2 relative items-center justify-center px-4 xl:px-8 lg:-mt-38 max-md:-mt-20 z-10">
               <div className="relative w-full max-w-[700px] group">
                 {current.layout === 'single' ? (
-                  <div className={`relative w-full aspect-[3/4] max-h-[550px] 
+                  <div className={`relative w-full aspect-[3/4] max-h-[550px] md:h-[500px]
                     ${isExiting ? 'opacity-0 scale-90 translate-y-12 transition-all duration-[800ms]' : isEntering ? 'opacity-100 transition-all duration-1200' : 'opacity-0 translate-y-4'}`}>
                     <Image src={current.image} alt={current.titleText} fill className="mt-20 object-contain" sizes="(max-width: 1024px) 100vw, 480px" priority />
                   </div>
@@ -513,8 +519,8 @@ export default function HomeHero({ initialData, variant = 'standard' }: { initia
         </div>
       </div>
 
-      {/* Navigation arrows */}
-      <button
+      {/* Navigation arrows — commented out, single slide only */}
+      {/* <button
         onClick={() => setStableIndex(prev => (prev - 1 + heroContents.length) % heroContents.length)}
         className="absolute left-4 sm:left-2 top-1/2 -translate-y-1/2 z-40 w-8 h-8 flex items-center justify-center rounded-full bg-white/70 backdrop-blur-md text-[#558273] border border-gray-200/60 hover:bg-white active:scale-90 transition-all shadow-sm"
         title="Previous slide"
@@ -527,18 +533,31 @@ export default function HomeHero({ initialData, variant = 'standard' }: { initia
         title="Next slide"
       >
         <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
-      </button>
+      </button> */}
 
-      <button
+      {/* <button
         onClick={addDevSlide}
         className="fixed top-2 right-4 sm:right-12 z-[999] px-2 py-1 text-[9px] font-bold uppercase tracking-wider bg-yellow-400 text-black rounded-md shadow-lg hover:bg-yellow-300 active:scale-95 border border-yellow-500/50"
         title="Add a new dev hero slide"
       >
         + Dev
-      </button>
+      </button> */}
+
+      {/* Mobile: Hero Image */}
+      <div className="lg:hidden relative w-full max-w-sm mx-auto px-4 -mt-4 mb-2">
+        <div className="relative w-full aspect-square">
+          <Image
+            src={current.image}
+            alt={current.titleText}
+            fill
+            className="object-contain"
+            sizes="(max-width: 1024px) 100vw, 0px"
+          />
+        </div>
+      </div>
 
       {/* QuickAccess Cards */}
-      <div className="relative z-30  pb-4 lg:pb-8">
+      <div className="relative z-30 -mt-12 lg:mt-0 lg:pt-4 pb-4 lg:pb-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-6">
             {QUICK_ACCESS_CARDS.map((card, idx) => (

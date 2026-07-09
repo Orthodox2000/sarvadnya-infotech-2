@@ -40,7 +40,7 @@ const FAQ = ({ initialData, initialSettings }: { initialData?: any[], initialSet
     );
 
     return (
-        <section ref={sectionRef} className="w-full py-16 md:py-20 bg-white">
+        <section ref={sectionRef} className="w-full py-16 md:py-20 bg-[linear-gradient(90deg,_rgba(249,251,245,1)_0%,_rgba(244,242,234,1)_53%,_rgba(238,236,223,1)_100%)]">
             <div className="max-w-[800px] mx-auto flex flex-col items-center px-6">
                 <h2 className="text-[32px] font-semibold text-[#1C1B1B] text-center mb-10">
                     Frequently Asked Questions
