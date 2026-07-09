@@ -6,15 +6,12 @@ import Footer from "../../components/Footer";
 import UnifiedContactModal, { FormType } from "../../components/UnifiedContactModal";
 import Link from 'next/link';
 
-type ComparisonCard = {
+type Product = {
   name: string;
-  type: string;
-  summary: string;
-  includes: string;
+  description: string;
   tags: string[];
   link: string;
-  cardClass: string;
-  stripClass: string;
+  logo: string;
 };
 
 export default function ProductsPage() {
@@ -29,138 +26,103 @@ export default function ProductsPage() {
     setModalConfig({ isOpen: true, type, service, details });
   };
 
-  const products: ComparisonCard[] = [
+  const products: Product[] = [
     {
       name: "TallyPrime Silver",
-      type: "For one user",
-      summary: "Core accounting, inventory, GST, and reporting for one workstation.",
-      includes: "a single owner or operator who manages everything alone.",
-      tags: ["1 user", "Single PC"],
-      cardClass: "bg-white border-slate-200",
-      stripClass: "bg-[#316852]",
-      link: "/products/silver"
+      description: "TallyPrime Silver is meant to complete transactions, assignments and emerge business.",
+      tags: ["FOR ONE USER", "SUITED FOR", "1 USER PC"],
+      link: "/products/silver",
+      logo: "/tallyprime logo.png"
     },
     {
       name: "TallyPrime Gold",
-      type: "For shared teams",
-      summary: "All Silver features plus shared LAN access for teams working on the same data.",
-      includes: "small offices where sales, accounts, and purchase teams share one company file.",
-      tags: ["Silver included", "Shared LAN"],
-      cardClass: "bg-white border-slate-200",
-      stripClass: "bg-[#316852]",
-      link: "/products/gold"
+      description: "TallyPrime Gold offers simultaneous access, assignments and emerge business for teams.",
+      tags: ["SUITED FOR", "SHARED LAN", "MULTI USER"],
+      link: "/products/gold",
+      logo: "/tallyprime logo.png"
     },
     {
       name: "TallyPrime Server",
-      type: "For bigger teams",
-      summary: "All Gold and Silver features plus faster shared access, tighter control, and user logs.",
-      includes: "larger MSMEs that need more control across users and branches.",
-      tags: ["Gold included", "Access logs"],
-      cardClass: "bg-white border-slate-200",
-      stripClass: "bg-[#316852]",
-      link: "/products/server"
+      description: "TallyPrime Server is a robust and complete professional, automatic, and eminent business solution.",
+      tags: ["BIGGER TEAMS", "ACCESS LOGS", "ADVANCED"],
+      link: "/products/server",
+      logo: "/tallyprime logo.png"
     },
     {
       name: "TallyDrive",
-      type: "Cloud backup",
-      summary: "Automated encrypted cloud backups for TallyPrime with scheduling, restore, and management.",
-      includes: "any TallyPrime user who wants automatic, encrypted backup protection.",
-      tags: ["AES-256", "Scheduled"],
-      cardClass: "bg-white border-slate-200",
-      stripClass: "bg-[#316852]",
-      link: "/products/tallydrive"
+      description: "TallyDrive is a simple way to connect with recreate and protections for your data.",
+      tags: ["AES-256", "SCHEDULED", "CLOUD BACKUP"],
+      link: "/products/tallydrive",
+      logo: "/tallyprime logo.png"
     }
   ];
 
   return (
-    <div className="min-h-screen bg-[#C0C0C0]/15">
-      {/* Hero Section (Radiant Sky Theme) */}
-      <section className="bg-white relative pt-12 pb-16 px-6 overflow-hidden border-b border-[#316852]/10"> 
-        <div className="absolute inset-0 opacity-40 pointer-events-none">
-          <div className="absolute top-0 right-0 w-[60%] h-[60%] bg-white/40 blur-[130px] -mr-32 -mt-32" />
-          <div className="absolute bottom-0 left-0 w-[40%] h-[40%] bg-[#316852]/10 blur-[110px] -ml-24 -mb-24" />
-        </div>
-        
-        <div className="max-w-4xl mx-auto text-center relative z-10">
-          
-          <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-yellow-400/10 border border-yellow-500/20 text-yellow-600 text-[10px] font-black uppercase tracking-[0.2em] mb-8 backdrop-blur-sm">
-            <span className="flex h-1.5 w-1.5 rounded-full bg-yellow-500 animate-pulse"></span>
-            Official TallyPrime Partner
-          </div>
-          <h1 className="text-4xl md:text-6xl font-black text-slate-900 mb-6 leading-tight tracking-tight">
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#316852] via-[#4a9e7a] to-[#316852] drop-shadow-[0_2px_15px_rgba(49,104,82,0.2)]">TallyPrime</span> <br />
-            Editions & Licensing
+    <div className="min-h-screen bg-[#F9F9F7] font-sans antialiased">
+
+      <div className="bg-[url('/mobilebg.png')] md:bg-[url('/cardbg.png')] bg-cover bg-center bg-no-repeat">
+        {/* Header */}
+        <section className="relative z-10 pt-16 pb-6 md:pt-16 md:pb-8 px-6 max-w-7xl mx-auto">
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 tracking-tight mb-4">
+            Official Tally Products
           </h1>
-          <p className="text-slate-600/80 text-sm md:text-xl max-w-xl mx-auto leading-relaxed font-semibold">
-            Choose the right edition of TallyPrime designed to scale with your business complexity and user requirements.
-          </p>
-        </div>
-      </section>
+        </section>
 
-      {/* Comparison Grid */}
-      <section id="compare" className="py-20 px-6 max-w-7xl mx-auto">
-        <h2 className="text-3xl md:text-5xl font-black text-slate-900 tracking-tight mb-10">
-          Official Tally Products
-        </h2>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-4">
-          {products.map((p) => (
-            <div
-              key={p.name}
-              className={`relative overflow-hidden rounded-[1.5rem] border p-4 md:p-[18px] flex flex-col shadow-sm hover:shadow-xl hover:border-[#316852]/30 hover:-translate-y-1 transition-all duration-300 ${p.cardClass} min-h-[19rem] md:min-h-[20.5rem]`}
-            >
-              <div className={`absolute inset-x-0 top-0 h-1 ${p.stripClass}`} />
-
-              <div className="relative mb-4">
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white border border-slate-200 text-[10px] font-black uppercase tracking-[0.18em] text-slate-500">
-                  {p.type}
-                </span>
-                <h3 className="mt-3 text-lg md:text-xl font-black text-slate-900 tracking-tight">
-                  {p.name}
-                </h3>
-                {/* <p className="mt-2 text-[13px] leading-snug text-slate-600">
-                  {p.summary}
-                </p> */}
-              </div>
-
-              <div className="rounded-2xl bg-slate-50 border border-slate-100 p-3 mb-3.5">
-                <div className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-1.5">
-                  Suited for
+        {/* Cards Grid */}
+        <section className="relative z-10 px-6 pb-16 md:pb-16 max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {products.map((p) => (
+              <div
+                key={p.name}
+                className="bg-white rounded-2xl p-6 shadow-[0_12px_40px_-10px_rgba(0,0,0,0.15)] border border-gray-100 flex flex-col h-full hover:-translate-y-1 transition-all duration-300"
+              >
+                <div className="flex items-start mb-4">
+                  <div className="w-12 h-12 rounded-lg overflow-hidden bg-white shrink-0 mr-3 flex items-center justify-center border border-gray-100">
+                    <Image src={p.logo} alt={p.name} width={48} height={48} className="object-contain w-full h-full" />
+                  </div>
+                  <h3 className="text-lg font-bold text-gray-900 leading-tight">
+                    {p.name.split(' ').map((word, i) => (
+                      <span key={i}>
+                        {word}
+                      </span>
+                    ))}
+                  </h3>
                 </div>
-                <p className="text-[13px] text-slate-700 leading-snug">
-                  {p.includes}
+
+                <p className="text-gray-600 text-sm mb-5 flex-grow leading-relaxed">
+                  {p.description}
                 </p>
-              </div>
 
-              <div className="flex flex-wrap gap-1.5 mb-4">
-                {p.tags.map((tag) => (
-                  <span
-                    key={tag}
-                    className="inline-flex items-center rounded-full border border-slate-200 bg-white px-2 py-1 text-[10px] font-bold uppercase tracking-[0.12em] text-slate-500"
+                <div className="flex flex-wrap gap-2 mb-6">
+                  {p.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="bg-[#EBF2F7] text-[#4A6478] text-[10px] font-bold px-2 py-1 rounded-md tracking-wider uppercase"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+
+                <div className="flex flex-col gap-2 mt-auto">
+                  <button
+                    onClick={() => openModal('quote', p.name, p.description)}
+                    className="w-full bg-[#1A4731] hover:bg-[#123323] text-white font-semibold py-2.5 rounded-lg transition-colors text-sm tracking-wide"
                   >
-                    {tag}
-                  </span>
-                ))}
+                    REQUEST QUOTE
+                  </button>
+                  <Link
+                    href={p.link}
+                    className="w-full bg-[#EAF2ED] hover:bg-[#dcede3] text-[#1A4731] border border-[#C5DACF] font-semibold py-2.5 rounded-lg transition-colors text-sm tracking-wide text-center"
+                  >
+                    KNOW MORE
+                  </Link>
+                </div>
               </div>
-
-              <div className="mt-auto flex gap-3">
-                <button
-                  onClick={() => openModal('quote', p.name, p.summary)}
-                  className="flex-1 rounded-xl bg-[#316852] py-2.5 text-[10px] font-black uppercase tracking-[0.14em] text-white transition-colors hover:bg-[#1e4d3a]"
-                >
-                  Request Quote
-                </button>
-                <Link
-                  href={p.link}
-                  className="flex-1 rounded-xl border border-slate-200 bg-white py-2.5 text-center text-[10px] font-black uppercase tracking-[0.14em] text-slate-700 transition-colors hover:bg-slate-50"
-                >
-                  Know More
-                </Link>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
+            ))}
+          </div>
+        </section>
+      </div>
 
       <UnifiedContactModal 
         isOpen={modalConfig.isOpen} 

@@ -173,7 +173,7 @@ const Productbar = ({ initialSettings }: { initialSettings?: any }) => {
               <span className="opacity-100 scale-90 lg:scale-110">
                 {iconMap[item.label]}
               </span>
-              <span className="tracking-tighter">{item.label}</span>
+              <span className="tracking-normal">{item.label}</span>
               <svg 
                 className={`w-2 h-2 lg:w-2.5 lg:h-2.5 transition-transform duration-300 opacity-70 ${activeMenu === item.label ? 'rotate-180 opacity-100' : ''}`} 
                 viewBox="0 0 20 20" 

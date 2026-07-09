@@ -6,16 +6,72 @@ import Link from 'next/link';
 import Footer from "../../components/Footer";
 import UnifiedContactModal, { FormType } from "../../components/UnifiedContactModal";
 
-type CloudCard = {
-  name: string;
-  type: string;
-  summary: string;
-  includes: string;
-  tags: string[];
-  link: string;
-  cardClass: string;
-  stripClass: string;
+const TAG_STYLES: Record<string, { bg: string; txt: string }> = {
+  green: { bg: '#dcf0e0', txt: '#2b6338' },
+  blue: { bg: '#d0e5fb', txt: '#29548f' },
+  purple: { bg: '#dcd1f3', txt: '#4f3183' },
+  yellow: { bg: '#f6e4bd', txt: '#85601c' },
 };
+
+const cards = [
+  {
+    name: 'AWS Cloud Server',
+    icon: (
+      <span className="inline-flex items-center justify-center w-9 h-9 rounded-full bg-white/20 text-white text-[10px] font-black tracking-wider">AWS</span>
+    ),
+    link: '/cloud/aws',
+    features: [
+      'Hosted Tally on AWS for 24/7 remote access with backups.',
+      'Best for businesses that need always-on, secure access to Tally from any device.',
+    ],
+    tags: [
+      { label: 'AWS INFRA', color: 'green' },
+      { label: 'AUTO BACKUPS', color: 'blue' },
+      { label: 'REMOTE ACCESS', color: 'purple' },
+      { label: 'SCALABLE', color: 'purple' },
+    ],
+  },
+  {
+    name: 'Windows VM',
+    icon: (
+      <span className="inline-flex items-center justify-center w-9 h-9 rounded-full bg-white/20">
+        <svg className="w-5 h-5 text-white" viewBox="0 0 88 88" fill="currentColor">
+          <path d="M0 12.402l35.687-4.86.016 34.423-35.67.203v-29.766zm35.67 33.529l.016 34.453-35.687-4.906v-29.75l35.67.203zm4.326-39.011l47.988-6.92v40.09l-47.988.246v-33.416zm47.988 37.52v40.165l-47.988-6.942v-33.454l47.988.231z"/>
+        </svg>
+      </span>
+    ),
+    link: '/cloud/windows',
+    features: [
+      'Dedicated Windows with familiar desktop feel, printer access.',
+      'Best for teams that need a full Windows experience alongside their Tally operations.',
+    ],
+    tags: [
+      { label: 'DESKTOP FEEL', color: 'green' },
+      { label: 'PRINTER ACCESS', color: 'blue' },
+      { label: 'OFFICE INTEGRATION', color: 'yellow' },
+      { label: 'ADMIN CONTROL', color: 'purple' },
+    ],
+  },
+  {
+    name: 'NoSky Backup',
+    icon: (
+      <span className="inline-flex items-center justify-center w-9 h-9 rounded-full bg-white/20">
+        <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.5"><path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"/></svg>
+      </span>
+    ),
+    link: '/cloud/nosky',
+    features: [
+      'Encrypted backup and quick recovery with scheduled.',
+      'Best for any TallyPrime user who needs automated, encrypted backup with fast restore.',
+    ],
+    tags: [
+      { label: 'AES-256', color: 'green' },
+      { label: 'SCHEDULED', color: 'blue' },
+      { label: 'ONE-CLICK RESTORE', color: 'purple' },
+      { label: 'INCREMENTAL', color: 'green' },
+    ],
+  },
+];
 
 export default function CloudPage() {
   const [modalConfig, setModalConfig] = useState<{ isOpen: boolean; type: FormType; service: string; details: string }>({
@@ -28,39 +84,6 @@ export default function CloudPage() {
   const openModal = (type: FormType, service: string = '', details: string = '') => {
     setModalConfig({ isOpen: true, type, service, details });
   };
-
-  const cloudCards: CloudCard[] = [
-    {
-      name: "AWS Cloud Server",
-      type: "Hosted Tally",
-      summary: "Hosted Tally on AWS for 24/7 remote access with managed backups.",
-      includes: "Best for businesses that need always-on, secure access to Tally from any device.",
-      tags: ["AWS infra", "Auto backups", "Remote access", "Scalable"],
-      link: "/cloud/aws",
-      cardClass: "bg-white border-slate-200",
-      stripClass: "bg-[#316852]",
-    },
-    {
-      name: "Windows VM",
-      type: "Remote desktop",
-      summary: "A dedicated Windows VM with familiar desktop feel, printer access, and admin control.",
-      includes: "Best for teams that need a full Windows experience alongside their Tally operations.",
-      tags: ["Desktop feel", "Printer access", "Office integration", "Admin control"],
-      link: "/cloud/windows",
-      cardClass: "bg-white border-slate-200",
-      stripClass: "bg-[#316852]",
-    },
-    {
-      name: "NoSky Backup",
-      type: "Data protection",
-      summary: "Encrypted backup and quick recovery with scheduled, incremental protection.",
-      includes: "Best for any TallyPrime user who needs automated, encrypted backup with fast restore.",
-      tags: ["AES-256", "Scheduled", "One-click restore", "Incremental"],
-      link: "/cloud/nosky",
-      cardClass: "bg-white border-slate-200",
-      stripClass: "bg-[#316852]",
-    },
-  ];
 
   const ctaGroups = [
     {
@@ -92,99 +115,84 @@ export default function CloudPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#C0C0C0]/15">
-      {/* Hero Section */}
-      <section className="bg-white relative pt-12 pb-16 md:pt-16 px-6 overflow-hidden border-b border-[#316852]/10">
-        <div className="absolute inset-0 opacity-40 pointer-events-none">
-          <div className="absolute top-0 right-0 w-[60%] h-[60%] bg-white/40 blur-[130px] -mr-16 -mt-16" />
-          <div className="absolute bottom-0 left-0 w-[40%] h-[40%] bg-[#316852]/10 blur-[110px] -ml-24 -mb-24" />
-        </div>
+    <div className="min-h-screen bg-[#f6f5ef] font-sans antialiased">
 
-        <div className="max-w-7xl mx-auto text-center relative z-10">
-        <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#316852]/10 border border-[#316852]/20 text-[#316852] text-[10px] font-black uppercase tracking-[0.2em] mb-8">
-            <span className="flex h-1.5 w-1.5 rounded-full bg-[#316852] animate-pulse"></span>
-            Cloud products
-          </div>
-          <h1 className="text-4xl md:text-6xl font-black text-slate-900 mb-6 leading-tight tracking-tight">
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#316852] via-[#4a9e7a] to-[#316852] drop-shadow-[0_2px_15px_rgba(49,104,82,0.2)]">TallyPrime</span> <br />
-            Cloud & Hosting
+      <div className="bg-[url('/mobilebg.png')] md:bg-[url('/cardbg.png')] bg-cover bg-center bg-no-repeat">
+        {/* Header */}
+        <section className="relative z-10 pt-16 pb-6 md:pt-8 md:pb-8 px-6 max-w-7xl mx-auto">
+          <h1 className="text-4xl md:text-[2.75rem] font-extrabold tracking-tight mb-4 text-[#1a1c20]">
+            Cloud Solutions
           </h1>
-          <p className="text-slate-600/80 text-sm md:text-xl max-w-xl mx-auto leading-relaxed font-semibold">
-            Host it, access it remotely, keep it safe — independent cloud products for TallyPrime.
+          <p className="text-[1.05rem] text-[#4a4d50] leading-relaxed font-medium max-w-2xl">
+            Deploy, access, and protect your TallyPrime with our independent cloud offerings — choose what fits your workflow.
           </p>
-        </div>
-      </section>
+        </section>
 
-      {/* Cloud Solutions Grid */}
-      <section id="compare" className="py-20 px-6 max-w-7xl mx-auto">
-        <h2 className="text-3xl md:text-5xl font-black text-slate-900 tracking-tight mb-3">
-          Cloud Solutions
-        </h2>
-        <p className="text-slate-500 text-sm md:text-base mb-10 max-w-2xl leading-relaxed">
-          Deploy, access, and protect your TallyPrime with our independent cloud offerings — choose what fits your workflow.
-        </p>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 lg:gap-4">
-          {cloudCards.map((p) => (
-            <div
-              key={p.name}
-              className={`relative overflow-hidden rounded-[1.5rem] border p-4 md:p-[18px] flex flex-col shadow-sm hover:shadow-xl hover:border-[#316852]/30 hover:-translate-y-1 transition-all duration-300 ${p.cardClass} min-h-[19rem] md:min-h-[20.5rem]`}
-            >
-              <div className={`absolute inset-x-0 top-0 h-1 ${p.stripClass}`} />
-
-              <div className="relative mb-4">
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white border border-slate-200 text-[10px] font-black uppercase tracking-[0.18em] text-slate-500">
-                  {p.type}
-                </span>
-                <h3 className="mt-3 text-lg md:text-xl font-black text-slate-900 tracking-tight">
-                  {p.name}
-                </h3>
-                <p className="mt-2 text-[13px] leading-snug text-slate-600">
-                  {p.summary}
-                </p>
-              </div>
-
-              <div className="rounded-2xl bg-slate-50 border border-slate-100 p-3 mb-3.5">
-                <div className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-1.5">
-                  Includes
+        {/* Cards Grid */}
+        <section className="relative z-10 px-6 pb-16 md:pb-12 max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 xl:gap-8 items-stretch">
+            {cards.map((card) => (
+              <div
+                key={card.name}
+                className="bg-white rounded-[24px] flex flex-col shadow-[0_12px_40px_-10px_rgba(0,0,0,0.15)] overflow-hidden transition-transform duration-300 hover:-translate-y-1 border border-gray-100"
+              >
+                {/* Header Gradient */}
+                <div className="bg-gradient-to-r from-[#2d6a46] to-[#428f81] px-5 py-3.5 h-[58px] flex items-center justify-between relative overflow-hidden">
+                  <h2 className="text-[1.1rem] font-bold text-white tracking-wide relative z-10">{card.name}</h2>
+                  <div className="relative z-10 scale-[0.85] origin-right">{card.icon}</div>
                 </div>
-                <p className="text-[13px] text-slate-700 leading-snug">
-                  {p.includes}
-                </p>
-              </div>
 
-              <div className="flex flex-wrap gap-1.5 mb-4">
-                {p.tags.map((tag) => (
-                  <span
-                    key={tag}
-                    className="inline-flex items-center rounded-full border border-slate-200 bg-white px-2 py-1 text-[10px] font-bold uppercase tracking-[0.12em] text-slate-500"
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
+                {/* Body */}
+                <div className="p-4 flex flex-col flex-grow">
+                  <h3 className="text-[0.65rem] font-bold tracking-[0.1em] text-black uppercase mb-2">INCLUDES</h3>
 
-              <div className="mt-auto flex gap-3">
-                <button
-                  onClick={() => openModal('quote', p.name, p.summary)}
-                  className="flex-1 rounded-xl bg-[#316852] py-2.5 text-[10px] font-black uppercase tracking-[0.14em] text-white transition-colors hover:bg-[#1e4d3a]"
-                >
-                  Request Quote
-                </button>
-                <Link
-                  href={p.link}
-                  className="flex-1 rounded-xl border border-slate-200 bg-white py-2.5 text-center text-[10px] font-black uppercase tracking-[0.14em] text-slate-700 transition-colors hover:bg-slate-50"
-                >
-                  Know More
-                </Link>
+                  <ul className="space-y-2 mb-3 flex-grow">
+                    {card.features.map((f, i) => (
+                      <li key={i} className="flex items-start gap-2">
+                        <svg className="w-3.5 h-3.5 mt-0.5 shrink-0 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.5"><path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                        <span className="text-[12px] text-gray-800 leading-[1.5]">{f}</span>
+                      </li>
+                    ))}
+                  </ul>
+
+                  <div className="flex flex-wrap gap-1.5 mb-3">
+                    {card.tags.map((tag) => {
+                      const s = TAG_STYLES[tag.color] || TAG_STYLES.green;
+                      return (
+                        <span
+                          key={tag.label}
+                          className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-[0.6rem] font-bold uppercase tracking-wide"
+                          style={{ backgroundColor: s.bg, color: s.txt }}
+                        >
+                          {tag.label}
+                        </span>
+                      );
+                    })}
+                  </div>
+
+                  <div className="flex gap-2 mt-auto">
+                    <button
+                      onClick={() => openModal('quote', card.name, card.features[0])}
+                      className="flex-1 bg-[#2e6b4b] hover:bg-[#225239] text-white text-[0.65rem] font-bold py-2 px-2 rounded-full transition-colors shadow-sm text-center"
+                    >
+                      REQUEST QUOTE
+                    </button>
+                    <Link
+                      href={card.link}
+                      className="flex-1 border-[1.5px] border-gray-300 bg-white text-gray-800 hover:bg-gray-50 text-[0.65rem] font-bold py-2 px-2 rounded-full transition-colors text-center"
+                    >
+                      KNOW MORE
+                    </Link>
+                  </div>
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
-      </section>
+            ))}
+          </div>
+        </section>
+      </div>
 
       {/* Why Cloud Section */}
-      <section className="bg-white py-20 px-6 border-y border-slate-100">
+      <section className=" bg-[linear-gradient(90deg,rgba(249,251,245,1)_0%,rgba(244,242,234,1)_53%,rgba(238,236,223,1)_100%)] py-20 px-6 border-y border-slate-100">
         <div className="max-w-7xl mx-auto">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#316852]/10 text-[#316852] text-[10px] font-black uppercase tracking-widest mb-6">
             Why cloud
@@ -209,7 +217,7 @@ export default function CloudPage() {
               { title: 'Lower IT cost', desc: 'No server hardware or maintenance.' },
               { title: 'Team sync', desc: 'Multi-user access without VPN setups.' },
             ].map((item) => (
-              <div key={item.title} className="p-5 bg-[#EFEBE3]/60 rounded-2xl border border-slate-200">
+              <div key={item.title} className="p-5 bg-white rounded-2xl border border-slate-200">
                 <h3 className="font-black text-slate-900 mb-2">{item.title}</h3>
                 <p className="text-sm text-slate-500 leading-relaxed font-semibold">{item.desc}</p>
               </div>
@@ -265,8 +273,8 @@ export default function CloudPage() {
         </div>
       </section>
 
-      {/* TallyDrive Detailed Features Section */}
-      <section id="tallydrive" className="py-20 px-6 bg-white border-y border-slate-100 overflow-hidden relative">
+      {/* NoSky Backup Section */}
+      {/* <section className="py-20 px-6  bg-[linear-gradient(90deg,rgba(249,251,245,1)_0%,rgba(244,242,234,1)_53%,rgba(238,236,223,1)_100%)]border-y border-slate-100 overflow-hidden relative">
         <div className="absolute top-0 right-0 w-1/3 h-full bg-[#316852]/5 -skew-x-12 transform translate-x-1/2" />
 
         <div className="max-w-7xl mx-auto relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
@@ -339,7 +347,7 @@ export default function CloudPage() {
             </button>
           </div>
         </div>
-      </section>
+      </section> */}
 
       <UnifiedContactModal
         isOpen={modalConfig.isOpen}
