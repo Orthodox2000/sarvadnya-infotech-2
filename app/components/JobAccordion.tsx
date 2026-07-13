@@ -29,7 +29,7 @@ export default function JobAccordion({ job, onApply }: JobAccordionProps) {
   return (
     <div 
       className={`group border rounded-[2rem] transition-all duration-500 overflow-hidden ${
-        isOpen ? 'border-[#316852]/30 bg-[#f0f9ff]/50 shadow-2xl' : 'border-[#E9F1FA] bg-white hover:border-[#316852]/40 hover:shadow-xl'
+        isOpen ? 'border-[#316852]/30 bg-[#F5F4ED]/50 shadow-2xl' : 'border-[#F0F5F2] bg-white hover:border-[#316852]/40 hover:shadow-xl'
       }`}
     >
       {/* Header - Always Visible */}
@@ -43,7 +43,7 @@ export default function JobAccordion({ job, onApply }: JobAccordionProps) {
                 New
               </span>
             )}
-            <span className="px-2 py-0.5 rounded-full bg-[#f0f9ff] text-[#316852] text-[9px] font-black uppercase tracking-widest border border-[#E9F1FA]">
+            <span className="px-2 py-0.5 rounded-full bg-[#F5F4ED] text-[#316852] text-[9px] font-black uppercase tracking-widest border border-[#F0F5F2]">
               {job.department}
             </span>
           </div>
@@ -96,7 +96,7 @@ export default function JobAccordion({ job, onApply }: JobAccordionProps) {
       </div>
 
       {/* Expanded Content */}
-      <div className={`overflow-hidden transition-all duration-700 ease-in-out ${isOpen ? 'max-h-[2000px] border-t border-[#E9F1FA]' : 'max-h-0'}`}>
+      <div className={`overflow-hidden transition-all duration-700 ease-in-out ${isOpen ? 'max-h-[2000px] border-t border-[#F0F5F2]' : 'max-h-0'}`}>
         <div className="p-8 md:p-10 space-y-10 bg-white">
           <div>
             <h4 className="text-[11px] font-black uppercase tracking-[0.2em] text-[#316852] mb-6 flex items-center gap-2">
@@ -142,14 +142,14 @@ export default function JobAccordion({ job, onApply }: JobAccordionProps) {
                 {job.whyJoinUs ? (
                   job.whyJoinUs.split('\n').filter(line => line.trim()).map((benefit, i) => (
                     <li key={i} className="flex items-start gap-3.5 text-sm text-slate-600 font-bold opacity-90">
-                      <svg className="w-5 h-5 text-sky-400 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                      <svg className="w-5 h-5 text-emerald-400 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                       {benefit}
                     </li>
                   ))
                 ) : (
                   (job.benefits || []).map((benefit, i) => (
                     <li key={i} className="flex items-start gap-3.5 text-sm text-slate-600 font-bold opacity-90">
-                      <svg className="w-5 h-5 text-sky-400 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                      <svg className="w-5 h-5 text-emerald-400 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                       {benefit}
                     </li>
                   ))
@@ -158,7 +158,7 @@ export default function JobAccordion({ job, onApply }: JobAccordionProps) {
             </div>
           </div>
 
-          <div className="pt-10 border-t border-[#E9F1FA] flex flex-col md:flex-row md:items-center justify-between gap-8">
+          <div className="pt-10 border-t border-[#F0F5F2] flex flex-col md:flex-row md:items-center justify-between gap-8">
             <div className="text-[10px] text-slate-400 font-black uppercase tracking-widest flex items-center gap-2">
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
               Resume must be in PDF format

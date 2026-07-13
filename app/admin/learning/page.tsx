@@ -178,7 +178,7 @@ export default function AdminLearning() {
         </div>
         <button 
           onClick={startAdd}
-          className="bg-[#0371a3] text-white px-8 py-4 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-[#00ABE4] transition-all shadow-xl shadow-[#0371a3]/20 hover:scale-105 active:scale-95"
+          className="bg-[#4A6E62] text-white px-8 py-4 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-[#5D887A] transition-all shadow-xl shadow-[#4A6E62]/20 hover:scale-105 active:scale-95"
         >
           + Add New Content
         </button>
@@ -200,16 +200,16 @@ export default function AdminLearning() {
             <input 
               type="text" 
               placeholder="Search by title or tags..."
-              className="w-full pl-12 pr-6 py-4 bg-white border border-[#E9F1FA] rounded-[1.5rem] shadow-sm focus:ring-4 focus:ring-[#00ABE4]/5 focus:border-[#00ABE4] outline-none transition-all text-slate-900 font-bold placeholder:text-slate-300"
+              className="w-full pl-12 pr-6 py-4 bg-white border border-[#F0F5F2] rounded-[1.5rem] shadow-sm focus:ring-4 focus:ring-[#5D887A]/5 focus:border-[#5D887A] outline-none transition-all text-slate-900 font-bold placeholder:text-slate-300"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
-            <svg className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-300 group-focus-within:text-[#00ABE4] transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-300 group-focus-within:text-[#5D887A] transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
           </div>
           <select 
-            className="px-8 py-4 bg-white border border-[#E9F1FA] rounded-[1.5rem] shadow-sm focus:ring-4 focus:ring-[#00ABE4]/5 focus:border-[#00ABE4] outline-none font-black text-[10px] uppercase tracking-widest text-slate-500 transition-all cursor-pointer"
+            className="px-8 py-4 bg-white border border-[#F0F5F2] rounded-[1.5rem] shadow-sm focus:ring-4 focus:ring-[#5D887A]/5 focus:border-[#5D887A] outline-none font-black text-[10px] uppercase tracking-widest text-slate-500 transition-all cursor-pointer"
             value={filterFolder}
             onChange={(e) => setFilterFolder(e.target.value)}
           >
@@ -221,7 +221,7 @@ export default function AdminLearning() {
       )}
 
       {editingItem ? (
-        <div className="bg-white p-8 md:p-12 rounded-[2.5rem] border border-[#E9F1FA] shadow-2xl mb-12 animate-in slide-in-from-top-4 duration-500">
+        <div className="bg-white p-8 md:p-12 rounded-[2.5rem] border border-[#F0F5F2] shadow-2xl mb-12 animate-in slide-in-from-top-4 duration-500">
           <div className="flex justify-between items-center mb-10">
             <h2 className="text-2xl font-black text-slate-900 tracking-tight">{editingItem._id ? 'Edit Content' : 'New Content'}</h2>
             <button onClick={() => setEditingItem(null)} className="text-slate-400 hover:text-rose-500 font-black text-[10px] uppercase tracking-widest transition-colors flex items-center gap-2">
@@ -234,19 +234,19 @@ export default function AdminLearning() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
               <div className="space-y-6">
                 <div>
-                  <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-[#0371a3] mb-3 ml-1">Title</label>
+                  <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-[#4A6E62] mb-3 ml-1">Title</label>
                   <input 
                     required
-                    className="w-full p-5 bg-[#f0f9ff]/50 rounded-2xl border border-[#E9F1FA] focus:ring-4 focus:ring-[#00ABE4]/5 focus:border-[#00ABE4] outline-none transition-all font-bold text-slate-900"
+                    className="w-full p-5 bg-[#F5F4ED]/50 rounded-2xl border border-[#F0F5F2] focus:ring-4 focus:ring-[#5D887A]/5 focus:border-[#5D887A] outline-none transition-all font-bold text-slate-900"
                     value={editingItem.title}
                     onChange={e => setEditingItem({...editingItem, title: e.target.value})}
                   />
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                     <div>
-                        <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-[#0371a3] mb-3 ml-1">Type</label>
+                        <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-[#4A6E62] mb-3 ml-1">Type</label>
                         <select 
-                            className="w-full p-5 bg-[#f0f9ff]/50 rounded-2xl border border-[#E9F1FA] focus:ring-4 focus:ring-[#00ABE4]/5 focus:border-[#00ABE4] outline-none transition-all font-bold text-slate-900 cursor-pointer"
+                            className="w-full p-5 bg-[#F5F4ED]/50 rounded-2xl border border-[#F0F5F2] focus:ring-4 focus:ring-[#5D887A]/5 focus:border-[#5D887A] outline-none transition-all font-bold text-slate-900 cursor-pointer"
                             value={editingItem.type}
                             onChange={e => setEditingItem({...editingItem, type: e.target.value})}
                         >
@@ -255,9 +255,9 @@ export default function AdminLearning() {
                         </select>
                     </div>
                     <div>
-                        <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-[#0371a3] mb-3 ml-1">Folder / Category</label>
+                        <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-[#4A6E62] mb-3 ml-1">Folder / Category</label>
                         <input 
-                            className="w-full p-5 bg-[#f0f9ff]/50 rounded-2xl border border-[#E9F1FA] focus:ring-4 focus:ring-[#00ABE4]/5 focus:border-[#00ABE4] outline-none transition-all font-bold text-slate-900"
+                            className="w-full p-5 bg-[#F5F4ED]/50 rounded-2xl border border-[#F0F5F2] focus:ring-4 focus:ring-[#5D887A]/5 focus:border-[#5D887A] outline-none transition-all font-bold text-slate-900"
                             placeholder="e.g. Webinars, GST Guide"
                             value={editingItem.folder}
                             onChange={e => setEditingItem({...editingItem, folder: e.target.value})}
@@ -265,21 +265,21 @@ export default function AdminLearning() {
                     </div>
                 </div>
                 <div>
-                  <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-[#0371a3] mb-3 ml-1">
+                  <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-[#4A6E62] mb-3 ml-1">
                     {editingItem.type === 'video' ? 'YouTube Video ID or Link' : 'Target URL Link'}
                   </label>
                   <input 
                     required
-                    className="w-full p-5 bg-[#f0f9ff]/50 rounded-2xl border border-[#E9F1FA] focus:ring-4 focus:ring-[#00ABE4]/5 focus:border-[#00ABE4] outline-none transition-all font-bold text-slate-900"
+                    className="w-full p-5 bg-[#F5F4ED]/50 rounded-2xl border border-[#F0F5F2] focus:ring-4 focus:ring-[#5D887A]/5 focus:border-[#5D887A] outline-none transition-all font-bold text-slate-900"
                     placeholder={editingItem.type === 'video' ? 'e.g. dQw4w9WgXcQ' : 'https://example.com/guide'}
                     value={editingItem.url}
                     onChange={e => setEditingItem({...editingItem, url: e.target.value})}
                   />
                 </div>
                 <div>
-                  <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-[#0371a3] mb-3 ml-1">Tags (comma separated)</label>
+                  <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-[#4A6E62] mb-3 ml-1">Tags (comma separated)</label>
                   <input 
-                    className="w-full p-5 bg-[#f0f9ff]/50 rounded-2xl border border-[#E9F1FA] focus:ring-4 focus:ring-[#00ABE4]/5 focus:border-[#00ABE4] outline-none transition-all font-bold text-[#00ABE4]"
+                    className="w-full p-5 bg-[#F5F4ED]/50 rounded-2xl border border-[#F0F5F2] focus:ring-4 focus:ring-[#5D887A]/5 focus:border-[#5D887A] outline-none transition-all font-bold text-[#5D887A]"
                     placeholder="e.g. tallyprime, gst, training"
                     value={tagInput}
                     onChange={e => setTagInput(e.target.value)}
@@ -289,9 +289,9 @@ export default function AdminLearning() {
 
               <div className="space-y-6">
                 <div>
-                  <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-[#0371a3] mb-3 ml-1">Description</label>
+                  <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-[#4A6E62] mb-3 ml-1">Description</label>
                   <textarea 
-                    className="w-full p-5 bg-[#f0f9ff]/50 rounded-2xl border border-[#E9F1FA] focus:ring-4 focus:ring-[#00ABE4]/5 focus:border-[#00ABE4] outline-none transition-all font-bold text-slate-600 h-[140px] resize-none"
+                    className="w-full p-5 bg-[#F5F4ED]/50 rounded-2xl border border-[#F0F5F2] focus:ring-4 focus:ring-[#5D887A]/5 focus:border-[#5D887A] outline-none transition-all font-bold text-slate-600 h-[140px] resize-none"
                     value={editingItem.description}
                     onChange={e => setEditingItem({...editingItem, description: e.target.value})}
                   />
@@ -299,26 +299,26 @@ export default function AdminLearning() {
 
                 {editingItem.type === 'link' && (
                   <div className="space-y-4">
-                    <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-[#0371a3] ml-1">Thumbnail Configuration</label>
+                    <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-[#4A6E62] ml-1">Thumbnail Configuration</label>
                     <div className="flex gap-4">
                       <button 
                         type="button"
                         onClick={() => setEditingItem({...editingItem, thumbnailOption: 'logo'})}
-                        className={`flex-1 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest border-2 transition-all ${editingItem.thumbnailOption === 'logo' ? 'border-[#00ABE4] bg-[#f0f9ff] text-[#00ABE4]' : 'border-[#E9F1FA] text-slate-300'}`}
+                        className={`flex-1 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest border-2 transition-all ${editingItem.thumbnailOption === 'logo' ? 'border-[#5D887A] bg-[#F5F4ED] text-[#5D887A]' : 'border-[#F0F5F2] text-slate-300'}`}
                       >
                         Company Logo
                       </button>
                       <button 
                         type="button"
                         onClick={() => setEditingItem({...editingItem, thumbnailOption: 'custom'})}
-                        className={`flex-1 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest border-2 transition-all ${editingItem.thumbnailOption === 'custom' ? 'border-[#00ABE4] bg-[#f0f9ff] text-[#00ABE4]' : 'border-[#E9F1FA] text-slate-300'}`}
+                        className={`flex-1 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest border-2 transition-all ${editingItem.thumbnailOption === 'custom' ? 'border-[#5D887A] bg-[#F5F4ED] text-[#5D887A]' : 'border-[#F0F5F2] text-slate-300'}`}
                       >
                         Cloud Upload
                       </button>
                     </div>
 
                     {editingItem.thumbnailOption === 'custom' && (
-                      <div className="flex items-center gap-4 p-5 bg-[#f0f9ff]/30 rounded-2xl border-2 border-dashed border-[#E9F1FA] group hover:border-[#00ABE4]/50 transition-colors">
+                      <div className="flex items-center gap-4 p-5 bg-[#F5F4ED]/30 rounded-2xl border-2 border-dashed border-[#F0F5F2] group hover:border-[#5D887A]/50 transition-colors">
                         <input 
                           type="file" 
                           accept="image/*"
@@ -328,12 +328,12 @@ export default function AdminLearning() {
                         />
                         <label 
                           htmlFor="thumbnail-upload"
-                          className="px-6 py-3 bg-white text-[10px] font-black uppercase tracking-widest rounded-xl shadow-sm border border-[#E9F1FA] cursor-pointer hover:bg-[#0371a3] hover:text-white transition-all transform active:scale-95"
+                          className="px-6 py-3 bg-white text-[10px] font-black uppercase tracking-widest rounded-xl shadow-sm border border-[#F0F5F2] cursor-pointer hover:bg-[#4A6E62] hover:text-white transition-all transform active:scale-95"
                         >
                           {uploading ? 'Processing...' : 'Upload Image'}
                         </label>
                         {editingItem.thumbnail && (
-                          <div className="w-14 h-14 rounded-xl overflow-hidden border border-[#E9F1FA] bg-white shadow-inner p-1">
+                          <div className="w-14 h-14 rounded-xl overflow-hidden border border-[#F0F5F2] bg-white shadow-inner p-1">
                             <img src={editingItem.thumbnail} alt="Thumb" className="w-full h-full object-cover rounded-lg" />
                           </div>
                         )}
@@ -343,8 +343,8 @@ export default function AdminLearning() {
                 )}
 
                 <div>
-                  <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-[#0371a3] mb-3 ml-1">Asset Preview</label>
-                  <div className="relative aspect-video w-full max-w-[320px] rounded-[1.5rem] overflow-hidden bg-[#f0f9ff] border-4 border-white shadow-2xl">
+                  <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-[#4A6E62] mb-3 ml-1">Asset Preview</label>
+                  <div className="relative aspect-video w-full max-w-[320px] rounded-[1.5rem] overflow-hidden bg-[#F5F4ED] border-4 border-white shadow-2xl">
                     {editingItem.type === 'video' ? (
                       getYoutubeThumbnail(editingItem.url) ? (
                         <img src={getYoutubeThumbnail(editingItem.url)} alt="Thumbnail" className="w-full h-full object-cover" />
@@ -360,16 +360,16 @@ export default function AdminLearning() {
                         </div>
                       )
                     )}
-                    <div className="absolute inset-0 bg-[#0371a3]/5" />
+                    <div className="absolute inset-0 bg-[#4A6E62]/5" />
                   </div>
                 </div>
               </div>
             </div>
 
-            <div className="pt-10 flex flex-col sm:flex-row gap-4 border-t border-[#E9F1FA]">
+            <div className="pt-10 flex flex-col sm:flex-row gap-4 border-t border-[#F0F5F2]">
               <button 
                 disabled={saving || uploading}
-                className="flex-1 bg-[#0371a3] text-white py-5 rounded-2xl font-black text-xs uppercase tracking-[0.2em] shadow-xl shadow-[#0371a3]/20 hover:bg-[#00ABE4] transition-all disabled:opacity-50 transform active:scale-95"
+                className="flex-1 bg-[#4A6E62] text-white py-5 rounded-2xl font-black text-xs uppercase tracking-[0.2em] shadow-xl shadow-[#4A6E62]/20 hover:bg-[#5D887A] transition-all disabled:opacity-50 transform active:scale-95"
               >
                 {saving ? 'Synchronizing...' : (editingItem._id ? 'Update Content' : 'Publish Content')}
               </button>
@@ -386,8 +386,8 @@ export default function AdminLearning() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {filteredItems.map((item) => (
-            <div key={item._id} className="bg-white p-6 rounded-[2.5rem] border border-[#E9F1FA] shadow-sm flex flex-col h-full group hover:shadow-2xl hover:border-[#00ABE4]/20 transition-all duration-500">
-              <div className="relative aspect-video w-full mb-6 rounded-[1.5rem] overflow-hidden bg-[#f0f9ff] border border-[#E9F1FA] shrink-0">
+            <div key={item._id} className="bg-white p-6 rounded-[2.5rem] border border-[#F0F5F2] shadow-sm flex flex-col h-full group hover:shadow-2xl hover:border-[#5D887A]/20 transition-all duration-500">
+              <div className="relative aspect-video w-full mb-6 rounded-[1.5rem] overflow-hidden bg-[#F5F4ED] border border-[#F0F5F2] shrink-0">
                 {item.type === 'video' ? (
                   getYoutubeThumbnail(item.url) ? (
                     <img src={getYoutubeThumbnail(item.url)} alt={item.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
@@ -406,27 +406,27 @@ export default function AdminLearning() {
                 <div className="absolute top-4 left-4 px-3 py-1 bg-white/40 backdrop-blur-md border border-white/40 text-white text-[8px] font-black uppercase tracking-widest rounded-full shadow-sm">
                   {item.folder || 'General'}
                 </div>
-                <div className="absolute inset-0 bg-[#0371a3]/5 group-hover:bg-[#0371a3]/10 transition-colors" />
+                <div className="absolute inset-0 bg-[#4A6E62]/5 group-hover:bg-[#4A6E62]/10 transition-colors" />
               </div>
               <div className="mb-6 flex-1 px-2">
                 <div className="flex items-center gap-2 mb-3">
-                    <span className="text-[#00ABE4] text-[9px] font-black uppercase tracking-widest bg-[#f0f9ff] px-2 py-0.5 rounded-full border border-[#E9F1FA]">
+                    <span className="text-[#5D887A] text-[9px] font-black uppercase tracking-widest bg-[#F5F4ED] px-2 py-0.5 rounded-full border border-[#F0F5F2]">
                         {item.type === 'video' ? 'Webinar' : 'Article'}
                     </span>
                     <span className="text-slate-300 text-[10px] font-bold">{item.date}</span>
                 </div>
-                <h3 className="text-[17px] font-black text-slate-900 line-clamp-2 tracking-tight group-hover:text-[#00ABE4] transition-colors leading-tight mb-3">{item.title}</h3>
+                <h3 className="text-[17px] font-black text-slate-900 line-clamp-2 tracking-tight group-hover:text-[#5D887A] transition-colors leading-tight mb-3">{item.title}</h3>
                 <p className="text-slate-500 text-[11px] font-bold opacity-80 leading-relaxed line-clamp-2">{item.description}</p>
                 <div className="flex flex-wrap gap-2 mt-4">
                   {item.tags?.slice(0, 3).map((tag: string) => (
-                    <span key={tag} className="text-[9px] font-black uppercase tracking-tighter text-[#00ABE4]/60">#{tag}</span>
+                    <span key={tag} className="text-[9px] font-black uppercase tracking-tighter text-[#5D887A]/60">#{tag}</span>
                   ))}
                 </div>
               </div>
-              <div className="mt-auto flex gap-3 pt-6 border-t border-[#f0f9ff]">
+              <div className="mt-auto flex gap-3 pt-6 border-t border-[#F5F4ED]">
                 <button 
                   onClick={() => setEditingItem(item)}
-                  className="flex-1 py-3 bg-[#f0f9ff] text-[#0371a3] rounded-xl text-[10px] font-black uppercase tracking-[0.2em] hover:bg-[#0371a3] hover:text-white transition-all transform active:scale-95 border border-[#E9F1FA]"
+                  className="flex-1 py-3 bg-[#F5F4ED] text-[#4A6E62] rounded-xl text-[10px] font-black uppercase tracking-[0.2em] hover:bg-[#4A6E62] hover:text-white transition-all transform active:scale-95 border border-[#F0F5F2]"
                 >
                   Edit
                 </button>
@@ -440,8 +440,8 @@ export default function AdminLearning() {
             </div>
           ))}
           {filteredItems.length === 0 && (
-            <div className="col-span-full py-24 text-center bg-[#f0f9ff]/30 rounded-[3rem] border-2 border-dashed border-[#E9F1FA]">
-              <p className="text-[#0371a3]/40 font-black uppercase tracking-widest text-[10px]">No content found matching your filters.</p>
+            <div className="col-span-full py-24 text-center bg-[#F5F4ED]/30 rounded-[3rem] border-2 border-dashed border-[#F0F5F2]">
+              <p className="text-[#4A6E62]/40 font-black uppercase tracking-widest text-[10px]">No content found matching your filters.</p>
             </div>
           )}
         </div>

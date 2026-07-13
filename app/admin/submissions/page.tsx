@@ -75,10 +75,10 @@ export default function AdminSubmissions() {
   const getFormTypeBadge = (type: string) => {
     const colors: any = {
       quote: 'bg-amber-50 text-amber-600 border-amber-100',
-      enquire: 'bg-blue-50 text-blue-600 border-blue-100',
+      enquire: 'bg-emerald-50 text-emerald-600 border-emerald-100',
       support: 'bg-rose-50 text-rose-600 border-rose-100',
       callback: 'bg-emerald-50 text-emerald-600 border-emerald-100',
-      demo: 'bg-sky-50 text-[#0371a3] border-sky-100',
+      demo: 'bg-emerald-50 text-[#4A6E62] border-emerald-100',
       general: 'bg-slate-50 text-slate-600 border-slate-100'
     };
     return (
@@ -113,7 +113,7 @@ export default function AdminSubmissions() {
         <div className="flex items-center gap-3">
             <button 
                 onClick={fetchData}
-                className="bg-[#0371a3] text-white px-6 py-2.5 rounded-xl font-semibold text-xs hover:shadow-lg transition-all flex items-center gap-2"
+                className="bg-[#4A6E62] text-white px-6 py-2.5 rounded-xl font-semibold text-xs hover:shadow-lg transition-all flex items-center gap-2"
             >
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
                 Refresh
@@ -128,7 +128,7 @@ export default function AdminSubmissions() {
               <button
                 key={type}
                 onClick={() => setFilterType(type)}
-                className={`px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest border transition-all ${filterType === type ? 'bg-[#0371a3] border-[#0371a3] text-white' : 'bg-white border-slate-100 text-slate-400 hover:border-slate-300'}`}
+                className={`px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest border transition-all ${filterType === type ? 'bg-[#4A6E62] border-[#4A6E62] text-white' : 'bg-white border-slate-100 text-slate-400 hover:border-slate-300'}`}
               >
                 {type}
               </button>
@@ -194,7 +194,7 @@ export default function AdminSubmissions() {
                       <div className="text-[10px] text-slate-400 font-medium">{item.email}</div>
                     </td>
                     <td className="p-4">
-                      <div className="text-sm font-bold text-[#0371a3] tabular-nums">{item.contact}</div>
+                      <div className="text-sm font-bold text-[#4A6E62] tabular-nums">{item.contact}</div>
                     </td>
                     <td className="p-4">
                       {getFormTypeBadge(item.formType)}
@@ -244,12 +244,12 @@ export default function AdminSubmissions() {
             <div className="p-8 md:p-10 border-b border-slate-100 flex items-center justify-between bg-slate-50/50 shrink-0">
               <div className="flex items-center gap-4">
                 <div className={`p-3 rounded-2xl bg-white shadow-sm border border-slate-100`}>
-                   <svg className="w-6 h-6 text-[#0371a3]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                   <svg className="w-6 h-6 text-[#4A6E62]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                    </svg>
                 </div>
                 <div>
-                  <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#0371a3] mb-1 block">Inquiry Detail</span>
+                  <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#4A6E62] mb-1 block">Inquiry Detail</span>
                   <h2 className="text-2xl font-bold text-slate-900 tracking-tight leading-none">
                     {selectedItem.name}
                   </h2>
@@ -275,8 +275,8 @@ export default function AdminSubmissions() {
 
                   <div className="group relative">
                     <p className="text-[9px] font-bold uppercase tracking-widest text-slate-400 mb-2">Phone Number</p>
-                    <div className="flex items-center justify-between bg-sky-50/50 px-4 py-3 rounded-2xl border border-sky-100">
-                        <span className="text-sm font-bold text-[#0371a3] tabular-nums">{selectedItem.contact}</span>
+                    <div className="flex items-center justify-between bg-emerald-50/50 px-4 py-3 rounded-2xl border border-emerald-100">
+                        <span className="text-sm font-bold text-[#4A6E62] tabular-nums">{selectedItem.contact}</span>
                     </div>
                   </div>
 
@@ -302,7 +302,7 @@ export default function AdminSubmissions() {
                     {selectedItem.service && (
                         <div>
                             <p className="text-[9px] font-bold uppercase tracking-widest text-slate-400 mb-3">Targeted Service / Product</p>
-                            <div className="inline-flex items-center gap-3 bg-[#0371a3] text-white px-5 py-3 rounded-2xl shadow-md shadow-sky-900/10">
+                            <div className="inline-flex items-center gap-3 bg-[#4A6E62] text-white px-5 py-3 rounded-2xl shadow-md shadow-emerald-900/10">
                                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" /></svg>
                                 <span className="text-sm font-bold tracking-tight">{selectedItem.service}</span>
                             </div>
@@ -331,7 +331,7 @@ export default function AdminSubmissions() {
                 </button>
                 <a 
                    href={`mailto:${selectedItem.email}`}
-                   className="bg-[#0371a3] text-white px-8 py-3 rounded-xl font-bold text-xs hover:shadow-xl transition-all flex items-center gap-2 shadow-lg shadow-sky-900/20"
+                   className="bg-[#4A6E62] text-white px-8 py-3 rounded-xl font-bold text-xs hover:shadow-xl transition-all flex items-center gap-2 shadow-lg shadow-emerald-900/20"
                 >
                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
                    Reply via Email

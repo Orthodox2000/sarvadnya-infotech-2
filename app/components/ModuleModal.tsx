@@ -32,7 +32,7 @@ export default function ModuleModal({ isOpen, onClose, module, onEnquire }: Modu
         </button>
         
         <div className="mb-8">
-          <span className="inline-block px-3 py-1 bg-sky-50 text-[#316852] text-[10px] font-black uppercase tracking-widest rounded-full border border-sky-100 mb-4">
+          <span className="inline-block px-3 py-1 bg-emerald-50 text-[#316852] text-[10px] font-black uppercase tracking-widest rounded-full border border-emerald-100 mb-4">
             {module.category}
           </span>
           <h3 className="text-2xl md:text-4xl font-black mb-4 text-slate-900">{module.title}</h3>
@@ -76,9 +76,9 @@ export default function ModuleModal({ isOpen, onClose, module, onEnquire }: Modu
         <div className="flex flex-col sm:flex-row gap-4">
           <button 
             onClick={() => onEnquire(module)}
-            className="flex-1 py-4 bg-[#316852] text-white rounded-2xl font-bold hover:bg-[#316852] transition-all shadow-lg shadow-sky-900/10 flex items-center justify-center gap-2"
+            className="flex-1 py-4 bg-[#316852] text-white rounded-2xl font-bold hover:bg-[#316852] transition-all shadow-lg shadow-emerald-900/10 flex items-center justify-center gap-2"
           >
-            Request Demo
+            Enquire Now
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
           </button>
           <button 

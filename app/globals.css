@@ -60,17 +60,17 @@ html {
 
 :root {
   color-scheme: only light;
-  --primary-color: #00ABE4;
-  --primary-dark: #0371a3;
-  --secondary-color: #E9F1FA;
-  --bg-sky: #f0f9ff;
-  --primary-btn-color: #00ABE4;
+  --primary-color: #5D887A;
+  --primary-dark: #4A6E62;
+  --secondary-color: #F0F5F2;
+  --bg-sky: #F5F4ED;
+  --primary-btn-color: #5D887A;
   --secondary-btn-color: #ffffff;
   --heading-color: #0f172a;
   --para-color: #334155;
   --background-color: #ffffff;
-  --accent-color: #00ABE4;
-  --heading-light-color: #0371a3;
+  --accent-color: #5D887A;
+  --heading-light-color: #4A6E62;
   --font-sans: "Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
   --font-mono: "Consolas", "SFMono-Regular", "Liberation Mono", monospace;
   --hero-gradient-opacity: 0.85;
@@ -80,18 +80,18 @@ html {
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: #00ABE4;
+  --primary: #5D887A;
   --primary-foreground: oklch(0.985 0 0);
-  --secondary: #E9F1FA;
-  --secondary-foreground: #0371a3;
-  --muted: #f0f9ff;
+  --secondary: #F0F5F2;
+  --secondary-foreground: #4A6E62;
+  --muted: #F5F4ED;
   --muted-foreground: oklch(0.556 0 0);
-  --accent: #E9F1FA;
-  --accent-foreground: #00ABE4;
+  --accent: #F0F5F2;
+  --accent-foreground: #5D887A;
   --destructive: oklch(0.577 0.245 27.325);
   --border: oklch(0.922 0 0);
   --input: oklch(0.922 0 0);
-  --ring: #00ABE4;
+  --ring: #5D887A;
   --chart-1: oklch(0.87 0 0);
   --chart-2: oklch(0.556 0 0);
   --chart-3: oklch(0.439 0 0);
@@ -100,12 +100,12 @@ html {
   --radius: 0.625rem;
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: #00ABE4;
+  --sidebar-primary: #5D887A;
   --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: #E9F1FA;
-  --sidebar-accent-foreground: #0371a3;
+  --sidebar-accent: #F0F5F2;
+  --sidebar-accent-foreground: #4A6E62;
   --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: #00ABE4;
+  --sidebar-ring: #5D887A;
 }
 
 @media (max-width: 768px) {
@@ -217,9 +217,9 @@ body {
 .text-highlight-gradient {
   background: linear-gradient(
     90deg, 
-    var(--hero-text-from, #0371a3) 0%, 
-    var(--hero-text-to, #00ABE4) 50%,
-    var(--hero-text-from, #0371a3) 100%
+    var(--hero-text-from, #4A6E62) 0%, 
+    var(--hero-text-to, #5D887A) 50%,
+    var(--hero-text-from, #4A6E62) 100%
   );
   background-size: 200% auto;
   -webkit-background-clip: text;
@@ -474,7 +474,7 @@ main > div:first-of-type {
   --chart-5: oklch(0.269 0 0);
   --sidebar: oklch(0.205 0 0);
   --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary: oklch(0.55 0.10 160);
   --sidebar-primary-foreground: oklch(0.985 0 0);
   --sidebar-accent: oklch(0.269 0 0);
   --sidebar-accent-foreground: oklch(0.985 0 0);

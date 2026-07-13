@@ -8,7 +8,7 @@ import UnifiedContactModal, { FormType } from "../../components/UnifiedContactMo
 
 const TAG_STYLES: Record<string, { bg: string; txt: string }> = {
   green: { bg: '#dcf0e0', txt: '#2b6338' },
-  blue: { bg: '#d0e5fb', txt: '#29548f' },
+  blue: { bg: '#E0EDE6', txt: '#3D5E52' },
   purple: { bg: '#dcd1f3', txt: '#4f3183' },
   yellow: { bg: '#f6e4bd', txt: '#85601c' },
 };

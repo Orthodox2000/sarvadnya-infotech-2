@@ -9,11 +9,11 @@ export default async function NewsPage() {
   return (
     <div className="min-h-screen bg-white text-slate-900">
       {/* Centered Tighter Hero Section */}
-      <section className="bg-white pt-8 pb-8 md:pt-12 md:pb-12 px-6 text-center relative overflow-hidden flex flex-col items-center border-b border-[#0371a3]/10">
+      <section className="bg-white pt-8 pb-8 md:pt-12 md:pb-12 px-6 text-center relative overflow-hidden flex flex-col items-center border-b border-[#4A6E62]/10">
        
         <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-40">
           <div className="absolute top-0 right-0 w-[70%] h-[70%] bg-white/10 blur-[130px] -mr-32 -mt-32" />
-          <div className="absolute bottom-0 left-0 w-[50%] h-[50%] bg-sky-200/20 blur-[110px] -ml-24 -mb-24" />
+          <div className="absolute bottom-0 left-0 w-[50%] h-[50%] bg-emerald-200/20 blur-[110px] -ml-24 -mb-24" />
         </div>
         
         <div className="max-w-4xl mx-auto relative z-10 w-full flex flex-col items-center">
@@ -22,7 +22,7 @@ export default async function NewsPage() {
             Company Press & Insights
           </div>
           <h1 className="text-4xl md:text-6xl font-black text-slate-900 mb-4 leading-tight tracking-tight">
-            Latest News & <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0371a3] via-[#4b91ca] to-[#0371a3] drop-shadow-[0_2px_15px_rgba(0,171,228,0.3)]">Updates</span>
+            Latest News & <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#4A6E62] via-[#5D887A] to-[#4A6E62] drop-shadow-[0_2px_15px_rgba(93,136,122,0.3)]">Updates</span>
           </h1>
           <p className="text-slate-600/80 text-[10px] md:text-sm max-w-xl mx-auto leading-relaxed font-semibold">
             Stay informed about the latest Tally updates, statutory changes, and Sarvadnya Infotech LLP announcements.
@@ -39,7 +39,7 @@ export default async function NewsPage() {
               className="bg-white/80 backdrop-blur-sm rounded-3xl p-8 border border-slate-200 shadow-sm hover:shadow-xl transition-all duration-300 group flex flex-col"
             >
               <div className="flex items-center gap-3 mb-6">
-                <span className="px-3 py-1 bg-[#E9F1FA] text-[#0371a3] text-[10px] font-black uppercase tracking-widest rounded-full">
+                <span className="px-3 py-1 bg-[#F0F5F2] text-[#4A6E62] text-[10px] font-black uppercase tracking-widest rounded-full">
                   {item.category}
                 </span>
                 <span className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">
@@ -47,7 +47,7 @@ export default async function NewsPage() {
                 </span>
               </div>
               
-              <h2 className="text-xl font-bold text-slate-900 mb-4 group-hover:text-[#0371a3] transition-colors leading-tight">
+              <h2 className="text-xl font-bold text-slate-900 mb-4 group-hover:text-[#4A6E62] transition-colors leading-tight">
                 {item.title}
               </h2>
               
@@ -63,7 +63,7 @@ export default async function NewsPage() {
               <div className="flex flex-col gap-4">
                 <Link 
                   href={item.link}
-                  className="inline-flex items-center gap-2 text-[#0371a3] font-bold text-xs uppercase tracking-widest hover:gap-3 transition-all"
+                  className="inline-flex items-center gap-2 text-[#4A6E62] font-bold text-xs uppercase tracking-widest hover:gap-3 transition-all"
                 >
                   Learn More
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">

@@ -58,7 +58,7 @@ export default function TDLPage() {
   return (
     <div className="min-h-screen bg-white text-slate-900">
       {/* Cinematic Hero Section (Themed Hero) */}
-      <section className="bg-white relative overflow-hidden flex items-center min-h-[200px] md:min-h-[350px] border-b border-[#0371a3]/10">
+      <section className="bg-white relative overflow-hidden flex items-center min-h-[200px] md:min-h-[350px] border-b border-[#4A6E62]/10">
         {/* Cinematic Image Side - Hidden on mobile, full height on desktop */}
         <div className="hidden lg:block absolute right-0 top-0 bottom-0 w-1/2 z-0">
           <div className="relative h-full w-full">
@@ -76,13 +76,13 @@ export default function TDLPage() {
         
         <div className="max-w-7xl mx-auto w-full px-6 relative z-10 py-12 md:py-16">
           <div className="max-w-2xl lg:pr-12">
-            <div className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-white/40 border border-[#0371a3]/10 text-[#0371a3] text-[10px] font-bold uppercase tracking-widest mb-6 backdrop-blur-sm">
-              <span className="flex h-0.5 w-0.5 rounded-full bg-[#0371a3]"></span>
+            <div className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-white/40 border border-[#4A6E62]/10 text-[#4A6E62] text-[10px] font-bold uppercase tracking-widest mb-6 backdrop-blur-sm">
+              <span className="flex h-0.5 w-0.5 rounded-full bg-[#4A6E62]"></span>
               Tailored Excellence
             </div>
             <h1 className="text-3xl md:text-6xl font-black text-slate-900 mb-6 leading-tight tracking-tight">
               TDL & Custom <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0371a3] via-[#00ABE4] to-[#0371a3]">Development</span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#4A6E62] via-[#5D887A] to-[#4A6E62]">Development</span>
             </h1>
             <p className="text-slate-600 text-base md:text-lg max-w-xl leading-relaxed mb-8 font-semibold">
               Make Tally work exactly the way your business does. Our expert TDL developers create custom solutions to bridge the gap between standard features and your unique needs.
@@ -90,7 +90,7 @@ export default function TDLPage() {
             <div className="flex flex-wrap gap-4">
                <button 
                   onClick={() => openModal('enquire')}
-                  className="px-8 py-4 bg-[#0371a3] text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-[#00ABE4] transition-all shadow-xl shadow-[#0371a3]/20"
+                  className="px-8 py-4 bg-[#4A6E62] text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-[#5D887A] transition-all shadow-xl shadow-[#4A6E62]/20"
                >
                   Consult a Developer
                </button>
@@ -108,7 +108,7 @@ export default function TDLPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {tdlFeatures.map((feature, i) => (
             <div key={i} className="p-8 bg-white rounded-3xl border border-slate-100 shadow-sm hover:shadow-xl transition-all duration-300 group">
-              <div className="w-12 h-12 bg-[#dff0f5] text-[#0371a3] rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+              <div className="w-12 h-12 bg-[#E8F0EB] text-[#4A6E62] rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
                 {feature.icon}
               </div>
               <h3 className="text-lg font-black text-slate-900 mb-3">{feature.title}</h3>
@@ -130,7 +130,7 @@ export default function TDLPage() {
              />
           </div>
           <div className="space-y-8">
-            <h2 className="text-3xl md:text-4xl font-black text-slate-900 leading-tight">Our Development <br /><span className="text-[#0371a3]">Lifecycle</span></h2>
+            <h2 className="text-3xl md:text-4xl font-black text-slate-900 leading-tight">Our Development <br /><span className="text-[#4A6E62]">Lifecycle</span></h2>
             <div className="space-y-4">
               {[
                 { step: "01", title: "Requirement Analysis", desc: "We sit with you to understand your specific business logic and pain points." },
@@ -139,7 +139,7 @@ export default function TDLPage() {
                 { step: "04", title: "UAT & Deployment", desc: "Testing the module with your live data and final implementation." }
               ].map((item, i) => (
                 <div key={i} className="flex gap-5 p-5 bg-white rounded-2xl border border-slate-100 shadow-sm">
-                  <span className="text-2xl font-black text-[#0371a3]/20">{item.step}</span>
+                  <span className="text-2xl font-black text-[#4A6E62]/20">{item.step}</span>
                   <div>
                     <h4 className="font-bold text-slate-900">{item.title}</h4>
                     <p className="text-slate-500 text-sm font-medium">{item.desc}</p>
@@ -154,13 +154,13 @@ export default function TDLPage() {
       {/* CTA Section */}
       <section className="py-20 px-6">
         <div className="max-w-5xl mx-auto bg-slate-900 rounded-[3rem] p-12 text-center relative overflow-hidden shadow-2xl">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-[#0371a3]/20 rounded-full blur-[80px]" />
+          <div className="absolute top-0 right-0 w-64 h-64 bg-[#4A6E62]/20 rounded-full blur-[80px]" />
           <div className="relative z-10">
             <h2 className="text-3xl md:text-4xl font-black text-white mb-6">Have a Unique Requirement?</h2>
             <p className="text-white/60 mb-10 max-w-xl mx-auto font-medium">If you can imagine it, we can build it in Tally. Let's discuss your custom module today.</p>
             <button 
               onClick={() => openModal('callback')}
-              className="px-10 py-4 bg-[#00ABE4] text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:scale-105 transition-all shadow-xl shadow-[#00ABE4]/20"
+              className="px-10 py-4 bg-[#5D887A] text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:scale-105 transition-all shadow-xl shadow-[#5D887A]/20"
             >
               Get a Callback
             </button>

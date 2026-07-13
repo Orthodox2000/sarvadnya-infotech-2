@@ -66,7 +66,7 @@ export default function TSSPage() {
   return (
     <div className="min-h-screen bg-white text-slate-900">
       {/* Cinematic Hero Section (Themed Hero) */}
-      <section className="bg-white relative overflow-hidden flex items-center min-h-[200px] md:min-h-[350px] border-b border-[#0371a3]/10">
+      <section className="bg-white relative overflow-hidden flex items-center min-h-[200px] md:min-h-[350px] border-b border-[#4A6E62]/10">
         {/* Cinematic Image Side - Hidden on mobile, full height on desktop */}
         <div className="hidden lg:block absolute right-0 top-0 bottom-0 w-1/2 z-0">
           <div className="relative h-full w-full">
@@ -84,13 +84,13 @@ export default function TSSPage() {
         
         <div className="max-w-7xl mx-auto w-full px-6 relative z-10 py-12 md:py-16">
           <div className="max-w-2xl lg:pr-12">
-            <div className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-white/40 border border-[#0371a3]/10 text-[#0371a3] text-[10px] font-bold uppercase tracking-widest mb-6 backdrop-blur-sm">
-              <span className="flex h-0.5 w-0.5 rounded-full bg-[#0371a3]"></span>
+            <div className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-white/40 border border-[#4A6E62]/10 text-[#4A6E62] text-[10px] font-bold uppercase tracking-widest mb-6 backdrop-blur-sm">
+              <span className="flex h-0.5 w-0.5 rounded-full bg-[#4A6E62]"></span>
               Software Continuity
             </div>
             <h1 className="text-3xl md:text-6xl font-black text-slate-900 mb-6 leading-tight tracking-tight">
               Tally Software <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0371a3] via-[#00ABE4] to-[#0371a3]">Service (TSS)</span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#4A6E62] via-[#5D887A] to-[#4A6E62]">Service (TSS)</span>
             </h1>
             <p className="text-slate-600 text-base md:text-lg max-w-xl leading-relaxed mb-8 font-semibold">
               Don't miss out on the latest features and statutory compliance. Renew your TSS to unlock a world of remote access and seamless updates.
@@ -98,7 +98,7 @@ export default function TSSPage() {
             <div className="flex flex-wrap gap-4">
               <button 
                 onClick={() => openModal('quote')}
-                className="px-8 py-4 bg-[#0371a3] text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-[#00ABE4] transition-all shadow-xl shadow-[#0371a3]/20"
+                className="px-8 py-4 bg-[#4A6E62] text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-[#5D887A] transition-all shadow-xl shadow-[#4A6E62]/20"
               >
                 Renew TSS Today
               </button>
@@ -116,7 +116,7 @@ export default function TSSPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {tssFeatures.map((feature, i) => (
             <div key={i} className="p-8 bg-white rounded-3xl border border-slate-100 shadow-sm hover:shadow-xl transition-all duration-300 group">
-              <div className="w-12 h-12 bg-[#dff0f5] text-[#0371a3] rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+              <div className="w-12 h-12 bg-[#E8F0EB] text-[#4A6E62] rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
                 {feature.icon}
               </div>
               <h3 className="text-lg font-black text-slate-900 mb-3">{feature.title}</h3>
@@ -138,7 +138,7 @@ export default function TSSPage() {
              />
           </div>
           <div className="space-y-8">
-            <h2 className="text-3xl md:text-4xl font-black text-slate-900 leading-tight">Comprehensive Product <br /><span className="text-[#0371a3]">Capabilities</span></h2>
+            <h2 className="text-3xl md:text-4xl font-black text-slate-900 leading-tight">Comprehensive Product <br /><span className="text-[#4A6E62]">Capabilities</span></h2>
             <div className="space-y-4">
               {deliverableList.map((benefit, i) => (
                 <div key={i} className="flex items-center gap-4 p-4 bg-white rounded-2xl border border-slate-100 shadow-sm">
@@ -149,7 +149,7 @@ export default function TSSPage() {
                 </div>
               ))}
             </div>
-            <p className="text-slate-500 font-medium leading-relaxed italic border-l-4 border-[#0371a3] pl-4">
+            <p className="text-slate-500 font-medium leading-relaxed italic border-l-4 border-[#4A6E62] pl-4">
               "TSS is not an expense; it's an investment in keeping your business compliant and technologically current."
             </p>
           </div>
@@ -159,13 +159,13 @@ export default function TSSPage() {
       {/* CTA Section */}
       <section className="py-20 px-6">
         <div className="max-w-5xl mx-auto bg-slate-900 rounded-[3rem] p-12 text-center relative overflow-hidden shadow-2xl">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-[#0371a3]/20 rounded-full blur-[80px]" />
+          <div className="absolute top-0 right-0 w-64 h-64 bg-[#4A6E62]/20 rounded-full blur-[80px]" />
           <div className="relative z-10">
             <h2 className="text-3xl md:text-4xl font-black text-white mb-6">Stay Current. Stay Compliant.</h2>
             <p className="text-white/60 mb-10 max-w-xl mx-auto font-medium">Renewal takes less than 5 minutes. Protect your statutory compliance and product features today.</p>
             <button 
               onClick={() => openModal('callback')}
-              className="px-10 py-4 bg-[#00ABE4] text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:scale-105 transition-all shadow-xl shadow-[#00ABE4]/20"
+              className="px-10 py-4 bg-[#5D887A] text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:scale-105 transition-all shadow-xl shadow-[#5D887A]/20"
             >
               Consult an Expert
             </button>

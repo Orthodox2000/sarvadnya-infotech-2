@@ -29,29 +29,29 @@ export default function ProductsPage() {
   const products: Product[] = [
     {
       name: "TallyPrime Silver",
-      description: "TallyPrime Silver is meant to complete transactions, assignments and emerge business.",
-      tags: ["FOR ONE USER", "SUITED FOR", "1 USER PC"],
+      description: "Ideal for small businesses. Manage invoicing, inventory, GST filing and financial reports on a single computer.",
+      tags: ["1 USER", "SINGLE PC", "GST READY"],
       link: "/products/silver",
       logo: "/tallyprime logo.png"
     },
     {
       name: "TallyPrime Gold",
-      description: "TallyPrime Gold offers simultaneous access, assignments and emerge business for teams.",
-      tags: ["SUITED FOR", "SHARED LAN", "MULTI USER"],
+      description: "Built for growing teams. Enables real-time collaboration across multiple users on a shared LAN network.",
+      tags: ["MULTI USER", "LAN ACCESS", "REAL-TIME"],
       link: "/products/gold",
       logo: "/tallyprime logo.png"
     },
     {
       name: "TallyPrime Server",
-      description: "TallyPrime Server is a robust and complete professional, automatic, and eminent business solution.",
-      tags: ["BIGGER TEAMS", "ACCESS LOGS", "ADVANCED"],
+      description: "Enterprise-grade solution with centralized data control, detailed audit trails and remote access capabilities.",
+      tags: ["ENTERPRISE", "AUDIT TRAIL", "REMOTE ACCESS"],
       link: "/products/server",
       logo: "/tallyprime logo.png"
     },
     {
       name: "TallyDrive",
-      description: "TallyDrive is a simple way to connect with recreate and protections for your data.",
-      tags: ["AES-256", "SCHEDULED", "CLOUD BACKUP"],
+      description: "Secure cloud backup and data protection for your Tally data with automated scheduling and encryption.",
+      tags: ["AES-256", "AUTO BACKUP", "CLOUD SYNC"],
       link: "/products/tallydrive",
       logo: "/tallyprime logo.png"
     }
@@ -70,7 +70,7 @@ export default function ProductsPage() {
 
         {/* Cards Grid */}
         <section className="relative z-10 px-6 pb-16 md:pb-16 max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {products.map((p) => (
               <div
                 key={p.name}
@@ -83,7 +83,7 @@ export default function ProductsPage() {
                   <h3 className="text-lg font-bold text-gray-900 leading-tight">
                     {p.name.split(' ').map((word, i) => (
                       <span key={i}>
-                        {word}
+                        {word+" "}
                       </span>
                     ))}
                   </h3>
@@ -93,11 +93,11 @@ export default function ProductsPage() {
                   {p.description}
                 </p>
 
-                <div className="flex flex-wrap gap-2 mb-6">
+                <div className="flex flex-nowrap gap-2 mb-6">
                   {p.tags.map((tag) => (
                     <span
                       key={tag}
-                      className="bg-[#EBF2F7] text-[#4A6478] text-[10px] font-bold px-2 py-1 rounded-md tracking-wider uppercase"
+                      className="bg-[#EBF2F7] text-[#4A6478] text-[9px] font-bold px-2 py-1 rounded-md tracking-wide uppercase"
                     >
                       {tag}
                     </span>

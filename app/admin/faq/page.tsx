@@ -82,7 +82,7 @@ export default function AdminFAQ() {
         <button
           onClick={handleSave}
           disabled={saving}
-          className="bg-[#0371a3] text-white px-8 py-3 rounded-2xl font-bold hover:shadow-lg transition-all disabled:opacity-50"
+          className="bg-[#4A6E62] text-white px-8 py-3 rounded-2xl font-bold hover:shadow-lg transition-all disabled:opacity-50"
         >
           {saving ? 'Saving...' : 'Save Changes'}
         </button>
@@ -99,10 +99,10 @@ export default function AdminFAQ() {
           const sectionFaqs = faqsByCategory(category);
           return (
             <div key={category} className="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden">
-              <div className="flex items-center justify-between px-6 py-4 bg-[#f0f9ff] border-b border-[#E9F1FA]">
+              <div className="flex items-center justify-between px-6 py-4 bg-[#F5F4ED] border-b border-[#F0F5F2]">
                 <div className="flex items-center gap-3">
-                  <h2 className="text-lg font-black text-[#0371a3]">{category}</h2>
-                  <span className="px-2.5 py-0.5 rounded-full bg-[#E9F1FA] text-[#0371a3] text-[10px] font-black uppercase tracking-widest">
+                  <h2 className="text-lg font-black text-[#4A6E62]">{category}</h2>
+                  <span className="px-2.5 py-0.5 rounded-full bg-[#F0F5F2] text-[#4A6E62] text-[10px] font-black uppercase tracking-widest">
                     {sectionFaqs.length} {sectionFaqs.length === 1 ? 'Question' : 'Questions'}
                   </span>
                 </div>
@@ -139,7 +139,7 @@ export default function AdminFAQ() {
                             Question {sectionFaqs.length - localIdx}
                           </label>
                           <input
-                            className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#0371a3] font-bold text-slate-800"
+                            className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#4A6E62] font-bold text-slate-800"
                             placeholder="e.g. What is TallyPrime Silver?"
                             value={faq.question}
                             onChange={e => updateFaq(globalIdx, 'question', e.target.value)}
@@ -149,7 +149,7 @@ export default function AdminFAQ() {
                         <div>
                           <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">Answer</label>
                           <textarea
-                            className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#0371a3] h-24 text-slate-600 leading-relaxed"
+                            className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#4A6E62] h-24 text-slate-600 leading-relaxed"
                             placeholder="Provide a detailed answer..."
                             value={faq.answer}
                             onChange={e => updateFaq(globalIdx, 'answer', e.target.value)}
@@ -187,7 +187,7 @@ export default function AdminFAQ() {
                     <div className="pr-10">
                       <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">Question</label>
                       <input
-                        className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#0371a3] font-bold text-slate-800"
+                        className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#4A6E62] font-bold text-slate-800"
                         value={faq.question}
                         onChange={e => updateFaq(globalIdx, 'question', e.target.value)}
                       />
@@ -195,7 +195,7 @@ export default function AdminFAQ() {
                     <div>
                       <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">Category</label>
                       <select
-                        className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#0371a3] font-medium text-slate-700"
+                        className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#4A6E62] font-medium text-slate-700"
                         value={faq.category || ''}
                         onChange={e => updateFaq(globalIdx, 'category', e.target.value)}
                       >
@@ -208,7 +208,7 @@ export default function AdminFAQ() {
                     <div>
                       <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">Answer</label>
                       <textarea
-                        className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#0371a3] h-24 text-slate-600 leading-relaxed"
+                        className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#4A6E62] h-24 text-slate-600 leading-relaxed"
                         value={faq.answer}
                         onChange={e => updateFaq(globalIdx, 'answer', e.target.value)}
                       />

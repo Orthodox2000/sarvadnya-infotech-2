@@ -68,7 +68,7 @@ export default function ModuleCard({ module, onViewDetails, onEnquire }: ModuleC
           </button>
           <button
             onClick={() => onEnquire(module)}
-            className="w-10 h-10 flex items-center justify-center rounded-xl border border-slate-200 text-[#316852] hover:bg-sky-50 transition-all"
+            className="w-10 h-10 flex items-center justify-center rounded-xl border border-slate-200 text-[#316852] hover:bg-emerald-50 transition-all"
             title="Enquire Now"
           >
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>

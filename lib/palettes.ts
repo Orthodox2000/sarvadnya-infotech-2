@@ -66,22 +66,22 @@ export const palettes: Palette[] = [
   {
     id: "ocean-deep",
     name: "Ocean Deep",
-    description: "A classic corporate blue palette that conveys stability, intelligence, and professional reliability.",
-    primary: "#2563eb",
-    secondary: "#1e3a8a",
-    accent: "#60a5fa",
-    heading: "#1e1b4b",
-    paragraph: "#1e3a8a",
+    description: "A classic corporate green palette that conveys stability, intelligence, and professional reliability.",
+    primary: "#5D887A",
+    secondary: "#4A6E62",
+    accent: "#72B896",
+    heading: "#2C3F36",
+    paragraph: "#4A6E62",
     backgrounds: [
       { name: "Pure White", value: "#ffffff" },
-      { name: "Sky Tint", value: "#eff6ff" },
+      { name: "Sky Tint", value: "#F0F5F2" },
       { name: "Slate Wash", value: "#f8fafc" },
-      { name: "Midnight Navy", value: "#020617", isDark: true }
+      { name: "Midnight Navy", value: "#1A2E25", isDark: true }
     ],
     combinations: [
-      { name: "Tech Blue", colors: ["#2563eb", "#1e3a8a"] },
-      { name: "Clean Cloud", colors: ["#2563eb", "#60a5fa", "#ffffff"] },
-      { name: "Ocean Gradient", colors: ["#1e3a8a", "#1e1b4b"] }
+      { name: "Tech Blue", colors: ["#5D887A", "#4A6E62"] },
+      { name: "Clean Cloud", colors: ["#5D887A", "#72B896", "#ffffff"] },
+      { name: "Ocean Gradient", colors: ["#4A6E62", "#2C3F36"] }
     ]
   },
   {

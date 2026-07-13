@@ -140,6 +140,12 @@ export const productItems: ProductItem[] = [
     href: "/tutorials",
     subItems: [
       {
+        id: "l-sara",
+        label: "Learn from Sara",
+        href: "/learn-sara",
+        description: "Ask questions and learn Tally interactively.",
+      },
+      {
         id: "l-video",
         label: "Video Learning",
         href: "/tutorials",

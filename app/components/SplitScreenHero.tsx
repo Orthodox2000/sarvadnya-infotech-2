@@ -24,7 +24,7 @@ export default function SplitScreenHero() {
             </p>
             <h1 className="mt-4 font-sans text-[2rem] font-black leading-[1.1] text-[#0f0529] sm:text-[3rem] md:text-[4rem] tracking-tight">
               Tally Excellence & <br/> 
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-600 to-indigo-600">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-emerald-700">
                 Priority Support
               </span>
             </h1>

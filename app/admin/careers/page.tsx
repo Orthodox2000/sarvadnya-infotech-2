@@ -106,7 +106,7 @@ export default function AdminCareers() {
         {activeTab === 'listings' && !editingJob && (
           <button 
             onClick={() => setEditingJob({ title: '', department: '', location: '', type: 'Full-time', shortDescription: '', fullDescription: '', aboutRole: '', lookingFor: '', whyJoinUs: '', postedAt: new Date().toISOString(), requirements: [], benefits: [] })}
-            className="bg-[#0371a3] text-white px-6 py-3 rounded-2xl font-bold hover:shadow-lg transition-all"
+            className="bg-[#4A6E62] text-white px-6 py-3 rounded-2xl font-bold hover:shadow-lg transition-all"
           >
             Add New Job
           </button>
@@ -117,13 +117,13 @@ export default function AdminCareers() {
       <div className="flex gap-4 mb-8">
         <button 
           onClick={() => { setActiveTab('listings'); setEditingJob(null); }}
-          className={`px-6 py-2 rounded-xl font-bold transition-all ${activeTab === 'listings' ? 'bg-[#0371a3] text-white' : 'bg-slate-100 text-slate-500 hover:bg-slate-200'}`}
+          className={`px-6 py-2 rounded-xl font-bold transition-all ${activeTab === 'listings' ? 'bg-[#4A6E62] text-white' : 'bg-slate-100 text-slate-500 hover:bg-slate-200'}`}
         >
           Job Listings
         </button>
         <button 
           onClick={() => { setActiveTab('applications'); setEditingJob(null); }}
-          className={`px-6 py-2 rounded-xl font-bold transition-all ${activeTab === 'applications' ? 'bg-[#0371a3] text-white' : 'bg-slate-100 text-slate-500 hover:bg-slate-200'}`}
+          className={`px-6 py-2 rounded-xl font-bold transition-all ${activeTab === 'applications' ? 'bg-[#4A6E62] text-white' : 'bg-slate-100 text-slate-500 hover:bg-slate-200'}`}
         >
           Applications ({applications.length || '...'})
         </button>
@@ -137,7 +137,7 @@ export default function AdminCareers() {
               <input 
                 type="text" 
                 placeholder="Job Title" 
-                className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#0371a3]"
+                className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#4A6E62]"
                 value={editingJob.title || ''}
                 onChange={e => setEditingJob({...editingJob, title: e.target.value})}
                 required
@@ -145,7 +145,7 @@ export default function AdminCareers() {
               <input 
                 type="text" 
                 placeholder="Department" 
-                className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#0371a3]"
+                className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#4A6E62]"
                 value={editingJob.department || ''}
                 onChange={e => setEditingJob({...editingJob, department: e.target.value})}
                 required
@@ -153,13 +153,13 @@ export default function AdminCareers() {
               <input 
                 type="text" 
                 placeholder="Location" 
-                className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#0371a3]"
+                className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#4A6E62]"
                 value={editingJob.location || ''}
                 onChange={e => setEditingJob({...editingJob, location: e.target.value})}
                 required
               />
               <select 
-                className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#0371a3]"
+                className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#4A6E62]"
                 value={editingJob.type || 'Full-time'}
                 onChange={e => setEditingJob({...editingJob, type: e.target.value as any})}
               >
@@ -170,7 +170,7 @@ export default function AdminCareers() {
               </select>
               <input 
                 type="datetime-local" 
-                className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#0371a3]"
+                className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#4A6E62]"
                 value={editingJob.postedAt ? new Date(editingJob.postedAt).toISOString().slice(0, 16) : ''}
                 onChange={e => setEditingJob({...editingJob, postedAt: new Date(e.target.value).toISOString()})}
                 required
@@ -179,7 +179,7 @@ export default function AdminCareers() {
             
             <textarea 
               placeholder="Short Description" 
-              className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#0371a3] h-24"
+              className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#4A6E62] h-24"
               value={editingJob.shortDescription || ''}
               onChange={e => setEditingJob({...editingJob, shortDescription: e.target.value})}
               required
@@ -188,21 +188,21 @@ export default function AdminCareers() {
             <div className="grid grid-cols-1 gap-6">
               <textarea 
                 placeholder="About the Role" 
-                className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#0371a3] h-32"
+                className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#4A6E62] h-32"
                 value={editingJob.aboutRole || ''}
                 onChange={e => setEditingJob({...editingJob, aboutRole: e.target.value})}
               />
               
               <textarea 
                 placeholder="What We're Looking For" 
-                className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#0371a3] h-32"
+                className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#4A6E62] h-32"
                 value={editingJob.lookingFor || ''}
                 onChange={e => setEditingJob({...editingJob, lookingFor: e.target.value})}
               />
               
               <textarea 
                 placeholder="Why Join Us?" 
-                className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#0371a3] h-32"
+                className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#4A6E62] h-32"
                 value={editingJob.whyJoinUs || ''}
                 onChange={e => setEditingJob({...editingJob, whyJoinUs: e.target.value})}
               />
@@ -210,13 +210,13 @@ export default function AdminCareers() {
             
             <textarea 
               placeholder="Full Description (Technical/Additional Info)" 
-              className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#0371a3] h-48"
+              className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#4A6E62] h-48"
               value={editingJob.fullDescription || ''}
               onChange={e => setEditingJob({...editingJob, fullDescription: e.target.value})}
             />
 
             <div className="flex gap-4">
-              <button type="submit" className="bg-[#0371a3] text-white px-8 py-3 rounded-2xl font-bold">Save Job</button>
+              <button type="submit" className="bg-[#4A6E62] text-white px-8 py-3 rounded-2xl font-bold">Save Job</button>
               <button type="button" onClick={() => setEditingJob(null)} className="bg-slate-100 text-slate-600 px-8 py-3 rounded-2xl font-bold">Cancel</button>
             </div>
           </form>
@@ -227,7 +227,7 @@ export default function AdminCareers() {
             <div className="text-center py-10 text-slate-400">Loading jobs...</div>
           ) : jobs.length > 0 ? (
             jobs.map(job => (
-              <div key={job.id || (job as any)._id} className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm flex justify-between items-center group hover:border-[#0371a3]/30 transition-all">
+              <div key={job.id || (job as any)._id} className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm flex justify-between items-center group hover:border-[#4A6E62]/30 transition-all">
                 <div>
                   <h3 className="font-bold text-[#0f172a]">{job.title}</h3>
                   <p className="text-xs text-slate-500">{job.department} • {job.location} • {job.type}</p>
@@ -235,7 +235,7 @@ export default function AdminCareers() {
                 <div className="flex gap-2">
                   <button 
                     onClick={() => setEditingJob(job)}
-                    className="px-3 py-1 text-xs font-bold text-[#0371a3] hover:bg-sky-50 rounded-lg transition-colors border border-sky-100"
+                    className="px-3 py-1 text-xs font-bold text-[#4A6E62] hover:bg-emerald-50 rounded-lg transition-colors border border-emerald-100"
                     title="Edit"
                   >
                     Edit
@@ -284,20 +284,20 @@ export default function AdminCareers() {
                         <div className="text-[10px] text-slate-400">{app.email}</div>
                       </td>
                       <td className="p-4">
-                        <div className="text-sm font-black text-[#0371a3] tabular-nums">{app.phone}</div>
+                        <div className="text-sm font-black text-[#4A6E62] tabular-nums">{app.phone}</div>
                       </td>
                       <td className="p-4 text-sm font-medium text-slate-600">
                         {app.job_title}
                       </td>
                       <td className="p-4">
-                         <span className="px-2.5 py-1 rounded-lg text-[10px] font-bold bg-sky-50 text-[#0371a3] border border-sky-100">
+                         <span className="px-2.5 py-1 rounded-lg text-[10px] font-bold bg-sky-50 text-[#4A6E62] border border-sky-100">
                            {app.experience}
                          </span>
                       </td>
                       <td className="p-4 text-right">
                         <button 
                           onClick={() => openResume(app.resume_url)}
-                          className="px-3 py-1.5 text-[10px] font-black uppercase tracking-widest bg-[#0371a3] text-white rounded-xl hover:shadow-lg transition-all"
+                          className="px-3 py-1.5 text-[10px] font-black uppercase tracking-widest bg-[#4A6E62] text-white rounded-xl hover:shadow-lg transition-all"
                         >
                           Resume
                         </button>

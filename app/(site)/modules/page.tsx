@@ -52,28 +52,24 @@ export default function ModulesPage() {
   return (
     <div className="min-h-screen bg-[FAFAFA]">
       {/* Compact Hero Section (Radiant Sky Theme) */}
-      <section className="bg-[#ecf5fa] relative pt-12 pb-16 md:pt-16 md:pb-24 px-6 overflow-hidden border-b border-[#0371a3]/10">
+      <section className="bg-[#F5F4ED] relative pt-12 pb-16 md:pt-16 md:pb-24 px-6 overflow-hidden border-b border-[#4A6E62]/10">
         {/* Background Effects */}
         <div className="absolute inset-0 opacity-40 pointer-events-none">
           <div className="absolute top-0 right-0 w-[60%] h-[60%] bg-white/40 blur-[130px] -mr-32 -mt-32" />
-          <div className="absolute bottom-0 left-0 w-[40%] h-[40%] bg-sky-200/30 blur-[110px] -ml-24 -mb-24" />
+          <div className="absolute bottom-0 left-0 w-[40%] h-[40%] bg-emerald-200/30 blur-[110px] -ml-24 -mb-24" />
         </div>
 
         <div className="relative z-10 max-w-7xl mx-auto text-center">
-          <div className="flex justify-center mb-6">
-            <div className="w-16 h-16 rounded-2xl bg-white border border-slate-200 shadow-sm flex items-center justify-center p-3">
-              <Image src="/customization icon.png" alt="Custom Modules" width={44} height={44} className="object-contain" />
-            </div>
-          </div>
+          
           <div className="inline-flex items-center gap-1.5 px-2 py-1 rounded-full bg-slate-900/5 border border-slate-900/10 text-slate-500 text-[10px] font-bold uppercase tracking-[0.2em] mb-8 backdrop-blur-sm">
             <span className="flex h-1 w-1 rounded-full bg-slate-400"></span>
             Specialized Solutions
           </div>
-          <h1 className="text-3xl md:text-6xl font-black text-slate-900 mb-6 leading-tight tracking-tight">
-            Custom Modules for <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0371a3] via-[#4b91ca] to-[#0371a3] drop-shadow-[0_2px_15px_rgba(0,171,228,0.2)]">Your Industry Logic</span>
+          <h1 className="text-3xl md:text-5xl font-black text-slate-900 mb-6 leading-tight tracking-tight">
+            Custom Modules for<br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#4A6E62] via-[#5D887A] to-[#4A6E62] drop-shadow-[0_2px_15px_rgba(93,136,122,0.2)]">Industry Specific Logic</span>
           </h1>
-          <p className="text-slate-600/80 text-sm md:text-xl max-w-2xl mx-auto leading-relaxed font-semibold">
+          <p className="text-slate-600/80 text-sm md:text-xl max-w-4xl mx-auto leading-relaxed font-semibold">
             Beyond standard accounting. We build deep, industry-specific logic directly into your Tally environment to automate your unique business workflows.
           </p>
         </div>
@@ -117,7 +113,7 @@ export default function ModulesPage() {
       {/* Trust Banner (High Contrast CTA) */}
       <section className="py-16 px-6 bg-slate-950 relative overflow-hidden">
         {/* Subtle decorative glow */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-full bg-[#0371a3]/10 blur-[120px] pointer-events-none"></div>
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-full bg-[#4A6E62]/10 blur-[120px] pointer-events-none"></div>
         
         <div className="max-w-4xl mx-auto text-center relative z-10">
           <h2 className="text-2xl md:text-4xl font-black text-white mb-6">Need a Custom TDL Solution?</h2>
@@ -127,7 +123,7 @@ export default function ModulesPage() {
           </p>
           <button 
             onClick={() => setContactModalConfig({ isOpen: true, type: 'callback', service: 'Bespoke TDL Customization' })}
-            className="group px-10 py-4 bg-[#0371a3] text-white rounded-full font-bold hover:bg-[#00ABE4] transition-all shadow-xl shadow-sky-900/20 flex items-center gap-3 mx-auto"
+            className="group px-10 py-4 bg-[#4A6E62] text-white rounded-full font-bold hover:bg-[#5D887A] transition-all shadow-xl shadow-emerald-900/20 flex items-center gap-3 mx-auto"
           >
             Consult Our Team
             <svg className="w-5 h-5 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>

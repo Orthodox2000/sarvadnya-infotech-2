@@ -67,7 +67,7 @@ export default function AdminProblemReportsPage() {
       case 'broken-link':
         return 'bg-rose-50 text-rose-600 border-rose-100';
       case 'form-issue':
-        return 'bg-sky-50 text-[#0371a3] border-sky-100';
+        return 'bg-emerald-50 text-emerald-600 border-emerald-100';
       case 'content-mismatch':
         return 'bg-amber-50 text-amber-700 border-amber-100';
       case 'layout-issue':
@@ -99,7 +99,7 @@ export default function AdminProblemReportsPage() {
     <div className="relative">
       <header className="mb-8 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
         <div>
-          <p className="text-[10px] font-black uppercase tracking-[0.3em] text-[#0371a3] mb-2">Admin Support</p>
+          <p className="text-[10px] font-black uppercase tracking-[0.3em] text-[#4A6E62] mb-2">Admin Support</p>
           <h1 className="text-3xl font-black tracking-tight text-slate-900">Problem Reports</h1>
           <p className="mt-1 text-sm font-medium text-slate-500">
             Review basic error reports submitted from the public form.
@@ -107,18 +107,18 @@ export default function AdminProblemReportsPage() {
         </div>
 
         <div className="flex flex-wrap items-center gap-3">
-          <span className="rounded-full border border-sky-100 bg-sky-50 px-4 py-2 text-[10px] font-black uppercase tracking-[0.2em] text-[#0371a3]">
+          <span className="rounded-full border border-emerald-100 bg-emerald-50 px-4 py-2 text-[10px] font-black uppercase tracking-[0.2em] text-[#4A6E62]">
             Endpoint: /api/admin/problem-reports
           </span>
           <Link
             href="/report-problem"
-            className="rounded-full border border-slate-200 bg-white px-4 py-2 text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 transition-colors hover:border-sky-200 hover:text-[#0371a3]"
+            className="rounded-full border border-slate-200 bg-white px-4 py-2 text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 transition-colors hover:border-emerald-200 hover:text-[#4A6E62]"
           >
             View Public Form
           </Link>
           <button
             onClick={fetchData}
-            className="rounded-full bg-[#0371a3] px-5 py-2.5 text-[10px] font-black uppercase tracking-[0.2em] text-white transition-all hover:shadow-lg hover:shadow-sky-900/15"
+            className="rounded-full bg-[#4A6E62] px-5 py-2.5 text-[10px] font-black uppercase tracking-[0.2em] text-white transition-all hover:shadow-lg hover:shadow-emerald-900/15"
           >
             Refresh
           </button>
@@ -222,7 +222,7 @@ export default function AdminProblemReportsPage() {
           >
             <div className="flex shrink-0 items-center justify-between border-b border-slate-100 bg-slate-50/70 p-6 sm:p-8">
               <div>
-                <p className="mb-1 text-[10px] font-black uppercase tracking-[0.25em] text-[#0371a3]">Problem Detail</p>
+                <p className="mb-1 text-[10px] font-black uppercase tracking-[0.25em] text-[#4A6E62]">Problem Detail</p>
                 <h2 className="text-2xl font-black tracking-tight text-slate-900">{selectedReport.name}</h2>
               </div>
               <button
@@ -266,7 +266,7 @@ export default function AdminProblemReportsPage() {
                     href={selectedReport.pageUrl}
                     target={selectedReport.pageUrl.startsWith('http') ? '_blank' : undefined}
                     rel={selectedReport.pageUrl.startsWith('http') ? 'noreferrer' : undefined}
-                    className="break-all text-sm font-semibold text-[#0371a3] hover:underline"
+                    className="break-all text-sm font-semibold text-[#4A6E62] hover:underline"
                   >
                     {selectedReport.pageUrl}
                   </a>
@@ -292,7 +292,7 @@ export default function AdminProblemReportsPage() {
               </button>
               <a
                 href={`mailto:${selectedReport.email}`}
-                className="inline-flex items-center gap-2 rounded-xl bg-[#0371a3] px-6 py-3 text-[11px] font-black uppercase tracking-[0.2em] text-white transition-all hover:shadow-lg hover:shadow-sky-900/20"
+                className="inline-flex items-center gap-2 rounded-xl bg-[#4A6E62] px-6 py-3 text-[11px] font-black uppercase tracking-[0.2em] text-white transition-all hover:shadow-lg hover:shadow-emerald-900/20"
               >
                 Reply via Email
               </a>

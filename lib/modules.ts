@@ -18,10 +18,10 @@ export const modules: Module[] = [
   {
     id: "logistics-transport",
     title: "Logistics & Transport",
-    shortDescription: "End-to-end fleet management, trip sheets, and fuel tracking integrated with Tally.",
-    fullDescription: "Our Logistics & Transport module is designed for fleet owners and transport contractors. It automates trip sheet management, driver commissions, fuel expenses, and vehicle maintenance schedules directly within your TallyPrime environment.",
-    videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ", // Placeholder
-    brochureUrl: "/brochures/transport-module.pdf", // Placeholder
+    shortDescription: "Take total control of your fleet. Automate trip sheets, track fuel, and manage maintenance directly within TallyPrime.",
+    fullDescription: "Stop profit leakage in its tracks. Designed specifically for fleet owners and transport contractors, this module completely automates trip sheet management, driver payouts, and fuel expenses. Get real-time visibility into vehicle maintenance and trip-wise profitability without ever leaving your Tally environment.",
+    videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+    brochureUrl: "/brochures/transport-module.pdf",
     image: "/assets/images/1519003722824-194d4455a60c.jpg",
     features: [
       "Trip-wise P&L Reporting",
@@ -30,119 +30,119 @@ export const modules: Module[] = [
       "Vehicle Maintenance Alerts"
     ],
     benefits: [
-      "Reduce operational leakage",
-      "Real-time fleet visibility",
+      "Eliminate operational leakage",
+      "Gain real-time fleet visibility",
       "Seamless accounting integration",
-      "Automated documentation"
+      "Automate heavy documentation"
     ],
     category: "Vertical Solution"
   },
   {
     id: "cf-agencies",
     title: "C&F Agencies",
-    shortDescription: "Specialized billing and container tracking for Clearing and Forwarding agents.",
-    fullDescription: "Designed for C&F agents, this module manages complex container tracking, agent commissions, and multi-layered shipping documentation. It simplifies the complex billing cycles typical in the logistics industry.",
+    shortDescription: "Simplify complex logistics billing and track containers seamlessly for Clearing & Forwarding operations.",
+    fullDescription: "Say goodbye to chaotic shipping documentation. Designed exclusively for C&F agents, this module streamlines multi-layered container tracking, port documentation, and agent commissions. We simplify the notorious billing cycles of the logistics industry so you can focus on moving cargo.",
     videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
     brochureUrl: "/brochures/cf-agent-module.pdf",
     image: "/assets/images/1586528116311-ad8dd3c8310d.jpg",
     features: [
-      "Container Tracking System",
+      "Live Container Tracking System",
       "Automated Commission Billing",
       "Customized Port Documentation",
       "Client-wise Container Reports"
     ],
     benefits: [
-      "Error-free billing",
-      "Faster document processing",
-      "Improved client transparency",
-      "Better cash flow management"
+      "Ensure 100% error-free billing",
+      "Speed up document processing",
+      "Improve client transparency",
+      "Accelerate cash flow management"
     ],
     category: "Vertical Solution"
   },
   {
     id: "housing-societies",
     title: "Housing Societies",
-    shortDescription: "Automated maintenance billing and receipt tracking for co-operative societies.",
-    fullDescription: "A comprehensive solution for Housing Societies to automate maintenance bill generation, track receipts, calculate penalties for late payments, and generate statutory audit reports according to society norms.",
+    shortDescription: "Smart, automated maintenance billing and effortless accounting for co-operative housing societies.",
+    fullDescription: "Eliminate the headaches of society management. This comprehensive tool automates maintenance bill generation, instant receipt tracking, and late-payment penalty calculations. Easily generate audit-ready financial reports that strictly comply with society by-laws in just a few clicks.",
     videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
     brochureUrl: "/brochures/society-module.pdf",
     image: "/assets/images/1486406146926-c627a92ad1ab.jpg",
     features: [
       "Automated Maintenance Billing",
-      "Late Payment Interest Calculation",
-      "Society Expense Tracking",
+      "Late Payment Penalty Calculation",
+      "Detailed Society Expense Tracking",
       "Audit-Ready Financial Reports"
     ],
     benefits: [
-      "Transparent society management",
-      "Reduced manual accounting work",
-      "Timely collection alerts",
-      "Compliant with society laws"
+      "Ensure transparent society management",
+      "Drastically reduce manual accounting",
+      "Trigger timely collection alerts",
+      "Stay compliant with society laws"
     ],
     category: "Vertical Solution"
   },
   {
     id: "excel-to-tally",
     title: "Excel to Tally Import",
-    shortDescription: "Bulk import thousands of vouchers and masters from Excel to Tally in seconds.",
-    fullDescription: "Stop manual data entry. Our Excel to Tally module allows you to import thousands of sales, purchase, bank statements, and masters directly from any Excel sheet into TallyPrime without data errors.",
+    shortDescription: "Eliminate manual data entry. Bulk import thousands of vouchers and masters from Excel to Tally in seconds.",
+    fullDescription: "Stop wasting hours on manual data entry. Seamlessly migrate thousands of sales invoices, purchase vouchers, bank statements, and masters from any Excel sheet straight into TallyPrime. Enjoy lightning-fast, 100% error-free data imports with our intelligent mapping utility.",
     videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
     brochureUrl: "/brochures/excel-import.pdf",
     image: "/assets/images/excel-to-tally-new.jpg",
     features: [
-      "Custom Mapping Utility",
-      "Error Validation Before Import",
-      "Support for All Voucher Types",
-      "Multi-Company Import Support"
+      "Intelligent Custom Mapping",
+      "Pre-Import Error Validation",
+      "Supports All Tally Voucher Types",
+      "Multi-Company Import Capability"
     ],
     benefits: [
-      "Save 90% manual entry time",
-      "Eliminate human errors",
-      "Quick bulk data migration",
-      "Simple user interface"
+      "Save 90% on manual entry time",
+      "Eliminate costly human errors",
+      "Execute rapid bulk data migration",
+      "Enjoy a simple, intuitive interface"
     ],
     category: "Utility Module"
   },
   {
     id: "garment-retail",
     title: "Garment Retail/Wholesale",
-    shortDescription: "Inventory tracking by size, color, and fabric type for the fashion industry.",
-    fullDescription: "Manage your garment business with precision. This module adds multi-dimensional inventory tracking to Tally, allowing you to monitor stock by size, color, brand, and fabric type across multiple retail outlets.",
+    shortDescription: "Smart multi-dimensional inventory tracking by size, color, and style for fashion retailers.",
+    fullDescription: "Never lose track of your inventory again. Designed for the fast-paced fashion industry, this module adds robust, multi-dimensional tracking directly to Tally. Monitor your stock levels by size, color, brand, and fabric type across multiple retail outlets to prevent dead stock and boost overall sales.",
     videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
     brochureUrl: "/brochures/garment-module.pdf",
     image: "/assets/images/1523381210434-271e8be1f52b.jpg",
     features: [
-      "Size & Color Matrix",
-      "Barcode Integration",
-      "Multi-Store Sync",
+      "Dynamic Size & Color Matrix",
+      "Seamless Barcode Integration",
+      "Real-time Multi-Store Sync",
       "Season-wise Stock Analysis"
     ],
     benefits: [
-      "Accurate stock visibility",
-      "Faster checkout process",
-      "Optimized purchasing",
-      "Better trend analysis"
+      "Gain precise stock visibility",
+      "Enable lightning-fast checkouts",
+      "Optimize purchasing decisions",
+      "Identify profitable fashion trends"
     ],
     category: "Vertical Solution"
   },
   {
     id: "sales-commission",
     title: "Sales & Commission",
-    shortDescription: "Automate complex commission rules and payout calculations for sales teams.",
-    fullDescription: "Define multi-level commission rules based on product categories, sales volume, or payment realization dates. This module automates the complex payout calculations for your entire sales force.",
+    shortDescription: "Motivate your sales team with automated, error-free commission and payout calculations.",
+    fullDescription: "Turn complex incentive structures into simple, automated payouts. Define custom, multi-level commission rules based on product categories, sales volumes, or actual payment realization dates. Eliminate math disputes, motivate your sales force, and save hours of administrative work.",
     videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
     brochureUrl: "/brochures/commission-module.pdf",
     image: "/assets/images/1554224155-6726b3ff858f.jpg",
     features: [
-      "Multi-Tier Rule Definition",
-      "Target vs Achievement Reports",
+      "Multi-Tier Commission Rules",
+      "Target vs. Achievement Tracking",
       "Automated Payout Vouchers",
-      "Sales Representative Dashboard"
+      "Live Sales Rep Dashboard"
     ],
     benefits: [
-      "Transparent sales incentives",
-      "Eliminate calculation disputes",
-      "Motivate sales performance",
+      "Provide transparent sales incentives",
+      "Eliminate payout calculation disputes",
+      "Drive higher sales performance",
       "Automate complex payroll logic"
     ],
     category: "Business Booster"

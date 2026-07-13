@@ -33,7 +33,7 @@ const DEFAULT_HERO: HeroContent[] = [
       "badge": "3 star Tally Partner",
       "titleText": "Fueling MSME Ambition Through Smarter Tally Systems",
       "colorFrom": "#232F3E",
-      "colorTo": "#00ABE4",
+      "colorTo": "#5D887A",
       "description": "We don't just implement software; we clear the path for your growth. Maximize your Tally investment with certified experts who care about your bottom line as much as you do.",
       "image": "/certified partner person.png",
       "layout": "single",
@@ -49,7 +49,7 @@ const DEFAULT_HERO: HeroContent[] = [
       "badge": "TallyPrime 7.1 Now Available",
       "titleText": "Revolutionizing Business with Smart Tally Automation",
       "colorFrom": "#232F3E",
-      "colorTo": "#00ABE4",
+      "colorTo": "#5D887A",
       "description": "Unleash TallyPrime 7.0 with PrimeBanking and SmartFind. We build the financial engine that turns your accounting into a growth machine.",
       "image": "/sa2.png",
       "layout": "standard",
@@ -67,7 +67,7 @@ const DEFAULT_HERO: HeroContent[] = [
       "badge": "Certified Cloud Solutions",
       "titleText": "Tally on Cloud: Absolute Freedom.",
       "colorFrom": "#232F3E",
-      "colorTo": "#00ABE4",
+      "colorTo": "#5D887A",
       "description": "Your office, now in your pocket. Secure AWS-powered hosting with 100% uptime and zero-loss military encryption for your business data.",
       "image": "/hero/dedicated-to-cloud-hosting.jpg",
       "layout": "ecosystem",
@@ -83,7 +83,7 @@ const DEFAULT_HERO: HeroContent[] = [
       "badge": "Industry Leading Support",
       "titleText": "Instant Solutions. Zero Downtime.",
       "colorFrom": "#232F3E",
-      "colorTo": "#00ABE4",
+      "colorTo": "#5D887A",
       "description": "Stop waiting for answers. Our 90% First Call Resolution standard means your technical hurdles disappear before you hang up.",
       "image": "/trainning.png",
       "layout": "standard",
@@ -101,7 +101,7 @@ const DEFAULT_HERO: HeroContent[] = [
       "badge": "Smart Business Integration",
       "titleText": "WhatsApp Sync: Real-Time Growth.",
       "colorFrom": "#232F3E",
-      "colorTo": "#00ABE4",
+      "colorTo": "#5D887A",
       "description": "Bridge the gap between accounting and communication. Send invoices and collection alerts directly to your customers instantly.",
       "image": "/sa3.png",
       "layout": "standard",
@@ -209,7 +209,7 @@ const processHeroData = (data: any[]): HeroContent[] => {
   const merged = hasSingle ? data : [DEFAULT_HERO[0], ...data];
   return merged.map((item: any) => {
     if (item.layout === 'single') {
-      return { ...item, colorFrom: '#232F3E', colorTo: '#00ABE4' };
+      return { ...item, colorFrom: '#232F3E', colorTo: '#5D887A' };
     }
 
     const title = (item.titleText || '').toLowerCase();
@@ -252,7 +252,7 @@ const processHeroData = (data: any[]): HeroContent[] => {
       image: mainImg,
       layout: isCloud ? 'ecosystem' : 'standard',
       colorFrom: '#232F3E',
-      colorTo: '#00ABE4',
+      colorTo: '#5D887A',
       sub1Img,
       sub2Img,
       ctaPrimary: (!isCloud && !isSupport && !isTraining && !isWhatsApp) 
@@ -360,7 +360,7 @@ export default function HomeHero({ initialData, variant = 'standard' }: { initia
       badge: `DEV SLIDE #${n}`,
       titleText: `Development Slide ${n} — New Feature Set`,
       colorFrom: '#232F3E',
-      colorTo: '#00ABE4',
+      colorTo: '#5D887A',
       description: `Temporary dev slide for testing. Edit DEFAULT_HERO or push via API to finalize this group (Slide ${n}).`,
       image: '/sa2.png',
       layout: 'standard',
@@ -453,7 +453,7 @@ export default function HomeHero({ initialData, variant = 'standard' }: { initia
                   onClick={() => setModalConfig({ isOpen: true, type: 'demo', service: 'TallyPrime', details: 'Requesting a personalized demo' })} 
                   className="group px-6 py-3 rounded-xl bg-[#365275] font-bold text-xs uppercase tracking-wide transition-all duration-500 ease-in-out text-white hover:bg-[#283e5a] hover:scale-[1.03] active:scale-95 shadow-md"
                 >
-                  Request Demo
+                  Enquire Now
                 </button>
               </div>
 

@@ -45,7 +45,7 @@ export default function AdminLayout({
       <div className="min-h-screen bg-slate-950 flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-2xl font-black tracking-tighter text-white">
-            ADMIN<span className="text-[#00ABE4]">PANEL</span>
+            ADMIN<span className="text-[#5D887A]">PANEL</span>
           </h1>
           <p className="text-slate-400 text-xs font-bold uppercase tracking-widest mt-2">
             Checking session...
@@ -60,11 +60,11 @@ export default function AdminLayout({
       {/* Mobile Header with Toggle */}
       <div className="lg:hidden fixed top-0 left-0 right-0 h-16 bg-slate-950 text-white flex items-center justify-between px-6 z-[100] shadow-xl border-b border-white/5">
         <h2 className="text-xl font-black tracking-tighter">
-          ADMIN<span className="text-[#00ABE4]">PANEL</span>
+          ADMIN<span className="text-[#5D887A]">PANEL</span>
         </h2>
         <button 
           onClick={() => setIsSidebarOpen(true)}
-          className="p-2 hover:bg-[#00ABE4]/20 rounded-xl transition-all"
+          className="p-2 hover:bg-[#5D887A]/20 rounded-xl transition-all"
           aria-label="Open Sidebar"
         >
           <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">

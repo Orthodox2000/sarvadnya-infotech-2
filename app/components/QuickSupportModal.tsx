@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
+import { findMatchingTutorials, type Tutorial } from '@/lib/tutorial-matcher';
 
 interface Message {
   id: string;
@@ -11,6 +12,7 @@ interface Message {
   timestamp: Date;
   showContact?: boolean;
   showAudioPrompt?: boolean;
+  suggestedTutorials?: Tutorial[];
 }
 
 interface QuickSupportModalProps {
@@ -37,6 +39,7 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
   const [autoPlayMode, setAutoPlayMode] = useState<'summary' | 'full' | null>(null);
   const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
   const [autoScrollEnabled, setAutoScrollEnabled] = useState(true);
+  const [tutorials, setTutorials] = useState<Tutorial[]>([]);
   
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -106,6 +109,14 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
     }
   }, []);
 
+  // Fetch tutorials for matching
+  useEffect(() => {
+    fetch('/api/tutorials')
+      .then(r => r.json())
+      .then(data => { if (data && !data.error) setTutorials(data); })
+      .catch(() => {});
+  }, []);
+
   // Auto-scroll to bottom with smooth behavior
   const scrollToBottom = (force = false) => {
     if (scrollRef.current && (autoScrollEnabled || force)) {
@@ -145,7 +156,7 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
     }
   }, [isOpen]);
 
-  const typeMessage = async (fullText: string) => {
+  const typeMessage = async (fullText: string, userQuery?: string) => {
     const id = Date.now().toString();
     setIsAiResponding(true);
     setAutoScrollEnabled(true);
@@ -176,6 +187,14 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
     }
     
     setIsAiResponding(false);
+
+    // Attach matching tutorials
+    if (userQuery && tutorials.length > 0) {
+      const matched = findMatchingTutorials(tutorials, userQuery, 3, 8);
+      if (matched.length > 0) {
+        setMessages(prev => prev.map(m => m.id === id ? { ...m, suggestedTutorials: matched } : m));
+      }
+    }
     
     if (window.matchMedia('(hover: hover)').matches) {
       inputRef.current?.focus();
@@ -229,7 +248,7 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
         setIsTyping(false);
         
         const cleanMessage = data.message ? data.message.replace(/\*/g, '') : "I'm sorry, I couldn't process that.";
-        await typeMessage(cleanMessage);
+        await typeMessage(cleanMessage, text);
         success = true;
       } catch (err: any) {
         attempts++;
@@ -245,7 +264,7 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
             userFriendlyError = "**Service Notice**: My AI engine is currently resting. Please contact our support team directly for immediate help.";
           }
           
-          await typeMessage(userFriendlyError);
+          await typeMessage(userFriendlyError, text);
         } else {
           // Wait 1s before retry
           await new Promise(resolve => setTimeout(resolve, 1000));
@@ -269,7 +288,7 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
       /new\s+(instructions|prompt)/i,
     ];
     if (injectionPatterns.some(p => p.test(userText))) {
-      await typeMessage("I'm here to help with Tally and business solutions. How can I assist you with your TallyPrime setup, features, or services today?");
+      await typeMessage("I'm here to help with Tally and business solutions. How can I assist you with your TallyPrime setup, features, or services today?", userText);
       return;
     }
 
@@ -282,7 +301,7 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
   return (
     <div className="fixed bottom-24 left-0 right-0 px-4 sm:left-auto sm:right-6 sm:px-0 z-[3001] sm:w-[380px] max-w-[380px] animate-in slide-in-from-bottom-4 fade-in duration-300 pointer-events-none">
       <div 
-        className="relative overflow-hidden w-full mx-auto rounded-[2rem] flex flex-col h-[550px] max-h-[calc(100vh-140px)] text-slate-900 shadow-[0_20px_50px_rgba(3,113,163,0.2)] border border-slate-100 bg-white/95 backdrop-blur-md pointer-events-auto"
+        className="relative overflow-hidden w-full mx-auto rounded-[2rem] flex flex-col h-[550px] max-h-[calc(100vh-140px)] text-slate-900 shadow-[0_20px_50px_rgba(93,136,122,0.2)] border border-slate-100 bg-white/95 backdrop-blur-md pointer-events-auto"
         onClick={e => e.stopPropagation()}
       >
         {/* Header */}
@@ -297,7 +316,7 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
               </div>
               <div>
                 <h3 className="text-sm font-black tracking-tight">Ask Sara</h3>
-                <p className="text-[10px] text-sky-200 font-bold uppercase tracking-widest leading-none mt-0.5">Sarvadnya Assistant</p>
+                <p className="text-[10px] text-emerald-200 font-bold uppercase tracking-widest leading-none mt-0.5">Sarvadnya Assistant</p>
               </div>
             </div>
             <div className="flex items-center gap-2">
@@ -310,7 +329,7 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
                     setIsSpeaking(false);
                   }
                 }}
-                className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${voiceEnabled ? 'bg-white/20 text-white' : 'bg-white/5 text-sky-300'}`}
+                className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${voiceEnabled ? 'bg-white/20 text-white' : 'bg-white/5 text-emerald-300'}`}
                 title={voiceEnabled ? 'Mute Sara' : 'Unmute Sara'}
               >
                 {voiceEnabled ? (
@@ -339,7 +358,7 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
         <div 
           ref={scrollRef}
           onScroll={handleScroll}
-          className="flex-1 overflow-y-auto p-5 space-y-4 no-scrollbar bg-[#f0f9ff]/50 relative"
+          className="flex-1 overflow-y-auto p-5 space-y-4 no-scrollbar bg-[#F5F4ED]/50 relative"
         >
           {messages.map((msg) => (
             <div 
@@ -366,7 +385,7 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
                               key={j}
                               href={url}
                               onClick={onClose}
-                              className="inline-flex items-center gap-1.5 px-3 py-1 bg-sky-100 text-[#316852] rounded-lg font-bold hover:bg-[#316852] hover:text-white transition-all my-1.5 border border-sky-200 shadow-sm mx-1"
+                              className="inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-100 text-[#316852] rounded-lg font-bold hover:bg-[#316852] hover:text-white transition-all my-1.5 border border-emerald-200 shadow-sm mx-1"
                             >
                               <span className="text-[10px] uppercase tracking-wider">{label}</span>
                               <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3"><path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" /></svg>
@@ -376,7 +395,7 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
 
                         return <React.Fragment key={j}>{part.split(/(\*\*.*?\*\*)/).map((subPart, k) => {
                           if (subPart.startsWith('**') && subPart.endsWith('**')) {
-                            return <strong key={k} className={`font-black ${msg.sender === 'user' ? 'text-sky-200' : 'text-[#316852]'}`}>{subPart.slice(2, -2)}</strong>;
+                            return <strong key={k} className={`font-black ${msg.sender === 'user' ? 'text-emerald-200' : 'text-[#316852]'}`}>{subPart.slice(2, -2)}</strong>;
                           }
                           return msg.sender === 'ai'
                             ? subPart.split('').map((char, ci) => (
@@ -423,7 +442,7 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
                           className={`px-2 py-1 border text-[9px] font-black uppercase rounded-lg transition-colors shadow-sm ${
                             autoPlayMode === 'summary' 
                               ? 'bg-[#316852] border-[#316852] text-white' 
-                              : 'bg-white border-sky-200 text-[#316852] hover:bg-sky-50'
+                              : 'bg-white border-emerald-200 text-[#316852] hover:bg-emerald-50'
                           }`}
                         >
                           Summary
@@ -437,7 +456,7 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
                           className={`px-2 py-1 border text-[9px] font-black uppercase rounded-lg transition-colors shadow-sm ${
                             autoPlayMode === 'full' 
                               ? 'bg-[#316852] border-[#316852] text-white' 
-                              : 'bg-white border-sky-200 text-[#316852] hover:bg-sky-50'
+                              : 'bg-white border-emerald-200 text-[#316852] hover:bg-emerald-50'
                           }`}
                         >
                           Full
@@ -453,6 +472,46 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
                         </button>
                       </>
                     )}
+                  </div>
+                </div>
+              )}
+
+              {/* Suggested tutorials */}
+              {msg.sender === 'ai' && msg.suggestedTutorials && msg.suggestedTutorials.length > 0 && (
+                <div className="mt-2 ml-2 max-w-[90%]">
+                  <p className="text-[8px] font-bold text-[#316852] uppercase tracking-widest mb-1.5">
+                    You can also refer to these for additional info
+                  </p>
+                  <div className="space-y-1.5">
+                    {msg.suggestedTutorials.map((tutorial) => (
+                      <Link
+                        key={tutorial._id}
+                        href="/tutorials"
+                        onClick={onClose}
+                        className="flex items-center gap-2 p-2 bg-white rounded-lg border border-emerald-100 hover:border-[#316852]/30 hover:shadow-sm transition-all group"
+                      >
+                        <div className="w-10 h-7 rounded overflow-hidden bg-slate-100 shrink-0 flex items-center justify-center">
+                          {tutorial.type === 'video' ? (
+                            <svg className="w-4 h-4 text-rose-400" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
+                          ) : (
+                            <svg className="w-4 h-4 text-[#316852]/40" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+                            </svg>
+                          )}
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <p className="text-[10px] font-bold text-slate-900 group-hover:text-[#316852] transition-colors leading-snug truncate">
+                            {tutorial.title}
+                          </p>
+                          <p className="text-[8px] text-slate-400 font-medium">
+                            {tutorial.folder || 'Tutorial'}
+                          </p>
+                        </div>
+                        <svg className="w-3 h-3 text-slate-300 group-hover:text-[#316852] shrink-0 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                        </svg>
+                      </Link>
+                    ))}
                   </div>
                 </div>
               )}

@@ -1,195 +1,185 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import { capabilityCategories } from '@/lib/capabilities';
 import Footer from '@/app/components/Footer';
 
 export default function CapabilitiesPage() {
-  const [activeTab, setActiveTab] = useState(capabilityCategories[0].id);
+  const [activeCat, setActiveCat] = useState(capabilityCategories[0].id);
+  const [expandedFeature, setExpandedFeature] = useState<string | null>(null);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const sections = capabilityCategories.map(cat => document.getElementById(cat.id));
-      const scrollPosition = window.scrollY + 200;
-
-      for (let i = sections.length - 1; i >= 0; i--) {
-        const section = sections[i];
-        if (section && section.offsetTop <= scrollPosition) {
-          setActiveTab(capabilityCategories[i].id);
-          break;
-        }
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  const scrollToSection = (id: string) => {
-    const element = document.getElementById(id);
-    if (element) {
-      const offset = 160; 
-      const bodyRect = document.body.getBoundingClientRect().top;
-      const elementRect = element.getBoundingClientRect().top;
-      const elementPosition = elementRect - bodyRect;
-      const offsetPosition = elementPosition - offset;
-
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth'
-      });
-    }
-  };
+  const currentCat = capabilityCategories.find(c => c.id === activeCat) || capabilityCategories[0];
+  const totalFeatures = capabilityCategories.reduce((acc, c) => acc + c.features.length, 0);
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* Compact Hero Section (Radiant Sky Theme) */}
-      <section className="bg-[#ecf5fa] relative pt-10 pb-12 md:pt-14 md:pb-16 px-6 overflow-hidden border-b border-[#0371a3]/10">
-        {/* Background Effects */}
-        <div className="absolute inset-0 opacity-40 pointer-events-none">
-          <div className="absolute top-0 right-0 w-[60%] h-[60%] bg-white/40 blur-[130px] -mr-32 -mt-32" />
-          <div className="absolute bottom-0 left-0 w-[40%] h-[40%] bg-sky-200/30 blur-[110px] -ml-24 -mb-24" />
-        </div>
-        
-        <div className="relative z-10 max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-10">
-          <div className="text-left max-w-xl">
-            <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-slate-900/5 border border-slate-900/10 text-slate-500 text-[9px] font-bold uppercase tracking-[0.2em] mb-6 backdrop-blur-sm">
-              <span className="flex h-1 w-1 rounded-full bg-slate-400"></span>
-              Feature Architecture
+    <div className="min-h-screen bg-[#F9F9F7]">
+      {/* Hero */}
+      <section className="bg-white border-b border-slate-100">
+        <div className="max-w-6xl mx-auto px-6 pt-12 pb-10 md:pt-16 md:pb-14">
+          <div className="max-w-2xl">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#F0F5F2] text-[#4A6E62] text-[10px] font-bold uppercase tracking-widest mb-5">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#5D887A]"></span>
+              What TallyPrime Can Do
             </div>
-            <h1 className="text-3xl md:text-5xl font-black text-slate-900 mb-5 leading-tight tracking-tight">
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0371a3] via-[#4b91ca] to-[#0371a3] drop-shadow-[0_2px_15px_rgba(0,171,228,0.2)]">TallyPrime</span> <br />
-              Core Capabilities
+            <h1 className="text-3xl md:text-5xl font-black text-slate-900 mb-4 leading-tight">
+              Every feature you need.{' '}
+              <span className="text-[#4A6E62]">Nothing you don&apos;t.</span>
             </h1>
-            <p className="text-slate-600/80 text-xs md:text-lg max-w-lg leading-relaxed font-semibold">
-              Technical and functional architecture optimized for high-performance accounting and statutory compliance.
+            <p className="text-slate-500 text-sm md:text-base leading-relaxed max-w-lg">
+              From invoicing to payroll, TallyPrime handles it all. Explore {totalFeatures} capabilities 
+              across {capabilityCategories.length} categories — built for Indian businesses.
             </p>
           </div>
 
-          <div className="hidden lg:flex items-center gap-4">
-             <div className="p-5 bg-white border border-slate-100 rounded-3xl text-center shadow-lg shadow-sky-900/5">
-                <div className="text-3xl font-black text-slate-900">500+</div>
-                <div className="text-[9px] font-black text-[#0371a3] uppercase tracking-[0.2em] mt-1.5">Capabilities</div>
-             </div>
-             <div className="p-5 bg-white border border-slate-100 rounded-3xl text-center shadow-lg shadow-sky-900/5">
-                <div className="text-3xl font-black text-slate-900">100%</div>
-                <div className="text-[9px] font-black text-[#00ABE4] uppercase tracking-[0.2em] mt-1.5">Compliance</div>
-             </div>
+          {/* Quick Stats */}
+          <div className="flex gap-6 mt-8">
+            {[
+              { num: `${totalFeatures}+`, label: 'Features' },
+              { num: `${capabilityCategories.length}`, label: 'Categories' },
+              { num: '100%', label: 'GST Ready' },
+            ].map((s, i) => (
+              <div key={i} className="flex items-baseline gap-2">
+                <span className="text-xl font-black text-[#4A6E62]">{s.num}</span>
+                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{s.label}</span>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Modern Compact Navigator */}
-      <nav className="sticky top-[127px] z-[45] bg-white/80 backdrop-blur-xl border-b border-slate-200 shadow-sm overflow-x-auto no-scrollbar">
-        <div className="max-w-7xl mx-auto px-6">
-          <ul className="flex items-center gap-6 min-w-max">
+      {/* Category Tabs */}
+      <nav className="sticky top-[127px] z-[45] bg-white/90 backdrop-blur-xl border-b border-slate-100">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="flex gap-1 overflow-x-auto no-scrollbar py-2">
             {capabilityCategories.map((cat) => (
-              <li key={cat.id}>
-                <button
-                  onClick={() => scrollToSection(cat.id)}
-                  className={`py-4 text-[10px] font-black uppercase tracking-widest border-b-2 transition-all flex items-center gap-2.5
-                    ${activeTab === cat.id 
-                      ? 'border-[#0371a3] text-[#0371a3] opacity-100' 
-                      : 'border-transparent text-slate-400 hover:text-slate-600 opacity-70'}`}
-                >
-                  <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: activeTab === cat.id ? '#0371a3' : '#e2e8f0' }}></span>
-                  {cat.title.split(' ')[0]}
-                </button>
-              </li>
+              <button
+                key={cat.id}
+                onClick={() => setActiveCat(cat.id)}
+                className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all
+                  ${activeCat === cat.id 
+                    ? 'bg-[#4A6E62] text-white shadow-md shadow-[#4A6E62]/20' 
+                    : 'bg-slate-50 text-slate-500 hover:bg-slate-100'}`}
+              >
+                <span className="hidden sm:inline">{cat.title}</span>
+                <span className="sm:hidden">{cat.title.split(' ')[0]}</span>
+              </button>
             ))}
-          </ul>
+          </div>
         </div>
       </nav>
 
-      {/* High-Fidelity Categories */}
-      <section className="py-12 md:py-16 px-6 max-w-7xl mx-auto">
-        <div className="space-y-16">
-          {capabilityCategories.map((cat) => (
-            <div key={cat.id} id={cat.id} className="scroll-mt-48 animate-in fade-in duration-700">
-              {/* Category Heading Card */}
-              <div 
-                className="mb-6 p-6 md:p-8 rounded-[2rem] border transition-all flex flex-col md:flex-row md:items-center justify-between gap-8"
-                style={{ backgroundColor: 'white', borderColor: `${cat.color}20` }}
-              >
-                <div className="flex items-center gap-6">
-                  <div className="w-12 h-12 rounded-xl flex items-center justify-center text-white text-2xl font-black shadow-lg" style={{ backgroundColor: cat.color }}>
-                    {cat.title.charAt(0)}
-                  </div>
-                  <div>
-                    <h2 className="text-xl md:text-2xl font-black text-slate-900 leading-tight">
-                      {cat.title}
-                    </h2>
-                    <p className="text-slate-400 text-[9px] font-black uppercase tracking-[0.25em] mt-1.5">
-                      Technical Logic & Integration
-                    </p>
-                  </div>
-                </div>
-                <div className="max-w-md border-l-4 border-slate-100 pl-6">
-                   <p className="text-slate-600 text-xs md:text-sm font-semibold leading-relaxed italic">
-                     "{cat.description}"
-                   </p>
-                </div>
-              </div>
+      {/* Active Category Content */}
+      <section className="max-w-6xl mx-auto px-6 py-10 md:py-14">
+        {/* Category Header */}
+          <div className="mb-8">
+            <h2 className="text-2xl md:text-3xl font-black text-slate-900 mb-2">{currentCat.title}</h2>
+            <p className="text-slate-500 text-sm md:text-base">{currentCat.description}</p>
+          </div>
 
-              {/* Denser Grid of Detailed Features */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                {cat.features.map((feature, idx) => (
+        {/* Features Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 items-start gap-3">
+          {currentCat.features.map((feature, idx) => {
+            const featureKey = `${activeCat}-${idx}`;
+            const isExpanded = expandedFeature === featureKey;
+
+            return (
+              <div
+                key={idx}
+                className="bg-white rounded-2xl border border-slate-100 hover:border-slate-200 transition-all"
+              >
+                <button
+                  onClick={() => setExpandedFeature(isExpanded ? null : featureKey)}
+                  className="w-full flex items-center gap-4 p-5 text-left"
+                >
                   <div 
-                    key={idx}
-                    className="group p-5 rounded-2xl bg-white border border-slate-100 hover:border-[#0371a3]/30 hover:shadow-xl transition-all duration-500 flex flex-col"
+                    className="w-9 h-9 rounded-xl flex items-center justify-center text-white text-xs font-black shrink-0"
+                    style={{ backgroundColor: currentCat.color }}
                   >
-                    <div className="flex items-center justify-between mb-4">
-                       <div 
-                        className="w-6 h-6 rounded-lg flex items-center justify-center text-white text-[10px] font-black shadow-md"
-                        style={{ backgroundColor: cat.color }}
-                       >
-                         {idx + 1}
-                       </div>
-                       <div className="h-px w-8 bg-slate-100 group-hover:w-12 group-hover:bg-[#00ABE4] transition-all duration-500" />
-                    </div>
-                    <h4 className="font-black text-slate-900 text-sm mb-2 leading-tight group-hover:text-[#0371a3] transition-colors">
-                      {feature.title}
-                    </h4>
-                    <p className="text-[11px] text-slate-500 leading-relaxed font-semibold">
-                      {feature.description}
-                    </p>
+                    {idx + 1}
                   </div>
-                ))}
+                  <div className="flex-1 min-w-0">
+                    <h4 className="text-sm font-bold text-slate-900 leading-snug">{feature.title}</h4>
+                    {!isExpanded && feature.description && (
+                      <p className="text-[11px] text-slate-400 mt-0.5 truncate">{feature.description}</p>
+                    )}
+                  </div>
+                  <svg 
+                    className={`w-4 h-4 text-slate-300 shrink-0 transition-transform ${isExpanded ? 'rotate-180' : ''}`} 
+                    fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+                
+                {isExpanded && (feature.description || feature.example) && (
+                  <div className="px-5 pb-5 md:pl-[4.25rem] pl-5">
+                    {feature.description && (
+                      <p className="text-xs text-slate-500 leading-relaxed mb-3">{feature.description}</p>
+                    )}
+                    {feature.example && (
+                      <div className="bg-[#F0F5F2] rounded-xl px-4 py-3 border border-[#4A6E62]/10">
+                        <p className="text-[10px] font-bold text-[#4A6E62] uppercase tracking-widest mb-1">Example</p>
+                        <p className="text-[11px] text-slate-600 leading-relaxed">{feature.example}</p>
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
-            </div>
-          ))}
+            );
+          })}
+        </div>
+
+        {/* Category Navigation */}
+        <div className="flex items-center justify-between mt-10 pt-6 border-t border-slate-100">
+          {capabilityCategories.indexOf(currentCat) > 0 ? (
+            <button
+              onClick={() => setActiveCat(capabilityCategories[capabilityCategories.indexOf(currentCat) - 1].id)}
+              className="flex items-center gap-2 text-sm font-bold text-slate-400 hover:text-[#4A6E62] transition-colors"
+            >
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+              </svg>
+              {capabilityCategories[capabilityCategories.indexOf(currentCat) - 1].title}
+            </button>
+          ) : <div />}
+
+          {capabilityCategories.indexOf(currentCat) < capabilityCategories.length - 1 ? (
+            <button
+              onClick={() => setActiveCat(capabilityCategories[capabilityCategories.indexOf(currentCat) + 1].id)}
+              className="flex items-center gap-2 text-sm font-bold text-slate-400 hover:text-[#4A6E62] transition-colors"
+            >
+              {capabilityCategories[capabilityCategories.indexOf(currentCat) + 1].title}
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+          ) : <div />}
         </div>
       </section>
 
-      {/* Call to Action - Compact (High Contrast) */}
-      <section className="py-20 px-6 bg-slate-950 relative overflow-hidden">
-         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-full bg-[#0371a3]/10 blur-[120px] pointer-events-none transition-all duration-700"></div>
-         
-         <div className="max-w-4xl mx-auto text-center relative z-10">
-            <div className="w-16 h-16 bg-[#0371a3]/20 rounded-full flex items-center justify-center mx-auto mb-6 border border-[#0371a3]/30">
-               <svg className="w-8 h-8 text-[#00ABE4]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
-            </div>
-            <h2 className="text-2xl md:text-4xl font-black mb-5 text-white leading-tight">Experience the Full Suite</h2>
-            <p className="text-slate-400 text-sm md:text-base mb-10 max-w-xl mx-auto leading-relaxed font-medium">
-               Technical implementation assistance for every TallyPrime capability.
-            </p>
-            <div className="flex flex-wrap justify-center gap-4">
-               <Link 
-                 href="/demo"
-                 className="px-8 py-4 bg-[#0371a3] text-white rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-[#00ABE4] hover:shadow-xl hover:shadow-sky-900/20 transition-all flex items-center gap-2.5"
-               >
-                 Request Live Demo
-                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
-               </Link>
-               <Link 
-                 href="/contact"
-                 className="px-8 py-4 bg-white/5 border border-white/10 text-white rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-white/10 transition-all"
-               >
-                 Consult Our Team
-               </Link>
-            </div>
-         </div>
+      {/* CTA */}
+      <section className="bg-[#4A6E62] py-14 px-6">
+        <div className="max-w-3xl mx-auto text-center">
+          <h2 className="text-2xl md:text-3xl font-black text-white mb-3">Ready to see it in action?</h2>
+          <p className="text-emerald-100 text-sm mb-8 max-w-md mx-auto">
+            Our team will walk you through every feature that matters to your business.
+          </p>
+          <div className="flex flex-wrap justify-center gap-3">
+            <Link
+              href="/demo"
+              className="px-7 py-3.5 bg-white text-[#4A6E62] rounded-xl font-black text-xs uppercase tracking-widest hover:bg-emerald-50 transition-all"
+            >
+              Book a Free Demo
+            </Link>
+            <Link
+              href="/contact"
+              className="px-7 py-3.5 bg-white/10 border border-white/20 text-white rounded-xl font-black text-xs uppercase tracking-widest hover:bg-white/20 transition-all"
+            >
+              Talk to Sales
+            </Link>
+          </div>
+        </div>
       </section>
 
       <Footer />

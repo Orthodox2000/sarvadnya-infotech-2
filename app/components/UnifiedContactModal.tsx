@@ -116,7 +116,7 @@ export default function UnifiedContactModal({
       >
         {/* Decorative Header */}
         <div className="bg-white sm:p-6 p-6 text-slate-900 relative overflow-hidden border-b border-slate-100">
-          <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-50 rounded-full blur-[60px] opacity-60 -mr-16 -mt-16" />
+          <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-50 rounded-full blur-[60px] opacity-60 -mr-16 -mt-16" />
           <div className="absolute bottom-0 left-0 w-24 h-24 bg-violet-50 rounded-full blur-[50px] opacity-40 -ml-12 -mb-12" />
           
           <button 
@@ -222,7 +222,7 @@ export default function UnifiedContactModal({
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="group relative w-full h-11 sm:h-12 bg-[#316852] text-white rounded-xl font-black text-xs uppercase tracking-widest shadow-lg shadow-sky-100 hover:bg-[#316852] transition-all flex items-center justify-center gap-3 overflow-hidden active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed"
+                className="group relative w-full h-11 sm:h-12 bg-[#316852] text-white rounded-xl font-black text-xs uppercase tracking-widest shadow-lg shadow-emerald-100 hover:bg-[#316852] transition-all flex items-center justify-center gap-3 overflow-hidden active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed"
               >
                 {isSubmitting ? (
                   <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />

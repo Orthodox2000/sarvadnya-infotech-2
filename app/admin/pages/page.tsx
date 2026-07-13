@@ -137,7 +137,7 @@ export default function AdminPages() {
             <button 
                 onClick={handleSaveContent}
                 disabled={saving}
-                className="text-xs font-black text-white bg-[#0371a3] px-8 py-3 rounded-2xl hover:bg-[#00ABE4] transition-all shadow-lg shadow-[#0371a3]/20 active:scale-95 disabled:opacity-50"
+                className="text-xs font-black text-white bg-[#4A6E62] px-8 py-3 rounded-2xl hover:bg-[#5D887A] transition-all shadow-lg shadow-[#4A6E62]/20 active:scale-95 disabled:opacity-50"
             >
                 {saving ? 'Saving...' : 'Save All Changes'}
             </button>
@@ -159,7 +159,7 @@ export default function AdminPages() {
           <button 
             key={page.id}
             onClick={() => setActivePage(page.id as any)}
-            className={`px-6 py-2.5 rounded-xl font-black transition-all uppercase text-[10px] tracking-widest ${activePage === page.id ? 'bg-white text-[#0371a3] shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+            className={`px-6 py-2.5 rounded-xl font-black transition-all uppercase text-[10px] tracking-widest ${activePage === page.id ? 'bg-white text-[#4A6E62] shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
           >
             {page.label}
           </button>
@@ -184,7 +184,7 @@ export default function AdminPages() {
                                 type="text"
                                 value={content.hero_title || ''}
                                 onChange={e => setContent({...content, hero_title: e.target.value})}
-                                className="w-full rounded-2xl bg-slate-50 border border-slate-100 px-5 py-3 text-sm text-slate-900 focus:outline-none focus:border-[#00ABE4] transition-all font-bold"
+                                className="w-full rounded-2xl bg-slate-50 border border-slate-100 px-5 py-3 text-sm text-slate-900 focus:outline-none focus:border-[#5D887A] transition-all font-bold"
                             />
                         </div>
                         <div className="space-y-2">
@@ -193,7 +193,7 @@ export default function AdminPages() {
                                 type="text"
                                 value={content.hero_subtitle || ''}
                                 onChange={e => setContent({...content, hero_subtitle: e.target.value})}
-                                className="w-full rounded-2xl bg-slate-50 border border-slate-100 px-5 py-3 text-sm text-slate-900 focus:outline-none focus:border-[#00ABE4] transition-all font-bold"
+                                className="w-full rounded-2xl bg-slate-50 border border-slate-100 px-5 py-3 text-sm text-slate-900 focus:outline-none focus:border-[#5D887A] transition-all font-bold"
                             />
                         </div>
                         <div className="space-y-2">
@@ -202,7 +202,7 @@ export default function AdminPages() {
                                 rows={6}
                                 value={content.hero_description || ''}
                                 onChange={e => setContent({...content, hero_description: e.target.value})}
-                                className="w-full rounded-2xl bg-slate-50 border border-slate-100 px-5 py-4 text-sm text-slate-900 focus:outline-none focus:border-[#00ABE4] transition-all font-medium leading-relaxed resize-none"
+                                className="w-full rounded-2xl bg-slate-50 border border-slate-100 px-5 py-4 text-sm text-slate-900 focus:outline-none focus:border-[#5D887A] transition-all font-medium leading-relaxed resize-none"
                             />
                         </div>
                     </div>
@@ -233,7 +233,7 @@ export default function AdminPages() {
                 <div className="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm space-y-6">
                     <div className="flex items-center justify-between">
                         <h3 className="font-black text-slate-900 text-sm uppercase tracking-wider">Partner 1</h3>
-                        <span className="text-[10px] font-bold text-[#0371a3] uppercase tracking-widest">Leadership</span>
+                        <span className="text-[10px] font-bold text-[#4A6E62] uppercase tracking-widest">Leadership</span>
                     </div>
 
                     <div className="flex justify-center">
@@ -259,7 +259,7 @@ export default function AdminPages() {
                                 type="text"
                                 value={content.partner1_name || ''}
                                 onChange={e => setContent({...content, partner1_name: e.target.value})}
-                                className="w-full rounded-2xl bg-slate-50 border border-slate-100 px-5 py-3 text-sm text-slate-900 focus:outline-none focus:border-[#00ABE4] transition-all font-bold"
+                                className="w-full rounded-2xl bg-slate-50 border border-slate-100 px-5 py-3 text-sm text-slate-900 focus:outline-none focus:border-[#5D887A] transition-all font-bold"
                             />
                         </div>
                         <div className="space-y-2">
@@ -268,7 +268,7 @@ export default function AdminPages() {
                                 rows={8}
                                 value={content.partner1_quote || ''}
                                 onChange={e => setContent({...content, partner1_quote: e.target.value})}
-                                className="w-full rounded-2xl bg-slate-50 border border-slate-100 px-5 py-4 text-sm text-slate-900 focus:outline-none focus:border-[#00ABE4] transition-all font-medium leading-relaxed resize-none"
+                                className="w-full rounded-2xl bg-slate-50 border border-slate-100 px-5 py-4 text-sm text-slate-900 focus:outline-none focus:border-[#5D887A] transition-all font-medium leading-relaxed resize-none"
                             />
                         </div>
                     </div>
@@ -278,7 +278,7 @@ export default function AdminPages() {
                 <div className="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm space-y-6">
                     <div className="flex items-center justify-between">
                         <h3 className="font-black text-slate-900 text-sm uppercase tracking-wider">Partner 2</h3>
-                        <span className="text-[10px] font-bold text-[#0371a3] uppercase tracking-widest">Strategic Vision</span>
+                        <span className="text-[10px] font-bold text-[#4A6E62] uppercase tracking-widest">Strategic Vision</span>
                     </div>
 
                     <div className="flex justify-center">
@@ -304,7 +304,7 @@ export default function AdminPages() {
                                 type="text"
                                 value={content.partner2_name || ''}
                                 onChange={e => setContent({...content, partner2_name: e.target.value})}
-                                className="w-full rounded-2xl bg-slate-50 border border-slate-100 px-5 py-3 text-sm text-slate-900 focus:outline-none focus:border-[#00ABE4] transition-all font-bold"
+                                className="w-full rounded-2xl bg-slate-50 border border-slate-100 px-5 py-3 text-sm text-slate-900 focus:outline-none focus:border-[#5D887A] transition-all font-bold"
                             />
                         </div>
                         <div className="space-y-2">
@@ -313,7 +313,7 @@ export default function AdminPages() {
                                 rows={8}
                                 value={content.partner2_quote || ''}
                                 onChange={e => setContent({...content, partner2_quote: e.target.value})}
-                                className="w-full rounded-2xl bg-slate-50 border border-slate-100 px-5 py-4 text-sm text-slate-900 focus:outline-none focus:border-[#00ABE4] transition-all font-medium leading-relaxed resize-none"
+                                className="w-full rounded-2xl bg-slate-50 border border-slate-100 px-5 py-4 text-sm text-slate-900 focus:outline-none focus:border-[#5D887A] transition-all font-medium leading-relaxed resize-none"
                             />
                         </div>
                     </div>
@@ -338,7 +338,7 @@ export default function AdminPages() {
                                 type="text"
                                 value={content.hero_title || ''}
                                 onChange={e => setContent({...content, hero_title: e.target.value})}
-                                className="w-full rounded-2xl bg-slate-50 border border-slate-100 px-5 py-3 text-sm text-slate-900 focus:outline-none focus:border-[#00ABE4] transition-all font-bold"
+                                className="w-full rounded-2xl bg-slate-50 border border-slate-100 px-5 py-3 text-sm text-slate-900 focus:outline-none focus:border-[#5D887A] transition-all font-bold"
                             />
                         </div>
                         <div className="space-y-2">
@@ -347,7 +347,7 @@ export default function AdminPages() {
                                 rows={4}
                                 value={content.hero_quote || ''}
                                 onChange={e => setContent({...content, hero_quote: e.target.value})}
-                                className="w-full rounded-2xl bg-slate-50 border border-slate-100 px-5 py-4 text-sm text-slate-900 focus:outline-none focus:border-[#00ABE4] transition-all font-medium leading-relaxed resize-none"
+                                className="w-full rounded-2xl bg-slate-50 border border-slate-100 px-5 py-4 text-sm text-slate-900 focus:outline-none focus:border-[#5D887A] transition-all font-medium leading-relaxed resize-none"
                             />
                         </div>
                     </div>
@@ -383,7 +383,7 @@ export default function AdminPages() {
                                 type="text"
                                 value={content.culture_title || ''}
                                 onChange={e => setContent({...content, culture_title: e.target.value})}
-                                className="w-full rounded-2xl bg-slate-50 border border-slate-100 px-5 py-3 text-sm text-slate-900 focus:outline-none focus:border-[#00ABE4] transition-all font-bold"
+                                className="w-full rounded-2xl bg-slate-50 border border-slate-100 px-5 py-3 text-sm text-slate-900 focus:outline-none focus:border-[#5D887A] transition-all font-bold"
                             />
                         </div>
                         <div className="space-y-2">
@@ -392,7 +392,7 @@ export default function AdminPages() {
                                 rows={4}
                                 value={content.culture_description || ''}
                                 onChange={e => setContent({...content, culture_description: e.target.value})}
-                                className="w-full rounded-2xl bg-slate-50 border border-slate-100 px-5 py-4 text-sm text-slate-900 focus:outline-none focus:border-[#00ABE4] transition-all font-medium leading-relaxed resize-none"
+                                className="w-full rounded-2xl bg-slate-50 border border-slate-100 px-5 py-4 text-sm text-slate-900 focus:outline-none focus:border-[#5D887A] transition-all font-medium leading-relaxed resize-none"
                             />
                         </div>
                     </div>
@@ -405,7 +405,7 @@ export default function AdminPages() {
                                 rows={3}
                                 value={content.testimonial || ''}
                                 onChange={e => setContent({...content, testimonial: e.target.value})}
-                                className="w-full rounded-2xl bg-slate-50 border border-slate-100 px-5 py-4 text-sm text-slate-900 focus:outline-none focus:border-[#00ABE4] transition-all font-medium leading-relaxed resize-none"
+                                className="w-full rounded-2xl bg-slate-50 border border-slate-100 px-5 py-4 text-sm text-slate-900 focus:outline-none focus:border-[#5D887A] transition-all font-medium leading-relaxed resize-none"
                             />
                         </div>
                         <div className="grid grid-cols-2 gap-4">
@@ -415,7 +415,7 @@ export default function AdminPages() {
                                     type="text"
                                     value={content.testimonial_author || ''}
                                     onChange={e => setContent({...content, testimonial_author: e.target.value})}
-                                    className="w-full rounded-2xl bg-slate-50 border border-slate-100 px-5 py-3 text-sm text-slate-900 focus:outline-none focus:border-[#00ABE4] transition-all font-bold"
+                                    className="w-full rounded-2xl bg-slate-50 border border-slate-100 px-5 py-3 text-sm text-slate-900 focus:outline-none focus:border-[#5D887A] transition-all font-bold"
                                 />
                             </div>
                             <div className="space-y-2">
@@ -424,16 +424,16 @@ export default function AdminPages() {
                                     type="text"
                                     value={content.testimonial_role || ''}
                                     onChange={e => setContent({...content, testimonial_role: e.target.value})}
-                                    className="w-full rounded-2xl bg-slate-50 border border-slate-100 px-5 py-3 text-sm text-slate-900 focus:outline-none focus:border-[#00ABE4] transition-all font-bold"
+                                    className="w-full rounded-2xl bg-slate-50 border border-slate-100 px-5 py-3 text-sm text-slate-900 focus:outline-none focus:border-[#5D887A] transition-all font-bold"
                                 />
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div className="p-6 bg-sky-50/50 rounded-2xl border border-sky-100/50">
-                    <p className="text-[10px] font-bold text-sky-400 uppercase tracking-widest mb-1">Requirement</p>
-                    <p className="text-sky-900/60 text-xs font-medium leading-relaxed">
+                <div className="p-6 bg-emerald-50/50 rounded-2xl border border-emerald-100/50">
+                    <p className="text-[10px] font-bold text-emerald-400 uppercase tracking-widest mb-1">Requirement</p>
+                    <p className="text-emerald-900/60 text-xs font-medium leading-relaxed">
                         For the best presentation, use a high-resolution wide-angle photo of your team 
                         in the office workspace. Landscape orientation (16:9) is recommended.
                     </p>

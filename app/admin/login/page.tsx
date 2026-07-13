@@ -42,7 +42,7 @@ export default function AdminLogin() {
       <div className="w-full max-w-sm">
         <div className="text-center mb-10">
           <h1 className="text-3xl font-black tracking-tighter text-white">
-            ADMIN<span className="text-[#00ABE4]">PANEL</span>
+            ADMIN<span className="text-[#5D887A]">PANEL</span>
           </h1>
           <p className="text-slate-400 text-xs font-bold uppercase tracking-widest mt-2">
             Sign in to your account
@@ -58,7 +58,7 @@ export default function AdminLogin() {
               type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              className="w-full px-4 py-3 bg-slate-900 border border-slate-800 rounded-xl text-white placeholder-slate-600 focus:outline-none focus:border-[#00ABE4] focus:ring-1 focus:ring-[#00ABE4]/30 transition-all"
+              className="w-full px-4 py-3 bg-slate-900 border border-slate-800 rounded-xl text-white placeholder-slate-600 focus:outline-none focus:border-[#5D887A] focus:ring-1 focus:ring-[#5D887A]/30 transition-all"
               placeholder="Enter username"
               autoFocus
             />
@@ -72,7 +72,7 @@ export default function AdminLogin() {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-3 bg-slate-900 border border-slate-800 rounded-xl text-white placeholder-slate-600 focus:outline-none focus:border-[#00ABE4] focus:ring-1 focus:ring-[#00ABE4]/30 transition-all"
+              className="w-full px-4 py-3 bg-slate-900 border border-slate-800 rounded-xl text-white placeholder-slate-600 focus:outline-none focus:border-[#5D887A] focus:ring-1 focus:ring-[#5D887A]/30 transition-all"
               placeholder="Enter password"
             />
           </div>
@@ -86,7 +86,7 @@ export default function AdminLogin() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3 bg-[#00ABE4] hover:bg-[#0097cc] disabled:opacity-50 disabled:cursor-not-allowed text-white font-black rounded-xl tracking-wide transition-all"
+            className="w-full py-3 bg-[#5D887A] hover:bg-[#4A6E62] disabled:opacity-50 disabled:cursor-not-allowed text-white font-black rounded-xl tracking-wide transition-all"
           >
             {loading ? 'Signing in...' : 'Sign In'}
           </button>

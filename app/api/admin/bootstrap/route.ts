@@ -36,8 +36,8 @@ export async function GET() {
     {
       badge: "Certified Expertise",
       titleText: "Why Choose Certified Partner?",
-      colorFrom: "#2563eb",
-      colorTo: "#0891b2",
+      colorFrom: "#5D887A",
+      colorTo: "#5D887A",
       description: "Experience unparalleled reliability with Tally Certified Partners. We ensure your business software is always optimized, secure, and compliant.",
       image: "/certified.png",
       features: [
