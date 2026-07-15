@@ -21,14 +21,6 @@ type Topic = {
 
 const saraTopics: Topic[] = [
   {
-    label: "Getting Started with TallyPrime",
-    answer: "TallyPrime is powerful yet simple. Here's how to start:\n\n1. Install TallyPrime from tallysolutions.com\n2. Create your first company (Company > Create)\n3. Set your fiscal year and GST details\n4. Start with a simple Sales Invoice (Gateway > Vouchers > F8)\n5. Record a Purchase Invoice (F9)\n6. Check your reports (Gateway > Reports)\n\nTip: Use the keyboard shortcut Alt+G to quickly find any feature. TallyPrime is keyboard-first — once you learn the shortcuts, you'll be 10x faster.",
-    followUp: [
-      { label: "How to create a company?", answer: "Go to Gateway of Tally > Company > Create Company. Fill in:\n\n- Company Name — your business name\n- Financial Year — e.g., April 2025 to March 2026\n- State — important for GST calculation\n- Contact Details — optional but useful\n\nTally will auto-create your Chart of Accounts. You can customize it later under Accounts Info > Ledger > Create." },
-      { label: "Understanding the Gateway", answer: "The Gateway of Tally is your home screen. Everything starts here:\n\n- Masters — Create ledgers, stock items, groups\n- Transactions — Record vouchers (sales, purchase, payment)\n- Reports — See your balance sheet, P&L, GST reports\n- Utilities — Import data, backup, sync\n\nThink of it as your cockpit. All controls are within 2-3 keystrokes from here." },
-    ]
-  },
-  {
     label: "GST & Tax Filing",
     answer: "TallyPrime handles GST automatically. Here's what you need to know:\n\n- Enable GST: Go to Company Features (F11) > Enable GST\n- Auto-calculation: Tally calculates CGST, SGST, IGST on every invoice\n- E-Invoicing: Generate directly from Tally (one click)\n- GSTR-1: Gateway > Reports > Statutory Reports > GST > GSTR-1\n- GSTR-3B: Same path, select GSTR-3B\n- E-Way Bill: Generate for shipments above ₹50,000\n\nTallyPrime also auto-reconciles your GSTR-2A/2B with purchase records.",
     followUp: [
@@ -96,7 +88,6 @@ export default function LearnSaraPage() {
   const [inputValue, setInputValue] = useState('');
   const [tutorials, setTutorials] = useState<Tutorial[]>([]);
   const [isTyping, setIsTyping] = useState(false);
-  const [showChips, setShowChips] = useState(true);
   const chatEndRef = useRef<HTMLDivElement>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -145,7 +136,6 @@ export default function LearnSaraPage() {
         id: uid(),
         role: 'assistant',
         text: WELCOME_TEXT,
-        topics: saraTopics.slice(0, 4),
         timestamp: new Date()
       }]);
       setIsTyping(false);
@@ -203,7 +193,6 @@ export default function LearnSaraPage() {
   }, [addAssistantMessage]);
 
   const handleTopicClick = (topic: Topic) => {
-    setShowChips(false);
     setMessages(prev => [...prev, {
       id: uid(),
       role: 'user',
@@ -228,7 +217,6 @@ export default function LearnSaraPage() {
     if (!inputValue.trim() || isTyping) return;
 
     const query = inputValue.trim();
-    setShowChips(false);
     setInputValue('');
 
     // Add user message
@@ -275,10 +263,9 @@ export default function LearnSaraPage() {
       respondWithDelay(bestMatch.topic.answer, bestMatch.topic.followUp, query);
     } else {
       // Helpful fallback — still tries to guide the user
-      const topicHints = saraTopics.slice(0, 4).map(t => t.label.split(' ')[0].toLowerCase()).join(', ');
       respondWithDelay(
-        `Good question! While I specialize in TallyPrime and business automation, here's what I can help with:\n\n- Accounting, billing & invoicing\n- GST filing & tax compliance\n- Inventory & stock management\n- Banking & reconciliation\n- Payroll & employee management\n- Reports & business insights\n- Keyboard shortcuts & productivity tips\n\nTry asking about any of these, or explore the topics below!`,
-        saraTopics.slice(0, 4),
+        `Good question! While I specialize in TallyPrime and business automation, here's what I can help with:\n\n- Accounting, billing & invoicing\n- GST filing & tax compliance\n- Inventory & stock management\n- Banking & reconciliation\n- Payroll & employee management\n- Reports & business insights\n- Keyboard shortcuts & productivity tips\n\nTry asking about any of these!`,
+        undefined,
         query
       );
     }
@@ -286,14 +273,12 @@ export default function LearnSaraPage() {
 
   const handleReset = () => {
     setMessages([]);
-    setShowChips(true);
     setIsTyping(true);
     setTimeout(() => {
       setMessages([{
         id: uid(),
         role: 'assistant',
         text: WELCOME_TEXT,
-        topics: saraTopics.slice(0, 4),
         timestamp: new Date()
       }]);
       setIsTyping(false);
@@ -428,26 +413,6 @@ export default function LearnSaraPage() {
                   <span className="w-2 h-2 bg-[#4A6E62]/40 rounded-full animate-bounce [animation-delay:200ms] [animation-duration:1.2s]" />
                   <span className="w-2 h-2 bg-[#4A6E62]/40 rounded-full animate-bounce [animation-delay:400ms] [animation-duration:1.2s]" />
                 </div>
-              </div>
-            </div>
-          )}
-
-          {/* Quick topic chips — shown only at start */}
-          {showChips && messages.length > 0 && !isTyping && (
-            <div className="pt-2 pb-4 animate-[slideUp_0.4s_ease-out]">
-              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3 text-center">
-                Quick topics
-              </p>
-              <div className="flex flex-wrap justify-center gap-2">
-                {saraTopics.map((topic, i) => (
-                  <button
-                    key={i}
-                    onClick={() => handleTopicClick(topic)}
-                    className="px-4 py-2 bg-white hover:bg-[#4A6E62] hover:text-white text-slate-700 rounded-full text-[11px] font-bold border border-slate-200 hover:border-[#4A6E62] transition-all hover:shadow-lg active:scale-95"
-                  >
-                    {topic.label}
-                  </button>
-                ))}
               </div>
             </div>
           )}

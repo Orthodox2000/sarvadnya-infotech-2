@@ -62,7 +62,7 @@ export default function ModuleCard({ module, onViewDetails, onEnquire }: ModuleC
         <div className="mt-auto flex items-center gap-2">
           <button
             onClick={() => onViewDetails(module)}
-            className="flex-1 py-2.5 bg-slate-900 text-white text-[11px] font-bold rounded-xl hover:bg-[#316852] transition-colors shadow-lg shadow-slate-200"
+            className="flex-1 py-2.5 bg-[#316852] text-white text-[11px] border font-bold rounded-xl hover:bg-[#FAFAFA] hover:text-[#316852] hover:border-[#316852] transition-colors shadow-lg shadow-slate-200"
           >
             Explore Details
           </button>

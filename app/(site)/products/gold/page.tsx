@@ -10,34 +10,34 @@ const BRAND_PRIMARY = '#316852';
 const BRAND_SECONDARY = '#1e4d3a';
 
 const features = [
-  { title: 'Multi-User Collaboration', desc: 'Multiple users access the same company simultaneously over a local network with no data conflicts.' },
-  { title: 'Role-Based Access Control', desc: 'Assign user-level permissions to control who views, edits, or reports on sensitive company data.' },
-  { title: 'Centralised Audit Trail', desc: 'Track every user action with detailed logs for accountability and simplified compliance audits.' },
-  { title: 'Multi-Branch Consolidation', desc: 'Centralise data from multiple branches into one source of truth with zero duplication.' },
-  { title: 'Real-Time Sync', desc: 'Changes made by any user reflect instantly across all connected workstations on the network.' },
-  { title: 'Cross-Branch Reporting', desc: 'Generate consolidated financial reports across branches without manual data merging.' },
+  { title: 'Everyone Works Together', desc: 'Stop taking turns on one PC. Let your billing, inventory, and accounting teams work on the exact same live data at the same time without any conflicts.' },
+  { title: 'Control Who Sees What', desc: 'Keep your sensitive financials private. Set passwords and permissions so your sales team only sees invoices, while only you see the bank balances.' },
+  { title: 'Zero Data Duplication', desc: 'Say goodbye to merging Excel sheets or passing backup files on pen drives. Everyone connects to one single, accurate source of truth.' },
+  { title: 'Instant Live Updates', desc: 'When an item is sold at the front desk, your warehouse team sees the updated stock instantly. Real-time syncing keeps your whole team aligned.' },
+  { title: 'Automated Local Compliance', desc: 'Handle local taxes, VAT, or GST returns accurately. Multiple users can generate tax-compliant e-invoices simultaneously without slowing down.' },
+  { title: 'Seamless Silver Upgrade', desc: 'Upgrading from single-user? It takes just minutes. Your existing data transitions perfectly to Gold without losing a single invoice.' },
 ];
 
 const faqs = [
   {
-    q: 'What type of support is available for TallyPrime Gold?',
-    a: 'We provide Phone and Email support for TallyPrime Gold. Our certified Tally experts can assist with installation, network setup, GST compliance, and multi-user configuration.',
+    q: 'How is TallyPrime Gold different from Silver?',
+    a: 'Silver is for a single user on one computer. Gold is a multi-user license that allows your entire team to access and work on your Tally data simultaneously across multiple computers on the same network.',
   },
   {
-    q: 'Who is TallyPrime Gold best suited for?',
-    a: 'Gold is designed for growing businesses with multiple users who need simultaneous access to the same company data on a local network.',
+    q: 'Do I need to buy a license for every single employee?',
+    a: 'No! TallyPrime Gold gives you unlimited users on a single Local Area Network (LAN). You purchase the Gold license once, and any computer on that network can connect to it.',
   },
   {
-    q: 'How many users can work on TallyPrime Gold at the same time?',
-    a: 'TallyPrime Gold supports multiple concurrent users working on the same company data over a local network, depending on your license.',
+    q: 'Can I restrict what my employees can see or edit?',
+    a: 'Absolutely. You have full control. You can restrict a data entry operator from viewing your profit and loss statements, or prevent a salesperson from altering old invoices.',
   },
   {
-    q: 'What are the system requirements for TallyPrime Gold?',
-    a: 'TallyPrime Gold runs on Windows 7 and above. Each workstation needs a minimum of 2GB RAM and 500MB free disk space. A stable network connection is required between workstations.',
+    q: 'Will I lose my data if I upgrade from Silver to Gold?',
+    a: 'Not at all. Upgrading is instant and seamless. You just enter your new Gold activation key, and your existing data is immediately available for your whole team to use.',
   },
   {
-    q: 'Can I upgrade from Gold to Server later?',
-    a: 'Yes. Gold data and workflows are fully compatible with TallyPrime Server. You can upgrade seamlessly as your business grows.',
+    q: 'Can I connect a branch office to my main office?',
+    a: 'Yes, with the right network setup (like a VPN) or by pairing TallyPrime Gold with cloud hosting, your branch offices can work on the exact same live data as your head office.',
   },
 ];
 
@@ -212,7 +212,7 @@ export default function TallyGoldPage() {
               </div>
               <div className="flex items-center flex-wrap gap-x-4 gap-y-1 mt-1.5"></div>
               <p className="text-[13px] text-slate-500 mt-1.5 leading-relaxed max-w-3xl">
-                Gold is the multi-user edition for growing teams that need simultaneous access, centralized data, and branch-ready control on a local network.
+                The ultimate multi-user accounting software for growing teams. Stop sharing one computer and let your entire staff bill, manage inventory, and track payments at the exact same time on a secure local network.
               </p>
             </div>
 
@@ -296,24 +296,25 @@ export default function TallyGoldPage() {
               <h2 className="text-lg font-bold text-slate-900 mb-3">What is TallyPrime Gold?</h2>
               <div className="text-sm text-slate-600 leading-relaxed space-y-3">
                 <p>
-                  TallyPrime Gold is the multi-user edition of TallyPrime, designed for
-                  growing teams that need simultaneous access to the same company data on a local network.
-                  It delivers core accounting, inventory management, GST compliance, and financial
-                  reporting with multi-user collaboration and role-based access control.
+                  When your business grows, sharing a single-user accounting setup becomes a massive bottleneck.
+                  TallyPrime Gold is built specifically for teams. Whether you have two accountants or a dozen
+                  staff members, Gold allows everyone to access your live company data simultaneously without
+                  any conflicts.
                 </p>
                 <p>
-                  With role-based access control, real-time sync, and multi-branch consolidation, Gold gives
-                  your team the power to work together while keeping data centralized and secure.
-                  When your team grows further, your data and workflows seamlessly upgrade to TallyPrime Server.
+                  By networking your office computers, your billing clerk, inventory manager, and accountant can
+                  all work together in real-time. You get all the powerful compliance, inventory, and reporting
+                  features of Tally, supercharged with role-based security so you can control exactly who sees
+                  your sensitive financial data.
                 </p>
               </div>
               {/* Hero stats */}
               <div className="mt-5 grid grid-cols-2 sm:grid-cols-4 gap-3">
                 {[
-                  { label: 'Users', value: '2+' },
-                  { label: 'Focus', value: 'Shared' },
-                  { label: 'Access', value: 'Network' },
-                  { label: 'Setup', value: 'Multi-User' },
+                  { label: 'Users', value: 'Unlimited' },
+                  { label: 'Focus', value: 'Teamwork' },
+                  { label: 'Network', value: 'Local LAN' },
+                  { label: 'Data', value: 'Real-Time' },
                 ].map((stat) => (
                   <div
                     key={stat.label}
@@ -334,7 +335,7 @@ export default function TallyGoldPage() {
             <section id="features" className="scroll-mt-16 bg-white rounded-xl border border-slate-200 p-6">
               <h2 className="text-lg font-bold text-slate-900 mb-1">Key Features of TallyPrime Gold</h2>
               <p className="text-sm text-slate-500 mb-5">
-                Here are the powerful features that make TallyPrime Gold stand out. Packed with essential tools for multi-user accounting and collaboration.
+                Here is how TallyPrime Gold completely eliminates workplace bottlenecks and brings your team together.
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                 {features.map((feature) => (
@@ -362,10 +363,10 @@ export default function TallyGoldPage() {
                 <h2 className="text-lg font-bold text-slate-900 mb-4">When Gold is the right choice</h2>
                 <ul className="space-y-3">
                   {[
-                    'Medium-sized businesses with multiple departments needing simultaneous access',
-                    'Companies with branch offices requiring one source of truth',
-                    'Wholesalers managing large transaction volumes across team members',
-                    'Businesses prioritizing centralized data management and strict user-access control',
+                    'You have multiple employees who need to use Tally at the exact same time.',
+                    'Your staff is currently taking turns sharing one computer to do their work.',
+                    'You are tired of merging Excel sheets or passing backup files on pen drives.',
+                    'You want to restrict your sales team from seeing your bank balances or profit margins.',
                   ].map((item) => (
                     <li key={item} className="flex items-start gap-2.5 text-sm text-slate-600">
                       <span
@@ -398,12 +399,9 @@ export default function TallyGoldPage() {
                   <div>
                     <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Network</h3>
                     <div className="flex flex-wrap gap-2">
-                      {[
-                        { label: 'LAN', icon: 'M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z M15 13a3 3 0 11-6 0 3 3 0 016 0z' },
-                        { label: 'Wi-Fi', icon: 'M8.288 15.038a5.25 5.25 0 017.424 0M5.106 11.856c3.807-3.808 9.98-3.808 13.788 0M1.924 8.674c5.565-5.565 14.587-5.565 20.152 0' },
-                      ].map((device) => (
-                        <span key={device.label} className="inline-flex rounded-md px-2.5 py-1 text-[12px] font-medium text-slate-600 bg-slate-50 border border-slate-200">
-                          {device.label}
+                      {['Office LAN', 'Wi-Fi Network'].map((net) => (
+                        <span key={net} className="inline-flex rounded-md px-2.5 py-1 text-[12px] font-medium text-slate-600 bg-slate-50 border border-slate-200">
+                          {net}
                         </span>
                       ))}
                     </div>
@@ -411,7 +409,7 @@ export default function TallyGoldPage() {
                   <div>
                     <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Integrations</h3>
                     <div className="flex flex-wrap gap-2">
-                      {['TallyDrive', 'Excel Import/Export', 'TallyReports', 'Cloud Backup'].map((item) => (
+                      {['TallyDrive Backups', 'Excel Export', 'Cloud Hosting Ready'].map((item) => (
                         <span key={item} className="inline-flex rounded-md px-2.5 py-1 text-[12px] font-medium border" style={{ borderColor: `${BRAND_PRIMARY}25`, backgroundColor: `${BRAND_PRIMARY}06`, color: BRAND_PRIMARY }}>
                           {item}
                         </span>
@@ -460,8 +458,8 @@ export default function TallyGoldPage() {
             {/* Still not satisfied? */}
             <section className="bg-white rounded-xl border border-slate-200 p-6">
               <div className="text-center mb-5">
-                <h2 className="text-lg font-bold text-slate-900">Still not satisfied?</h2>
-                <p className="text-sm text-slate-500 mt-1">Tell us your requirements and we will find the right solution for you.</p>
+                <h2 className="text-lg font-bold text-slate-900">Need help setting up your team?</h2>
+                <p className="text-sm text-slate-500 mt-1">Tell us how many users you have, and we will recommend the best networking setup.</p>
               </div>
               <form onSubmit={handleInquirySubmit} className="max-w-xl mx-auto space-y-3">
                 <input
@@ -497,7 +495,7 @@ export default function TallyGoldPage() {
                   className="w-full py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider text-white shadow-lg transition-all hover:scale-[1.01] disabled:opacity-60"
                   style={{ backgroundColor: BRAND_PRIMARY }}
                 >
-                  {inquiryLoading ? 'Sending...' : 'Submit Requirement'}
+                  {inquiryLoading ? 'Sending...' : 'Get Expert Advice'}
                 </button>
                 {inquiryStatus && (
                   <p
@@ -514,7 +512,7 @@ export default function TallyGoldPage() {
             {/* Pricing - Hidden reveal */}
             <section id="pricing" className="scroll-mt-16 bg-white rounded-xl border border-slate-200 p-6">
               <h2 className="text-lg font-bold text-slate-900 mb-1">TallyPrime Gold Pricing</h2>
-              <p className="text-sm text-slate-500 mb-5">View pricing plans for TallyPrime Gold.</p>
+              <p className="text-sm text-slate-500 mb-5">One license covers unlimited users on your local network.</p>
               <button
                 type="button"
                 onClick={() => setShowPricing(!showPricing)}
@@ -551,7 +549,7 @@ export default function TallyGoldPage() {
                   </table>
                   <div className="px-4 py-3 bg-slate-50 border-t border-slate-200">
                     <p className="text-[11px] text-slate-500">
-                      Prices are subject to change. Contact our sales team for the latest pricing and discounts.
+                      Prices are subject to change. Contact our sales team for the latest multi-user upgrade discounts.
                     </p>
                     <button
                       type="button"
@@ -577,9 +575,9 @@ export default function TallyGoldPage() {
             {/* Get Best Quote */}
             <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
               <div className="px-5 py-4 text-white" style={{ backgroundColor: BRAND_SECONDARY }}>
-                <h3 className="text-sm font-bold">Get Best Quote for TallyPrime Gold</h3>
+                <h3 className="text-sm font-bold">Upgrade Your Team Today</h3>
                 <p className="text-[12px] text-white/75 mt-1 leading-relaxed">
-                  Connect with our experts to get the best quote for your business.
+                  Connect with our experts to get the best network deployment and pricing plan for your business.
                 </p>
               </div>
               <form onSubmit={handleSidebarSubmit} className="p-5 space-y-3">

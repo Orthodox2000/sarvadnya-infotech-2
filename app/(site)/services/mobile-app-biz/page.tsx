@@ -18,8 +18,8 @@ export default function MobileAppBizPage() {
 
   const mobileFeatures = [
     {
-      title: "Real-time Data Sync",
-      desc: "Access your latest Tally data on your mobile device instantly, anytime and anywhere.",
+      title: "Zero Accountant Dependency",
+      desc: "View live bank balances, daily sales, and profits instantly without having to call your accounts team.",
       icon: (
         <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
@@ -27,8 +27,8 @@ export default function MobileAppBizPage() {
       )
     },
     {
-      title: "Business Analytics",
-      desc: "Get deep insights into your sales, purchases, and outstandings with interactive dashboards.",
+      title: "Spot Dead Stock Instantly",
+      desc: "Quickly identify which products are your fast-movers and which inventory is sitting idle and blocking your cash.",
       icon: (
         <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
@@ -36,8 +36,8 @@ export default function MobileAppBizPage() {
       )
     },
     {
-      title: "Sales Team Tracking",
-      desc: "Monitor your sales team's performance, check-ins, and orders in real-time.",
+      title: "GPS Sales Tracking",
+      desc: "Monitor your field team's exact locations, client check-ins, and daily order bookings in real-time to ensure productivity.",
       icon: (
         <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
@@ -46,8 +46,8 @@ export default function MobileAppBizPage() {
       )
     },
     {
-      title: "Outstanding Reminders",
-      desc: "Send automated payment reminders to customers directly from your mobile via WhatsApp.",
+      title: "1-Click WhatsApp Reminders",
+      desc: "Recover pending payments faster. Send polite, automated ledger reports and payment links via WhatsApp directly to clients.",
       icon: (
         <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -57,9 +57,9 @@ export default function MobileAppBizPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-white text-slate-900">
+    <div className="min-h-screen bg-[linear-gradient(90deg,rgba(249,251,245,1)_0%,rgba(244,242,234,1)_53%,rgba(238,236,223,1)_100%)]  text-slate-900">
       {/* Cinematic Hero Section (Themed Hero) */}
-      <section className="bg-white relative overflow-hidden flex items-center min-h-[200px] md:min-h-[350px] border-b border-[#4A6E62]/10">
+      <section className=" relative overflow-hidden flex items-center min-h-[200px] md:min-h-[350px] border-b border-[#4A6E62]/10">
         {/* Cinematic Image Side - Hidden on mobile, full height on desktop */}
         <div className="hidden lg:block absolute right-0 top-0 bottom-0 w-1/2 z-0">
           <div className="relative h-full w-full">
@@ -71,32 +71,32 @@ export default function MobileAppBizPage() {
               priority
             />
             {/* Cinematic Overlay - Fades image into the light background */}
-            <div className="absolute inset-0 bg-gradient-to-r from-white via-white/80 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#F5F4EC] via-[#F4F2EA]/80 to-transparent" />
           </div>
         </div>
         
-        <div className="max-w-7xl mx-auto w-full px-6 relative z-10 py-12 md:py-16">
-          <div className="max-w-2xl lg:pr-12">
+        <div className="max-w-7xl mx-auto w-full px-6 relative z-10 py-12 ">
+          <div className="max-w-2xl lg:pr-6">
             <div className="flex items-center gap-4 mb-6">
-              <div className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-white/40 border border-[#4A6E62]/10 text-[#4A6E62] text-[10px] font-bold uppercase tracking-widest backdrop-blur-sm">
+              <div className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-white/40 border border-[#4A6E62]/10 text-[#4A6E62] text-xs font-bold uppercase tracking-widest backdrop-blur-sm">
                 <span className="flex h-0.5 w-0.5 rounded-full bg-[#4A6E62]"></span>
                 Mobile Intelligence
               </div>
               
             </div>
-            <h1 className="text-3xl md:text-6xl font-black text-slate-900 mb-6 leading-tight tracking-tight">
-              Tally on <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#4A6E62] via-[#5D887A] to-[#4A6E62]">Mobile Dashboard</span>
+            <h1 className="text-4xl md:text-5xl font-black text-slate-900 mb-6 leading-tight tracking-tight">
+              Total Control Over Your Business{' '}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#4A6E62] via-[#5D887A] to-[#4A6E62]">& Cash Flow</span>
             </h1>
             <p className="text-slate-600 text-base md:text-lg max-w-xl leading-relaxed mb-8 font-semibold">
-              Bring your office in your pocket. Access critical business data, track sales performance, and send outstanding reminders instantly from anywhere.
+              Stop calling your accountant for reports. Access live Tally data, track your field sales team, and send WhatsApp payment reminders directly from your smartphone—anytime, anywhere.
             </p>
             <div className="flex flex-wrap gap-4">
               <button 
                 onClick={() => openModal('demo')}
-                className="px-8 py-4 bg-[#4A6E62] text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-[#5D887A] transition-all shadow-xl shadow-[#4A6E62]/20"
+                className="px-4 py-4 bg-[#4A6E62] text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-[#5D887A] transition-all shadow-xl shadow-[#4A6E62]/20"
               >
-                Enquire Now
+                Get a Free Demo
               </button>
             </div>
           </div>
@@ -104,10 +104,10 @@ export default function MobileAppBizPage() {
       </section>
 
       {/* Feature Grid */}
-      <section className="py-24 px-6 max-w-7xl mx-auto">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-black text-slate-900 mb-4">Powerful Features</h2>
-          <p className="text-slate-500 font-medium max-w-2xl mx-auto">Modern analytical tools designed for business owners who are always on the move.</p>
+      <section className="py-12 px-6 max-w-7xl mx-auto">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl md:text-5xl font-black text-slate-black mb-4">Why MSME Owners Love Biz Analyst</h2>
+          <p className="text-slate-500 font-medium max-w-2xl mx-auto">Everything you need to manage cash flow, field teams, and inventory while on the go.</p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {mobileFeatures.map((feature, i) => (
@@ -123,24 +123,24 @@ export default function MobileAppBizPage() {
       </section>
 
       {/* Analytics Section */}
-      <section className="py-24 px-6 bg-slate-50">
+      <section className="py-8 px-6 ">
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          <div className="relative rounded-[2.5rem] overflow-hidden shadow-2xl aspect-video max-w-md mx-auto">
+          <div className="relative rounded-[2.5rem] overflow-hidden shadow-2xl aspect-video max-w-lg mx-auto w-full">
             <Image 
               src="/biz.jpg" 
               alt="Mobile App Analytics" 
               fill 
-              className="object-cover"
+              className="object-fill"
             />
           </div>
           <div className="space-y-8">
-            <h2 className="text-3xl md:text-4xl font-black text-slate-900 leading-tight">Data-Driven <br /><span className="text-[#4A6E62]">Decision Making</span></h2>
+            <h2 className="text-3xl md:text-4xl font-black text-slate-900 leading-tight">Your Entire Business At <span className="text-[#4A6E62]">Your Fingertips</span></h2>
             <div className="space-y-6">
               {[
-                { title: "Sales Analysis", desc: "Track top customers, items, and sales trends over any period." },
-                { title: "Inventory Control", desc: "Check stock levels and godown-wise inventory on the fly." },
-                { title: "Outstanding Reports", desc: "View party-wise outstandings and ageing analysis instantly." },
-                { title: "Secure & Offline", desc: "Your data is encrypted and accessible even without internet." }
+                { title: "Instant Sales Analysis", desc: "Track your top-performing customers, fast-moving items, and monthly sales trends at a glance." },
+                { title: "Live Inventory Control", desc: "Never lose an order. Check live godown-wise stock levels instantly while negotiating with a client." },
+                { title: "Stop Bad Debts", desc: "View party-wise aging reports to see exactly who owes you money and for how many days." },
+                { title: "Bank-Grade Security", desc: "Your Tally data is 100% encrypted, safely synced, and accessible even if you lose internet access." }
               ].map((benefit, i) => (
                 <div key={i} className="flex gap-4">
                   <div className="mt-1 shrink-0 w-5 h-5 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center">
@@ -158,7 +158,7 @@ export default function MobileAppBizPage() {
                   onClick={() => openModal('quote')}
                   className="px-10 py-4 bg-slate-900 text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-[#4A6E62] transition-all shadow-lg"
                >
-                  Get Pricing Plans
+              Contact Us
                </button>
             </div>
           </div>
@@ -166,17 +166,24 @@ export default function MobileAppBizPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 px-6">
-        <div className="max-w-5xl mx-auto bg-slate-900 rounded-[3rem] p-12 text-center relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-[#4A6E62]/20 rounded-full blur-[80px]" />
-          <div className="relative z-10">
-            <h2 className="text-3xl md:text-4xl font-black text-white mb-6">Experience the Freedom</h2>
-            <p className="text-white/60 mb-10 max-w-xl mx-auto font-medium">Join thousands of business owners who manage their Tally from their smartphones.</p>
-            <button 
+      <section className="bg-[#4A6E62] py-14 px-6">
+        <div className="max-w-3xl mx-auto text-center">
+          <h2 className="text-2xl md:text-3xl font-black text-white mb-3">Stop Waiting for Reports. Take Control Today.</h2>
+          <p className="text-emerald-100 text-sm mb-8 max-w-md mx-auto">
+            Join thousands of smart business owners who use the Biz Analyst app to run their operations independently.
+          </p>
+          <div className="flex flex-wrap justify-center gap-3">
+            <button
               onClick={() => openModal('callback')}
-              className="px-10 py-4 bg-[#5D887A] text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:scale-105 transition-all shadow-xl shadow-[#5D887A]/20"
+              className="px-7 py-3.5 bg-white text-[#4A6E62] rounded-xl font-black text-xs uppercase tracking-widest hover:bg-emerald-50 transition-all"
             >
-              Consult an Expert
+              Start Your Free Trial
+            </button>
+            <button
+              onClick={() => openModal('enquire')}
+              className="px-7 py-3.5 bg-white/10 border border-white/20 text-white rounded-xl font-black text-xs uppercase tracking-widest hover:bg-white/20 transition-all"
+            >
+              Get Pricing Plans
             </button>
           </div>
         </div>

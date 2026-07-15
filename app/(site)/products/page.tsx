@@ -29,29 +29,29 @@ export default function ProductsPage() {
   const products: Product[] = [
     {
       name: "TallyPrime Silver",
-      description: "Ideal for small businesses. Manage invoicing, inventory, GST filing and financial reports on a single computer.",
-      tags: ["1 USER", "SINGLE PC", "GST READY"],
+      description: "One person, one computer. Handles your daily billing, stock, and taxes.",
+      tags: ["1-USER", "SINGLE WORKSTATION", "READY-TO-USE"],
       link: "/products/silver",
       logo: "/tallyprime logo.png"
     },
     {
       name: "TallyPrime Gold",
-      description: "Built for growing teams. Enables real-time collaboration across multiple users on a shared LAN network.",
-      tags: ["MULTI USER", "LAN ACCESS", "REAL-TIME"],
+      description: "Your whole team works together on the same data, at the same time, on the same network.",
+      tags: ["MULTI-USER", "TEAM COLLABORATION", "REAL-TIME SYNC"],
       link: "/products/gold",
       logo: "/tallyprime logo.png"
     },
     {
       name: "TallyPrime Server",
-      description: "Enterprise-grade solution with centralized data control, detailed audit trails and remote access capabilities.",
-      tags: ["ENTERPRISE", "AUDIT TRAIL", "REMOTE ACCESS"],
+      description: "For bigger teams that need speed, access controls, and a full activity log.",
+      tags: ["ENTERPRISE SPEED", "FULL AUDIT TRAIL", "HIGH-CONTROL"],
       link: "/products/server",
       logo: "/tallyprime logo.png"
     },
     {
       name: "TallyDrive",
-      description: "Secure cloud backup and data protection for your Tally data with automated scheduling and encryption.",
-      tags: ["AES-256", "AUTO BACKUP", "CLOUD SYNC"],
+      description: "Automatic daily backups to the cloud. Your data stays safe, always.",
+      tags: ["BANK-LEVEL SECURITY", "AUTO BACKUP", "1-CLICK RESTORE"],
       link: "/products/tallydrive",
       logo: "/tallyprime logo.png"
     }
@@ -64,8 +64,11 @@ export default function ProductsPage() {
         {/* Header */}
         <section className="relative z-10 pt-16 pb-6 md:pt-16 md:pb-8 px-6 max-w-7xl mx-auto">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 tracking-tight mb-4">
-            Official Tally Products
+            TallyPrime Products
           </h1>
+          <p className="text-gray-600 text-sm md:text-base max-w-2xl leading-relaxed">
+            Pick the right version for your team size.
+          </p>
         </section>
 
         {/* Cards Grid */}
@@ -109,13 +112,13 @@ export default function ProductsPage() {
                     onClick={() => openModal('quote', p.name, p.description)}
                     className="w-full bg-[#1A4731] hover:bg-[#123323] text-white font-semibold py-2.5 rounded-lg transition-colors text-sm tracking-wide"
                   >
-                    REQUEST QUOTE
+                    GET PRICING
                   </button>
                   <Link
                     href={p.link}
                     className="w-full bg-[#EAF2ED] hover:bg-[#dcede3] text-[#1A4731] border border-[#C5DACF] font-semibold py-2.5 rounded-lg transition-colors text-sm tracking-wide text-center"
                   >
-                    KNOW MORE
+                    VIEW DETAILS
                   </Link>
                 </div>
               </div>

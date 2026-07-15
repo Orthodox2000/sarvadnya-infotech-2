@@ -56,9 +56,9 @@ export default function AMCPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-white text-slate-900">
+    <div className="min-h-screen bg-[linear-gradient(90deg,rgba(249,251,245,1)_0%,rgba(244,242,234,1)_53%,rgba(238,236,223,1)_100%)] text-slate-900">
       {/* Cinematic Hero Section (Themed Hero) */}
-      <section className="bg-white relative overflow-hidden flex items-center min-h-[200px] md:min-h-[350px] border-b border-[#4A6E62]/10">
+      <section className="bg-[linear-gradient(90deg,rgba(249,251,245,1)_0%,rgba(244,242,234,1)_53%,rgba(238,236,223,1)_100%)] relative overflow-hidden flex items-center min-h-[200px] md:min-h-[350px] border-b border-[#4A6E62]/10">
         {/* Cinematic Image Side - Hidden on mobile, full height on desktop */}
         <div className="hidden lg:block absolute right-0 top-0 bottom-0 w-1/2 z-0">
           <div className="relative h-full w-full">
@@ -70,7 +70,7 @@ export default function AMCPage() {
               priority
             />
             {/* Cinematic Overlay - Fades image into the light background */}
-            <div className="absolute inset-0 bg-gradient-to-r from-white via-white/80 to-transparent" />
+            {/* <div className="absolute inset-0 bg-gradient-to-r from-[#EEECDF]/10 via-[#F4F2EA]/80 to-transparent" /> */}
           </div>
         </div>
         
@@ -80,9 +80,9 @@ export default function AMCPage() {
               <span className="flex h-1.5 w-1.5 rounded-full bg-[#4A6E62]"></span>
               Support Excellence
             </div>
-            <h1 className="text-3xl md:text-6xl font-black text-slate-900 mb-6 leading-tight tracking-tight">
-              Tally Annual Maintenance <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#4A6E62] via-[#5D887A] to-[#4A6E62]">Contract (AMC)</span>
+            <h1 className="text-3xl md:text-5xl font-black text-slate-900 mb-6 leading-tight tracking-tight">
+              Tally Annual Maintenance Contract 
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#4A6E62] via-[#5D887A] to-[#4A6E62]"> (AMC)</span>
             </h1>
             <p className="text-slate-600 text-base md:text-lg max-w-xl leading-relaxed mb-8 font-semibold">
               Minimize downtime and maximize productivity with our priority troubleshooting and regular health checks. Your safety net for continuous business operations.
@@ -100,8 +100,8 @@ export default function AMCPage() {
       </section>
 
       {/* Feature Grid */}
-      <section className="py-24 px-6 max-w-7xl mx-auto">
-        <div className="text-center mb-16">
+      <section className="py-12 px-6 max-w-7xl mx-auto">
+        <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-black text-slate-900 mb-4">Why Choose Our AMC?</h2>
           <p className="text-slate-500 font-medium max-w-2xl mx-auto">Comprehensive support coverage designed to keep your Tally environment healthy and compliant.</p>
         </div>
@@ -119,18 +119,18 @@ export default function AMCPage() {
       </section>
 
       {/* Benefits Section */}
-      <section className="py-24 px-6 bg-slate-50">
+      <section className="py-12 px-6 bg-[linear-gradient(90deg,rgba(249,251,245,1)_0%,rgba(244,242,234,1)_53%,rgba(238,236,223,1)_100%)]">
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          <div className="relative rounded-[2.5rem] overflow-hidden shadow-2xl aspect-video">
+          <div className="relative rounded-[2.5rem] overflow-hidden shadow-2xl aspect-video bg-slate-50">
             <Image 
               src="/amc.png" 
               alt="AMC Support in action" 
               fill 
-              className="object-cover"
+              className="object-fill"
             />
           </div>
           <div className="space-y-8">
-            <h2 className="text-3xl md:text-4xl font-black text-slate-900 leading-tight">Zero-Friction Technical <br /><span className="text-[#4A6E62]">Assistance</span></h2>
+            <h2 className="text-3xl md:text-4xl font-black text-slate-900 leading-tight">Zero-Friction Technical {" "}<span className="text-[#4A6E62]">Assistance</span></h2>
             <div className="space-y-6">
               {[
                 { title: "Unlimited Remote Support", desc: "No limits on how many times you can call us for help." },
@@ -154,17 +154,24 @@ export default function AMCPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 px-6">
-        <div className="max-w-5xl mx-auto bg-slate-900 rounded-[3rem] p-12 text-center relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-[#4A6E62]/20 rounded-full blur-[80px]" />
-          <div className="relative z-10">
-            <h2 className="text-3xl md:text-4xl font-black text-white mb-6">Ready for Priority Support?</h2>
-            <p className="text-white/60 mb-10 max-w-xl mx-auto font-medium">Join 2000+ businesses who trust Sarvadnya Infotech for their daily Tally operations.</p>
-            <button 
+      <section className="bg-[#4A6E62] py-14 px-6">
+        <div className="max-w-3xl mx-auto text-center">
+          <h2 className="text-2xl md:text-3xl font-black text-white mb-3">Ready for Priority Support?</h2>
+          <p className="text-emerald-100 text-sm mb-8 max-w-md mx-auto">
+            Join 2000+ businesses who trust Sarvadnya Infotech for their daily Tally operations.
+          </p>
+          <div className="flex flex-wrap justify-center gap-3">
+            <button
               onClick={() => openModal('callback')}
-              className="px-10 py-4 bg-[#5D887A] text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:scale-105 transition-all shadow-xl shadow-[#5D887A]/20"
+              className="px-7 py-3.5 bg-white text-[#4A6E62] rounded-xl font-black text-xs uppercase tracking-widest hover:bg-emerald-50 transition-all"
             >
               Get a Callback
+            </button>
+            <button
+              onClick={() => openModal('enquire')}
+              className="px-7 py-3.5 bg-white/10 border border-white/20 text-white rounded-xl font-black text-xs uppercase tracking-widest hover:bg-white/20 transition-all"
+            >
+              Contact Us
             </button>
           </div>
         </div>

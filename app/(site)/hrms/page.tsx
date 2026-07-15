@@ -10,34 +10,34 @@ const BRAND_PRIMARY = '#316852';
 const BRAND_SECONDARY = '#1e4d3a';
 
 const features = [
-  { title: 'Employee Master', desc: 'Centralised employee database with documents, contacts, and role management.' },
-  { title: 'Payroll Processing', desc: 'Automated salary, deductions, and compliance calculations every cycle.' },
-  { title: 'Attendance & Time', desc: 'Track check-in, shifts, leave, and overtime with integrated reports.' },
-  { title: 'Statutory Compliance', desc: 'Auto-generated PF, ESI, PT, and LWF returns with year-end forms.' },
-  { title: 'Expense & Reimbursement', desc: 'Manage travel, conveyance, and business expense claims seamlessly.' },
-  { title: 'Reports & Dashboards', desc: 'Real-time HR analytics, headcount, cost-to-company, and attrition views.' },
+  { title: 'Employee Records', desc: 'Ditch the paper files. Keep all employee documents, contact details, and ID proofs safely organized in one secure digital vault.' },
+  { title: '1-Click Payroll', desc: 'Stop the month-end salary stress. Automatically calculate wages, overtime, and deductions with 100% accuracy every single month.' },
+  { title: 'Smart Attendance', desc: 'No more proxy attendance. Easily track daily check-ins, shifts, and leave balances directly from biometric devices or the mobile app.' },
+  { title: 'Worry-Free Compliance', desc: 'Stay perfectly safe from penalties. Automatically compute and generate ready-to-file local tax returns, statutory deductions, and year-end compliance reports based on your region\'s labor laws.' },
+  { title: 'Easy Expense Tracking', desc: 'Stop chasing paper bills. Let employees submit travel and conveyance claims from their phones for quick, easy approval.' },
+  { title: 'Simple HR Reports', desc: 'Know exactly where your money is going. Get instant reports on your total staff costs, headcounts, and monthly salary payouts.' },
 ];
 
 const faqs = [
   {
-    q: 'What is an HRMS and why does my business need one?',
-    a: 'HRMS (Human Resource Management System) automates employee lifecycle management — from onboarding and payroll to attendance and compliance. It eliminates spreadsheets, reduces errors, and keeps you compliant with Indian statutory regulations.',
+    q: 'What is an HRMS and why does my small business need one?',
+    a: 'An HRMS replaces your spreadsheets and paper files with a simple software that handles payroll, attendance, and compliance automatically. You need it to save hours of manual work every month and ensure you don\'t make costly calculation errors.',
   },
   {
-    q: 'Is OTU HRplus integrated with TallyPrime?',
-    a: 'Yes. OTU HRplus integrates seamlessly with TallyPrime, ensuring your payroll and financial data stay in sync. No duplicate data entry required.',
+    q: 'Will OTU HRplus connect with my existing TallyPrime?',
+    a: 'Yes, absolutely! OTU HRplus integrates directly with TallyPrime. When you run your monthly payroll, the financial data syncs to Tally automatically so your accountant doesn\'t have to re-type anything.',
   },
   {
-    q: 'Can HRMS handle statutory compliance like PF, ESI, and PT?',
-    a: 'Absolutely. A modern HRMS auto-generates PF returns, ESI challans, PT returns, LWF forms, and Form 16 — all with the latest regulatory updates built in.',
+    q: 'Can this software really handle my local tax and statutory filings?',
+    a: 'Yes. The software easily adapts to your local labor laws and statutory requirements. It automatically calculates the exact deductions for taxes and social contributions, and generates ready-to-use reports so you remain fully compliant and penalty-free.',
   },
   {
-    q: 'How many employees can an HRMS support?',
-    a: 'HRMS solutions scale from 10 to 10,000+ employees. Whether you are a small business or a growing enterprise, the platform adapts to your headcount.',
+    q: 'My business is very small. Is this only for large companies?',
+    a: 'Not at all. Modern HRMS solutions are incredibly affordable and scale perfectly whether you have 10 employees or 500. It simply grows with your business.',
   },
   {
-    q: 'Do employees get self-service access?',
-    a: 'Yes. Employees can view payslips, apply for leave, submit expense claims, and update their profiles through a mobile-friendly self-service portal.',
+    q: 'Will this make things easier for my staff?',
+    a: 'Yes. Your employees get access to a friendly mobile portal where they can instantly download their payslips, check their holiday list, and apply for leave directly from their phones.',
   },
 ];
 
@@ -211,7 +211,7 @@ export default function HRMSPage() {
               <div className="flex items-center flex-wrap gap-x-4 gap-y-1 mt-1.5"></div>
               <p className="text-[13px] text-slate-500 mt-1.5 leading-relaxed max-w-3xl">
                 A complete Human Resource Management System to manage payroll, attendance, employee lifecycle,
-                statutory compliance, and more — on a single integrated platform designed for Indian businesses.
+                statutory compliance, and more — on a single integrated platform designed for growing businesses.
               </p>
             </div>
 
@@ -295,15 +295,16 @@ export default function HRMSPage() {
               <h2 className="text-lg font-bold text-slate-900 mb-3">What is an HRMS?</h2>
               <div className="text-sm text-slate-600 leading-relaxed space-y-3">
                 <p>
-                  A Human Resource Management System (HRMS) is a unified platform that automates and streamlines
-                  your entire employee lifecycle — from onboarding and payroll to attendance tracking, expense
-                  management, and statutory compliance. It eliminates manual spreadsheets, reduces errors, and
-                  gives you real-time visibility into your workforce.
+                  Tired of calculating salaries on messy Excel sheets and tracking attendance on paper? A Human Resource
+                  Management System (HRMS) is a simple software that takes over the hard work of managing your staff.
+                  It automates your monthly payroll, tracks attendance instantly, and keeps all your employee records
+                  perfectly organized in one secure place.
                 </p>
                 <p>
-                  Designed for Indian businesses, a modern HRMS handles complex statutory requirements like PF,
-                  ESI, PT, LWF, and Form 16 generation automatically. With employee self-service portals, your
-                  team can access payslips, apply for leave, and submit claims — all from their phone.
+                  Built specifically for growing small businesses, our HRMS completely removes the stress of month-end
+                  statutory compliance. It automatically handles local tax calculations, social contributions, and
+                  mandatory deductions. It even gives your employees a simple mobile app so they can check their own
+                  payslips and apply for leave without bothering you.
                 </p>
               </div>
               {/* Hero stats */}
@@ -362,11 +363,12 @@ export default function HRMSPage() {
                   <Image src="/uploads/brand-otu-hrplus-1779435427064.png" alt="OTU HRplus" width={44} height={44} className="object-contain" />
                 </div>
                 <div>
-                  <h3 className="text-sm font-bold text-slate-900">We recommend OTU HRplus</h3>
+                  <h3 className="text-sm font-bold text-slate-900">We highly recommend OTU HRplus</h3>
                   <p className="text-[13px] text-slate-600 mt-1 leading-relaxed">
-                    OTU HRplus is our recommended HRMS solution — it offers seamless TallyPrime integration,
-                    automated compliance, and employee self-service. Built for Indian businesses, it handles
-                    everything from payroll to statutory returns in one platform.
+                    OTU HRplus is our top-rated HR solution for small businesses. Why? Because it talks directly to your
+                    TallyPrime software. You process payroll in OTU HRplus, and the accounting entries happen in Tally
+                    automatically — zero double-entry required. It&apos;s the easiest way to handle everything from
+                    attendance to local statutory returns on a single, affordable platform.
                     <Link href="https://otuhrplus.com/" target="_blank" rel="noopener noreferrer" className="font-bold ml-1 hover:underline" style={{ color: BRAND_PRIMARY }}>Learn more →</Link>
                   </p>
                 </div>
@@ -376,14 +378,14 @@ export default function HRMSPage() {
             {/* When HRMS is the right choice + Compatible Systems */}
             <section className="grid sm:grid-cols-2 gap-6">
               <div className="bg-white rounded-xl border border-slate-200 p-6">
-                <h2 className="text-lg font-bold text-slate-900 mb-4">When HRMS is the right choice</h2>
+                <h2 className="text-lg font-bold text-slate-900 mb-4">Is an HRMS right for your business? It is if:</h2>
                 <ul className="space-y-3">
                   {[
-                    'You are still managing payroll in spreadsheets',
-                    'Your team has grown beyond 10 employees',
-                    'You need auto-generated PF, ESI, and PT returns',
-                    'You want employees to access payslips and apply for leave online',
-                    'You need real-time headcount and cost reports',
+                    'You are still calculating monthly salaries on Excel or paper.',
+                    'Your team has grown, and tracking who is absent or late is becoming a headache.',
+                    'You are afraid of making costly calculation errors with employee tax deductions and local statutory compliance.',
+                    'You want employees to view their own payslips online instead of asking you for them.',
+                    'You are tired of double-typing your payroll data into your accounting software.',
                   ].map((item) => (
                     <li key={item} className="flex items-start gap-2.5 text-sm text-slate-600">
                       <span
@@ -426,7 +428,7 @@ export default function HRMSPage() {
                   <div>
                     <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Supported</h3>
                     <div className="flex flex-wrap gap-2">
-                      {['PF', 'ESI', 'PT', 'LWF', 'Form 16'].map((item) => (
+                      {['Local Tax', 'Social Contributions', 'Statutory Deductions', 'Year-End Reports'].map((item) => (
                         <span key={item} className="inline-flex rounded-md px-2.5 py-1 text-[12px] font-medium text-slate-600 bg-slate-50 border border-slate-200">
                           {item}
                         </span>

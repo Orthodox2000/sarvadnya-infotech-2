@@ -10,34 +10,34 @@ const BRAND_PRIMARY = '#316852';
 const BRAND_SECONDARY = '#1e4d3a';
 
 const features = [
-  { title: 'Concurrent Work', desc: 'Let multiple users work at the same time on one live company dataset.' },
-  { title: 'Hidden Data Folders', desc: 'Add a stronger layer of privacy around company files on the server.' },
-  { title: 'Advanced User Logs', desc: 'Track who changed what and when for better review and accountability.' },
-  { title: 'Branch Control', desc: 'Keep head office and branch teams on one consistent data source.' },
-  { title: 'High-Speed Access', desc: 'Stay responsive when many users search, view, and post transactions.' },
-  { title: 'Backup Readiness', desc: 'Pair Server with structured backups and TallyDrive storage.' },
+  { title: 'Lightning-Fast for Teams', desc: 'No more waiting or system hangs. Dozens of users can enter data, generate bills, and pull heavy reports at the exact same time without slowing each other down.' },
+  { title: 'Complete Data Privacy', desc: 'Keep your core financial data invisible. TallyPrime Server hides your physical data files on the server, preventing unauthorized staff from copying, deleting, or stealing your records.' },
+  { title: 'Track Every Action (Audit Trail)', desc: 'Know exactly who is doing what. Track which user created, modified, or deleted any invoice or ledger, ensuring 100% accountability across your team.' },
+  { title: 'Centralized Branch Management', desc: 'Connect all your offices, warehouses, and branches to one live system. Everyone works on the same real-time data, eliminating duplicate entries and confusion.' },
+  { title: 'Zero-Downtime Backups', desc: 'Run automated, scheduled backups using TallyDrive or local storage without ever asking your team to log out or stop working.' },
+  { title: 'Seamless Upgrades', desc: 'Moving from TallyPrime Gold? Your data transitions instantly. No complex data migration, no downtime — just upgrade the license and keep working.' },
 ];
 
 const faqs = [
   {
-    q: 'What type of support is available for TallyPrime Server?',
-    a: 'We provide Phone and Email support for TallyPrime Server. Our certified Tally experts can assist with installation, network deployment, server configuration, audit setup, and team training.',
+    q: 'How is TallyPrime Server different from TallyPrime Gold?',
+    a: 'While Gold allows multiple users, Server adds a massive speed boost for larger teams, completely hides your backend data files from employees for security, and tracks every individual user\'s actions.',
   },
   {
-    q: 'Who is TallyPrime Server best suited for?',
-    a: 'Server is designed for larger MSMEs with multiple departments, branch operations, or audit-sensitive workflows that need controlled access and full visibility.',
+    q: 'Will my team experience slowdowns when generating big reports?',
+    a: 'No. TallyPrime Server is built specifically to handle heavy loads. Someone pulling a huge year-end report will not slow down the rest of your team doing their daily billing.',
   },
   {
-    q: 'How many concurrent users does TallyPrime Server support?',
-    a: 'TallyPrime Server supports higher concurrency than Gold, making it suitable for larger teams with simultaneous data entry and reporting needs.',
+    q: 'Can I restrict what my employees can see and do?',
+    a: 'Yes! You get granular control. You can hide the physical data folders to prevent theft, and strictly control who has the rights to view, edit, or delete specific transactions.',
   },
   {
-    q: 'What are the system requirements for TallyPrime Server?',
-    a: 'TallyPrime Server runs on Windows Server 2016 and above or Windows 10/11 Pro. A dedicated server machine with minimum 8GB RAM and SSD storage is recommended for optimal performance.',
+    q: 'Is it difficult to upgrade my current data to Server?',
+    a: 'Not at all. Your data transitions instantly without any conversion or data loss. You simply activate the Server license and your team can continue working immediately.',
   },
   {
-    q: 'Can I integrate TallyPrime Server with other business tools?',
-    a: 'Yes. Server supports TallyDrive, Excel Import/Export, TallyReports, and various third-party integrations including LDAP for user authentication.',
+    q: 'Do I need a dedicated IT team to manage this?',
+    a: 'While a basic Windows Server setup is required, our certified experts can handle the entire deployment, network configuration, and ongoing support for you.',
   },
 ];
 
@@ -207,12 +207,12 @@ export default function TallyServerPage() {
                   }}
                 >
                   <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: BRAND_PRIMARY }} />
-                  High-Control Edition
+                  Enterprise Speed &amp; Security
                 </span>
               </div>
               <div className="flex items-center flex-wrap gap-x-4 gap-y-1 mt-1.5"></div>
               <p className="text-[13px] text-slate-500 mt-1.5 leading-relaxed max-w-3xl">
-                Server is built for larger teams that need higher concurrency, audit-friendly logs, hidden data folders, and branch-level control across the organisation.
+                The ultimate accounting powerhouse for growing businesses. Keep your data completely secure, track every user&apos;s actions, and ensure lightning-fast performance even when dozens of employees are billing at the exact same time.
               </p>
             </div>
 
@@ -296,24 +296,25 @@ export default function TallyServerPage() {
               <h2 className="text-lg font-bold text-slate-900 mb-3">What is TallyPrime Server?</h2>
               <div className="text-sm text-slate-600 leading-relaxed space-y-3">
                 <p>
-                  TallyPrime Server is the high-control edition of TallyPrime, built for larger teams
-                  that need higher concurrency, audit-friendly logs, hidden data folders, and
-                  branch-level control across the organisation.
+                  As your business grows, so does your team. TallyPrime Server is designed specifically for
+                  businesses with multiple accountants, salespeople, and branch offices working simultaneously.
+                  It completely eliminates system slowdowns, ensuring that one person pulling a massive report
+                  won&apos;t freeze the screen of someone trying to generate a quick invoice.
                 </p>
                 <p>
-                  With a server-based architecture, Server lets multiple users work simultaneously on
-                  live data while maintaining full visibility into who changed what and when. When your
-                  organisation needs centralised control with branch operations, Server delivers the
-                  structure and accountability you need.
+                  More importantly, it gives you absolute control over your business data. Server allows you to
+                  hide sensitive financial files from regular staff and logs every single user action. You will
+                  always know exactly who created, edited, or deleted an entry. It&apos;s enterprise-level security
+                  and speed, made simple.
                 </p>
               </div>
               {/* Hero stats */}
               <div className="mt-5 grid grid-cols-2 sm:grid-cols-4 gap-3">
                 {[
-                  { label: 'Users', value: 'Many' },
-                  { label: 'Focus', value: 'Controlled' },
-                  { label: 'Access', value: 'Centralized' },
-                  { label: 'Setup', value: 'Server-Based' },
+                  { label: 'Users', value: 'Unlimited' },
+                  { label: 'Focus', value: 'Speed & Security' },
+                  { label: 'Access', value: 'Multi-Branch' },
+                  { label: 'Setup', value: 'Secure Network' },
                 ].map((stat) => (
                   <div
                     key={stat.label}
@@ -332,9 +333,9 @@ export default function TallyServerPage() {
 
             {/* Features */}
             <section id="features" className="scroll-mt-16 bg-white rounded-xl border border-slate-200 p-6">
-              <h2 className="text-lg font-bold text-slate-900 mb-1">Key Features of TallyPrime Server</h2>
+              <h2 className="text-lg font-bold text-slate-900 mb-1">Built for speed, security, and large teams</h2>
               <p className="text-sm text-slate-500 mb-5">
-                Here are the powerful features that make TallyPrime Server stand out. Packed with essential tools for multi-user control and accountability.
+                Everything your growing business needs to run simultaneously — without slowdowns or security risks.
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                 {features.map((feature) => (
@@ -359,13 +360,13 @@ export default function TallyServerPage() {
             {/* When Server is the right choice + Compatible Systems */}
             <section className="grid sm:grid-cols-2 gap-6">
               <div className="bg-white rounded-xl border border-slate-200 p-6">
-                <h2 className="text-lg font-bold text-slate-900 mb-4">When Server is the right choice</h2>
+                <h2 className="text-lg font-bold text-slate-900 mb-4">Is Server the right choice for you? It is if:</h2>
                 <ul className="space-y-3">
                   {[
-                    'Distribution and wholesale teams handling orders, dispatch, billing, and collections together',
-                    'Multi-branch companies that need one source of truth across locations',
-                    'Audit-sensitive finance teams that want clearer accountability',
-                    'Shared service centres processing a high volume of vouchers and approvals',
+                    'You have multiple employees using Tally at the same time and your current system is slowing down.',
+                    'You are worried about data theft and need to hide physical financial files from your staff.',
+                    'You need strict tracking to see exactly which user modified or deleted a transaction.',
+                    'You have different branches, offices, or warehouses that need to work on the same live data.',
                   ].map((item) => (
                     <li key={item} className="flex items-start gap-2.5 text-sm text-slate-600">
                       <span
@@ -388,7 +389,7 @@ export default function TallyServerPage() {
                   <div>
                     <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Supported OS</h3>
                     <div className="flex flex-wrap gap-2">
-                      {['Windows Server 2016+', 'Windows 10', 'Windows 11'].map((os) => (
+                      {['Windows Server 2016+', 'Windows 10 Pro', 'Windows 11 Pro'].map((os) => (
                         <span key={os} className="inline-flex rounded-md px-2.5 py-1 text-[12px] font-medium border" style={{ borderColor: `${BRAND_PRIMARY}25`, backgroundColor: `${BRAND_PRIMARY}06`, color: BRAND_PRIMARY }}>
                           {os}
                         </span>
@@ -398,7 +399,7 @@ export default function TallyServerPage() {
                   <div>
                     <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Network</h3>
                     <div className="flex flex-wrap gap-2">
-                      {['LAN', 'VPN', 'WAN'].map((net) => (
+                      {['Local Office (LAN)', 'Multi-Branch (VPN/WAN)'].map((net) => (
                         <span key={net} className="inline-flex rounded-md px-2.5 py-1 text-[12px] font-medium text-slate-600 bg-slate-50 border border-slate-200">
                           {net}
                         </span>
@@ -408,7 +409,7 @@ export default function TallyServerPage() {
                   <div>
                     <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Integrations</h3>
                     <div className="flex flex-wrap gap-2">
-                      {['TallyDrive', 'Excel Import/Export', 'TallyReports', 'Cloud Backup', 'LDAP/Auth'].map((item) => (
+                      {['Advanced User Authentication', 'Secure Cloud Backups', 'Excel Import/Export'].map((item) => (
                         <span key={item} className="inline-flex rounded-md px-2.5 py-1 text-[12px] font-medium border" style={{ borderColor: `${BRAND_PRIMARY}25`, backgroundColor: `${BRAND_PRIMARY}06`, color: BRAND_PRIMARY }}>
                           {item}
                         </span>
@@ -457,8 +458,8 @@ export default function TallyServerPage() {
             {/* Still not satisfied? */}
             <section className="bg-white rounded-xl border border-slate-200 p-6">
               <div className="text-center mb-5">
-                <h2 className="text-lg font-bold text-slate-900">Still not satisfied?</h2>
-                <p className="text-sm text-slate-500 mt-1">Tell us your requirements and we will find the right solution for you.</p>
+                <h2 className="text-lg font-bold text-slate-900">Is it time to upgrade to Server?</h2>
+                <p className="text-sm text-slate-500 mt-1">Tell us about your team size, branch locations, and current setup. Our experts will advise if TallyPrime Server is the right fit for your growth.</p>
               </div>
               <form onSubmit={handleInquirySubmit} className="max-w-xl mx-auto space-y-3">
                 <input
@@ -494,7 +495,7 @@ export default function TallyServerPage() {
                   className="w-full py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider text-white shadow-lg transition-all hover:scale-[1.01] disabled:opacity-60"
                   style={{ backgroundColor: BRAND_PRIMARY }}
                 >
-                  {inquiryLoading ? 'Sending...' : 'Submit Requirement'}
+                  {inquiryLoading ? 'Sending...' : 'Get Expert Advice'}
                 </button>
                 {inquiryStatus && (
                   <p
@@ -510,8 +511,8 @@ export default function TallyServerPage() {
 
             {/* Pricing - Hidden reveal */}
             <section id="pricing" className="scroll-mt-16 bg-white rounded-xl border border-slate-200 p-6">
-              <h2 className="text-lg font-bold text-slate-900 mb-1">TallyPrime Server Pricing</h2>
-              <p className="text-sm text-slate-500 mb-5">View pricing plans for TallyPrime Server.</p>
+              <h2 className="text-lg font-bold text-slate-900 mb-1">Enterprise-Grade Software Pricing</h2>
+              <p className="text-sm text-slate-500 mb-5">Invest in the speed, security, and control your growing business needs. View our flexible rental and perpetual license options below.</p>
               <button
                 type="button"
                 onClick={() => setShowPricing(!showPricing)}
@@ -574,9 +575,9 @@ export default function TallyServerPage() {
             {/* Get Best Quote */}
             <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
               <div className="px-5 py-4 text-white" style={{ backgroundColor: BRAND_SECONDARY }}>
-                <h3 className="text-sm font-bold">Get Best Quote for TallyPrime Server</h3>
+                <h3 className="text-sm font-bold">Get a Custom Server Quote</h3>
                 <p className="text-[12px] text-white/75 mt-1 leading-relaxed">
-                  Connect with our experts to get the best quote for your business.
+                  Connect with our enterprise team to discuss implementation, multi-branch networking, and seamless data migration.
                 </p>
               </div>
               <form onSubmit={handleSidebarSubmit} className="p-5 space-y-3">

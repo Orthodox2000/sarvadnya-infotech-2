@@ -10,34 +10,34 @@ const BRAND_PRIMARY = '#316852';
 const BRAND_SECONDARY = '#1e4d3a';
 
 const features = [
-  { title: 'GST Compliance', desc: 'GST-ready billing, returns, and e-invoicing for day-to-day work.' },
-  { title: 'Inventory Management', desc: 'Track stock and valuation on one simple workstation.' },
-  { title: 'Financial Reporting', desc: 'Get quick reports for cash flow, sales, and purchases.' },
-  { title: 'Security Protocols', desc: 'Keep your company data protected on the local machine.' },
-  { title: 'Scalable Foundation', desc: 'Clean, efficient workflows designed for single-user accounting operations.' },
-  { title: 'Cloud Integration', desc: 'Pair Silver with TallyDrive and other backup options.' },
+  { title: 'Automated Tax Compliance', desc: 'Generate tax-ready invoices and automated return files tailored to your local tax laws (like VAT or GST) instantly, keeping you penalty-free.' },
+  { title: 'Effortless Inventory Tracking', desc: 'Always know exactly what\'s in your shop or warehouse. Track stock levels, set reorder alerts, and monitor your most profitable items.' },
+  { title: 'Instant Business Insights', desc: 'Stop waiting for the accountant. See your daily cash flow, pending payments, and profit margins with a single click.' },
+  { title: 'Complete Data Privacy', desc: 'Your financial data stays securely on your own local machine. You are in total control of who sees your business numbers.' },
+  { title: 'Grows With Your Business', desc: 'Start small with one user. When you\'re ready to expand, easily upgrade to a multi-user setup without re-entering any of your old data.' },
+  { title: 'Cloud Backup Ready', desc: 'Easily pair Silver with TallyDrive to ensure your daily work is automatically saved to the cloud for ultimate peace of mind.' },
 ];
 
 const faqs = [
   {
-    q: 'What type of support is available for TallyPrime Silver?',
-    a: 'We provide Phone and Email support for TallyPrime Silver. Our certified Tally experts can assist with installation, setup, GST compliance, and day-to-day accounting queries.',
+    q: 'Who is this version actually for?',
+    a: 'It is built for independent business owners, freelancers, and small shop owners who only need one person to access the accounting system at a time.',
   },
   {
-    q: 'Who is TallyPrime Silver best suited for?',
-    a: 'Silver is designed for sole proprietors, freelancers, small retailers, and service businesses that need a dedicated single-user accounting setup.',
+    q: 'Does it handle my local taxes and e-invoicing?',
+    a: 'Yes. TallyPrime Silver automatically calculates your local taxes (such as VAT or GST) on every bill and generates ready-to-file returns to keep you 100% compliant.',
   },
   {
-    q: 'Can I upgrade from Silver to Gold or Server later?',
-    a: 'Yes. Silver foundations are fully compatible with Gold and Server editions. You can upgrade seamlessly as your business grows without data migration hassle.',
+    q: 'What if I hire more staff and need them to use Tally too?',
+    a: 'No problem! You can easily upgrade your license to TallyPrime Gold (our multi-user version) later. All your data moves over automatically with zero hassle.',
   },
   {
-    q: 'What are the system requirements for TallyPrime Silver?',
-    a: 'TallyPrime Silver runs on Windows 7 and above with a minimum of 2GB RAM and 500MB free disk space. A stable internet connection is required for activation and updates.',
+    q: 'Do I need a powerful computer or fast internet?',
+    a: 'Not at all. Silver runs beautifully on standard Windows laptops and desktops. Plus, since it stores data locally, you can keep billing your customers even if your internet goes down.',
   },
   {
-    q: 'Does TallyPrime Silver support GST and e-invoicing?',
-    a: 'Yes. Silver includes full GST compliance with GST-ready billing, returns filing, and e-invoicing capabilities for single-user operations.',
+    q: 'Will I get help if I get stuck?',
+    a: 'Absolutely. We provide dedicated expert support to help you with installation, initial setup, and day-to-day accounting queries.',
   },
 ];
 
@@ -212,8 +212,7 @@ export default function TallySilverPage() {
               </div>
               <div className="flex items-center flex-wrap gap-x-4 gap-y-1 mt-1.5"></div>
               <p className="text-[13px] text-slate-500 mt-1.5 leading-relaxed max-w-3xl">
-                Silver is the dedicated single-user edition for solo accountants and small retailers.
-                It covers core accounting, inventory, GST, and reporting on one machine.
+                The perfect accounting software for solo business owners. Manage your daily billing, track inventory, and handle your local tax compliance effortlessly from a single computer — no accounting degree required.
               </p>
             </div>
 
@@ -297,24 +296,24 @@ export default function TallySilverPage() {
               <h2 className="text-lg font-bold text-slate-900 mb-3">What is TallyPrime Silver?</h2>
               <div className="text-sm text-slate-600 leading-relaxed space-y-3">
                 <p>
-                  TallyPrime Silver is the dedicated single-user edition of TallyPrime, designed for
-                  solo accountants, freelancers, and small retailers who manage their own books.
-                  It delivers core accounting, inventory management, GST compliance, and financial
-                  reporting on a single workstation.
+                  Running a small business is hard enough without struggling with complicated accounting software.
+                  TallyPrime Silver is built specifically for independent owners, freelancers, and small retailers.
+                  It gives you everything you need to manage your invoicing, track your stock, and generate tax
+                  returns — all safely stored on your own computer.
                 </p>
                 <p>
-                  With a clean, efficient workflow and zero dependency on network setup, Silver lets
-                  you focus on your business numbers without the complexity of multi-user configurations.
-                  When your team grows, your data and workflows seamlessly upgrade to Gold or Server.
+                  There are no complex network setups or confusing IT requirements. You just install it and start
+                  billing immediately. And the best part? When your business grows and you hire more staff, your
+                  Silver data seamlessly upgrades to our multi-user Gold edition without losing a single invoice.
                 </p>
               </div>
               {/* Hero stats from original */}
               <div className="mt-5 grid grid-cols-2 sm:grid-cols-4 gap-3">
                 {[
-                  { label: 'Users', value: '1' },
-                  { label: 'Focus', value: 'Simple' },
-                  { label: 'Access', value: 'Local' },
-                  { label: 'Setup', value: 'Standalone' },
+                  { label: 'Users', value: '1 User' },
+                  { label: 'Focus', value: 'Easy Billing' },
+                  { label: 'Data', value: '100% Private' },
+                  { label: 'Setup', value: 'Instant' },
                 ].map((stat) => (
                   <div
                     key={stat.label}
@@ -335,9 +334,9 @@ export default function TallySilverPage() {
 
             {/* Features */}
             <section id="features" className="scroll-mt-16 bg-white rounded-xl border border-slate-200 p-6">
-              <h2 className="text-lg font-bold text-slate-900 mb-1">Key Features of TallyPrime Silver</h2>
+              <h2 className="text-lg font-bold text-slate-900 mb-1">Everything you need to run your solo business</h2>
               <p className="text-sm text-slate-500 mb-5">
-                Here are the powerful features that make TallyPrime Silver stand out. Packed with essential tools for single-user accounting.
+                Powerful features designed for the one-person accounting team. Simple to learn, impossible to outgrow.
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                 {features.map((feature) => (
@@ -362,13 +361,13 @@ export default function TallySilverPage() {
             {/* When Silver is the right choice + Upgrade path */}
             <section className="grid sm:grid-cols-2 gap-6">
               <div className="bg-white rounded-xl border border-slate-200 p-6">
-                <h2 className="text-lg font-bold text-slate-900 mb-4">When Silver is the right choice</h2>
+                <h2 className="text-lg font-bold text-slate-900 mb-4">Is Silver the right choice for you? It is if:</h2>
                 <ul className="space-y-3">
                   {[
-                    'Sole proprietors who handle accounting themselves',
-                    'Small retailers that want a simple and dependable setup',
-                    'Freelancers and service businesses with one active user',
-                    'Businesses that want a dedicated single-user accounting setup',
+                    'You manage all your business billing and accounting by yourself on one computer.',
+                    'You want a simple, one-time setup without needing to hire an IT networking expert.',
+                    'You are tired of generating invoices manually and calculating taxes on calculators.',
+                    'You need a reliable system that works perfectly even if your internet goes down.',
                   ].map((item) => (
                     <li key={item} className="flex items-start gap-2.5 text-sm text-slate-600">
                       <span
@@ -414,7 +413,7 @@ export default function TallySilverPage() {
                   <div>
                     <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Integrations</h3>
                     <div className="flex flex-wrap gap-2">
-                      {['TallyDrive', 'Excel Import/Export', 'TallyReports', 'Cloud Backup'].map((item) => (
+                      {['Excel Import/Export', 'Secure Cloud Backups', 'Tally Reports'].map((item) => (
                         <span key={item} className="inline-flex rounded-md px-2.5 py-1 text-[12px] font-medium border" style={{ borderColor: `${BRAND_PRIMARY}25`, backgroundColor: `${BRAND_PRIMARY}06`, color: BRAND_PRIMARY }}>
                           {item}
                         </span>
@@ -463,8 +462,8 @@ export default function TallySilverPage() {
             {/* Still not satisfied? */}
             <section className="bg-white rounded-xl border border-slate-200 p-6">
               <div className="text-center mb-5">
-                <h2 className="text-lg font-bold text-slate-900">Still not satisfied?</h2>
-                <p className="text-sm text-slate-500 mt-1">Tell us your requirements and we will find the right solution for you.</p>
+                <h2 className="text-lg font-bold text-slate-900">Not sure which version you need?</h2>
+                <p className="text-sm text-slate-500 mt-1">Tell us a bit about your business, and our experts will help you choose the right Tally setup.</p>
               </div>
               <form onSubmit={handleInquirySubmit} className="max-w-xl mx-auto space-y-3">
                 <input
@@ -500,7 +499,7 @@ export default function TallySilverPage() {
                   className="w-full py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider text-white shadow-lg transition-all hover:scale-[1.01] disabled:opacity-60"
                   style={{ backgroundColor: BRAND_PRIMARY }}
                 >
-                  {inquiryLoading ? 'Sending...' : 'Submit Requirement'}
+                  {inquiryLoading ? 'Sending...' : 'Get Expert Advice'}
                 </button>
                 {inquiryStatus && (
                   <p
@@ -516,8 +515,8 @@ export default function TallySilverPage() {
 
             {/* Pricing - Hidden reveal */}
             <section id="pricing" className="scroll-mt-16 bg-white rounded-xl border border-slate-200 p-6">
-              <h2 className="text-lg font-bold text-slate-900 mb-1">TallyPrime Silver Pricing</h2>
-              <p className="text-sm text-slate-500 mb-5">View pricing plans for TallyPrime Silver.</p>
+              <h2 className="text-lg font-bold text-slate-900 mb-1">Simple, Transparent Pricing</h2>
+              <p className="text-sm text-slate-500 mb-5">Enterprise-level accounting, priced for small businesses. Choose a flexible annual rental or own the software for life with a perpetual license.</p>
               <button
                 type="button"
                 onClick={() => setShowPricing(!showPricing)}
@@ -581,9 +580,9 @@ export default function TallySilverPage() {
             {/* Get Best Quote */}
             <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
               <div className="px-5 py-4 text-white" style={{ backgroundColor: BRAND_SECONDARY }}>
-                <h3 className="text-sm font-bold">Get Best Quote for TallyPrime Silver</h3>
+                <h3 className="text-sm font-bold">Get a Custom Quote</h3>
                 <p className="text-[12px] text-white/75 mt-1 leading-relaxed">
-                  Connect with our experts to get the best quote for your business.
+                  Connect with our team to find the best pricing and implementation plan for your single-user setup.
                 </p>
               </div>
               <form onSubmit={handleSidebarSubmit} className="p-5 space-y-3">

@@ -10,34 +10,34 @@ const BRAND_PRIMARY = '#316852';
 const BRAND_SECONDARY = '#1e4d3a';
 
 const features = [
-  { title: 'AES-256 Encryption', desc: 'All backup data is encrypted with industry-standard AES-256 to keep financial records secure.' },
-  { title: 'Scheduled Tasks', desc: 'Automate backups on a schedule that fits your business rhythm no manual intervention needed.' },
-  { title: 'One-Click Restore', desc: 'Restore your data quickly when something goes wrong with a simple recovery process.' },
-  { title: 'Incremental Backups', desc: 'Only changed data is backed up after the first full backup, saving time and storage.' },
-  { title: 'Status Visibility', desc: 'Monitor backup health and status at a glance so you always know your data is protected.' },
-  { title: 'Disaster Recovery', desc: 'Be ready for hardware failures, accidental deletions, or ransomware events with reliable recovery points.' },
+  { title: 'Set It and Forget It', desc: 'Just pick a time, and NoSky will automatically back up your data every single day. No manual clicking, no copying, and no remembering required.' },
+  { title: 'Instant 1-Click Recovery', desc: 'Did a computer completely die? Don\'t panic. Just log in to a new machine, click one button, and your entire Tally setup is restored exactly how you left it.' },
+  { title: 'Bank-Level Security', desc: 'Your financial data is locked tight with enterprise-grade encryption before it ever leaves your computer, ensuring absolutely no one can read your private business numbers.' },
+  { title: 'Fast & Saves Internet Data', desc: 'After your very first backup, NoSky only saves the new entries you made that day. It takes just seconds and will never slow down your office Wi-Fi.' },
+  { title: 'Ransomware Proof', desc: 'Because your backup data is hidden in a secure cloud vault, local computer viruses and ransomware attacks cannot touch or corrupt your safe files.' },
+  { title: 'Daily Peace of Mind', desc: 'Get simple, clear status updates on your dashboard so you know your daily backup was successful. You never have to guess if your data is safe.' },
 ];
 
 const faqs = [
   {
-    q: 'What is NoSky Backup for TallyPrime?',
-    a: 'NoSky Backup is a secure cloud backup service designed specifically for TallyPrime data. It automates backups with strong encryption and provides one-click restore.',
+    q: 'Do I have to remember to click "backup" every day?',
+    a: 'No! That\'s the best part. You set it up once, and NoSky does it automatically in the background on your preferred schedule without disturbing your work.',
   },
   {
-    q: 'How often will my data be backed up?',
-    a: 'You can configure backups on a schedule that works for you - daily, hourly, or custom intervals depending on your plan.',
+    q: 'Is my data really safe from hackers or viruses?',
+    a: 'Absolutely. Your data is encrypted (locked) with bank-level security before it even transfers, keeping it completely safe from ransomware and local computer viruses.',
   },
   {
-    q: 'Is my backup data encrypted?',
-    a: 'Yes. All backup data is encrypted using AES-256 encryption both during transfer and while stored.',
+    q: 'Will this slow down my internet or my computer while I work?',
+    a: 'Not at all. NoSky only backs up the new changes you made that day, not your entire hard drive. It takes just a few seconds and uses very little internet bandwidth.',
   },
   {
-    q: 'How do I restore my data if something goes wrong?',
-    a: 'NoSky Backup provides a one-click restore process. Our team can also assist with full recovery if needed.',
+    q: 'What happens if my computer completely dies?',
+    a: 'You simply install Tally on a new computer, run the NoSky 1-Click Restore, and you\'ll have all your data back in minutes so you can start billing immediately.',
   },
   {
-    q: 'Can I backup to a local drive as well?',
-    a: 'Yes. NoSky Backup supports both cloud storage (AWS S3) and local/network drive destinations for flexibility.',
+    q: 'Can I backup to my own hard drive instead of the internet?',
+    a: 'Yes! NoSky gives you the total flexibility to back up to the secure cloud, or directly to a physical hard drive connected to your office network.',
   },
 ];
 
@@ -197,7 +197,7 @@ export default function NoSkyBackupPage() {
             {/* Info */}
             <div className="flex-1 min-w-0">
               <div className="flex items-center flex-wrap gap-x-3 gap-y-1">
-                <h1 className="text-xl md:text-2xl font-bold text-slate-900">NoSky Backup</h1>
+                <h1 className="text-xl md:text-2xl font-bold text-slate-900">NoSky Backup for TallyPrime</h1>
                 <span
                   className="inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider border"
                   style={{
@@ -207,12 +207,12 @@ export default function NoSkyBackupPage() {
                   }}
                 >
                   <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: BRAND_PRIMARY }} />
-                  Data Protection
+                  Bulletproof Data Protection
                 </span>
               </div>
               <div className="flex items-center flex-wrap gap-x-4 gap-y-1 mt-1.5"></div>
               <p className="text-[13px] text-slate-500 mt-1.5 leading-relaxed max-w-3xl">
-                Secure backup and recovery for TallyPrime users who want quick restore, strong encryption, and scheduled protection without complexity.
+                Never worry about losing your accounting data again. NoSky Backup runs silently in the background, automatically saving your Tally records so you are 100% safe from computer crashes, hardware theft, and ransomware viruses.
               </p>
             </div>
 
@@ -296,24 +296,19 @@ export default function NoSkyBackupPage() {
               <h2 className="text-lg font-bold text-slate-900 mb-3">What is NoSky Backup?</h2>
               <div className="text-sm text-slate-600 leading-relaxed space-y-3">
                 <p>
-                  NoSky Backup is a secure cloud backup and recovery solution built for TallyPrime users.
-                  It provides automated, encrypted backups with one-click restore so your financial data
-                  is always protected and quickly recoverable.
+                  Stop manually copying your Tally files to pen drives and external hard disks every week. NoSky Backup is a smart, silent safety net that automatically saves your business records to a secure vault at the end of every day.
                 </p>
                 <p>
-                  Designed for MSMEs that need reliable data protection without complexity, NoSky Backup
-                  handles scheduling, encryption, and recovery management so you can focus on your business.
-                  With support for multiple storage destinations and incremental backups, it is a cost-effective
-                  disaster recovery layer for your TallyPrime environment.
+                  Whether your laptop gets stolen, your hard drive crashes, or your office gets hit by a ransomware virus, your financial data remains completely untouched and safe. Best of all, if disaster strikes, you can get your business back up and running with a single click.
                 </p>
               </div>
               {/* Hero stats */}
               <div className="mt-5 grid grid-cols-2 sm:grid-cols-4 gap-3">
                 {[
-                  { label: 'Type', value: 'Backup' },
-                  { label: 'Access', value: 'Automated' },
-                  { label: 'Security', value: 'Encrypted' },
-                  { label: 'Recovery', value: 'One-Click' },
+                  { label: 'Type', value: '100% Automatic' },
+                  { label: 'Access', value: 'Cloud & Local' },
+                  { label: 'Security', value: 'Bank-Grade' },
+                  { label: 'Recovery', value: '1-Click Restore' },
                 ].map((stat) => (
                   <div
                     key={stat.label}
@@ -334,7 +329,7 @@ export default function NoSkyBackupPage() {
             <section id="features" className="scroll-mt-16 bg-white rounded-xl border border-slate-200 p-6">
               <h2 className="text-lg font-bold text-slate-900 mb-1">Key Features of NoSky Backup</h2>
               <p className="text-sm text-slate-500 mb-5">
-                Here are the powerful features that make NoSky Backup stand out. Packed with essential tools for data protection and recovery.
+                Why small business owners trust NoSky to protect their years of hard work.
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                 {features.map((feature) => (
@@ -359,13 +354,13 @@ export default function NoSkyBackupPage() {
             {/* When NoSky Backup is the right choice + Compatible Systems */}
             <section className="grid sm:grid-cols-2 gap-6">
               <div className="bg-white rounded-xl border border-slate-200 p-6">
-                <h2 className="text-lg font-bold text-slate-900 mb-4">When NoSky Backup is the right choice</h2>
+                <h2 className="text-lg font-bold text-slate-900 mb-4">Is NoSky Backup right for you?</h2>
                 <ul className="space-y-3">
                   {[
-                    'Owners who want regular backup protection without manual processes',
-                    'Teams planning for quick recovery after a hardware or software failure',
-                    'Businesses that must protect financial records for compliance',
-                    'MSMEs looking for a simple, backup-first data protection setup',
+                    'You are still manually copying Tally data to pen drives or hard disks and occasionally forget to do it.',
+                    'You are terrified of losing years of accounting data to a computer crash, fire, or theft.',
+                    'You want a reliable system that backs up your files automatically without relying on your staff.',
+                    'You need to get your billing back up and running in minutes, not days, if a laptop breaks.',
                   ].map((item) => (
                     <li key={item} className="flex items-start gap-2.5 text-sm text-slate-600">
                       <span
@@ -398,7 +393,7 @@ export default function NoSkyBackupPage() {
                   <div>
                     <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Backup Sources</h3>
                     <div className="flex flex-wrap gap-2">
-                      {['TallyPrime Data', 'Local Files'].map((src) => (
+                      {['TallyPrime Data', 'Local Office Files'].map((src) => (
                         <span key={src} className="inline-flex rounded-md px-2.5 py-1 text-[12px] font-medium text-slate-600 bg-slate-50 border border-slate-200">
                           {src}
                         </span>
@@ -408,19 +403,9 @@ export default function NoSkyBackupPage() {
                   <div>
                     <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Storage Destinations</h3>
                     <div className="flex flex-wrap gap-2">
-                      {['AWS S3', 'Local Drive', 'Network Drive'].map((storage) => (
+                      {['Secure Cloud Vault (AWS)', 'Local Office Network', 'External Hard Drives'].map((storage) => (
                         <span key={storage} className="inline-flex rounded-md px-2.5 py-1 text-[12px] font-medium border" style={{ borderColor: `${BRAND_PRIMARY}25`, backgroundColor: `${BRAND_PRIMARY}06`, color: BRAND_PRIMARY }}>
                           {storage}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                  <div>
-                    <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Integrations</h3>
-                    <div className="flex flex-wrap gap-2">
-                      {['TallyDrive', 'Email Notifications'].map((item) => (
-                        <span key={item} className="inline-flex rounded-md px-2.5 py-1 text-[12px] font-medium border" style={{ borderColor: `${BRAND_PRIMARY}25`, backgroundColor: `${BRAND_PRIMARY}06`, color: BRAND_PRIMARY }}>
-                          {item}
                         </span>
                       ))}
                     </div>
@@ -432,7 +417,7 @@ export default function NoSkyBackupPage() {
             {/* FAQ */}
             <section id="faqs" className="scroll-mt-16 bg-white rounded-xl border border-slate-200 p-6">
               <h2 className="text-lg font-bold text-slate-900 mb-1">NoSky Backup FAQs</h2>
-              <p className="text-sm text-slate-500 mb-5">Frequently asked questions about NoSky Backup.</p>
+              <p className="text-sm text-slate-500 mb-5">Frequently asked questions about securing your business data.</p>
               <div className="space-y-0 divide-y divide-slate-100">
                 {faqs.map((faq, idx) => (
                   <div key={idx}>
@@ -467,8 +452,8 @@ export default function NoSkyBackupPage() {
             {/* Still not satisfied? */}
             <section className="bg-white rounded-xl border border-slate-200 p-6">
               <div className="text-center mb-5">
-                <h2 className="text-lg font-bold text-slate-900">Still not satisfied?</h2>
-                <p className="text-sm text-slate-500 mt-1">Tell us your requirements and we will find the right solution for you.</p>
+                <h2 className="text-lg font-bold text-slate-900">Let&apos;s secure your business data today.</h2>
+                <p className="text-sm text-slate-500 mt-1">Tell us how much data you have, and we will set up the perfect automated backup plan for you.</p>
               </div>
               <form onSubmit={handleInquirySubmit} className="max-w-xl mx-auto space-y-3">
                 <input
@@ -504,7 +489,7 @@ export default function NoSkyBackupPage() {
                   className="w-full py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider text-white shadow-lg transition-all hover:scale-[1.01] disabled:opacity-60"
                   style={{ backgroundColor: BRAND_PRIMARY }}
                 >
-                  {inquiryLoading ? 'Sending...' : 'Submit Requirement'}
+                  {inquiryLoading ? 'Sending...' : 'Get Expert Advice'}
                 </button>
                 {inquiryStatus && (
                   <p
@@ -520,8 +505,8 @@ export default function NoSkyBackupPage() {
 
             {/* Pricing - Hidden reveal */}
             <section id="pricing" className="scroll-mt-16 bg-white rounded-xl border border-slate-200 p-6">
-              <h2 className="text-lg font-bold text-slate-900 mb-1">NoSky Backup Pricing</h2>
-              <p className="text-sm text-slate-500 mb-5">View pricing plans for NoSky Backup.</p>
+              <h2 className="text-lg font-bold text-slate-900 mb-1">Simple, Transparent Backup Pricing</h2>
+              <p className="text-sm text-slate-500 mb-5">Affordable peace of mind for small businesses.</p>
               <button
                 type="button"
                 onClick={() => setShowPricing(!showPricing)}
@@ -540,28 +525,25 @@ export default function NoSkyBackupPage() {
                       <tr className="bg-slate-50 text-[10px] font-bold uppercase tracking-wider text-slate-500">
                         <th className="px-4 py-3">Subscription</th>
                         <th className="px-4 py-3">Storage</th>
-                        <th className="px-4 py-3">Features</th>
                         <th className="px-4 py-3">Price</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr className="border-b border-slate-100">
-                        <td className="px-4 py-3 font-bold text-slate-900">Monthly Rental</td>
-                        <td className="px-4 py-3 text-slate-600">50GB</td>
-                        <td className="px-4 py-3 text-slate-600">Encrypted, scheduled, one-click restore</td>
-                        <td className="px-4 py-3 font-bold" style={{ color: BRAND_PRIMARY }}>NoSky Monthly — Contact Sales</td>
+                        <td className="px-4 py-3 font-bold text-slate-900">NoSky Monthly Rental (50GB)</td>
+                        <td className="px-4 py-3 text-slate-600">50GB Secure Cloud</td>
+                        <td className="px-4 py-3 font-bold" style={{ color: BRAND_PRIMARY }}>Contact Sales</td>
                       </tr>
                       <tr>
-                        <td className="px-4 py-3 font-bold text-slate-900">1 Year Rental</td>
-                        <td className="px-4 py-3 text-slate-600">50GB</td>
-                        <td className="px-4 py-3 text-slate-600">Encrypted, scheduled, one-click restore</td>
-                        <td className="px-4 py-3 font-bold" style={{ color: BRAND_PRIMARY }}>NoSky Yearly — Contact Sales</td>
+                        <td className="px-4 py-3 font-bold text-slate-900">NoSky Yearly Plan (50GB)</td>
+                        <td className="px-4 py-3 text-slate-600">50GB Secure Cloud</td>
+                        <td className="px-4 py-3 font-bold" style={{ color: BRAND_PRIMARY }}>Contact Sales</td>
                       </tr>
                     </tbody>
                   </table>
                   <div className="px-4 py-3 bg-slate-50 border-t border-slate-200">
                     <p className="text-[11px] text-slate-500">
-                      Prices are subject to change. Contact our sales team for the latest pricing and discounts.
+                      Prices are subject to change. Contact our sales team for the latest pricing and multi-year discounts.
                     </p>
                     <button
                       type="button"
@@ -587,9 +569,9 @@ export default function NoSkyBackupPage() {
             {/* Get Best Quote */}
             <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
               <div className="px-5 py-4 text-white" style={{ backgroundColor: BRAND_SECONDARY }}>
-                <h3 className="text-sm font-bold">Get Best Quote for NoSky Backup</h3>
+                <h3 className="text-sm font-bold">Protect Your Tally Data Now</h3>
                 <p className="text-[12px] text-white/75 mt-1 leading-relaxed">
-                  Connect with our experts to get the best quote for your business.
+                  Connect with our data protection experts to set up a bulletproof backup system for your business.
                 </p>
               </div>
               <form onSubmit={handleSidebarSubmit} className="p-5 space-y-3">

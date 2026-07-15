@@ -10,34 +10,34 @@ const BRAND_PRIMARY = '#316852';
 const BRAND_SECONDARY = '#1e4d3a';
 
 const features = [
-  { title: 'AES-256 Encryption', desc: 'All backup data is encrypted with industry-standard AES-256, with an optional Backup Password and Recovery Key for extra protection.' },
-  { title: 'Automatic Scheduling', desc: 'Schedule regular backups to TallyDrive even when TallyPrime is not running — set it and forget it.' },
-  { title: 'One-Click Restore', desc: 'Restore the latest backup or any previous version stored on TallyDrive with a single click.' },
-  { title: 'Incremental Backups', desc: 'After the first full backup, only changed data is uploaded — saving time and bandwidth.' },
-  { title: 'TallyDrive Management', desc: 'Use the Management report to monitor, download, and delete company backups, and manage storage and user rights.' },
-  { title: 'Cross-Edition Compatibility', desc: 'Works seamlessly with TallyPrime Silver, Gold, and Server editions.' },
+  { title: 'Bank-Level Security', desc: 'Your financial data is locked with enterprise-grade security. You can even set a custom Recovery Key, meaning absolutely no one can access your data except you.' },
+  { title: 'Set It and Forget It', desc: 'Choose a time, and TallyDrive will back up your data automatically every single day — even if TallyPrime is closed.' },
+  { title: 'Instant 1-Click Restore', desc: 'Computer crashed? Don\'t panic. You can download and restore your latest backup in minutes with a single click.' },
+  { title: 'Fast & Saves Internet', desc: 'After the first backup, TallyDrive only uploads the new entries you made that day. It takes seconds and won\'t slow down your internet connection.' },
+  { title: 'Easy Backup Management', desc: 'No IT skills required. See all your backups on one simple screen, delete old ones, or manage who in your team has access.' },
+  { title: 'Works With Your Tally', desc: 'Whether you use a single-user Silver edition or a multi-user Server setup, TallyDrive works perfectly out of the box.' },
 ];
 
 const faqs = [
   {
-    q: 'What is TallyDrive?',
-    a: 'TallyDrive is TallyPrime\'s integrated cloud backup service that automatically stores encrypted backups of your company data to the cloud. It is available with TallyPrime v7.0 and later.',
+    q: 'What exactly does TallyDrive do?',
+    a: 'It is an automatic safety net for your accounting data. It securely saves a copy of your TallyPrime data to the internet so you never lose your records if your computer breaks.',
   },
   {
-    q: 'How much storage do I get?',
-    a: 'Storage depends on your TallyPrime edition: Silver includes 1 GB, Gold includes 5 GB, and Server includes 25 GB or more. All require an active TSS.',
+    q: 'How much cloud storage do I get?',
+    a: 'Storage is included for free as long as your Tally Software Services (TSS) subscription is active! Silver users get 1 GB, Gold users get 5 GB, and Server users get 25+ GB.',
   },
   {
-    q: 'Is my backup data encrypted?',
-    a: 'Yes. TallyDrive uses AES-256 encryption. You can also set a Backup Password and Recovery Key for additional protection.',
+    q: 'Is my financial data safe in the cloud?',
+    a: 'Absolutely. TallyDrive uses bank-level encryption. By setting a Backup Password, your data becomes unreadable to everyone — even to Tally themselves.',
   },
   {
-    q: 'Can I schedule backups automatically?',
-    a: 'Yes. You can configure automatic backups to run on a schedule, even when TallyPrime is not actively open.',
+    q: 'Do I have to remember to click \'Backup\' every day?',
+    a: 'No. You can schedule it to run automatically at the end of the day, even if you\'ve already closed the Tally application.',
   },
   {
-    q: 'How do I restore my data?',
-    a: 'Use the one-click restore feature in TallyDrive. You can restore the latest backup or browse previous versions stored in the cloud.',
+    q: 'How do I get my data back if my computer crashes?',
+    a: 'Simply log into TallyDrive on your new computer and use the 1-Click Restore feature. You\'ll be back to billing in minutes.',
   },
 ];
 
@@ -212,7 +212,7 @@ export default function TallyDrivePage() {
               </div>
               <div className="flex items-center flex-wrap gap-x-4 gap-y-1 mt-1.5"></div>
               <p className="text-[13px] text-slate-500 mt-1.5 leading-relaxed max-w-3xl">
-                TallyDrive is TallyPrime's secure cloud backup service. It stores encrypted company backups online, automates scheduling, and lets you restore data instantly if local hardware fails.
+                Never lose your business data again. TallyDrive automatically and securely backs up your TallyPrime data to the cloud, protecting your business from hard drive crashes, theft, or computer viruses.
               </p>
             </div>
 
@@ -296,23 +296,23 @@ export default function TallyDrivePage() {
               <h2 className="text-lg font-bold text-slate-900 mb-3">What is TallyDrive?</h2>
               <div className="text-sm text-slate-600 leading-relaxed space-y-3">
                 <p>
-                  TallyDrive is TallyPrime v7.0's integrated encrypted cloud backup service. It automatically stores
-                  encrypted backups of your company data to secure cloud storage, eliminating the risk of data loss
-                  from local hardware failure, theft, or corruption.
+                  Stop worrying about your computer crashing or losing years of accounting data. TallyDrive is a
+                  built-in safety net for TallyPrime. It works silently in the background, automatically saving your
+                  company records to a highly secure cloud vault.
                 </p>
                 <p>
-                  With automated scheduling, incremental backups, and one-click restore, TallyDrive ensures your
-                  critical business data is always safe and recoverable. It is available across all TallyPrime
-                  editions — Silver, Gold, and Server — with storage tiers tailored to your business size.
+                  Forget about manually copying files to pen drives or external hard disks. Whether your laptop gets
+                  stolen, your hard drive fails, or you get hit by a virus, TallyDrive ensures you can recover
+                  everything and get your business back up and running with a single click.
                 </p>
               </div>
               {/* Hero stats */}
               <div className="mt-5 grid grid-cols-2 sm:grid-cols-4 gap-3">
                 {[
-                  { label: 'Type', value: 'Backup' },
-                  { label: 'Security', value: 'Encrypted' },
-                  { label: 'Access', value: 'Automated' },
-                  { label: 'Storage', value: 'Cloud' },
+                  { label: 'Type', value: 'Automatic Backup' },
+                  { label: 'Security', value: 'Bank-Level' },
+                  { label: 'Effort', value: 'Zero Manual Work' },
+                  { label: 'Recovery', value: '1-Click Restore' },
                 ].map((stat) => (
                   <div
                     key={stat.label}
@@ -335,7 +335,7 @@ export default function TallyDrivePage() {
             <section id="features" className="scroll-mt-16 bg-white rounded-xl border border-slate-200 p-6">
               <h2 className="text-lg font-bold text-slate-900 mb-1">Key Features of TallyDrive</h2>
               <p className="text-sm text-slate-500 mb-5">
-                Here are the powerful features that make TallyDrive the go-to cloud backup for TallyPrime users. Enterprise-grade protection with one-click simplicity.
+                Everything you need to protect your business data — automatically and effortlessly.
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                 {features.map((feature) => (
@@ -360,13 +360,13 @@ export default function TallyDrivePage() {
             {/* When TallyDrive is the right choice + Compatible Systems */}
             <section className="grid sm:grid-cols-2 gap-6">
               <div className="bg-white rounded-xl border border-slate-200 p-6">
-                <h2 className="text-lg font-bold text-slate-900 mb-4">When TallyDrive is the right choice</h2>
+                <h2 className="text-lg font-bold text-slate-900 mb-4">Is TallyDrive right for your business? It is if:</h2>
                 <ul className="space-y-3">
                   {[
-                    'Solo practitioners who want automated backup protection without manual processes',
-                    'Growing teams that need centralized backup management across users',
-                    'Businesses that must protect financial records for compliance and audit',
-                    'Any TallyPrime user wanting a simple, encrypted, cloud-first backup solution',
+                    'You are tired of manually copying your Tally data to a pen drive or hard disk every day.',
+                    'You worry about computer viruses, ransomware, or hard drive crashes destroying your financial records.',
+                    'You have a growing team and need a centralized, safe place to store your company backups.',
+                    'You want the absolute peace of mind knowing your business data is 100% safe and instantly recoverable.',
                   ].map((item) => (
                     <li key={item} className="flex items-start gap-2.5 text-sm text-slate-600">
                       <span
@@ -389,7 +389,7 @@ export default function TallyDrivePage() {
                   <div>
                     <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Backup Sources</h3>
                     <div className="flex flex-wrap gap-2">
-                      {['TallyPrime Company Data', 'Local Files'].map((src) => (
+                      {['Tally Company Data', 'Local Business Files'].map((src) => (
                         <span key={src} className="inline-flex rounded-md px-2.5 py-1 text-[12px] font-medium border" style={{ borderColor: `${BRAND_PRIMARY}25`, backgroundColor: `${BRAND_PRIMARY}06`, color: BRAND_PRIMARY }}>
                           {src}
                         </span>
@@ -399,7 +399,7 @@ export default function TallyDrivePage() {
                   <div>
                     <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Security</h3>
                     <div className="flex flex-wrap gap-2">
-                      {['AES-256 Encryption', 'Backup Password', 'Recovery Key'].map((sec) => (
+                      {['Bank-Grade Encryption', 'Custom Backup Password', 'Private Recovery Key'].map((sec) => (
                         <span key={sec} className="inline-flex rounded-md px-2.5 py-1 text-[12px] font-medium border" style={{ borderColor: `${BRAND_PRIMARY}25`, backgroundColor: `${BRAND_PRIMARY}06`, color: BRAND_PRIMARY }}>
                           {sec}
                         </span>
@@ -409,7 +409,7 @@ export default function TallyDrivePage() {
                   <div>
                     <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Integrations</h3>
                     <div className="flex flex-wrap gap-2">
-                      {['TallyPrime Silver', 'TallyPrime Gold', 'TallyPrime Server', 'TallyDrive Management Report'].map((item) => (
+                      {['TallyPrime Silver', 'TallyPrime Gold', 'TallyPrime Server'].map((item) => (
                         <span key={item} className="inline-flex rounded-md px-2.5 py-1 text-[12px] font-medium border" style={{ borderColor: `${BRAND_PRIMARY}25`, backgroundColor: `${BRAND_PRIMARY}06`, color: BRAND_PRIMARY }}>
                           {item}
                         </span>
@@ -458,8 +458,8 @@ export default function TallyDrivePage() {
             {/* Still not satisfied? */}
             <section className="bg-white rounded-xl border border-slate-200 p-6">
               <div className="text-center mb-5">
-                <h2 className="text-lg font-bold text-slate-900">Still not satisfied?</h2>
-                <p className="text-sm text-slate-500 mt-1">Tell us your requirements and we will find the right backup solution for you.</p>
+                <h2 className="text-lg font-bold text-slate-900">Have questions about securing your data?</h2>
+                <p className="text-sm text-slate-500 mt-1">Tell us how you currently back up your data, and we&apos;ll show you how TallyDrive can automate it.</p>
               </div>
               <form onSubmit={handleInquirySubmit} className="max-w-xl mx-auto space-y-3">
                 <input
@@ -512,7 +512,7 @@ export default function TallyDrivePage() {
             {/* Pricing - Hidden reveal */}
             <section id="pricing" className="scroll-mt-16 bg-white rounded-xl border border-slate-200 p-6">
               <h2 className="text-lg font-bold text-slate-900 mb-1">TallyDrive Storage Plans</h2>
-              <p className="text-sm text-slate-500 mb-5">Storage is tied to your TallyPrime edition. All plans require an active TSS.</p>
+              <p className="text-sm text-slate-500 mb-5">Great news: TallyDrive storage is automatically included with your active Tally Software Services (TSS) subscription at no extra cost!</p>
               <button
                 type="button"
                 onClick={() => setShowPricing(!showPricing)}
@@ -558,7 +558,7 @@ export default function TallyDrivePage() {
                   </table>
                   <div className="px-4 py-3 bg-slate-50 border-t border-slate-200">
                     <p className="text-[11px] text-slate-500">
-                      TallyDrive storage is included with your TallyPrime edition at no extra cost. Contact our team if you need additional storage or have questions.
+                      Need more space or need to renew your TSS to activate TallyDrive? Contact our team for immediate assistance.
                     </p>
                     <button
                       type="button"
@@ -566,7 +566,7 @@ export default function TallyDrivePage() {
                       className="mt-2 inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-[10px] font-bold uppercase tracking-wider text-white transition-all hover:scale-[1.02]"
                       style={{ backgroundColor: BRAND_PRIMARY }}
                     >
-                      Get Custom Quote
+                      Renew TSS / Get Quote
                       <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
                       </svg>
@@ -585,9 +585,9 @@ export default function TallyDrivePage() {
             {/* Get Best Quote */}
             <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
               <div className="px-5 py-4 text-white" style={{ backgroundColor: BRAND_SECONDARY }}>
-                <h3 className="text-sm font-bold">Get Best Quote for TallyDrive Backup</h3>
+                <h3 className="text-sm font-bold">Get Expert Backup Advice</h3>
                 <p className="text-[12px] text-white/75 mt-1 leading-relaxed">
-                  Connect with our experts to get the best quote for your business.
+                  Connect with our team to learn how to activate TallyDrive and secure your business records today.
                 </p>
               </div>
               <form onSubmit={handleSidebarSubmit} className="p-5 space-y-3">

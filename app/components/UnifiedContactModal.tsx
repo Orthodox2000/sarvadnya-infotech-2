@@ -111,11 +111,11 @@ export default function UnifiedContactModal({
   return (
     <div className="fixed inset-0 z-[100000] flex items-center justify-center p-4 bg-[#0f0529]/60 backdrop-blur-md animate-in fade-in duration-300" onClick={onClose}>
       <div 
-        className="w-full max-w-lg bg-white rounded-[2rem] overflow-hidden shadow-[0_32px_80px_rgba(15,23,42,0.5)] relative animate-in zoom-in-95 duration-300 border border-white/20"
+        className="w-full max-w-lg md:max-w-[614px] lg:max-w-[410px] bg-white rounded-[2rem] overflow-hidden shadow-[0_32px_80px_rgba(15,23,42,0.5)] relative animate-in zoom-in-95 duration-300 border border-white/20"
         onClick={e => e.stopPropagation()}
       >
         {/* Decorative Header */}
-        <div className="bg-white sm:p-6 p-6 text-slate-900 relative overflow-hidden border-b border-slate-100">
+        <div className="bg-white sm:p-6 p-6 md:p-8 lg:p-4 text-slate-900 relative overflow-hidden border-b border-slate-100">
           <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-50 rounded-full blur-[60px] opacity-60 -mr-16 -mt-16" />
           <div className="absolute bottom-0 left-0 w-24 h-24 bg-violet-50 rounded-full blur-[50px] opacity-40 -ml-12 -mb-12" />
           
@@ -146,7 +146,7 @@ export default function UnifiedContactModal({
         </div>
 
         {/* Form Content */}
-        <div className="sm:p-6 p-6 bg-slate-50/50">
+        <div className="sm:p-6 p-6 md:p-8 lg:p-4 bg-slate-50/50">
           {isSuccess ? (
             <div className="py-6 sm:py-8 text-center animate-in fade-in zoom-in-95 duration-500">
               <div className="w-14 h-14 sm:w-16 sm:h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4 shadow-inner">
@@ -239,7 +239,7 @@ export default function UnifiedContactModal({
           )}
         </div>
         
-        <div className="px-8 pb-4 bg-slate-50/50">
+        <div className="px-8 md:px-10 lg:px-6 pb-4 md:pb-5 lg:pb-3 bg-slate-50/50">
           <p className="text-center text-[10px] text-slate-400 font-medium">
             🔒 Your data is secure with Sarvadnya Infotech LLP.
           </p>

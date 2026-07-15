@@ -27,7 +27,7 @@ const ServiceDetailPopup = ({ isOpen, onClose, service, onEnquire }: ServicePopu
   if (!isOpen || !service) return null;
   return (
     <div className="fixed inset-0 z-[100000] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200" onClick={onClose}>
-      <div className="bg-white rounded-2xl p-6 md:p-8 max-w-2xl w-full shadow-2xl relative animate-in zoom-in-95 duration-200 max-h-[90vh] overflow-y-auto border border-slate-100" onClick={e => e.stopPropagation()}>
+      <div className="bg-[linear-gradient(135deg,rgba(249,251,245,0.98)_0%,rgba(244,242,234,0.98)_53%,rgba(238,236,223,0.98)_100%)] rounded-2xl p-6 md:p-8 max-w-2xl w-full shadow-2xl relative animate-in zoom-in-95 duration-200 max-h-[90vh] overflow-y-auto border border-[#E5E2D9]" onClick={e => e.stopPropagation()}>
         <button className="absolute top-6 right-6 text-slate-400 hover:text-[#316852] transition-colors" onClick={onClose}>
           <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
         </button>
@@ -37,7 +37,7 @@ const ServiceDetailPopup = ({ isOpen, onClose, service, onEnquire }: ServicePopu
              {service.icon}
           </div>
           <div>
-            <span className="px-3 py-1 rounded-full bg-slate-50 text-[#316852] text-[9px] font-black uppercase tracking-widest border border-slate-100 mb-2 inline-block">
+            <span className="px-3 py-2 rounded-full bg-slate-50 text-[#316852] text-[9px] font-black uppercase tracking-widest border border-slate-100 mb-2 inline-block">
               {service.tag}
             </span>
             <h3 className="text-2xl md:text-3xl font-black text-slate-900 leading-tight tracking-tight">{service.title}</h3>
@@ -214,7 +214,7 @@ export default function ServicesPage() {
       />
 
       {/* Clean Header Section */}
-      <section className="bg-white pt-12 pb-16 md:pt-20 md:pb-24 px-6 text-center relative overflow-hidden flex flex-col items-center">
+      <section className="bg-[linear-gradient(90deg,rgba(249,251,245,1)_0%,rgba(244,242,234,1)_53%,rgba(238,236,223,1)_100%)] pt-8 pb-16 px-6 text-center relative overflow-hidden flex flex-col items-center">
         <div className="max-w-4xl mx-auto relative z-10 w-full">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/40 border border-[#316852]/10 text-[#316852] text-[9px] font-black uppercase tracking-widest mb-8 backdrop-blur-sm">
             <span className="flex h-1.5 w-1.5 rounded-full bg-[#316852] animate-pulse"></span>

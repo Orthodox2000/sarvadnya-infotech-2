@@ -50,9 +50,9 @@ export default function ModulesPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[FAFAFA]">
+    <div className="min-h-screen bg-[linear-gradient(90deg,rgba(249,251,245,1)_0%,rgba(244,242,234,1)_53%,rgba(238,236,223,1)_100%)]">
       {/* Compact Hero Section (Radiant Sky Theme) */}
-      <section className="bg-[#F5F4ED] relative pt-12 pb-16 md:pt-16 md:pb-24 px-6 overflow-hidden border-b border-[#4A6E62]/10">
+      <section className=" relative pt-12 md:pt-12 md:pb-8 px-6 overflow-hidden ">
         {/* Background Effects */}
         <div className="absolute inset-0 opacity-40 pointer-events-none">
           <div className="absolute top-0 right-0 w-[60%] h-[60%] bg-white/40 blur-[130px] -mr-32 -mt-32" />
@@ -66,31 +66,31 @@ export default function ModulesPage() {
             Specialized Solutions
           </div>
           <h1 className="text-3xl md:text-5xl font-black text-slate-900 mb-6 leading-tight tracking-tight">
-            Custom Modules for<br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#4A6E62] via-[#5D887A] to-[#4A6E62] drop-shadow-[0_2px_15px_rgba(93,136,122,0.2)]">Industry Specific Logic</span>
+            Ready-to-Run<br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#4A6E62] via-[#5D887A] to-[#4A6E62] drop-shadow-[0_2px_15px_rgba(93,136,122,0.2)]">Industry Modules</span>
           </h1>
-          <p className="text-slate-600/80 text-sm md:text-xl max-w-4xl mx-auto leading-relaxed font-semibold">
-            Beyond standard accounting. We build deep, industry-specific logic directly into your Tally environment to automate your unique business workflows.
+          <p className="text-slate-600/80 text-sm md:text-xl max-w-5xl mx-auto leading-relaxed font-semibold">
+            Why start from scratch? We&apos;ve already designed and tested the exact features your business needs. Simply plug in our pre-built modules to transform your Tally into a complete, easy-to-use system that handles your daily operations instantly.
           </p>
         </div>
       </section>
 
       {/* Modules Grid */}
-      <section className="py-20 px-6 max-w-7xl mx-auto">
+      <section className="py-12 px-6 max-w-7xl mx-auto ">
         {loading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
             {Array.from({ length: 6 }).map((_, i) => (
-              <div key={i} className="rounded-[1.5rem] border border-slate-100 bg-white p-4 md:p-[18px] shadow-sm animate-pulse">
-                <div className="h-28 rounded-2xl bg-slate-100" />
+              <div key={i} className="rounded-[1.5rem] border border-slate-200 p-4 md:p-[18px] shadow-sm animate-pulse">
+                <div className="h-28 rounded-2xl bg-slate-200" />
                 <div className="mt-4 space-y-3">
-                  <div className="h-5 w-3/4 rounded bg-slate-100" />
-                  <div className="h-4 w-full rounded bg-slate-100" />
-                  <div className="h-4 w-5/6 rounded bg-slate-100" />
+                  <div className="h-5 w-3/4 rounded bg-slate-200" />
+                  <div className="h-4 w-full rounded bg-slate-200" />
+                  <div className="h-4 w-5/6 rounded bg-slate-200" />
                   <div className="grid grid-cols-2 gap-2 mt-4">
-                    <div className="h-6 rounded-full bg-slate-100" />
-                    <div className="h-6 rounded-full bg-slate-100" />
-                    <div className="h-6 rounded-full bg-slate-100" />
-                    <div className="h-6 rounded-full bg-slate-100" />
+                    <div className="h-6 rounded-full bg-slate-200" />
+                    <div className="h-6 rounded-full bg-slate-200" />
+                    <div className="h-6 rounded-full bg-slate-200" />
+                    <div className="h-6 rounded-full bg-slate-200" />
                   </div>
                 </div>
               </div>

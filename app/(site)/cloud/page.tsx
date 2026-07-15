@@ -15,24 +15,24 @@ const TAG_STYLES: Record<string, { bg: string; txt: string }> = {
 
 const cards = [
   {
-    name: 'AWS Cloud Server',
+    name: 'Tally on AWS Cloud',
     icon: (
       <span className="inline-flex items-center justify-center w-9 h-9 rounded-full bg-white/20 text-white text-[10px] font-black tracking-wider">AWS</span>
     ),
     link: '/cloud/aws',
     features: [
-      'Hosted Tally on AWS for 24/7 remote access with backups.',
-      'Best for businesses that need always-on, secure access to Tally from any device.',
+      '100% remote access to your Tally from any device, anywhere in the world.',
+      'Perfect for growing businesses that want bank-level security without buying expensive office servers.',
     ],
     tags: [
-      { label: 'AWS INFRA', color: 'green' },
-      { label: 'AUTO BACKUPS', color: 'blue' },
-      { label: 'REMOTE ACCESS', color: 'purple' },
-      { label: 'SCALABLE', color: 'purple' },
+      { label: 'WORK FROM ANYWHERE', color: 'purple' },
+      { label: 'ZERO HARDWARE', color: 'green' },
+      { label: 'BANK-LEVEL SECURITY', color: 'blue' },
+      { label: 'AUTO BACKUPS', color: 'yellow' },
     ],
   },
   {
-    name: 'Windows VM',
+    name: 'Windows Cloud Desktop',
     icon: (
       <span className="inline-flex items-center justify-center w-9 h-9 rounded-full bg-white/20">
         <svg className="w-5 h-5 text-white" viewBox="0 0 88 88" fill="currentColor">
@@ -42,14 +42,14 @@ const cards = [
     ),
     link: '/cloud/windows',
     features: [
-      'Dedicated Windows with familiar desktop feel, printer access.',
-      'Best for teams that need a full Windows experience alongside their Tally operations.',
+      'A complete, private Windows computer hosted securely on the internet.',
+      'Perfect for teams who want to run Tally, use Excel side-by-side, and print to their local office printer.',
     ],
     tags: [
-      { label: 'DESKTOP FEEL', color: 'green' },
-      { label: 'PRINTER ACCESS', color: 'blue' },
-      { label: 'OFFICE INTEGRATION', color: 'yellow' },
-      { label: 'ADMIN CONTROL', color: 'purple' },
+      { label: 'NATIVE DESKTOP', color: 'green' },
+      { label: 'LOCAL PRINTING', color: 'blue' },
+      { label: 'EXCEL INTEGRATION', color: 'yellow' },
+      { label: 'EASY TO USE', color: 'purple' },
     ],
   },
   {
@@ -61,14 +61,14 @@ const cards = [
     ),
     link: '/cloud/nosky',
     features: [
-      'Encrypted backup and quick recovery with scheduled.',
-      'Best for any TallyPrime user who needs automated, encrypted backup with fast restore.',
+      'A silent, automatic safety net that backs up your Tally data every single day.',
+      'Perfect for owners who want to stop worrying about computer crashes, hardware theft, or ransomware.',
     ],
     tags: [
-      { label: 'AES-256', color: 'green' },
-      { label: 'SCHEDULED', color: 'blue' },
-      { label: 'ONE-CLICK RESTORE', color: 'purple' },
-      { label: 'INCREMENTAL', color: 'green' },
+      { label: '100% AUTOMATIC', color: 'blue' },
+      { label: 'RANSOMWARE PROOF', color: 'green' },
+      { label: '1-CLICK RESTORE', color: 'purple' },
+      { label: 'SECURE VAULT', color: 'yellow' },
     ],
   },
 ];
@@ -87,7 +87,7 @@ export default function CloudPage() {
 
   const ctaGroups = [
     {
-      title: 'Sales and Demo',
+      title: 'Sales & Expert Advice',
       buttons: [
         { label: 'Request Quote', type: 'quote' as FormType },
         { label: 'Book Demo', type: 'demo' as FormType },
@@ -98,7 +98,7 @@ export default function CloudPage() {
       ],
     },
     {
-      title: 'Support and Backup',
+      title: 'Technical Support',
       buttons: [
         { label: 'Technical Support', type: 'support' as FormType },
         { label: 'Talk to Consultant', type: 'callback' as FormType },
@@ -121,10 +121,10 @@ export default function CloudPage() {
         {/* Header */}
         <section className="relative z-10 pt-16 pb-6 md:pt-8 md:pb-8 px-6 max-w-7xl mx-auto">
           <h1 className="text-4xl md:text-[2.75rem] font-extrabold tracking-tight mb-4 text-[#1a1c20]">
-            Cloud Solutions
+            Tally Cloud &amp; Backup Solutions
           </h1>
           <p className="text-[1.05rem] text-[#4a4d50] leading-relaxed font-medium max-w-2xl">
-            Deploy, access, and protect your TallyPrime with our independent cloud offerings — choose what fits your workflow.
+            Get the freedom to work from anywhere and the peace of mind that your data is safe. No expensive office servers, no complex IT headaches—just your business, always online.
           </p>
         </section>
 
@@ -195,27 +195,23 @@ export default function CloudPage() {
       <section className=" bg-[linear-gradient(90deg,rgba(249,251,245,1)_0%,rgba(244,242,234,1)_53%,rgba(238,236,223,1)_100%)] py-20 px-6 border-y border-slate-100">
         <div className="max-w-7xl mx-auto">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#316852]/10 text-[#316852] text-[10px] font-black uppercase tracking-widest mb-6">
-            Why cloud
+            WHY GO CLOUD?
           </div>
           <h2 className="text-3xl md:text-4xl font-black text-slate-900 mb-3 leading-tight">
-            Benefits of moving to cloud
+            Why small businesses are moving to the cloud
           </h2>
           <p className="text-slate-500 text-sm md:text-base mb-2 max-w-3xl leading-relaxed">
-            Move your TallyPrime to the cloud for better accessibility, security, and cost savings. 
-            No upfront hardware costs, no maintenance hassles — just secure, on-demand access to your 
-            business data from anywhere, anytime.
+            Stop spending thousands on heavy server computers, UPS batteries, and paying IT guys to fix them. Moving your Tally to the cloud gives you instant freedom and absolute peace of mind.
           </p>
           <p className="text-slate-500 text-sm md:text-base mb-8 max-w-3xl leading-relaxed">
-            Whether you're a small team or a growing enterprise, cloud hosting eliminates IT overhead 
-            while giving you enterprise-grade reliability, automatic backups, and seamless collaboration 
-            across users and locations.
+            Whether you want to check reports from home, connect a new branch office, or just sleep well knowing your data is safe from a hard drive crash—our cloud solutions make it completely effortless.
           </p>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
-              { title: 'Access anywhere', desc: 'Work from any device, any location.' },
-              { title: 'Auto backups', desc: 'Scheduled protection with easy restore.' },
-              { title: 'Lower IT cost', desc: 'No server hardware or maintenance.' },
-              { title: 'Team sync', desc: 'Multi-user access without VPN setups.' },
+              { title: 'Work From Anywhere', desc: 'Log in securely from your laptop, Mac, or tablet at home or while traveling.' },
+              { title: 'Total Data Safety', desc: 'Bank-level security protects your business from physical theft and viruses.' },
+              { title: 'Zero IT Headaches', desc: 'No expensive hardware to buy, maintain, upgrade, or replace.' },
+              { title: 'Easy Team Sync', desc: 'Connect branch offices instantly so everyone bills on the same live data.' },
             ].map((item) => (
               <div key={item.title} className="p-5 bg-white rounded-2xl border border-slate-200">
                 <h3 className="font-black text-slate-900 mb-2">{item.title}</h3>
@@ -231,11 +227,11 @@ export default function CloudPage() {
         <div className="bg-white rounded-[2rem] p-7 md:p-8 border border-slate-100 shadow-sm">
           <div className="flex flex-col lg:flex-row items-start lg:items-end justify-between gap-6 mb-8">
             <div>
-              <div className="text-[10px] font-black uppercase tracking-[0.3em] text-[#316852] mb-3">Help Menu</div>
-              <h2 className="text-2xl md:text-3xl font-black tracking-tight">How can we help with TallyPrime Cloud?</h2>
+              <div className="text-[10px] font-black uppercase tracking-[0.3em] text-[#316852] mb-3">HELP MENU</div>
+              <h2 className="text-2xl md:text-3xl font-black tracking-tight">Not sure which cloud setup you need?</h2>
             </div>
             <p className="text-slate-500 max-w-2xl leading-relaxed">
-              Each product is independent — take hosting, remote desktop, backup, or any combination.
+              Every business is different. You don&apos;t have to be a tech expert—tell us how your team works, and we&apos;ll recommend the perfect, cost-effective setup.
             </p>
           </div>
 

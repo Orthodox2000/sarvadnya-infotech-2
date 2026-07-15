@@ -10,12 +10,15 @@ const BRAND_PRIMARY = '#316852';
 const BRAND_SECONDARY = '#1e4d3a';
 
 const features = [
-  { title: 'AWS Infrastructure', desc: 'Hosted on official AWS cloud infrastructure for strong uptime and broad availability.' },
-  { title: 'Automatic Backups', desc: 'Managed backup and recovery planning so your data stays protected without manual effort.' },
-  { title: 'Remote Access', desc: 'Approved users can access TallyPrime from anywhere, enabling distributed team workflows.' },
-  { title: 'Scalable Storage', desc: 'Easily scale your storage and compute resources as your team and data grow.' },
-  { title: 'Encrypted Data', desc: 'Data is encrypted at rest and in transit, keeping financial records secure.' },
-  { title: 'Professional Support', desc: 'Implementation and ongoing support from certified Tally partners.' },
+  { title: 'Work From Anywhere', desc: 'Log in from any laptop or desktop with internet. Your data stays safe in the cloud, not on someone\'s computer.' },
+  { title: 'Works on Old Laptops', desc: 'Employees can use affordable, basic laptops. The heavy work happens on powerful cloud servers.' },
+  { title: 'Complete Data Safety', desc: 'If a laptop breaks, crashes, or is stolen, your data is still safe in the cloud. Just log in from another device.' },
+  { title: 'Low Internet Usage', desc: 'Once loaded, TallyPrime on cloud uses very little internet. Even 4G mobile hotspot works for daily work.' },
+  { title: 'Free Setup Support', desc: 'Sarvadnya experts set up everything for you — no need to hire an IT team. We handle it all.' },
+  { title: 'TSS Included', desc: '12 months of Tally Software Services included with your cloud subscription. Free updates and support.' },
+  { title: 'Unlimited Users', desc: 'Add as many users as you need. Pay only for the cloud resources, not per user. Growing teams love this.' },
+  { title: 'Bank-Level Security', desc: 'AES-256 encryption keeps your financial data locked. Role-based access means employees see only what they should.' },
+  { title: '99.99% Uptime', desc: 'AWS data centers are reliable. Your TallyPrime is available whenever you need it.' },
 ];
 
 const faqs = [
