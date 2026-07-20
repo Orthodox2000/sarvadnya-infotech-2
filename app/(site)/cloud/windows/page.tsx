@@ -9,34 +9,34 @@ const BRAND_PRIMARY = '#316852';
 const BRAND_SECONDARY = '#1e4d3a';
 
 const features = [
-  { title: 'Native Desktop Feel', desc: 'A dedicated Windows virtual machine that keeps the familiar desktop workflow your team already knows.' },
-  { title: 'Direct Printer Access', desc: 'Print directly from the VM to local printers, making it practical for office environments.' },
-  { title: 'Office Integration', desc: 'Seamlessly work with Excel, Word, and other Microsoft tools alongside TallyPrime.' },
-  { title: 'Full Admin Control', desc: 'Customise the VM environment to match your IT policies and business preferences.' },
-  { title: 'Remote Desktop Access', desc: 'Access the Windows desktop from anywhere using standard remote desktop protocols.' },
-  { title: 'Custom VM Sizing', desc: 'Right-sized virtual machine resources based on your team size and workload.' },
+  { title: 'Feels Just Like Your Office PC', desc: 'A full Windows desktop in the cloud. Your team sees the same familiar screen they always have — no training needed.' },
+  { title: 'Print Invoices Directly', desc: 'Print your Tally bills and reports to your office printer. No extra setup, no workarounds.' },
+  { title: 'Use Excel, Word & Tally Together', desc: 'Work on your Tally data and Excel sheets at the same time, on the same screen. Just like sitting at your office desk.' },
+  { title: 'You Are In Complete Control', desc: 'Install any software, set your own rules, and manage everything the way your business works.' },
+  { title: 'Work From Anywhere', desc: 'Log in from home, while traveling, or from a branch office. Your full desktop is always ready.' },
+  { title: 'Sized For Your Team', desc: 'We configure the cloud desktop exactly for your team size and workload. No wasted money on resources you don\'t use.' },
 ];
 
 const faqs = [
   {
-    q: 'What is Windows VM for TallyPrime?',
-    a: 'It is a dedicated Windows virtual machine hosted in the cloud where you can run TallyPrime along with other Windows applications as if you were on a local desktop.',
+    q: 'What is Windows Cloud Desktop?',
+    a: 'It is a full Windows desktop computer in the cloud. You log in from any laptop and get the exact same experience as sitting at your office PC — with TallyPrime, Excel, printers, and everything else.',
   },
   {
-    q: 'Who is Windows VM best suited for?',
-    a: 'Office teams that rely on desktop tools like Excel, need printer access, or prefer a full Windows desktop environment over a browser-based solution.',
+    q: 'Who is this best suited for?',
+    a: 'Teams that use Excel alongside Tally, need to print invoices regularly, or want the full desktop experience instead of a simplified cloud interface.',
   },
   {
-    q: 'Can I print from the Windows VM?',
-    a: 'Yes. The VM supports printer redirection, allowing you to print to local printers directly from your VM session.',
+    q: 'Can I print from the cloud desktop?',
+    a: 'Yes. You can print directly to your office printer from the cloud desktop, just like you would from your regular PC.',
   },
   {
-    q: 'How do I access the Windows VM?',
-    a: 'You access it via Remote Desktop Protocol (RDP) from any device Windows, Mac, or Linux. Your desktop is available whenever you log in.',
+    q: 'How do I access it?',
+    a: 'Just like opening any app. You get a simple login, connect from any Windows laptop, Mac, or even a tablet, and your full desktop is ready.',
   },
   {
-    q: 'Can I install other software on the Windows VM?',
-    a: 'Yes. You get admin control and can install TallyPrime, Microsoft Office, and other business applications as needed.',
+    q: 'Can I install other software on it?',
+    a: 'Yes. You can install TallyPrime, Microsoft Office, and any other business application you need. You have full control.',
   },
 ];
 
@@ -50,7 +50,7 @@ const navSections = [
 export default function WindowsVMPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalType, setModalType] = useState<FormType>('quote');
-  const [modalService, setModalService] = useState('Windows VM');
+  const [modalService, setModalService] = useState('Windows Cloud Desktop');
   const [modalDetails, setModalDetails] = useState('');
   const [activeNav, setActiveNav] = useState('overview');
   const [openFaq, setOpenFaq] = useState<number | null>(0);
@@ -68,7 +68,7 @@ export default function WindowsVMPage() {
   const [inquiryStatus, setInquiryStatus] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
   const navRef = useRef<HTMLDivElement>(null);
 
-  const openModal = (type: FormType, service = 'Windows VM', details = '') => {
+  const openModal = (type: FormType, service = 'Windows Cloud Desktop', details = '') => {
     setModalType(type);
     setModalService(service);
     setModalDetails(details);
@@ -91,7 +91,7 @@ export default function WindowsVMPage() {
           name: inquiryName,
           email: inquiryContact,
           contact: inquiryContact,
-          service: 'Windows VM',
+          service: 'Windows Cloud Desktop',
           formType: 'inquiry',
           description: inquiryMsg,
         }),
@@ -124,9 +124,9 @@ export default function WindowsVMPage() {
           name: formName,
           email: formEmail,
           contact: formPhone,
-          service: 'Windows VM',
+          service: 'Windows Cloud Desktop',
           formType: 'callback',
-          description: 'Requesting a call back for Windows VM pricing.',
+          description: 'Requesting a call back for Windows Cloud Desktop pricing.',
         }),
       });
       if (!res.ok) throw new Error('Submission failed');
@@ -178,7 +178,7 @@ export default function WindowsVMPage() {
               <li className="text-slate-300 mx-0.5">/</li>
               <li><Link href="/cloud" className="hover:text-[#316852] transition-colors">Cloud</Link></li>
               <li className="text-slate-300 mx-0.5">/</li>
-              <li className="text-slate-800 font-semibold">Windows VM</li>
+              <li className="text-slate-800 font-semibold">Windows Cloud Desktop</li>
             </ul>
           </div>
         </div>
@@ -201,7 +201,7 @@ export default function WindowsVMPage() {
             {/* Info */}
             <div className="flex-1 min-w-0">
               <div className="flex items-center flex-wrap gap-x-3 gap-y-1">
-                <h1 className="text-xl md:text-2xl font-bold text-slate-900">Windows VM</h1>
+                <h1 className="text-xl md:text-2xl font-bold text-slate-900">Windows Cloud Desktop</h1>
                 <span
                   className="inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider border"
                   style={{
@@ -211,19 +211,19 @@ export default function WindowsVMPage() {
                   }}
                 >
                   <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: BRAND_PRIMARY }} />
-                  Native Desktop
+                  Full Desktop
                 </span>
               </div>
               <div className="flex items-center flex-wrap gap-x-4 gap-y-1 mt-1.5"></div>
               <p className="text-[13px] text-slate-500 mt-1.5 leading-relaxed max-w-3xl">
-                A dedicated Windows virtual machine for teams that want the familiar desktop feel with remote access and full peripheral support for TallyPrime.
+                A full Windows desktop in the cloud for teams that want to print invoices, use Excel with Tally, and work from anywhere — just like sitting at the office.
               </p>
             </div>
 
             {/* Action Buttons */}
             <div className="hidden md:flex flex-col gap-2 shrink-0">
               <button
-                onClick={() => openModal('demo', 'Windows VM')}
+                onClick={() => openModal('demo', 'Windows Cloud Desktop')}
                 className="px-6 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider text-white shadow-lg transition-all hover:scale-[1.02]"
                 style={{ backgroundColor: BRAND_PRIMARY }}
               >
@@ -243,7 +243,7 @@ export default function WindowsVMPage() {
         {/* Mobile action buttons */}
         <div className="md:hidden flex gap-2 px-6 pb-4">
           <button
-            onClick={() => openModal('demo', 'Windows VM')}
+            onClick={() => openModal('demo', 'Windows Cloud Desktop')}
             className="flex-1 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider text-white shadow-lg transition-all"
             style={{ backgroundColor: BRAND_PRIMARY }}
           >
@@ -297,26 +297,21 @@ export default function WindowsVMPage() {
 
             {/* Overview */}
             <section id="overview" className="scroll-mt-16 bg-white rounded-xl border border-slate-200 p-6">
-              <h2 className="text-lg font-bold text-slate-900 mb-3">What is Windows VM?</h2>
+              <h2 className="text-lg font-bold text-slate-900 mb-3">What is Windows Cloud Desktop?</h2>
               <div className="text-sm text-slate-600 leading-relaxed space-y-3">
                 <p>
-                  Windows VM is a dedicated Windows virtual machine hosted in the cloud, designed for teams that
-                  want the full desktop experience with remote access. It runs TallyPrime alongside other Windows
-                  applications — Excel, Word, printers, and more — as if you were sitting right in front of a local PC.
+                  Some businesses need more than just Tally in the cloud. You might need to print invoices, work on Excel spreadsheets alongside Tally, or use other Windows software. That is exactly what Windows Cloud Desktop is for.
                 </p>
                 <p>
-                  Unlike browser-based solutions, Windows VM gives you a complete Windows environment with admin
-                  control, peripheral support, and the flexibility to install any software your business needs.
-                  Your desktop is always available, always on, and accessible from anywhere.
+                  It gives you a full Windows computer in the cloud. You log in from any laptop and see the exact same desktop you would see at your office — TallyPrime, Excel, Word, your printer, everything. It works exactly like your office PC, except you can access it from anywhere in the world.
                 </p>
               </div>
-              {/* Hero stats */}
               <div className="mt-5 grid grid-cols-2 sm:grid-cols-4 gap-3">
                 {[
-                  { label: 'Type', value: 'Virtual Desktop' },
-                  { label: 'Access', value: 'Remote' },
-                  { label: 'Security', value: 'Managed' },
-                  { label: 'Setup', value: 'Customizable' },
+                  { label: 'Type', value: 'Full Desktop' },
+                  { label: 'Access', value: 'Anywhere' },
+                  { label: 'Print', value: 'Supported' },
+                  { label: 'Software', value: 'Install Any' },
                 ].map((stat) => (
                   <div
                     key={stat.label}
@@ -335,9 +330,9 @@ export default function WindowsVMPage() {
 
             {/* Features */}
             <section id="features" className="scroll-mt-16 bg-white rounded-xl border border-slate-200 p-6">
-              <h2 className="text-lg font-bold text-slate-900 mb-1">Key Features of Windows VM</h2>
+              <h2 className="text-lg font-bold text-slate-900 mb-1">Why MSMEs Love Windows Cloud Desktop</h2>
               <p className="text-sm text-slate-500 mb-5">
-                Here are the powerful features that make Windows VM stand out. A complete desktop experience, built for remote productivity.
+                Everything your team needs to work from anywhere, with the full desktop experience they are used to.
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                 {features.map((feature) => (
@@ -359,16 +354,16 @@ export default function WindowsVMPage() {
               </div>
             </section>
 
-            {/* When Windows VM is the right choice + Compatible Systems */}
+            {/* When Windows Cloud Desktop is the right choice + Compatible Systems */}
             <section className="grid sm:grid-cols-2 gap-6">
               <div className="bg-white rounded-xl border border-slate-200 p-6">
-                <h2 className="text-lg font-bold text-slate-900 mb-4">When Windows VM is the right choice</h2>
+                <h2 className="text-lg font-bold text-slate-900 mb-4">Is Windows Cloud Desktop right for you? It is if:</h2>
                 <ul className="space-y-3">
                   {[
-                    'Teams that rely on desktop add-ons and peripherals',
-                    'Companies with printer-based invoice and report workflows',
-                    'IT-managed business environments needing central control',
-                    'Power users who prefer native Windows tools',
+                    'Your team uses Excel or Word alongside Tally every day.',
+                    'You need to print invoices and reports to your office printer.',
+                    'You want a full Windows desktop that works from anywhere.',
+                    'You prefer a familiar desktop over a browser-based cloud solution.',
                   ].map((item) => (
                     <li key={item} className="flex items-start gap-2.5 text-sm text-slate-600">
                       <span
@@ -428,8 +423,8 @@ export default function WindowsVMPage() {
 
             {/* FAQ */}
             <section id="faqs" className="scroll-mt-16 bg-white rounded-xl border border-slate-200 p-6">
-              <h2 className="text-lg font-bold text-slate-900 mb-1">Windows VM FAQs</h2>
-              <p className="text-sm text-slate-500 mb-5">Frequently asked questions about Windows VM.</p>
+              <h2 className="text-lg font-bold text-slate-900 mb-1">Windows Cloud Desktop FAQs</h2>
+              <p className="text-sm text-slate-500 mb-5">Common questions about Windows Cloud Desktop.</p>
               <div className="space-y-0 divide-y divide-slate-100">
                 {faqs.map((faq, idx) => (
                   <div key={idx}>
@@ -464,8 +459,8 @@ export default function WindowsVMPage() {
             {/* Still not satisfied? */}
             <section className="bg-white rounded-xl border border-slate-200 p-6">
               <div className="text-center mb-5">
-                <h2 className="text-lg font-bold text-slate-900">Still not satisfied?</h2>
-                <p className="text-sm text-slate-500 mt-1">Tell us your requirements and we will find the right solution for you.</p>
+                <h2 className="text-lg font-bold text-slate-900">Not sure which cloud setup you need?</h2>
+                <p className="text-sm text-slate-500 mt-1">Tell us how your team works and we will recommend the best cloud desktop for your business.</p>
               </div>
               <form onSubmit={handleInquirySubmit} className="max-w-xl mx-auto space-y-3">
                 <input
@@ -517,8 +512,8 @@ export default function WindowsVMPage() {
 
             {/* Pricing - Hidden reveal */}
             <section id="pricing" className="scroll-mt-16 bg-white rounded-xl border border-slate-200 p-6">
-              <h2 className="text-lg font-bold text-slate-900 mb-1">Windows VM Pricing</h2>
-              <p className="text-sm text-slate-500 mb-5">View pricing plans for Windows VM.</p>
+              <h2 className="text-lg font-bold text-slate-900 mb-1">Simple Cloud Desktop Pricing</h2>
+              <p className="text-sm text-slate-500 mb-5">Pay a simple monthly or yearly fee. No hardware costs, no IT headaches.</p>
               <button
                 type="button"
                 onClick={() => setShowPricing(!showPricing)}
@@ -544,12 +539,12 @@ export default function WindowsVMPage() {
                       <tr className="border-b border-slate-100">
                         <td className="px-4 py-3 font-bold text-slate-900">Monthly Rental</td>
                         <td className="px-4 py-3 text-slate-600">Dedicated VM, custom sizing</td>
-                        <td className="px-4 py-3 font-bold" style={{ color: BRAND_PRIMARY }}>Windows VM Monthly — Contact Sales</td>
+                        <td className="px-4 py-3 font-bold" style={{ color: BRAND_PRIMARY }}>Windows Cloud Desktop Monthly — Contact Sales</td>
                       </tr>
                       <tr>
                         <td className="px-4 py-3 font-bold text-slate-900">1 Year Rental</td>
                         <td className="px-4 py-3 text-slate-600">Dedicated VM, custom sizing</td>
-                        <td className="px-4 py-3 font-bold" style={{ color: BRAND_PRIMARY }}>Windows VM Yearly — Contact Sales</td>
+                        <td className="px-4 py-3 font-bold" style={{ color: BRAND_PRIMARY }}>Windows Cloud Desktop Yearly — Contact Sales</td>
                       </tr>
                     </tbody>
                   </table>
@@ -559,7 +554,7 @@ export default function WindowsVMPage() {
                     </p>
                     <button
                       type="button"
-                      onClick={() => openModal('quote', 'Windows VM', 'Please share pricing details for Windows VM.')}
+                      onClick={() => openModal('quote', 'Windows Cloud Desktop', 'Please share pricing details for Windows Cloud Desktop.')}
                       className="mt-2 inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-[10px] font-bold uppercase tracking-wider text-white transition-all hover:scale-[1.02]"
                       style={{ backgroundColor: BRAND_PRIMARY }}
                     >
@@ -581,9 +576,9 @@ export default function WindowsVMPage() {
             {/* Get Best Quote */}
             <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
               <div className="px-5 py-4 text-white" style={{ backgroundColor: BRAND_SECONDARY }}>
-                <h3 className="text-sm font-bold">Get Best Quote for Windows VM</h3>
+                <h3 className="text-sm font-bold">Get Best Quote for Windows Cloud</h3>
                 <p className="text-[12px] text-white/75 mt-1 leading-relaxed">
-                  Connect with our experts to get the best quote for your business.
+                  Tell us your team size and we will configure the perfect cloud desktop for your business.
                 </p>
               </div>
               <form onSubmit={handleSidebarSubmit} className="p-5 space-y-3">
@@ -645,7 +640,7 @@ export default function WindowsVMPage() {
                   { name: 'TallyPrime Gold', slug: '/products/gold', rating: '4.8', reviews: '120' },
                   { name: 'TallyPrime Server', slug: '/products/server', rating: '4.7', reviews: '85' },
                   { name: 'Tally on WhatsApp', slug: '/services/tally-on-whatsapp', rating: '4.9', reviews: '200' },
-                  { name: 'Cloud AWS', slug: '/cloud/aws', rating: '4.6', reviews: '65' },
+                  { name: 'Tally Cloud Access', slug: '/cloud/tallycloudaccess', rating: '4.8', reviews: '85' },
                 ].map((item) => (
                   <Link
                     key={item.name}
@@ -705,7 +700,7 @@ export default function WindowsVMPage() {
                     <button
                       key={link.label}
                       type="button"
-                      onClick={() => openModal(link.type!, 'Windows VM')}
+                      onClick={() => openModal(link.type!, 'Windows Cloud Desktop')}
                       className="block w-full text-left text-sm text-slate-600 hover:text-[#316852] transition-colors py-1"
                     >
                       {link.label}

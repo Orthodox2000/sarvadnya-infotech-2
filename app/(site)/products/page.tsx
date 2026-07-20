@@ -54,6 +54,13 @@ export default function ProductsPage() {
       tags: ["BANK-LEVEL SECURITY", "AUTO BACKUP", "1-CLICK RESTORE"],
       link: "/products/tallydrive",
       logo: "/tallyprime logo.png"
+    },
+    {
+      name: "TallyCapital",
+      description: "Simple, smart & superior financing solution integrated within TallyPrime. Check eligibility in 2 minutes.",
+      tags: ["BUSINESS LOANS", "PRE-QUALIFIED OFFERS", "FREE CREDIT SCORE"],
+      link: "/products/tallycapital",
+      logo: "/tallycapital.png"
     }
   ];
 

@@ -212,7 +212,7 @@ export default function TallySilverPage() {
               </div>
               <div className="flex items-center flex-wrap gap-x-4 gap-y-1 mt-1.5"></div>
               <p className="text-[13px] text-slate-500 mt-1.5 leading-relaxed max-w-3xl">
-                The perfect accounting software for solo business owners. Manage your daily billing, track inventory, and handle your local tax compliance effortlessly from a single computer — no accounting degree required.
+                Everything your solo business needs for billing, inventory, and tax compliance. Simple to learn, works on any laptop, and your data stays 100% private on your own computer.
               </p>
             </div>
 
@@ -334,9 +334,9 @@ export default function TallySilverPage() {
 
             {/* Features */}
             <section id="features" className="scroll-mt-16 bg-white rounded-xl border border-slate-200 p-6">
-              <h2 className="text-lg font-bold text-slate-900 mb-1">Everything you need to run your solo business</h2>
+              <h2 className="text-lg font-bold text-slate-900 mb-1">Why MSME Owners Love TallyPrime Silver</h2>
               <p className="text-sm text-slate-500 mb-5">
-                Powerful features designed for the one-person accounting team. Simple to learn, impossible to outgrow.
+                All the billing, inventory, and compliance tools a solo business needs — without the complexity.
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                 {features.map((feature) => (
@@ -361,7 +361,7 @@ export default function TallySilverPage() {
             {/* When Silver is the right choice + Upgrade path */}
             <section className="grid sm:grid-cols-2 gap-6">
               <div className="bg-white rounded-xl border border-slate-200 p-6">
-                <h2 className="text-lg font-bold text-slate-900 mb-4">Is Silver the right choice for you? It is if:</h2>
+                <h2 className="text-lg font-bold text-slate-900 mb-4">Is Silver right for your business? It is if:</h2>
                 <ul className="space-y-3">
                   {[
                     'You manage all your business billing and accounting by yourself on one computer.',
@@ -515,8 +515,8 @@ export default function TallySilverPage() {
 
             {/* Pricing - Hidden reveal */}
             <section id="pricing" className="scroll-mt-16 bg-white rounded-xl border border-slate-200 p-6">
-              <h2 className="text-lg font-bold text-slate-900 mb-1">Simple, Transparent Pricing</h2>
-              <p className="text-sm text-slate-500 mb-5">Enterprise-level accounting, priced for small businesses. Choose a flexible annual rental or own the software for life with a perpetual license.</p>
+              <h2 className="text-lg font-bold text-slate-900 mb-1">TallyPrime Silver Pricing</h2>
+              <p className="text-sm text-slate-500 mb-5">Choose a flexible annual rental or own the software for life with a perpetual license.</p>
               <button
                 type="button"
                 onClick={() => setShowPricing(!showPricing)}
@@ -580,9 +580,9 @@ export default function TallySilverPage() {
             {/* Get Best Quote */}
             <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
               <div className="px-5 py-4 text-white" style={{ backgroundColor: BRAND_SECONDARY }}>
-                <h3 className="text-sm font-bold">Get a Custom Quote</h3>
+                <h3 className="text-sm font-bold">Get Best Quote for TallyPrime Silver</h3>
                 <p className="text-[12px] text-white/75 mt-1 leading-relaxed">
-                  Connect with our team to find the best pricing and implementation plan for your single-user setup.
+                  Tell us about your business and we will recommend the perfect setup for you.
                 </p>
               </div>
               <form onSubmit={handleSidebarSubmit} className="p-5 space-y-3">
@@ -644,7 +644,7 @@ export default function TallySilverPage() {
                   { name: 'TallyPrime Gold', slug: '/products/gold', rating: '4.8', reviews: '120' },
                   { name: 'TallyPrime Server', slug: '/products/server', rating: '4.7', reviews: '85' },
                   { name: 'Tally on WhatsApp', slug: '/services/tally-on-whatsapp', rating: '4.9', reviews: '200' },
-                  { name: 'Cloud AWS', slug: '/cloud/aws', rating: '4.6', reviews: '65' },
+                  { name: 'Tally Cloud Access', slug: '/cloud/tallycloudaccess', rating: '4.8', reviews: '85' },
                 ].map((item) => (
                   <Link
                     key={item.name}

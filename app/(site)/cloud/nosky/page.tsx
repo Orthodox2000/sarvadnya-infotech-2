@@ -633,7 +633,7 @@ export default function NoSkyBackupPage() {
                   { name: 'TallyPrime Gold', slug: '/products/gold', rating: '4.8', reviews: '120' },
                   { name: 'TallyPrime Server', slug: '/products/server', rating: '4.7', reviews: '85' },
                   { name: 'Tally on WhatsApp', slug: '/services/tally-on-whatsapp', rating: '4.9', reviews: '200' },
-                  { name: 'Cloud AWS', slug: '/cloud/aws', rating: '4.6', reviews: '65' },
+                  { name: 'Tally Cloud Access', slug: '/cloud/tallycloudaccess', rating: '4.8', reviews: '85' },
                 ].map((item) => (
                   <Link
                     key={item.name}

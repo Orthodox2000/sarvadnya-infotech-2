@@ -26,27 +26,18 @@ export const productItems: ProductItem[] = [
           { id: "tp-silver", label: "TallyPrime Silver", href: "/products/silver" },
           { id: "tp-gold", label: "TallyPrime Gold", href: "/products/gold" },
           { id: "tp-server", label: "TallyPrime Server", href: "/products/server" },
+        ]
+      },
+      {
+        id: "tp-do-more",
+        label: "Do More with Tally",
+        href: "/products",
+        description: "Powerful solutions built for TallyPrime.",
+        subItems: [
+          { id: "tp-cloud", label: "Tally Cloud Access", href: "/cloud/tallycloudaccess" },
           { id: "tallydrive", label: "TallyDrive Backup", href: "/products/tallydrive" },
-        ]
-      },
-      {
-        id: "tp-cloud",
-        label: "Cloud Solutions",
-        href: "/cloud",
-        description: "Managed AWS & Windows infrastructure.",
-        subItems: [
-          { id: "c-aws", label: "AWS Cloud Server", href: "/cloud/aws" },
-          { id: "c-win", label: "Windows VM", href: "/cloud/windows" },
-          { id: "nosky-backup", label: "NoSky Backup", href: "/cloud/nosky" },
-        ]
-      },
-      {
-        id: "tp-hrms",
-        label: "HRMS",
-        href: "/hrms",
-        description: "Complete HR ecosystem for modern businesses.",
-        subItems: [
-          { id: "hr-otu", label: "OTU HRplus", href: "/hrms#features" },
+          { id: "tp-hrms", label: "HRMS (OTU HRplus)", href: "/hrms" },
+          { id: "tp-capital", label: "TallyCapital", href: "/products/tallycapital" },
         ]
       },
     ],

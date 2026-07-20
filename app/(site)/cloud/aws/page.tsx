@@ -23,24 +23,24 @@ const features = [
 
 const faqs = [
   {
-    q: 'What is AWS Cloud Server for TallyPrime?',
-    a: 'AWS Cloud Server provides a cloud-hosted TallyPrime environment on Amazon Web Services infrastructure. You access it remotely like you would a local installation.',
+    q: 'What exactly is TallyPrime on AWS Cloud?',
+    a: 'It is TallyPrime running on a powerful cloud server. You log in from any laptop or desktop with internet and use TallyPrime exactly like you do today — but without needing a server in your office.',
   },
   {
-    q: 'Who is AWS Cloud Server best suited for?',
-    a: 'It is ideal for MSMEs that want to avoid maintaining on-premise servers while giving their team secure remote access to TallyPrime.',
+    q: 'Do I need a powerful laptop to use it?',
+    a: 'Not at all. Since the heavy work happens on the cloud server, even a basic laptop with 2 Mbps internet works perfectly. You can even use a tablet.',
   },
   {
-    q: 'Is my data safe on AWS Cloud Server?',
-    a: 'Yes. Data is encrypted at rest and in transit. AWS infrastructure provides enterprise-grade security, and regular backups are managed as part of the service.',
+    q: 'Is my financial data safe in the cloud?',
+    a: 'Yes. Your data is encrypted with bank-level security (AES-256). Regular automatic backups are included. Even if your laptop breaks, your data remains safe.',
   },
   {
-    q: 'How do I access TallyPrime on AWS?',
-    a: 'You can access it via Remote Desktop from Windows, Mac, or Linux. All you need is a stable internet connection and your login credentials.',
+    q: 'How do I access TallyPrime on the cloud?',
+    a: 'You get a simple login. Just open it on any Windows laptop, Mac, or even a web browser. It looks and works exactly like the TallyPrime on your computer.',
   },
   {
-    q: 'Can I migrate my existing TallyPrime data to AWS Cloud?',
-    a: 'Yes. Our team can help migrate your existing data and setup to the cloud with minimal downtime.',
+    q: 'Can I migrate my existing data to the cloud?',
+    a: 'Yes. Our team will move all your existing company data and settings to the cloud. You will not lose a single invoice or report.',
   },
 ];
 
@@ -54,7 +54,7 @@ const navSections = [
 export default function AWSCloudPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalType, setModalType] = useState<FormType>('quote');
-  const [modalService, setModalService] = useState('AWS Cloud Server');
+  const [modalService, setModalService] = useState('AWS Cloud');
   const [modalDetails, setModalDetails] = useState('');
   const [activeNav, setActiveNav] = useState('overview');
   const [openFaq, setOpenFaq] = useState<number | null>(0);
@@ -72,7 +72,7 @@ export default function AWSCloudPage() {
   const [inquiryStatus, setInquiryStatus] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
   const navRef = useRef<HTMLDivElement>(null);
 
-  const openModal = (type: FormType, service = 'AWS Cloud Server', details = '') => {
+  const openModal = (type: FormType, service = 'AWS Cloud', details = '') => {
     setModalType(type);
     setModalService(service);
     setModalDetails(details);
@@ -95,7 +95,7 @@ export default function AWSCloudPage() {
           name: inquiryName,
           email: inquiryContact,
           contact: inquiryContact,
-          service: 'AWS Cloud Server',
+          service: 'AWS Cloud',
           formType: 'inquiry',
           description: inquiryMsg,
         }),
@@ -128,9 +128,9 @@ export default function AWSCloudPage() {
           name: formName,
           email: formEmail,
           contact: formPhone,
-          service: 'AWS Cloud Server',
+          service: 'AWS Cloud',
           formType: 'callback',
-          description: 'Requesting a call back for AWS Cloud Server pricing.',
+          description: 'Requesting a call back for AWS Cloud pricing.',
         }),
       });
       if (!res.ok) throw new Error('Submission failed');
@@ -182,7 +182,7 @@ export default function AWSCloudPage() {
               <li className="text-slate-300 mx-0.5">/</li>
               <li><Link href="/cloud" className="hover:text-[#316852] transition-colors">Cloud</Link></li>
               <li className="text-slate-300 mx-0.5">/</li>
-              <li className="text-slate-800 font-semibold">AWS Cloud Server</li>
+              <li className="text-slate-800 font-semibold">AWS Cloud</li>
             </ul>
           </div>
         </div>
@@ -194,13 +194,13 @@ export default function AWSCloudPage() {
           <div className="flex items-start gap-5">
             {/* Logo */}
             <div className="w-[72px] h-[72px] shrink-0 rounded-xl border border-slate-200 bg-white flex items-center justify-center shadow-sm p-2.5">
-              <Image src="/PartnerBrands/AWS.png" alt="AWS Cloud Server" width={48} height={48} className="object-contain" />
+              <Image src="/PartnerBrands/AWS.png" alt="AWS Cloud" width={48} height={48} className="object-contain" />
             </div>
 
             {/* Info */}
             <div className="flex-1 min-w-0">
               <div className="flex items-center flex-wrap gap-x-3 gap-y-1">
-                <h1 className="text-xl md:text-2xl font-bold text-slate-900">AWS Cloud Server</h1>
+                <h1 className="text-xl md:text-2xl font-bold text-slate-900">TallyPrime on AWS Cloud</h1>
                 <span
                   className="inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider border"
                   style={{
@@ -215,14 +215,14 @@ export default function AWSCloudPage() {
               </div>
               <div className="flex items-center flex-wrap gap-x-4 gap-y-1 mt-1.5"></div>
               <p className="text-[13px] text-slate-500 mt-1.5 leading-relaxed max-w-3xl">
-                Hosted TallyPrime on AWS for MSMEs that want 24/7 access, managed backup flow, and reliable remote work without maintaining local servers.
+                Access TallyPrime from anywhere, on any laptop, without maintaining a server. Your data stays safe in the cloud with free setup and automatic backups.
               </p>
             </div>
 
             {/* Action Buttons */}
             <div className="hidden md:flex flex-col gap-2 shrink-0">
               <button
-                onClick={() => openModal('demo', 'AWS Cloud Server')}
+                onClick={() => openModal('demo', 'AWS Cloud')}
                 className="px-6 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider text-white shadow-lg transition-all hover:scale-[1.02]"
                 style={{ backgroundColor: BRAND_PRIMARY }}
               >
@@ -242,7 +242,7 @@ export default function AWSCloudPage() {
         {/* Mobile action buttons */}
         <div className="md:hidden flex gap-2 px-6 pb-4">
           <button
-            onClick={() => openModal('demo', 'AWS Cloud Server')}
+            onClick={() => openModal('demo', 'AWS Cloud')}
             className="flex-1 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider text-white shadow-lg transition-all"
             style={{ backgroundColor: BRAND_PRIMARY }}
           >
@@ -296,13 +296,13 @@ export default function AWSCloudPage() {
 
             {/* Overview */}
             <section id="overview" className="scroll-mt-16 bg-white rounded-xl border border-slate-200 p-6">
-              <h2 className="text-lg font-bold text-slate-900 mb-3">What is AWS Cloud Server?</h2>
+              <h2 className="text-lg font-bold text-slate-900 mb-3">What is TallyPrime on AWS Cloud?</h2>
               <div className="text-sm text-slate-600 leading-relaxed space-y-3">
                 <p>
-                  AWS Cloud Server provides a cloud-hosted TallyPrime environment on Amazon Web Services infrastructure. You access it remotely like you would a local installation, with the added benefits of enterprise-grade reliability, managed backups, and encrypted data.
+                  Running TallyPrime on your office computer means you can only work from one place. If that computer crashes, breaks, or gets stolen, your data is gone. AWS Cloud solves all of this.
                 </p>
                 <p>
-                  Designed for MSMEs that want secure remote access to TallyPrime without the overhead of maintaining on-premise servers, AWS Cloud Server lets you scale storage and users as your business grows, with professional support from certified Tally partners.
+                  Your TallyPrime runs on a powerful, secure server in the cloud. You just log in from any laptop or desktop with internet and start working. Your data is always safe, always backed up, and accessible from anywhere in the world. We handle all the technical setup so you can focus on your business.
                 </p>
               </div>
               {/* Hero stats */}
@@ -330,9 +330,9 @@ export default function AWSCloudPage() {
 
             {/* Features */}
             <section id="features" className="scroll-mt-16 bg-white rounded-xl border border-slate-200 p-6">
-              <h2 className="text-lg font-bold text-slate-900 mb-1">Key Features of AWS Cloud Server</h2>
+              <h2 className="text-lg font-bold text-slate-900 mb-1">Why MSMEs Love AWS Cloud</h2>
               <p className="text-sm text-slate-500 mb-5">
-                Here are the powerful features that make AWS Cloud Server stand out. Packed with enterprise infrastructure for MSME simplicity.
+                Everything your business needs to work from anywhere, without worrying about IT or servers.
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                 {features.map((feature) => (
@@ -357,13 +357,13 @@ export default function AWSCloudPage() {
             {/* When AWS Cloud is the right choice + Compatible Systems */}
             <section className="grid sm:grid-cols-2 gap-6">
               <div className="bg-white rounded-xl border border-slate-200 p-6">
-                <h2 className="text-lg font-bold text-slate-900 mb-4">When AWS Cloud is the right choice</h2>
+                <h2 className="text-lg font-bold text-slate-900 mb-4">Is AWS Cloud right for you? It is if:</h2>
                 <ul className="space-y-3">
                   {[
-                    'Businesses that want hosted TallyPrime access from different locations',
-                    'Teams that prefer a managed cloud environment over on-premise servers',
-                    'Owners who want secure access without maintaining a local server room',
-                    'MSMEs planning for growth and business continuity',
+                    'You want to access TallyPrime from home, office, or while traveling.',
+                    'You are tired of maintaining a server and worrying about data backups.',
+                    'Your laptop broke or got stolen and you lost days of work.',
+                    'You have multiple locations or a work-from-home team.',
                   ].map((item) => (
                     <li key={item} className="flex items-start gap-2.5 text-sm text-slate-600">
                       <span
@@ -421,8 +421,8 @@ export default function AWSCloudPage() {
 
             {/* FAQ */}
             <section id="faqs" className="scroll-mt-16 bg-white rounded-xl border border-slate-200 p-6">
-              <h2 className="text-lg font-bold text-slate-900 mb-1">AWS Cloud Server FAQs</h2>
-              <p className="text-sm text-slate-500 mb-5">Frequently asked questions about AWS Cloud Server.</p>
+              <h2 className="text-lg font-bold text-slate-900 mb-1">AWS Cloud FAQs</h2>
+              <p className="text-sm text-slate-500 mb-5">Common questions about running TallyPrime on AWS Cloud.</p>
               <div className="space-y-0 divide-y divide-slate-100">
                 {faqs.map((faq, idx) => (
                   <div key={idx}>
@@ -457,8 +457,8 @@ export default function AWSCloudPage() {
             {/* Still not satisfied? */}
             <section className="bg-white rounded-xl border border-slate-200 p-6">
               <div className="text-center mb-5">
-                <h2 className="text-lg font-bold text-slate-900">Still not satisfied?</h2>
-                <p className="text-sm text-slate-500 mt-1">Tell us your requirements and we will find the right solution for you.</p>
+                <h2 className="text-lg font-bold text-slate-900">Not sure if cloud is right for you?</h2>
+                <p className="text-sm text-slate-500 mt-1">Tell us how you currently use Tally and we will recommend the best setup for your business.</p>
               </div>
               <form onSubmit={handleInquirySubmit} className="max-w-xl mx-auto space-y-3">
                 <input
@@ -510,8 +510,8 @@ export default function AWSCloudPage() {
 
             {/* Pricing - Hidden reveal */}
             <section id="pricing" className="scroll-mt-16 bg-white rounded-xl border border-slate-200 p-6">
-              <h2 className="text-lg font-bold text-slate-900 mb-1">AWS Cloud Server Pricing</h2>
-              <p className="text-sm text-slate-500 mb-5">View pricing plans for AWS Cloud Server.</p>
+              <h2 className="text-lg font-bold text-slate-900 mb-1">Simple Cloud Pricing</h2>
+              <p className="text-sm text-slate-500 mb-5">Pay a simple monthly or yearly fee. No server costs, no IT team needed, no surprises.</p>
               <button
                 type="button"
                 onClick={() => setShowPricing(!showPricing)}
@@ -552,7 +552,7 @@ export default function AWSCloudPage() {
                     </p>
                     <button
                       type="button"
-                      onClick={() => openModal('quote', 'AWS Cloud Server', 'Please share pricing details for AWS Cloud Server.')}
+                      onClick={() => openModal('quote', 'AWS Cloud', 'Please share pricing details for AWS Cloud.')}
                       className="mt-2 inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-[10px] font-bold uppercase tracking-wider text-white transition-all hover:scale-[1.02]"
                       style={{ backgroundColor: BRAND_PRIMARY }}
                     >
@@ -574,9 +574,9 @@ export default function AWSCloudPage() {
             {/* Get Best Quote */}
             <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
               <div className="px-5 py-4 text-white" style={{ backgroundColor: BRAND_SECONDARY }}>
-                <h3 className="text-sm font-bold">Get Best Quote for AWS Cloud Server</h3>
+                <h3 className="text-sm font-bold">Get Best Quote for AWS Cloud</h3>
                 <p className="text-[12px] text-white/75 mt-1 leading-relaxed">
-                  Connect with our experts to get the best quote for your business.
+                  Tell us your team size and we will recommend the perfect cloud setup for your business.
                 </p>
               </div>
               <form onSubmit={handleSidebarSubmit} className="p-5 space-y-3">
@@ -698,7 +698,7 @@ export default function AWSCloudPage() {
                     <button
                       key={link.label}
                       type="button"
-                      onClick={() => openModal(link.type!, 'AWS Cloud Server')}
+                      onClick={() => openModal(link.type!, 'AWS Cloud')}
                       className="block w-full text-left text-sm text-slate-600 hover:text-[#316852] transition-colors py-1"
                     >
                       {link.label}

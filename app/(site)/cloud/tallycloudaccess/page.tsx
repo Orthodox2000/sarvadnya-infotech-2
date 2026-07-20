@@ -9,67 +9,147 @@ import UnifiedContactModal, { FormType } from '../../../components/UnifiedContac
 const BRAND_PRIMARY = '#316852';
 const BRAND_SECONDARY = '#1e4d3a';
 
-const features = [
-  { title: 'Bank-Level Security', desc: 'Your financial data is locked with enterprise-grade security. You can even set a custom Recovery Key, meaning absolutely no one can access your data except you.' },
-  { title: 'Set It and Forget It', desc: 'Choose a time, and TallyDrive will back up your data automatically every single day — even if TallyPrime is closed.' },
-  { title: 'Instant 1-Click Restore', desc: 'Computer crashed? Don\'t panic. You can download and restore your latest backup in minutes with a single click.' },
-  { title: 'Fast & Saves Internet', desc: 'After the first backup, TallyDrive only uploads the new entries you made that day. It takes seconds and won\'t slow down your internet connection.' },
-  { title: 'Easy Backup Management', desc: 'No IT skills required. See all your backups on one simple screen, delete old ones, or manage who in your team has access.' },
-  { title: 'Works With Your Tally', desc: 'Whether you use a single-user Silver edition or a multi-user Server setup, TallyDrive works perfectly out of the box.' },
+const cloudPartners = [
+  { name: 'AWS', logo: '/PartnerBrands/AWS.png' },
+  { name: 'Oracle Cloud', logo: null, initials: 'OCI' },
+  { name: 'Windows Server', logo: null, initials: 'WS' },
+];
+
+const plans = [
+  {
+    name: 'Basic',
+    users: '1 User',
+    price: 'NA',
+    period: '',
+    desc: 'Perfect for solo founders and sole proprietors who need secure, anywhere access to their business data.',
+    features: [
+      'Single user access',
+      'TallyPrime Silver features',
+      'Automatic daily backups',
+      '24/7 cloud access',
+      'Email support',
+    ],
+  },
+  {
+    name: 'Standard',
+    users: 'Up to 5 Users',
+    price: 'NA',
+    period: '',
+    desc: 'Ideal for small teams who want to collaborate in real-time without maintaining an office server.',
+    features: [
+      'Up to 5 concurrent users',
+      'TallyPrime Gold features',
+      'Automatic daily backups',
+      '24/7 cloud access',
+      'Priority support',
+      'Free setup assistance',
+    ],
+    popular: true,
+  },
+  {
+    name: 'Professional',
+    users: '10+ Users',
+    price: 'NA',
+    period: '',
+    desc: 'Built for growing businesses and enterprises that need a fully managed, scalable cloud environment.',
+    features: [
+      'Unlimited users',
+      'TallyPrime Server features',
+      'Automatic daily backups',
+      '24/7 cloud access',
+      'Dedicated account manager',
+      'Free setup & migration',
+      'Custom integrations',
+    ],
+  },
+];
+
+const coreFeatures = [
+  { title: 'Access From Anywhere', desc: 'Log in from any laptop, desktop, Mac, or tablet with internet. Your TallyPrime data is always available — whether you are at home, office, or traveling.' },
+  { title: 'Works on Any Device', desc: 'Use a web browser, Windows client, Mac client, or Linux client. Even old laptops work perfectly since all processing happens on powerful cloud servers.' },
+  { title: 'Full Desktop Experience', desc: 'Need Excel, Word, or other Windows apps alongside Tally? Get a complete Windows desktop in the cloud with printing, scanners, and USB support.' },
+  { title: 'Complete Data Safety', desc: 'Bank-level AES-256 encryption keeps your financial data locked. If a laptop breaks or is stolen, your data remains safe in the cloud. Just log in from another device.' },
+  { title: 'Automatic Backups', desc: 'Your data is backed up automatically every day. No manual backup schedules, no USB drives, no worrying about data loss.' },
+  { title: 'Free Setup & Migration', desc: 'Sarvadnya experts set up everything and migrate your existing company data. No IT team needed — we handle it all.' },
+  { title: 'Low Internet Usage', desc: 'Once loaded, TallyPrime on cloud uses very little bandwidth. Even a 4G mobile hotspot works for daily work. Just 2 Mbps is enough.' },
+  { title: '99.99% Uptime', desc: 'Enterprise-grade cloud infrastructure ensures your TallyPrime is available whenever you need it. No downtime, no disruptions.' },
+  { title: 'Print Invoices Locally', desc: 'Print Tally bills and reports directly to your office printer from the cloud. Works with local printers, scanners, and USB devices.' },
 ];
 
 const faqs = [
   {
-    q: 'What exactly does TallyDrive do?',
-    a: 'It is an automatic safety net for your accounting data. It securely saves a copy of your TallyPrime data to the internet so you never lose your records if your computer breaks.',
+    q: 'What is TallyPrime Cloud Access?',
+    a: 'TallyPrime Cloud Access lets you run TallyPrime on secure cloud servers and access it from any laptop, desktop, or tablet with internet. You get the same TallyPrime experience — but without needing a server in your office.',
   },
   {
-    q: 'How much cloud storage do I get?',
-    a: 'Storage is included for free as long as your Tally Software Services (TSS) subscription is active! Silver users get 1 GB, Gold users get 5 GB, and Server users get 25+ GB.',
+    q: 'How is this different from installing Tally on my computer?',
+    a: 'When you install Tally locally, you can only work from that one computer. With Cloud Access, your Tally runs on a powerful cloud server, so you can log in from anywhere — home, office, while traveling, or from a branch office.',
+  },
+  {
+    q: 'Do I need a powerful laptop to use it?',
+    a: 'Not at all. Since the heavy processing happens on cloud servers, even a basic laptop with 2 Mbps internet works perfectly. You can also use a Mac, tablet, or web browser.',
+  },
+  {
+    q: 'Can I print invoices from the cloud?',
+    a: 'Yes. You can print directly to your office printer. The Windows Cloud Desktop option also supports scanners, USB devices, and all peripherals you use at your office.',
   },
   {
     q: 'Is my financial data safe in the cloud?',
-    a: 'Absolutely. TallyDrive uses bank-level encryption. By setting a Backup Password, your data becomes unreadable to everyone — even to Tally themselves.',
+    a: 'Absolutely. Your data is encrypted with bank-level AES-256 encryption. Regular automatic backups are included. Even if your laptop breaks, gets stolen, or crashes, your data remains safe and accessible from any other device.',
   },
   {
-    q: 'Do I have to remember to click \'Backup\' every day?',
-    a: 'No. You can schedule it to run automatically at the end of the day, even if you\'ve already closed the Tally application.',
+    q: 'Can I use Excel and Tally together?',
+    a: 'Yes. The Windows Cloud Desktop option gives you a full Windows environment where you can run TallyPrime, Microsoft Excel, Word, and any other software side-by-side — just like sitting at your office desk.',
   },
   {
-    q: 'How do I get my data back if my computer crashes?',
-    a: 'Simply log into TallyDrive on your new computer and use the 1-Click Restore feature. You\'ll be back to billing in minutes.',
+    q: 'What infrastructure providers do you use?',
+    a: 'We partner with leading cloud infrastructure providers including AWS (Amazon Web Services), Oracle Cloud Infrastructure (OCI), and Windows Server to deliver reliable, secure, and high-performance cloud access.',
+  },
+  {
+    q: 'How do I get started?',
+    a: 'Simply contact our team. We will set up everything — cloud server, TallyPrime installation, data migration, and user accounts. You just log in and start working. Free setup support is included.',
+  },
+  {
+    q: 'Can I migrate my existing data to the cloud?',
+    a: 'Yes. Our team will move all your existing company data, settings, and configurations to the cloud. You will not lose a single invoice, report, or entry.',
   },
 ];
+
+const compatibleSystems = {
+  access: ['Web Browser (RDP/HTML5)', 'Windows Client', 'Mac Client', 'Linux Client', 'Tablets'],
+  peripherals: ['Local Printers', 'Scanners', 'USB Devices', 'Barcode Readers'],
+};
 
 const navSections = [
-  { id: 'overview', label: 'Product Information' },
+  { id: 'overview', label: 'Overview' },
   { id: 'features', label: 'Features' },
+  { id: 'plans', label: 'Plans & Pricing' },
+  { id: 'compatibility', label: 'Compatibility' },
   { id: 'faqs', label: 'FAQ' },
-  { id: 'pricing', label: 'Pricing' },
 ];
 
-export default function TallyDrivePage() {
+export default function TallyCloudAccessPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalType, setModalType] = useState<FormType>('quote');
-  const [modalService, setModalService] = useState('TallyDrive Backup');
+  const [modalService, setModalService] = useState('Tally Cloud Access');
   const [modalDetails, setModalDetails] = useState('');
   const [activeNav, setActiveNav] = useState('overview');
   const [openFaq, setOpenFaq] = useState<number | null>(0);
   const [stickyNav, setStickyNav] = useState(false);
-  const [showPricing, setShowPricing] = useState(false);
-  const [formName, setFormName] = useState('');
-  const [formEmail, setFormEmail] = useState('');
-  const [formPhone, setFormPhone] = useState('');
-  const [formLoading, setFormLoading] = useState(false);
-  const [formMsg, setFormMsg] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+  const [activePlan, setActivePlan] = useState<number | null>(null);
   const [inquiryName, setInquiryName] = useState('');
   const [inquiryContact, setInquiryContact] = useState('');
   const [inquiryMsg, setInquiryMsg] = useState('');
   const [inquiryLoading, setInquiryLoading] = useState(false);
   const [inquiryStatus, setInquiryStatus] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+  const [formName, setFormName] = useState('');
+  const [formEmail, setFormEmail] = useState('');
+  const [formPhone, setFormPhone] = useState('');
+  const [formLoading, setFormLoading] = useState(false);
+  const [formMsg, setFormMsg] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
   const navRef = useRef<HTMLDivElement>(null);
 
-  const openModal = (type: FormType, service = 'TallyDrive Backup', details = '') => {
+  const openModal = (type: FormType, service = 'Tally Cloud Access', details = '') => {
     setModalType(type);
     setModalService(service);
     setModalDetails(details);
@@ -92,7 +172,7 @@ export default function TallyDrivePage() {
           name: inquiryName,
           email: inquiryContact,
           contact: inquiryContact,
-          service: 'TallyDrive Backup',
+          service: 'Tally Cloud Access',
           formType: 'inquiry',
           description: inquiryMsg,
         }),
@@ -125,9 +205,9 @@ export default function TallyDrivePage() {
           name: formName,
           email: formEmail,
           contact: formPhone,
-          service: 'TallyDrive Backup',
+          service: 'Tally Cloud Access',
           formType: 'callback',
-          description: 'Requesting a call back for TallyDrive Backup pricing.',
+          description: 'Requesting a call back for Tally Cloud Access pricing.',
         }),
       });
       if (!res.ok) throw new Error('Submission failed');
@@ -169,7 +249,7 @@ export default function TallyDrivePage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#C0C0C0]/15 text-slate-900 font-sans">
+    <div className="min-h-screen bg-[#f5f7fa] text-slate-900 font-sans">
       {/* Breadcrumb */}
       <div className="bg-white border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-6">
@@ -177,9 +257,9 @@ export default function TallyDrivePage() {
             <ul className="flex items-center gap-1.5 text-[11px] font-medium text-slate-500">
               <li><Link href="/" className="hover:text-[#316852] transition-colors">Home</Link></li>
               <li className="text-slate-300 mx-0.5">/</li>
-              <li><Link href="/products" className="hover:text-[#316852] transition-colors">Products</Link></li>
+              <li><Link href="/cloud" className="hover:text-[#316852] transition-colors">Cloud</Link></li>
               <li className="text-slate-300 mx-0.5">/</li>
-              <li className="text-slate-800 font-semibold">TallyDrive</li>
+              <li className="text-slate-800 font-semibold">Tally Cloud Access</li>
             </ul>
           </div>
         </div>
@@ -191,13 +271,13 @@ export default function TallyDrivePage() {
           <div className="flex items-start gap-5">
             {/* Logo */}
             <div className="w-[72px] h-[72px] shrink-0 rounded-xl border border-slate-200 bg-white flex items-center justify-center shadow-sm p-2.5">
-              <Image src="/tallydrive logo.png" alt="TallyDrive" width={48} height={48} className="object-contain" />
+              <Image src="/tally%20on%20cloud.png" alt="Cloud Access" width={48} height={48} className="object-contain" />
             </div>
 
             {/* Info */}
             <div className="flex-1 min-w-0">
               <div className="flex items-center flex-wrap gap-x-3 gap-y-1">
-                <h1 className="text-xl md:text-2xl font-bold text-slate-900">TallyDrive</h1>
+                <h1 className="text-xl md:text-2xl font-bold text-slate-900">TallyPrime Cloud Access</h1>
                 <span
                   className="inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider border"
                   style={{
@@ -207,30 +287,29 @@ export default function TallyDrivePage() {
                   }}
                 >
                   <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: BRAND_PRIMARY }} />
-                  Cloud Backup
+                  All-In-One Cloud
                 </span>
               </div>
-              <div className="flex items-center flex-wrap gap-x-4 gap-y-1 mt-1.5"></div>
               <p className="text-[13px] text-slate-500 mt-1.5 leading-relaxed max-w-3xl">
-                Never lose your accounting data again. TallyDrive automatically backs up your TallyPrime data to the cloud — even if your computer crashes, gets stolen, or gets a virus.
+                Access TallyPrime from anywhere, on any device — powered by AWS, Oracle Cloud, and Windows Server infrastructure.
               </p>
             </div>
 
             {/* Action Buttons */}
             <div className="hidden md:flex flex-col gap-2 shrink-0">
               <button
-                onClick={() => openModal('demo', 'TallyDrive Backup')}
+                onClick={() => openModal('demo', 'Tally Cloud Access')}
                 className="px-6 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider text-white shadow-lg transition-all hover:scale-[1.02]"
                 style={{ backgroundColor: BRAND_PRIMARY }}
               >
                 Get Demo
               </button>
               <button
-                onClick={() => scrollToSection('pricing')}
+                onClick={() => scrollToSection('plans')}
                 className="px-6 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider border transition-all hover:scale-[1.02]"
                 style={{ borderColor: BRAND_PRIMARY, color: BRAND_PRIMARY }}
               >
-                Get Pricing
+                View Plans
               </button>
             </div>
           </div>
@@ -239,18 +318,18 @@ export default function TallyDrivePage() {
         {/* Mobile action buttons */}
         <div className="md:hidden flex gap-2 px-6 pb-4">
           <button
-            onClick={() => openModal('demo', 'TallyDrive Backup')}
+            onClick={() => openModal('demo', 'Tally Cloud Access')}
             className="flex-1 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider text-white shadow-lg transition-all"
             style={{ backgroundColor: BRAND_PRIMARY }}
           >
             Get Demo
           </button>
           <button
-            onClick={() => scrollToSection('pricing')}
+            onClick={() => scrollToSection('plans')}
             className="flex-1 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider border transition-all"
             style={{ borderColor: BRAND_PRIMARY, color: BRAND_PRIMARY }}
           >
-            Get Pricing
+            View Plans
           </button>
         </div>
       </div>
@@ -293,26 +372,25 @@ export default function TallyDrivePage() {
 
             {/* Overview */}
             <section id="overview" className="scroll-mt-16 bg-white rounded-xl border border-slate-200 p-6">
-              <h2 className="text-lg font-bold text-slate-900 mb-3">What is TallyDrive?</h2>
+              <h2 className="text-lg font-bold text-slate-900 mb-3">What is TallyPrime Cloud Access?</h2>
               <div className="text-sm text-slate-600 leading-relaxed space-y-3">
                 <p>
-                  Stop worrying about your computer crashing or losing years of accounting data. TallyDrive is a
-                  built-in safety net for TallyPrime. It works silently in the background, automatically saving your
-                  company records to a highly secure cloud vault.
+                  Running TallyPrime on your office computer means you can only work from one place. If that computer crashes, breaks, or gets stolen, your data is at risk. TallyPrime Cloud Access solves all of this.
                 </p>
                 <p>
-                  Forget about manually copying files to pen drives or external hard disks. Whether your laptop gets
-                  stolen, your hard drive fails, or you get hit by a virus, TallyDrive ensures you can recover
-                  everything and get your business back up and running with a single click.
+                  Your TallyPrime runs on powerful, secure cloud servers managed by industry leaders like <strong>Amazon Web Services (AWS)</strong>, <strong>Oracle Cloud Infrastructure (OCI)</strong>, and <strong>Windows Server</strong>. You simply log in from any laptop, desktop, Mac, or tablet with internet and start working. Your data is always safe, always backed up, and accessible from anywhere in the world.
+                </p>
+                <p>
+                  Whether you need a lightweight cloud workspace or a full Windows desktop with Excel, printing, and peripheral support — we have the right cloud plan for your business. Starting at just <strong>₹600 per user per month</strong>.
                 </p>
               </div>
               {/* Hero stats */}
               <div className="mt-5 grid grid-cols-2 sm:grid-cols-4 gap-3">
                 {[
-                  { label: 'Type', value: 'Automatic Backup' },
-                  { label: 'Security', value: 'Bank-Level' },
-                  { label: 'Effort', value: 'Zero Manual Work' },
-                  { label: 'Recovery', value: '1-Click Restore' },
+                  { label: 'Starting at', value: '₹600' },
+                  { label: 'Access', value: '24/7' },
+                  { label: 'Security', value: 'AES-256' },
+                  { label: 'Uptime', value: '99.99%' },
                 ].map((stat) => (
                   <div
                     key={stat.label}
@@ -327,18 +405,35 @@ export default function TallyDrivePage() {
                   </div>
                 ))}
               </div>
+
+              {/* Cloud Partners */}
+              <div className="mt-5 pt-5 border-t border-slate-100">
+                <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-3">Powered By</p>
+                <div className="flex items-center gap-4 flex-wrap">
+                  {cloudPartners.map((partner) => (
+                    <div key={partner.name} className="flex items-center gap-2 px-3 py-2 rounded-lg bg-slate-50 border border-slate-100">
+                      {partner.logo ? (
+                        <Image src={partner.logo} alt={partner.name} width={24} height={24} className="object-contain" />
+                      ) : (
+                        <span className="w-6 h-6 rounded flex items-center justify-center text-[8px] font-black text-white" style={{ backgroundColor: BRAND_PRIMARY }}>
+                          {partner.initials}
+                        </span>
+                      )}
+                      <span className="text-xs font-bold text-slate-700">{partner.name}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </section>
-
-
 
             {/* Features */}
             <section id="features" className="scroll-mt-16 bg-white rounded-xl border border-slate-200 p-6">
-              <h2 className="text-lg font-bold text-slate-900 mb-1">Why MSME Owners Love TallyDrive</h2>
+              <h2 className="text-lg font-bold text-slate-900 mb-1">Why MSMEs Love Cloud Access</h2>
               <p className="text-sm text-slate-500 mb-5">
-                Set it once, forget it forever. Your data is automatically backed up and instantly recoverable.
+                Everything your business needs to work from anywhere — cloud workspace, full desktop, or both.
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                {features.map((feature) => (
+                {coreFeatures.map((feature) => (
                   <div
                     key={feature.title}
                     className="rounded-lg border border-slate-100 p-4 hover:shadow-sm transition-shadow"
@@ -357,16 +452,18 @@ export default function TallyDrivePage() {
               </div>
             </section>
 
-            {/* When TallyDrive is the right choice + Compatible Systems */}
-            <section className="grid sm:grid-cols-2 gap-6">
+            {/* When Cloud Access is the right choice + Compatible Systems */}
+            <section id="compatibility" className="scroll-mt-16 grid sm:grid-cols-2 gap-6">
               <div className="bg-white rounded-xl border border-slate-200 p-6">
-                <h2 className="text-lg font-bold text-slate-900 mb-4">Is TallyDrive right for you? It is if:</h2>
+                <h2 className="text-lg font-bold text-slate-900 mb-4">It&apos;s time to move to the cloud if:</h2>
                 <ul className="space-y-3">
                   {[
-                    'You are tired of manually copying your Tally data to a pen drive or hard disk every day.',
-                    'You worry about computer viruses, ransomware, or hard drive crashes destroying your financial records.',
-                    'You have a growing team and need a centralized, safe place to store your company backups.',
-                    'You want the absolute peace of mind knowing your business data is 100% safe and instantly recoverable.',
+                    'You want to access TallyPrime from home, office, or while traveling.',
+                    'You are tired of maintaining a server and worrying about data backups.',
+                    'Your laptop broke or got stolen and you lost days of work.',
+                    'You have multiple locations or a work-from-home team.',
+                    'Your team uses Excel or Word alongside Tally every day.',
+                    'You need to print invoices and reports to your office printer.',
                   ].map((item) => (
                     <li key={item} className="flex items-start gap-2.5 text-sm text-slate-600">
                       <span
@@ -387,31 +484,21 @@ export default function TallyDrivePage() {
                 <h2 className="text-lg font-bold text-slate-900 mb-4">Compatible Systems</h2>
                 <div className="space-y-4">
                   <div>
-                    <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Backup Sources</h3>
+                    <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Access Methods</h3>
                     <div className="flex flex-wrap gap-2">
-                      {['Tally Company Data', 'Local Business Files'].map((src) => (
-                        <span key={src} className="inline-flex rounded-md px-2.5 py-1 text-[12px] font-medium border" style={{ borderColor: `${BRAND_PRIMARY}25`, backgroundColor: `${BRAND_PRIMARY}06`, color: BRAND_PRIMARY }}>
-                          {src}
+                      {compatibleSystems.access.map((os) => (
+                        <span key={os} className="inline-flex rounded-md px-2.5 py-1 text-[12px] font-medium border" style={{ borderColor: `${BRAND_PRIMARY}25`, backgroundColor: `${BRAND_PRIMARY}06`, color: BRAND_PRIMARY }}>
+                          {os}
                         </span>
                       ))}
                     </div>
                   </div>
                   <div>
-                    <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Security</h3>
+                    <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Peripherals</h3>
                     <div className="flex flex-wrap gap-2">
-                      {['Bank-Grade Encryption', 'Custom Backup Password', 'Private Recovery Key'].map((sec) => (
-                        <span key={sec} className="inline-flex rounded-md px-2.5 py-1 text-[12px] font-medium border" style={{ borderColor: `${BRAND_PRIMARY}25`, backgroundColor: `${BRAND_PRIMARY}06`, color: BRAND_PRIMARY }}>
-                          {sec}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                  <div>
-                    <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Integrations</h3>
-                    <div className="flex flex-wrap gap-2">
-                      {['TallyPrime Silver', 'TallyPrime Gold', 'TallyPrime Server'].map((item) => (
-                        <span key={item} className="inline-flex rounded-md px-2.5 py-1 text-[12px] font-medium border" style={{ borderColor: `${BRAND_PRIMARY}25`, backgroundColor: `${BRAND_PRIMARY}06`, color: BRAND_PRIMARY }}>
-                          {item}
+                      {compatibleSystems.peripherals.map((device) => (
+                        <span key={device} className="inline-flex rounded-md px-2.5 py-1 text-[12px] font-medium text-slate-600 bg-slate-50 border border-slate-200">
+                          {device}
                         </span>
                       ))}
                     </div>
@@ -420,10 +507,77 @@ export default function TallyDrivePage() {
               </div>
             </section>
 
+            {/* Plans & Pricing */}
+            <section id="plans" className="scroll-mt-16 bg-white rounded-xl border border-slate-200 p-6">
+              <div className="mb-6">
+                <h2 className="text-lg font-bold text-slate-900 mb-1">Simple Cloud Pricing</h2>
+                <p className="text-sm text-slate-500">Pay a simple monthly fee per user. No server costs, no IT team needed, no surprises.</p>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {plans.map((plan, idx) => (
+                  <div
+                    key={plan.name}
+                    className={`relative rounded-xl border p-5 transition-all duration-300 cursor-pointer ${
+                      plan.popular
+                        ? 'border-[#316852] shadow-lg ring-1 ring-[#316852]/20'
+                        : 'border-slate-200 hover:border-[#316852]/30 hover:shadow-md'
+                    }`}
+                    style={{
+                      backgroundColor: activePlan === idx ? `${BRAND_PRIMARY}05` : plan.popular ? `${BRAND_PRIMARY}08` : 'transparent',
+                    }}
+                    onMouseEnter={() => setActivePlan(idx)}
+                  >
+                    {plan.popular && (
+                      <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+                        <span className="inline-flex items-center gap-1 rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-white shadow-md" style={{ backgroundColor: BRAND_PRIMARY }}>
+                          Most Popular
+                        </span>
+                      </div>
+                    )}
+                    <div className="mb-4">
+                      <h3 className="text-base font-bold text-slate-900">{plan.name}</h3>
+                      <p className="text-[11px] text-slate-500 font-medium mt-0.5">{plan.users}</p>
+                    </div>
+                    <div className="mb-4">
+                      <span className="text-2xl font-black" style={{ color: BRAND_PRIMARY }}>{plan.price}</span>
+                      <span className="text-xs text-slate-500 font-medium">{plan.period}</span>
+                    </div>
+                    <p className="text-[13px] text-slate-600 leading-relaxed mb-4">{plan.desc}</p>
+                    <ul className="space-y-2 mb-5">
+                      {plan.features.map((feature) => (
+                        <li key={feature} className="flex items-start gap-2 text-[12px] text-slate-600">
+                          <svg className="w-3.5 h-3.5 mt-0.5 shrink-0" viewBox="0 0 24 24" fill={BRAND_PRIMARY}>
+                            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" />
+                          </svg>
+                          <span>{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
+                    <button
+                      onClick={() => openModal('quote', `Tally Cloud Access - ${plan.name}`, `Interested in the ${plan.name} plan (${plan.users}). Please share details.`)}
+                      className="w-full py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider transition-all hover:scale-[1.01]"
+                      style={{
+                        backgroundColor: plan.popular ? BRAND_PRIMARY : 'transparent',
+                        color: plan.popular ? '#fff' : BRAND_PRIMARY,
+                        border: plan.popular ? 'none' : `1px solid ${BRAND_PRIMARY}`,
+                      }}
+                    >
+                      Get Started
+                    </button>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-5 p-4 rounded-lg bg-slate-50 border border-slate-100">
+                <p className="text-[11px] text-slate-500 leading-relaxed">
+                  All plans include managed cloud hosting, automatic daily backups, TSS (Tally Software Services), and free setup support. Prices shown are indicative. Contact our sales team for the latest pricing, enterprise discounts, and custom configurations.
+                </p>
+              </div>
+            </section>
+
             {/* FAQ */}
             <section id="faqs" className="scroll-mt-16 bg-white rounded-xl border border-slate-200 p-6">
-              <h2 className="text-lg font-bold text-slate-900 mb-1">TallyDrive FAQs</h2>
-              <p className="text-sm text-slate-500 mb-5">Frequently asked questions about TallyDrive cloud backup.</p>
+              <h2 className="text-lg font-bold text-slate-900 mb-1">Cloud Access FAQs</h2>
+              <p className="text-sm text-slate-500 mb-5">Common questions about TallyPrime Cloud Access.</p>
               <div className="space-y-0 divide-y divide-slate-100">
                 {faqs.map((faq, idx) => (
                   <div key={idx}>
@@ -458,8 +612,8 @@ export default function TallyDrivePage() {
             {/* Still not satisfied? */}
             <section className="bg-white rounded-xl border border-slate-200 p-6">
               <div className="text-center mb-5">
-                <h2 className="text-lg font-bold text-slate-900">Have questions about securing your data?</h2>
-                <p className="text-sm text-slate-500 mt-1">Tell us how you currently back up your data, and we&apos;ll show you how TallyDrive can automate it.</p>
+                <h2 className="text-lg font-bold text-slate-900">Not sure which cloud setup fits you?</h2>
+                <p className="text-sm text-slate-500 mt-1">Tell us how your team works and we will recommend the best cloud plan for your business.</p>
               </div>
               <form onSubmit={handleInquirySubmit} className="max-w-xl mx-auto space-y-3">
                 <input
@@ -509,74 +663,6 @@ export default function TallyDrivePage() {
               </form>
             </section>
 
-            {/* Pricing - Hidden reveal */}
-            <section id="pricing" className="scroll-mt-16 bg-white rounded-xl border border-slate-200 p-6">
-              <h2 className="text-lg font-bold text-slate-900 mb-1">TallyDrive Pricing</h2>
-              <p className="text-sm text-slate-500 mb-5">TallyDrive storage is automatically included with your active TSS subscription at no extra cost.</p>
-              <button
-                type="button"
-                onClick={() => setShowPricing(!showPricing)}
-                className="inline-flex items-center gap-2 rounded-lg px-5 py-2.5 text-xs font-bold uppercase tracking-wider text-white shadow-lg transition-all hover:scale-[1.02]"
-                style={{ backgroundColor: BRAND_PRIMARY }}
-              >
-                {showPricing ? 'Hide Plans' : 'View Plans'}
-                <svg className={`w-3.5 h-3.5 transition-transform duration-200 ${showPricing ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-                </svg>
-              </button>
-              {showPricing && (
-                <div className="mt-5 overflow-x-auto rounded-lg border border-slate-200">
-                  <table className="w-full text-left text-sm">
-                    <thead>
-                      <tr className="bg-slate-50 text-[10px] font-bold uppercase tracking-wider text-slate-500">
-                        <th className="px-4 py-3">Plan</th>
-                        <th className="px-4 py-3">Storage</th>
-                        <th className="px-4 py-3">Validity</th>
-                        <th className="px-4 py-3">Price</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr className="border-b border-slate-100">
-                        <td className="px-4 py-3 font-bold text-slate-900">TallyDrive Basic (Free)</td>
-                        <td className="px-4 py-3 text-slate-600">1 GB</td>
-                        <td className="px-4 py-3 text-slate-600">Active TSS required</td>
-                        <td className="px-4 py-3 font-bold" style={{ color: BRAND_PRIMARY }}>Included with Silver</td>
-                      </tr>
-                      <tr className="border-b border-slate-100">
-                        <td className="px-4 py-3 font-bold text-slate-900">TallyDrive Pro</td>
-                        <td className="px-4 py-3 text-slate-600">5 GB</td>
-                        <td className="px-4 py-3 text-slate-600">Active TSS required</td>
-                        <td className="px-4 py-3 font-bold" style={{ color: BRAND_PRIMARY }}>Included with Gold</td>
-                      </tr>
-                      <tr>
-                        <td className="px-4 py-3 font-bold text-slate-900">TallyDrive Enterprise</td>
-                        <td className="px-4 py-3 text-slate-600">25 GB+</td>
-                        <td className="px-4 py-3 text-slate-600">Active TSS required</td>
-                        <td className="px-4 py-3 font-bold" style={{ color: BRAND_PRIMARY }}>Included with Server</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                  <div className="px-4 py-3 bg-slate-50 border-t border-slate-200">
-                    <p className="text-[11px] text-slate-500">
-                      Need more space or need to renew your TSS to activate TallyDrive? Contact our team for immediate assistance.
-                    </p>
-                    <button
-                      type="button"
-                      onClick={() => openModal('quote', 'TallyDrive Backup', 'Please share pricing details for TallyDrive Backup.')}
-                      className="mt-2 inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-[10px] font-bold uppercase tracking-wider text-white transition-all hover:scale-[1.02]"
-                      style={{ backgroundColor: BRAND_PRIMARY }}
-                    >
-                      Renew TSS / Get Quote
-                      <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                      </svg>
-                    </button>
-                  </div>
-                </div>
-              )}
-            </section>
-
-
           </div>
 
           {/* ========== RIGHT SIDEBAR (3/12) ========== */}
@@ -585,9 +671,9 @@ export default function TallyDrivePage() {
             {/* Get Best Quote */}
             <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
               <div className="px-5 py-4 text-white" style={{ backgroundColor: BRAND_SECONDARY }}>
-                <h3 className="text-sm font-bold">Get Best Quote for TallyDrive</h3>
+                <h3 className="text-sm font-bold">Get Best Quote for Cloud Access</h3>
                 <p className="text-[12px] text-white/75 mt-1 leading-relaxed">
-                  Tell us your current Tally setup and we will show you how to activate TallyDrive today.
+                  Tell us your team size and we will recommend the perfect cloud setup for your business.
                 </p>
               </div>
               <form onSubmit={handleSidebarSubmit} className="p-5 space-y-3">
@@ -641,15 +727,15 @@ export default function TallyDrivePage() {
               </form>
             </div>
 
-            {/* Most Popular Software */}
+            {/* Most Popular Products */}
             <div className="bg-white rounded-xl border border-slate-200 p-5">
-              <h3 className="text-sm font-bold text-slate-900 mb-4">Most Popular Software</h3>
+              <h3 className="text-sm font-bold text-slate-900 mb-4">Most Popular Products</h3>
               <div className="space-y-4">
                 {[
-                  { name: 'TallyPrime Silver', slug: '/products/silver', rating: '4.8', reviews: '120' },
                   { name: 'TallyPrime Gold', slug: '/products/gold', rating: '4.8', reviews: '120' },
                   { name: 'TallyPrime Server', slug: '/products/server', rating: '4.7', reviews: '85' },
-                  { name: 'Tally Cloud Access', slug: '/cloud/tallycloudaccess', rating: '4.8', reviews: '85' },
+                  { name: 'Tally on WhatsApp', slug: '/services/tally-on-whatsapp', rating: '4.9', reviews: '200' },
+                  { name: 'NoSky Cloud Backup', slug: '/cloud/nosky', rating: '4.6', reviews: '55' },
                 ].map((item) => (
                   <Link
                     key={item.name}
@@ -691,10 +777,10 @@ export default function TallyDrivePage() {
               <h3 className="text-sm font-bold text-slate-900 mb-3">Quick Links</h3>
               <div className="space-y-2">
                 {[
-                  { label: 'Compare Editions', href: '/products#compare' },
+                  { label: 'Cloud Solutions Guide', href: '/cloud' },
                   { label: 'Book a Demo', type: 'demo' as FormType },
                   { label: 'Technical Support', type: 'support' as FormType },
-                  { label: 'AMC Services', href: '/services/amc' },
+                  { label: 'Cloud Backup (NoSky)', href: '/cloud/nosky' },
                   { label: 'Corporate Training', href: '/services/corporate-training' },
                 ].map((link) =>
                   'href' in link ? (
@@ -709,7 +795,7 @@ export default function TallyDrivePage() {
                     <button
                       key={link.label}
                       type="button"
-                      onClick={() => openModal(link.type!, 'TallyDrive Backup')}
+                      onClick={() => openModal(link.type!, 'Tally Cloud Access')}
                       className="block w-full text-left text-sm text-slate-600 hover:text-[#316852] transition-colors py-1"
                     >
                       {link.label}

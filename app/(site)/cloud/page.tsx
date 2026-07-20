@@ -15,41 +15,20 @@ const TAG_STYLES: Record<string, { bg: string; txt: string }> = {
 
 const cards = [
   {
-    name: 'Tally on AWS Cloud',
+    name: 'Tally Cloud Access',
     icon: (
       <span className="inline-flex items-center justify-center w-9 h-9 rounded-full bg-white/20 text-white text-[10px] font-black tracking-wider">AWS</span>
     ),
-    link: '/cloud/aws',
+    link: '/cloud/tallycloudaccess',
     features: [
-      '100% remote access to your Tally from any device, anywhere in the world.',
-      'Perfect for growing businesses that want bank-level security without buying expensive office servers.',
+      'Access TallyPrime from anywhere, on any device — powered by AWS, Oracle Cloud & Windows Server.',
+      'Starting at just ₹600/user/month. Full desktop, printing, Excel integration, and bank-level security.',
     ],
     tags: [
       { label: 'WORK FROM ANYWHERE', color: 'purple' },
-      { label: 'ZERO HARDWARE', color: 'green' },
+      { label: 'STARTS ₹600/MONTH', color: 'green' },
       { label: 'BANK-LEVEL SECURITY', color: 'blue' },
       { label: 'AUTO BACKUPS', color: 'yellow' },
-    ],
-  },
-  {
-    name: 'Windows Cloud Desktop',
-    icon: (
-      <span className="inline-flex items-center justify-center w-9 h-9 rounded-full bg-white/20">
-        <svg className="w-5 h-5 text-white" viewBox="0 0 88 88" fill="currentColor">
-          <path d="M0 12.402l35.687-4.86.016 34.423-35.67.203v-29.766zm35.67 33.529l.016 34.453-35.687-4.906v-29.75l35.67.203zm4.326-39.011l47.988-6.92v40.09l-47.988.246v-33.416zm47.988 37.52v40.165l-47.988-6.942v-33.454l47.988.231z"/>
-        </svg>
-      </span>
-    ),
-    link: '/cloud/windows',
-    features: [
-      'A complete, private Windows computer hosted securely on the internet.',
-      'Perfect for teams who want to run Tally, use Excel side-by-side, and print to their local office printer.',
-    ],
-    tags: [
-      { label: 'NATIVE DESKTOP', color: 'green' },
-      { label: 'LOCAL PRINTING', color: 'blue' },
-      { label: 'EXCEL INTEGRATION', color: 'yellow' },
-      { label: 'EASY TO USE', color: 'purple' },
     ],
   },
   {
@@ -121,10 +100,10 @@ export default function CloudPage() {
         {/* Header */}
         <section className="relative z-10 pt-16 pb-6 md:pt-8 md:pb-8 px-6 max-w-7xl mx-auto">
           <h1 className="text-4xl md:text-[2.75rem] font-extrabold tracking-tight mb-4 text-[#1a1c20]">
-            Tally Cloud &amp; Backup Solutions
+            Tally Cloud Access &amp; Backup Solutions
           </h1>
           <p className="text-[1.05rem] text-[#4a4d50] leading-relaxed font-medium max-w-2xl">
-            Get the freedom to work from anywhere and the peace of mind that your data is safe. No expensive office servers, no complex IT headaches—just your business, always online.
+            Access TallyPrime from anywhere, on any device — powered by AWS, Oracle Cloud, and Windows Server. Starting at just ₹600/user/month. No expensive office servers, no complex IT headaches.
           </p>
         </section>
 

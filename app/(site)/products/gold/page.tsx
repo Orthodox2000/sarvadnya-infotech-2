@@ -212,7 +212,7 @@ export default function TallyGoldPage() {
               </div>
               <div className="flex items-center flex-wrap gap-x-4 gap-y-1 mt-1.5"></div>
               <p className="text-[13px] text-slate-500 mt-1.5 leading-relaxed max-w-3xl">
-                The ultimate multi-user accounting software for growing teams. Stop sharing one computer and let your entire staff bill, manage inventory, and track payments at the exact same time on a secure local network.
+                Let your entire team use Tally at the same time. No more taking turns on one computer — everyone bills, tracks inventory, and works on the same live data.
               </p>
             </div>
 
@@ -333,9 +333,9 @@ export default function TallyGoldPage() {
 
             {/* Features */}
             <section id="features" className="scroll-mt-16 bg-white rounded-xl border border-slate-200 p-6">
-              <h2 className="text-lg font-bold text-slate-900 mb-1">Key Features of TallyPrime Gold</h2>
+              <h2 className="text-lg font-bold text-slate-900 mb-1">Why Growing Teams Choose TallyPrime Gold</h2>
               <p className="text-sm text-slate-500 mb-5">
-                Here is how TallyPrime Gold completely eliminates workplace bottlenecks and brings your team together.
+                Stop fighting over one computer. Give your whole team access to the same live data.
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                 {features.map((feature) => (
@@ -360,7 +360,7 @@ export default function TallyGoldPage() {
             {/* When Gold is the right choice + Compatible Systems */}
             <section className="grid sm:grid-cols-2 gap-6">
               <div className="bg-white rounded-xl border border-slate-200 p-6">
-                <h2 className="text-lg font-bold text-slate-900 mb-4">When Gold is the right choice</h2>
+                <h2 className="text-lg font-bold text-slate-900 mb-4">Is Gold right for your business? It is if:</h2>
                 <ul className="space-y-3">
                   {[
                     'You have multiple employees who need to use Tally at the exact same time.',
@@ -512,7 +512,7 @@ export default function TallyGoldPage() {
             {/* Pricing - Hidden reveal */}
             <section id="pricing" className="scroll-mt-16 bg-white rounded-xl border border-slate-200 p-6">
               <h2 className="text-lg font-bold text-slate-900 mb-1">TallyPrime Gold Pricing</h2>
-              <p className="text-sm text-slate-500 mb-5">One license covers unlimited users on your local network.</p>
+              <p className="text-sm text-slate-500 mb-5">One license, unlimited users on your local network. No per-user fees.</p>
               <button
                 type="button"
                 onClick={() => setShowPricing(!showPricing)}
@@ -575,9 +575,9 @@ export default function TallyGoldPage() {
             {/* Get Best Quote */}
             <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
               <div className="px-5 py-4 text-white" style={{ backgroundColor: BRAND_SECONDARY }}>
-                <h3 className="text-sm font-bold">Upgrade Your Team Today</h3>
+                <h3 className="text-sm font-bold">Get Best Quote for TallyPrime Gold</h3>
                 <p className="text-[12px] text-white/75 mt-1 leading-relaxed">
-                  Connect with our experts to get the best network deployment and pricing plan for your business.
+                  Tell us your team size and we will recommend the perfect setup and pricing.
                 </p>
               </div>
               <form onSubmit={handleSidebarSubmit} className="p-5 space-y-3">
@@ -639,7 +639,7 @@ export default function TallyGoldPage() {
                   { name: 'TallyPrime Gold', slug: '/products/gold', rating: '4.8', reviews: '120' },
                   { name: 'TallyPrime Server', slug: '/products/server', rating: '4.7', reviews: '85' },
                   { name: 'Tally on WhatsApp', slug: '/services/tally-on-whatsapp', rating: '4.9', reviews: '200' },
-                  { name: 'Cloud AWS', slug: '/cloud/aws', rating: '4.6', reviews: '65' },
+                  { name: 'Tally Cloud Access', slug: '/cloud/tallycloudaccess', rating: '4.8', reviews: '85' },
                 ].map((item) => (
                   <Link
                     key={item.name}

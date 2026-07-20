@@ -10,34 +10,34 @@ const BRAND_PRIMARY = '#316852';
 const BRAND_SECONDARY = '#1e4d3a';
 
 const features = [
-  { title: 'Lightning-Fast for Teams', desc: 'No more waiting or system hangs. Dozens of users can enter data, generate bills, and pull heavy reports at the exact same time without slowing each other down.' },
-  { title: 'Complete Data Privacy', desc: 'Keep your core financial data invisible. TallyPrime Server hides your physical data files on the server, preventing unauthorized staff from copying, deleting, or stealing your records.' },
-  { title: 'Track Every Action (Audit Trail)', desc: 'Know exactly who is doing what. Track which user created, modified, or deleted any invoice or ledger, ensuring 100% accountability across your team.' },
-  { title: 'Centralized Branch Management', desc: 'Connect all your offices, warehouses, and branches to one live system. Everyone works on the same real-time data, eliminating duplicate entries and confusion.' },
-  { title: 'Zero-Downtime Backups', desc: 'Run automated, scheduled backups using TallyDrive or local storage without ever asking your team to log out or stop working.' },
-  { title: 'Seamless Upgrades', desc: 'Moving from TallyPrime Gold? Your data transitions instantly. No complex data migration, no downtime — just upgrade the license and keep working.' },
+  { title: 'Work Without Interruptions', desc: 'High concurrency means multiple users can save transactions, export reports, and print bills at the exact same time with zero system lag.' },
+  { title: 'Controlled Data Access', desc: 'Keep your backend data completely invisible. Employees only need the server name to log in, preventing unauthorized copying or theft of your physical data files.' },
+  { title: 'Zero System Downtime', desc: 'You can actively take data backups or pull massive financial reports while the rest of your team continues billing — no one has to stop working.' },
+  { title: 'Smarter Monitoring & Control', desc: 'Actively monitor who is logged in and what activities are in progress. As an admin, you can even disconnect idle users to optimize system performance.' },
+  { title: 'Centralized Multi-Branch Sync', desc: 'Connect all your branch offices to a single head office server. Ensure everyone works on one consistent, real-time data source.' },
+  { title: 'Seamless Upgrade Path', desc: 'Moving from Gold? It\'s effortless. TallyPrime Server works perfectly with your existing Gold license, requiring zero data migration or complex conversions.' },
 ];
 
 const faqs = [
   {
-    q: 'How is TallyPrime Server different from TallyPrime Gold?',
-    a: 'While Gold allows multiple users, Server adds a massive speed boost for larger teams, completely hides your backend data files from employees for security, and tracks every individual user\'s actions.',
+    q: 'Is TallyPrime Server suitable for businesses with multiple users?',
+    a: 'Yes, if your business has 10+ employees working simultaneously on various tasks, TallyPrime Server ensures seamless multi-user access without slowdowns.',
   },
   {
-    q: 'Will my team experience slowdowns when generating big reports?',
-    a: 'No. TallyPrime Server is built specifically to handle heavy loads. Someone pulling a huge year-end report will not slow down the rest of your team doing their daily billing.',
+    q: 'Can I control and monitor user access to company data?',
+    a: 'Absolutely! TallyPrime Server provides centralized control, allowing an administrator to manage user access, hide physical data files, and monitor live activity for better security.',
   },
   {
-    q: 'Can I restrict what my employees can see and do?',
-    a: 'Yes! You get granular control. You can hide the physical data folders to prevent theft, and strictly control who has the rights to view, edit, or delete specific transactions.',
+    q: 'Will TallyPrime Server help in managing multiple branch operations?',
+    a: 'Yes. It is perfect for businesses where multiple branch users connect to the same data, allowing the Head Office to manage access and consolidate reports easily.',
   },
   {
-    q: 'Is it difficult to upgrade my current data to Server?',
-    a: 'Not at all. Your data transitions instantly without any conversion or data loss. You simply activate the Server license and your team can continue working immediately.',
+    q: 'How is this different from TallyPrime Gold?',
+    a: 'While Gold allows multiple users, Server adds a massive speed boost (high concurrency), hides your backend data files from employees, and lets you actively monitor and control user sessions.',
   },
   {
-    q: 'Do I need a dedicated IT team to manage this?',
-    a: 'While a basic Windows Server setup is required, our certified experts can handle the entire deployment, network configuration, and ongoing support for you.',
+    q: 'Can my team keep working while I take a backup?',
+    a: 'Yes! With TallyPrime Server, you can take complete data backups without ever asking your team to log out or stop their daily billing.',
   },
 ];
 
@@ -207,12 +207,11 @@ export default function TallyServerPage() {
                   }}
                 >
                   <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: BRAND_PRIMARY }} />
-                  Enterprise Speed &amp; Security
+                  Enterprise Edition
                 </span>
               </div>
-              <div className="flex items-center flex-wrap gap-x-4 gap-y-1 mt-1.5"></div>
               <p className="text-[13px] text-slate-500 mt-1.5 leading-relaxed max-w-3xl">
-                The ultimate accounting powerhouse for growing businesses. Keep your data completely secure, track every user&apos;s actions, and ensure lightning-fast performance even when dozens of employees are billing at the exact same time.
+                The ultimate accounting powerhouse for growing businesses. Enjoy zero downtime, lightning-fast performance, and strict data security — even when dozens of employees are working at the exact same time.
               </p>
             </div>
 
@@ -296,25 +295,19 @@ export default function TallyServerPage() {
               <h2 className="text-lg font-bold text-slate-900 mb-3">What is TallyPrime Server?</h2>
               <div className="text-sm text-slate-600 leading-relaxed space-y-3">
                 <p>
-                  As your business grows, so does your team. TallyPrime Server is designed specifically for
-                  businesses with multiple accountants, salespeople, and branch offices working simultaneously.
-                  It completely eliminates system slowdowns, ensuring that one person pulling a massive report
-                  won&apos;t freeze the screen of someone trying to generate a quick invoice.
+                  As your business grows, system delays and data security become major concerns. TallyPrime Server is built specifically for medium and large enterprises. It operates on a powerful server-based architecture, completely eliminating system slowdowns so your team can work without interruptions.
                 </p>
                 <p>
-                  More importantly, it gives you absolute control over your business data. Server allows you to
-                  hide sensitive financial files from regular staff and logs every single user action. You will
-                  always know exactly who created, edited, or deleted an entry. It&apos;s enterprise-level security
-                  and speed, made simple.
+                  More importantly, it gives you absolute control over your business data. Server allows you to hide physical data files from regular staff and logs every single user action. You get enterprise-class speed, strict privacy, and the ability to monitor exactly who is doing what in real-time.
                 </p>
               </div>
               {/* Hero stats */}
               <div className="mt-5 grid grid-cols-2 sm:grid-cols-4 gap-3">
                 {[
-                  { label: 'Users', value: 'Unlimited' },
-                  { label: 'Focus', value: 'Speed & Security' },
-                  { label: 'Access', value: 'Multi-Branch' },
-                  { label: 'Setup', value: 'Secure Network' },
+                  { label: 'Concurrency', value: 'Zero Downtime' },
+                  { label: 'Focus', value: 'High Productivity' },
+                  { label: 'Security', value: 'Controlled Access' },
+                  { label: 'Tracking', value: 'Live Monitoring' },
                 ].map((stat) => (
                   <div
                     key={stat.label}
@@ -333,9 +326,9 @@ export default function TallyServerPage() {
 
             {/* Features */}
             <section id="features" className="scroll-mt-16 bg-white rounded-xl border border-slate-200 p-6">
-              <h2 className="text-lg font-bold text-slate-900 mb-1">Built for speed, security, and large teams</h2>
+              <h2 className="text-lg font-bold text-slate-900 mb-1">Key Features of TallyPrime Server</h2>
               <p className="text-sm text-slate-500 mb-5">
-                Everything your growing business needs to run simultaneously — without slowdowns or security risks.
+                Smarter monitoring, zero interruptions, and total data control for your growing team.
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                 {features.map((feature) => (
@@ -360,13 +353,13 @@ export default function TallyServerPage() {
             {/* When Server is the right choice + Compatible Systems */}
             <section className="grid sm:grid-cols-2 gap-6">
               <div className="bg-white rounded-xl border border-slate-200 p-6">
-                <h2 className="text-lg font-bold text-slate-900 mb-4">Is Server the right choice for you? It is if:</h2>
+                <h2 className="text-lg font-bold text-slate-900 mb-4">Is TallyPrime Server right for your business?</h2>
                 <ul className="space-y-3">
                   {[
-                    'You have multiple employees using Tally at the same time and your current system is slowing down.',
-                    'You are worried about data theft and need to hide physical financial files from your staff.',
-                    'You need strict tracking to see exactly which user modified or deleted a transaction.',
-                    'You have different branches, offices, or warehouses that need to work on the same live data.',
+                    'You have a growing business with 10+ employees performing various operations simultaneously.',
+                    'You need an administrator to strictly manage data access and actively monitor user activities.',
+                    'You have multiple branch offices that need to consolidate transactions to the Head Office while local users operate smoothly.',
+                    'You are experiencing system lag when multiple users try to pull heavy reports or take backups at the same time.',
                   ].map((item) => (
                     <li key={item} className="flex items-start gap-2.5 text-sm text-slate-600">
                       <span
@@ -397,21 +390,11 @@ export default function TallyServerPage() {
                     </div>
                   </div>
                   <div>
-                    <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Network</h3>
+                    <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Network Setup</h3>
                     <div className="flex flex-wrap gap-2">
-                      {['Local Office (LAN)', 'Multi-Branch (VPN/WAN)'].map((net) => (
+                      {['Local Area Network (LAN)', 'VPN for Branch Offices'].map((net) => (
                         <span key={net} className="inline-flex rounded-md px-2.5 py-1 text-[12px] font-medium text-slate-600 bg-slate-50 border border-slate-200">
                           {net}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                  <div>
-                    <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Integrations</h3>
-                    <div className="flex flex-wrap gap-2">
-                      {['Advanced User Authentication', 'Secure Cloud Backups', 'Excel Import/Export'].map((item) => (
-                        <span key={item} className="inline-flex rounded-md px-2.5 py-1 text-[12px] font-medium border" style={{ borderColor: `${BRAND_PRIMARY}25`, backgroundColor: `${BRAND_PRIMARY}06`, color: BRAND_PRIMARY }}>
-                          {item}
                         </span>
                       ))}
                     </div>
@@ -423,7 +406,7 @@ export default function TallyServerPage() {
             {/* FAQ */}
             <section id="faqs" className="scroll-mt-16 bg-white rounded-xl border border-slate-200 p-6">
               <h2 className="text-lg font-bold text-slate-900 mb-1">TallyPrime Server FAQs</h2>
-              <p className="text-sm text-slate-500 mb-5">Frequently asked questions about TallyPrime Server.</p>
+              <p className="text-sm text-slate-500 mb-5">Frequently asked questions about upgrading to the Server edition.</p>
               <div className="space-y-0 divide-y divide-slate-100">
                 {faqs.map((faq, idx) => (
                   <div key={idx}>
@@ -458,8 +441,8 @@ export default function TallyServerPage() {
             {/* Still not satisfied? */}
             <section className="bg-white rounded-xl border border-slate-200 p-6">
               <div className="text-center mb-5">
-                <h2 className="text-lg font-bold text-slate-900">Is it time to upgrade to Server?</h2>
-                <p className="text-sm text-slate-500 mt-1">Tell us about your team size, branch locations, and current setup. Our experts will advise if TallyPrime Server is the right fit for your growth.</p>
+                <h2 className="text-lg font-bold text-slate-900">Want to test the power of Server?</h2>
+                <p className="text-sm text-slate-500 mt-1">Tell us about your team size, and we can arrange a free 10-day trial of TallyPrime Server to prove how fast your system can be.</p>
               </div>
               <form onSubmit={handleInquirySubmit} className="max-w-xl mx-auto space-y-3">
                 <input
@@ -509,63 +492,47 @@ export default function TallyServerPage() {
               </form>
             </section>
 
-            {/* Pricing - Hidden reveal */}
+            {/* Pricing - Hidden */}
+            {/*
             <section id="pricing" className="scroll-mt-16 bg-white rounded-xl border border-slate-200 p-6">
-              <h2 className="text-lg font-bold text-slate-900 mb-1">Enterprise-Grade Software Pricing</h2>
-              <p className="text-sm text-slate-500 mb-5">Invest in the speed, security, and control your growing business needs. View our flexible rental and perpetual license options below.</p>
-              <button
-                type="button"
-                onClick={() => setShowPricing(!showPricing)}
-                className="inline-flex items-center gap-2 rounded-lg px-5 py-2.5 text-xs font-bold uppercase tracking-wider text-white shadow-lg transition-all hover:scale-[1.02]"
-                style={{ backgroundColor: BRAND_PRIMARY }}
-              >
-                {showPricing ? 'Hide Pricing' : 'View Price'}
-                <svg className={`w-3.5 h-3.5 transition-transform duration-200 ${showPricing ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-                </svg>
-              </button>
-              {showPricing && (
-                <div className="mt-5 overflow-x-auto rounded-lg border border-slate-200">
-                  <table className="w-full text-left text-sm">
-                    <thead>
-                      <tr className="bg-slate-50 text-[10px] font-bold uppercase tracking-wider text-slate-500">
-                        <th className="px-4 py-3">License Type</th>
-                        <th className="px-4 py-3">Validity</th>
-                        <th className="px-4 py-3">Price (INR)</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr className="border-b border-slate-100">
-                        <td className="px-4 py-3 font-bold text-slate-900">1 Year Rental</td>
-                        <td className="px-4 py-3 text-slate-600">1 Year</td>
-                        <td className="px-4 py-3 font-bold" style={{ color: BRAND_PRIMARY }}>Server 1 Year Rental — Contact Sales</td>
-                      </tr>
-                      <tr>
-                        <td className="px-4 py-3 font-bold text-slate-900">Perpetual License</td>
-                        <td className="px-4 py-3 text-slate-600">Lifetime</td>
-                        <td className="px-4 py-3 font-bold" style={{ color: BRAND_PRIMARY }}>Server Perpetual — Contact Sales</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                  <div className="px-4 py-3 bg-slate-50 border-t border-slate-200">
-                    <p className="text-[11px] text-slate-500">
-                      Prices are subject to change. Contact our sales team for the latest pricing and discounts.
-                    </p>
-                    <button
-                      type="button"
-                      onClick={() => openModal('quote', 'TallyPrime Server', 'Please share pricing details for TallyPrime Server.')}
-                      className="mt-2 inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-[10px] font-bold uppercase tracking-wider text-white transition-all hover:scale-[1.02]"
-                      style={{ backgroundColor: BRAND_PRIMARY }}
-                    >
-                      Get Custom Quote
-                      <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                      </svg>
-                    </button>
-                  </div>
+              <h2 className="text-lg font-bold text-slate-900 mb-1">TallyPrime Server Pricing</h2>
+              <p className="text-sm text-slate-500 mb-5">Enterprise-grade performance for medium and large businesses.</p>
+              <div className="overflow-x-auto rounded-lg border border-slate-200">
+                <table className="w-full text-left text-sm">
+                  <thead>
+                    <tr className="bg-slate-50 text-[10px] font-bold uppercase tracking-wider text-slate-500">
+                      <th className="px-4 py-3">License Type</th>
+                      <th className="px-4 py-3">Details</th>
+                      <th className="px-4 py-3">Price (INR)</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td className="px-4 py-3 font-bold text-slate-900">TallyPrime Server</td>
+                      <td className="px-4 py-3 text-slate-600">Works in conjunction with a TallyPrime Gold license</td>
+                      <td className="px-4 py-3 font-bold" style={{ color: BRAND_PRIMARY }}>₹2,70,000 + 18% GST (₹48,600)</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div className="px-4 py-3 bg-slate-50 border-t border-slate-200">
+                  <p className="text-[11px] text-slate-500">
+                    Prices are indicative. Contact our sales team for the latest pricing, enterprise discounts, and implementation support.
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => openModal('quote', 'TallyPrime Server', 'Please share pricing details for TallyPrime Server.')}
+                    className="mt-2 inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-[10px] font-bold uppercase tracking-wider text-white transition-all hover:scale-[1.02]"
+                    style={{ backgroundColor: BRAND_PRIMARY }}
+                  >
+                    Contact Us for Implementation
+                    <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                    </svg>
+                  </button>
                 </div>
-              )}
+              </div>
             </section>
+            */}
 
           </div>
 
@@ -575,9 +542,9 @@ export default function TallyServerPage() {
             {/* Get Best Quote */}
             <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
               <div className="px-5 py-4 text-white" style={{ backgroundColor: BRAND_SECONDARY }}>
-                <h3 className="text-sm font-bold">Get a Custom Server Quote</h3>
+                <h3 className="text-sm font-bold">Upgrade Your Infrastructure</h3>
                 <p className="text-[12px] text-white/75 mt-1 leading-relaxed">
-                  Connect with our enterprise team to discuss implementation, multi-branch networking, and seamless data migration.
+                  Connect with our certified enterprise team to discuss network deployment, data migration, and branch syncing.
                 </p>
               </div>
               <form onSubmit={handleSidebarSubmit} className="p-5 space-y-3">
@@ -639,7 +606,7 @@ export default function TallyServerPage() {
                   { name: 'TallyPrime Gold', slug: '/products/gold', rating: '4.8', reviews: '120' },
                   { name: 'TallyPrime Server', slug: '/products/server', rating: '4.7', reviews: '85' },
                   { name: 'Tally on WhatsApp', slug: '/services/tally-on-whatsapp', rating: '4.9', reviews: '200' },
-                  { name: 'Cloud AWS', slug: '/cloud/aws', rating: '4.6', reviews: '65' },
+                  { name: 'Tally Cloud Access', slug: '/cloud/tallycloudaccess', rating: '4.8', reviews: '85' },
                 ].map((item) => (
                   <Link
                     key={item.name}
