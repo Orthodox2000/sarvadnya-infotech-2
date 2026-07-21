@@ -14,6 +14,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/cloud/nosky',
     '/colour',
     '/contact',
+    '/do-more',
     '/modules',
     '/news',
     '/privacy',

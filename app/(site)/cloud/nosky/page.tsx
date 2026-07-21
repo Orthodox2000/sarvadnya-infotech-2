@@ -10,34 +10,34 @@ const BRAND_PRIMARY = '#316852';
 const BRAND_SECONDARY = '#1e4d3a';
 
 const features = [
-  { title: 'Set It and Forget It', desc: 'Just pick a time, and NoSky will automatically back up your data every single day. No manual clicking, no copying, and no remembering required.' },
-  { title: 'Instant 1-Click Recovery', desc: 'Did a computer completely die? Don\'t panic. Just log in to a new machine, click one button, and your entire Tally setup is restored exactly how you left it.' },
-  { title: 'Bank-Level Security', desc: 'Your financial data is locked tight with enterprise-grade encryption before it ever leaves your computer, ensuring absolutely no one can read your private business numbers.' },
-  { title: 'Fast & Saves Internet Data', desc: 'After your very first backup, NoSky only saves the new entries you made that day. It takes just seconds and will never slow down your office Wi-Fi.' },
-  { title: 'Ransomware Proof', desc: 'Because your backup data is hidden in a secure cloud vault, local computer viruses and ransomware attacks cannot touch or corrupt your safe files.' },
-  { title: 'Daily Peace of Mind', desc: 'Get simple, clear status updates on your dashboard so you know your daily backup was successful. You never have to guess if your data is safe.' },
+  { title: 'Set It and Forget It', desc: 'Pick a time, and backups run automatically every day. No manual work needed.' },
+  { title: 'Instant 1-Click Recovery', desc: 'Computer died? Install TallyPrime on a new machine, click restore, and your data is back.' },
+  { title: 'Military-Grade Encryption', desc: 'Your data is encrypted with AES-256 before it leaves your computer. No one can read your files.' },
+  { title: 'Incremental Backups', desc: 'After the first backup, only new or changed data is saved. Fast, efficient, and uses minimal internet.' },
+  { title: 'Ransomware Proof', desc: 'Backup data is stored in a secure cloud vault. Local viruses cannot touch your safe files.' },
+  { title: 'Daily Peace of Mind', desc: 'Get status updates on your dashboard so you know your data is safe every day.' },
 ];
 
 const faqs = [
   {
     q: 'Do I have to remember to click "backup" every day?',
-    a: 'No! That\'s the best part. You set it up once, and NoSky does it automatically in the background on your preferred schedule without disturbing your work.',
+    a: 'No! That\'s the best part. You set it up once, and it does it automatically in the background on your preferred schedule without disturbing your work.',
   },
   {
     q: 'Is my data really safe from hackers or viruses?',
-    a: 'Absolutely. Your data is encrypted (locked) with bank-level security before it even transfers, keeping it completely safe from ransomware and local computer viruses.',
+    a: 'Absolutely. Your data is encrypted (locked) with AES-256 encryption before it even transfers, keeping it completely safe from ransomware and local computer viruses.',
   },
   {
     q: 'Will this slow down my internet or my computer while I work?',
-    a: 'Not at all. NoSky only backs up the new changes you made that day, not your entire hard drive. It takes just a few seconds and uses very little internet bandwidth.',
+    a: 'Not at all. It only backs up the new changes you made that day, not your entire hard drive. It takes just a few seconds and uses very little internet bandwidth.',
   },
   {
     q: 'What happens if my computer completely dies?',
-    a: 'You simply install Tally on a new computer, run the NoSky 1-Click Restore, and you\'ll have all your data back in minutes so you can start billing immediately.',
+    a: 'You simply install Tally on a new computer, run the 1-Click Restore, and you\'ll have all your data back in minutes so you can start billing immediately.',
   },
   {
     q: 'Can I backup to my own hard drive instead of the internet?',
-    a: 'Yes! NoSky gives you the total flexibility to back up to the secure cloud, or directly to a physical hard drive connected to your office network.',
+    a: 'Yes! You get the total flexibility to back up to the secure cloud, or directly to a physical hard drive connected to your office network.',
   },
 ];
 
@@ -51,7 +51,7 @@ const navSections = [
 export default function NoSkyBackupPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalType, setModalType] = useState<FormType>('quote');
-  const [modalService, setModalService] = useState('NoSky Backup');
+  const [modalService, setModalService] = useState('Backup for TallyPrime');
   const [modalDetails, setModalDetails] = useState('');
   const [activeNav, setActiveNav] = useState('overview');
   const [openFaq, setOpenFaq] = useState<number | null>(0);
@@ -69,7 +69,7 @@ export default function NoSkyBackupPage() {
   const [inquiryStatus, setInquiryStatus] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
   const navRef = useRef<HTMLDivElement>(null);
 
-  const openModal = (type: FormType, service = 'NoSky Backup', details = '') => {
+  const openModal = (type: FormType, service = 'Backup for TallyPrime', details = '') => {
     setModalType(type);
     setModalService(service);
     setModalDetails(details);
@@ -92,7 +92,7 @@ export default function NoSkyBackupPage() {
           name: inquiryName,
           email: inquiryContact,
           contact: inquiryContact,
-          service: 'NoSky Backup',
+          service: 'Backup for TallyPrime',
           formType: 'inquiry',
           description: inquiryMsg,
         }),
@@ -125,9 +125,9 @@ export default function NoSkyBackupPage() {
           name: formName,
           email: formEmail,
           contact: formPhone,
-          service: 'NoSky Backup',
+          service: 'Backup for TallyPrime',
           formType: 'callback',
-          description: 'Requesting a call back for NoSky Backup pricing.',
+          description: 'Requesting a call back for Backup for TallyPrime pricing.',
         }),
       });
       if (!res.ok) throw new Error('Submission failed');
@@ -179,7 +179,7 @@ export default function NoSkyBackupPage() {
               <li className="text-slate-300 mx-0.5">/</li>
               <li><Link href="/cloud" className="hover:text-[#316852] transition-colors">Cloud</Link></li>
               <li className="text-slate-300 mx-0.5">/</li>
-              <li className="text-slate-800 font-semibold">NoSky Backup</li>
+              <li className="text-slate-800 font-semibold">Backup for TallyPrime</li>
             </ul>
           </div>
         </div>
@@ -191,13 +191,13 @@ export default function NoSkyBackupPage() {
           <div className="flex items-start gap-5">
             {/* Logo */}
             <div className="w-[72px] h-[72px] shrink-0 rounded-xl border border-slate-200 bg-white flex items-center justify-center shadow-sm p-2.5">
-              <Image src="/hero/brand-nosky-1779439419186.webp" alt="NoSky Backup" width={48} height={48} className="object-contain" />
+              <Image src="/hero/brand-nosky-1779439419186.webp" alt="Backup for TallyPrime" width={48} height={48} className="object-contain" />
             </div>
 
             {/* Info */}
             <div className="flex-1 min-w-0">
               <div className="flex items-center flex-wrap gap-x-3 gap-y-1">
-                <h1 className="text-xl md:text-2xl font-bold text-slate-900">NoSky Backup for TallyPrime</h1>
+                <h1 className="text-xl md:text-2xl font-bold text-slate-900">Backup for TallyPrime</h1>
                 <span
                   className="inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider border"
                   style={{
@@ -212,14 +212,14 @@ export default function NoSkyBackupPage() {
               </div>
               <div className="flex items-center flex-wrap gap-x-4 gap-y-1 mt-1.5"></div>
               <p className="text-[13px] text-slate-500 mt-1.5 leading-relaxed max-w-3xl">
-                Never worry about losing your accounting data again. NoSky Backup runs silently in the background, automatically saving your Tally records so you are 100% safe from computer crashes, hardware theft, and ransomware viruses.
+                Never worry about losing your accounting data again. Backup for TallyPrime runs silently in the background, automatically saving your Tally records so you are 100% safe from computer crashes, hardware theft, and ransomware viruses.
               </p>
             </div>
 
             {/* Action Buttons */}
             <div className="hidden md:flex flex-col gap-2 shrink-0">
               <button
-                onClick={() => openModal('demo', 'NoSky Backup')}
+                onClick={() => openModal('demo', 'Backup for TallyPrime')}
                 className="px-6 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider text-white shadow-lg transition-all hover:scale-[1.02]"
                 style={{ backgroundColor: BRAND_PRIMARY }}
               >
@@ -239,7 +239,7 @@ export default function NoSkyBackupPage() {
         {/* Mobile action buttons */}
         <div className="md:hidden flex gap-2 px-6 pb-4">
           <button
-            onClick={() => openModal('demo', 'NoSky Backup')}
+            onClick={() => openModal('demo', 'Backup for TallyPrime')}
             className="flex-1 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider text-white shadow-lg transition-all"
             style={{ backgroundColor: BRAND_PRIMARY }}
           >
@@ -293,10 +293,10 @@ export default function NoSkyBackupPage() {
 
             {/* Overview */}
             <section id="overview" className="scroll-mt-16 bg-white rounded-xl border border-slate-200 p-6">
-              <h2 className="text-lg font-bold text-slate-900 mb-3">What is NoSky Backup?</h2>
+              <h2 className="text-lg font-bold text-slate-900 mb-3">What is Backup for TallyPrime?</h2>
               <div className="text-sm text-slate-600 leading-relaxed space-y-3">
                 <p>
-                  Stop manually copying your Tally files to pen drives and external hard disks every week. NoSky Backup is a smart, silent safety net that automatically saves your business records to a secure vault at the end of every day.
+                  Stop manually copying your Tally files to pen drives and external hard disks every week. Backup for TallyPrime is a smart, silent safety net that automatically saves your business records to a secure vault at the end of every day.
                 </p>
                 <p>
                   Whether your laptop gets stolen, your hard drive crashes, or your office gets hit by a ransomware virus, your financial data remains completely untouched and safe. Best of all, if disaster strikes, you can get your business back up and running with a single click.
@@ -307,7 +307,7 @@ export default function NoSkyBackupPage() {
                 {[
                   { label: 'Type', value: '100% Automatic' },
                   { label: 'Access', value: 'Cloud & Local' },
-                  { label: 'Security', value: 'Bank-Grade' },
+                  { label: 'Security', value: 'AES-256' },
                   { label: 'Recovery', value: '1-Click Restore' },
                 ].map((stat) => (
                   <div
@@ -327,7 +327,7 @@ export default function NoSkyBackupPage() {
 
             {/* Features */}
             <section id="features" className="scroll-mt-16 bg-white rounded-xl border border-slate-200 p-6">
-              <h2 className="text-lg font-bold text-slate-900 mb-1">Key Features of NoSky Backup</h2>
+              <h2 className="text-lg font-bold text-slate-900 mb-1">Key Features of Backup for TallyPrime</h2>
               <p className="text-sm text-slate-500 mb-5">
                 Why small business owners trust NoSky to protect their years of hard work.
               </p>
@@ -351,10 +351,10 @@ export default function NoSkyBackupPage() {
               </div>
             </section>
 
-            {/* When NoSky Backup is the right choice + Compatible Systems */}
+            {/* When Backup for TallyPrime is the right choice + Compatible Systems */}
             <section className="grid sm:grid-cols-2 gap-6">
               <div className="bg-white rounded-xl border border-slate-200 p-6">
-                <h2 className="text-lg font-bold text-slate-900 mb-4">Is NoSky Backup right for you?</h2>
+                <h2 className="text-lg font-bold text-slate-900 mb-4">Why you should prefer this backup feature?</h2>
                 <ul className="space-y-3">
                   {[
                     'You are still manually copying Tally data to pen drives or hard disks and occasionally forget to do it.',
@@ -416,7 +416,7 @@ export default function NoSkyBackupPage() {
 
             {/* FAQ */}
             <section id="faqs" className="scroll-mt-16 bg-white rounded-xl border border-slate-200 p-6">
-              <h2 className="text-lg font-bold text-slate-900 mb-1">NoSky Backup FAQs</h2>
+              <h2 className="text-lg font-bold text-slate-900 mb-1">Backup for TallyPrime FAQs</h2>
               <p className="text-sm text-slate-500 mb-5">Frequently asked questions about securing your business data.</p>
               <div className="space-y-0 divide-y divide-slate-100">
                 {faqs.map((faq, idx) => (
@@ -547,7 +547,7 @@ export default function NoSkyBackupPage() {
                     </p>
                     <button
                       type="button"
-                      onClick={() => openModal('quote', 'NoSky Backup', 'Please share pricing details for NoSky Backup.')}
+                      onClick={() => openModal('quote', 'Backup for TallyPrime', 'Please share pricing details for Backup for TallyPrime.')}
                       className="mt-2 inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-[10px] font-bold uppercase tracking-wider text-white transition-all hover:scale-[1.02]"
                       style={{ backgroundColor: BRAND_PRIMARY }}
                     >
@@ -693,7 +693,7 @@ export default function NoSkyBackupPage() {
                     <button
                       key={link.label}
                       type="button"
-                      onClick={() => openModal(link.type!, 'NoSky Backup')}
+                      onClick={() => openModal(link.type!, 'Backup for TallyPrime')}
                       className="block w-full text-left text-sm text-slate-600 hover:text-[#316852] transition-colors py-1"
                     >
                       {link.label}

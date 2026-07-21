@@ -17,7 +17,7 @@ const features = [
   { title: 'Free Setup Support', desc: 'Sarvadnya experts set up everything for you — no need to hire an IT team. We handle it all.' },
   { title: 'TSS Included', desc: '12 months of Tally Software Services included with your cloud subscription. Free updates and support.' },
   { title: 'Unlimited Users', desc: 'Add as many users as you need. Pay only for the cloud resources, not per user. Growing teams love this.' },
-  { title: 'Bank-Level Security', desc: 'AES-256 encryption keeps your financial data locked. Role-based access means employees see only what they should.' },
+  { title: 'AES-256 Encryption', desc: 'AES-256 encryption keeps your financial data locked. Role-based access means employees see only what they should.' },
   { title: '99.99% Uptime', desc: 'AWS data centers are reliable. Your TallyPrime is available whenever you need it.' },
 ];
 
@@ -32,7 +32,7 @@ const faqs = [
   },
   {
     q: 'Is my financial data safe in the cloud?',
-    a: 'Yes. Your data is encrypted with bank-level security (AES-256). Regular automatic backups are included. Even if your laptop breaks, your data remains safe.',
+    a: 'Yes. Your data is encrypted with AES-256 encryption. Regular automatic backups are included. Even if your laptop breaks, your data remains safe.',
   },
   {
     q: 'How do I access TallyPrime on the cloud?',

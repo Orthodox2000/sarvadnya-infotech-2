@@ -42,7 +42,7 @@ const plans = [
       'Automatic daily backups',
       '24/7 cloud access',
       'Priority support',
-      'Free setup assistance',
+      'Setup assistance',
     ],
     popular: true,
   },
@@ -58,7 +58,7 @@ const plans = [
       'Automatic daily backups',
       '24/7 cloud access',
       'Dedicated account manager',
-      'Free setup & migration',
+      'Setup & migration',
       'Custom integrations',
     ],
   },
@@ -68,10 +68,7 @@ const coreFeatures = [
   { title: 'Access From Anywhere', desc: 'Log in from any laptop, desktop, Mac, or tablet with internet. Your TallyPrime data is always available — whether you are at home, office, or traveling.' },
   { title: 'Works on Any Device', desc: 'Use a web browser, Windows client, Mac client, or Linux client. Even old laptops work perfectly since all processing happens on powerful cloud servers.' },
   { title: 'Full Desktop Experience', desc: 'Need Excel, Word, or other Windows apps alongside Tally? Get a complete Windows desktop in the cloud with printing, scanners, and USB support.' },
-  { title: 'Complete Data Safety', desc: 'Bank-level AES-256 encryption keeps your financial data locked. If a laptop breaks or is stolen, your data remains safe in the cloud. Just log in from another device.' },
-  { title: 'Automatic Backups', desc: 'Your data is backed up automatically every day. No manual backup schedules, no USB drives, no worrying about data loss.' },
-  { title: 'Free Setup & Migration', desc: 'Sarvadnya experts set up everything and migrate your existing company data. No IT team needed — we handle it all.' },
-  { title: 'Low Internet Usage', desc: 'Once loaded, TallyPrime on cloud uses very little bandwidth. Even a 4G mobile hotspot works for daily work. Just 2 Mbps is enough.' },
+  { title: 'Setup & Migration', desc: 'Sarvadnya experts set up everything and migrate your existing company data. No IT team needed — we handle it all.' },
   { title: '99.99% Uptime', desc: 'Enterprise-grade cloud infrastructure ensures your TallyPrime is available whenever you need it. No downtime, no disruptions.' },
   { title: 'Print Invoices Locally', desc: 'Print Tally bills and reports directly to your office printer from the cloud. Works with local printers, scanners, and USB devices.' },
 ];
@@ -95,7 +92,7 @@ const faqs = [
   },
   {
     q: 'Is my financial data safe in the cloud?',
-    a: 'Absolutely. Your data is encrypted with bank-level AES-256 encryption. Regular automatic backups are included. Even if your laptop breaks, gets stolen, or crashes, your data remains safe and accessible from any other device.',
+    a: 'Absolutely. Your data is encrypted with AES-256 encryption. Regular automatic backups are included. Even if your laptop breaks, gets stolen, or crashes, your data remains safe and accessible from any other device.',
   },
   {
     q: 'Can I use Excel and Tally together?',
@@ -107,7 +104,7 @@ const faqs = [
   },
   {
     q: 'How do I get started?',
-    a: 'Simply contact our team. We will set up everything — cloud server, TallyPrime installation, data migration, and user accounts. You just log in and start working. Free setup support is included.',
+    a: 'Simply contact our team. We will set up everything — cloud server, TallyPrime installation, data migration, and user accounts. You just log in and start working. Setup support is included.',
   },
   {
     q: 'Can I migrate my existing data to the cloud?',
@@ -569,7 +566,7 @@ export default function TallyCloudAccessPage() {
               </div>
               <div className="mt-5 p-4 rounded-lg bg-slate-50 border border-slate-100">
                 <p className="text-[11px] text-slate-500 leading-relaxed">
-                  All plans include managed cloud hosting, automatic daily backups, TSS (Tally Software Services), and free setup support. Prices shown are indicative. Contact our sales team for the latest pricing, enterprise discounts, and custom configurations.
+                  All plans include managed cloud hosting, automatic daily backups, TSS (Tally Software Services), and setup support. Prices shown are indicative. Contact our sales team for the latest pricing, enterprise discounts, and custom configurations.
                 </p>
               </div>
             </section>

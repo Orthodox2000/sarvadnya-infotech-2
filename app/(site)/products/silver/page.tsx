@@ -212,7 +212,7 @@ export default function TallySilverPage() {
               </div>
               <div className="flex items-center flex-wrap gap-x-4 gap-y-1 mt-1.5"></div>
               <p className="text-[13px] text-slate-500 mt-1.5 leading-relaxed max-w-3xl">
-                Everything your solo business needs for billing, inventory, and tax compliance. Simple to learn, works on any laptop, and your data stays 100% private on your own computer.
+                Everything you need as a small bussiness for billing, inventory, and tax compliance. Simple to learn, works on any laptop, and your data stays 100% private on your own computer.
               </p>
             </div>
 
@@ -297,7 +297,7 @@ export default function TallySilverPage() {
               <div className="text-sm text-slate-600 leading-relaxed space-y-3">
                 <p>
                   Running a small business is hard enough without struggling with complicated accounting software.
-                  TallyPrime Silver is built specifically for independent owners, freelancers, and small retailers.
+                  TallyPrime Silver is built specifically for small bussiness owners, freelancers, and small retailers.
                   It gives you everything you need to manage your invoicing, track your stock, and generate tax
                   returns — all safely stored on your own computer.
                 </p>
@@ -361,7 +361,7 @@ export default function TallySilverPage() {
             {/* When Silver is the right choice + Upgrade path */}
             <section className="grid sm:grid-cols-2 gap-6">
               <div className="bg-white rounded-xl border border-slate-200 p-6">
-                <h2 className="text-lg font-bold text-slate-900 mb-4">Is Silver right for your business? It is if:</h2>
+                <h2 className="text-lg font-bold text-slate-900 mb-4">TallyPrime Silver is right fit when:</h2>
                 <ul className="space-y-3">
                   {[
                     'You manage all your business billing and accounting by yourself on one computer.',

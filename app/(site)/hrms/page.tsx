@@ -24,8 +24,8 @@ const faqs = [
     a: 'An HRMS replaces your spreadsheets and paper files with a simple software that handles payroll, attendance, and compliance automatically. You need it to save hours of manual work every month and ensure you don\'t make costly calculation errors.',
   },
   {
-    q: 'Will OTU HRplus connect with my existing TallyPrime?',
-    a: 'Yes, absolutely! OTU HRplus integrates directly with TallyPrime. When you run your monthly payroll, the financial data syncs to Tally automatically so your accountant doesn\'t have to re-type anything.',
+    q: 'Will this HRMS connect with my existing TallyPrime?',
+    a: 'Yes, absolutely! This HRMS integrates directly with TallyPrime. When you run your monthly payroll, the financial data syncs to Tally automatically so your accountant doesn\'t have to re-type anything.',
   },
   {
     q: 'Can this software really handle my local tax and statutory filings?',
@@ -355,25 +355,6 @@ export default function HRMSPage() {
                 ))}
               </div>
             </section>
-
-            {/* OTU HRplus Reference */}
-            <div className="bg-white rounded-xl border border-slate-200 p-5">
-              <div className="flex items-start gap-4">
-                <div className="w-14 h-14 rounded-xl flex items-center justify-center shrink-0 p-1.5 bg-white border border-slate-200 shadow-sm">
-                  <Image src="/uploads/brand-otu-hrplus-1779435427064.png" alt="OTU HRplus" width={44} height={44} className="object-contain" />
-                </div>
-                <div>
-                  <h3 className="text-sm font-bold text-slate-900">We highly recommend OTU HRplus</h3>
-                  <p className="text-[13px] text-slate-600 mt-1 leading-relaxed">
-                    OTU HRplus is our top-rated HR solution for small businesses. Why? Because it talks directly to your
-                    TallyPrime software. You process payroll in OTU HRplus, and the accounting entries happen in Tally
-                    automatically — zero double-entry required. It&apos;s the easiest way to handle everything from
-                    attendance to local statutory returns on a single, affordable platform.
-                    <Link href="https://otuhrplus.com/" target="_blank" rel="noopener noreferrer" className="font-bold ml-1 hover:underline" style={{ color: BRAND_PRIMARY }}>Learn more →</Link>
-                  </p>
-                </div>
-              </div>
-            </div>
 
             {/* When HRMS is the right choice + Compatible Systems */}
             <section className="grid sm:grid-cols-2 gap-6">

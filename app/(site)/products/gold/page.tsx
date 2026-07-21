@@ -11,29 +11,29 @@ const BRAND_SECONDARY = '#1e4d3a';
 
 const features = [
   { title: 'Everyone Works Together', desc: 'Stop taking turns on one PC. Let your billing, inventory, and accounting teams work on the exact same live data at the same time without any conflicts.' },
-  { title: 'Control Who Sees What', desc: 'Keep your sensitive financials private. Set passwords and permissions so your sales team only sees invoices, while only you see the bank balances.' },
+  { title: 'Controlled Access', desc: 'Keep your sensitive financials private. Set passwords and permissions so your sales team only sees invoices, while only you see the bank balances.' },
   { title: 'Zero Data Duplication', desc: 'Say goodbye to merging Excel sheets or passing backup files on pen drives. Everyone connects to one single, accurate source of truth.' },
   { title: 'Instant Live Updates', desc: 'When an item is sold at the front desk, your warehouse team sees the updated stock instantly. Real-time syncing keeps your whole team aligned.' },
-  { title: 'Automated Local Compliance', desc: 'Handle local taxes, VAT, or GST returns accurately. Multiple users can generate tax-compliant e-invoices simultaneously without slowing down.' },
-  { title: 'Seamless Silver Upgrade', desc: 'Upgrading from single-user? It takes just minutes. Your existing data transitions perfectly to Gold without losing a single invoice.' },
+  { title: 'Automated Local Compliance', desc: 'Handle taxes, VAT, or GST returns accurately. Multiple users can generate tax-compliant e-invoices simultaneously without slowing down.' },
+  { title: 'Seamless Upgrade', desc: 'Upgrading from single-user? It takes just minutes. Your existing data transitions perfectly to Gold as data source remains same.' },
 ];
 
 const faqs = [
   {
     q: 'How is TallyPrime Gold different from Silver?',
-    a: 'Silver is for a single user on one computer. Gold is a multi-user license that allows your entire team to access and work on your Tally data simultaneously across multiple computers on the same network.',
+    a: 'Silver is for a single user on one computer at a time. Gold is a multi-user license that allows your entire team to access and work on your Tally data simultaneously across multiple computers on the same network.',
   },
   {
     q: 'Do I need to buy a license for every single employee?',
-    a: 'No! TallyPrime Gold gives you unlimited users on a single Local Area Network (LAN). You purchase the Gold license once, and any computer on that network can connect to it.',
+    a: 'No! TallyPrime Gold gives you unlimited users on a single Wi-Fi (LAN). You purchase the Gold license once, and any computer on that network can connect to it.',
   },
   {
     q: 'Can I restrict what my employees can see or edit?',
-    a: 'Absolutely. You have full control. You can restrict a data entry operator from viewing your profit and loss statements, or prevent a salesperson from altering old invoices.',
+    a: 'Absolutely. You have access full control. You can restrict a prevent a salesperson from altering old invoices or make custom view for audit, You have absolute freedom of who can access your data.',
   },
   {
     q: 'Will I lose my data if I upgrade from Silver to Gold?',
-    a: 'Not at all. Upgrading is instant and seamless. You just enter your new Gold activation key, and your existing data is immediately available for your whole team to use.',
+    a: 'Not at all. Upgrading is instant and seamless. Your existing data path remains the same  thus immediately available for your whole team to use.',
   },
   {
     q: 'Can I connect a branch office to my main office?',
@@ -212,7 +212,7 @@ export default function TallyGoldPage() {
               </div>
               <div className="flex items-center flex-wrap gap-x-4 gap-y-1 mt-1.5"></div>
               <p className="text-[13px] text-slate-500 mt-1.5 leading-relaxed max-w-3xl">
-                Let your entire team use Tally at the same time. No more taking turns on one computer — everyone bills, tracks inventory, and works on the same live data.
+                When your entire team use Tally at the same time, No more taking turns on one computer — everyone bills, tracks inventory, and works on the same live data.
               </p>
             </div>
 

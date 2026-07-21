@@ -140,7 +140,7 @@ export default function MobileAppBizPage() {
                 { title: "Instant Sales Analysis", desc: "Track your top-performing customers, fast-moving items, and monthly sales trends at a glance." },
                 { title: "Live Inventory Control", desc: "Never lose an order. Check live godown-wise stock levels instantly while negotiating with a client." },
                 { title: "Stop Bad Debts", desc: "View party-wise aging reports to see exactly who owes you money and for how many days." },
-                { title: "Bank-Grade Security", desc: "Your Tally data is 100% encrypted, safely synced, and accessible even if you lose internet access." }
+                { title: "AES-256 Encryption", desc: "Your Tally data is 100% encrypted, safely synced, and accessible even if you lose internet access." }
               ].map((benefit, i) => (
                 <div key={i} className="flex gap-4">
                   <div className="mt-1 shrink-0 w-5 h-5 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center">

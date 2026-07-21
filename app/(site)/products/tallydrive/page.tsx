@@ -10,7 +10,7 @@ const BRAND_PRIMARY = '#316852';
 const BRAND_SECONDARY = '#1e4d3a';
 
 const features = [
-  { title: 'Bank-Level Security', desc: 'Your financial data is locked with enterprise-grade security. You can even set a custom Recovery Key, meaning absolutely no one can access your data except you.' },
+  { title: 'AES-256 Encryption', desc: 'Your financial data is locked with enterprise-grade security. You can even set a custom Recovery Key, meaning absolutely no one can access your data except you.' },
   { title: 'Set It and Forget It', desc: 'Choose a time, and TallyDrive will back up your data automatically every single day — even if TallyPrime is closed.' },
   { title: 'Instant 1-Click Restore', desc: 'Computer crashed? Don\'t panic. You can download and restore your latest backup in minutes with a single click.' },
   { title: 'Fast & Saves Internet', desc: 'After the first backup, TallyDrive only uploads the new entries you made that day. It takes seconds and won\'t slow down your internet connection.' },
@@ -21,7 +21,7 @@ const features = [
 const faqs = [
   {
     q: 'What exactly does TallyDrive do?',
-    a: 'It is an automatic safety net for your accounting data. It securely saves a copy of your TallyPrime data to the internet so you never lose your records if your computer breaks.',
+    a: 'It is an automatic safety net for your accounting data. It uses incremental backups — after the first backup, only new or changed data is saved. This keeps your data safe without slowing down your internet.',
   },
   {
     q: 'How much cloud storage do I get?',
@@ -29,7 +29,7 @@ const faqs = [
   },
   {
     q: 'Is my financial data safe in the cloud?',
-    a: 'Absolutely. TallyDrive uses bank-level encryption. By setting a Backup Password, your data becomes unreadable to everyone — even to Tally themselves.',
+    a: 'Absolutely. TallyDrive uses AES-256 encryption. By setting a Backup Password, your data becomes unreadable to everyone — even to Tally themselves.',
   },
   {
     q: 'Do I have to remember to click \'Backup\' every day?',
@@ -191,7 +191,7 @@ export default function TallyDrivePage() {
           <div className="flex items-start gap-5">
             {/* Logo */}
             <div className="w-[72px] h-[72px] shrink-0 rounded-xl border border-slate-200 bg-white flex items-center justify-center shadow-sm p-2.5">
-              <Image src="/tallydrive logo.png" alt="TallyDrive" width={48} height={48} className="object-contain" />
+              <Image src="/tallydrive logo.png" alt="TallyDrive" width={62} height={62} className="object-contain" />
             </div>
 
             {/* Info */}
@@ -212,7 +212,7 @@ export default function TallyDrivePage() {
               </div>
               <div className="flex items-center flex-wrap gap-x-4 gap-y-1 mt-1.5"></div>
               <p className="text-[13px] text-slate-500 mt-1.5 leading-relaxed max-w-3xl">
-                Never lose your accounting data again. TallyDrive automatically backs up your TallyPrime data to the cloud — even if your computer crashes, gets stolen, or gets a virus.
+                Never lose your accounting data again. TallyDrive automatically backs up your TallyPrime data to the cloud — as long as your device is powered on.
               </p>
             </div>
 
@@ -310,7 +310,7 @@ export default function TallyDrivePage() {
               <div className="mt-5 grid grid-cols-2 sm:grid-cols-4 gap-3">
                 {[
                   { label: 'Type', value: 'Automatic Backup' },
-                  { label: 'Security', value: 'Bank-Level' },
+                  { label: 'Security', value: 'AES-256' },
                   { label: 'Effort', value: 'Zero Manual Work' },
                   { label: 'Recovery', value: '1-Click Restore' },
                 ].map((stat) => (
@@ -399,7 +399,7 @@ export default function TallyDrivePage() {
                   <div>
                     <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Security</h3>
                     <div className="flex flex-wrap gap-2">
-                      {['Bank-Grade Encryption', 'Custom Backup Password', 'Private Recovery Key'].map((sec) => (
+                      {['AES-256 Encryption', 'Custom Backup Password', 'Private Recovery Key'].map((sec) => (
                         <span key={sec} className="inline-flex rounded-md px-2.5 py-1 text-[12px] font-medium border" style={{ borderColor: `${BRAND_PRIMARY}25`, backgroundColor: `${BRAND_PRIMARY}06`, color: BRAND_PRIMARY }}>
                           {sec}
                         </span>

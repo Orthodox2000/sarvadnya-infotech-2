@@ -22,7 +22,7 @@ const cards = [
     link: '/cloud/tallycloudaccess',
     features: [
       'Access TallyPrime from anywhere, on any device — powered by AWS, Oracle Cloud & Windows Server.',
-      'Starting at just ₹600/user/month. Full desktop, printing, Excel integration, and bank-level security.',
+      'Starting at just ₹600/user/month. Full desktop, printing, Excel integration, and AES-256 encryption.',
     ],
     tags: [
       { label: 'WORK FROM ANYWHERE', color: 'purple' },
@@ -188,7 +188,7 @@ export default function CloudPage() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
               { title: 'Work From Anywhere', desc: 'Log in securely from your laptop, Mac, or tablet at home or while traveling.' },
-              { title: 'Total Data Safety', desc: 'Bank-level security protects your business from physical theft and viruses.' },
+              { title: 'Total Data Safety', desc: 'AES-256 encryption protects your business from physical theft and viruses.' },
               { title: 'Zero IT Headaches', desc: 'No expensive hardware to buy, maintain, upgrade, or replace.' },
               { title: 'Easy Team Sync', desc: 'Connect branch offices instantly so everyone bills on the same live data.' },
             ].map((item) => (

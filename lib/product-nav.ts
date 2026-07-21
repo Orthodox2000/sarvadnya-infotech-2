@@ -31,12 +31,13 @@ export const productItems: ProductItem[] = [
       {
         id: "tp-do-more",
         label: "Do More with Tally",
-        href: "/products",
+        href: "/do-more",
         description: "Powerful solutions built for TallyPrime.",
         subItems: [
           { id: "tp-cloud", label: "Tally Cloud Access", href: "/cloud/tallycloudaccess" },
           { id: "tallydrive", label: "TallyDrive Backup", href: "/products/tallydrive" },
-          { id: "tp-hrms", label: "HRMS (OTU HRplus)", href: "/hrms" },
+          { id: "tp-backup", label: "Backup for TallyPrime", href: "/cloud/nosky" },
+          { id: "tp-hrms", label: "HRMS Solution", href: "/hrms" },
           { id: "tp-capital", label: "TallyCapital", href: "/products/tallycapital" },
         ]
       },

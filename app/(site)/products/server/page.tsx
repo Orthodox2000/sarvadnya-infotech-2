@@ -10,34 +10,34 @@ const BRAND_PRIMARY = '#316852';
 const BRAND_SECONDARY = '#1e4d3a';
 
 const features = [
-  { title: 'Work Without Interruptions', desc: 'High concurrency means multiple users can save transactions, export reports, and print bills at the exact same time with zero system lag.' },
-  { title: 'Controlled Data Access', desc: 'Keep your backend data completely invisible. Employees only need the server name to log in, preventing unauthorized copying or theft of your physical data files.' },
+  { title: 'Work Without Interruptions', desc: 'High concurrency means multiple users can save transactions, export reports, and print bills at the exact same time with minimum system lag.' },
+  { title: 'Near Concurrency Experience', desc: 'Keep your backend data completely invisible. Employees only need the server name to log in, preventing unauthorized copying or theft of your physical data files.' },
   { title: 'Zero System Downtime', desc: 'You can actively take data backups or pull massive financial reports while the rest of your team continues billing — no one has to stop working.' },
-  { title: 'Smarter Monitoring & Control', desc: 'Actively monitor who is logged in and what activities are in progress. As an admin, you can even disconnect idle users to optimize system performance.' },
-  { title: 'Centralized Multi-Branch Sync', desc: 'Connect all your branch offices to a single head office server. Ensure everyone works on one consistent, real-time data source.' },
-  { title: 'Seamless Upgrade Path', desc: 'Moving from Gold? It\'s effortless. TallyPrime Server works perfectly with your existing Gold license, requiring zero data migration or complex conversions.' },
+  { title: 'Multi-Threaded Architecture', desc: 'Every user gets equal priority. Requests are processed in parallel, not in queues. Each user works on their own snapshot without waiting for others.' },
+  { title: 'Data Reliability', desc: 'Data consistency is maintained even if network connectivity is lost or a client system crashes. Your data remains safe and protected at all times.' },
+  { title: 'Easy to Deploy', desc: 'Quick one-step installation that takes less than an hour. No training required — your team can start working immediately.' },
 ];
 
 const faqs = [
   {
-    q: 'Is TallyPrime Server suitable for businesses with multiple users?',
-    a: 'Yes, if your business has 10+ employees working simultaneously on various tasks, TallyPrime Server ensures seamless multi-user access without slowdowns.',
-  },
-  {
-    q: 'Can I control and monitor user access to company data?',
-    a: 'Absolutely! TallyPrime Server provides centralized control, allowing an administrator to manage user access, hide physical data files, and monitor live activity for better security.',
-  },
-  {
-    q: 'Will TallyPrime Server help in managing multiple branch operations?',
-    a: 'Yes. It is perfect for businesses where multiple branch users connect to the same data, allowing the Head Office to manage access and consolidate reports easily.',
+    q: 'What is TallyPrime Server?',
+    a: 'TallyPrime Server is an enterprise-class software that converts peer-to-peer data access to server-based data management. It provides TallyPrime Gold users power and control for growing business needs.',
   },
   {
     q: 'How is this different from TallyPrime Gold?',
-    a: 'While Gold allows multiple users, Server adds a massive speed boost (high concurrency), hides your backend data files from employees, and lets you actively monitor and control user sessions.',
+    a: 'While Gold uses folder sharing for multiple users, Server provides true concurrent access with multi-threaded architecture. It hides data files, ensures data reliability even during network issues, and supports 100-150 users.',
   },
   {
-    q: 'Can my team keep working while I take a backup?',
-    a: 'Yes! With TallyPrime Server, you can take complete data backups without ever asking your team to log out or stop their daily billing.',
+    q: 'Do I need a physical server to use this?',
+    a: 'No. TallyPrime Server is a software product installed on any existing computer in your network. It does not require a dedicated physical server.',
+  },
+  {
+    q: 'What happens if a client system crashes?',
+    a: 'TallyPrime Server ensures data consistency even if a client crashes. The crash is isolated to that client — no other user or the server data is affected.',
+  },
+  {
+    q: 'How many users can connect?',
+    a: 'You can connect 100-150 users. Performance remains smooth as there is no blocking of tasks even as new users are added.',
   },
 ];
 
@@ -211,7 +211,7 @@ export default function TallyServerPage() {
                 </span>
               </div>
               <p className="text-[13px] text-slate-500 mt-1.5 leading-relaxed max-w-3xl">
-                The ultimate accounting powerhouse for growing businesses. Enjoy zero downtime, lightning-fast performance, and strict data security — even when dozens of employees are working at the exact same time.
+                The ultimate accounting powerhouse for growing businesses. Enjoy lightning-fast performance, and strict data security — even when dozens of employees are working at the exact same time.
               </p>
             </div>
 
@@ -295,19 +295,19 @@ export default function TallyServerPage() {
               <h2 className="text-lg font-bold text-slate-900 mb-3">What is TallyPrime Server?</h2>
               <div className="text-sm text-slate-600 leading-relaxed space-y-3">
                 <p>
-                  As your business grows, system delays and data security become major concerns. TallyPrime Server is built specifically for medium and large enterprises. It operates on a powerful server-based architecture, completely eliminating system slowdowns so your team can work without interruptions.
+                  TallyPrime Server is an enterprise-class software that converts peer-to-peer data access to server-based data management. It provides TallyPrime Gold users the necessary power and control for their growing business needs.
                 </p>
                 <p>
-                  More importantly, it gives you absolute control over your business data. Server allows you to hide physical data files from regular staff and logs every single user action. You get enterprise-class speed, strict privacy, and the ability to monitor exactly who is doing what in real-time.
+                  It is a simple-to-deploy product that provides concurrent, fast and secure access to Tally data along with advanced monitoring and administrative control. Businesses experience increased productivity, better utilisation of man-hours, enhanced speed of operations and superior business performance.
                 </p>
               </div>
               {/* Hero stats */}
               <div className="mt-5 grid grid-cols-2 sm:grid-cols-4 gap-3">
                 {[
-                  { label: 'Concurrency', value: 'Zero Downtime' },
-                  { label: 'Focus', value: 'High Productivity' },
-                  { label: 'Security', value: 'Controlled Access' },
-                  { label: 'Tracking', value: 'Live Monitoring' },
+                  { label: 'Architecture', value: 'Multi-Threaded' },
+                  { label: 'Users', value: '100-150' },
+                  { label: 'Reliability', value: 'Zero Downtime' },
+                  { label: 'Setup', value: '< 1 Hour' },
                 ].map((stat) => (
                   <div
                     key={stat.label}
@@ -356,10 +356,10 @@ export default function TallyServerPage() {
                 <h2 className="text-lg font-bold text-slate-900 mb-4">Is TallyPrime Server right for your business?</h2>
                 <ul className="space-y-3">
                   {[
-                    'You have a growing business with 10+ employees performing various operations simultaneously.',
-                    'You need an administrator to strictly manage data access and actively monitor user activities.',
-                    'You have multiple branch offices that need to consolidate transactions to the Head Office while local users operate smoothly.',
-                    'You are experiencing system lag when multiple users try to pull heavy reports or take backups at the same time.',
+                    'You have 10+ employees performing various operations simultaneously.',
+                    'You need concurrent data access without queues or waiting.',
+                    'You want data reliability even during network issues.',
+                    'You need to run backups without stopping your team.',
                   ].map((item) => (
                     <li key={item} className="flex items-start gap-2.5 text-sm text-slate-600">
                       <span
