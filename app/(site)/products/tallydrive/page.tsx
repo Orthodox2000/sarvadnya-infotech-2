@@ -11,9 +11,9 @@ const BRAND_SECONDARY = '#1e4d3a';
 
 const features = [
   { title: 'AES-256 Encryption', desc: 'Your financial data is locked with enterprise-grade security. You can even set a custom Recovery Key, meaning absolutely no one can access your data except you.' },
-  { title: 'Set It and Forget It', desc: 'Choose a time, and TallyDrive will back up your data automatically every single day — even if TallyPrime is closed.' },
+  { title: 'Set It and Forget It', desc: 'Choose daily, weekly, or monthly schedules, and TallyDrive will back up your data automatically — even if TallyPrime is closed.' },
   { title: 'Instant 1-Click Restore', desc: 'Computer crashed? Don\'t panic. You can download and restore your latest backup in minutes with a single click.' },
-  { title: 'Fast & Saves Internet', desc: 'After the first backup, TallyDrive only uploads the new entries you made that day. It takes seconds and won\'t slow down your internet connection.' },
+  { title: 'Fast & Saves Internet', desc: 'TallyDrive compresses your backups by up to 10×, so they take minimal space and upload in seconds — without slowing down your internet connection.' },
   { title: 'Easy Backup Management', desc: 'No IT skills required. See all your backups on one simple screen, delete old ones, or manage who in your team has access.' },
   { title: 'Works With Your Tally', desc: 'Whether you use a single-user Silver edition or a multi-user Server setup, TallyDrive works perfectly out of the box.' },
 ];
@@ -25,7 +25,15 @@ const faqs = [
   },
   {
     q: 'How much cloud storage do I get?',
-    a: 'Storage is included for free as long as your Tally Software Services (TSS) subscription is active! Silver users get 1 GB, Gold users get 5 GB, and Server users get 25+ GB.',
+    a: 'Storage is included for free as long as your Tally Software Services (TSS) subscription is active! Single-User TallyPrime gets 1 GB, and Multi-User TallyPrime gets 3 GB of free cloud storage.',
+  },
+  {
+    q: 'What happens to my backups if my TSS subscription expires?',
+    a: 'Your data remains safely stored for 90 days after your TSS expires. During this period, you can still restore your backups. After 90 days, the data is permanently deleted from the cloud.',
+  },
+  {
+    q: 'Can I buy more storage if I need it?',
+    a: 'Yes! Extra storage is available starting at ₹1,200 per year for an additional 10 GB of cloud backup space.',
   },
   {
     q: 'Is my financial data safe in the cloud?',
@@ -190,7 +198,7 @@ export default function TallyDrivePage() {
         <div className="max-w-7xl mx-auto px-6 py-5">
           <div className="flex items-start gap-5">
             {/* Logo */}
-            <div className="w-[72px] h-[72px] shrink-0 rounded-xl border border-slate-200 bg-white flex items-center justify-center shadow-sm p-2.5">
+            <div className="w-18 h-18 shrink-0 rounded-xl border border-slate-200 bg-white flex items-center justify-center shadow-sm p-2.5">
               <Image src="/tallydrive logo.png" alt="TallyDrive" width={62} height={62} className="object-contain" />
             </div>
 
@@ -259,7 +267,7 @@ export default function TallyDrivePage() {
       <div
         ref={navRef}
         className={`bg-white border-b border-slate-200 transition-all duration-200 ${
-          stickyNav ? 'sticky top-0 z-[100] shadow-sm' : ''
+          stickyNav ? 'sticky top-0 z-100 shadow-sm' : ''
         }`}
       >
         <div className="max-w-7xl mx-auto px-6">
@@ -397,6 +405,16 @@ export default function TallyDrivePage() {
                     </div>
                   </div>
                   <div>
+                    <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Backup Destination</h3>
+                    <div className="flex flex-wrap gap-2">
+                      {['TallyDrive Cloud', 'Local Drive'].map((dest) => (
+                        <span key={dest} className="inline-flex rounded-md px-2.5 py-1 text-[12px] font-medium border" style={{ borderColor: `${BRAND_PRIMARY}25`, backgroundColor: `${BRAND_PRIMARY}06`, color: BRAND_PRIMARY }}>
+                          {dest}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                  <div>
                     <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Security</h3>
                     <div className="flex flex-wrap gap-2">
                       {['AES-256 Encryption', 'Custom Backup Password', 'Private Recovery Key'].map((sec) => (
@@ -412,6 +430,16 @@ export default function TallyDrivePage() {
                       {['TallyPrime Silver', 'TallyPrime Gold', 'TallyPrime Server'].map((item) => (
                         <span key={item} className="inline-flex rounded-md px-2.5 py-1 text-[12px] font-medium border" style={{ borderColor: `${BRAND_PRIMARY}25`, backgroundColor: `${BRAND_PRIMARY}06`, color: BRAND_PRIMARY }}>
                           {item}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                  <div>
+                    <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Requirement</h3>
+                    <div className="flex flex-wrap gap-2">
+                      {['TallyPrime Release 7.0 or above'].map((req) => (
+                        <span key={req} className="inline-flex rounded-md px-2.5 py-1 text-[12px] font-medium border" style={{ borderColor: `${BRAND_PRIMARY}25`, backgroundColor: `${BRAND_PRIMARY}06`, color: BRAND_PRIMARY }}>
+                          {req}
                         </span>
                       ))}
                     </div>
@@ -540,19 +568,19 @@ export default function TallyDrivePage() {
                         <td className="px-4 py-3 font-bold text-slate-900">TallyDrive Basic (Free)</td>
                         <td className="px-4 py-3 text-slate-600">1 GB</td>
                         <td className="px-4 py-3 text-slate-600">Active TSS required</td>
-                        <td className="px-4 py-3 font-bold" style={{ color: BRAND_PRIMARY }}>Included with Silver</td>
-                      </tr>
-                      <tr className="border-b border-slate-100">
-                        <td className="px-4 py-3 font-bold text-slate-900">TallyDrive Pro</td>
-                        <td className="px-4 py-3 text-slate-600">5 GB</td>
-                        <td className="px-4 py-3 text-slate-600">Active TSS required</td>
-                        <td className="px-4 py-3 font-bold" style={{ color: BRAND_PRIMARY }}>Included with Gold</td>
+                        <td className="px-4 py-3 font-bold" style={{ color: BRAND_PRIMARY }}>Included with Single-User TSS</td>
                       </tr>
                       <tr>
-                        <td className="px-4 py-3 font-bold text-slate-900">TallyDrive Enterprise</td>
-                        <td className="px-4 py-3 text-slate-600">25 GB+</td>
+                        <td className="px-4 py-3 font-bold text-slate-900">Multi-User (Gold / Server)</td>
+                        <td className="px-4 py-3 text-slate-600">3 GB</td>
                         <td className="px-4 py-3 text-slate-600">Active TSS required</td>
-                        <td className="px-4 py-3 font-bold" style={{ color: BRAND_PRIMARY }}>Included with Server</td>
+                        <td className="px-4 py-3 font-bold" style={{ color: BRAND_PRIMARY }}>Included with Multi-User TSS</td>
+                      </tr>
+                      <tr className="border-b border-slate-100">
+                        <td className="px-4 py-3 font-bold text-slate-900">Extra Storage</td>
+                        <td className="px-4 py-3 text-slate-600">10 GB</td>
+                        <td className="px-4 py-3 text-slate-600">Per year</td>
+                        <td className="px-4 py-3 font-bold" style={{ color: BRAND_PRIMARY }}>₹1,200/year</td>
                       </tr>
                     </tbody>
                   </table>

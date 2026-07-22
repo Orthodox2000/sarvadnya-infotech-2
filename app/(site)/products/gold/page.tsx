@@ -190,7 +190,7 @@ export default function TallyGoldPage() {
         <div className="max-w-7xl mx-auto px-6 py-5">
           <div className="flex items-start gap-5">
             {/* Logo */}
-            <div className="w-[72px] h-[72px] shrink-0 rounded-xl border border-slate-200 bg-white flex items-center justify-center shadow-sm p-2.5">
+            <div className="w-18 h-18 shrink-0 rounded-xl border border-slate-200 bg-white flex items-center justify-center shadow-sm p-2.5">
               <Image src="/PartnerBrands/Tally-Software.png" alt="TallyPrime Gold" width={48} height={48} className="object-contain" />
             </div>
 
@@ -259,7 +259,7 @@ export default function TallyGoldPage() {
       <div
         ref={navRef}
         className={`bg-white border-b border-slate-200 transition-all duration-200 ${
-          stickyNav ? 'sticky top-0 z-[100] shadow-sm' : ''
+          stickyNav ? 'sticky top-0 z-100 shadow-sm' : ''
         }`}
       >
         <div className="max-w-7xl mx-auto px-6">

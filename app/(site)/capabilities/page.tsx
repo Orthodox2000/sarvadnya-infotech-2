@@ -1,7 +1,9 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
+import RupeeIcon from '../../components/RupeeIcon';
 import { capabilityCategories } from '@/lib/capabilities';
 import Footer from '@/app/components/Footer';
 
@@ -120,7 +122,16 @@ export default function CapabilitiesPage() {
                     {feature.example && (
                       <div className="bg-[#F0F5F2] rounded-xl px-4 py-3 border border-[#4A6E62]/10">
                         <p className="text-[10px] font-bold text-[#4A6E62] uppercase tracking-widest mb-1">Example</p>
-                        <p className="text-[11px] text-slate-600 leading-relaxed">{feature.example}</p>
+                        <p className="text-[11px] text-slate-600 leading-relaxed">
+                          {feature.example.split('[RUPEE_ICON]').map((part, i, arr) => (
+                            <span key={i}>
+                              {part}
+                              {i < arr.length - 1 && (
+                                <RupeeIcon className="inline-block align-middle w-3.5 h-3.5 mx-0.5" />
+                              )}
+                            </span>
+                          ))}
+                        </p>
                       </div>
                     )}
                   </div>

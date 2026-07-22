@@ -85,7 +85,7 @@ export default function ProductsPage() {
                   </h3>
                 </div>
 
-                <p className="text-gray-600 text-sm mb-8 flex-grow leading-relaxed">
+                <p className="text-gray-600 text-sm mb-8 grow leading-relaxed">
                   {p.description}
                 </p>
 

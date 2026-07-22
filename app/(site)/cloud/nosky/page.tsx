@@ -10,34 +10,42 @@ const BRAND_PRIMARY = '#316852';
 const BRAND_SECONDARY = '#1e4d3a';
 
 const features = [
-  { title: 'Set It and Forget It', desc: 'Pick a time, and backups run automatically every day. No manual work needed.' },
-  { title: 'Instant 1-Click Recovery', desc: 'Computer died? Install TallyPrime on a new machine, click restore, and your data is back.' },
-  { title: 'Military-Grade Encryption', desc: 'Your data is encrypted with AES-256 before it leaves your computer. No one can read your files.' },
-  { title: 'Incremental Backups', desc: 'After the first backup, only new or changed data is saved. Fast, efficient, and uses minimal internet.' },
-  { title: 'Ransomware Proof', desc: 'Backup data is stored in a secure cloud vault. Local viruses cannot touch your safe files.' },
-  { title: 'Daily Peace of Mind', desc: 'Get status updates on your dashboard so you know your data is safe every day.' },
+  { title: 'Automated Backup & Scheduling', desc: 'Set customizable backup schedules — daily, weekly, or monthly. Backups run automatically in the background with zero manual intervention, using incremental technology to capture only changed data.' },
+  { title: 'Centralized Management Portal', desc: 'A single dashboard to monitor and manage backup status across all your systems. View storage usage, version history, and receive alerts — all in one place.' },
+  { title: 'Instant 1-Click Recovery', desc: 'Access backups from anywhere with an internet connection. Restore files, folders, or full systems with a single click — even from a different device type.' },
+  { title: 'Enterprise-Grade Security', desc: 'Data is encrypted with AES-256 both in transit and at rest. Role-based access control (RBAC) and multi-factor authentication (MFA) ensure only authorized users can access your data.' },
+  { title: 'Scalable Storage', desc: 'Storage capacity expands as your business grows. Global storage regions provide geographic redundancy, so your data is always safe and accessible.' },
+  { title: 'Disaster Recovery & Business Continuity', desc: 'Fast system recovery after hardware failure, ransomware, or natural disaster. Maintain business continuity for your critical accounting systems with minimal downtime.' },
 ];
 
 const faqs = [
   {
     q: 'Do I have to remember to click "backup" every day?',
-    a: 'No! That\'s the best part. You set it up once, and it does it automatically in the background on your preferred schedule without disturbing your work.',
+    a: 'No! You set it up once with your preferred schedule — daily, weekly, or monthly — and backups run automatically in the background without disturbing your work.',
   },
   {
     q: 'Is my data really safe from hackers or viruses?',
-    a: 'Absolutely. Your data is encrypted (locked) with AES-256 encryption before it even transfers, keeping it completely safe from ransomware and local computer viruses.',
+    a: 'Absolutely. Your data is encrypted with AES-256 both in transit and at rest. Role-based access control (RBAC) and multi-factor authentication (MFA) add extra layers of security. Backup data is stored in a secure cloud vault, completely isolated from local ransomware and viruses.',
   },
   {
     q: 'Will this slow down my internet or my computer while I work?',
-    a: 'Not at all. It only backs up the new changes you made that day, not your entire hard drive. It takes just a few seconds and uses very little internet bandwidth.',
+    a: 'Not at all. Incremental backup technology means only new or changed data is saved after the first backup. It takes seconds and uses minimal internet bandwidth.',
   },
   {
     q: 'What happens if my computer completely dies?',
-    a: 'You simply install Tally on a new computer, run the 1-Click Restore, and you\'ll have all your data back in minutes so you can start billing immediately.',
+    a: 'You simply install the backup agent on a new computer, log in to the management portal, and use 1-Click Restore. You can even restore from a different device type — your data is always accessible from anywhere with an internet connection.',
   },
   {
-    q: 'Can I backup to my own hard drive instead of the internet?',
-    a: 'Yes! You get the total flexibility to back up to the secure cloud, or directly to a physical hard drive connected to your office network.',
+    q: 'Can I manage backups for multiple computers from one place?',
+    a: 'Yes! The centralized management portal gives you a single dashboard to monitor and manage backup status across all your systems — desktops, servers, and virtual machines. You can view storage usage, version history, and receive alerts all in one place.',
+  },
+  {
+    q: 'What if my business grows and I need more storage?',
+    a: 'Storage capacity scales with your business needs. You can expand your storage at any time, and global storage regions provide geographic redundancy for extra protection.',
+  },
+  {
+    q: 'Does this support compliance requirements?',
+    a: 'Yes. The platform provides compliance-oriented storage with secure data retention, audit logging, and encryption — helping you meet regulatory requirements for financial data.',
   },
 ];
 
@@ -179,7 +187,7 @@ export default function NoSkyBackupPage() {
               <li className="text-slate-300 mx-0.5">/</li>
               <li><Link href="/cloud" className="hover:text-[#316852] transition-colors">Cloud</Link></li>
               <li className="text-slate-300 mx-0.5">/</li>
-              <li className="text-slate-800 font-semibold">Backup for TallyPrime</li>
+              <li className="text-slate-800 font-semibold">Backup for Tally</li>
             </ul>
           </div>
         </div>
@@ -190,14 +198,14 @@ export default function NoSkyBackupPage() {
         <div className="max-w-7xl mx-auto px-6 py-5">
           <div className="flex items-start gap-5">
             {/* Logo */}
-            <div className="w-[72px] h-[72px] shrink-0 rounded-xl border border-slate-200 bg-white flex items-center justify-center shadow-sm p-2.5">
-              <Image src="/hero/brand-nosky-1779439419186.webp" alt="Backup for TallyPrime" width={48} height={48} className="object-contain" />
+            <div className="w-18 h-18 shrink-0 rounded-xl border border-slate-200 bg-white flex items-center justify-center shadow-sm p-2.5">
+              <Image src="/backup-logo.png" alt="Backup for TallyPrime" width={48} height={48} className="object-contain" />
             </div>
 
             {/* Info */}
             <div className="flex-1 min-w-0">
               <div className="flex items-center flex-wrap gap-x-3 gap-y-1">
-                <h1 className="text-xl md:text-2xl font-bold text-slate-900">Backup for TallyPrime</h1>
+                <h1 className="text-xl md:text-2xl font-bold text-slate-900">Backup for Tally</h1>
                 <span
                   className="inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider border"
                   style={{
@@ -212,7 +220,7 @@ export default function NoSkyBackupPage() {
               </div>
               <div className="flex items-center flex-wrap gap-x-4 gap-y-1 mt-1.5"></div>
               <p className="text-[13px] text-slate-500 mt-1.5 leading-relaxed max-w-3xl">
-                Never worry about losing your accounting data again. Backup for TallyPrime runs silently in the background, automatically saving your Tally records so you are 100% safe from computer crashes, hardware theft, and ransomware viruses.
+                A secure, scalable cloud backup and disaster recovery solution for TallyPrime. Automated backups, centralized management, and instant 1-Click restore — protecting your business data against crashes, theft, and ransomware.
               </p>
             </div>
 
@@ -259,7 +267,7 @@ export default function NoSkyBackupPage() {
       <div
         ref={navRef}
         className={`bg-white border-b border-slate-200 transition-all duration-200 ${
-          stickyNav ? 'sticky top-0 z-[100] shadow-sm' : ''
+          stickyNav ? 'sticky top-0 z-100 shadow-sm' : ''
         }`}
       >
         <div className="max-w-7xl mx-auto px-6">
@@ -293,22 +301,22 @@ export default function NoSkyBackupPage() {
 
             {/* Overview */}
             <section id="overview" className="scroll-mt-16 bg-white rounded-xl border border-slate-200 p-6">
-              <h2 className="text-lg font-bold text-slate-900 mb-3">What is Backup for TallyPrime?</h2>
+              <h2 className="text-lg font-bold text-slate-900 mb-3">What is Backup for Tally?</h2>
               <div className="text-sm text-slate-600 leading-relaxed space-y-3">
                 <p>
-                  Stop manually copying your Tally files to pen drives and external hard disks every week. Backup for TallyPrime is a smart, silent safety net that automatically saves your business records to a secure vault at the end of every day.
+                  Backup for Tally is a secure, scalable cloud backup and disaster recovery solution designed to protect your TallyPrime business data against accidental deletion, hardware failures, ransomware, and other risks. It supports diverse environments — desktops, servers, and virtual machines — with centralized management.
                 </p>
                 <p>
-                  Whether your laptop gets stolen, your hard drive crashes, or your office gets hit by a ransomware virus, your financial data remains completely untouched and safe. Best of all, if disaster strikes, you can get your business back up and running with a single click.
+                  The platform emphasizes automation, security, ease of management, and fast recovery. Schedule automated backups, monitor everything from a single dashboard, and restore your data in minutes if disaster strikes.
                 </p>
               </div>
               {/* Hero stats */}
               <div className="mt-5 grid grid-cols-2 sm:grid-cols-4 gap-3">
                 {[
-                  { label: 'Type', value: '100% Automatic' },
-                  { label: 'Access', value: 'Cloud & Local' },
-                  { label: 'Security', value: 'AES-256' },
-                  { label: 'Recovery', value: '1-Click Restore' },
+                  { label: 'Encryption', value: 'AES-256' },
+                  { label: 'Access', value: 'Anywhere' },
+                  { label: 'Management', value: 'Centralized' },
+                  { label: 'Recovery', value: '1-Click' },
                 ].map((stat) => (
                   <div
                     key={stat.label}
@@ -327,9 +335,9 @@ export default function NoSkyBackupPage() {
 
             {/* Features */}
             <section id="features" className="scroll-mt-16 bg-white rounded-xl border border-slate-200 p-6">
-              <h2 className="text-lg font-bold text-slate-900 mb-1">Key Features of Backup for TallyPrime</h2>
+              <h2 className="text-lg font-bold text-slate-900 mb-1">Key Features of Backup for Tally</h2>
               <p className="text-sm text-slate-500 mb-5">
-                Why small business owners trust NoSky to protect their years of hard work.
+                Automated backup, centralized management, and instant recovery — all in one solution.
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                 {features.map((feature) => (
@@ -354,13 +362,14 @@ export default function NoSkyBackupPage() {
             {/* When Backup for TallyPrime is the right choice + Compatible Systems */}
             <section className="grid sm:grid-cols-2 gap-6">
               <div className="bg-white rounded-xl border border-slate-200 p-6">
-                <h2 className="text-lg font-bold text-slate-900 mb-4">Why you should prefer this backup feature?</h2>
+                <h2 className="text-lg font-bold text-slate-900 mb-4">When is Backup for Tally the right choice?</h2>
                 <ul className="space-y-3">
                   {[
-                    'You are still manually copying Tally data to pen drives or hard disks and occasionally forget to do it.',
-                    'You are terrified of losing years of accounting data to a computer crash, fire, or theft.',
-                    'You want a reliable system that backs up your files automatically without relying on your staff.',
-                    'You need to get your billing back up and running in minutes, not days, if a laptop breaks.',
+                    'You need ransomware protection — recover clean copies of data after cyber threats.',
+                    'You require business continuity — maintain access to critical information during outages.',
+                    'You have regulatory compliance needs — secure data retention aligned with compliance requirements.',
+                    'You support a hybrid workforce — protect distributed endpoints and remote users.',
+                    'You want centralized IT control — simplify backup management across all environments.',
                   ].map((item) => (
                     <li key={item} className="flex items-start gap-2.5 text-sm text-slate-600">
                       <span
@@ -381,9 +390,9 @@ export default function NoSkyBackupPage() {
                 <h2 className="text-lg font-bold text-slate-900 mb-4">Compatible Systems</h2>
                 <div className="space-y-4">
                   <div>
-                    <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Supported OS</h3>
+                    <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Supported Operating Systems</h3>
                     <div className="flex flex-wrap gap-2">
-                      {['Windows 7', 'Windows 8', 'Windows 10', 'Windows 11', 'Windows Server'].map((os) => (
+                      {['Windows 7/8/10/11', 'Windows Server', 'macOS', 'Linux'].map((os) => (
                         <span key={os} className="inline-flex rounded-md px-2.5 py-1 text-[12px] font-medium border" style={{ borderColor: `${BRAND_PRIMARY}25`, backgroundColor: `${BRAND_PRIMARY}06`, color: BRAND_PRIMARY }}>
                           {os}
                         </span>
@@ -391,20 +400,20 @@ export default function NoSkyBackupPage() {
                     </div>
                   </div>
                   <div>
-                    <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Backup Sources</h3>
+                    <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Virtual Environments</h3>
                     <div className="flex flex-wrap gap-2">
-                      {['TallyPrime Data', 'Local Office Files'].map((src) => (
-                        <span key={src} className="inline-flex rounded-md px-2.5 py-1 text-[12px] font-medium text-slate-600 bg-slate-50 border border-slate-200">
-                          {src}
+                      {['VMware', 'Hyper-V'].map((env) => (
+                        <span key={env} className="inline-flex rounded-md px-2.5 py-1 text-[12px] font-medium border" style={{ borderColor: `${BRAND_PRIMARY}25`, backgroundColor: `${BRAND_PRIMARY}06`, color: BRAND_PRIMARY }}>
+                          {env}
                         </span>
                       ))}
                     </div>
                   </div>
                   <div>
-                    <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Storage Destinations</h3>
+                    <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Backup Destinations</h3>
                     <div className="flex flex-wrap gap-2">
-                      {['Secure Cloud Vault (AWS)', 'Local Office Network', 'External Hard Drives'].map((storage) => (
-                        <span key={storage} className="inline-flex rounded-md px-2.5 py-1 text-[12px] font-medium border" style={{ borderColor: `${BRAND_PRIMARY}25`, backgroundColor: `${BRAND_PRIMARY}06`, color: BRAND_PRIMARY }}>
+                      {['Secure Cloud Vault', 'Global Regions'].map((storage) => (
+                        <span key={storage} className="inline-flex rounded-md px-2.5 py-1 text-[12px] font-medium text-slate-600 bg-slate-50 border border-slate-200">
                           {storage}
                         </span>
                       ))}
@@ -416,7 +425,7 @@ export default function NoSkyBackupPage() {
 
             {/* FAQ */}
             <section id="faqs" className="scroll-mt-16 bg-white rounded-xl border border-slate-200 p-6">
-              <h2 className="text-lg font-bold text-slate-900 mb-1">Backup for TallyPrime FAQs</h2>
+              <h2 className="text-lg font-bold text-slate-900 mb-1">Backup for Tally FAQs</h2>
               <p className="text-sm text-slate-500 mb-5">Frequently asked questions about securing your business data.</p>
               <div className="space-y-0 divide-y divide-slate-100">
                 {faqs.map((faq, idx) => (
@@ -452,8 +461,8 @@ export default function NoSkyBackupPage() {
             {/* Still not satisfied? */}
             <section className="bg-white rounded-xl border border-slate-200 p-6">
               <div className="text-center mb-5">
-                <h2 className="text-lg font-bold text-slate-900">Let&apos;s secure your business data today.</h2>
-                <p className="text-sm text-slate-500 mt-1">Tell us how much data you have, and we will set up the perfect automated backup plan for you.</p>
+                <h2 className="text-lg font-bold text-slate-900">Ready to secure your Tally data?</h2>
+                <p className="text-sm text-slate-500 mt-1">Tell us about your business size and we will set up the perfect automated backup plan for you.</p>
               </div>
               <form onSubmit={handleInquirySubmit} className="max-w-xl mx-auto space-y-3">
                 <input
@@ -506,7 +515,7 @@ export default function NoSkyBackupPage() {
             {/* Pricing - Hidden reveal */}
             <section id="pricing" className="scroll-mt-16 bg-white rounded-xl border border-slate-200 p-6">
               <h2 className="text-lg font-bold text-slate-900 mb-1">Simple, Transparent Backup Pricing</h2>
-              <p className="text-sm text-slate-500 mb-5">Affordable peace of mind for small businesses.</p>
+              <p className="text-sm text-slate-500 mb-5">Affordable peace of mind for businesses of all sizes.</p>
               <button
                 type="button"
                 onClick={() => setShowPricing(!showPricing)}
@@ -530,12 +539,12 @@ export default function NoSkyBackupPage() {
                     </thead>
                     <tbody>
                       <tr className="border-b border-slate-100">
-                        <td className="px-4 py-3 font-bold text-slate-900">NoSky Monthly Rental (50GB)</td>
+                        <td className="px-4 py-3 font-bold text-slate-900">Monthly Rental (50GB)</td>
                         <td className="px-4 py-3 text-slate-600">50GB Secure Cloud</td>
                         <td className="px-4 py-3 font-bold" style={{ color: BRAND_PRIMARY }}>Contact Sales</td>
                       </tr>
                       <tr>
-                        <td className="px-4 py-3 font-bold text-slate-900">NoSky Yearly Plan (50GB)</td>
+                        <td className="px-4 py-3 font-bold text-slate-900">Yearly Plan (50GB)</td>
                         <td className="px-4 py-3 text-slate-600">50GB Secure Cloud</td>
                         <td className="px-4 py-3 font-bold" style={{ color: BRAND_PRIMARY }}>Contact Sales</td>
                       </tr>
@@ -569,9 +578,9 @@ export default function NoSkyBackupPage() {
             {/* Get Best Quote */}
             <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
               <div className="px-5 py-4 text-white" style={{ backgroundColor: BRAND_SECONDARY }}>
-                <h3 className="text-sm font-bold">Protect Your Tally Data Now</h3>
+                <h3 className="text-sm font-bold">Protect Your Tally Data</h3>
                 <p className="text-[12px] text-white/75 mt-1 leading-relaxed">
-                  Connect with our data protection experts to set up a bulletproof backup system for your business.
+                  Connect with our data protection experts to set up automated backup for your business.
                 </p>
               </div>
               <form onSubmit={handleSidebarSubmit} className="p-5 space-y-3">

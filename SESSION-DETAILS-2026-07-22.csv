@@ -1,0 +1,25 @@
+File,Section,Change Type,Before,After,Impact
+app/(site)/services/amc/page.tsx,Hero Section,Replace Structure,Static image hero,Abstract graphic composition (Document Plate + Floating Icons),Visual upgrade - dynamic composition
+app/(site)/services/amc/page.tsx,Features - Section Padding,Reduce,py-24,py-8,67% reduction in vertical space
+app/(site)/services/amc/page.tsx,Features - Title,Reduce,text-3xl md:text-5xl,text-xl md:text-3xl,Smaller heading
+app/(site)/services/amc/page.tsx,Features - Description,Reduce,text-lg,text-sm,Compact description
+app/(site)/services/amc/page.tsx,Features - Grid Gap,Reduce,gap-6 lg:gap-8,gap-4,Tighter card spacing
+app/(site)/services/amc/page.tsx,Features - Card Padding,Reduce,p-8,p-5,37% reduction
+app/(site)/services/amc/page.tsx,Features - Card Radius,Reduce,rounded-[2rem],rounded-2xl,Smaller corners
+app/(site)/services/amc/page.tsx,Features - Icon Container,Reduce,w-16 h-16 rounded-2xl,w-11 h-11 rounded-xl,31% smaller
+app/(site)/services/amc/page.tsx,Features - Icon,Reduce,w-7 h-7,w-5 h-5,29% smaller
+app/(site)/services/amc/page.tsx,Features - Card Title,Reduce,text-xl,text-sm,50% smaller
+app/(site)/services/amc/page.tsx,Features - Card Description,Reduce,text-sm,text-xs,20% smaller
+app/(site)/services/amc/page.tsx,Zero-Friction - Section Padding,Reduce,py-16,py-2,87% reduction
+app/(site)/services/amc/page.tsx,Zero-Friction - Container Padding,Reduce,p-8 md:p-10 lg:p-14,p-6 md:p-8 lg:p-10,~30% reduction
+app/(site)/services/amc/page.tsx,Zero-Friction - Graphic,Add,Commented out AMC Image,Abstract UI composition (Dashboard + Floating Notification + Activity icon),New visual element
+app/(site)/services/amc/page.tsx,CTA - Button Padding,Reduce,px-8 py-4,px-5 py-2.5,~37% smaller
+app/(site)/services/amc/page.tsx,CTA - Button Text,Reduce,text-sm,text-xs,20% smaller
+app/(site)/services/amc/page.tsx,CTA - Button Radius,Reduce,rounded-2xl,rounded-xl,Smaller corners
+app/(site)/services/corporporate-training/page.tsx,Full Page,Rewrite,Custom layout,AMC page structure,Structural alignment
+app/(site)/services/corporporate-training/page.tsx,Hero,Badge Change,Knowledge Empowerment,Knowledge Empowerment (kept),No change
+app/(site)/services/corporporate-training/page.tsx,Hero,Title,Rewritten,Tally Corporate Training Programs,Content preserved
+app/(site)/services/corporporate-training/page.tsx,Features,Icons Change,Inline SVGs,lucide-react (BookOpen/ Award/ Target/ Calendar),Consistent icon library
+app/(site)/services/corporporate-training/page.tsx,Details Section,Replace,Custom layout,AMC Zero-Friction style (Image + Checklist),Structural alignment
+app/(site)/services/corporporate-training/page.tsx,CTA,Title,Invest in Your Team's Growth,Invest in Your Team's Growth (kept),No change
+app/globals.css,Animations,Add,None,bounce-slow (3s) + float (4s),Support for hero floating elements

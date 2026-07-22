@@ -21,7 +21,7 @@ const features = [
 const faqs = [
   {
     q: 'Who is this version actually for?',
-    a: 'It is built for independent business owners, freelancers, and small shop owners who only need one person to access the accounting system at a time.',
+    a: 'It is built for small business owners, freelancers, and small shop owners who only need one user to access the accounting system at a time.',
   },
   {
     q: 'Does it handle my local taxes and e-invoicing?',
@@ -37,7 +37,7 @@ const faqs = [
   },
   {
     q: 'Will I get help if I get stuck?',
-    a: 'Absolutely. We provide dedicated expert support to help you with installation, initial setup, and day-to-day accounting queries.',
+    a: 'Absolutely. We provide expert support to help you with installation and initial setup',
   },
 ];
 
@@ -190,7 +190,7 @@ export default function TallySilverPage() {
         <div className="max-w-7xl mx-auto px-6 py-5">
           <div className="flex items-start gap-5">
             {/* Logo */}
-            <div className="w-[72px] h-[72px] shrink-0 rounded-xl border border-slate-200 bg-white flex items-center justify-center shadow-sm p-2.5">
+            <div className="w-18 h-18 shrink-0 rounded-xl border border-slate-200 bg-white flex items-center justify-center shadow-sm p-2.5">
               <Image src="/PartnerBrands/Tally-Software.png" alt="TallyPrime Silver" width={48} height={48} className="object-contain" />
             </div>
 
@@ -259,7 +259,7 @@ export default function TallySilverPage() {
       <div
         ref={navRef}
         className={`bg-white border-b border-slate-200 transition-all duration-200 ${
-          stickyNav ? 'sticky top-0 z-[100] shadow-sm' : ''
+          stickyNav ? 'sticky top-0 z-100 shadow-sm' : ''
         }`}
       >
         <div className="max-w-7xl mx-auto px-6">

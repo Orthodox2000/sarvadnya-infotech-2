@@ -29,7 +29,7 @@ export const capabilityCategories: CapabilityCategory[] = [
       {
         title: "Multi-Currency Support",
         description: "Handle international trade with automatic forex gain/loss calculation. TallyPrime tracks exchange rates, converts amounts in real-time, and records unrealized/realized gains in your books.",
-        example: "If you invoice a US client for $10,000 when USD/INR is 83.00, and receive payment at 83.50, Tally auto-records the ₹5,000 forex gain."
+        example: "If you invoice a US client for [RUPEE_ICON]10,000 when USD/INR is 83.00, and receive payment at 83.50, Tally auto-records the ₹5,000 forex gain."
       },
       {
         title: "Dr/Cr Ledgers",

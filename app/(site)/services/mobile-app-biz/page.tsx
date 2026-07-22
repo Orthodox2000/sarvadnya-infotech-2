@@ -59,7 +59,7 @@ export default function MobileAppBizPage() {
   return (
     <div className="min-h-screen bg-[linear-gradient(90deg,rgba(249,251,245,1)_0%,rgba(244,242,234,1)_53%,rgba(238,236,223,1)_100%)]  text-slate-900">
       {/* Cinematic Hero Section (Themed Hero) */}
-      <section className=" relative overflow-hidden flex items-center min-h-[200px] md:min-h-[350px] border-b border-[#4A6E62]/10">
+      <section className="bg-white relative overflow-hidden flex items-center min-h-[200px] md:min-h-[350px] border-b border-[#4A6E62]/10">
         {/* Cinematic Image Side - Hidden on mobile, full height on desktop */}
         <div className="hidden lg:block absolute right-0 top-0 bottom-0 w-1/2 z-0">
           <div className="relative h-full w-full">
@@ -71,7 +71,7 @@ export default function MobileAppBizPage() {
               priority
             />
             {/* Cinematic Overlay - Fades image into the light background */}
-            <div className="absolute inset-0 bg-gradient-to-r from-[#F5F4EC] via-[#F4F2EA]/80 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#ffffff] via-[#F4F2EA]/80 to-transparent" />
           </div>
         </div>
         

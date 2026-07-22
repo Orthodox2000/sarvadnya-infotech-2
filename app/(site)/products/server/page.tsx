@@ -10,34 +10,46 @@ const BRAND_PRIMARY = '#316852';
 const BRAND_SECONDARY = '#1e4d3a';
 
 const features = [
-  { title: 'Work Without Interruptions', desc: 'High concurrency means multiple users can save transactions, export reports, and print bills at the exact same time with minimum system lag.' },
-  { title: 'Near Concurrency Experience', desc: 'Keep your backend data completely invisible. Employees only need the server name to log in, preventing unauthorized copying or theft of your physical data files.' },
-  { title: 'Zero System Downtime', desc: 'You can actively take data backups or pull massive financial reports while the rest of your team continues billing — no one has to stop working.' },
-  { title: 'Multi-Threaded Architecture', desc: 'Every user gets equal priority. Requests are processed in parallel, not in queues. Each user works on their own snapshot without waiting for others.' },
-  { title: 'Data Reliability', desc: 'Data consistency is maintained even if network connectivity is lost or a client system crashes. Your data remains safe and protected at all times.' },
-  { title: 'Easy to Deploy', desc: 'Quick one-step installation that takes less than an hour. No training required — your team can start working immediately.' },
+  { title: 'True Concurrent Access', desc: 'Unlike Gold\'s folder-sharing model, TallyPrime Server provides true server-based data management. Every user gets their own thread with equal priority — requests are processed in parallel, not in queues, so no one ever waits for another user.' },
+  { title: 'Zero System Downtime', desc: 'Run backups, generate massive financial reports, or perform year-end processes while the rest of your team continues billing. No one has to stop working — ever.' },
+  { title: 'Advanced Monitoring & Control', desc: 'Administrators get a dedicated console to monitor active users, view real-time activity, and manage data access. You see exactly who is doing what, and can intervene instantly if needed.' },
+  { title: 'Data Reliability', desc: 'Data consistency is maintained even if network connectivity is lost or a client system crashes. The crash is isolated to that client — no other user or the server data is affected.' },
+  { title: 'Data Security by Design', desc: 'TallyPrime Server hides your physical data files completely. Employees only need the server name to log in, preventing unauthorized copying or theft of your financial records.' },
+  { title: 'Simple to Deploy', desc: 'Quick one-step installation that takes less than an hour on any existing computer in your network. No dedicated physical server required — and no training needed for your team.' },
 ];
 
 const faqs = [
   {
     q: 'What is TallyPrime Server?',
-    a: 'TallyPrime Server is an enterprise-class software that converts peer-to-peer data access to server-based data management. It provides TallyPrime Gold users power and control for growing business needs.',
+    a: 'TallyPrime Server is an enterprise-class software that converts peer-to-peer data access (like Gold\'s folder-sharing model) to true server-based data management. It gives TallyPrime Gold users the power to handle 100-150 concurrent users with advanced monitoring, zero system waiting, and complete data reliability.',
   },
   {
-    q: 'How is this different from TallyPrime Gold?',
-    a: 'While Gold uses folder sharing for multiple users, Server provides true concurrent access with multi-threaded architecture. It hides data files, ensures data reliability even during network issues, and supports 100-150 users.',
+    q: 'How is TallyPrime Server different from TallyPrime Gold?',
+    a: 'TallyPrime Gold uses folder sharing for multiple users — which works well on a LAN but has limitations. Server provides true concurrent access with multi-threaded architecture, hides data files for security, supports 100-150 users, and gives administrators real-time monitoring and control. If Gold is your multi-user accounting tool, Server is the infrastructure upgrade that increases its limits.',
   },
   {
-    q: 'Do I need a physical server to use this?',
-    a: 'No. TallyPrime Server is a software product installed on any existing computer in your network. It does not require a dedicated physical server.',
+    q: 'I use TallyPrime Gold on a LAN — how many users can I have?',
+    a: 'TallyPrime Gold supports unlimited users on a Local Area Network (LAN). There is no hard user limit when all your employees are on the same office network. The limitation only appears when you move to virtual environments or need enterprise-level performance.',
+  },
+  {
+    q: 'What about Cloud, RDP, or Citrix? Are there limits?',
+    a: 'Yes. If you use TallyPrime Gold in a virtual environment (Cloud, RDP, or Citrix), Tally limits you to 10 free Tally Virtual Users (TVUs). If you need more than 10 virtual users, you must purchase additional TVU subscription packs from Tally.',
+  },
+  {
+    q: 'What is a Tally Virtual User (TVU)?',
+    a: 'A TVU is a license required when TallyPrime is accessed through virtual desktops like Cloud, RDP, or Citrix — instead of a direct LAN connection. Each concurrent virtual connection consumes one TVU slot. TallyPrime Gold comes with 10 free TVUs; additional slots require a paid subscription.',
+  },
+  {
+    q: 'Do I need a physical server to use TallyPrime Server?',
+    a: 'No. TallyPrime Server is a software product installed on any existing computer in your network. It does not require a dedicated physical server — a standard office PC with a good network connection is sufficient.',
   },
   {
     q: 'What happens if a client system crashes?',
-    a: 'TallyPrime Server ensures data consistency even if a client crashes. The crash is isolated to that client — no other user or the server data is affected.',
+    a: 'TallyPrime Server ensures data consistency even if a client crashes. The crash is isolated to that client — no other user or the server data is affected. You can simply restart the client and continue working.',
   },
   {
-    q: 'How many users can connect?',
-    a: 'You can connect 100-150 users. Performance remains smooth as there is no blocking of tasks even as new users are added.',
+    q: 'How many users can TallyPrime Server handle?',
+    a: 'TallyPrime Server supports 100-150 concurrent users. Performance remains smooth because the multi-threaded architecture processes every user\'s request in parallel — there is no blocking or queuing of tasks.',
   },
 ];
 
@@ -190,7 +202,7 @@ export default function TallyServerPage() {
         <div className="max-w-7xl mx-auto px-6 py-5">
           <div className="flex items-start gap-5">
             {/* Logo */}
-            <div className="w-[72px] h-[72px] shrink-0 rounded-xl border border-slate-200 bg-white flex items-center justify-center shadow-sm p-2.5">
+            <div className="w-18 h-18 shrink-0 rounded-xl border border-slate-200 bg-white flex items-center justify-center shadow-sm p-2.5">
               <Image src="/PartnerBrands/Tally-Software.png" alt="TallyPrime Server" width={48} height={48} className="object-contain" />
             </div>
 
@@ -211,7 +223,7 @@ export default function TallyServerPage() {
                 </span>
               </div>
               <p className="text-[13px] text-slate-500 mt-1.5 leading-relaxed max-w-3xl">
-                The ultimate accounting powerhouse for growing businesses. Enjoy lightning-fast performance, and strict data security — even when dozens of employees are working at the exact same time.
+                The ultimate accounting powerhouse for growing businesses. Convert peer-to-peer folder sharing to true server-based data management — with 100-150 concurrent users, zero downtime, and advanced administrative control.
               </p>
             </div>
 
@@ -258,7 +270,7 @@ export default function TallyServerPage() {
       <div
         ref={navRef}
         className={`bg-white border-b border-slate-200 transition-all duration-200 ${
-          stickyNav ? 'sticky top-0 z-[100] shadow-sm' : ''
+          stickyNav ? 'sticky top-0 z-100 shadow-sm' : ''
         }`}
       >
         <div className="max-w-7xl mx-auto px-6">
@@ -300,13 +312,16 @@ export default function TallyServerPage() {
                 <p>
                   It is a simple-to-deploy product that provides concurrent, fast and secure access to Tally data along with advanced monitoring and administrative control. Businesses experience increased productivity, better utilisation of man-hours, enhanced speed of operations and superior business performance.
                 </p>
+                <p>
+                  If your business has outgrown a standard LAN and requires massive multi-site data handling, upgrading to the Tally.Server 9 architecture allows connection for 100 to 150 concurrent clients without blocking tasks — something no folder-sharing model can achieve.
+                </p>
               </div>
               {/* Hero stats */}
               <div className="mt-5 grid grid-cols-2 sm:grid-cols-4 gap-3">
                 {[
                   { label: 'Architecture', value: 'Multi-Threaded' },
-                  { label: 'Users', value: '100-150' },
-                  { label: 'Reliability', value: 'Zero Downtime' },
+                  { label: 'Users', value: 'No Fixed Limit' },
+                  { label: 'Performance', value: 'Near Concurrency' },
                   { label: 'Setup', value: '< 1 Hour' },
                 ].map((stat) => (
                   <div
@@ -356,10 +371,12 @@ export default function TallyServerPage() {
                 <h2 className="text-lg font-bold text-slate-900 mb-4">Is TallyPrime Server right for your business?</h2>
                 <ul className="space-y-3">
                   {[
-                    'You have 10+ employees performing various operations simultaneously.',
-                    'You need concurrent data access without queues or waiting.',
-                    'You want data reliability even during network issues.',
-                    'You need to run backups without stopping your team.',
+                    'Your team has outgrown TallyPrime Gold and you need 10+ users performing operations simultaneously.',
+                    'You use Cloud, RDP, or Citrix and have hit the 10 free TVU limit.',
+                    'You need true concurrent access — no queuing, no blocking, no waiting.',
+                    'You want administrators to monitor who is doing what in real time.',
+                    'You need to run backups or reports without stopping your team from billing.',
+                    'Your business spans multiple branches and you need massive data handling.',
                   ].map((item) => (
                     <li key={item} className="flex items-start gap-2.5 text-sm text-slate-600">
                       <span
@@ -399,7 +416,52 @@ export default function TallyServerPage() {
                       ))}
                     </div>
                   </div>
+                  <div>
+                    <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Virtual Environments</h3>
+                    <div className="flex flex-wrap gap-2">
+                      {['Cloud (TVU Required)', 'RDP (TVU Required)', 'Citrix (TVU Required)'].map((env) => (
+                        <span key={env} className="inline-flex rounded-md px-2.5 py-1 text-[12px] font-medium border" style={{ borderColor: '#d9770625', backgroundColor: '#d9770606', color: '#d97706' }}>
+                          {env}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
                 </div>
+              </div>
+            </section>
+
+            {/* Gold vs Server Comparison */}
+            <section className="bg-white rounded-xl border border-slate-200 p-6">
+              <h2 className="text-lg font-bold text-slate-900 mb-1">TallyPrime Gold vs TallyPrime Server</h2>
+              <p className="text-sm text-slate-500 mb-5">Understanding when to upgrade from Gold to Server.</p>
+              <div className="overflow-x-auto rounded-lg border border-slate-200">
+                <table className="w-full text-left text-sm">
+                  <thead>
+                    <tr className="bg-slate-50 text-[10px] font-bold uppercase tracking-wider text-slate-500">
+                      <th className="px-4 py-3">Feature</th>
+                      <th className="px-4 py-3">TallyPrime Gold</th>
+                      <th className="px-4 py-3">TallyPrime Server</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {[
+                      { feature: 'Data Access Model', gold: 'Folder Sharing (Peer-to-Peer)', server: 'Server-Based (Multi-Threaded)' },
+                      { feature: 'LAN Users', gold: 'Unlimited concurrent', server: '100-150 concurrent' },
+                      { feature: 'Virtual Users (Cloud/RDP/Citrix)', gold: '10 free TVUs (paid packs for more)', server: '100-150 concurrent' },
+                      { feature: 'Task Blocking', gold: 'May occur under heavy load', server: 'No blocking — parallel processing' },
+                      { feature: 'Data File Visibility', gold: 'Visible on shared folder', server: 'Hidden — server name only' },
+                      { feature: 'Admin Monitoring', gold: 'Basic', server: 'Advanced real-time console' },
+                      { feature: 'Crash Recovery', gold: 'Client may need manual restart', server: 'Isolated — no impact on others' },
+                      { feature: 'Setup Time', gold: 'Minutes', server: '< 1 Hour' },
+                    ].map((row, idx) => (
+                      <tr key={idx} className="border-b border-slate-100 last:border-0">
+                        <td className="px-4 py-3 font-bold text-slate-900">{row.feature}</td>
+                        <td className="px-4 py-3 text-slate-600">{row.gold}</td>
+                        <td className="px-4 py-3 font-bold" style={{ color: BRAND_PRIMARY }}>{row.server}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               </div>
             </section>
 

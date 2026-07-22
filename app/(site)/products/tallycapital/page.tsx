@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, Fragment } from 'react';
+import { useState, type ElementType } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import Footer from '../../../components/Footer';
@@ -15,8 +15,11 @@ const fundingOptions = [
     limit: 'Up to ₹75 Lakhs',
     desc: 'Fast, collateral-free funding for growing businesses that need working capital without risking assets.',
     icon: (
-      <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+      <svg className="w-6 h-6" viewBox="0 0 64 64" fill="none" stroke="currentColor" strokeWidth="2" strokeMiterlimit="10">
+        <path d="M53.92,10.081c12.107,12.105,12.107,31.732,0,43.838c-12.106,12.108-31.734,12.108-43.84,0c-12.107-12.105-12.107-31.732,0-43.838C22.186-2.027,41.813-2.027,53.92,10.081z" />
+        <path d="M36,50L21,36v-1h7c0,0,11,1,11-9c0-9-11-9-11-9h-8" />
+        <line x1="20" y1="17" x2="44" y2="17" />
+        <line x1="20" y1="23" x2="44" y2="23" />
       </svg>
     ),
   },
@@ -97,11 +100,53 @@ const faqs = [
   },
 ];
 
+const features: { icon: ElementType; title: string; description: string }[] = [
+  {
+    icon: ({ className, ...props }: { className?: string; strokeWidth?: number }) => (
+      <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5} {...props}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
+      </svg>
+    ),
+    title: '60-Second Eligibility Check',
+    description: "Since your books are maintained on Tally, the system calculates your pre-qualified loan amount in under a minute.",
+  },
+  {
+    icon: ({ className, ...props }: { className?: string; strokeWidth?: number }) => (
+      <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5} {...props}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+      </svg>
+    ),
+    title: 'Free Credit Health Report',
+    description: 'Pull your detailed business credit report for free. Get actionable insights on how to improve your score.',
+  },
+  {
+    icon: ({ className, ...props }: { className?: string; strokeWidth?: number }) => (
+      <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5} {...props}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+      </svg>
+    ),
+    title: '100% Digital & Paperless',
+    description: 'Apply for Term Loans, LAP, or CGTMSE without ever stepping foot inside a bank branch. Financial data syncs straight from your Tally software.',
+  },
+  {
+    icon: ({ className, ...props }: { className?: string; strokeWidth?: number }) => (
+      <svg className={className} viewBox="0 0 64 64" fill="none" stroke="currentColor" strokeWidth="2" strokeMiterlimit="10" {...props}>
+        <path d="M53.92,10.081c12.107,12.105,12.107,31.732,0,43.838c-12.106,12.108-31.734,12.108-43.84,0c-12.107-12.105-12.107-31.732,0-43.838C22.186-2.027,41.813-2.027,53.92,10.081z" />
+        <path d="M36,50L21,36v-1h7c0,0,11,1,11-9c0-9-11-9-11-9h-8" />
+        <line x1="20" y1="17" x2="44" y2="17" />
+        <line x1="20" y1="23" x2="44" y2="23" />
+      </svg>
+    ),
+    title: 'Repay on Your Exact Terms',
+    description: "Never get locked into a bad deal. Use our built-in EMI calculator to pick flexible repayment tenures that match your business's cash flow.",
+  },
+];
+
 const steps = [
-  { title: "Click 'Check Eligibility'", desc: 'Press Alt + 9 in TallyPrime to instantly see if you pre-qualify.' },
-  { title: 'Compare Real Offers', desc: 'Review rates from multiple lenders and pick the best fit.' },
-  { title: 'Upload Basic KYC', desc: '100% digital. No printing massive ledgers or physical files.' },
-  { title: 'Receive Your Funds', desc: 'Get money directly in your business account in 72 hours.' },
+  { id: 1, title: "Click 'Check Eligibility'", description: 'Press Alt + 9 in TallyPrime to instantly see if you pre-qualify.' },
+  { id: 2, title: 'Compare Real Offers', description: 'Review rates from multiple lenders and pick the best fit.' },
+  { id: 3, title: 'Upload Basic KYC', description: '100% digital. No printing massive ledgers or physical files.' },
+  { id: 4, title: 'Receive Your Funds', description: 'Get money directly in your business account in 72 hours.' },
 ];
 
 export default function TallyCapitalPage() {
@@ -112,35 +157,15 @@ export default function TallyCapitalPage() {
     details: '',
   });
   const [openFaq, setOpenFaq] = useState<number | null>(0);
-  const [activeFeature, setActiveFeature] = useState(0);
 
   const openModal = (type: FormType, service = 'TallyCapital', details = '') => {
     setModalConfig({ isOpen: true, type, service, details });
   };
 
-  const whyFeatures = [
-    {
-      title: '60-Second Eligibility Check',
-      desc: "Don't wait weeks for a 'maybe'. Because your books are maintained on Tally, the system calculates your pre-qualified loan amount in under a minute.",
-    },
-    {
-      title: 'Free Credit Health Report',
-      desc: 'Pull your detailed business credit report for free. See exactly what the banks see, and get actionable insights on how to improve your score to get better interest rates.',
-    },
-    {
-      title: '100% Digital & Paperless',
-      desc: 'Apply for Term Loans, LAP, or CGTMSE without ever stepping foot inside a bank branch. The financial data lenders need is securely synced straight from your Tally software.',
-    },
-    {
-      title: 'Repay on Your Exact Terms',
-      desc: "Never get locked into a bad deal. Use our built-in EMI calculator to pick flexible repayment tenures (from 12 to 84 months) that perfectly match your business's cash flow.",
-    },
-  ];
-
   return (
     <div className="min-h-screen bg-[linear-gradient(90deg,rgba(249,251,245,1)_0%,rgba(244,242,234,1)_53%,rgba(238,236,223,1)_100%)] text-slate-900 font-sans">
       {/* Breadcrumb */}
-      {/* <div className="bg-white border-b border-slate-200">
+      <div className=" border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-6">
           <div className="py-2.5">
             <ul className="flex items-center gap-1.5 text-[11px] font-medium text-slate-500">
@@ -152,7 +177,7 @@ export default function TallyCapitalPage() {
             </ul>
           </div>
         </div>
-      </div> */}
+      </div>
 
       {/* ===== SECTION 1: HERO — The Loan Hook ===== */}
       <div className="bg-[url('/mobilebg.png')] md:bg-[url('/cardbg.png')] bg-cover bg-center bg-no-repeat">
@@ -161,11 +186,11 @@ export default function TallyCapitalPage() {
             {/* Left: Copy */}
             <div className=" lg:ml-10">
               <div className="flex items-start gap-4mb-5">
-                <div className="w-24 h-24 shrink-0 rounded-xl border border-slate-200 bg-white flex items-center justify-center shadow-sm p-2">
-                  <Image src="/tallycapital.png" alt="TallyCapital" width={64} height={64} className="object-contain" />
+                <div className="w-24 h-24 shrink-0 rounded-xl border border-slate-200 bg-white flex items-center justify-center shadow-sm ">
+                  <Image src="/tallycapital.png" alt="TallyCapital" width={80} height={80} className="object-fit " />
                 </div>
                 <div>
-                  <h1 className="text-4xl md:text-[3.2rem] font-black text-[#316852] tracking-tight leading-[1.1] mb-2 ml-4">
+                  <h1 className="text-4xl md:text-[3.2rem] font-black text-[#181717] tracking-tight leading-[1.1] mb-2 ml-4">
                     TallyCapital
                   </h1>
                   <p className="text-lg md:text-xl ml-4 font-bold text-gray-700 tracking-tight leading-snug">
@@ -249,8 +274,8 @@ export default function TallyCapitalPage() {
       {/* ===== LENDING PARTNERS ===== */}
       <section className="py-10 w-full">
         <div className="text-center mb-6 px-6">
-          <h2 className="text-xl md:text-3xl font-black text-slate-900">
-            Trusted by India&apos;s Top Lenders to Fund Your Growth
+          <h2 className="text-xl md:text-4xl font-black text-slate-900">
+            Trusted by India&apos;s Top Lenders
           </h2>
         </div>
         <div className="relative">
@@ -259,7 +284,7 @@ export default function TallyCapitalPage() {
           {/* Right fade gradient */}
           <div className="absolute right-0 top-0 bottom-0 w-20 z-10 pointer-events-none" style={{ background: 'linear-gradient(to left, #f5f7fa, transparent)' }} />
           <div className="overflow-hidden py-6">
-            <div className="flex gap-8 animate-[scroll-left_30s_linear_infinite] w-max hover:[animation-play-state:paused]">
+            <div className="flex gap-8 animate-[scroll-left_30s_linear_infinite] w-max hover:paused">
               {[...lenderPartners, ...lenderPartners].map((partner, i) => (
                 <div
                   key={`${partner.name}-${i}`}
@@ -287,86 +312,88 @@ export default function TallyCapitalPage() {
       </section>
 
       {/* ===== SECTION 2: WHY MSMEs PREFER TALLYCAPITAL + HOW IT WORKS ===== */}
-      <section className="py-10 px-6 max-w-7xl mx-auto">
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#316852]/10 text-[#316852] text-[10px] font-black uppercase tracking-widest mb-4">
-            <span className="flex h-1.5 w-1.5 rounded-full bg-[#316852] animate-pulse"></span>
-            Why TallyCapital?
-          </div>
-          <h2 className="text-3xl md:text-4xl font-black text-slate-900 mb-3 leading-tight">
-            Why MSMEs Prefer TallyCapital ?
-          </h2>
-          <p className="text-slate-500 text-sm md:text-base max-w-3xl mx-auto leading-relaxed font-medium">
-            Skip the branch visits, long waits, and endless paperwork. The everyday financial records you already maintain in Tally contain exactly what lenders need to approve your loan — giving you faster funding with zero hassle.
-          </p>
-        </div>
+      <section className="relative   py-14 px-4 sm:px-6 lg:px-8 font-sans text-slate-800 antialiased overflow-hidden">
+        {/* Decorative Background Elements */}
+        {/* <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
+          <div className="absolute -top-[10%] -right-[5%] w-[40%] h-[40%] rounded-full bg-emerald-100/30 blur-3xl mix-blend-multiply"></div>
+          <div className="absolute top-[40%] -left-[10%] w-[30%] h-[30%] rounded-full bg-blue-100/30 blur-3xl mix-blend-multiply"></div>
+        </div> */}
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-stretch">
-          {/* Left: Common Benefits */}
-          <div className="flex flex-col">
-            <div className="space-y-4 flex-1">
-              {whyFeatures.map((item, i) => (
+        <div className="max-w-7xl mx-auto relative z-10">
+          <div className="text-center mb-12 max-w-5xl mx-auto">
+            <div className="inline-flex items-center justify-center space-x-2 bg-white text-emerald-700 px-4 py-1.5 rounded-full text-xs font-semibold tracking-wide uppercase mb-5 shadow-sm border border-emerald-100/60 ring-1 ring-emerald-50">
+              <span className="relative flex h-2.5 w-2.5">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+              </span>
+              <span>Why Choose TallyCapital?</span>
+            </div>
+
+            <h2 className="text-2xl md:text-3xl lg:text-5xl font-extrabold text-slate-900 mb-4 tracking-tight leading-tight">
+              The Smart Way for MSMEs to <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-600">Grow</span>
+            </h2>
+
+            <p className="text-base md:text-lg text-slate-600 leading-relaxed font-medium">
+              Skip the branch visits and endless paperwork. Leverage the financial records you already maintain in Tally for faster funding with zero hassle.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-start">
+            {/* Left: Feature Cards */}
+            <div className="lg:col-span-7 grid sm:grid-cols-2 gap-4">
+              {features.map((feature, index) => (
                 <div
-                  key={i}
-                  className="bg-white rounded-xl border border-slate-200 p-5 cursor-pointer group"
-                  onMouseEnter={() => setActiveFeature(i)}
+                  key={index}
+                  className="group bg-white p-5 rounded-2xl border border-slate-100 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 relative overflow-hidden"
                 >
-                  <div className="flex items-start gap-3">
-                    <span
-                      className="shrink-0 w-8 h-8 rounded-lg flex items-center justify-center transition-colors duration-300"
-                      style={{
-                        backgroundColor: activeFeature === i ? BRAND_PRIMARY : `${BRAND_PRIMARY}15`,
-                        color: activeFeature === i ? '#fff' : BRAND_PRIMARY,
-                      }}
-                    >
-                      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" />
-                      </svg>
-                    </span>
-                    <div>
-                      <h3 className="text-sm font-bold text-slate-900 mb-1">{item.title}</h3>
-                      <p className="text-[13px] text-slate-500 leading-relaxed">{item.desc}</p>
+                  <div className="absolute inset-0 bg-gradient-to-br from-emerald-50/0 via-emerald-50/0 to-emerald-50/50 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+
+                  <div className="relative z-10">
+                    <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center mb-3 group-hover:scale-110 group-hover:bg-emerald-100 transition-transform duration-300">
+                      <feature.icon className="w-5 h-5" strokeWidth={1.5} />
                     </div>
+                    <h3 className="text-base font-bold text-slate-900 mb-1.5 group-hover:text-emerald-700 transition-colors duration-300">{feature.title}</h3>
+                    <p className="text-slate-600 text-sm leading-relaxed">{feature.description}</p>
                   </div>
                 </div>
               ))}
             </div>
-          </div>
 
-          {/* Right: How It Works */}
-          <div className="bg-[linear-gradient(135deg,#f0f7f3_0%,#f9faf8_100%)] rounded-2xl border border-[#316852]/10 p-6 md:p-8 flex flex-col">
-            <h3 className="text-xl md:text-2xl font-black text-slate-900 mb-1">How it <span className="text-[#316852]">works</span></h3>
-            <p className="text-xs text-slate-500 font-medium mb-6">4 simple steps from your Tally screen to your bank account.</p>
+            {/* Right: How It Works (Sticky) */}
+            <div className="lg:col-span-5 relative">
+              <div className="sticky top-10 bg-white/60 backdrop-blur-xl rounded-[2rem] p-6 sm:p-7 border border-white shadow-2xl shadow-slate-200/50">
+                <div className="mb-6 text-center sm:text-left">
+                  <h3 className="text-4xl font-extrabold text-slate-900 mb-2 tracking-tight">
+                    How it <span className="text-emerald-600 relative inline-block">
+                      works
+                      <svg className="absolute w-full h-3 -bottom-1 left-0 text-emerald-200/60" viewBox="0 0 100 10" preserveAspectRatio="none">
+                        <path d="M0 5 Q 50 10 100 5" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
+                      </svg>
+                    </span>
+                  </h3>
+                  <p className="text-slate-500 text-sm">4 simple steps to secure your funds.</p>
+                </div>
 
-            <div className="flex flex-col items-center flex-1">
-              {steps.map((step, i) => (
-                <Fragment key={i}>
-                  <div className="group w-full bg-white rounded-xl p-4 border border-slate-200 hover:shadow-md hover:border-[#316852]/30 transition-all duration-300 relative">
-                    <div className="flex items-start gap-4">
-                      <div
-                        className="shrink-0 w-10 h-10 rounded-xl flex items-center justify-center text-white text-sm font-black shadow-md transition-all duration-300 group-hover:scale-110"
-                        style={{ backgroundColor: BRAND_PRIMARY }}
-                      >
-                        {i + 1}
-                      </div>
-                      <div className="pt-1">
-                        <h4 className="text-sm font-bold text-slate-900 mb-0.5">{step.title}</h4>
-                        <p className="text-[12px] text-slate-500 leading-relaxed">{step.desc}</p>
-                      </div>
-                    </div>
-                    {i < 3 && (
-                      <div className="absolute left-1/2 -bottom-4 -translate-x-1/2 z-10">
-                        <div className="w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center shadow-sm">
-                          <svg className="w-4 h-4 text-[#316852]" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z" />
-                          </svg>
+                <div className="relative">
+                  <div className="absolute left-5 top-5 bottom-5 w-0.5 bg-emerald-100 z-0 hidden sm:block"></div>
+
+                  <div className="space-y-5 relative z-10">
+                    {steps.map((step, index) => (
+                      <div key={index} className="flex flex-col sm:flex-row gap-3 items-start group">
+                        <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-white border-2 border-emerald-100 text-emerald-600 flex items-center justify-center font-bold text-base shadow-sm group-hover:bg-emerald-600 group-hover:text-white group-hover:border-emerald-600 group-hover:shadow-emerald-200 transition-all duration-300 relative z-10 self-center sm:self-start">
+                          {step.id}
+                        </div>
+
+                        <div className="pt-0.5 text-center sm:text-left w-full">
+                          <h4 className="text-sm font-bold text-slate-900 mb-0.5 group-hover:text-emerald-700 transition-colors duration-200">{step.title}</h4>
+                          <p className="text-slate-600 text-sm leading-relaxed">{step.description}</p>
                         </div>
                       </div>
-                    )}
+                    ))}
                   </div>
-                  {i < 3 && <div className="w-px h-4 bg-[#316852]/15" />}
-                </Fragment>
-              ))}
+                </div>
+ 
+              </div>
             </div>
           </div>
         </div>
@@ -651,14 +678,12 @@ export default function TallyCapitalPage() {
             </div>
           ))}
           <div className="pt-4 text-center">
-            <a
-              href="https://tallycapital.tallysolutions.com/frequently-asked-questions/"
-              target="_blank"
-              rel="noopener noreferrer"
+            <button
+              onClick={() => openModal('quote', 'TallyCapital', 'I have more questions about TallyCapital.')}
               className="text-sm font-bold text-[#316852] hover:underline"
             >
-              Have more questions? Visit TallyCapital FAQ →
-            </a>
+              Have more questions? Contact Us →
+            </button>
           </div>
         </div>
       </section>

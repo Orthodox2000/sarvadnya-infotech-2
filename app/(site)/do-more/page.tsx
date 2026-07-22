@@ -92,7 +92,7 @@ export default function DoMorePage() {
                   </h3>
                 </div>
 
-                <p className="text-gray-600 text-sm mb-5 flex-grow leading-relaxed">
+                <p className="text-gray-600 text-sm mb-5 grow leading-relaxed">
                   {s.description}
                 </p>
 
