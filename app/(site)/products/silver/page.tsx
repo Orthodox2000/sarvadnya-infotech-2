@@ -57,6 +57,7 @@ export default function TallySilverPage() {
   const [openFaq, setOpenFaq] = useState<number | null>(0);
   const [stickyNav, setStickyNav] = useState(false);
   const [showPricing, setShowPricing] = useState(false);
+
   const [formName, setFormName] = useState('');
   const [formEmail, setFormEmail] = useState('');
   const [formPhone, setFormPhone] = useState('');
@@ -516,7 +517,7 @@ export default function TallySilverPage() {
             {/* Pricing - Hidden reveal */}
             <section id="pricing" className="scroll-mt-16 bg-white rounded-xl border border-slate-200 p-6">
               <h2 className="text-lg font-bold text-slate-900 mb-1">TallyPrime Silver Pricing</h2>
-              <p className="text-sm text-slate-500 mb-5">Choose a flexible annual rental or own the software for life with a perpetual license.</p>
+              <p className="text-sm text-slate-500 mb-5">Final pricing for TallyPrime Silver (Single User) including 18% GST.</p>
               <button
                 type="button"
                 onClick={() => setShowPricing(!showPricing)}
@@ -533,27 +534,45 @@ export default function TallySilverPage() {
                   <table className="w-full text-left text-sm">
                     <thead>
                       <tr className="bg-slate-50 text-[10px] font-bold uppercase tracking-wider text-slate-500">
-                        <th className="px-4 py-3">License Type</th>
+                        <th className="px-4 py-3">Product / Service</th>
                         <th className="px-4 py-3">Validity</th>
-                        <th className="px-4 py-3">Price (INR)</th>
+                        <th className="px-4 py-3">Base Price (INR)</th>
+                        <th className="px-4 py-3">GST 18% (INR)</th>
+                        <th className="px-4 py-3">Total (INR)</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr className="border-b border-slate-100">
-                        <td className="px-4 py-3 font-bold text-slate-900">1 Year Rental</td>
+                        <td className="px-4 py-3 font-bold text-slate-900">TallyPrime Single User</td>
+                        <td className="px-4 py-3 text-slate-600">Lifetime</td>
+                        <td className="px-4 py-3 text-slate-600">22,500</td>
+                        <td className="px-4 py-3 text-slate-600">4,050</td>
+                        <td className="px-4 py-3 font-bold" style={{ color: BRAND_PRIMARY }}>26,550/-</td>
+                      </tr>
+                      <tr className="border-b border-slate-100">
+                        <td className="px-4 py-3 font-bold text-slate-900">TSS Single User (1 Year)</td>
                         <td className="px-4 py-3 text-slate-600">1 Year</td>
-                        <td className="px-4 py-3 font-bold" style={{ color: BRAND_PRIMARY }}>Silver 1 Year Rental — Contact Sales</td>
+                        <td className="px-4 py-3 text-slate-600">4,500</td>
+                        <td className="px-4 py-3 text-slate-600">810</td>
+                        <td className="px-4 py-3 font-bold" style={{ color: BRAND_PRIMARY }}>5,310/-</td>
                       </tr>
                       <tr>
-                        <td className="px-4 py-3 font-bold text-slate-900">Perpetual License</td>
-                        <td className="px-4 py-3 text-slate-600">Lifetime</td>
-                        <td className="px-4 py-3 font-bold" style={{ color: BRAND_PRIMARY }}>Silver Perpetual — Contact Sales</td>
+                        <td className="px-4 py-3 font-bold text-slate-900">TSS Single User (2 Years)</td>
+                        <td className="px-4 py-3 text-slate-600">2 Years</td>
+                        <td className="px-4 py-3 text-slate-600">8,100</td>
+                        <td className="px-4 py-3 text-slate-600">1,458</td>
+                        <td className="px-4 py-3">
+                          <span className="text-slate-400 line-through mr-1.5">9,558</span>
+                          <span className="font-bold text-emerald-600">8,496/-</span>
+                          <span className="inline-flex items-center rounded-full px-2 py-0.5 ml-2 text-[10px] font-bold bg-emerald-50 text-emerald-600 border border-emerald-200">10% OFF</span>
+                          <p className="text-[10px] text-emerald-600 mt-0.5 font-medium">You save 1,062/-</p>
+                        </td>
                       </tr>
                     </tbody>
                   </table>
                   <div className="px-4 py-3 bg-slate-50 border-t border-slate-200">
                     <p className="text-[11px] text-slate-500">
-                      Prices are subject to change. Contact our sales team for the latest pricing and discounts.
+                      Prices are inclusive of 18% GST. Contact our sales team for more price options.
                     </p>
                     <button
                       type="button"
@@ -570,7 +589,6 @@ export default function TallySilverPage() {
                 </div>
               )}
             </section>
-
 
           </div>
 

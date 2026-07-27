@@ -156,6 +156,89 @@ export default function TSSPage() {
         </div>
       </section>
 
+      {/* Pricing Section */}
+      <section className="py-12 px-6 max-w-7xl mx-auto">
+        <div className="text-center mb-10">
+          <h2 className="text-3xl md:text-5xl font-black text-slate-900 mb-4">TSS Pricing</h2>
+          <p className="text-slate-500 font-medium max-w-2xl mx-auto">All plans include 18% GST. Choose the plan that fits your team size.</p>
+        </div>
+        <div className="overflow-x-auto rounded-2xl border border-slate-200 bg-white shadow-sm">
+          <table className="w-full text-left text-sm">
+            <thead>
+              <tr className="bg-slate-50 text-[10px] font-bold uppercase tracking-wider text-slate-500">
+                <th className="px-6 py-4">Plan</th>
+                <th className="px-6 py-4">Validity</th>
+                <th className="px-6 py-4">Base Price (INR)</th>
+                <th className="px-6 py-4">GST 18% (INR)</th>
+                <th className="px-6 py-4">Total (INR)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="border-b border-slate-100">
+                <td className="px-6 py-4 font-bold text-slate-900">TSS Single User (1 Year)</td>
+                <td className="px-6 py-4 text-slate-600">1 Year</td>
+                <td className="px-6 py-4 text-slate-600">4,500</td>
+                <td className="px-6 py-4 text-slate-600">810</td>
+                <td className="px-6 py-4 font-bold text-[#316852]">5,310/-</td>
+              </tr>
+              <tr className="border-b border-slate-100">
+                <td className="px-6 py-4 font-bold text-slate-900">TSS Single User (2 Years)</td>
+                <td className="px-6 py-4 text-slate-600">2 Years</td>
+                <td className="px-6 py-4 text-slate-600">8,100</td>
+                <td className="px-6 py-4 text-slate-600">1,458</td>
+                <td className="px-6 py-4">
+                  <span className="text-slate-400 line-through mr-1.5">9,558</span>
+                  <span className="font-bold text-emerald-600">8,496/-</span>
+                  <span className="inline-flex items-center rounded-full px-2 py-0.5 ml-2 text-[10px] font-bold bg-emerald-50 text-emerald-600 border border-emerald-200">10% OFF</span>
+                  <p className="text-[10px] text-emerald-600 mt-0.5 font-medium">You save 1,062/-</p>
+                </td>
+              </tr>
+              <tr className="border-b border-slate-100">
+                <td className="px-6 py-4 font-bold text-slate-900">TSS Multi User (1 Year)</td>
+                <td className="px-6 py-4 text-slate-600">1 Year</td>
+                <td className="px-6 py-4 text-slate-600">13,500</td>
+                <td className="px-6 py-4 text-slate-600">2,430</td>
+                <td className="px-6 py-4 font-bold text-[#316852]">15,930/-</td>
+              </tr>
+              <tr className="border-b border-slate-100">
+                <td className="px-6 py-4 font-bold text-slate-900">TSS Multi User (2 Years)</td>
+                <td className="px-6 py-4 text-slate-600">2 Years</td>
+                <td className="px-6 py-4 text-slate-600">24,300</td>
+                <td className="px-6 py-4 text-slate-600">4,374</td>
+                <td className="px-6 py-4">
+                  <span className="text-slate-400 line-through mr-1.5">28,674</span>
+                  <span className="font-bold text-emerald-600">25,488/-</span>
+                  <span className="inline-flex items-center rounded-full px-2 py-0.5 ml-2 text-[10px] font-bold bg-emerald-50 text-emerald-600 border border-emerald-200">10% OFF</span>
+                  <p className="text-[10px] text-emerald-600 mt-0.5 font-medium">You save 3,186/-</p>
+                </td>
+              </tr>
+              <tr className="border-b border-slate-100">
+                <td className="px-6 py-4 font-bold text-slate-900">TSS Auditor (1 Year)</td>
+                <td className="px-6 py-4 text-slate-600">1 Year</td>
+                <td className="px-6 py-4 text-slate-600">6,750</td>
+                <td className="px-6 py-4 text-slate-600">1,215</td>
+                <td className="px-6 py-4 font-bold text-[#316852]">7,965/-</td>
+              </tr>
+              <tr>
+                <td className="px-6 py-4 font-bold text-slate-900">TSS Auditor (2 Years)</td>
+                <td className="px-6 py-4 text-slate-600">2 Years</td>
+                <td className="px-6 py-4 text-slate-600">12,150</td>
+                <td className="px-6 py-4 text-slate-600">2,187</td>
+                <td className="px-6 py-4">
+                  <span className="text-slate-400 line-through mr-1.5">14,337</span>
+                  <span className="font-bold text-emerald-600">12,744/-</span>
+                  <span className="inline-flex items-center rounded-full px-2 py-0.5 ml-2 text-[10px] font-bold bg-emerald-50 text-emerald-600 border border-emerald-200">10% OFF</span>
+                  <p className="text-[10px] text-emerald-600 mt-0.5 font-medium">You save 1,593/-</p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div className="px-6 py-4 bg-slate-50 border-t border-slate-200">
+            <p className="text-[11px] text-slate-500 text-center">Prices are inclusive of 18% GST. Contact our sales team for more price options.</p>
+          </div>
+        </div>
+      </section>
+
       {/* CTA Section */}
       <section className="bg-[#4A6E62] py-14 px-6">
         <div className="max-w-3xl mx-auto text-center">

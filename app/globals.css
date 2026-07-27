@@ -9,6 +9,11 @@
   animation: letterPop 120ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
+.overflow-wrap-anywhere {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
 @keyframes letterPop {
   from {
     opacity: 0;

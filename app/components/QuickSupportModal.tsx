@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { findMatchingTutorials, type Tutorial } from '@/lib/tutorial-matcher';
+import { matchTopic, getFallbackResponse, SARA_WELCOME, type Topic } from '@/lib/sara-topics';
 
 interface Message {
   id: string;
@@ -12,6 +13,7 @@ interface Message {
   timestamp: Date;
   showContact?: boolean;
   showAudioPrompt?: boolean;
+  followUp?: Topic[];
   suggestedTutorials?: Tutorial[];
 }
 
@@ -24,7 +26,7 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      text: "Hello! I'm Sara, your Sarvadnya Infotech LLP Assistant. I can help you automate your business with Tally—feel free to ask your questions!",
+      text: SARA_WELCOME,
       sender: 'ai',
       timestamp: new Date(),
       showAudioPrompt: true
@@ -43,6 +45,8 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
   
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const stopRequestedRef = useRef(false);
+  const abortControllerRef = useRef<AbortController | null>(null);
 
   /**
    * VOICE RESPONSE ENGINE
@@ -144,7 +148,7 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
   // Special scroll for typing animation to keep bottom in view as text grows
   useEffect(() => {
     if (isAiResponding && autoScrollEnabled) {
-      const interval = setInterval(() => scrollToBottom(), 100);
+      const interval = setInterval(() => scrollToBottom(), 300);
       return () => clearInterval(interval);
     }
   }, [isAiResponding, autoScrollEnabled]);
@@ -158,6 +162,7 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
 
   const typeMessage = async (fullText: string, userQuery?: string) => {
     const id = Date.now().toString();
+    stopRequestedRef.current = false;
     setIsAiResponding(true);
     setAutoScrollEnabled(true);
 
@@ -170,25 +175,28 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
       playVoiceResponse(fullText, true);
     }
 
-    const lines = fullText.split('\n');
+    const totalLen = fullText.length;
     const isMobile = window.innerWidth < 640;
-    const revealDelay = isMobile ? 15 : 10;
-    const chunkSize = isMobile ? 3 : 4;
+    const chunkSize = isMobile ? 20 : 40;
+    const revealDelay = isMobile ? 8 : 5;
 
-    for (let i = 0; i < lines.length; i++) {
-      let partial = '';
-      for (let c = 0; c < lines[i].length; c += chunkSize) {
-        partial += lines[i].slice(c, c + chunkSize);
-        const prevText = lines.slice(0, i).join('\n');
-        const displayed = prevText + (i > 0 ? '\n' : '') + partial;
-        setMessages(prev => prev.map(m => m.id === id ? { ...m, text: displayed } : m));
-        await new Promise(resolve => setTimeout(resolve, revealDelay));
+    for (let pos = 0; pos < totalLen; pos += chunkSize) {
+      if (stopRequestedRef.current) {
+        setMessages(prev => prev.map(m => m.id === id ? { ...m, text: fullText } : m));
+        break;
       }
+      const displayed = fullText.slice(0, pos + chunkSize);
+      setMessages(prev => prev.map(m => m.id === id ? { ...m, text: displayed } : m));
+      inputRef.current?.focus();
+      await new Promise(resolve => setTimeout(resolve, revealDelay));
+    }
+    
+    if (!stopRequestedRef.current) {
+      setMessages(prev => prev.map(m => m.id === id ? { ...m, text: fullText } : m));
     }
     
     setIsAiResponding(false);
 
-    // Attach matching tutorials
     if (userQuery && tutorials.length > 0) {
       const matched = findMatchingTutorials(tutorials, userQuery, 3, 8);
       if (matched.length > 0) {
@@ -201,11 +209,21 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
     }
   };
 
+  const handleStop = () => {
+    stopRequestedRef.current = true;
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+      abortControllerRef.current = null;
+    }
+    if (typeof window !== 'undefined' && window.speechSynthesis) {
+      window.speechSynthesis.cancel();
+      setIsSpeaking(false);
+    }
+  };
+
   const processChatMessage = async (text: string) => {
-    // Reset auto-scroll when user sends a message
     setAutoScrollEnabled(true);
 
-    // Interrupt current speech on new message
     if (typeof window !== 'undefined' && window.speechSynthesis) {
       window.speechSynthesis.cancel();
       setIsSpeaking(false);
@@ -223,54 +241,73 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
 
     const apiMessages = messages.map(m => ({
       role: m.sender === 'ai' ? 'assistant' : 'user',
-      content: m.text
+      content: m.text || m.fullText || ''
     }));
     apiMessages.push({ role: 'user', content: text });
 
-    let attempts = 0;
-    const maxAttempts = 2;
-    let success = false;
+    try {
+      const controller = new AbortController();
+      abortControllerRef.current = controller;
 
-    while (attempts < maxAttempts && !success) {
-      try {
-        const response = await fetch('/api/chat', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ messages: apiMessages }),
-        });
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: apiMessages }),
+        signal: controller.signal,
+      });
 
-        if (!response.ok) {
-          const errorData = await response.json().catch(() => ({}));
-          throw new Error(errorData.error || `Server responded with ${response.status}`);
-        }
-
-        const data = await response.json();
-        setIsTyping(false);
-        
-        const cleanMessage = data.message ? data.message.replace(/\*/g, '') : "I'm sorry, I couldn't process that.";
-        await typeMessage(cleanMessage, text);
-        success = true;
-      } catch (err: any) {
-        attempts++;
-        console.error(`Chat attempt ${attempts} failed:`, err);
-
-        if (attempts >= maxAttempts) {
-          setIsTyping(false);
-          let userFriendlyError = "I'm sorry, I'm having trouble connecting right now. Please try again in a few moments.";
-          
-          if (err.message === 'Failed to fetch') {
-            userFriendlyError = "**Connection Error**: I couldn't reach the server. Please check your internet connection or try again later.";
-          } else if (err.message.includes('restricted')) {
-            userFriendlyError = "**Service Notice**: My AI engine is currently resting. Please contact our support team directly for immediate help.";
-          }
-          
-          await typeMessage(userFriendlyError, text);
-        } else {
-          // Wait 1s before retry
-          await new Promise(resolve => setTimeout(resolve, 1000));
-        }
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.error || `Server responded with ${response.status}`);
       }
+
+      const data = await response.json();
+      setIsTyping(false);
+
+      const clean = data.message
+        ? data.message.replace(/<think>[\s\S]*?<\/think>/g, '').replace(/<\/?think[^>]*>/g, '').trim()
+        : '';
+      if (clean && clean.length > 5) {
+        await typeMessage(clean, text);
+      } else {
+        const result = matchTopic(text);
+        await typeMessage(result ? result.topic.answer : getFallbackResponse(text), text);
+        if (result) setMessages(prev => prev.map(m => m.text === result.topic.answer ? { ...m, followUp: result.topic.followUp } : m));
+      }
+    } catch (err: any) {
+      setIsTyping(false);
+      if (err.name === 'AbortError') return;
+      const result = matchTopic(text);
+      await typeMessage(result ? result.topic.answer : getFallbackResponse(text), text);
+      if (result) setMessages(prev => prev.map(m => m.text === result.topic.answer ? { ...m, followUp: result.topic.followUp } : m));
+    } finally {
+      abortControllerRef.current = null;
     }
+  };
+
+  const handleFollowUp = async (topic: Topic) => {
+    if (isTyping || isAiResponding) return;
+    setAutoScrollEnabled(true);
+
+    if (typeof window !== 'undefined' && window.speechSynthesis) {
+      window.speechSynthesis.cancel();
+      setIsSpeaking(false);
+    }
+
+    setMessages(prev => [...prev, {
+      id: Date.now().toString(),
+      text: topic.label,
+      sender: 'user',
+      timestamp: new Date()
+    }]);
+
+    setIsTyping(true);
+    const delay = Math.min(600 + topic.answer.length * 8, 2000);
+    await new Promise(resolve => setTimeout(resolve, delay));
+    setIsTyping(false);
+
+    await typeMessage(topic.answer, topic.label);
+    setMessages(prev => prev.map(m => m.text === topic.answer ? { ...m, followUp: topic.followUp } : m));
   };
 
   const handleSendMessage = async (e: React.FormEvent) => {
@@ -366,7 +403,7 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
               className={`flex flex-col ${msg.sender === 'user' ? 'items-end' : 'items-start'}`}
             >
               <div 
-                className={`max-w-[85%] px-4 py-3 rounded-2xl text-xs font-medium shadow-sm leading-relaxed ${
+                className={`max-w-[85%] px-4 py-3 rounded-2xl text-xs font-medium shadow-sm leading-relaxed break-words overflow-wrap-anywhere ${
                   msg.sender === 'user' 
                     ? 'bg-[#316852] text-white rounded-tr-none' 
                     : 'bg-white text-slate-700 border border-slate-100 rounded-tl-none'
@@ -397,13 +434,7 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
                           if (subPart.startsWith('**') && subPart.endsWith('**')) {
                             return <strong key={k} className={`font-black ${msg.sender === 'user' ? 'text-emerald-200' : 'text-[#316852]'}`}>{subPart.slice(2, -2)}</strong>;
                           }
-                          return msg.sender === 'ai'
-                            ? subPart.split('').map((char, ci) => (
-                                <span key={ci} className="letter-animate">
-                                  {char === ' ' ? '\u00A0' : char}
-                                </span>
-                              ))
-                            : subPart;
+                          return subPart;
                         })}</React.Fragment>;
                       })}
                       {i < msg.text.split('\n').length - 1 && <br />}
@@ -476,6 +507,21 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
                 </div>
               )}
 
+              {/* Follow-up chips */}
+              {msg.sender === 'ai' && msg.followUp && msg.followUp.length > 0 && (
+                <div className="mt-2 flex flex-wrap gap-1.5 ml-2">
+                  {msg.followUp.map((topic, ti) => (
+                    <button
+                      key={ti}
+                      onClick={() => handleFollowUp(topic)}
+                      className="px-2 py-1 bg-emerald-50 hover:bg-[#316852] hover:text-white text-[#316852] rounded-full text-[9px] font-bold transition-all border border-[#316852]/15 hover:border-[#316852] active:scale-95"
+                    >
+                      {topic.label}
+                    </button>
+                  ))}
+                </div>
+              )}
+
               {/* Suggested tutorials */}
               {msg.sender === 'ai' && msg.suggestedTutorials && msg.suggestedTutorials.length > 0 && (
                 <div className="mt-2 ml-2 max-w-[90%]">
@@ -530,28 +576,39 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
 
         {/* Input Area */}
         <div className="p-4 bg-white border-t border-slate-100 shrink-0">
-          <form onSubmit={handleSendMessage} className="flex items-center gap-2">
+          <form onSubmit={isAiResponding ? (e) => { e.preventDefault(); handleStop(); } : handleSendMessage} className="flex items-center gap-2">
             <input 
               ref={inputRef}
               type="text"
-              placeholder="Type your message..."
+              placeholder={isAiResponding ? "Sara is responding... (click ■ to stop)" : "Type your message..."}
               className="flex-1 bg-slate-50 border border-slate-100 rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-[#316852]/10 focus:border-[#316852] transition-all"
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
-              disabled={isAiResponding}
             />
-            <button 
-              type="submit"
-              disabled={!inputText.trim() || isTyping || isAiResponding}
-              className="w-10 h-10 rounded-xl bg-[#316852] text-white flex items-center justify-center shadow-lg shadow-[#316852]/20 disabled:opacity-50 transition-all active:scale-95"
-            >
-              <svg className="w-5 h-5 rotate-90" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-              </svg>
-            </button>
+            {isAiResponding ? (
+              <button 
+                type="submit"
+                className="w-10 h-10 rounded-xl bg-red-500 hover:bg-red-600 text-white flex items-center justify-center shadow-lg shadow-red-500/20 transition-all active:scale-95"
+                title="Stop response"
+              >
+                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                  <rect x="5" y="5" width="14" height="14" rx="2" />
+                </svg>
+              </button>
+            ) : (
+              <button 
+                type="submit"
+                disabled={!inputText.trim() || isTyping}
+                className="w-10 h-10 rounded-xl bg-[#316852] text-white flex items-center justify-center shadow-lg shadow-[#316852]/20 disabled:opacity-50 transition-all active:scale-95"
+              >
+                <svg className="w-5 h-5 rotate-90" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                </svg>
+              </button>
+            )}
           </form>
           <p className="mt-3 text-center text-[9px] text-slate-400 font-bold uppercase tracking-widest">
-            Sara • Intelligent Assistant
+            Sara • Sales Consultant
           </p>
         </div>
 

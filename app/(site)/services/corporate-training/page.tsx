@@ -113,11 +113,11 @@ export default function CorporateTrainingPage() {
                   />
 
                   {/* Decorative stamp */}
-                  <div className="absolute bottom-8 right-8 w-24 h-24 rounded-full border-4 border-emerald-100 flex items-center justify-center opacity-40 transform rotate-12">
+                  {/* <div className="absolute bottom-8 right-8 w-32 h-24 rounded-full border-4 border-emerald-100 flex items-center justify-center opacity-40 transform rotate-12">
                     <div className="w-20 h-20 rounded-full border border-dashed border-emerald-300 flex items-center justify-center">
                       <CheckCircle2 className="w-10 h-10 text-emerald-400" />
                     </div>
-                  </div>
+                  </div> */}
                 </div>
 
                 {/* Floating Elements */}
@@ -129,9 +129,9 @@ export default function CorporateTrainingPage() {
                   <Award className="w-10 h-10 text-emerald-500" />
                 </div>
 
-                <div className="absolute top-0 left-12 bg-amber-100 p-4 rounded-xl shadow-md z-0 transform -rotate-12">
+                {/* <div className="absolute top-0 left-12 bg-amber-100 p-4 rounded-xl shadow-md z-20 transform -rotate-12">
                   <Calendar className="w-6 h-6 text-amber-600" />
-                </div>
+                </div> */}
               </div>
             </div>
           </div>

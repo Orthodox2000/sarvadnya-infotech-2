@@ -512,7 +512,7 @@ export default function TallyGoldPage() {
             {/* Pricing - Hidden reveal */}
             <section id="pricing" className="scroll-mt-16 bg-white rounded-xl border border-slate-200 p-6">
               <h2 className="text-lg font-bold text-slate-900 mb-1">TallyPrime Gold Pricing</h2>
-              <p className="text-sm text-slate-500 mb-5">One license, unlimited users on your local network. No per-user fees.</p>
+              <p className="text-sm text-slate-500 mb-5">Final pricing for TallyPrime Gold (Multi User) including 18% GST.</p>
               <button
                 type="button"
                 onClick={() => setShowPricing(!showPricing)}
@@ -529,27 +529,57 @@ export default function TallyGoldPage() {
                   <table className="w-full text-left text-sm">
                     <thead>
                       <tr className="bg-slate-50 text-[10px] font-bold uppercase tracking-wider text-slate-500">
-                        <th className="px-4 py-3">License Type</th>
+                        <th className="px-4 py-3">Product / Service</th>
                         <th className="px-4 py-3">Validity</th>
-                        <th className="px-4 py-3">Price (INR)</th>
+                        <th className="px-4 py-3">Base Price (INR)</th>
+                        <th className="px-4 py-3">GST 18% (INR)</th>
+                        <th className="px-4 py-3">Total (INR)</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr className="border-b border-slate-100">
-                        <td className="px-4 py-3 font-bold text-slate-900">1 Year Rental</td>
+                        <td className="px-4 py-3 font-bold text-slate-900">TallyPrime Multi User</td>
+                        <td className="px-4 py-3 text-slate-600">Lifetime</td>
+                        <td className="px-4 py-3 text-slate-600">67,500</td>
+                        <td className="px-4 py-3 text-slate-600">12,150</td>
+                        <td className="px-4 py-3 font-bold" style={{ color: BRAND_PRIMARY }}>79,650/-</td>
+                      </tr>
+                      <tr className="border-b border-slate-100">
+                        <td className="px-4 py-3 font-bold text-slate-900">Upgrade: Single to Multi</td>
+                        <td className="px-4 py-3 text-slate-600">Lifetime</td>
+                        <td className="px-4 py-3 text-slate-600">45,000</td>
+                        <td className="px-4 py-3 text-slate-600">8,100</td>
+                        <td className="px-4 py-3">
+                          <span className="text-slate-400 line-through mr-1.5">53,100</span>
+                          <span className="font-bold text-emerald-600">39,825/-</span>
+                          <span className="inline-flex items-center rounded-full px-2 py-0.5 ml-2 text-[10px] font-bold bg-emerald-50 text-emerald-600 border border-emerald-200">25% OFF</span>
+                          <p className="text-[10px] text-emerald-600 mt-0.5 font-medium">You save 13,275/-</p>
+                        </td>
+                      </tr>
+                      <tr className="border-b border-slate-100">
+                        <td className="px-4 py-3 font-bold text-slate-900">TSS Multi User (1 Year)</td>
                         <td className="px-4 py-3 text-slate-600">1 Year</td>
-                        <td className="px-4 py-3 font-bold" style={{ color: BRAND_PRIMARY }}>Gold 1 Year Rental — Contact Sales</td>
+                        <td className="px-4 py-3 text-slate-600">13,500</td>
+                        <td className="px-4 py-3 text-slate-600">2,430</td>
+                        <td className="px-4 py-3 font-bold" style={{ color: BRAND_PRIMARY }}>15,930/-</td>
                       </tr>
                       <tr>
-                        <td className="px-4 py-3 font-bold text-slate-900">Perpetual License</td>
-                        <td className="px-4 py-3 text-slate-600">Lifetime</td>
-                        <td className="px-4 py-3 font-bold" style={{ color: BRAND_PRIMARY }}>Gold Perpetual — Contact Sales</td>
+                        <td className="px-4 py-3 font-bold text-slate-900">TSS Multi User (2 Years)</td>
+                        <td className="px-4 py-3 text-slate-600">2 Years</td>
+                        <td className="px-4 py-3 text-slate-600">24,300</td>
+                        <td className="px-4 py-3 text-slate-600">4,374</td>
+                        <td className="px-4 py-3">
+                          <span className="text-slate-400 line-through mr-1.5">28,674</span>
+                          <span className="font-bold text-emerald-600">25,488/-</span>
+                          <span className="inline-flex items-center rounded-full px-2 py-0.5 ml-2 text-[10px] font-bold bg-emerald-50 text-emerald-600 border border-emerald-200">10% OFF</span>
+                          <p className="text-[10px] text-emerald-600 mt-0.5 font-medium">You save 3,186/-</p>
+                        </td>
                       </tr>
                     </tbody>
                   </table>
                   <div className="px-4 py-3 bg-slate-50 border-t border-slate-200">
                     <p className="text-[11px] text-slate-500">
-                      Prices are subject to change. Contact our sales team for the latest multi-user upgrade discounts.
+                      Prices are inclusive of 18% GST. Contact our sales team for more price options.
                     </p>
                     <button
                       type="button"

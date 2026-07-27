@@ -31,7 +31,16 @@ The application implements several advanced optimization strategies to ensure sm
 | `CustomerReviews` | Displays verified social proof. | Staggered entrance animations, memoized star ratings. |
 | `CertifiedPartners` | Showcases network reliability. | Automated Rise-up animations, lazy-loaded partner logos. |
 | `FAQ` | Dynamic accordion with keyword search. | `useMemo` for search filtering, partial list rendering (Expandable). |
-| `QuickSupportModal` | High-priority lead generation. | Dynamically imported, zero initial bundle impact. |
+| `QuickSupportModal` | AI-powered sales consultant chatbot (Ask Sara). | Groq API with local fallback, stop/interrupt, typewriter, voice, tutorials. |
+
+### 4. AI Chatbot Architecture (Sara)
+
+| File | Role |
+| :--- | :--- |
+| `app/api/chat/route.ts` | Server-side API. Calls Groq SDK with multi-key rotation, 25s timeout, bulletproof think-tag cleanup. System prompt defines Sara as a senior sales consultant with full product catalog. |
+| `app/components/QuickSupportModal.tsx` | Floating button chat UI. AI API call with local keyword fallback. Stop/interrupt button during typewriter. Input stays focused. 20-40 char chunks at 5-8ms. |
+| `lib/sara-topics.ts` | Shared knowledge base. 7 topic trees with follow-ups, `matchTopic()` keyword scorer, `getFallbackResponse()` with 20+ contextual patterns. Used by both Ask Sara and Learn Sara. |
+| `app/(site)/learn-sara/page.tsx` | Full-page Sara chatbot. Imports from `lib/sara-topics.ts`. Local keyword matching, no API calls. |
 
 ## Developer Guidelines
 - **Surgical Updates:** Always prefer targeted `replace` over complete file rewrites for existing files.
@@ -40,4 +49,4 @@ The application implements several advanced optimization strategies to ensure sm
 - **GPU Hints:** Use `will-change` and `translateZ(0)` sparingly for elements with complex animations.
 
 ---
-*Last Updated: 2026-05-12*
+*Last Updated: 2026-07-27*

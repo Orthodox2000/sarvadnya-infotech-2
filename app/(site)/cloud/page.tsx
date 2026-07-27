@@ -22,11 +22,11 @@ const cards = [
     link: '/cloud/tallycloudaccess',
     features: [
       'Access TallyPrime from anywhere, on any device — powered by AWS, Oracle Cloud & Windows Server.',
-      'Starting at just ₹600/user/month. Full desktop, printing, Excel integration, and AES-256 encryption.',
+      'Affordable pricing. Full desktop, printing, Excel integration, and AES-256 encryption.',
     ],
     tags: [
       { label: 'WORK FROM ANYWHERE', color: 'purple' },
-      { label: 'STARTS ₹600/MONTH', color: 'green' },
+      { label: 'AFFORDABLE PRICING', color: 'green' },
       { label: 'BANK-LEVEL SECURITY', color: 'blue' },
       { label: 'AUTO BACKUPS', color: 'yellow' },
     ],
@@ -103,7 +103,7 @@ export default function CloudPage() {
             Tally Cloud Access &amp; Backup Solutions
           </h1>
           <p className="text-[1.05rem] text-[#4a4d50] leading-relaxed font-medium max-w-2xl">
-            Access TallyPrime from anywhere, on any device — powered by AWS, Oracle Cloud, and Windows Server. Starting at just ₹600/user/month. No expensive office servers, no complex IT headaches.
+            Access TallyPrime from anywhere, on any device — powered by AWS, Oracle Cloud, and Windows Server. Affordable pricing for every team. No expensive office servers, no complex IT headaches.
           </p>
         </section>
 

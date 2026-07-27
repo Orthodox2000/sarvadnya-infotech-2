@@ -126,7 +126,7 @@ const QUICK_ACCESS_CARDS = [
     img: "/PartnerBrands/Tally-Software.png"
   },
   {
-    title: "Cloud Products",
+    title: "Cloud Access",
     description: "Secure, 24/7 remote access with Official AWS and NoSky infrastructure.",
     shortDesc: "AWS & NoSky cloud access",
     href: "/cloud",

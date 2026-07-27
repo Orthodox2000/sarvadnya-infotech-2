@@ -23,12 +23,12 @@ const HUB_CARDS: HubCard[] = [
     )
   },
   {
-    title: "Cloud Products",
+    title: "Cloud Access",
     description: "Secure, 24/7 remote access with Official AWS and NoSky infrastructure.",
     href: "/cloud",
     color: "bg-white",
     icon: (
-      <Image src="/tally on cloud.png" alt="Cloud Products" width={40} height={40} className="object-contain" />
+      <Image src="/tally on cloud.png" alt="Cloud Access" width={40} height={40} className="object-contain" />
     )
   },
   {

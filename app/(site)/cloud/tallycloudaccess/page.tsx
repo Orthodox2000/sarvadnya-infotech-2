@@ -11,8 +11,8 @@ const BRAND_SECONDARY = '#1e4d3a';
 
 const cloudPartners = [
   { name: 'AWS', logo: '/PartnerBrands/AWS.png' },
-  { name: 'Oracle Cloud', logo: null, initials: 'OCI' },
-  { name: 'Windows Server', logo: null, initials: 'WS' },
+  { name: 'Oracle Cloud', logo: '/PartnerBrands/Oracle-Cloud.svg' },
+  { name: 'Windows Server', logo: '/PartnerBrands/Windows-Server.svg' },
 ];
 
 const plans = [
@@ -378,16 +378,16 @@ export default function TallyCloudAccessPage() {
                   Your TallyPrime runs on powerful, secure cloud servers managed by industry leaders like <strong>Amazon Web Services (AWS)</strong>, <strong>Oracle Cloud Infrastructure (OCI)</strong>, and <strong>Windows Server</strong>. You simply log in from any laptop, desktop, Mac, or tablet with internet and start working. Your data is always safe, always backed up, and accessible from anywhere in the world.
                 </p>
                 <p>
-                  Whether you need a lightweight cloud workspace or a full Windows desktop with Excel, printing, and peripheral support — we have the right cloud plan for your business. Starting at just <strong>₹600 per user per month</strong>.
+                  Whether you need a lightweight cloud workspace or a full Windows desktop with Excel, printing, and peripheral support — we have the right cloud plan for your business with <strong>affordable pricing</strong>.
                 </p>
               </div>
               {/* Hero stats */}
               <div className="mt-5 grid grid-cols-2 sm:grid-cols-4 gap-3">
                 {[
-                  { label: 'Starting at', value: '₹600' },
+                  { label: 'Pricing', value: 'Affordable' },
                   { label: 'Access', value: '24/7' },
                   { label: 'Security', value: 'AES-256' },
-                  { label: 'Uptime', value: '99.99%' },
+                  { label: 'Uptime', value: '99.99%*' },
                 ].map((stat) => (
                   <div
                     key={stat.label}
@@ -402,8 +402,7 @@ export default function TallyCloudAccessPage() {
                   </div>
                 ))}
               </div>
-
-              {/* Cloud Partners */}
+              <p className="text-[9px] text-slate-400 mt-1.5">*Uptime as claimed by respective cloud host platforms.</p>
               <div className="mt-5 pt-5 border-t border-slate-100">
                 <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-3">Powered By</p>
                 <div className="flex items-center gap-4 flex-wrap">
@@ -413,7 +412,7 @@ export default function TallyCloudAccessPage() {
                         <Image src={partner.logo} alt={partner.name} width={24} height={24} className="object-contain" />
                       ) : (
                         <span className="w-6 h-6 rounded flex items-center justify-center text-[8px] font-black text-white" style={{ backgroundColor: BRAND_PRIMARY }}>
-                          {partner.initials}
+                          {partner.name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase()}
                         </span>
                       )}
                       <span className="text-xs font-bold text-slate-700">{partner.name}</span>
