@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import Footer from '../../../components/Footer';
 import UnifiedContactModal, { FormType } from '../../../components/UnifiedContactModal';
+import TssRenewalForm from '../../../components/TssRenewalForm';
 
 export default function TSSPage() {
   const [modalConfig, setModalConfig] = useState<{isOpen: boolean; type: FormType; service: string}>({
@@ -162,7 +163,9 @@ export default function TSSPage() {
           <h2 className="text-3xl md:text-5xl font-black text-slate-900 mb-4">TSS Pricing</h2>
           <p className="text-slate-500 font-medium max-w-2xl mx-auto">All plans include 18% GST. Choose the plan that fits your team size.</p>
         </div>
-        <div className="overflow-x-auto rounded-2xl border border-slate-200 bg-white shadow-sm">
+
+        {/* Desktop Table */}
+        <div className="hidden md:block overflow-x-auto rounded-2xl border border-slate-200 bg-white shadow-sm">
           <table className="w-full text-left text-sm">
             <thead>
               <tr className="bg-slate-50 text-[10px] font-bold uppercase tracking-wider text-slate-500">
@@ -237,21 +240,66 @@ export default function TSSPage() {
             <p className="text-[11px] text-slate-500 text-center">Prices are inclusive of 18% GST. Contact our sales team for more price options.</p>
           </div>
         </div>
+
+        {/* Mobile Card Layout */}
+        <div className="md:hidden space-y-4">
+          {[
+            { plan: 'TSS Single User (1 Year)', validity: '1 Year', base: '4,500', gst: '810', total: '5,310/-' },
+            { plan: 'TSS Single User (2 Years)', validity: '2 Years', base: '8,100', gst: '1,458', total: '8,496/-', originalTotal: '9,558', discount: '10% OFF', save: '1,062/-' },
+            { plan: 'TSS Multi User (1 Year)', validity: '1 Year', base: '13,500', gst: '2,430', total: '15,930/-' },
+            { plan: 'TSS Multi User (2 Years)', validity: '2 Years', base: '24,300', gst: '4,374', total: '25,488/-', originalTotal: '28,674', discount: '10% OFF', save: '3,186/-' },
+            { plan: 'TSS Auditor (1 Year)', validity: '1 Year', base: '6,750', gst: '1,215', total: '7,965/-' },
+            { plan: 'TSS Auditor (2 Years)', validity: '2 Years', base: '12,150', gst: '2,187', total: '12,744/-', originalTotal: '14,337', discount: '10% OFF', save: '1,593/-' },
+          ].map((row, i) => (
+            <div key={i} className="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm">
+              <div className="flex items-center justify-between mb-3">
+                <h3 className="font-bold text-slate-900 text-sm">{row.plan}</h3>
+                {row.discount && (
+                  <span className="shrink-0 inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-bold bg-emerald-50 text-emerald-600 border border-emerald-200">{row.discount}</span>
+                )}
+              </div>
+              <div className="space-y-2 text-xs">
+                <div className="flex justify-between"><span className="text-slate-400 font-medium">Validity</span><span className="text-slate-600 font-semibold">{row.validity}</span></div>
+                <div className="flex justify-between"><span className="text-slate-400 font-medium">Base Price</span><span className="text-slate-600 font-semibold">₹{row.base}</span></div>
+                <div className="flex justify-between"><span className="text-slate-400 font-medium">GST 18%</span><span className="text-slate-600 font-semibold">₹{row.gst}</span></div>
+                <div className="flex justify-between items-center border-t border-slate-100 pt-2 mt-2">
+                  <span className="text-slate-400 font-medium">Total</span>
+                  <div className="text-right">
+                    {row.originalTotal && <span className="text-slate-400 line-through mr-1.5">₹{row.originalTotal}</span>}
+                    <span className="font-bold text-[#316852] text-base">₹{row.total}</span>
+                  </div>
+                </div>
+                {row.save && <p className="text-[10px] text-emerald-600 font-medium text-right">You save ₹{row.save}</p>}
+              </div>
+            </div>
+          ))}
+          <p className="text-[11px] text-slate-500 text-center pt-2">Prices are inclusive of 18% GST.</p>
+        </div>
       </section>
 
-      {/* CTA Section */}
+      {/* Renewal Form Section */}
       <section className="bg-[#4A6E62] py-14 px-6">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-8">
+            <h2 className="text-2xl md:text-3xl font-black text-white mb-3">Renew Your TSS Now</h2>
+            <p className="text-emerald-100 text-sm max-w-md mx-auto">
+              Enter your serial number and details below. Our team will process your renewal immediately.
+            </p>
+          </div>
+          <TssRenewalForm variant="inline" source="tss-page" />
+        </div>
+      </section>
+
+      {/* Contact CTA */}
+      <section className="bg-[#3a5c52] py-10 px-6">
         <div className="max-w-3xl mx-auto text-center">
-          <h2 className="text-2xl md:text-3xl font-black text-white mb-3">Don&apos;t Let Your Compliance Expire.</h2>
-          <p className="text-emerald-100 text-sm mb-8 max-w-md mx-auto">
-            Reactivate your E-invoicing, auto-bank reconciliation, and GST capabilities instantly. Renewal takes less than 5 minutes.
-          </p>
+          <p className="text-emerald-100 text-sm mb-6">Have questions? Need help finding your serial number?</p>
           <div className="flex flex-wrap justify-center gap-3">
             <button
               onClick={() => openModal('callback')}
               className="px-7 py-3.5 bg-white text-[#4A6E62] rounded-xl font-black text-xs uppercase tracking-widest hover:bg-emerald-50 transition-all"
             >
-              Renew Instantly
+              Request Callback
             </button>
             <button
               onClick={() => openModal('enquire')}

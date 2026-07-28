@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Footer from "../../components/Footer";
 import UnifiedContactModal, { FormType } from "../../components/UnifiedContactModal";
+import TssRenewalForm from "../../components/TssRenewalForm";
 
 interface ServicePopupProps {
   isOpen: boolean;
@@ -68,6 +69,12 @@ const ServiceDetailPopup = ({ isOpen, onClose, service, onEnquire }: ServicePopu
             ))}
           </ul>
         </div>
+
+        {service.title === 'TSS Renewal' && (
+          <div className="mt-6">
+            <TssRenewalForm variant="compact" source="services-page" />
+          </div>
+        )}
 
         <div className="mt-10 flex flex-col sm:flex-row gap-3">
           <button 

@@ -6,6 +6,7 @@ export async function GET() {
     const stats: any = {
       submissions: 0,
       problemReports: 0,
+      tssRenewals: 0,
       applications: 0,
       modules: 0,
       learning: 0,
@@ -22,6 +23,10 @@ export async function GET() {
     // Problem reports count
     const problemReportsCol = await getCollection('problem_reports');
     stats.problemReports = await problemReportsCol.countDocuments();
+
+    // TSS Renewals count
+    const tssRenewalsCol = await getCollection('tss_renewals');
+    stats.tssRenewals = await tssRenewalsCol.countDocuments();
 
     // Applications count
     const applicationsCol = await getCollection('job_applications');

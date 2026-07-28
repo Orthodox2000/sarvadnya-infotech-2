@@ -69,7 +69,7 @@ export default function CloudPage() {
       title: 'Sales & Expert Advice',
       buttons: [
         { label: 'Request Quote', type: 'quote' as FormType },
-        { label: 'Book Demo', type: 'demo' as FormType },
+        { label: 'Get Now', type: 'demo' as FormType },
         {
           label: 'Contact Sales',
           href: '/contact?service=Cloud%20Solutions&message=Please%20share%20deployment%20details%20and%20setup%20options%20for%20cloud%20solutions.',

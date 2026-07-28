@@ -18,22 +18,26 @@ const features = [
   { title: 'Simple to Deploy', desc: 'Quick one-step installation that takes less than an hour on any existing computer in your network. No dedicated physical server required — and no training needed for your team.' },
 ];
 
-const faqs = [
+const faqs: { q: string; a: string; cta?: { label: string; type: string } | { label: string; href: string } }[] = [
   {
     q: 'What is TallyPrime Server?',
     a: 'TallyPrime Server is an enterprise-class software that converts peer-to-peer data access (like Gold\'s folder-sharing model) to true server-based data management. It gives TallyPrime Gold users the power to handle 100-150 concurrent users with advanced monitoring, zero system waiting, and complete data reliability.',
+    cta: { label: 'Get a Custom Quote', type: 'quote' },
   },
   {
     q: 'How is TallyPrime Server different from TallyPrime Gold?',
     a: 'TallyPrime Gold uses folder sharing for multiple users — which works well on a LAN but has limitations. Server provides true concurrent access with multi-threaded architecture, hides data files for security, supports 100-150 users, and gives administrators real-time monitoring and control. If Gold is your multi-user accounting tool, Server is the infrastructure upgrade that increases its limits.',
+    cta: { label: 'Compare Editions', href: '/products#compare' },
   },
   {
     q: 'I use TallyPrime Gold on a LAN — how many users can I have?',
     a: 'TallyPrime Gold supports unlimited users on a Local Area Network (LAN). There is no hard user limit when all your employees are on the same office network. The limitation only appears when you move to virtual environments or need enterprise-level performance.',
+    cta: { label: 'View Gold Pricing', href: '/products/gold' },
   },
   {
     q: 'What about Cloud, RDP, or Citrix? Are there limits?',
     a: 'Yes. If you use TallyPrime Gold in a virtual environment (Cloud, RDP, or Citrix), Tally limits you to 10 free Tally Virtual Users (TVUs). If you need more than 10 virtual users, you must purchase additional TVU subscription packs from Tally.',
+    cta: { label: 'Explore Cloud Solutions', href: '/cloud' },
   },
   {
     q: 'What is a Tally Virtual User (TVU)?',
@@ -50,6 +54,7 @@ const faqs = [
   {
     q: 'How many users can TallyPrime Server handle?',
     a: 'TallyPrime Server supports 100-150 concurrent users. Performance remains smooth because the multi-threaded architecture processes every user\'s request in parallel — there is no blocking or queuing of tasks.',
+    cta: { label: 'Get Expert Advice', type: 'quote' },
   },
 ];
 
@@ -493,6 +498,34 @@ export default function TallyServerPage() {
                     {openFaq === idx && (
                       <div className="pb-3.5 text-sm text-slate-600 leading-relaxed pr-8">
                         {faq.a}
+                        {faq.cta && (
+                          <div className="mt-3">
+                            {'href' in faq.cta && faq.cta.href ? (
+                              <a
+                                href={faq.cta.href}
+                                className="inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-[10px] font-bold uppercase tracking-wider text-white transition-all hover:scale-[1.02]"
+                                style={{ backgroundColor: BRAND_PRIMARY }}
+                              >
+                                {faq.cta.label}
+                                <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
+                                  <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                                </svg>
+                              </a>
+                            ) : 'type' in faq.cta ? (
+                              <button
+                                type="button"
+                                onClick={() => openModal((faq.cta as { type: string }).type as FormType, 'TallyPrime Server')}
+                                className="inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-[10px] font-bold uppercase tracking-wider text-white transition-all hover:scale-[1.02]"
+                                style={{ backgroundColor: BRAND_PRIMARY }}
+                              >
+                                {faq.cta.label}
+                                <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
+                                  <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                                </svg>
+                              </button>
+                            ) : null}
+                          </div>
+                        )}
                       </div>
                     )}
                   </div>
@@ -697,7 +730,7 @@ export default function TallyServerPage() {
               <div className="space-y-2">
                 {[
                   { label: 'Compare Editions', href: '/products#compare' },
-                  { label: 'Book a Demo', type: 'demo' as FormType },
+                  { label: 'Get Now', type: 'demo' as FormType },
                   { label: 'Technical Support', type: 'support' as FormType },
                   { label: 'AMC Services', href: '/services/amc' },
                   { label: 'Corporate Training', href: '/services/corporate-training' },

@@ -685,7 +685,7 @@ export default function NoSkyBackupPage() {
               <div className="space-y-2">
                 {[
                   { label: 'Cloud Solutions Guide', href: '/cloud' },
-                  { label: 'Book a Demo', type: 'demo' as FormType },
+                  { label: 'Get Now', type: 'demo' as FormType },
                   { label: 'Technical Support', type: 'support' as FormType },
                   { label: 'Cloud Backup Guidance', href: '/cloud/nosky' },
                   { label: 'Corporate Training', href: '/services/corporate-training' },

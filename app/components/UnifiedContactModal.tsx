@@ -92,7 +92,7 @@ export default function UnifiedContactModal({
       case 'enquire': return 'Product Enquiry';
       case 'support': return 'Priority Support';
       case 'callback': return 'Request Callback';
-      case 'demo': return 'Book a Demo';
+      case 'demo': return 'Get Now';
       default: return 'Contact Us';
     }
   };

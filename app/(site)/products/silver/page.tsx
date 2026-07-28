@@ -18,10 +18,11 @@ const features = [
   { title: 'Cloud Backup Ready', desc: 'Easily pair Silver with TallyDrive to ensure your daily work is automatically saved to the cloud for ultimate peace of mind.' },
 ];
 
-const faqs = [
+const faqs: { q: string; a: string; cta?: { label: string; type: string } | { label: string; href: string } }[] = [
   {
     q: 'Who is this version actually for?',
     a: 'It is built for small business owners, freelancers, and small shop owners who only need one user to access the accounting system at a time.',
+    cta: { label: 'Get Silver Now', type: 'quote' },
   },
   {
     q: 'Does it handle my local taxes and e-invoicing?',
@@ -30,6 +31,7 @@ const faqs = [
   {
     q: 'What if I hire more staff and need them to use Tally too?',
     a: 'No problem! You can easily upgrade your license to TallyPrime Gold (our multi-user version) later. All your data moves over automatically with zero hassle.',
+    cta: { label: 'Explore Gold Edition', href: '/products/gold' },
   },
   {
     q: 'Do I need a powerful computer or fast internet?',
@@ -37,7 +39,8 @@ const faqs = [
   },
   {
     q: 'Will I get help if I get stuck?',
-    a: 'Absolutely. We provide expert support to help you with installation and initial setup',
+    a: 'Absolutely. We provide expert support to help you with installation and initial setup.',
+    cta: { label: 'Get Support', type: 'support' },
   },
 ];
 
@@ -411,16 +414,6 @@ export default function TallySilverPage() {
                       ))}
                     </div>
                   </div>
-                  <div>
-                    <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Integrations</h3>
-                    <div className="flex flex-wrap gap-2">
-                      {['Excel Import/Export', 'Secure Cloud Backups', 'Tally Reports'].map((item) => (
-                        <span key={item} className="inline-flex rounded-md px-2.5 py-1 text-[12px] font-medium border" style={{ borderColor: `${BRAND_PRIMARY}25`, backgroundColor: `${BRAND_PRIMARY}06`, color: BRAND_PRIMARY }}>
-                          {item}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
                 </div>
               </div>
             </section>
@@ -453,6 +446,34 @@ export default function TallySilverPage() {
                     {openFaq === idx && (
                       <div className="pb-3.5 text-sm text-slate-600 leading-relaxed pr-8">
                         {faq.a}
+                        {faq.cta && (
+                          <div className="mt-3">
+                            {'href' in faq.cta && faq.cta.href ? (
+                              <a
+                                href={faq.cta.href}
+                                className="inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-[10px] font-bold uppercase tracking-wider text-white transition-all hover:scale-[1.02]"
+                                style={{ backgroundColor: BRAND_PRIMARY }}
+                              >
+                                {faq.cta.label}
+                                <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
+                                  <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                                </svg>
+                              </a>
+                            ) : 'type' in faq.cta ? (
+                              <button
+                                type="button"
+                                onClick={() => openModal((faq.cta as { type: string }).type as FormType, 'TallyPrime Silver')}
+                                className="inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-[10px] font-bold uppercase tracking-wider text-white transition-all hover:scale-[1.02]"
+                                style={{ backgroundColor: BRAND_PRIMARY }}
+                              >
+                                {faq.cta.label}
+                                <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
+                                  <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                                </svg>
+                              </button>
+                            ) : null}
+                          </div>
+                        )}
                       </div>
                     )}
                   </div>
@@ -705,7 +726,7 @@ export default function TallySilverPage() {
               <div className="space-y-2">
                 {[
                   { label: 'Compare Editions', href: '/products#compare' },
-                  { label: 'Book a Demo', type: 'demo' as FormType },
+                  { label: 'Get Now', type: 'demo' as FormType },
                   { label: 'Technical Support', type: 'support' as FormType },
                   { label: 'AMC Services', href: '/services/amc' },
                   { label: 'Corporate Training', href: '/services/corporate-training' },

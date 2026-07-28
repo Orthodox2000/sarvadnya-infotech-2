@@ -133,4 +133,40 @@ export function getFallbackResponse(userInput: string): string {
   return genericResponses[hash % genericResponses.length];
 }
 
+export function getTeachingFallbackResponse(userInput: string): string {
+  const input = userInput.toLowerCase();
+
+  const teachingResponses: [RegExp, string][] = [
+    [/hello|hi|hey|namaste|good\s*(morning|afternoon|evening)/, "Hello! Welcome to Learn Sara. I am here to help you master TallyPrime step by step. What would you like to learn about — GST, inventory, banking, payroll, or something else?"],
+    [/thank|thanks|bye|goodbye|ok|okay|theek|alright/, "You're welcome! Keep practicing and you'll master TallyPrime in no time. Feel free to come back anytime with more questions."],
+    [/price|cost|rate|charge|fees|buy|purchase|license/, "For pricing and license details, please contact our sales team directly. Here, let us focus on learning how to use TallyPrime effectively. What feature would you like to understand?"],
+    [/software|install|setup|download|update|version/, "To install TallyPrime: download from tallysolutions.com, run the installer, and follow the setup wizard. During first launch, create your company with GST details. Want me to walk you through the initial configuration step by step?"],
+    [/gst|tax|return|filing|compliance|gstr/, "TallyPrime handles GST end to end. To get started: go to Company Features (F11) and Enable GST. Then set your GST rate and HSN/SAC codes. Would you like to learn how to create a GST invoice, or how to file GSTR-1?"],
+    [/inventory|stock|godown|warehouse|item|product/, "TallyPrime inventory management is powerful. Start by creating Stock Items under Inventory Info. You can track quantities, values, godowns, batches, and reorder levels. What type of business inventory are you managing?"],
+    [/bank|reconcil|payment|upi|neft|rtgs|cheque/, "Bank reconciliation in TallyPrime is simple: go to Banking > Bank Reconciliation, import your bank statement, and Tally auto-matches entries. Want me to explain the step-by-step process?"],
+    [/payroll|salary|employee|attendance|pf|esi/, "TallyPrime payroll covers everything: employee profiles, pay structures, attendance, PF/ESI calculations, and payslip generation. Enable it via F11 > Payroll Features. Would you like to learn how to set up a pay structure?"],
+    [/report|balance.sheet|profit|loss|cash.flow/, "TallyPrime has 400+ built-in reports. Press Alt+F1 for detailed view, F12 to configure columns, and Ctrl+F to search. The Balance Sheet and Profit & Loss reports update in real time. Which report would you like to learn to read?"],
+    [/shortcut|keyboard|key|hotkey|ctrl|alt/, "Here are the most useful shortcuts:\n\n- Alt+G — Go To (find anything)\n- F5 — Payment voucher\n- F8 — Sales voucher\n- F9 — Purchase voucher\n- Ctrl+A — Accept/Save\n- Ctrl+F — Search\n\nWant me to explain any specific shortcut in detail?"],
+    [/voucher|entry|transaction|journal|contra/, "TallyPrime uses different voucher types for different transactions:\n\n- F5 — Payment (money going out)\n- F6 — Receipt (money coming in)\- F7 — Journal (adjustments)\n- F8 — Sales (your invoices)\n- F9 — Purchase (supplier bills)\n\nWhich voucher type would you like to learn to create?"],
+    [/error|problem|issue|not working|slow|crash|bug|fix/, "Common TallyPrime issues and fixes:\n\n- Slow performance: Go to Data > Compress\n- Can't find feature: Press Alt+G and search\n- Data corruption: Use Help > Troubleshooting > Data Integrity\n- GST mismatch: Use the GST Reconciliation report\n\nWhat specific issue are you facing?"],
+    [/backup|restore|data|safe/, "To backup in TallyPrime: go to Data > Backup, select your company, choose a destination folder, and confirm. To restore: Data > Restore, select the backup file. I recommend backing up daily. Want to learn about automatic cloud backup with TallyDrive?"],
+    [/cloud|remote|access|online|anywhere/, "You can access TallyPrime remotely via AWS Cloud or Windows Cloud Desktop. This lets you work from home, office, or while traveling. Want me to explain how remote access works step by step?"],
+    [/e.invoice|einvoicing|irn|qrcode/, "E-Invoicing in TallyPrime:\n\n1. Enable: F11 > GST > Enable E-Invoicing\n2. Set IRN threshold (currently Rs. 5 crore)\n3. While saving invoice, press Ctrl+I for IRN\n4. Tally auto-generates QR code and IRN\n\nWould you like to practice creating an e-invoice?"],
+    [/e.way|eway|ewaybill|shipment/, "E-Way Bill generation in TallyPrime:\n\n1. Enable: F11 > GST > Enable E-Way Bill\n2. While creating an invoice for goods above Rs. 50,000\n3. Enter vehicle details and destination\n4. Tally generates the E-Way Bill JSON\n\nWant me to walk through the complete process?"],
+  ];
+
+  for (const [pattern, response] of teachingResponses) {
+    if (pattern.test(input)) return response;
+  }
+
+  const genericTeachingResponses = [
+    "That is an interesting question! Let me help you understand this better in the context of TallyPrime. Could you tell me more about what you are trying to accomplish? For example, are you working with invoicing, inventory, or reports?",
+    "Good question! TallyPrime has a feature for that. Let me guide you through it step by step. First, can you tell me which TallyPrime edition you are using — Silver (single user) or Gold (multi user)?",
+    "I understand your question. Let me break this down into simple steps. In TallyPrime, most tasks start from the Gateway of Tally. What specific area are you trying to learn — accounting, inventory, or statutory compliance?",
+  ];
+
+  const hash = input.split('').reduce((acc, ch) => acc + ch.charCodeAt(0), 0);
+  return genericTeachingResponses[hash % genericTeachingResponses.length];
+}
+
 export const SARA_WELCOME = "Hello! I'm Sara, your Sarvadnya Infotech LLP Assistant. I can help you automate your business with Tally—feel free to ask your questions!";

@@ -11,6 +11,8 @@
     "typecheck": "tsc --noEmit",
     "test": "node scripts/api-test.mjs",
     "test:api": "node scripts/api-test.mjs",
+    "test:sara": "node scripts/sara-test.mjs",
+    "test:all": "node scripts/api-test.mjs && node scripts/sara-test.mjs",
     "audit": "npm audit --audit-level=high",
     "audit:deps": "npm audit --json",
     "security:check": "node scripts/security-audit.mjs",

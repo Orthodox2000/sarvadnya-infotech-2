@@ -687,7 +687,7 @@ export default function HRMSPage() {
               <div className="space-y-2">
                 {[
                   { label: 'TallyPrime Products', href: '/products' },
-                  { label: 'Book a Demo', type: 'demo' as FormType },
+                  { label: 'Get Now', type: 'demo' as FormType },
                   { label: 'Technical Support', type: 'support' as FormType },
                   { label: 'Cloud Solutions', href: '/cloud' },
                   { label: 'Custom Modules', href: '/modules' },

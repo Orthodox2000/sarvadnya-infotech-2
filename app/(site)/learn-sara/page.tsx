@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import Link from 'next/link';
 import { findMatchingTutorials, type Tutorial } from '@/lib/tutorial-matcher';
-import { saraTopics, matchTopic, getFallbackResponse, type Topic } from '@/lib/sara-topics';
+import { saraTopics, matchTopic, getTeachingFallbackResponse, type Topic } from '@/lib/sara-topics';
 
 type Message = {
   id: string;
@@ -14,7 +14,7 @@ type Message = {
   timestamp: Date;
 };
 
-const WELCOME_TEXT = "Hi! I'm Sara. I help small businesses simplify their accounting, billing, and taxes so you can focus on growing. How can I make your workday easier today?";
+const WELCOME_TEXT = "Hi! I'm Sara, your TallyPrime learning assistant. I can walk you through GST setup, invoicing, inventory, payroll, bank reconciliation, reports, and much more. What would you like to learn today?";
 
 function uid() {
   return Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
@@ -122,16 +122,34 @@ export default function LearnSaraPage() {
     }]);
   }, [matchTutorials]);
 
-  // Simulate typing delay then respond
   const respondWithDelay = useCallback((text: string, topics?: Topic[], queryText?: string) => {
     setIsTyping(true);
-    // Gentler timing: 900ms base + 10ms per character, capped at 3s
     const delay = Math.min(900 + text.length * 10, 3000);
     setTimeout(() => {
       setIsTyping(false);
       addAssistantMessage(text, topics, queryText);
     }, delay);
   }, [addAssistantMessage]);
+
+  const callLearnAI = useCallback(async (conversationHistory: { role: string; content: string }[]) => {
+    try {
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          messages: conversationHistory,
+          mode: 'learn',
+        }),
+      });
+
+      if (!response.ok) return null;
+
+      const data = await response.json();
+      return data.message || null;
+    } catch {
+      return null;
+    }
+  }, []);
 
   const handleTopicClick = (topic: Topic) => {
     setMessages(prev => [...prev, {
@@ -153,14 +171,13 @@ export default function LearnSaraPage() {
     respondWithDelay(topic.answer, topic.followUp, topic.label);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!inputValue.trim() || isTyping) return;
 
     const query = inputValue.trim();
     setInputValue('');
 
-    // Add user message
     setMessages(prev => [...prev, {
       id: uid(),
       role: 'user',
@@ -168,12 +185,29 @@ export default function LearnSaraPage() {
       timestamp: new Date()
     }]);
 
-    // Find matching topic using shared logic
     const result = matchTopic(query);
     if (result) {
       respondWithDelay(result.topic.answer, result.topic.followUp, query);
     } else {
-      respondWithDelay(getFallbackResponse(query), undefined, query);
+      setIsTyping(true);
+
+      const history = messages
+        .filter(m => m.role === 'user' || m.role === 'assistant')
+        .map(m => ({ role: m.role === 'assistant' ? 'assistant' as const : 'user' as const, content: m.text }));
+      history.push({ role: 'user' as const, content: query });
+
+      try {
+        const aiResponse = await callLearnAI(history);
+        setIsTyping(false);
+        if (aiResponse) {
+          addAssistantMessage(aiResponse, undefined, query);
+        } else {
+          respondWithDelay(getTeachingFallbackResponse(query), undefined, query);
+        }
+      } catch {
+        setIsTyping(false);
+        respondWithDelay(getTeachingFallbackResponse(query), undefined, query);
+      }
     }
   };
 
@@ -336,7 +370,7 @@ export default function LearnSaraPage() {
               type="text"
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
-              placeholder="Ask Sara anything about Tally..."
+              placeholder="Ask Sara to teach you anything about Tally..."
               disabled={isTyping}
               className="flex-1 bg-transparent px-4 py-3 text-[13px] font-medium text-slate-900 placeholder:text-slate-400 outline-none"
             />

@@ -29,6 +29,11 @@ const FAQ = ({ initialData, initialSettings }: { initialData?: any[], initialSet
 
     const filteredFaq = activeCategory === 'All' ? faqData : faqData.filter(item => item.category === activeCategory);
 
+    const ERP_NOTICE = {
+        question: "Has Tally stopped ERP renewals?",
+        answer: "Yes. Tally has officially discontinued legacy ERP renewals. Upgrading to TallyPrime with an active TSS subscription is now the only way to stay compliant with the latest GST rules, E-invoicing mandates, and statutory updates. Contact us to upgrade today."
+    };
+
     const toggleIndex = (index: number) => {
         setActiveIndex(activeIndex === index ? null : index);
     };
@@ -63,6 +68,37 @@ const FAQ = ({ initialData, initialSettings }: { initialData?: any[], initialSet
                 </div>
 
                 <div className="w-full flex flex-col gap-4">
+                    {/* Pinned ERP Renewal Notice */}
+                    {activeCategory === 'All' && (
+                        <div className={`w-full border rounded-xl overflow-hidden transition-colors ${
+                            activeIndex === -1
+                                ? 'bg-amber-50 shadow-sm border-amber-300'
+                                : 'bg-amber-50/50 border-amber-200 hover:bg-amber-50'
+                        }`}>
+                            <div
+                                onClick={() => setActiveIndex(activeIndex === -1 ? null : -1)}
+                                className="w-full px-6 py-5 flex justify-between items-center cursor-pointer"
+                            >
+                                <span className="text-base font-bold text-slate-900 pr-4 flex items-center gap-2">
+                                    <span className="shrink-0 inline-flex items-center rounded-full px-2 py-0.5 text-[9px] font-bold bg-amber-100 text-amber-700 border border-amber-200">IMPORTANT</span>
+                                    {ERP_NOTICE.question}
+                                </span>
+                                <div className={`w-6 h-6 rounded-full flex items-center justify-center shrink-0 transition-transform duration-200 ${
+                                    activeIndex === -1 ? 'bg-amber-500 rotate-180' : 'bg-amber-100'
+                                }`}>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`w-4 h-4 ${activeIndex === -1 ? 'text-white' : 'text-amber-600'}`}><path d="m6 9 6 6 6-6"></path></svg>
+                                </div>
+                            </div>
+                            <div className={`overflow-hidden transition-all duration-300 ease-in-out ${activeIndex === -1 ? 'max-h-96' : 'max-h-0'}`}>
+                                <div className="px-6 pb-6 pt-0">
+                                    <p className="text-base text-slate-600 leading-[1.6] border-t border-amber-200 pt-4">
+                                        {ERP_NOTICE.answer}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
                     {filteredFaq.length === 0 ? (
                         <div className="text-center py-20 border border-dashed border-[#E9F1FA] rounded-xl">
                             <p className="text-[#5D5F5F]">No FAQs found for this category.</p>

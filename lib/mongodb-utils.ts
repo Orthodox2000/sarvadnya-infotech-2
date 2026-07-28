@@ -356,3 +356,32 @@ export async function deleteProblemReport(id: string) {
   const col = await getCollection('problem_reports');
   return await col.deleteOne({ _id: new ObjectId(id) });
 }
+
+// TSS Renewal helpers
+export async function saveTssRenewal(data: any) {
+  const col = await getCollection('tss_renewals');
+  return await col.insertOne({
+    ...data,
+    status: 'pending',
+    createdAt: new Date()
+  });
+}
+
+export async function getTssRenewals() {
+  const col = await getCollection('tss_renewals');
+  const data = await col.find({}).sort({ createdAt: -1 }).toArray();
+  return serializeData(data);
+}
+
+export async function updateTssRenewalStatus(id: string, status: string) {
+  const col = await getCollection('tss_renewals');
+  return await col.updateOne(
+    { _id: new ObjectId(id) },
+    { $set: { status, updatedAt: new Date() } }
+  );
+}
+
+export async function deleteTssRenewal(id: string) {
+  const col = await getCollection('tss_renewals');
+  return await col.deleteOne({ _id: new ObjectId(id) });
+}

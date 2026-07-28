@@ -18,14 +18,16 @@ const features = [
   { title: 'Seamless Upgrade', desc: 'Upgrading from single-user? It takes just minutes. Your existing data transitions perfectly to Gold as data source remains same.' },
 ];
 
-const faqs = [
+const faqs: { q: string; a: string; cta?: { label: string; type: string } | { label: string; href: string } }[] = [
   {
     q: 'How is TallyPrime Gold different from Silver?',
     a: 'Silver is for a single user on one computer at a time. Gold is a multi-user license that allows your entire team to access and work on your Tally data simultaneously across multiple computers on the same network.',
+    cta: { label: 'Compare Editions', href: '/products#compare' },
   },
   {
     q: 'Do I need to buy a license for every single employee?',
     a: 'No! TallyPrime Gold gives you unlimited users on a single Wi-Fi (LAN). You purchase the Gold license once, and any computer on that network can connect to it.',
+    cta: { label: 'Get Gold Now', type: 'quote' },
   },
   {
     q: 'Can I restrict what my employees can see or edit?',
@@ -34,10 +36,12 @@ const faqs = [
   {
     q: 'Will I lose my data if I upgrade from Silver to Gold?',
     a: 'Not at all. Upgrading is instant and seamless. Your existing data path remains the same  thus immediately available for your whole team to use.',
+    cta: { label: 'Upgrade to Gold', type: 'quote' },
   },
   {
     q: 'Can I connect a branch office to my main office?',
     a: 'Yes, with the right network setup (like a VPN) or by pairing TallyPrime Gold with cloud hosting, your branch offices can work on the exact same live data as your head office.',
+    cta: { label: 'Explore Cloud Solutions', href: '/cloud' },
   },
 ];
 
@@ -406,16 +410,6 @@ export default function TallyGoldPage() {
                       ))}
                     </div>
                   </div>
-                  <div>
-                    <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Integrations</h3>
-                    <div className="flex flex-wrap gap-2">
-                      {['TallyDrive Backups', 'Excel Export', 'Cloud Hosting Ready'].map((item) => (
-                        <span key={item} className="inline-flex rounded-md px-2.5 py-1 text-[12px] font-medium border" style={{ borderColor: `${BRAND_PRIMARY}25`, backgroundColor: `${BRAND_PRIMARY}06`, color: BRAND_PRIMARY }}>
-                          {item}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
                 </div>
               </div>
             </section>
@@ -448,6 +442,34 @@ export default function TallyGoldPage() {
                     {openFaq === idx && (
                       <div className="pb-3.5 text-sm text-slate-600 leading-relaxed pr-8">
                         {faq.a}
+                        {faq.cta && (
+                          <div className="mt-3">
+                            {'href' in faq.cta && faq.cta.href ? (
+                              <a
+                                href={faq.cta.href}
+                                className="inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-[10px] font-bold uppercase tracking-wider text-white transition-all hover:scale-[1.02]"
+                                style={{ backgroundColor: BRAND_PRIMARY }}
+                              >
+                                {faq.cta.label}
+                                <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
+                                  <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                                </svg>
+                              </a>
+                            ) : 'type' in faq.cta ? (
+                              <button
+                                type="button"
+                                onClick={() => openModal((faq.cta as { type: string }).type as FormType, 'TallyPrime Gold')}
+                                className="inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-[10px] font-bold uppercase tracking-wider text-white transition-all hover:scale-[1.02]"
+                                style={{ backgroundColor: BRAND_PRIMARY }}
+                              >
+                                {faq.cta.label}
+                                <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
+                                  <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                                </svg>
+                              </button>
+                            ) : null}
+                          </div>
+                        )}
                       </div>
                     )}
                   </div>
@@ -712,7 +734,7 @@ export default function TallyGoldPage() {
               <div className="space-y-2">
                 {[
                   { label: 'Compare Editions', href: '/products#compare' },
-                  { label: 'Book a Demo', type: 'demo' as FormType },
+                  { label: 'Get Now', type: 'demo' as FormType },
                   { label: 'Technical Support', type: 'support' as FormType },
                   { label: 'AMC Services', href: '/services/amc' },
                   { label: 'Corporate Training', href: '/services/corporate-training' },

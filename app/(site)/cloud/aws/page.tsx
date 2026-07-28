@@ -405,16 +405,6 @@ export default function AWSCloudPage() {
                       ))}
                     </div>
                   </div>
-                  <div>
-                    <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Integrations</h3>
-                    <div className="flex flex-wrap gap-2">
-                      {['TallyDrive', 'Excel Import/Export', 'TallyReports', 'AnyDesk/TeamViewer'].map((item) => (
-                        <span key={item} className="inline-flex rounded-md px-2.5 py-1 text-[12px] font-medium border" style={{ borderColor: `${BRAND_PRIMARY}25`, backgroundColor: `${BRAND_PRIMARY}06`, color: BRAND_PRIMARY }}>
-                          {item}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
                 </div>
               </div>
             </section>
@@ -681,7 +671,7 @@ export default function AWSCloudPage() {
               <div className="space-y-2">
                 {[
                   { label: 'Cloud Solutions Guide', href: '/cloud' },
-                  { label: 'Book a Demo', type: 'demo' as FormType },
+                  { label: 'Get Now', type: 'demo' as FormType },
                   { label: 'Technical Support', type: 'support' as FormType },
                   { label: 'Cloud Backup Guidance', href: '/cloud/nosky' },
                   { label: 'Corporate Training', href: '/services/corporate-training' },

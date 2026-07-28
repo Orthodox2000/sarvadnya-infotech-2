@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import Footer from '../../../components/Footer';
 import UnifiedContactModal, { FormType } from '../../../components/UnifiedContactModal';
+import TssRenewalForm from '../../../components/TssRenewalForm';
 
 const BRAND_PRIMARY = '#316852';
 const BRAND_SECONDARY = '#1e4d3a';
@@ -18,26 +19,31 @@ const features = [
   { title: 'Works With Your Tally', desc: 'Whether you use a single-user Silver edition or a multi-user Server setup, TallyDrive works perfectly out of the box.' },
 ];
 
-const faqs = [
+const faqs: { q: string; a: string; cta?: { label: string; type: string } | { label: string; href: string } }[] = [
   {
     q: 'What exactly does TallyDrive do?',
     a: 'It is an automatic safety net for your accounting data. It uses incremental backups — after the first backup, only new or changed data is saved. This keeps your data safe without slowing down your internet.',
+    cta: { label: 'Get TallyDrive Now', type: 'quote' },
   },
   {
     q: 'How much cloud storage do I get?',
     a: 'Storage is included for free as long as your Tally Software Services (TSS) subscription is active! Single-User TallyPrime gets 1 GB, and Multi-User TallyPrime gets 3 GB of free cloud storage.',
+    cta: { label: 'Renew TSS / Get Quote', type: 'quote' },
   },
   {
     q: 'What happens to my backups if my TSS subscription expires?',
     a: 'Your data remains safely stored for 90 days after your TSS expires. During this period, you can still restore your backups. After 90 days, the data is permanently deleted from the cloud.',
+    cta: { label: 'Renew TSS Now', type: 'quote' },
   },
   {
     q: 'Can I buy more storage if I need it?',
     a: 'Yes! Extra storage is available starting at ₹1,200 per year for an additional 10 GB of cloud backup space.',
+    cta: { label: 'Get Storage Quote', type: 'quote' },
   },
   {
     q: 'Is my financial data safe in the cloud?',
     a: 'Absolutely. TallyDrive uses AES-256 encryption. By setting a Backup Password, your data becomes unreadable to everyone — even to Tally themselves.',
+    cta: { label: 'Secure My Data Now', type: 'quote' },
   },
   {
     q: 'Do I have to remember to click \'Backup\' every day?',
@@ -46,6 +52,7 @@ const faqs = [
   {
     q: 'How do I get my data back if my computer crashes?',
     a: 'Simply log into TallyDrive on your new computer and use the 1-Click Restore feature. You\'ll be back to billing in minutes.',
+    cta: { label: 'Get Help Now', type: 'support' },
   },
 ];
 
@@ -425,16 +432,6 @@ export default function TallyDrivePage() {
                     </div>
                   </div>
                   <div>
-                    <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Integrations</h3>
-                    <div className="flex flex-wrap gap-2">
-                      {['TallyPrime Silver', 'TallyPrime Gold', 'TallyPrime Server'].map((item) => (
-                        <span key={item} className="inline-flex rounded-md px-2.5 py-1 text-[12px] font-medium border" style={{ borderColor: `${BRAND_PRIMARY}25`, backgroundColor: `${BRAND_PRIMARY}06`, color: BRAND_PRIMARY }}>
-                          {item}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                  <div>
                     <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Requirement</h3>
                     <div className="flex flex-wrap gap-2">
                       {['TallyPrime Release 7.0 or above'].map((req) => (
@@ -476,6 +473,34 @@ export default function TallyDrivePage() {
                     {openFaq === idx && (
                       <div className="pb-3.5 text-sm text-slate-600 leading-relaxed pr-8">
                         {faq.a}
+                        {faq.cta && (
+                          <div className="mt-3">
+                            {'href' in faq.cta && faq.cta.href ? (
+                              <a
+                                href={faq.cta.href}
+                                className="inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-[10px] font-bold uppercase tracking-wider text-white transition-all hover:scale-[1.02]"
+                                style={{ backgroundColor: BRAND_PRIMARY }}
+                              >
+                                {faq.cta.label}
+                                <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
+                                  <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                                </svg>
+                              </a>
+                            ) : 'type' in faq.cta ? (
+                              <button
+                                type="button"
+                                onClick={() => openModal((faq.cta as { type: string }).type as FormType, 'TallyDrive Backup')}
+                                className="inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-[10px] font-bold uppercase tracking-wider text-white transition-all hover:scale-[1.02]"
+                                style={{ backgroundColor: BRAND_PRIMARY }}
+                              >
+                                {faq.cta.label}
+                                <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
+                                  <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                                </svg>
+                              </button>
+                            ) : null}
+                          </div>
+                        )}
                       </div>
                     )}
                   </div>
@@ -584,21 +609,11 @@ export default function TallyDrivePage() {
                       </tr>
                     </tbody>
                   </table>
-                  <div className="px-4 py-3 bg-slate-50 border-t border-slate-200">
-                    <p className="text-[11px] text-slate-500">
-                      Need more space or need to renew your TSS to activate TallyDrive? Contact our team for immediate assistance.
+                  <div className="px-4 py-4 bg-slate-50 border-t border-slate-200">
+                    <p className="text-[11px] text-slate-500 mb-3">
+                      Need to renew your TSS to activate TallyDrive? Enter your details below.
                     </p>
-                    <button
-                      type="button"
-                      onClick={() => openModal('quote', 'TallyDrive Backup', 'Please share pricing details for TallyDrive Backup.')}
-                      className="mt-2 inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-[10px] font-bold uppercase tracking-wider text-white transition-all hover:scale-[1.02]"
-                      style={{ backgroundColor: BRAND_PRIMARY }}
-                    >
-                      Renew TSS / Get Quote
-                      <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                      </svg>
-                    </button>
+                    <TssRenewalForm variant="compact" source="tallydrive-page" />
                   </div>
                 </div>
               )}
@@ -720,7 +735,7 @@ export default function TallyDrivePage() {
               <div className="space-y-2">
                 {[
                   { label: 'Compare Editions', href: '/products#compare' },
-                  { label: 'Book a Demo', type: 'demo' as FormType },
+                  { label: 'Get Now', type: 'demo' as FormType },
                   { label: 'Technical Support', type: 'support' as FormType },
                   { label: 'AMC Services', href: '/services/amc' },
                   { label: 'Corporate Training', href: '/services/corporate-training' },
