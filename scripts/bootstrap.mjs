@@ -139,13 +139,13 @@ async function run() {
 
     const faqData = [
       {
-          question: "What is the difference between TallyPrime Silver, Gold, and Server editions?",
-          answer: "TallyPrime Silver is a single-user license ideal for small businesses. Gold supports up to 5 concurrent users with additional features. Server edition offers unlimited concurrent users, centralized data management, and advanced security. Our team can help you choose the right edition based on your business size and requirements.",
+          question: "What is the difference between TallyPrime Silver, Gold, and Server products?",
+          answer: "TallyPrime Silver is a single-user license ideal for small businesses. Gold supports up to 5 concurrent users with additional features. Server is an enterprise product that enhances concurrency with multi-threaded architecture, delivers better speed and performance, provides a complete activity log, and strengthens data security. Our team can help you choose the right product based on your business size and requirements.",
           category: "Products"
       },
       {
           question: "Can I upgrade from Tally.ERP 9 to TallyPrime?",
-          answer: "Yes, upgrading is simple if you have an active TSS. We can assist you in migrating your data safely to TallyPrime, ensuring all your previous records and customizations are preserved while you enjoy the new, enhanced user experience with improved performance and modern interface.",
+          answer: "Yes, upgrading is simple if you have an active TSS. We can assist you in migrating your data safely to TallyPrime, ensuring all your previous records are preserved while you enjoy the new, enhanced user experience with improved performance and modern interface.",
           category: "Products"
       },
       {
@@ -165,7 +165,7 @@ async function run() {
       },
       {
           question: "What is included in your AMC plan?",
-          answer: "Our Annual Maintenance Contract (AMC) includes priority support, regular system health checks, data backup assistance, unlimited remote troubleshooting, and access to Tally updates. It ensures your accounting operations never stop due to technical glitches and you always have expert help available.",
+          answer: "Our Annual Maintenance Contract (AMC) includes priority support, regular system health checks, data backup assistance, unlimited remote troubleshooting, and access to Tally updates. It ensures your accounting operations never stop due to technical glitches. Beyond troubleshooting, each AMC period boosts your team's efficiency as you gain deeper knowledge and better command over Tally and accounts through ongoing expert guidance.",
           category: "Services"
       },
       {
@@ -176,6 +176,11 @@ async function run() {
       {
           question: "What is your 'Never Deny Service Call' policy?",
           answer: "It is our commitment to customer satisfaction. We guarantee that no service call will be turned away. Regardless of the complexity of the issue or the time of the request, our team will acknowledge and provide a path to resolution for every client within 15 minutes.",
+          category: "Services"
+      },
+      {
+          question: "What services do you provide for TallyPrime?",
+          answer: "We offer end-to-end TallyPrime services including license sales, implementation, customization, data synchronization, troubleshooting, annual maintenance contracts (AMC), Tally consultancy, and business training. Whether you need help choosing the right product, optimizing your workflows, or training your team, our experts ensure your business runs smoothly.",
           category: "Services"
       },
       {
@@ -195,7 +200,7 @@ async function run() {
       },
       {
           question: "Is TallyPrime GST compliant?",
-          answer: "Absolutely. TallyPrime is fully GST compliant, helping you generate GSTR-1, GSTR-3B, and GSTR-9 reports easily. It also supports E-invoicing and E-way bill generation directly from the software, ensuring you stay compliant with the latest tax regulations.",
+          answer: "Absolutely. TallyPrime is designed to be fully GST compliant, helping you generate GSTR-1, GSTR-3B, and GSTR-9 reports easily. It also supports E-invoicing and E-way bill generation directly from the software. With a valid TSS, you can now file GSTR-1, reconcile IMS, and manage all GST returns directly from within TallyPrime.",
           category: "Technical"
       },
       {
@@ -205,7 +210,7 @@ async function run() {
       },
       {
           question: "Can I access Tally reports on my mobile device?",
-          answer: "Yes, with a valid TSS, you can access your TallyPrime reports securely on any mobile device through a web browser. You can view balance sheets, profit & loss statements, stock summaries, and other key reports in real-time from anywhere, anytime.",
+          answer: "Yes. With a valid TSS, the built-in Tally on Mobile feature lets you view balance sheets, profit & loss statements, stock summaries, and key reports on mobile phones, tablets, and any browser-enabled device. If you don't have an active TSS, we also offer alternative solutions to access Tally features on mobile and other devices — contact us to explore the best option for your setup.",
           category: "Technical"
       },
       {
@@ -244,7 +249,7 @@ async function run() {
       {
         title: "Tally Products",
         iconName: "core",
-        description: "Explore TallyPrime Editions, Licensing, and specialized business modules.",
+        description: "Explore TallyPrime Products, Licensing, and specialized business modules.",
         links: [
           { label: "TallyPrime Silver", href: "/products/silver" },
           { label: "TallyPrime Gold", href: "/products/gold" },

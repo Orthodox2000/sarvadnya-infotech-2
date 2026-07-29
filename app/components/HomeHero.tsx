@@ -120,8 +120,8 @@ const DEFAULT_HERO: HeroContent[] = [
 const QUICK_ACCESS_CARDS = [
   {
     title: "Tally Products",
-    description: "Explore TallyPrime Editions, Licensing, and specialized business modules.",
-    shortDesc: "TallyPrime editions & licensing",
+    description: "Explore TallyPrime Products, Licensing, and specialized business modules.",
+    shortDesc: "TallyPrime products & licensing",
     href: "/products",
     img: "/PartnerBrands/Tally-Software.png"
   },
@@ -445,8 +445,8 @@ export default function HomeHero({ initialData, variant = 'standard' }: { initia
               <p className={`text-sm md:text-[15px] text-[#4a5056] max-w-xl leading-relaxed font-medium ${getAnimationClasses('delay-300')}`}>{current.description}</p>
 
               <div className={`flex flex-wrap gap-3 pt-1 ${getAnimationClasses('delay-500')}`}>
-                <Link href="/#quick-access-hub" className="group relative overflow-hidden px-6 py-3 rounded-xl bg-[#316852] text-white font-bold text-xs uppercase tracking-wide transition-all duration-500 ease-in-out hover:bg-[#4a7a6a] hover:scale-[1.03] active:scale-95 shadow-md">
-                  <span className="relative z-10">View Solutions</span>
+                <Link href="/products" className="group relative overflow-hidden px-6 py-3 rounded-xl bg-[#316852] text-white font-bold text-xs uppercase tracking-wide transition-all duration-500 ease-in-out hover:bg-[#4a7a6a] hover:scale-[1.03] active:scale-95 shadow-md">
+                  <span className="relative z-10">View Tally Products</span>
                   <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
                 </Link>
                 <button 

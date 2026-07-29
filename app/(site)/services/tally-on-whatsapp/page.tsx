@@ -92,7 +92,7 @@ export default function TallyOnWhatsappPage() {
                   onClick={() => openModal('enquire')}
                   className="px-8 py-4 bg-[#316852] text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-[#5D887A] transition-all shadow-xl shadow-[#4A6E62]/20"
                >
-                  Request a Live Demo
+                   Get Now
                </button>
             </div>
           </div>
@@ -167,7 +167,7 @@ export default function TallyOnWhatsappPage() {
               onClick={() => openModal('callback')}
               className="px-7 py-3.5 bg-white text-[#4A6E62] rounded-xl font-black text-xs uppercase tracking-widest hover:bg-emerald-50 transition-all"
             >
-              Get a Free Demo
+              Get Now
             </button>
             <button
               onClick={() => openModal('enquire')}

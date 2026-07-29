@@ -178,10 +178,10 @@ export default function CapabilitiesPage() {
           </p>
           <div className="flex flex-wrap justify-center gap-3">
             <Link
-              href="/demo"
+              href="/products"
               className="px-7 py-3.5 bg-white text-[#4A6E62] rounded-xl font-black text-xs uppercase tracking-widest hover:bg-emerald-50 transition-all"
             >
-              Book a Free Demo
+              Get Now
             </Link>
             <Link
               href="/contact"

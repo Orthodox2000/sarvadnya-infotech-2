@@ -13,7 +13,7 @@ const features = [
   { title: 'Everyone Works Together', desc: 'Stop taking turns on one PC. Let your billing, inventory, and accounting teams work on the exact same live data at the same time without any conflicts.' },
   { title: 'Controlled Access', desc: 'Keep your sensitive financials private. Set passwords and permissions so your sales team only sees invoices, while only you see the bank balances.' },
   { title: 'Zero Data Duplication', desc: 'Say goodbye to merging Excel sheets or passing backup files on pen drives. Everyone connects to one single, accurate source of truth.' },
-  { title: 'Instant Live Updates', desc: 'When an item is sold at the front desk, your warehouse team sees the updated stock instantly. Real-time syncing keeps your whole team aligned.' },
+  { title: 'Real-Time Data Sync', desc: 'When an item is sold at the front desk, your warehouse team sees the updated stock instantly. Real-time data sync keeps your whole team aligned.' },
   { title: 'Automated Local Compliance', desc: 'Handle taxes, VAT, or GST returns accurately. Multiple users can generate tax-compliant e-invoices simultaneously without slowing down.' },
   { title: 'Seamless Upgrade', desc: 'Upgrading from single-user? It takes just minutes. Your existing data transitions perfectly to Gold as data source remains same.' },
 ];
@@ -21,8 +21,8 @@ const features = [
 const faqs: { q: string; a: string; cta?: { label: string; type: string } | { label: string; href: string } }[] = [
   {
     q: 'How is TallyPrime Gold different from Silver?',
-    a: 'Silver is for a single user on one computer at a time. Gold is a multi-user license that allows your entire team to access and work on your Tally data simultaneously across multiple computers on the same network.',
-    cta: { label: 'Compare Editions', href: '/products#compare' },
+    a: 'Silver is for a single user on one computer at a time. Gold is a multi-user license that allows your entire team to access and work on your Tally data simultaneously across multiple computers on the same network, with increased security through controlled user access and permissions.',
+    cta: { label: 'See Products', href: '/products' },
   },
   {
     q: 'Do I need to buy a license for every single employee?',
@@ -211,7 +211,7 @@ export default function TallyGoldPage() {
                   }}
                 >
                   <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: BRAND_PRIMARY }} />
-                  Multi-User Edition
+                  Multi-User Product
                 </span>
               </div>
               <div className="flex items-center flex-wrap gap-x-4 gap-y-1 mt-1.5"></div>
@@ -227,7 +227,7 @@ export default function TallyGoldPage() {
                 className="px-6 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider text-white shadow-lg transition-all hover:scale-[1.02]"
                 style={{ backgroundColor: BRAND_PRIMARY }}
               >
-                Get Demo
+                Get Now
               </button>
               <button
                 onClick={() => scrollToSection('pricing')}
@@ -247,7 +247,7 @@ export default function TallyGoldPage() {
             className="flex-1 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider text-white shadow-lg transition-all"
             style={{ backgroundColor: BRAND_PRIMARY }}
           >
-            Get Demo
+            Get Now
           </button>
           <button
             onClick={() => scrollToSection('pricing')}
@@ -733,7 +733,7 @@ export default function TallyGoldPage() {
               <h3 className="text-sm font-bold text-slate-900 mb-3">Quick Links</h3>
               <div className="space-y-2">
                 {[
-                  { label: 'Compare Editions', href: '/products#compare' },
+                  { label: 'Tally Products', href: '/products' },
                   { label: 'Get Now', type: 'demo' as FormType },
                   { label: 'Technical Support', type: 'support' as FormType },
                   { label: 'AMC Services', href: '/services/amc' },

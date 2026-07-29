@@ -1,11 +1,11 @@
 import { NextResponse } from 'next/server';
-import { getSessionFromCookie } from '@/lib/admin-auth';
+import { verifySessionFromCookie } from '@/lib/admin-auth';
 
 export async function GET() {
   try {
-    const sessionId = await getSessionFromCookie();
-    if (sessionId) {
-      return NextResponse.json({ authenticated: true, sessionId });
+    const isAuthenticated = await verifySessionFromCookie();
+    if (isAuthenticated) {
+      return NextResponse.json({ authenticated: true });
     }
     return NextResponse.json({ authenticated: false }, { status: 401 });
   } catch {

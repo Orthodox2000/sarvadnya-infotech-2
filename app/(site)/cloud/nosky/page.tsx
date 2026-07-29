@@ -231,7 +231,7 @@ export default function NoSkyBackupPage() {
                 className="px-6 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider text-white shadow-lg transition-all hover:scale-[1.02]"
                 style={{ backgroundColor: BRAND_PRIMARY }}
               >
-                Get Demo
+                Get Now
               </button>
               <button
                 onClick={() => scrollToSection('pricing')}
@@ -251,7 +251,7 @@ export default function NoSkyBackupPage() {
             className="flex-1 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider text-white shadow-lg transition-all"
             style={{ backgroundColor: BRAND_PRIMARY }}
           >
-            Get Demo
+            Get Now
           </button>
           <button
             onClick={() => scrollToSection('pricing')}

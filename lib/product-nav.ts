@@ -18,8 +18,8 @@ export const productItems: ProductItem[] = [
     href: "/products",
     subItems: [
       {
-        id: "tp-editions",
-        label: "TallyPrime Editions",
+        id: "tp-products",
+        label: "TallyPrime Products",
         href: "/products#compare",
         description: "Core business management software.",
         subItems: [
@@ -97,7 +97,7 @@ export const productItems: ProductItem[] = [
       },
       {
         id: "s-amc",
-        label: "Annual Support",
+        label: "AMC",
         href: "/services/amc",
         description: "Priority troubleshooting & visits.",
       },

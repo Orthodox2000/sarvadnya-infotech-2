@@ -184,7 +184,7 @@ export default function ServicesPage() {
     {
       title: "AMC Services",
       simpleDesc: "Premium annual maintenance contracts ensuring 99.9% uptime with priority technical support and proactive system health audits.",
-      detailedDesc: "Our AMC is more than just a support contract; it is a business continuity guarantee. We provide a rigorous safety net involving 15-minute response SLAs, unlimited remote troubleshooting, and quarterly health checkups. From emergency data recovery to performance tuning, we ensure your Tally environment remains stable and secure.",
+      detailedDesc: "Our AMC is more than just a support contract; it is a business continuity guarantee. We provide a rigorous safety net involving 15-minute response SLAs, unlimited remote troubleshooting, and quarterly health checkups. From emergency data recovery to performance tuning, we ensure your Tally environment remains stable and secure. With each AMC period, your team naturally becomes more proficient — gaining deeper Tally knowledge and stronger command over your accounts through ongoing expert interactions.",
       features: ["15-min response SLA", "Priority troubleshooting", "System health audits", "Data recovery experts", "Unlimited remote support", "Quarterly health checks"],
       tag: "Support",
       iconBg: "bg-[#131921]",

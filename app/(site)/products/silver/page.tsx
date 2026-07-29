@@ -31,7 +31,7 @@ const faqs: { q: string; a: string; cta?: { label: string; type: string } | { la
   {
     q: 'What if I hire more staff and need them to use Tally too?',
     a: 'No problem! You can easily upgrade your license to TallyPrime Gold (our multi-user version) later. All your data moves over automatically with zero hassle.',
-    cta: { label: 'Explore Gold Edition', href: '/products/gold' },
+    cta: { label: 'Explore Gold', href: '/products/gold' },
   },
   {
     q: 'Do I need a powerful computer or fast internet?',
@@ -39,7 +39,7 @@ const faqs: { q: string; a: string; cta?: { label: string; type: string } | { la
   },
   {
     q: 'Will I get help if I get stuck?',
-    a: 'Absolutely. We provide expert support to help you with installation and initial setup.',
+    a: 'Absolutely. We are always available for telephonic support to help you with installation and initial setup. For advanced or ongoing assistance, you can opt for remote paid services or paid support. For regular, worry-free support, our AMC plan gives you priority troubleshooting, health checks, and unlimited remote help.',
     cta: { label: 'Get Support', type: 'support' },
   },
 ];
@@ -227,7 +227,7 @@ export default function TallySilverPage() {
                 className="px-6 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider text-white shadow-lg transition-all hover:scale-[1.02]"
                 style={{ backgroundColor: BRAND_PRIMARY }}
               >
-                Get Demo
+                Get Now
               </button>
               <button
                 onClick={() => scrollToSection('pricing')}
@@ -247,7 +247,7 @@ export default function TallySilverPage() {
             className="flex-1 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider text-white shadow-lg transition-all"
             style={{ backgroundColor: BRAND_PRIMARY }}
           >
-            Get Demo
+            Get Now
           </button>
           <button
             onClick={() => scrollToSection('pricing')}
@@ -308,7 +308,7 @@ export default function TallySilverPage() {
                 <p>
                   There are no complex network setups or confusing IT requirements. You just install it and start
                   billing immediately. And the best part? When your business grows and you hire more staff, your
-                  Silver data seamlessly upgrades to our multi-user Gold edition without losing a single invoice.
+                  Silver data seamlessly upgrades to our multi-user Gold product without losing a single invoice.
                 </p>
               </div>
               {/* Hero stats from original */}
@@ -725,7 +725,7 @@ export default function TallySilverPage() {
               <h3 className="text-sm font-bold text-slate-900 mb-3">Quick Links</h3>
               <div className="space-y-2">
                 {[
-                  { label: 'Compare Editions', href: '/products#compare' },
+                  { label: 'Tally Products', href: '/products' },
                   { label: 'Get Now', type: 'demo' as FormType },
                   { label: 'Technical Support', type: 'support' as FormType },
                   { label: 'AMC Services', href: '/services/amc' },

@@ -210,8 +210,8 @@ export default function HRMSPage() {
               </div>
               <div className="flex items-center flex-wrap gap-x-4 gap-y-1 mt-1.5"></div>
               <p className="text-[13px] text-slate-500 mt-1.5 leading-relaxed max-w-3xl">
-                A complete Human Resource Management System to manage payroll, attendance, employee lifecycle,
-                statutory compliance, and more — on a single integrated platform designed for growing businesses.
+                A complete Human Resource Management System integrated with TallyPrime to manage payroll, attendance, employee lifecycle,
+                statutory compliance, and more — on a single platform designed for growing businesses.
               </p>
             </div>
 
@@ -222,7 +222,7 @@ export default function HRMSPage() {
                 className="px-6 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider text-white shadow-lg transition-all hover:scale-[1.02]"
                 style={{ backgroundColor: BRAND_PRIMARY }}
               >
-                Get Demo
+                Get Now
               </button>
               <button
                 onClick={() => scrollToSection('pricing')}
@@ -242,7 +242,7 @@ export default function HRMSPage() {
             className="flex-1 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider text-white shadow-lg transition-all"
             style={{ backgroundColor: BRAND_PRIMARY }}
           >
-            Get Demo
+            Get Now
           </button>
           <button
             onClick={() => scrollToSection('pricing')}
@@ -401,16 +401,6 @@ export default function HRMSPage() {
                     <div className="flex flex-wrap gap-2">
                       {['TallyPrime', 'Email', 'Biometric Devices', 'Bank Files'].map((item) => (
                         <span key={item} className="inline-flex rounded-md px-2.5 py-1 text-[12px] font-medium border" style={{ borderColor: `${BRAND_PRIMARY}25`, backgroundColor: `${BRAND_PRIMARY}06`, color: BRAND_PRIMARY }}>
-                          {item}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                  <div>
-                    <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Supported</h3>
-                    <div className="flex flex-wrap gap-2">
-                      {['Local Tax', 'Social Contributions', 'Statutory Deductions', 'Year-End Reports'].map((item) => (
-                        <span key={item} className="inline-flex rounded-md px-2.5 py-1 text-[12px] font-medium text-slate-600 bg-slate-50 border border-slate-200">
                           {item}
                         </span>
                       ))}

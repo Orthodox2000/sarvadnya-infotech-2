@@ -184,9 +184,9 @@ export default function Footer({ settings: initialSettings }: { settings?: SiteS
          
                 </div>
 
-                {/* TallyPrime Editions */}
+                {/* TallyPrime Products */}
                 <div>
-                    <h3 className="text-white font-black uppercase tracking-widest text-xs mb-8">TallyPrime Editions</h3>
+                    <h3 className="text-white font-black uppercase tracking-widest text-xs mb-8">TallyPrime Products</h3>
                     <ul className="space-y-4 text-sm text-white/80">
                         {products.map((item) => (
                             <li key={item.name}>

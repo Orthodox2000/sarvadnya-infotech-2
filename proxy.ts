@@ -42,7 +42,7 @@ export function proxy(request: NextRequest) {
   if (pathname.startsWith('/admin') || pathname.startsWith('/api/admin')) {
     if (!isAdminRequest(request)) {
       if (pathname.startsWith('/api/')) {
-        return NextResponse.json({ error: 'Unauthorized Access' }, { status: 401 });
+        return NextResponse.json({ error: 'Unauthorized Access' }, { status: 401, headers: { 'Cache-Control': 'no-store, no-cache, must-revalidate' } });
       }
       // For page routes, redirect to login (or let the page handle it)
     }

@@ -16,7 +16,7 @@ const features = [
   { title: 'Instant 1-Click Restore', desc: 'Computer crashed? Don\'t panic. You can download and restore your latest backup in minutes with a single click.' },
   { title: 'Fast & Saves Internet', desc: 'TallyDrive compresses your backups by up to 10×, so they take minimal space and upload in seconds — without slowing down your internet connection.' },
   { title: 'Easy Backup Management', desc: 'No IT skills required. See all your backups on one simple screen, delete old ones, or manage who in your team has access.' },
-  { title: 'Works With Your Tally', desc: 'Whether you use a single-user Silver edition or a multi-user Server setup, TallyDrive works perfectly out of the box.' },
+  { title: 'Works With Your Tally', desc: 'Whether you use a single-user Silver product or a multi-user Server setup, TallyDrive works perfectly out of the box.' },
 ];
 
 const faqs: { q: string; a: string; cta?: { label: string; type: string } | { label: string; href: string } }[] = [
@@ -238,7 +238,7 @@ export default function TallyDrivePage() {
                 className="px-6 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider text-white shadow-lg transition-all hover:scale-[1.02]"
                 style={{ backgroundColor: BRAND_PRIMARY }}
               >
-                Get Demo
+                Get Now
               </button>
               <button
                 onClick={() => scrollToSection('pricing')}
@@ -258,7 +258,7 @@ export default function TallyDrivePage() {
             className="flex-1 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider text-white shadow-lg transition-all"
             style={{ backgroundColor: BRAND_PRIMARY }}
           >
-            Get Demo
+            Get Now
           </button>
           <button
             onClick={() => scrollToSection('pricing')}
@@ -734,7 +734,7 @@ export default function TallyDrivePage() {
               <h3 className="text-sm font-bold text-slate-900 mb-3">Quick Links</h3>
               <div className="space-y-2">
                 {[
-                  { label: 'Compare Editions', href: '/products#compare' },
+                  { label: 'Tally Products', href: '/products' },
                   { label: 'Get Now', type: 'demo' as FormType },
                   { label: 'Technical Support', type: 'support' as FormType },
                   { label: 'AMC Services', href: '/services/amc' },

@@ -161,7 +161,7 @@ export function getTeachingFallbackResponse(userInput: string): string {
 
   const genericTeachingResponses = [
     "That is an interesting question! Let me help you understand this better in the context of TallyPrime. Could you tell me more about what you are trying to accomplish? For example, are you working with invoicing, inventory, or reports?",
-    "Good question! TallyPrime has a feature for that. Let me guide you through it step by step. First, can you tell me which TallyPrime edition you are using — Silver (single user) or Gold (multi user)?",
+    "Good question! TallyPrime has a feature for that. Let me guide you through it step by step. First, can you tell me which TallyPrime product you are using — Silver (single user) or Gold (multi user)?",
     "I understand your question. Let me break this down into simple steps. In TallyPrime, most tasks start from the Gateway of Tally. What specific area are you trying to learn — accounting, inventory, or statutory compliance?",
   ];
 

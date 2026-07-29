@@ -15,7 +15,7 @@ interface HubCard {
 const HUB_CARDS: HubCard[] = [
   {
     title: "Tally Products",
-    description: "Explore TallyPrime Editions, Licensing, and specialized business modules.",
+    description: "Explore TallyPrime Products, Licensing, and specialized business modules.",
     href: "/products",
     color: "bg-white",
     icon: (

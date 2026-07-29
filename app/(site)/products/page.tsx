@@ -57,10 +57,10 @@ export default function ProductsPage() {
         {/* Header */}
         <section className="relative z-10 pt-16 pb-6 md:pt-16 md:pb-8 px-6 max-w-7xl mx-auto">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 tracking-tight mb-4">
-            TallyPrime Editions
+            TallyPrime Products
           </h1>
           <p className="text-gray-600 text-sm md:text-base max-w-2xl leading-relaxed">
-            Choose the right edition for your business needs.
+            Choose the right product for your business needs.
           </p>
         </section>
 

@@ -96,7 +96,7 @@ export default function MobileAppBizPage() {
                 onClick={() => openModal('demo')}
                 className="px-4 py-4 bg-[#4A6E62] text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-[#5D887A] transition-all shadow-xl shadow-[#4A6E62]/20"
               >
-                Get a Free Demo
+                Get Now
               </button>
             </div>
           </div>

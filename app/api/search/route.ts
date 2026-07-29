@@ -128,10 +128,10 @@ async function generateSearchSummary(query: string, results: any[]) {
 
 const STATIC_PAGES = [
   { title: 'Ask Sara (AI Assistant)', description: 'Instant help with Tally features, modules, and hosting.', url: '#ask-sara', type: 'AI Assistant', icon: 'M13 10V3L4 14h7v7l9-11h-7z' },
-  { title: 'Products & Editions', description: 'TallyPrime Silver, Gold, and Server editions.', url: '/products', type: 'Page' },
-  { title: 'TallyPrime Silver', description: 'Single-user TallyPrime edition for owner-managed companies.', url: '/products/silver', type: 'Page' },
-  { title: 'TallyPrime Gold', description: 'Multi-user TallyPrime edition for growing teams.', url: '/products/gold', type: 'Page' },
-  { title: 'TallyPrime Server', description: 'Enterprise TallyPrime edition for shared access and stronger control.', url: '/products/server', type: 'Page' },
+  { title: 'Products', description: 'TallyPrime Silver, Gold, and Server products.', url: '/products', type: 'Page' },
+  { title: 'TallyPrime Silver', description: 'Single-user TallyPrime product for owner-managed companies.', url: '/products/silver', type: 'Page' },
+  { title: 'TallyPrime Gold', description: 'Multi-user TallyPrime product for growing teams.', url: '/products/gold', type: 'Page' },
+  { title: 'TallyPrime Server', description: 'Enterprise TallyPrime product for shared access and stronger control.', url: '/products/server', type: 'Page' },
   { title: 'Cloud Solutions', description: 'TallyPrime Cloud Access and AWS solutions.', url: '/cloud', type: 'Page' },
   { title: 'About Us', description: 'Certified Tally Partner since 2008.', url: '/about', type: 'Page' },
   { title: 'Contact Support', description: 'Get priority support and technical help.', url: '/contact', type: 'Page' },

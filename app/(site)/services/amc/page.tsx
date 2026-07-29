@@ -19,8 +19,8 @@ const features = [
   },
   {
     icon: ShieldCheck,
-    title: 'Data Backup & Recovery',
-    description: 'Expert assistance in setting up robust data backup routines and emergency data recovery when you need it most.',
+    title: 'Data Backup',
+    description: 'Expert assistance in setting up robust data backup routines to keep your business data safe and accessible.',
   },
   {
     icon: Clock,
@@ -43,8 +43,8 @@ const technicalAssistance = [
     description: 'Scheduled visits for complex issues that need in-person attention from our certified Tally experts.',
   },
   {
-    title: 'Data Recovery Support',
-    description: 'Advanced data recovery services included in case of system failure, corruption, or accidental deletion.',
+    title: 'Cheaper Corporate Training',
+    description: 'AMC clients get exclusive lower rates on corporate training programs — upskill your team at a fraction of the regular cost.',
   },
 ];
 
@@ -89,11 +89,14 @@ export default function AMCLandingPage() {
               </h1>
 
               <p className="text-lg sm:text-xl text-slate-600 mb-10 leading-relaxed font-medium">
-                Minimize downtime and maximize productivity with our priority troubleshooting and regular health checks. Your safety net for continuous business operations.
+                Minimize downtime and maximize productivity with our priority troubleshooting and regular health checks. Your safety net for continuous business operations — with each AMC period, you leave with enhanced productivity and practical Tally usage tricks that make your daily work faster and smarter.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4">
-                <button className="inline-flex justify-center items-center px-8 py-4 border border-transparent text-base font-bold rounded-2xl shadow-xl text-white bg-[#1A4731] hover:bg-[#113021] hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 group">
+                <button
+                  onClick={() => openModal('enquire')}
+                  className="inline-flex justify-center items-center px-8 py-4 border border-transparent text-base font-bold rounded-2xl shadow-xl text-white bg-[#1A4731] hover:bg-[#113021] hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 group"
+                >
                   Enquire Now
                   <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </button>
@@ -148,7 +151,7 @@ export default function AMCLandingPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
 
           <div className="text-center max-w-3xl mx-auto mb-12">
-            <h2 className="text-xl md:text-3xl font-extrabold text-slate-900 mb-3 tracking-tight">Why Choose Our AMC?</h2>
+            <h2 className="text-xl md:text-3xl font-extrabold text-slate-900 mb-3 tracking-tight">Why Choose Tally AMC?</h2>
             <p className="text-sm text-slate-600 font-medium leading-relaxed">
               Comprehensive support coverage specifically designed to keep your Tally environment healthy, compliant, and running at peak performance.
             </p>

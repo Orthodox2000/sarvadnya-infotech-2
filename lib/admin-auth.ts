@@ -1,51 +1,58 @@
 import { cookies } from 'next/headers';
-import crypto from 'crypto';
 
-const COOKIE_NAME = '__admin_session';
+const TOKEN_COOKIE = '__admin_token';
 const ADMIN_USERNAME = 'admin';
 const ADMIN_PASSWORD = 'admin';
+const TOKEN_MAX_AGE = 86400;
 
-const sessions = new Map<string, { username: string; createdAt: number }>();
+function base64Encode(str: string): string {
+  return Buffer.from(str, 'utf-8').toString('base64url');
+}
+
+function base64Decode(str: string): string {
+  try { return Buffer.from(str, 'base64url').toString('utf-8'); } catch { return ''; }
+}
 
 export function validateCredentials(username: string, password: string): boolean {
   return username === ADMIN_USERNAME && password === ADMIN_PASSWORD;
 }
 
-export function createSession(): string {
-  const sessionId = crypto.randomUUID();
-  sessions.set(sessionId, { username: ADMIN_USERNAME, createdAt: Date.now() });
-  return sessionId;
+export function createToken(): string {
+  const masterKey = process.env.ADMIN_ACCESS_KEY;
+  if (!masterKey) return '';
+  return base64Encode(JSON.stringify({ s: masterKey, t: Date.now() }));
 }
 
-export function verifySession(sessionId: string): boolean {
-  return sessions.has(sessionId);
+export function verifyToken(token: string): boolean {
+  try {
+    const masterKey = process.env.ADMIN_ACCESS_KEY;
+    if (!masterKey) return false;
+    const payload = JSON.parse(base64Decode(token));
+    return payload.s === masterKey && Date.now() - payload.t < 86400000;
+  } catch {
+    return false;
+  }
 }
 
-export function destroySession(sessionId: string): void {
-  sessions.delete(sessionId);
-}
-
-export async function setSessionCookie(sessionId: string) {
+export async function setSessionCookie(token: string) {
   const cookieStore = await cookies();
-  cookieStore.set(COOKIE_NAME, sessionId, {
+  cookieStore.set(TOKEN_COOKIE, token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'strict',
     path: '/',
-    maxAge: 86400,
+    maxAge: TOKEN_MAX_AGE,
   });
 }
 
 export async function clearSessionCookie() {
   const cookieStore = await cookies();
-  cookieStore.delete(COOKIE_NAME);
+  cookieStore.delete(TOKEN_COOKIE);
 }
 
-export async function getSessionFromCookie(): Promise<string | null> {
+export async function verifySessionFromCookie(): Promise<boolean> {
   const cookieStore = await cookies();
-  const sessionId = cookieStore.get(COOKIE_NAME)?.value;
-  if (sessionId && verifySession(sessionId)) {
-    return sessionId;
-  }
-  return null;
+  const token = cookieStore.get(TOKEN_COOKIE)?.value;
+  if (!token) return false;
+  return verifyToken(token);
 }

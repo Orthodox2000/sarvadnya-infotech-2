@@ -21,13 +21,13 @@ const features = [
 const faqs: { q: string; a: string; cta?: { label: string; type: string } | { label: string; href: string } }[] = [
   {
     q: 'What is TallyPrime Server?',
-    a: 'TallyPrime Server is an enterprise-class software that converts peer-to-peer data access (like Gold\'s folder-sharing model) to true server-based data management. It gives TallyPrime Gold users the power to handle 100-150 concurrent users with advanced monitoring, zero system waiting, and complete data reliability.',
+    a: 'TallyPrime Server is an enterprise-class product that converts peer-to-peer data access (like Gold\'s folder-sharing model) to true server-based data management. It enhances concurrency, delivers faster performance with multi-threaded architecture, provides a detailed activity log, and strengthens data security by hiding physical data files.',
     cta: { label: 'Get a Custom Quote', type: 'quote' },
   },
   {
     q: 'How is TallyPrime Server different from TallyPrime Gold?',
-    a: 'TallyPrime Gold uses folder sharing for multiple users — which works well on a LAN but has limitations. Server provides true concurrent access with multi-threaded architecture, hides data files for security, supports 100-150 users, and gives administrators real-time monitoring and control. If Gold is your multi-user accounting tool, Server is the infrastructure upgrade that increases its limits.',
-    cta: { label: 'Compare Editions', href: '/products#compare' },
+    a: 'TallyPrime Gold uses folder sharing for multiple users — which works well on a LAN but has limitations. Server provides true concurrent access with multi-threaded architecture, hides data files for security, gives administrators real-time monitoring and a complete activity log. If Gold is your multi-user accounting tool, Server is the infrastructure upgrade that enhances concurrency and data security.',
+    cta: { label: 'See Products', href: '/products' },
   },
   {
     q: 'I use TallyPrime Gold on a LAN — how many users can I have?',
@@ -49,11 +49,11 @@ const faqs: { q: string; a: string; cta?: { label: string; type: string } | { la
   },
   {
     q: 'What happens if a client system crashes?',
-    a: 'TallyPrime Server ensures data consistency even if a client crashes. The crash is isolated to that client — no other user or the server data is affected. You can simply restart the client and continue working.',
+    a: 'Since TallyPrime Server manages data on the server side with multi-threaded architecture, a client crash has no impact on other users or the server data. The affected user simply reconnects and continues — no data loss, no disruption to the rest of the team.',
   },
   {
-    q: 'How many users can TallyPrime Server handle?',
-    a: 'TallyPrime Server supports 100-150 concurrent users. Performance remains smooth because the multi-threaded architecture processes every user\'s request in parallel — there is no blocking or queuing of tasks.',
+    q: 'How does TallyPrime Server improve concurrency?',
+    a: 'TallyPrime Server uses multi-threaded architecture to process every user\'s request in parallel — eliminating blocking and task queuing. Combined with enhanced data security through hidden data files and a complete activity log, it delivers enterprise-grade performance for growing businesses.',
     cta: { label: 'Get Expert Advice', type: 'quote' },
   },
 ];
@@ -224,11 +224,11 @@ export default function TallyServerPage() {
                   }}
                 >
                   <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: BRAND_PRIMARY }} />
-                  Enterprise Edition
+                  Enterprise Product
                 </span>
               </div>
               <p className="text-[13px] text-slate-500 mt-1.5 leading-relaxed max-w-3xl">
-                The ultimate accounting powerhouse for growing businesses. Convert peer-to-peer folder sharing into true server-based data management — with 100-150 concurrent users, zero downtime, and advanced administrative control.
+                The ultimate enterprise product for growing businesses. Convert peer-to-peer folder sharing into true server-based data management — with enhanced concurrency, zero downtime, complete activity log, and advanced administrative control.
               </p>
             </div>
 
@@ -239,7 +239,7 @@ export default function TallyServerPage() {
                 className="px-6 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider text-white shadow-lg transition-all hover:scale-[1.02]"
                 style={{ backgroundColor: BRAND_PRIMARY }}
               >
-                Get Demo
+                Get Now
               </button>
               <button
                 onClick={() => scrollToSection('pricing')}
@@ -259,7 +259,7 @@ export default function TallyServerPage() {
             className="flex-1 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider text-white shadow-lg transition-all"
             style={{ backgroundColor: BRAND_PRIMARY }}
           >
-            Get Demo
+            Get Now
           </button>
           <button
             onClick={() => scrollToSection('pricing')}
@@ -318,15 +318,15 @@ export default function TallyServerPage() {
                   It is a simple-to-deploy product that provides concurrent, fast and secure access to Tally data along with advanced monitoring and administrative control. Businesses experience increased productivity, better utilisation of man-hours, enhanced speed of operations and superior business performance.
                 </p>
                 <p>
-                  If your business has outgrown a standard LAN and requires massive multi-site data handling, upgrading to TallyPrime Server architecture allows connection for 100 to 150 concurrent clients without blocking tasks — something no folder-sharing model can achieve.
+                  If your business has outgrown a standard LAN and requires enterprise-grade data handling, upgrading to TallyPrime Server architecture delivers enhanced concurrency, superior speed, and robust data security — something no folder-sharing model can achieve.
                 </p>
               </div>
               {/* Hero stats */}
               <div className="mt-5 grid grid-cols-2 sm:grid-cols-4 gap-3">
                 {[
                   { label: 'Architecture', value: 'Multi-Threaded' },
-                  { label: 'Users', value: 'No Fixed Limit' },
-                  { label: 'Performance', value: 'Near Concurrency' },
+                  { label: 'Concurrency', value: 'Multi-Threaded' },
+                  { label: 'Security', value: 'Data Vault' },
                   { label: 'Setup', value: '< 1 Hour' },
                 ].map((stat) => (
                   <div
@@ -435,45 +435,10 @@ export default function TallyServerPage() {
               </div>
             </section>
 
-            {/* Gold vs Server Comparison */}
-            <section className="bg-white rounded-xl border border-slate-200 p-6">
-              <h2 className="text-lg font-bold text-slate-900 mb-1">TallyPrime Gold vs TallyPrime Server</h2>
-              <p className="text-sm text-slate-500 mb-5">Understanding when to upgrade from Gold to Server.</p>
-              <div className="overflow-x-auto rounded-lg border border-slate-200">
-                <table className="w-full text-left text-sm">
-                  <thead>
-                    <tr className="bg-slate-50 text-[10px] font-bold uppercase tracking-wider text-slate-500">
-                      <th className="px-4 py-3">Feature</th>
-                      <th className="px-4 py-3">TallyPrime Gold</th>
-                      <th className="px-4 py-3">TallyPrime Server</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {[
-                      { feature: 'Data Access Model', gold: 'Folder Sharing (Peer-to-Peer)', server: 'Server-Based (Multi-Threaded)' },
-                      { feature: 'LAN Users', gold: 'Unlimited concurrent', server: '100-150 concurrent' },
-                      { feature: 'Virtual Users (Cloud/RDP/Citrix)', gold: '10 free TVUs (paid packs for more)', server: '100-150 concurrent' },
-                      { feature: 'Task Blocking', gold: 'May occur under heavy load', server: 'No blocking — parallel processing' },
-                      { feature: 'Data File Visibility', gold: 'Visible on shared folder', server: 'Hidden — server name only' },
-                      { feature: 'Admin Monitoring', gold: 'Basic', server: 'Advanced real-time console' },
-                      { feature: 'Crash Recovery', gold: 'Client may need manual restart', server: 'Isolated to client' },
-                      { feature: 'Setup Time', gold: 'Minutes', server: '< 1 Hour' },
-                    ].map((row, idx) => (
-                      <tr key={idx} className="border-b border-slate-100 last:border-0">
-                        <td className="px-4 py-3 font-bold text-slate-900">{row.feature}</td>
-                        <td className="px-4 py-3 text-slate-600">{row.gold}</td>
-                        <td className="px-4 py-3 font-bold" style={{ color: BRAND_PRIMARY }}>{row.server}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </section>
-
             {/* FAQ */}
             <section id="faqs" className="scroll-mt-16 bg-white rounded-xl border border-slate-200 p-6">
               <h2 className="text-lg font-bold text-slate-900 mb-1">TallyPrime Server FAQs</h2>
-              <p className="text-sm text-slate-500 mb-5">Frequently asked questions about upgrading to the Server edition.</p>
+              <p className="text-sm text-slate-500 mb-5">Frequently asked questions about upgrading to the Server product.</p>
               <div className="space-y-0 divide-y divide-slate-100">
                 {faqs.map((faq, idx) => (
                   <div key={idx}>
@@ -729,7 +694,7 @@ export default function TallyServerPage() {
               <h3 className="text-sm font-bold text-slate-900 mb-3">Quick Links</h3>
               <div className="space-y-2">
                 {[
-                  { label: 'Compare Editions', href: '/products#compare' },
+                  { label: 'Tally Products', href: '/products' },
                   { label: 'Get Now', type: 'demo' as FormType },
                   { label: 'Technical Support', type: 'support' as FormType },
                   { label: 'AMC Services', href: '/services/amc' },

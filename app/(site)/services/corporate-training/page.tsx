@@ -31,8 +31,8 @@ const features = [
 
 const trainingTopics = [
   {
-    title: 'Advanced GST & TDS',
-    description: 'Master complex tax scenarios and compliance workflows.',
+    title: 'GST, TDS & E-Invoicing',
+    description: 'Master tax compliance, returns, and auto-generated invoicing in one workflow.',
   },
   {
     title: 'MIS & Management Reporting',
@@ -43,8 +43,8 @@ const trainingTopics = [
     description: 'Optimize stock control and track departmental expenses.',
   },
   {
-    title: 'E-Invoicing & Payroll',
-    description: 'Stay compliant with auto-generated invoices and salary management.',
+    title: 'Payroll & Compliance',
+    description: 'Automate salary processing and stay compliant with statutory requirements.',
   },
 ];
 
@@ -88,11 +88,14 @@ export default function CorporateTrainingPage() {
               </h1>
 
               <p className="text-lg sm:text-xl text-slate-600 mb-10 leading-relaxed font-medium">
-                Empower your team with expert knowledge. Our customized training programs help you master advanced Tally features and optimize business workflows.
+                Empower your team with expert knowledge. We offer two types of training — product-based training that covers TallyPrime features end-to-end, and business scenario-dependent training where we teach customized, scenario-based workflows and guidance tailored to your business. AMC clients enjoy exclusive lower rates on corporate training — an exclusive perk for our AMC clients.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4">
-                <button className="inline-flex justify-center items-center px-8 py-4 border border-transparent text-base font-bold rounded-2xl shadow-xl text-white bg-[#1A4731] hover:bg-[#113021] hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 group">
+                <button
+                  onClick={() => openModal('enquire')}
+                  className="inline-flex justify-center items-center px-8 py-4 border border-transparent text-base font-bold rounded-2xl shadow-xl text-white bg-[#1A4731] hover:bg-[#113021] hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 group"
+                >
                   Schedule Training
                   <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </button>
