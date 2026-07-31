@@ -211,26 +211,26 @@ function SearchContent() {
                   })}
                 </div>
               ) : (
-                <div className="text-center py-20 bg-white rounded-[3rem] border border-slate-100 shadow-xl shadow-slate-100/50">
-                  <div className="inline-flex items-center justify-center w-24 h-24 rounded-full bg-slate-50 mb-8 border border-slate-100">
-                    <svg className="w-12 h-12 text-slate-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <div className="text-center py-10 bg-white rounded-[2rem] border border-slate-100 shadow-sm animate-in fade-in slide-in-from-top-2 duration-300">
+                  <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-slate-50 mb-3 border border-slate-100">
+                    <svg className="w-6 h-6 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M9.172 9.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                   </div>
-                  <h2 className="text-2xl md:text-3xl font-black text-slate-900 mb-4">I cannot find an exact match</h2>
-                  <p className="text-slate-500 max-w-sm mx-auto font-semibold mb-10 leading-relaxed">
-                    We couldn't find anything matching "{query}". Our support team or AI assistant can help you find exactly what you need.
+                  <h2 className="text-lg md:text-xl font-black text-slate-900 mb-1.5">I cannot find an exact match</h2>
+                  <p className="text-slate-500 max-w-md mx-auto font-medium text-sm mb-5 leading-relaxed">
+                    We couldn't find anything matching "<span className="text-[#4A6E62] font-bold">{query}</span>". Our AI assistant can help you find exactly what you need.
                   </p>
-                  <div className="flex flex-wrap justify-center gap-4">
+                  <div className="flex flex-wrap justify-center gap-3">
                     <Link 
                         href="/contact"
-                        className="px-10 py-4 bg-slate-900 text-white font-black text-xs uppercase tracking-widest rounded-full hover:bg-[#4A6E62] transition-all shadow-xl shadow-slate-200"
+                        className="px-6 py-2.5 bg-slate-900 text-white font-black text-[10px] uppercase tracking-widest rounded-full hover:bg-[#4A6E62] transition-all shadow-md shadow-slate-200"
                     >
                         Contact Support
                     </Link>
                     <Link 
                         href="/"
-                        className="px-10 py-4 bg-[#4A6E62] text-white font-black text-xs uppercase tracking-widest rounded-full shadow-xl shadow-emerald-900/20 hover:bg-[#5D887A] transition-all"
+                        className="px-6 py-2.5 bg-[#4A6E62] text-white font-black text-[10px] uppercase tracking-widest rounded-full shadow-md shadow-emerald-900/20 hover:bg-[#5D887A] transition-all"
                     >
                         Return Home
                     </Link>

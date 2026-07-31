@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Job } from '@/lib/jobs';
 import { submitApplication } from '@/app/actions/careers';
+import { uploadFileChunked } from '@/lib/uploadClient';
 
 interface JobApplicationModalProps {
   isOpen: boolean;
@@ -82,7 +83,15 @@ export default function JobApplicationModal({
       data.append('phone', formData.phone);
       data.append('experience', formData.experience);
       data.append('message', formData.message);
-      data.append('resume', resume);
+
+      const { url } = await uploadFileChunked({
+        file: resume,
+        type: 'resume',
+        name: 'resume',
+        endpoint: '/api/upload/chunk',
+      });
+      data.append('resumeUrl', url);
+      data.append('resumeName', resume.name);
 
       const result = await submitApplication(data);
 

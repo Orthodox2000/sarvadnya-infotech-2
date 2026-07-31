@@ -1,4 +1,22 @@
-const BASE = process.env.BASE_URL || 'http://localhost:3000';
+import path from 'path';
+import fs from 'fs';
+import { fileURLToPath } from 'url';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const envPath = path.join(__dirname, '../.env');
+
+if (fs.existsSync(envPath)) {
+  const envContent = fs.readFileSync(envPath, 'utf-8');
+  envContent.split('\n').forEach(line => {
+    const [key, ...value] = line.split('=');
+    if (key && value) {
+      process.env[key.trim()] = value.join('=').trim().replace(/^["']|["']$/g, '');
+    }
+  });
+}
+
+let BASE = process.env.BASE_URL || 'http://localhost:3000';
+if (!/^https?:\/\//i.test(BASE)) BASE = `https://${BASE}`;
 const ADMIN_KEY = process.env.ADMIN_ACCESS_KEY || '';
 
 let passed = 0;

@@ -13,16 +13,20 @@ export async function submitApplication(formData: FormData) {
     const phone = formData.get('phone') as string;
     const experience = formData.get('experience') as string;
     const message = formData.get('message') as string;
-    const resumeFile = formData.get('resume') as File;
+    const resumeUrlField = formData.get('resumeUrl') as string;
+    const resumeName = (formData.get('resumeName') as string) || 'resume.pdf';
 
-    if (!resumeFile || resumeFile.size === 0) {
+    if (!resumeUrlField) {
       return { error: 'Resume is required.' };
     }
 
     // 1. Upload Resume to Mega.nz
     let resumeUrl = '';
     try {
-      resumeUrl = await uploadToMega(resumeFile);
+      const resumeRes = await fetch(resumeUrlField);
+      if (!resumeRes.ok) throw new Error('Failed to download uploaded resume.');
+      const resumeBuffer = Buffer.from(await resumeRes.arrayBuffer());
+      resumeUrl = await uploadToMega(resumeBuffer, resumeName);
     } catch (uploadError) {
       console.error('Mega.nz upload error:', uploadError);
       throw new Error('Failed to upload resume to storage.');

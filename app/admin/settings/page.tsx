@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { uploadFileChunked } from '@/lib/uploadClient';
 
 type Setting = {
   key: string;
@@ -35,19 +36,13 @@ export default function AdminSettings() {
 
     setSaving(true);
     try {
-      const formData = new FormData();
-      formData.append('file', file);
-      formData.append('type', 'branding');
-      formData.append('name', key.replace('NEXT_PUBLIC_', '').toLowerCase());
-      if (currentUrl) formData.append('oldUrl', currentUrl);
-
-      const response = await fetch('/api/admin/upload', {
-        method: 'POST',
-        body: formData
+      const data = await uploadFileChunked({
+        file,
+        type: 'branding',
+        name: key.replace('NEXT_PUBLIC_', '').toLowerCase(),
+        oldUrl: currentUrl || undefined,
+        endpoint: '/api/admin/upload/chunk',
       });
-
-      const data = await response.json();
-      if (data && data.error) throw new Error(data.error);
 
       handleChange(key, data.url);
       setMessage({ text: 'Logo uploaded and cloud-synced!', type: 'success' });

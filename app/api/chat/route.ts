@@ -2,8 +2,8 @@ import { NextResponse } from 'next/server';
 import { getSettings } from '@/lib/mongodb-utils';
 import { Groq } from 'groq-sdk';
 
-const PRIMARY_MODEL = "llopenai/gpt-oss-120b";
-const FALLBACK_MODEL = "ama-3.3-70b-versatile";
+const PRIMARY_MODEL = "openai/gpt-oss-120b";
+const FALLBACK_MODEL = "llama-3.3-70b-versatile";
 const TIMEOUT_MS = 30_000;
 
 const SALES_SYSTEM_PROMPT = `You are Sara, a chatbot built for engaging sales as a senior sales consultant and lead advisor for Sarvadnya Infotech LLP (Est. 2008), a Certified Tally Partner based in Belapur, India. 1500+ businesses trust us.

@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { Module } from '@/lib/modules';
 import Image from 'next/image';
+import { uploadFileChunked } from '@/lib/uploadClient';
 
 export default function AdminModules() {
   const [modules, setModules] = useState<any[]>([]);
@@ -128,18 +129,14 @@ export default function AdminModules() {
 
     const currentUrl = editingModule?.image || '';
 
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('type', 'module');
-    formData.append('name', editingModule.title || 'untitled');
-    if (currentUrl) formData.append('oldUrl', currentUrl);
-
     try {
-      const response = await fetch('/api/admin/upload', {
-        method: 'POST',
-        body: formData
+      const data = await uploadFileChunked({
+        file,
+        type: 'module',
+        name: editingModule.title || 'untitled',
+        oldUrl: currentUrl || undefined,
+        endpoint: '/api/admin/upload/chunk',
       });
-      const data = await response.json();
       if (data.url) {
         setEditingModule({ ...editingModule, image: data.url });
         setMessage({ text: 'Image uploaded and cloud-synced!', type: 'success' });

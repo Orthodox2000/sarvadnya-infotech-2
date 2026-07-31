@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { uploadFileChunked } from '@/lib/uploadClient';
 
 export default function AdminPages() {
   const [activePage, setActivePage] = useState<'about' | 'team'>('about');
@@ -91,19 +92,13 @@ export default function AdminPages() {
 
     setUploading(field);
     try {
-      const formData = new FormData();
-      formData.append('file', file);
-      formData.append('type', activePage);
-      formData.append('name', field);
-      if (currentUrl) formData.append('oldUrl', currentUrl);
-
-      const response = await fetch('/api/admin/upload', {
-        method: 'POST',
-        body: formData
+      const data = await uploadFileChunked({
+        file,
+        type: activePage,
+        name: field,
+        oldUrl: currentUrl || undefined,
+        endpoint: '/api/admin/upload/chunk',
       });
-
-      const data = await response.json();
-      if (data && data.error) throw new Error(data.error);
 
       // Update content state, but don't save to DB yet (user will hit Save button)
       setContent({ ...content, [field]: data.url });

@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useMemo } from 'react';
 import { showToast } from '@/app/components/NotificationToast';
+import { uploadFileChunked } from '@/lib/uploadClient';
 
 export default function AdminLearning() {
   const [items, setItems] = useState<any[]>([]);
@@ -49,19 +50,14 @@ export default function AdminLearning() {
     const currentUrl = editingItem?.thumbnail || '';
 
     setUploading(true);
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('type', 'learning');
-    formData.append('name', editingItem.title || 'thumbnail');
-    if (currentUrl) formData.append('oldUrl', currentUrl);
-
     try {
-      const response = await fetch('/api/admin/upload', {
-        method: 'POST',
-        body: formData,
+      const data = await uploadFileChunked({
+        file,
+        type: 'learning',
+        name: editingItem.title || 'thumbnail',
+        oldUrl: currentUrl || undefined,
+        endpoint: '/api/admin/upload/chunk',
       });
-      const data = await response.json();
-      if (data && data.error) throw new Error(data.error);
       setEditingItem({ ...editingItem, thumbnail: data.url, thumbnailOption: 'custom' });
       setMessage({ text: 'Thumbnail uploaded and cloud-synced!', type: 'success' });
       

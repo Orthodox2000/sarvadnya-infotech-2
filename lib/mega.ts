@@ -3,7 +3,7 @@ import { Storage } from 'megajs';
 const email = process.env.MEGA_EMAIL;
 const password = process.env.MEGA_PASSWORD;
 
-export async function uploadToMega(file: File, folderName: string = 'resumes') {
+export async function uploadToMega(buffer: Buffer, fileName: string, folderName: string = 'resumes') {
   if (!email || !password) {
     throw new Error('Mega.nz credentials are not configured in environment variables.');
   }
@@ -19,11 +19,7 @@ export async function uploadToMega(file: File, folderName: string = 'resumes') {
     folder = await storage.mkdir(folderName);
   }
 
-  const arrayBuffer = await file.arrayBuffer();
-  const buffer = Buffer.from(arrayBuffer);
-
-  const megaFile = await storage.upload(file.name, buffer).complete;
-
+  const megaFile = await storage.upload(fileName, buffer).complete;
   // Move to folder if specified
   if (folder) {
     await (megaFile as any).moveTo(folder);

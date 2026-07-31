@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
+import { uploadFileChunked } from '@/lib/uploadClient';
 
 type Asset = {
   _id: string;
@@ -46,20 +47,16 @@ export default function AdminAssets() {
 
     const uploadKey = isReplacement ? assetId || 'replacing' : 'new';
     setUploading(uploadKey);
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('type', activeTab);
-    formData.append('name', assetName || (isReplacement ? '' : newAsset.name) || 'untitled');
-    if (oldUrl) formData.append('oldUrl', oldUrl);
 
     try {
-      const response = await fetch('/api/admin/upload', {
-        method: 'POST',
-        body: formData,
+      const data = await uploadFileChunked({
+        file,
+        type: activeTab,
+        name: assetName || (isReplacement ? '' : newAsset.name) || 'untitled',
+        oldUrl,
+        endpoint: '/api/admin/upload/chunk',
       });
-      const data = await response.json();
-      if (data && data.error) throw new Error(data.error);
-      
+
       if (isReplacement && assetId) {
           // Immediately update database with new URL
           const patchResponse = await fetch('/api/admin/partners', {
