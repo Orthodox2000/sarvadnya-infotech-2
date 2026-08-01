@@ -114,11 +114,30 @@ function scoreTutorial(tutorial: Tutorial, questionKeywords: string[], expandedK
   return score;
 }
 
+// Words that appear in nearly every Tally tutorial and carry no discriminating
+// value. They are ignored when deciding whether ALL query keywords match.
+const ALL_MATCH_NOISE = new Set([
+  'tally', 'tallyprime', 'business', 'software', 'company', 'book', 'books', 'account', 'accounts', 'accounting',
+]);
+
+// Strict full match: EVERY meaningful query keyword must appear in the
+// tutorial's title or tags (substring). This guarantees the tutorial covers
+// the main content of the question — a partial or tangential match never
+// qualifies. Returns false when there is nothing meaningful to match.
+function hasFullMatch(tutorial: Tutorial, questionKeywords: string[]): boolean {
+  const coreKeywords = questionKeywords.filter(k => !ALL_MATCH_NOISE.has(k));
+  if (coreKeywords.length === 0) return false;
+
+  const haystack = `${tutorial.title} ${(tutorial.tags || []).join(' ')}`.toLowerCase();
+  return coreKeywords.every(k => haystack.includes(k));
+}
+
 export function findMatchingTutorials(
   tutorials: Tutorial[],
   query: string,
   maxResults: number = 4,
-  minScore: number = 5
+  minScore: number = 5,
+  strict: boolean = false
 ): Tutorial[] {
   const questionLower = query.toLowerCase();
   const questionKeywords = extractKeywords(query);
@@ -127,10 +146,20 @@ export function findMatchingTutorials(
   if (expandedKeywords.length === 0) return [];
 
   const scored = tutorials
-    .map(t => ({ tutorial: t, score: scoreTutorial(t, questionKeywords, expandedKeywords, questionLower) }))
-    .filter(s => s.score >= minScore)
+    .map(t => ({
+      tutorial: t,
+      score: scoreTutorial(t, questionKeywords, expandedKeywords, questionLower),
+      full: hasFullMatch(t, questionKeywords),
+    }))
+    .filter(s => {
+      if (s.score < minScore) return false;
+      if (!strict) return true;
+      // Strict mode: only full-content matches (every meaningful keyword in
+      // title/tags) are eligible, capped at 2 suggestions.
+      return s.full;
+    })
     .sort((a, b) => b.score - a.score)
-    .slice(0, maxResults);
+    .slice(0, strict ? Math.min(2, maxResults) : maxResults);
 
   return scored.map(s => s.tutorial);
 }

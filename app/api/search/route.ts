@@ -48,7 +48,7 @@ async function getAIRecommendations(query: string, siteMap: any[]) {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          model: "qwen/qwen3-32b",
+          model: "openai/gpt-oss-20b",
           messages: [
             {
               role: "system",
@@ -99,7 +99,7 @@ async function generateSearchSummary(query: string, results: any[]) {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          model: "qwen/qwen3-32b",
+          model: "openai/gpt-oss-20b",
           messages: [
             {
               role: "system",

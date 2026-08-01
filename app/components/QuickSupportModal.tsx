@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
+import SaraText from './SaraText';
 import { findMatchingTutorials, type Tutorial } from '@/lib/tutorial-matcher';
 import { matchTopic, getFallbackResponse, SARA_WELCOME, type Topic } from '@/lib/sara-topics';
 
@@ -42,11 +43,51 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
   const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
   const [autoScrollEnabled, setAutoScrollEnabled] = useState(true);
   const [tutorials, setTutorials] = useState<Tutorial[]>([]);
+  const [isListening, setIsListening] = useState(false);
   
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const stopRequestedRef = useRef(false);
   const abortControllerRef = useRef<AbortController | null>(null);
+  const recognitionRef = useRef<any>(null);
+
+  /**
+   * VOICE INPUT ENGINE
+   * Speech-to-text dictation for the input bar (desktop browsers with Web Speech API).
+   */
+  const toggleVoiceInput = () => {
+    if (typeof window === 'undefined') return;
+
+    if (isListening) {
+      recognitionRef.current?.stop();
+      setIsListening(false);
+      return;
+    }
+
+    const SR = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    if (!SR) return;
+
+    const rec = new SR();
+    rec.lang = 'en-IN';
+    rec.interimResults = false;
+    rec.continuous = false;
+    rec.onresult = (e: any) => {
+      const transcript = Array.from(e.results)
+        .map((r: any) => r[0].transcript)
+        .join(' ');
+      setInputText(transcript.trim());
+      inputRef.current?.focus();
+    };
+    rec.onend = () => setIsListening(false);
+    rec.onerror = () => setIsListening(false);
+    recognitionRef.current = rec;
+    rec.start();
+    setIsListening(true);
+  };
+
+  useEffect(() => {
+    return () => recognitionRef.current?.stop();
+  }, []);
 
   /**
    * VOICE RESPONSE ENGINE
@@ -198,7 +239,7 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
     setIsAiResponding(false);
 
     if (userQuery && tutorials.length > 0) {
-      const matched = findMatchingTutorials(tutorials, userQuery, 3, 8);
+      const matched = findMatchingTutorials(tutorials, userQuery, 2, 8, true);
       if (matched.length > 0) {
         setMessages(prev => prev.map(m => m.id === id ? { ...m, suggestedTutorials: matched } : m));
       }
@@ -409,38 +450,7 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
                     : 'bg-white text-slate-700 border border-slate-100 rounded-tl-none'
                 }`}
               >
-                {msg.text.split('\n').map((line, i) => {
-                  const parts = line.split(/(\[\[.*?\|.*?\]\])/);
-
-                  return (
-                    <span key={i}>
-                      {parts.map((part, j) => {
-                        if (part.startsWith('[[') && part.endsWith(']]')) {
-                          const [label, url] = part.slice(2, -2).split('|');
-                          return (
-                            <Link 
-                              key={j}
-                              href={url}
-                              onClick={onClose}
-                              className="inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-100 text-[#316852] rounded-lg font-bold hover:bg-[#316852] hover:text-white transition-all my-1.5 border border-emerald-200 shadow-sm mx-1"
-                            >
-                              <span className="text-[10px] uppercase tracking-wider">{label}</span>
-                              <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3"><path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" /></svg>
-                            </Link>
-                          );
-                        }
-
-                        return <React.Fragment key={j}>{part.split(/(\*\*.*?\*\*)/).map((subPart, k) => {
-                          if (subPart.startsWith('**') && subPart.endsWith('**')) {
-                            return <strong key={k} className={`font-black ${msg.sender === 'user' ? 'text-emerald-200' : 'text-[#316852]'}`}>{subPart.slice(2, -2)}</strong>;
-                          }
-                          return subPart;
-                        })}</React.Fragment>;
-                      })}
-                      {i < msg.text.split('\n').length - 1 && <br />}
-                    </span>
-                  );
-                })}
+                <SaraText text={msg.text} plain={msg.sender === 'user'} accent="#316852" onNavigate={onClose} />
               </div>
 
               {/* Audio Prompt */}
@@ -585,6 +595,28 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
             />
+            <button
+              type="button"
+              onClick={toggleVoiceInput}
+              disabled={isTyping || isAiResponding}
+              title={isListening ? 'Stop voice input' : 'Speak your question'}
+              className={`hidden sm:flex w-10 h-10 rounded-xl items-center justify-center transition-all active:scale-95 ${
+                isListening
+                  ? 'bg-red-500 text-white shadow-lg shadow-red-500/20 animate-pulse'
+                  : 'bg-slate-100 text-[#316852] hover:bg-emerald-50 hover:border-emerald-200 border border-slate-100 disabled:opacity-40 disabled:hover:bg-slate-100'
+              }`}
+            >
+              {isListening ? (
+                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                  <rect x="6" y="6" width="12" height="12" rx="2" />
+                </svg>
+              ) : (
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 18.5a4.5 4.5 0 004.5-4.5v-5a4.5 4.5 0 10-9 0v5a4.5 4.5 0 004.5 4.5z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M4 12a8 8 0 0016 0M12 20v3" />
+                </svg>
+              )}
+            </button>
             {isAiResponding ? (
               <button 
                 type="submit"

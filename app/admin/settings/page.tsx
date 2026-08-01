@@ -21,7 +21,7 @@ export default function AdminSettings() {
     'NEXT_PUBLIC_LINKEDIN_URL', 'NEXT_PUBLIC_LINKEDIN_HANDLE',
     'NEXT_PUBLIC_MAP_IFRAME_URL',
     'NEXT_PUBLIC_COMPANY_LOGO', 'NEXT_PUBLIC_ADMIN_LOGO',
-    'GROQ_API_KEYS'
+    'GROQ_API_KEYS', 'GEMINI_API_KEY'
   ];
 
   useEffect(() => {
@@ -221,16 +221,27 @@ export default function AdminSettings() {
 
         {/* AI Chat Configuration */}
         <div className="pt-8 border-t border-slate-100 space-y-6">
-          <h2 className="text-sm font-black uppercase tracking-widest text-[#0371a3]">AI Assistant (Groq Cloud)</h2>
+          <h2 className="text-sm font-black uppercase tracking-widest text-[#0371a3]">AI Assistant (Gemini Cloud)</h2>
           <div className="space-y-2">
-            <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Rotation API Keys (Comma Separated)</label>
+            <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Gemini API Key (Primary Provider)</label>
+            <textarea
+              className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#0371a3] h-24 font-mono text-xs"
+              placeholder="AIzaSy..."
+              value={settings.find(s => s.key === 'GEMINI_API_KEY')?.value || ''}
+              onChange={e => handleChange('GEMINI_API_KEY', e.target.value)}
+            />
+            <p className="text-[10px] text-slate-400 font-medium">Sara uses Gemini Flash as the primary model. If it fails, the system automatically falls back to Groq below.</p>
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Groq Rotation API Keys (Fallback - Comma Separated)</label>
             <textarea 
               className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#0371a3] h-24 font-mono text-xs"
               placeholder="gsk_key1, gsk_key2, gsk_key3..."
               value={settings.find(s => s.key === 'GROQ_API_KEYS')?.value || ''}
               onChange={e => handleChange('GROQ_API_KEYS', e.target.value)}
             />
-            <p className="text-[10px] text-slate-400 font-medium">System will randomly pick a key for each chat request to distribute usage and increase security.</p>
+            <p className="text-[10px] text-slate-400 font-medium">System will randomly pick a Groq key for each fallback request to distribute usage and increase security.</p>
           </div>
         </div>
 
