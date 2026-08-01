@@ -94,29 +94,36 @@ export function matchTopic(query: string): { topic: Topic; score: number } | nul
 }
 
 export function getFallbackResponse(userInput: string): string {
-  const input = userInput.toLowerCase();
+  const input = userInput.toLowerCase().trim();
 
   const contextualResponses: [RegExp, string][] = [
-    [/price|cost|rate|charge|fees|kitna|how much|expensive|cheap|budget/, "Happy to help you pick the right TallyPrime edition! Instead of dumping figures here, our pricing pages break everything down clearly — just tap the button and it'll open the exact section. Tell me your team size and I'll point you to the perfect setup.\n\n[[Silver Pricing|/products/silver#pricing]]\n[[Gold Pricing|/products/gold#pricing]]\n[[Server Pricing|/products/server#pricing]]\n[[Get a Quote|/contact]]"],
-    [/hello|hi|hey|namaste|good\s*(morning|afternoon|evening)/, "Hello! Welcome to Sarvadnya. We've been automating businesses since 2008. What kind of business do you run? I can recommend the perfect **TallyPrime** setup."],
-    [/thank|thanks|bye|goodbye|ok|okay|theek|alright/, "You're welcome! 2000+ businesses trust Sarvadnya for their **TallyPrime** needs. Come back anytime you need help with GST, payroll, or business automation."],
-    [/software|install|setup|download|update|version/, "We handle the full **TallyPrime** setup — installation, data migration, GST config. Plus our **AMC** gives you 15-min response SLA. Want us to set it up for you?"],
-    [/integration|sync|connect|api|crm|erp|ecommerce/, "**TallyPrime** connects with CRMs, ERPs, and e-commerce via our **Data Integration** service. We've built custom workflows for 200+ businesses. What system do you use?"],
-    [/mobile|phone|android|app|access|remote|travel/, "**Tally on Mobile** gives you live dashboards on your phone — bank balances, daily sales, stock status. No more calling your accountant. Want to see a demo?"],
-    [/training|learn|teach|team|staff|employee/, "**Corporate Training** customized for your team — GST, payroll, inventory, MIS reports. Hands-on workshops with certified Tally experts. Want to schedule one?"],
-    [/error|problem|issue|not working|slow|crash|bug|fix/, "Let's debug that together! A few quick checks that usually solve it:\n\n1. Restart TallyPrime and reopen the company\n2. Check your license is active (Help > Manage License)\n3. Ensure you're on the latest TSS release\n4. If it's running slow, compress the data (Data > Compress)\n\nStill stuck? Our **AMC** team fixes issues with a 15-minute response SLA. [[AMC Support|/services/amc]]"],
-    [/bank|reconcil|payment|upi|neft|rtgs|cheque/, "**TallyPrime** does auto bank reconciliation, e-payments via NEFT/RTGS, and UPI through **Bharat Connect**. Saves 2-3 hours weekly. Want to see how?"],
-    [/report|analytics|data|insight|dashboard|profit|loss/, "**TallyPrime** has 400+ reports — Balance Sheet, Cash Flow, stock aging. Export to Excel or connect Power BI via ODBC. Which reports do you need?"],
-    [/team|multi|user|concurrent|office|branch|lan/, "**TallyPrime Gold** lets your whole team work simultaneously on the same data. For larger setups, **TallyPrime Server** handles 10+ users. How many people need access?"],
-    [/gst|tax|return|filing|compliance|gstr/, "**TallyPrime** auto-calculates GST, generates e-invoices, files GSTR-1/3B, and reconciles GSTR-2A/2B. Are you filing manually or using software currently?"],
-    [/backup|data|safe|secure|cloud|restore/, "**TallyDrive** gives you automated cloud backup with AES-256 encryption and 1-click restore. Is your Tally data backed up right now?"],
-    [/loan|finance|capital|money|funding|invest/, "**TallyCapital** offers business loans up to 75L unsecured, LAP up to 15Cr, and working capital facilities. Quick approvals for Tally users. Want to check eligibility?"],
-    [/hr|human|resource|payroll|employee|staff|attendance/, "**HRMS** handles your complete employee lifecycle — payroll, attendance, compliance, expense tracking. Integrates directly with **TallyPrime**. Want to see it in action?"],
-    [/logistics|transport|delivery|fleet|vehicle/, "Our **Logistics & Transport Module** plugs into TallyPrime for trip-wise P&L, fuel analysis, driver payouts, and vehicle maintenance alerts. Built for your industry."],
-    [/garment|retail|fashion|clothing|size|color/, "Our **Garment Retail Module** handles size/color matrix, barcode, multi-store sync, and season-wise analysis — all inside **TallyPrime**. Perfect for fashion businesses."],
-    [/society|housing|apartment|maintenance/, "Our **Housing Society Module** handles maintenance billing, penalty calculation, and audit-ready reports inside **TallyPrime**. Built specifically for housing societies."],
-    [/whatsapp|message|chat|remind/, "**Tally on WhatsApp** sends invoices, payment reminders, and ledger queries automatically via WhatsApp. Your customers get info instantly. Want to set it up?"],
-    [/cloud|online|remote|access|anywhere/, "**AWS Cloud** and **Windows Cloud Desktop** let you access TallyPrime from anywhere. **TallyCloudAccess** manages it all. Which works best for your team?"],
+    [/price|cost|rate|charge|fees|kitna|how much|expensive|cheap|budget/, "Good call checking prices! Rather than dumping numbers here, our pricing pages break it all down clearly. Tap the button that fits your size — or tell me your team size and I'll point you to the perfect setup.\n\n[[Silver Pricing|/products/silver#pricing]]\n[[Gold Pricing|/products/gold#pricing]]\n[[Server Pricing|/products/server#pricing]]\n[[Get a Quote|/contact]]"],
+    [/who are you|about you|what can you do|how can you help|help me|i need help/, "I'm Sara, your business advisor from Sarvadnya Infotech LLP. We make Tally work for you. Three things businesses love us for:\n\n**TallyPrime** setup & support [[Explore|/products]]\n**AMC** with 15-min response SLA [[Learn More|/services/amc]]\n**Cloud backup** so data is never lost [[TallyDrive|/products/tallydrive]]\n\nWhat's the one thing eating the most time in your business?"],
+    [/\bhello\b|\bhi\b|\bhey\b|namaste|good\s*(morning|afternoon|evening)|hii+|hlo|hola/, "Hello! Welcome to Sarvadnya — we've been automating businesses since 2008. Quick one: how many people work with your accounts? I'll suggest the perfect TallyPrime setup."],
+    [/\bthanks?\b|\bty\b|thank you|\bbye\b|goodbye|\bok(ay)?\b|theek|alright|\bnice\b|\bgreat\b|\bcool\b/, "You're welcome! Whenever you're ready, I'd love to show you how **TallyDrive** keeps your data safe on autopilot. [[Explore TallyDrive|/products/tallydrive]]"],
+    [/mango|fruit|vegetable|perishable|expiry|food|restaurant|cafe|kirana|grocery|pharmacy|medical|jewelry|jewellery/, "Perishable stock is a headache — expiry, wastage, reordering. **TallyPrime** tracks batches, expiry dates, and reorder levels automatically. Want me to show you how it handles that?"],
+    [/software|install|setup|download|update|version|license/, "We handle the full **TallyPrime** setup — installation, data migration, GST config — and our **AMC** keeps it running with a 15-min response SLA. [[AMC Support|/services/amc]]\n\nWant us to set it up for you?"],
+    [/integration|sync|connect|api|crm|erp|ecommerce|shopify|amazon|flipkart/, "**TallyPrime** connects with CRMs, ERPs, and e-commerce through our **Data Integration** service. We've built custom workflows for 200+ businesses. What system are you using?"],
+    [/mobile|phone|android|app|access|remote|travel|outside|on the go|away/, "**Tally on Mobile** gives you live dashboards on your phone — bank balances, daily sales, stock status — no more calling your accountant. [[See It|/services/mobile-app-biz]]\n\nWant a quick demo?"],
+    [/training|learn|teach|team|staff|students?|workshop/, "**Corporate Training** is customized for your team — GST, payroll, inventory, MIS reports — with certified Tally experts. For self-paced lessons, Learn Sara teaches step by step. [[Open Learn Sara|/learn-sara]]\n\nWant to schedule a workshop?"],
+    [/error|problem|issue|not working|slow|crash|bug|fix|hang|freeze/, "Let's fix that! Quick checks: 1) restart TallyPrime, 2) confirm the license is active, 3) compress data (Data > Compress). If it still acts up, our **AMC** team jumps in with a 15-min SLA. [[AMC Support|/services/amc]]"],
+    [/bank|reconcil|payment|upi|neft|rtgs|cheque|transfer/, "**TallyPrime** does auto bank reconciliation, e-payments via NEFT/RTGS, and UPI — that alone saves 2-3 hours a week. Want me to show you how?"],
+    [/report|analytics|data|insight|dashboard|profit|loss|sales figures|sales report/, "**TallyPrime** has 400+ reports — Balance Sheet, cash flow, stock aging — all exportable to Excel. Which report do you need the most?"],
+    [/team|multi|user|concurrent|office|branch|lan|multiple people/, "**TallyPrime Gold** lets your whole team work on the same data at once, and **TallyPrime Server** handles 10+ users for bigger setups. How many people need access?"],
+    [/gst|tax|return|filing|compliance|gstr|einvoice|e-invoice|eway|e-way/, "**TallyPrime** auto-calculates GST, generates e-invoices, and files GSTR-1/3B. Are you filing manually right now? I'll show you how to automate it."],
+    [/backup|data loss|lost|safe|secure|cloud|restore|stolen|corrupt/, "Worrying about lost data? **TallyDrive** backs up automatically with AES-256 encryption and 1-click restore. Is your Tally data backed up right now? [[Explore TallyDrive|/products/tallydrive]]"],
+    [/loan|finance|capital|money|funding|invest|credit|borrow/, "**TallyCapital** offers business loans up to 75L unsecured, plus working capital — with quick approvals for Tally users. Want to check your eligibility?"],
+    [/hr|human|resource|payroll|salary|employee|staff|attendance|leave/, "**HRMS** handles the whole employee lifecycle — payroll, attendance, compliance — and connects right into **TallyPrime**. [[See HRMS|/hrms]]\n\nWant to see it in action?"],
+    [/logistics|transport|delivery|fleet|vehicle|driver|truck/, "Our **Logistics & Transport Module** plugs into TallyPrime for trip-wise P&L, fuel analysis, and driver payouts. Built for transport businesses. [[Explore Modules|/modules]]"],
+    [/garment|retail|fashion|clothing|size|color|colour|store/, "Our **Garment Retail Module** handles size/color matrix, barcode, and multi-store sync inside TallyPrime — perfect for fashion and retail. [[Explore Modules|/modules]]"],
+    [/society|housing|apartment|maintenance|building/, "Our **Housing Society Module** handles maintenance billing, penalties, and audit-ready reports inside **TallyPrime** — built exactly for societies. [[Explore Modules|/modules]]"],
+    [/whatsapp|message|chat|remind/, "**Tally on WhatsApp** sends invoices, payment reminders, and ledger queries automatically — your customers get answers instantly. [[Learn More|/services/tally-on-whatsapp]]\n\nWant to set it up?"],
+    [/cloud|online|remote|access|anywhere|from home|work from home/, "You can run TallyPrime from anywhere on **AWS Cloud** or **Windows Cloud Desktop**. [[Cloud Options|/cloud]]\n\nWhich would suit your team best?"],
+    [/demo|trial|free|try|test/, "I'd love that! Book a free demo and our team will walk you through the right setup for your business. [[Book a Demo|/demo]]"],
+    [/career|job|vacancy|interview|fresher|hiring/, "We're always looking for great people at Sarvadnya — check open roles here: [[Careers|/careers]]. And for your own team, our **Corporate Training** builds Tally skills fast."],
+    [/about|company|who is|team|founder|address|location|belapur|navi mumbai/, "We're Sarvadnya Infotech LLP — a Certified Tally Partner since 2008 in Belapur, trusted by 1500+ businesses. [[About Us|/about]]\n\nWhat can we do for your business today?"],
+    [/news|update|latest|announcement/, "We share product updates and news regularly — have a look: [[News|/news]]. Meanwhile, our **TSS Renewal** keeps your TallyPrime current with the latest statutory releases. [[Learn More|/services/tss]]"],
+    [/calculator|addition|multiply|calculate|math|\d+\s*[+\-*\/]\s*\d+/, "I can't crunch numbers myself, but **TallyPrime** does all the math for you — totals, GST, payroll, and more, with zero manual calculation. [[See TallyPrime|/products]]\n\nWhat calculation are you trying to do?"],
   ];
 
   for (const [pattern, response] of contextualResponses) {
@@ -124,9 +131,10 @@ export function getFallbackResponse(userInput: string): string {
   }
 
   const genericResponses = [
-    "Sounds like you're running a business! **TallyPrime** can handle your billing, inventory, GST, and payments in one place. What does your business deal with — products, services, or both?",
-    "Interesting! Whatever your business, **TallyPrime** can automate your accounting and compliance. Are you looking to simplify billing, manage inventory, or handle GST filing?",
-    "Got it! Every business needs proper accounting and GST compliance. **TallyPrime** handles it all — billing, inventory, payroll, banking. What's the one thing that takes most of your time right now?",
+    "Sounds like you run a business! **TallyPrime** can handle billing, inventory, GST, and payments all in one place. What do you deal in — products, services, or both?",
+    "Got it! Every business needs clean accounting and GST compliance. **TallyPrime** automates all of it. What's the task taking most of your time right now?",
+    "Interesting! Whatever your business, **TallyPrime** simplifies the books. Is it billing, inventory, or GST filing that's giving you the most trouble?",
+    "I'm with you! However you work, we can make the numbers easier — **TallyPrime** for accounting, **TallyDrive** for safe backups. [[Explore All Products|/products]]\n\nWhat does your business sell?",
   ];
 
   const hash = input.split('').reduce((acc, ch) => acc + ch.charCodeAt(0), 0);

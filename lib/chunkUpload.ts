@@ -125,7 +125,11 @@ export async function handleChunkedUpload(request: Request): Promise<NextRespons
 
     return NextResponse.json({ message: 'File uploaded successfully', url: blob.url });
   } catch (error) {
-    console.error('Critical upload error:', error);
+    if (!process.env.BLOB_READ_WRITE_TOKEN) {
+      console.error('Upload failed: BLOB_READ_WRITE_TOKEN is not set. Add it to the Vercel project environment (Dashboard > Settings > Environment Variables) and to the local .env file.', error);
+    } else {
+      console.error('Critical upload error:', error);
+    }
     return NextResponse.json(
       { error: 'Cloud storage upload failed. Please check your credentials.' },
       { status: 500 }
