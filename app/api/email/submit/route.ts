@@ -1,14 +1,10 @@
-import { NextResponse, after } from 'next/server';
+import { NextResponse } from 'next/server';
 import { saveSubmission } from '@/lib/mongodb-utils';
 import { isValidEmail } from '@/lib/email';
-import { enqueueEmailJob, processEmailQueue } from '@/lib/email-queue';
+import { sendEmailDirect } from '@/lib/email-queue';
 
 export const runtime = 'nodejs';
 export const maxDuration = 60;
-
-// Set EMAIL_DISABLE_BACKGROUND=1 to skip the post-response queue drain
-// (used by automated tests for deterministic queue-state assertions).
-const BACKGROUND_ENABLED = process.env.EMAIL_DISABLE_BACKGROUND !== '1';
 
 const RATE_LIMIT = Number(process.env.EMAIL_RATE_LIMIT || 30);
 const RATE_WINDOW = 60_000;
@@ -105,33 +101,25 @@ export async function POST(request: Request) {
     const submissionId = result.insertedId.toString();
 
     // Idempotency key: the modal generates one requestId per open, so a retried
-    // POST re-uses the same jobKey and can never create a second job → exactly
-    // one email per submission. Server fallback is the submission _id.
+    // POST re-uses the same jobKey and can never fire a second email → exactly
+    // one send per submission. Server fallback is the submission _id.
     const jobKey = sanitizeJobKey(rawData.requestId) || submissionId;
 
-    const enqueued = await enqueueEmailJob({
+    // Send the internal email copy DIRECTLY (inline) on submission. No queue,
+    // no cron, no background worker — Vercel's 2-cron/day limit cannot affect
+    // delivery. Dedupe is enforced by the unique jobKey claim in the ledger.
+    const send = await sendEmailDirect({
       jobKey,
       formType: data.formType,
       destination,
       submission: data,
     });
 
-    // Drain the queue in the background after the response is sent. The public
-    // route itself never calls Resend synchronously — it only enqueues.
-    if (BACKGROUND_ENABLED && enqueued.enqueued) {
-      after(async () => {
-        try {
-          await processEmailQueue({ batch: 10 });
-        } catch (err) {
-          console.error('Background email queue drain error:', err);
-        }
-      });
-    }
-
     return NextResponse.json({
       ok: true,
       saved: true,
-      queued: enqueued.enqueued,
+      sent: send.sent,
+      deduped: send.deduped,
       jobId: jobKey,
     });
   } catch (err) {

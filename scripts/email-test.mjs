@@ -21,7 +21,7 @@ if (!/^https?:\/\//i.test(BASE)) BASE = `https://${BASE}`;
 const ADMIN_KEY = process.env.ADMIN_ACCESS_KEY || '';
 
 // ─── Email budget protection ──────────────────────────────────────────────
-// Default (SINGLE) run queues + drains EXACTLY ONE email (the positive send).
+// Default (SINGLE) run sends EXACTLY ONE email (the positive direct send).
 // Set EMAIL_FULL_TEST=1 to also run sanitization/security sends, the
 // consistency loop (EMAIL_TEST_COUNT), the concurrency batch (EMAIL_TEST_BATCH),
 // and the optional rate-limit test (TEST_RATE_LIMIT=1 — consumes ~30 emails).
@@ -131,8 +131,8 @@ async function queueSentCount() {
   return q?.data?.stats?.sent ?? -1;
 }
 
-// Poll until the job reaches 'sent' (background after() handles it normally;
-// falls back to a manual admin drain for deterministic runs) or timeout.
+// Poll until the job reaches 'sent' (direct sends are already sent when the
+// POST returns; failed jobs are retried via the admin drain) or timeout.
 async function drainJob(jobKey, timeoutMs = 20000) {
   const deadline = Date.now() + timeoutMs;
   let manual = false;
@@ -167,7 +167,7 @@ async function run() {
 
   console.log(`\n✉️  Email (Resend) Tests — ${BASE}\n`);
   console.log(`  Mode: ${FULL_TEST ? 'FULL' : 'SINGLE'} | emails this run: ~${expectedEmails}${FULL_TEST ? ` (consistency=${TEST_COUNT}, batch=${CONCURRENT_BATCH}${RUN_RATE_LIMIT_TEST ? ', rate-limit' : ''})` : ''}`);
-  console.log('  (Default SINGLE mode sends EXACTLY ONE email. Emails are queued + drained by the background worker.)');
+  console.log('  (Default SINGLE mode sends EXACTLY ONE email. Emails are sent DIRECTLY on submission — no queue/cron.)');
 
   const sentBefore = await queueSentCount();
 
@@ -251,7 +251,7 @@ async function run() {
       );
       expect(res.status).toBe(200);
       expect(res.data.saved).toBe(true);
-      expect(res.data.queued).toBe(true);
+      expect(res.data.sent).toBe(true);
     });
 
     console.log('\n🔐 Internal-Only Recipient Enforcement');
@@ -259,7 +259,7 @@ async function run() {
       const jobKey = rid('toignored');
       const res = await submit({ ...validPayload(3), to: 'attacker@evil.com' }, jobKey);
       expect(res.status).toBe(200);
-      expect(res.data.queued).toBe(true);
+      expect(res.data.sent).toBe(true);
       const job = await drainJob(jobKey);
       if (!job) throw new Error('Job not found after drain');
       if (job.recipients.some(r => r.toLowerCase().includes('evil.com'))) {
@@ -269,32 +269,33 @@ async function run() {
     });
   }
 
-  // ─── Positive enqueue + exactly-once send (SINGLE default) ──
-  console.log('\n✅ Positive Send (exactly one email)');
+  // ─── Positive direct send + exactly-once (SINGLE default) ──
+  console.log('\n✅ Positive Send (exactly one email, sent inline)');
   const positiveKey = rid('positive');
 
-  await test('Valid demo submission saves + queues fast (no inline Resend call)', async () => {
+  await test('Valid demo submission saves + sends the email directly (inline)', async () => {
     const res = await submit(validPayload(4), positiveKey);
     expect(res.status).toBe(200);
     expect(res.data.ok).toBe(true);
     expect(res.data.saved).toBe(true);
-    expect(res.data.queued).toBe(true);
+    expect(res.data.sent).toBe(true);
+    expect(res.data.deduped).toBe(false);
     expect(res.data.jobId).toBeDefined();
-    if (res.ms >= 3000) throw new Error(`Response took ${res.ms}ms — must be < 3000ms (email is queued, not sent inline)`);
   });
 
-  await test('Duplicate POST with the same requestId does not create a second job', async () => {
+  await test('Duplicate POST with the same requestId does not send a second email', async () => {
     const res = await submit(validPayload(4), positiveKey);
     expect(res.status).toBe(200);
-    expect(res.data.queued).toBe(true);
+    expect(res.data.sent).toBe(false);
+    expect(res.data.deduped).toBe(true);
     const q = await getQueue();
     const matches = (q?.data?.recent || []).filter(j => j.jobKey === positiveKey);
     if (matches.length > 1) throw new Error(`Expected 1 job for ${positiveKey}, got ${matches.length}`);
   });
 
-  await test('Queued job sends exactly once (attempts === 1)', async () => {
+  await test('Direct send delivered exactly once (attempts === 1)', async () => {
     const job = await drainJob(positiveKey);
-    if (!job) throw new Error('Job was not found after drain');
+    if (!job) throw new Error('Job was not found after direct send');
     expect(job.status).toBe('sent');
     expect(job.attempts).toBe(1);
   });
@@ -310,20 +311,20 @@ async function run() {
     for (let i = 0; i < TEST_COUNT; i++) {
       const res = await submit(validPayload(100 + i), rid('seq'));
       latencies.push(res.ms);
-      if (res.status === 200 && res.data?.queued === true) {
+      if (res.status === 200 && res.data?.sent === true) {
         queuedCount++;
       } else {
         errors.push(`req#${i}: status=${res.status} ${res.data?.error || ''} (${res.ms}ms)`);
       }
     }
 
-    await test(`${TEST_COUNT} sequential submits: all queued`, async () => {
+    await test(`${TEST_COUNT} sequential submits: all sent directly`, async () => {
       if (queuedCount !== TEST_COUNT) {
         throw new Error(`${TEST_COUNT - queuedCount} failed: ${errors.slice(0, 3).join(' | ')}`);
       }
     });
 
-    await test(`${TEST_COUNT} sequential sends: all delivered from queue`, async () => {
+    await test(`${TEST_COUNT} sequential sends: all delivered`, async () => {
       await drainAll();
       const sentAfter = await queueSentCount();
       if (sentAfter - seqSentBefore !== TEST_COUNT) {
@@ -340,11 +341,11 @@ async function run() {
     );
 
     const conLatencies = concurrentResults.map(r => r.ms);
-    const conOk = concurrentResults.filter(r => r.status === 200 && r.data?.queued === true).length;
+    const conOk = concurrentResults.filter(r => r.status === 200 && r.data?.sent === true).length;
 
-    await test(`${CONCURRENT_BATCH} concurrent submits: all queued`, async () => {
+    await test(`${CONCURRENT_BATCH} concurrent submits: all sent directly`, async () => {
       if (conOk !== CONCURRENT_BATCH) {
-        const bad = concurrentResults.filter(r => !(r.status === 200 && r.data?.queued === true)).map(r => `status=${r.status} ${r.data?.error || ''}`).join(' | ');
+        const bad = concurrentResults.filter(r => !(r.status === 200 && r.data?.sent === true)).map(r => `status=${r.status} ${r.data?.error || ''}`).join(' | ');
         throw new Error(`${CONCURRENT_BATCH - conOk} failed: ${bad}`);
       }
     });

@@ -31,11 +31,13 @@ export interface EmailJob {
   expireAt?: Date;
 }
 
-export interface EnqueueResult {
-  enqueued: boolean;
-  created: boolean;
+export interface DirectSendResult {
+  claimed: boolean;
+  sent: boolean;
+  deduped: boolean;
   jobKey: string;
-  reason?: string;
+  messageId?: string;
+  error?: string;
 }
 
 export interface ProcessResult {
@@ -94,16 +96,19 @@ function terminalExpiry(): Date {
   return new Date(Date.now() + TTL_MS);
 }
 
-// Queue is the ONLY way internal emails are triggered. A job is deduplicated by
-// jobKey (unique index), so duplicate submissions can never fire a second email.
-// Emails are never sent inline from a public route — only processEmailQueue()
-// (invoked via after()/cron/admin) talks to Resend.
-export async function enqueueEmailJob(input: {
+// Direct (inline) send with exactly-once dedupe. The email_queue collection
+// doubles as a send ledger: the unique jobKey upsert claims a send slot — the
+// first caller owns it and sends via Resend immediately; any retry/duplicate
+// POST re-using the same key (requestId) is skipped, so exactly one email is
+// ever sent per submission. Failed sends stay in the ledger as 'failed' with a
+// nextRetryAt, where the admin panel ("Retry Failed Sends") or an external
+// scheduler (GitHub Actions / Upstash QStash) can pick them up again.
+export async function sendEmailDirect(input: {
   jobKey: string;
   formType?: string;
   destination?: string;
   submission: FormSubmissionPayload;
-}): Promise<EnqueueResult> {
+}): Promise<DirectSendResult> {
   await ensureIndexes();
 
   const { jobKey, formType, destination, submission } = input;
@@ -116,9 +121,9 @@ export async function enqueueEmailJob(input: {
   const { from } = await getEmailConfig();
 
   if (recipients.length === 0 || !from) {
-    // No internal recipient / sender configured — skip enqueue entirely so no
-    // job (and therefore no email) can ever be created. Protects the email budget.
-    return { enqueued: false, created: false, jobKey, reason: 'no-recipient-configured' };
+    // No internal recipient / sender configured — skip entirely so no send (and
+    // therefore no email) can ever happen. Protects the email budget.
+    return { claimed: false, sent: false, deduped: false, jobKey, error: 'no-recipient-configured' };
   }
 
   const col = await getEmailQueueCol();
@@ -150,7 +155,47 @@ export async function enqueueEmailJob(input: {
     { upsert: true }
   );
 
-  return { enqueued: true, created: result.upsertedCount > 0, jobKey };
+  if (result.upsertedCount === 0) {
+    // A job already exists for this key (sent, in flight, or failed) → exactly
+    // once. A failed job is NOT re-fired here — retries go through the admin /
+    // external scheduler path so a hostile repeat POST can never spam.
+    return { claimed: false, sent: false, deduped: true, jobKey };
+  }
+
+  // Fresh claim → send the internal copy NOW (directly, inline in the request).
+  const res = await sendInternalFormCopy(submission, { recipients, from });
+
+  if (res.ok) {
+    await col.updateOne(
+      { jobKey },
+      {
+        $set: {
+          status: 'sent',
+          sentAt: new Date(),
+          messageId: res.messageId || undefined,
+          lastError: null,
+          attempts: 1,
+          expireAt: terminalExpiry(),
+          updatedAt: new Date(),
+        },
+      }
+    );
+    return { claimed: true, sent: true, deduped: false, jobKey, messageId: res.messageId };
+  }
+
+  await col.updateOne(
+    { jobKey },
+    {
+      $set: {
+        status: 'failed',
+        attempts: 1,
+        lastError: res.error || 'send failed',
+        nextRetryAt: new Date(Date.now() + retryDelay(1)),
+        updatedAt: new Date(),
+      },
+    }
+  );
+  return { claimed: true, sent: false, deduped: false, jobKey, error: res.error };
 }
 
 // Atomically claims + sends due jobs. Safe to call concurrently from multiple

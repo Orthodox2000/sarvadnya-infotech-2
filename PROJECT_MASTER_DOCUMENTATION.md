@@ -83,25 +83,32 @@ Date,Version,Module,Activity,Status
 ---
 
 ## 7. Email Notification System (v1.1.389)
-An internal copy of every web form submission (Quote, Enquiry, Support, Callback, Demo, General) is delivered via **Resend** through a MongoDB-backed async queue. Web forms never call Resend inline — the public endpoint sanitizes, validates, saves, enqueues, and returns instantly; sending happens exclusively in the background.
+An internal copy of every web form submission (Quote, Enquiry, Support, Callback, Demo, General) is delivered via **Resend** **directly (inline)** on submission. The public endpoint sanitizes, validates, saves, and sends the email synchronously within the request; the MongoDB `email_queue` collection acts as a send ledger for dedupe + retries. No queue drain, `after()`, or Vercel cron is required for delivery.
 
 ### Key design decisions
+- **Why direct, not cron/queue:** Vercel's Hobby plan allows only 2 cron jobs at a minimum frequency of once/day, so scheduled/queue-drain sending is impossible. Direct inline sending means delivery never depends on a scheduler. Failed sends are recorded in the ledger with a `nextRetryAt` and retried from the admin panel or an optional external scheduler.
 - **Per-page destinations:** each modal derives a destination from the current route (`lib/form-destinations.ts`). Recipients resolve destination-first from the admin-editable `EMAIL_DESTINATION_RECIPIENTS` map — **opt-in**, a page with no configured recipient sends no email (only `demo` is pre-wired) — then per-form-type `EMAIL_FORM_RECIPIENTS`, then `RESEND_INTERNAL_TO`. Clients can never influence recipients.
-- **Exactly-once delivery:** the client generates a `requestId` per modal open; the queue upserts by unique `jobKey` so retried/duplicate POSTs can never fire a second email.
-- **Reliability:** atomic status-filtered claim, backoff `min(30s·2ⁿ, 4h)`, `maxAttempts` 5, stale `processing` auto-reset, and a TTL index that purges terminal jobs after 30 days (bounded memory).
-- **Draining:** `after()` from `next/server` post-response, a 1-min Vercel Cron (`/api/admin/email/process?batch=10`), and a manual "Process Queue Now" button. `EMAIL_DISABLE_BACKGROUND=1` disables the background drain for deterministic tests.
-- **Security:** admin queue endpoints are protected by both the proxy and a route-level `isRequestAuthorized()` check (header `x-admin-key`, `admin_key` cookie, or session token) — defense-in-depth against a misconfigured proxy.
+- **Exactly-once delivery:** the client generates a `requestId` per modal open; `sendEmailDirect()` claims the ledger slot by unique `jobKey = requestId` (upsert) — the first caller sends, any retried/duplicate POST returns `deduped: true` and never fires a second email.
+- **Retries:** `processEmailQueue()` atomically claims `pending`/`failed` jobs with backoff `min(30s·2ⁿ, 4h)`, `maxAttempts` 5, stale `processing` auto-reset, and a TTL index purging terminal jobs after 30 days (bounded memory).
+- **Scheduler auth:** the process route accepts the admin session or an external scheduler (verifies `Authorization: Bearer <CRON_SECRET>` when set, else the `x-vercel-cron-schedule` + `vercel-cron/*` user-agent signature).
+- **Security:** admin email endpoints are protected by both the proxy and a route-level `isRequestAuthorized()` check (header `x-admin-key`, `admin_key` cookie, or session token) — defense-in-depth against a misconfigured proxy.
 - **Seed data:** `EMAIL_FORM_RECIPIENTS` + `RESEND_SENDER_EMAIL` are seeded only-if-missing by `scripts/bootstrap.mjs` / `/api/admin/bootstrap`, so admin edits persist.
 
 | File | Role |
 | :--- | :--- |
-| `lib/email-queue.ts` | MongoDB `email_queue` collection: enqueue, dedupe, atomic claim, retry/backoff, stats. |
+| `lib/email-queue.ts` | MongoDB `email_queue` send ledger: `sendEmailDirect()` (claim + inline Resend send + record), `processEmailQueue()` (retry), stats. |
 | `lib/email.ts` | Resend config, per-page + per-form recipient resolution, masked diagnostic, HTML template. |
-| `app/api/email/submit/route.ts` | Public enqueue-only endpoint (rate-limited) with `after()` drain. |
-| `app/api/admin/email/process/route.ts` | Admin-only queue drain (cron + manual). |
-| `app/api/admin/email/queue/route.ts` | Admin-only queue stats + recent jobs (recipients masked). |
-| `app/admin/email-config/page.tsx` | Per-page destination editor (opt-in) + per-form-type recipient editor + queue status panel. |
+| `app/api/email/submit/route.ts` | Public direct-send endpoint (rate-limited): sanitize → validate → save → send inline. Returns `{ ok, saved, sent, deduped, jobId }`. |
+| `app/api/admin/email/process/route.ts` | Admin-only retry drain (manual + external scheduler). |
+| `app/api/admin/email/queue/route.ts` | Admin-only ledger stats + recent sends (recipients masked). |
+| `app/admin/email-config/page.tsx` | Per-page destination editor (opt-in) + per-form-type recipient editor + send-ledger status panel + "Retry Failed Sends". |
 | `scripts/email-test.mjs` | `npm run test:email` — SINGLE mode = exactly 1 email; `EMAIL_FULL_TEST=1` opts into extended suites. |
+
+### Scheduling alternatives (when a time-based email is needed)
+1. **Direct inline send (current)** — default; no scheduling needed for instant notifications.
+2. **GitHub Actions cron** — free workflow (`schedule: '*/5 * * * *'`) calls `/api/admin/email/process?batch=10` with `CRON_SECRET`.
+3. **Upstash QStash** — free-tier scheduled HTTP requests (down to per-second) hitting the same endpoint.
+4. **External uptime/heartbeat monitors** (UptimeRobot, Cronitor, Google Cloud Scheduler free tier) pinging the retry endpoint periodically.
 
 ---
 *End of Master Documentation*

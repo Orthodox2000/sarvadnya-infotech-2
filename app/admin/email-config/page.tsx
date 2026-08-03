@@ -156,12 +156,12 @@ export default function AdminEmailConfig() {
       if (data?.error) throw new Error(data.error);
       await fetchData();
       setMessage({
-        text: `Queue drained: ${data.sent} sent, ${data.failed} failed, ${data.dead} dead.`,
+        text: `Retry run done: ${data.sent} sent, ${data.failed} failed, ${data.dead} dead.`,
         type: 'success',
       });
     } catch (err) {
       console.error(err);
-      setMessage({ text: 'Failed to process queue.', type: 'error' });
+      setMessage({ text: 'Failed to retry sends.', type: 'error' });
     } finally {
       setProcessing(false);
     }
@@ -189,7 +189,7 @@ export default function AdminEmailConfig() {
       <header className="mb-10">
         <h1 className="text-3xl font-black text-slate-900">Email Notifications</h1>
         <p className="text-slate-500 text-sm mt-1">
-          Configure who receives the internal copy of each web form. Exactly one email is sent per submission.
+          Configure who receives the internal copy of each web form. Exactly one email is sent directly (inline) per submission — no queue or cron required.
         </p>
       </header>
 
@@ -200,9 +200,9 @@ export default function AdminEmailConfig() {
       )}
 
       <div className="mb-6 p-4 rounded-2xl bg-amber-50 border border-amber-100 text-amber-700 text-xs font-semibold leading-relaxed">
-        ⚠️ Resend accounts have a limited monthly email quota. Emails are only ever sent from the background
-        queue — one per submission, deduplicated by request ID, with max 5 retries. Sent/failed/dead jobs are
-        auto-purged after 30 days.
+        ⚠️ Resend accounts have a limited monthly email quota. Emails are sent <strong>directly</strong> on form
+        submission — one per submission, deduplicated by request ID. Failed sends are recorded in the ledger
+        below and can be retried from here; sent/failed jobs are auto-purged after 30 days.
       </div>
 
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
@@ -302,10 +302,10 @@ export default function AdminEmailConfig() {
           </div>
         </form>
 
-        {/* Queue panel */}
+        {/* Send ledger panel */}
         <div className="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm space-y-6 h-fit">
           <div>
-            <h2 className="text-sm font-black uppercase tracking-widest text-[#0371a3] mb-4">Email Queue</h2>
+            <h2 className="text-sm font-black uppercase tracking-widest text-[#0371a3] mb-4">Send Ledger</h2>
             <div className="grid grid-cols-2 gap-3">
               {[
                 { label: 'Pending', value: stats?.pending ?? 0, color: 'text-amber-600' },
@@ -328,10 +328,11 @@ export default function AdminEmailConfig() {
             disabled={processing}
             className="w-full bg-[#316852] text-white px-6 py-4 rounded-2xl font-black text-xs uppercase tracking-widest hover:shadow-xl transition-all disabled:opacity-50"
           >
-            {processing ? 'Processing...' : 'Process Queue Now'}
+            {processing ? 'Retrying...' : 'Retry Failed Sends'}
           </button>
           <p className="text-[10px] text-slate-400 font-medium text-center">
-            Also drained automatically every minute by the Vercel Cron and after each submission.
+            New submissions send their email instantly — no cron needed. This button only retries the small
+            set of sends that failed; an external scheduler (GitHub Actions / Upstash QStash) can also drive it.
           </p>
 
           <div className="pt-4 border-t border-slate-100">
