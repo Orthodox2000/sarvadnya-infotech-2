@@ -58,6 +58,7 @@ Date,Version,Module,Activity,Status
 2026-06-03,v1.1.370,QA,Automated Snapshots & Total Site Soft Copy,Complete
 2026-06-17,v1.1.376,Chat,AI Voice Restoration (TTS) & API Stability,Complete
 2026-06-18,v1.1.380,Core,Consultation Logic Codification & Form Hardening,Complete
+2026-08-03,v1.1.389,Email,Async Email Queue + Per-Form Recipient Config (Exactly-Once),Complete
 ```
 
 ---
@@ -78,6 +79,29 @@ Date,Version,Module,Activity,Status
 - **Backend:** MongoDB (Official Driver), Next.js Server Actions.
 - **AI Stack:** GroqCloud (llama-3.3-70b-versatile).
 - **Tools:** Puppeteer (Visual QA), Vercel Blob (Asset Management).
+
+---
+
+## 7. Email Notification System (v1.1.389)
+An internal copy of every web form submission (Quote, Enquiry, Support, Callback, Demo, General) is delivered via **Resend** through a MongoDB-backed async queue. Web forms never call Resend inline — the public endpoint sanitizes, validates, saves, enqueues, and returns instantly; sending happens exclusively in the background.
+
+### Key design decisions
+- **Per-page destinations:** each modal derives a destination from the current route (`lib/form-destinations.ts`). Recipients resolve destination-first from the admin-editable `EMAIL_DESTINATION_RECIPIENTS` map — **opt-in**, a page with no configured recipient sends no email (only `demo` is pre-wired) — then per-form-type `EMAIL_FORM_RECIPIENTS`, then `RESEND_INTERNAL_TO`. Clients can never influence recipients.
+- **Exactly-once delivery:** the client generates a `requestId` per modal open; the queue upserts by unique `jobKey` so retried/duplicate POSTs can never fire a second email.
+- **Reliability:** atomic status-filtered claim, backoff `min(30s·2ⁿ, 4h)`, `maxAttempts` 5, stale `processing` auto-reset, and a TTL index that purges terminal jobs after 30 days (bounded memory).
+- **Draining:** `after()` from `next/server` post-response, a 1-min Vercel Cron (`/api/admin/email/process?batch=10`), and a manual "Process Queue Now" button. `EMAIL_DISABLE_BACKGROUND=1` disables the background drain for deterministic tests.
+- **Security:** admin queue endpoints are protected by both the proxy and a route-level `isRequestAuthorized()` check (header `x-admin-key`, `admin_key` cookie, or session token) — defense-in-depth against a misconfigured proxy.
+- **Seed data:** `EMAIL_FORM_RECIPIENTS` + `RESEND_SENDER_EMAIL` are seeded only-if-missing by `scripts/bootstrap.mjs` / `/api/admin/bootstrap`, so admin edits persist.
+
+| File | Role |
+| :--- | :--- |
+| `lib/email-queue.ts` | MongoDB `email_queue` collection: enqueue, dedupe, atomic claim, retry/backoff, stats. |
+| `lib/email.ts` | Resend config, per-page + per-form recipient resolution, masked diagnostic, HTML template. |
+| `app/api/email/submit/route.ts` | Public enqueue-only endpoint (rate-limited) with `after()` drain. |
+| `app/api/admin/email/process/route.ts` | Admin-only queue drain (cron + manual). |
+| `app/api/admin/email/queue/route.ts` | Admin-only queue stats + recent jobs (recipients masked). |
+| `app/admin/email-config/page.tsx` | Per-page destination editor (opt-in) + per-form-type recipient editor + queue status panel. |
+| `scripts/email-test.mjs` | `npm run test:email` — SINGLE mode = exactly 1 email; `EMAIL_FULL_TEST=1` opts into extended suites. |
 
 ---
 *End of Master Documentation*

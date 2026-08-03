@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { updateContent } from '@/lib/mongodb-utils';
+import { updateContent, getCollection } from '@/lib/mongodb-utils';
 
 export async function GET() {
   const heroContents = [
@@ -191,6 +191,34 @@ export async function GET() {
     await updateContent('home_stats', stats);
     await updateContent('home_partners', partners);
     await updateContent('home_faq', faqData);
+
+    // ── Email notification settings (seeded only if missing, so admin edits persist) ──
+    const settingsCol = await getCollection('settings');
+    const defaultFormEmail = process.env.RESEND_SENDER_EMAIL || 'webenquiry@en.sarvadnyainfotech.com';
+    const emailSettings = [
+      { key: 'RESEND_SENDER_EMAIL', value: defaultFormEmail },
+      {
+        key: 'EMAIL_FORM_RECIPIENTS',
+        value: JSON.stringify(
+          { quote: defaultFormEmail, enquire: defaultFormEmail, support: defaultFormEmail, callback: defaultFormEmail, demo: defaultFormEmail, general: defaultFormEmail },
+          null,
+          2
+        ),
+      },
+      // Per-page destinations: only `demo` is pre-wired (keeps the existing
+      // demo page behavior). Every other page stays opt-in — no email until the
+      // admin assigns recipients for that destination in /admin/email-config.
+      {
+        key: 'EMAIL_DESTINATION_RECIPIENTS',
+        value: JSON.stringify({ demo: defaultFormEmail }, null, 2),
+      },
+    ];
+    for (const setting of emailSettings) {
+      await settingsCol.updateOne(
+        { key: setting.key },
+        { $setOnInsert: { key: setting.key, value: setting.value, updatedAt: new Date() } }
+      );
+    }
 
     return NextResponse.json({ message: 'Database bootstrapped successfully' });
   } catch (error) {

@@ -1,0 +1,11 @@
+{
+  "crons": [
+    {
+      "path": "/api/admin/email/process?batch=10",
+      "schedule": "* * * * *",
+      "headers": {
+        "x-admin-key": "@ADMIN_ACCESS_KEY"
+      }
+    }
+  ]
+}

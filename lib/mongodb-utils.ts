@@ -331,6 +331,38 @@ export async function getSubmissions() {
   return serializeData(data);
 }
 
+const SUBMISSION_SORT_KEYS = ['createdAt', 'name', 'contact', 'formType', 'service'];
+
+export type SubmissionQuery = {
+  page: number;
+  limit: number;
+  formType?: string;
+  sortBy: string;
+  sortDir: 'asc' | 'desc';
+};
+
+export async function getSubmissionsPaginated(query: SubmissionQuery) {
+  const col = await getCollection('form_submissions');
+  const filter =
+    query.formType && query.formType !== 'all' ? { formType: query.formType } : {};
+  const sortKey = SUBMISSION_SORT_KEYS.includes(query.sortBy) ? query.sortBy : 'createdAt';
+  const sortDir = query.sortDir === 'asc' ? 1 : -1;
+  const [total, data] = await Promise.all([
+    col.countDocuments(filter),
+    col
+      .find(filter)
+      .sort({ [sortKey]: sortDir, _id: -1 } as any)
+      .skip((query.page - 1) * query.limit)
+      .limit(query.limit)
+      .toArray(),
+  ]);
+  return { data: serializeData(data), total };
+}
+
+export function isValidObjectId(id: string): boolean {
+  return /^[a-fA-F0-9]{24}$/.test(id) && ObjectId.isValid(id);
+}
+
 export async function deleteSubmission(id: string) {
   const col = await getCollection('form_submissions');
   return await col.deleteOne({ _id: new ObjectId(id) });

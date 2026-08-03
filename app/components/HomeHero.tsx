@@ -262,7 +262,7 @@ const processHeroData = (data: any[]): HeroContent[] => {
   });
 };
 
-export default function HomeHero({ initialData, variant = 'standard' }: { initialData?: HeroContent[], variant?: 'standard' | 'radiant' | 'creative' }) {
+export default function HomeHero({ initialData, variant = 'standard', emailCopy = false }: { initialData?: HeroContent[], variant?: 'standard' | 'radiant' | 'creative', emailCopy?: boolean }) {
   const [heroContents, setHeroContents] = useState<HeroContent[]>(processHeroData(initialData || DEFAULT_HERO));
   const [stableIndex, setStableIndex] = useState(0);
   const [isExiting, setIsExiting] = useState(false);
@@ -590,7 +590,7 @@ export default function HomeHero({ initialData, variant = 'standard' }: { initia
         </div>
       </div>
     </main>
-    <UnifiedContactModal isOpen={modalConfig.isOpen} onClose={() => setModalConfig(prev => ({ ...prev, isOpen: false }))} type={modalConfig.type} prefillService={modalConfig.service} prefillDetails={modalConfig.details} />
+    <UnifiedContactModal isOpen={modalConfig.isOpen} onClose={() => setModalConfig(prev => ({ ...prev, isOpen: false }))} type={modalConfig.type} prefillService={modalConfig.service} prefillDetails={modalConfig.details} emailCopy={emailCopy} />
     </>
   );
 }

@@ -1,6 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { usePathname } from 'next/navigation';
+import { getDestinationFromPath } from '@/lib/form-destinations';
 
 export type FormType = 'quote' | 'enquire' | 'support' | 'callback' | 'demo' | 'general';
 
@@ -10,6 +12,8 @@ interface UnifiedContactModalProps {
   type?: FormType;
   prefillService?: string;
   prefillDetails?: string;
+  emailCopy?: boolean;
+  destination?: string;
 }
 
 export default function UnifiedContactModal({ 
@@ -17,8 +21,11 @@ export default function UnifiedContactModal({
   onClose, 
   type = 'general',
   prefillService = '',
-  prefillDetails = ''
+  prefillDetails = '',
+  emailCopy = false,
+  destination
 }: UnifiedContactModalProps) {
+  const pathname = usePathname();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -29,10 +36,18 @@ export default function UnifiedContactModal({
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [requestId, setRequestId] = useState('');
 
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
+      // Fresh idempotency key per open — a retried POST re-uses it server-side,
+      // guaranteeing exactly one queued email per submission.
+      setRequestId(
+        typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function'
+          ? crypto.randomUUID()
+          : `req-${Date.now()}-${Math.random().toString(36).slice(2)}`
+      );
       setFormData(prev => ({
         ...prev,
         service: prefillService,
@@ -49,18 +64,24 @@ export default function UnifiedContactModal({
 
   if (!isOpen) return null;
 
+  // Routing: an explicit `destination` prop wins; otherwise the current page
+  // route decides which configured recipient list receives the submission.
+  // When no destination applies, fall back to the legacy formType-based flow.
+  const dest = destination ?? getDestinationFromPath(pathname) ?? (emailCopy ? type : undefined);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     
     try {
-      const endpoint = '/api/contact';
+      const endpoint = dest ? '/api/email/submit' : '/api/contact';
       const res = await fetch(endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           ...formData,
           formType: type,
+          ...(dest ? { destination: dest, requestId } : {})
         })
       });
 
@@ -156,7 +177,7 @@ export default function UnifiedContactModal({
                 </svg>
               </div>
               <h3 className="text-lg sm:text-xl font-bold text-[#0f0529] mb-1">Request Received!</h3>
-              <p className="text-slate-500 text-xs sm:text-sm">We'll contact you within 15 minutes.</p>
+              <p className="text-slate-500 text-xs sm:text-sm">{dest ? "Request received! A copy is on its way to our team — we'll contact you shortly." : "We'll contact you within 15 minutes."}</p>
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="sm:space-y-4 space-y-4">

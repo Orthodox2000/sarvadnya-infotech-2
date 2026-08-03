@@ -336,6 +336,33 @@ async function run() {
       console.log(`Updated section: ${item.section}`);
     }
 
+    // ── Email notification settings (seeded only if missing, so admin edits persist) ──
+    const settingsCol = db.collection('settings');
+    const defaultFormEmail = process.env.RESEND_SENDER_EMAIL || 'webenquiry@en.sarvadnyainfotech.com';
+    const defaultFormRecipients = JSON.stringify(
+      { quote: defaultFormEmail, enquire: defaultFormEmail, support: defaultFormEmail, callback: defaultFormEmail, demo: defaultFormEmail, general: defaultFormEmail },
+      null,
+      2
+    );
+    const emailSettings = [
+      { key: 'RESEND_SENDER_EMAIL', value: defaultFormEmail },
+      { key: 'EMAIL_FORM_RECIPIENTS', value: defaultFormRecipients },
+      // Per-page destinations: only `demo` is pre-wired (keeps the existing
+      // demo page behavior). Every other page stays opt-in — no email until the
+      // admin assigns recipients for that destination in /admin/email-config.
+      {
+        key: 'EMAIL_DESTINATION_RECIPIENTS',
+        value: JSON.stringify({ demo: defaultFormEmail }, null, 2),
+      },
+    ];
+    for (const setting of emailSettings) {
+      await settingsCol.updateOne(
+        { key: setting.key },
+        { $setOnInsert: { key: setting.key, value: setting.value, updatedAt: new Date() } }
+      );
+      console.log(`Seeded setting (if missing): ${setting.key}`);
+    }
+
     console.log("Database bootstrapped successfully");
   } finally {
     await client.close();

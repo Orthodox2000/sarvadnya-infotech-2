@@ -56,3 +56,29 @@ export async function verifySessionFromCookie(): Promise<boolean> {
   if (!token) return false;
   return verifyToken(token);
 }
+
+// Route-level authorization (defense-in-depth on top of the proxy). Accepts the
+// x-admin-key header (cron/tests), the admin_key cookie, or the session token
+// cookie. Used by the email queue endpoints so a bypassed/misconfigured proxy
+// can never expose email sends.
+export function isRequestAuthorized(request: Request): boolean {
+  const masterKey = process.env.ADMIN_ACCESS_KEY;
+  if (!masterKey) return false;
+
+  const headerKey = request.headers.get('x-admin-key');
+  if (headerKey && headerKey === masterKey) return true;
+
+  const cookieHeader = request.headers.get('cookie') || '';
+  for (const part of cookieHeader.split(';')) {
+    const idx = part.indexOf('=');
+    if (idx === -1) continue;
+    const key = part.slice(0, idx).trim();
+    if (key === 'admin_key' && part.slice(idx + 1).trim() === masterKey) return true;
+    if (key === TOKEN_COOKIE) {
+      const token = decodeURIComponent(part.slice(idx + 1).trim());
+      if (verifyToken(token)) return true;
+    }
+  }
+
+  return false;
+}
