@@ -135,7 +135,7 @@ export default function QuickAccessHubDemo() {
         { label: "Cloud Hosting", href: "/cloud/aws" },
         { label: "Mobile App", href: "/services/mobile-app-biz" },
         { label: "Remote Access", href: "/cloud/windows" },
-        { label: "Data Security", href: "/cloud/nosky" }
+        { label: "Data Security", href: "/cloud/backup-for-tally" }
       ]
     },
     {

@@ -197,12 +197,16 @@ async function run() {
     expect(diag.recipientCount).toBeGreaterThan(0);
   });
 
-  await test('Per-form-type recipient map exists for all 6 form types', async () => {
+  await test('Recipient coverage for all form types (destination-aware)', async () => {
     if (!diag) throw new Error('Diagnostic unavailable');
-    const required = ['quote', 'enquire', 'support', 'callback', 'demo', 'general'];
-    for (const type of required) {
+    const formTypes = ['quote', 'enquire', 'support', 'callback', 'demo', 'general'];
+    for (const type of formTypes) {
       const list = diag.formRecipients?.[type];
       if (!Array.isArray(list) || list.length === 0) throw new Error(`Missing recipient config for "${type}"`);
+    }
+    const tss = diag.destinations?.['tss-renewal'];
+    if (!Array.isArray(tss) || tss.length === 0) {
+      throw new Error('Missing recipient config for destination "tss-renewal" (assign one in /admin/email-config)');
     }
   });
 

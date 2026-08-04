@@ -628,7 +628,7 @@ export default function AWSCloudPage() {
                   { name: 'TallyPrime Gold', slug: '/products/gold', rating: '4.8', reviews: '120' },
                   { name: 'TallyPrime Server', slug: '/products/server', rating: '4.7', reviews: '85' },
                   { name: 'Tally on WhatsApp', slug: '/services/tally-on-whatsapp', rating: '4.9', reviews: '200' },
-                  { name: 'NoSky Cloud', slug: '/cloud/nosky', rating: '4.6', reviews: '55' },
+                  { name: 'Backup for Tally', slug: '/cloud/backup-for-tally', rating: '4.6', reviews: '55' },
                 ].map((item) => (
                   <Link
                     key={item.name}
@@ -673,7 +673,7 @@ export default function AWSCloudPage() {
                   { label: 'Cloud Solutions Guide', href: '/cloud' },
                   { label: 'Get Now', type: 'demo' as FormType },
                   { label: 'Technical Support', type: 'support' as FormType },
-                  { label: 'Cloud Backup Guidance', href: '/cloud/nosky' },
+                  { label: 'Cloud Backup Guidance', href: '/cloud/backup-for-tally' },
                   { label: 'Corporate Training', href: '/services/corporate-training' },
                 ].map((link) =>
                   'href' in link ? (

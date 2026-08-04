@@ -73,7 +73,7 @@ const DEFAULT_HERO: HeroContent[] = [
       "layout": "ecosystem",
       "features": [
         { "text": "Official AWS Hosting" },
-        { "text": "NoSky Cloud Performance" },
+        { "text": "Backup for Tally Cloud Performance" },
         { "text": "24/7 Remote Access" },
         { "text": "Automated Server Backup" }
       ],
@@ -127,8 +127,8 @@ const QUICK_ACCESS_CARDS = [
   },
   {
     title: "Cloud Access",
-    description: "Secure, 24/7 remote access with Official AWS and NoSky infrastructure.",
-    shortDesc: "AWS & NoSky cloud access",
+    description: "Secure, 24/7 remote access with Official AWS and Backup for Tally infrastructure.",
+    shortDesc: "AWS & Backup for Tally cloud access",
     href: "/cloud",
     img: "/tally on cloud.png"
   },

@@ -88,7 +88,7 @@ async function capture() {
   console.log('✅ Captured Cloud Main');
 
   // Capture Cloud Details Popups
-  const cloudNames = ['AWS Cloud Server', 'Windows VM', 'NoSky Backup'];
+  const cloudNames = ['AWS Cloud Server', 'Windows VM', 'Backup for Tally'];
   for (const name of cloudNames) {
     console.log(`📸 Capturing details for ${name}...`);
     await page.evaluate((cName) => {

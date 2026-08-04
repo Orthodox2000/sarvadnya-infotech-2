@@ -554,3 +554,11 @@ main > div:first-of-type {
 .animate-lightning-glow {
   animation: lightning-glow 2.5s ease-in-out infinite;
 }
+
+.font-playfair {
+  font-family: var(--font-playfair), Georgia, 'Times New Roman', serif;
+}
+
+.font-inter {
+  font-family: var(--font-sans), 'Inter', ui-sans-serif, system-ui, sans-serif;
+}

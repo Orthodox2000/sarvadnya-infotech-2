@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { saveTssRenewal } from '@/lib/mongodb-utils';
+import { sendEmailDirect } from '@/lib/email-queue';
 
 function sanitize(str: string) {
   if (typeof str !== 'string') return '';
@@ -26,9 +27,31 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Please enter a valid email address' }, { status: 400 });
     }
 
-    await saveTssRenewal(data);
+    const result = await saveTssRenewal(data);
+    const renewalId = result.insertedId.toString();
 
-    return NextResponse.json({ message: 'Renewal request submitted successfully' });
+    // Send the internal TSS-renewal email copy DIRECTLY (inline). Recipients are
+    // opt-in via the "TSS Renewal" receiver option in /admin/email-config — no
+    // receiver configured means no email (the request is still saved).
+    const send = await sendEmailDirect({
+      jobKey: `tss-renewal-${renewalId}`,
+      formType: 'tss-renewal',
+      destination: 'tss-renewal',
+      submission: {
+        name: data.name,
+        email: data.email,
+        contact: '',
+        service: `TSS Serial No: ${data.serialNumber}`,
+        description: `TSS renewal requested from ${data.source || 'website'}`,
+        formType: 'tss-renewal',
+        destination: 'tss-renewal',
+      },
+    });
+
+    return NextResponse.json({
+      message: 'Renewal request submitted successfully',
+      emailSent: send.sent,
+    });
   } catch (error) {
     console.error('TSS Renewal API Error:', error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });

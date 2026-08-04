@@ -32,13 +32,13 @@ const cards = [
     ],
   },
   {
-    name: 'NoSky Backup',
+    name: 'Backup for Tally',
     icon: (
       <span className="inline-flex items-center justify-center w-9 h-9 rounded-full bg-white/20">
         <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.5"><path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"/></svg>
       </span>
     ),
-    link: '/cloud/nosky',
+    link: '/cloud/backup-for-tally',
     features: [
       'A silent, automatic safety net that backs up your Tally data every single day.',
       'Perfect for owners who want to stop worrying about computer crashes, hardware theft, or ransomware.',
@@ -248,7 +248,7 @@ export default function CloudPage() {
         </div>
       </section>
 
-      {/* NoSky Backup Section */}
+      {/* Backup for Tally Section */}
       {/* <section className="py-20 px-6  bg-[linear-gradient(90deg,rgba(249,251,245,1)_0%,rgba(244,242,234,1)_53%,rgba(238,236,223,1)_100%)]border-y border-slate-100 overflow-hidden relative">
         <div className="absolute top-0 right-0 w-1/3 h-full bg-[#316852]/5 -skew-x-12 transform translate-x-1/2" />
 
@@ -259,10 +259,10 @@ export default function CloudPage() {
             </div>
             <h2 className="text-3xl md:text-5xl font-black text-slate-900 mb-6 leading-tight">
               Secure Your Data with <br />
-              <span className="text-[#316852]">NoSky Backup</span>
+              <span className="text-[#316852]">Backup for Tally</span>
             </h2>
             <p className="text-slate-600 text-lg leading-relaxed mb-8 font-medium max-w-2xl">
-              NoSky Backup provides secure cloud storage for TallyPrime company backups. It stores backups online, helps protect against local system failures, and supports automatic scheduling.
+              Backup for Tally provides secure cloud storage for TallyPrime company backups. It stores backups online, helps protect against local system failures, and supports automatic scheduling.
             </p>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -315,7 +315,7 @@ export default function CloudPage() {
             </div>
 
             <button
-              onClick={() => openModal('callback', 'NoSky Backup')}
+              onClick={() => openModal('callback', 'Backup for Tally')}
               className="mt-8 w-full py-4 bg-[#316852] text-white rounded-xl font-black text-xs uppercase tracking-widest hover:bg-[#1e4d3a] transition-all shadow-lg"
             >
               Consult Backup Strategy

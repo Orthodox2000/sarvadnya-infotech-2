@@ -1,18 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { FORM_DESTINATIONS, KNOWN_DESTINATION_KEYS } from '@/lib/form-destinations';
-
-const FORM_TYPES = [
-  { key: 'quote', label: 'Quote Request' },
-  { key: 'enquire', label: 'Product Enquiry' },
-  { key: 'support', label: 'Priority Support' },
-  { key: 'callback', label: 'Callback Request' },
-  { key: 'demo', label: 'Demo Request' },
-  { key: 'general', label: 'Contact Request' },
-] as const;
-
-type FormType = (typeof FORM_TYPES)[number]['key'];
+import { DESTINATION_CATEGORIES, FORM_DESTINATIONS, KNOWN_DESTINATION_KEYS } from '@/lib/form-destinations';
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
@@ -32,7 +21,6 @@ export default function AdminEmailConfig() {
   const [processing, setProcessing] = useState(false);
   const [message, setMessage] = useState({ text: '', type: '' });
   const [sender, setSender] = useState('');
-  const [recipients, setRecipients] = useState<Record<string, string>>({});
   const [destinations, setDestinations] = useState<Record<string, string>>({});
   const [stats, setStats] = useState<QueueStats | null>(null);
   const [recent, setRecent] = useState<any[]>([]);
@@ -53,18 +41,6 @@ export default function AdminEmailConfig() {
       );
 
       setSender(settingsMap.get('RESEND_SENDER_EMAIL') || '');
-
-      let parsed: Record<string, string> = {};
-      try {
-        parsed = JSON.parse(settingsMap.get('EMAIL_FORM_RECIPIENTS') || '{}');
-      } catch {
-        parsed = {};
-      }
-      const next: Record<string, string> = {};
-      for (const { key } of FORM_TYPES) {
-        next[key] = String(parsed[key] || '');
-      }
-      setRecipients(next);
 
       let destParsed: Record<string, string> = {};
       try {
@@ -97,8 +73,8 @@ export default function AdminEmailConfig() {
     if (!sender || !EMAIL_RE.test(sender.trim())) {
       return 'Sender email address is invalid or empty.';
     }
-    for (const { key } of FORM_TYPES) {
-      const raw = recipients[key] || '';
+    for (const key of Object.keys(destinations)) {
+      const raw = destinations[key] || '';
       const emails = raw.split(',').map((e) => e.trim()).filter(Boolean);
       if (emails.some((e) => !EMAIL_RE.test(e))) {
         return `"${key}" contains an invalid email address.`;
@@ -118,10 +94,6 @@ export default function AdminEmailConfig() {
     setSaving(true);
     setMessage({ text: '', type: '' });
     try {
-      const clean: Record<string, string> = {};
-      for (const { key } of FORM_TYPES) {
-        clean[key] = recipients[key]?.trim() || '';
-      }
       const cleanDest: Record<string, string> = {};
       for (const key of Object.keys(destinations)) {
         cleanDest[key] = destinations[key]?.trim() || '';
@@ -132,7 +104,6 @@ export default function AdminEmailConfig() {
         body: JSON.stringify({
           settings: [
             { key: 'RESEND_SENDER_EMAIL', value: sender.trim() },
-            { key: 'EMAIL_FORM_RECIPIENTS', value: JSON.stringify(clean, null, 2) },
             { key: 'EMAIL_DESTINATION_RECIPIENTS', value: JSON.stringify(cleanDest, null, 2) },
           ],
         }),
@@ -182,6 +153,25 @@ export default function AdminEmailConfig() {
     );
   };
 
+  const renderDestinationInput = ({ key, label }: { key: string; label: string }, pathText?: string) => (
+    <div key={key} className="rounded-2xl border border-slate-100 bg-slate-50/50 p-4">
+      <div className="flex items-center justify-between gap-2 mb-1.5">
+        <label className="text-xs font-bold text-slate-700">{label}</label>
+        <span className="text-[10px] text-slate-400 font-mono font-medium">({key})</span>
+      </div>
+      {pathText && <p className="text-[10px] text-slate-400 font-medium mb-2">{pathText}</p>}
+      <input
+        type="text"
+        className="w-full px-3 py-2.5 bg-white rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#0371a3]/30 focus:border-[#0371a3] text-sm"
+        placeholder="name@company.com (comma-separated)"
+        value={destinations[key] || ''}
+        onChange={(e) => setDestinations((prev) => ({ ...prev, [key]: e.target.value }))}
+      />
+    </div>
+  );
+
+  const customKeys = Object.keys(destinations).filter((k) => !KNOWN_DESTINATION_KEYS.includes(k));
+
   if (loading) return <div className="text-center py-10">Loading email configuration...</div>;
 
   return (
@@ -189,7 +179,8 @@ export default function AdminEmailConfig() {
       <header className="mb-10">
         <h1 className="text-3xl font-black text-slate-900">Email Notifications</h1>
         <p className="text-slate-500 text-sm mt-1">
-          Configure who receives the internal copy of each web form. Exactly one email is sent directly (inline) per submission — no queue or cron required.
+          Choose who receives the internal copy of each form. Every form on a page sends its email to that page's
+          receiver, grouped by enquiry type below — set a receiver and save, leave blank to disable that page's email.
         </p>
       </header>
 
@@ -201,15 +192,15 @@ export default function AdminEmailConfig() {
 
       <div className="mb-6 p-4 rounded-2xl bg-amber-50 border border-amber-100 text-amber-700 text-xs font-semibold leading-relaxed">
         ⚠️ Resend accounts have a limited monthly email quota. Emails are sent <strong>directly</strong> on form
-        submission — one per submission, deduplicated by request ID. Failed sends are recorded in the ledger
-        below and can be retried from here; sent/failed jobs are auto-purged after 30 days.
+        submission — one per submission, deduplicated by request ID. Failed sends are recorded in the ledger below and
+        can be retried from here; sent/failed jobs are auto-purged after 30 days.
       </div>
 
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
         {/* Config form */}
-        <form onSubmit={handleSave} className="xl:col-span-2 bg-white p-8 rounded-3xl border border-slate-100 shadow-sm space-y-6">
+        <form onSubmit={handleSave} className="xl:col-span-2 bg-white p-8 rounded-3xl border border-slate-100 shadow-sm space-y-8">
           <div className="space-y-2">
-            <h2 className="text-sm font-black uppercase tracking-widest text-[#0371a3]">Sender Address</h2>
+            <h2 className="text-sm font-black uppercase tracking-widest text-[#0371a3]">1 · Sender Address</h2>
             <input
               type="text"
               className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#0371a3]"
@@ -218,77 +209,58 @@ export default function AdminEmailConfig() {
               onChange={(e) => setSender(e.target.value)}
             />
             <p className="text-[10px] text-slate-400 font-medium">
-              Must be on a domain verified in Resend (SPF + DKIM). Stored as RESEND_SENDER_EMAIL.
+              Must be on a domain verified in Resend (SPF + DKIM). Stored as RESEND_SENDER_EMAIL — all internal emails
+              are sent from this address.
             </p>
           </div>
 
-          <div className="pt-2 border-t border-slate-100">
-            <h2 className="text-sm font-black uppercase tracking-widest text-[#0371a3] mb-4">Recipients per Form Type</h2>
-            <div className="space-y-4">
-              {FORM_TYPES.map(({ key, label }) => (
-                <div key={key} className="space-y-1.5">
-                  <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">
-                    {label} <span className="normal-case text-slate-400">({key})</span>
-                  </label>
-                  <input
-                    type="text"
-                    className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#0371a3]"
-                    placeholder="name@company.com (comma-separated for multiple)"
-                    value={recipients[key] || ''}
-                    onChange={(e) => setRecipients((prev) => ({ ...prev, [key]: e.target.value }))}
-                  />
-                </div>
-              ))}
-            </div>
-            <p className="mt-3 text-[10px] text-slate-400 font-medium">
-              Stored as EMAIL_FORM_RECIPIENTS (JSON). Empty fields fall back to RESEND_INTERNAL_TO. Recipients are
-              resolved server-side only — clients can never change who receives emails.
-            </p>
-          </div>
+          <div className="space-y-8">
+            <div>
+              <h2 className="text-sm font-black uppercase tracking-widest text-[#0371a3] mb-1">2 · Recipients by Page</h2>
+              <p className="text-[10px] text-slate-400 font-medium mb-5">
+                Each page's forms (modal + sidebar enquiry) email only the receiver set below. Blank = no email for that
+                page (opt-in). Multiple addresses can be comma-separated.
+              </p>
 
-          <div className="pt-2 border-t border-slate-100">
-            <h2 className="text-sm font-black uppercase tracking-widest text-[#0371a3] mb-1">Per-Page Destinations</h2>
-            <p className="text-[10px] text-slate-400 font-medium mb-4">
-              Assign recipients for each page's form. A page only sends an internal email once you set its recipient
-              here — blank means no email for that page (opt-in, saves quota). The Demo page is pre-wired to the
-              sender address.
-            </p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {FORM_DESTINATIONS.map(({ key, label }) => (
-                <div key={key} className="space-y-1.5">
-                  <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">
-                    {label} <span className="normal-case text-slate-400">({key})</span>
-                  </label>
-                  <input
-                    type="text"
-                    className="w-full p-3 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#0371a3]"
-                    placeholder="name@company.com (comma-separated)"
-                    value={destinations[key] || ''}
-                    onChange={(e) => setDestinations((prev) => ({ ...prev, [key]: e.target.value }))}
-                  />
-                </div>
-              ))}
-              {Object.keys(destinations)
-                .filter((k) => !KNOWN_DESTINATION_KEYS.includes(k))
-                .map((key) => (
-                  <div key={key} className="space-y-1.5">
-                    <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">
-                      Custom <span className="normal-case text-slate-400">({key})</span>
-                    </label>
-                    <input
-                      type="text"
-                      className="w-full p-3 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#0371a3]"
-                      placeholder="name@company.com (comma-separated)"
-                      value={destinations[key] || ''}
-                      onChange={(e) => setDestinations((prev) => ({ ...prev, [key]: e.target.value }))}
-                    />
+              {DESTINATION_CATEGORIES.map(({ key: categoryKey, label: categoryLabel, description }) => {
+                const categoryDestinations = FORM_DESTINATIONS.filter((d) => d.category === categoryKey);
+                if (categoryDestinations.length === 0) return null;
+                return (
+                  <div key={categoryKey} className="mb-8 last:mb-0">
+                    <div className="flex items-baseline gap-2 mb-1">
+                      <h3 className="text-xs font-black text-slate-800 uppercase tracking-widest">{categoryLabel}</h3>
+                      <span className="text-[10px] font-bold text-slate-300">{categoryDestinations.length} pages</span>
+                    </div>
+                    <p className="text-[10px] text-slate-400 font-medium mb-3">{description}</p>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      {categoryDestinations.map((d) =>
+                        renderDestinationInput(d, d.paths.length ? `Pages: ${d.paths.join(', ')}` : undefined)
+                      )}
+                    </div>
                   </div>
-                ))}
+                );
+              })}
+
+              {customKeys.length > 0 && (
+                <div>
+                  <div className="flex items-baseline gap-2 mb-3">
+                    <h3 className="text-xs font-black text-slate-800 uppercase tracking-widest">Custom / Unassigned</h3>
+                    <span className="text-[10px] font-bold text-slate-300">{customKeys.length} keys</span>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {customKeys.map((key) =>
+                      renderDestinationInput({ key, label: `Custom (${key})` })
+                    )}
+                  </div>
+                </div>
+              )}
+
+              <p className="mt-4 text-[10px] text-slate-400 font-medium">
+                Stored as EMAIL_DESTINATION_RECIPIENTS (JSON) and read from the database on every submission — recipients
+                are resolved server-side only, so clients can never change who receives emails. Submissions from a page
+                with no receiver are still saved but produce no email.
+              </p>
             </div>
-            <p className="mt-3 text-[10px] text-slate-400 font-medium">
-              Stored as EMAIL_DESTINATION_RECIPIENTS (JSON). Recipients are resolved server-side only — each page's
-              form sends exactly one email per submission to its configured recipients.
-            </p>
           </div>
 
           <div className="pt-6 border-t border-slate-100">
@@ -331,8 +303,8 @@ export default function AdminEmailConfig() {
             {processing ? 'Retrying...' : 'Retry Failed Sends'}
           </button>
           <p className="text-[10px] text-slate-400 font-medium text-center">
-            New submissions send their email instantly — no cron needed. This button only retries the small
-            set of sends that failed; an external scheduler (GitHub Actions / Upstash QStash) can also drive it.
+            New submissions send their email instantly — no cron needed. This button only retries the small set of
+            sends that failed; an external scheduler (GitHub Actions / Upstash QStash) can also drive it.
           </p>
 
           <div className="pt-4 border-t border-slate-100">

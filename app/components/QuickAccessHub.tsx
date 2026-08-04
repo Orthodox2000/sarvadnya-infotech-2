@@ -24,7 +24,7 @@ const HUB_CARDS: HubCard[] = [
   },
   {
     title: "Cloud Access",
-    description: "Secure, 24/7 remote access with Official AWS and NoSky infrastructure.",
+    description: "Secure, 24/7 remote access with Official AWS and Backup for Tally infrastructure.",
     href: "/cloud",
     color: "bg-white",
     icon: (

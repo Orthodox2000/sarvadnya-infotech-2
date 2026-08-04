@@ -675,7 +675,7 @@ export default function WindowsVMPage() {
                   { label: 'Cloud Solutions Guide', href: '/cloud' },
                   { label: 'Get Now', type: 'demo' as FormType },
                   { label: 'Technical Support', type: 'support' as FormType },
-                  { label: 'Cloud Backup Guidance', href: '/cloud/nosky' },
+                  { label: 'Cloud Backup Guidance', href: '/cloud/backup-for-tally' },
                   { label: 'Corporate Training', href: '/services/corporate-training' },
                 ].map((link) =>
                   'href' in link ? (

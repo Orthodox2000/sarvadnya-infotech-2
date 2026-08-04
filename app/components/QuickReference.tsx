@@ -37,7 +37,7 @@ const categories = [
     links: [
       { label: "AWS Tally", href: "/cloud/aws" },
       { label: "Windows", href: "/cloud/windows" },
-      { label: "NoSky", href: "/cloud/nosky" },
+      { label: "Backup for Tally", href: "/cloud/backup-for-tally" },
       { label: "Recovery", href: "/contact" }
     ],
     theme: {

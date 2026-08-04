@@ -106,7 +106,7 @@ export default function Footer({ settings: initialSettings }: { settings?: SiteS
     const doMoreWithTally = [
         { name: 'Tally Cloud Access', href: '/cloud/tallycloudaccess' },
         { name: 'TallyDrive Backup', href: '/products/tallydrive' },
-        { name: 'Backup for Tally', href: '/cloud/nosky' },
+        { name: 'Backup for Tally', href: '/cloud/backup-for-tally' },
         { name: 'HRMS Solution', href: '/hrms' },
         { name: 'TallyCapital', href: '/products/tallycapital' },
     ];

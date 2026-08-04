@@ -114,7 +114,7 @@ export default function UnifiedContactModal({
       case 'enquire': return 'Product Enquiry';
       case 'support': return 'Priority Support';
       case 'callback': return 'Request Callback';
-      case 'demo': return 'Get Now';
+      case 'demo': return 'Enquire Now';
       default: return 'Contact Us';
     }
   };

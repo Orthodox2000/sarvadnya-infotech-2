@@ -36,7 +36,7 @@ export const productItems: ProductItem[] = [
         subItems: [
           { id: "tp-cloud", label: "Tally Cloud Access", href: "/cloud/tallycloudaccess" },
           { id: "tallydrive", label: "TallyDrive Backup", href: "/products/tallydrive" },
-          { id: "tp-backup", label: "Backup for TallyPrime", href: "/cloud/nosky" },
+          { id: "tp-backup", label: "Backup for TallyPrime", href: "/cloud/backup-for-tally" },
           { id: "tp-hrms", label: "HRMS Solution", href: "/hrms" },
           { id: "tp-capital", label: "TallyCapital", href: "/products/tallycapital" },
         ]

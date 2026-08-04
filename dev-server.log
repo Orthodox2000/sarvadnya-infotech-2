@@ -1,0 +1,17 @@
+
+> sarvadnya-infotech@1.1.389 dev
+> next dev --turbopack
+
+   ▲ Next.js 15.5.19 (Turbopack)
+   - Local:        http://localhost:3000
+   - Network:      http://192.168.1.7:3000
+   - Environments: .env
+
+ ✓ Starting...
+ ✓ Ready in 16.7s
+ ○ Compiling /api/email/diagnostic ...
+ ✓ Compiled /api/email/diagnostic in 14.9s
+ GET /api/email/diagnostic 200 in 6932ms
+ GET /api/email/diagnostic 200 in 1108ms
+ GET /api/email/diagnostic 200 in 1499ms
+[?25h

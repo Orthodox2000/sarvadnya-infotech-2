@@ -56,7 +56,7 @@ const navSections = [
   { id: 'pricing', label: 'Pricing' },
 ];
 
-export default function NoSkyBackupPage() {
+export default function BackupForTallyPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalType, setModalType] = useState<FormType>('quote');
   const [modalService, setModalService] = useState('Backup for TallyPrime');
@@ -687,7 +687,7 @@ export default function NoSkyBackupPage() {
                   { label: 'Cloud Solutions Guide', href: '/cloud' },
                   { label: 'Get Now', type: 'demo' as FormType },
                   { label: 'Technical Support', type: 'support' as FormType },
-                  { label: 'Cloud Backup Guidance', href: '/cloud/nosky' },
+                  { label: 'Cloud Backup Guidance', href: '/cloud/backup-for-tally' },
                   { label: 'Corporate Training', href: '/services/corporate-training' },
                 ].map((link) =>
                   'href' in link ? (

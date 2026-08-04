@@ -11,7 +11,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/cloud',
     '/cloud/aws',
     '/cloud/windows',
-    '/cloud/nosky',
+    '/cloud/backup-for-tally',
     '/cloud/tallycloudaccess',
     '/colour',
     '/contact',

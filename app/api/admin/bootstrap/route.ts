@@ -131,7 +131,7 @@ export async function GET() {
     },
     {
         question: "Can you help with Tally cloud hosting and setup?",
-        answer: "Absolutely. We offer Tally on Cloud solutions including AWS-hosted Tally, Windows Tally Cloud, and NoSky cloud backup. We handle the complete setup, security configuration, user management, and provide 24/7 access to your Tally data from any device, anywhere.",
+        answer: "Absolutely. We offer Tally on Cloud solutions including AWS-hosted Tally, Windows Tally Cloud, and Backup for Tally cloud backup. We handle the complete setup, security configuration, user management, and provide 24/7 access to your Tally data from any device, anywhere.",
         category: "Services"
     },
     {

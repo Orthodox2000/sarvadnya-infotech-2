@@ -53,7 +53,7 @@ const demoHeroData = [
     layout: "ecosystem" as const,
     features: [
       { text: "Official AWS Hosting" },
-      { text: "NoSky Cloud Performance" },
+      { text: "Backup for Tally Cloud Performance" },
       { text: "24/7 Remote Access" },
       { text: "Automated Server Backup" }
     ],

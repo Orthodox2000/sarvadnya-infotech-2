@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { saveProblemReport } from '@/lib/mongodb-utils';
+import { sendEmailDirect } from '@/lib/email-queue';
 
 const allowedIssueTypes = new Set([
   'broken-link',
@@ -46,7 +47,24 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Please provide a valid email address' }, { status: 400 });
     }
 
-    await saveProblemReport(data);
+    const result = await saveProblemReport(data);
+
+    // Route an internal copy to the admin-configured "Report a Problem"
+    // destination receiver (opt-in via the admin email config → DB). No
+    // configured recipient = saved + visible in the admin panel, no email.
+    const insertedId = result.insertedId?.toString?.() || crypto.randomUUID();
+    await sendEmailDirect({
+      jobKey: `problem-report-${insertedId}`,
+      formType: 'general',
+      destination: 'report-problem',
+      submission: {
+        name: data.name,
+        email: data.email,
+        contact: data.contact,
+        service: data.issueType,
+        description: data.pageUrl ? `${data.pageUrl}\n\n${data.description}` : data.description,
+      },
+    });
 
     return NextResponse.json({ message: 'Problem report submitted successfully' });
   } catch (error) {

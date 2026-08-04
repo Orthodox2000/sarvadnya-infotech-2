@@ -1,0 +1,48 @@
+name: Email Send Retry
+
+# Retries failed internal email sends. Vercel's Hobby plan allows only 2 cron
+# jobs at once-per-day, so this GitHub Actions schedule is the free replacement:
+# it hits the same admin retry endpoint (/api/admin/email/process) that a Vercel
+# cron would. New form emails are sent DIRECTLY on submission and never need
+# this — it only drains the small set of sends that failed once.
+#
+# Secrets required in the repo (Settings > Secrets and variables > Actions):
+#   APP_URL      - the deployed site URL, e.g. https://www.sarvadnyainfotech.com
+#   CRON_SECRET  - must match the CRON_SECRET variable in the Vercel project env
+on:
+  schedule:
+    - cron: '*/5 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  retry-failed-sends:
+    name: Retry failed email sends
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Call the email retry endpoint
+        env:
+          APP_URL: ${{ secrets.APP_URL }}
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+        run: |
+          if [ -z "$APP_URL" ] || [ -z "$CRON_SECRET" ]; then
+            echo "::warning::APP_URL and CRON_SECRET repo secrets are not configured. Skipping email retry."
+            exit 0
+          fi
+          code=$(curl -s -o /tmp/email-retry.json -w "%{http_code}" \
+            -X POST "$APP_URL/api/admin/email/process?batch=10" \
+            -H "Authorization: Bearer $CRON_SECRET")
+          echo "HTTP $code"
+          cat /tmp/email-retry.json
+          echo
+          if [ "$code" = "401" ]; then
+            echo "::error::CRON_SECRET was rejected by the email retry endpoint."
+            exit 1
+          fi
+          if [ "$code" != "200" ]; then
+            echo "::error::Email retry endpoint returned HTTP $code."
+            exit 1
+          fi

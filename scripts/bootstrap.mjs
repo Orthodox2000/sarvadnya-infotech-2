@@ -81,7 +81,7 @@ async function run() {
         layout: "ecosystem",
         features: [
           { text: "Official AWS Hosting" },
-          { text: "NoSky Cloud Performance" },
+          { text: "Backup for Tally Cloud Performance" },
           { text: "24/7 Remote Access" },
           { text: "Automated Server Backup" }
         ],
@@ -190,7 +190,7 @@ async function run() {
       },
       {
           question: "Can you help with Tally cloud hosting and setup?",
-          answer: "Absolutely. We offer Tally on Cloud solutions including AWS-hosted Tally, Windows Tally Cloud, and NoSky cloud backup. We handle the complete setup, security configuration, user management, and provide 24/7 access to your Tally data from any device, anywhere.",
+          answer: "Absolutely. We offer Tally on Cloud solutions including AWS-hosted Tally, Windows Tally Cloud, and Backup for Tally cloud backup. We handle the complete setup, security configuration, user management, and provide 24/7 access to your Tally data from any device, anywhere.",
           category: "Services"
       },
       {
@@ -267,11 +267,11 @@ async function run() {
       {
         title: "Cloud Products",
         iconName: "cloud",
-        description: "Secure, 24/7 remote access with Official AWS and NoSky infrastructure.",
+        description: "Secure, 24/7 remote access with Official AWS and Backup for Tally infrastructure.",
         links: [
           { label: "AWS Cloud Server", href: "/cloud/aws" },
           { label: "Windows VM", href: "/cloud/windows" },
-          { label: "NoSky Backup", href: "/cloud/nosky" }
+          { label: "Backup for Tally", href: "/cloud/backup-for-tally" }
         ],
         theme: {
           bg: "bg-blue-50",

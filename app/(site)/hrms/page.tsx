@@ -56,7 +56,6 @@ export default function HRMSPage() {
   const [activeNav, setActiveNav] = useState('overview');
   const [openFaq, setOpenFaq] = useState<number | null>(0);
   const [stickyNav, setStickyNav] = useState(false);
-  const [showPricing, setShowPricing] = useState(false);
   const [formName, setFormName] = useState('');
   const [formEmail, setFormEmail] = useState('');
   const [formPhone, setFormPhone] = useState('');
@@ -499,67 +498,32 @@ export default function HRMSPage() {
               </form>
             </section>
 
-            {/* Pricing */}
+            {/* Pricing - Contact Sales */}
             <section id="pricing" className="scroll-mt-16 bg-white rounded-xl border border-slate-200 p-6">
               <h2 className="text-lg font-bold text-slate-900 mb-1">HRMS Pricing</h2>
-              <p className="text-sm text-slate-500 mb-5">View pricing plans for HRMS.</p>
-              <button
-                type="button"
-                onClick={() => setShowPricing(!showPricing)}
-                className="inline-flex items-center gap-2 rounded-lg px-5 py-2.5 text-xs font-bold uppercase tracking-wider text-white shadow-lg transition-all hover:scale-[1.02]"
-                style={{ backgroundColor: BRAND_PRIMARY }}
-              >
-                {showPricing ? 'Hide Pricing' : 'View Price'}
-                <svg className={`w-3.5 h-3.5 transition-transform duration-200 ${showPricing ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-                </svg>
-              </button>
-              {showPricing && (
-                <div className="mt-5 overflow-x-auto rounded-lg border border-slate-200">
-                  <table className="w-full text-left text-sm">
-                    <thead>
-                      <tr className="bg-slate-50 text-[10px] font-bold uppercase tracking-wider text-slate-500">
-                        <th className="px-4 py-3">Plan</th>
-                        <th className="px-4 py-3">Validity</th>
-                        <th className="px-4 py-3">Price (INR)</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr className="border-b border-slate-100">
-                        <td className="px-4 py-3 font-bold text-slate-900">Starter</td>
-                        <td className="px-4 py-3 text-slate-600">Per Month</td>
-                        <td className="px-4 py-3 font-bold" style={{ color: BRAND_PRIMARY }}>Starter Plan — Contact Sales</td>
-                      </tr>
-                      <tr className="border-b border-slate-100">
-                        <td className="px-4 py-3 font-bold text-slate-900">Business</td>
-                        <td className="px-4 py-3 text-slate-600">Per Month</td>
-                        <td className="px-4 py-3 font-bold" style={{ color: BRAND_PRIMARY }}>Business Plan — Contact Sales</td>
-                      </tr>
-                      <tr>
-                        <td className="px-4 py-3 font-bold text-slate-900">Enterprise</td>
-                        <td className="px-4 py-3 text-slate-600">Custom</td>
-                        <td className="px-4 py-3 font-bold" style={{ color: BRAND_PRIMARY }}>Enterprise Plan — Contact Sales</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                  <div className="px-4 py-3 bg-slate-50 border-t border-slate-200">
-                    <p className="text-[11px] text-slate-500">
-                      Prices are subject to change. Contact our sales team for the latest pricing and discounts.
-                    </p>
-                    <button
-                      type="button"
-                      onClick={() => openModal('quote', 'HRMS', 'Please share pricing details for HRMS.')}
-                      className="mt-2 inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-[10px] font-bold uppercase tracking-wider text-white transition-all hover:scale-[1.02]"
-                      style={{ backgroundColor: BRAND_PRIMARY }}
-                    >
-                      Get Custom Quote
-                      <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                      </svg>
-                    </button>
-                  </div>
+              <p className="text-sm text-slate-500 mb-5">Complete human resource management for growing businesses.</p>
+              <div className="rounded-lg border border-slate-200 p-6 text-center">
+                <div className="w-12 h-12 mx-auto rounded-full flex items-center justify-center mb-4" style={{ backgroundColor: `${BRAND_PRIMARY}10` }}>
+                  <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke={BRAND_PRIMARY} strokeWidth="2">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                  </svg>
                 </div>
-              )}
+                <h3 className="text-base font-bold text-slate-900 mb-2">Contact Sales for Pricing</h3>
+                <p className="text-sm text-slate-500 mb-4 max-w-md mx-auto">
+                  HRMS pricing varies based on your employee count and features. Get in touch with our team for a custom quote.
+                </p>
+                <button
+                  type="button"
+                  onClick={() => openModal('quote', 'HRMS', 'Please share pricing details for HRMS.')}
+                  className="inline-flex items-center gap-1.5 rounded-lg px-5 py-2.5 text-xs font-bold uppercase tracking-wider text-white transition-all hover:scale-[1.02]"
+                  style={{ backgroundColor: BRAND_PRIMARY }}
+                >
+                  Contact Sales
+                  <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                  </svg>
+                </button>
+              </div>
             </section>
 
           </div>

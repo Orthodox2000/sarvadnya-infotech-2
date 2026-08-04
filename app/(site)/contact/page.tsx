@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from "react";
-import Image from "next/image";
+import { Phone, Mail, Clock, MapPin, ArrowRight, ChevronDown } from "lucide-react";
 import Footer from "../../components/Footer";
 
 export type SiteSettings = {
@@ -18,15 +18,26 @@ export type SiteSettings = {
   map_iframe_url: string;
 };
 
+const serviceSectors = [
+  "TallyPrime",
+  "Tally Certified Partner",
+  "HRMS / Payroll",
+  "Cloud / Hosting",
+  "AWS / Windows Server",
+  "Custom Module",
+  "Annual Maintenance",
+  "Other",
+];
+
 export default function ContactPage() {
   const [settings, setSettings] = useState<SiteSettings | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [formData, setFormData] = useState({
-    name: '',
+    firstName: '',
     email: '',
-    contact: '',
-    service: '',
+    phone: '',
+    serviceSector: '',
     message: ''
   });
 
@@ -43,7 +54,7 @@ export default function ContactPage() {
 
     setFormData(prev => ({
       ...prev,
-      service: prev.service || service,
+      serviceSector: prev.serviceSector || service,
       message: prev.message || message
     }));
   }, []);
@@ -51,13 +62,16 @@ export default function ContactPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
+
     try {
       const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          ...formData,
+          name: formData.firstName,
+          email: formData.email,
+          contact: formData.phone,
+          service: formData.serviceSector,
           formType: 'general',
           description: formData.message
         })
@@ -67,7 +81,7 @@ export default function ContactPage() {
       if (data.error) throw new Error(data.error);
 
       setIsSuccess(true);
-      setFormData({ name: '', email: '', contact: '', service: '', message: '' });
+      setFormData({ firstName: '', email: '', phone: '', serviceSector: '', message: '' });
       setTimeout(() => setIsSuccess(false), 5000);
     } catch (err) {
       console.error('Submission error:', err);
@@ -98,22 +112,20 @@ export default function ContactPage() {
   };
 
   const supportPhone = settings?.support_phone || process.env.NEXT_PUBLIC_SUPPORT_PHONE || "9821309060";
-  const whatsappPhone = settings?.whatsapp_phone || (settings as any)?.whatsapp_phone || supportPhone;
+  const whatsappPhone = settings?.whatsapp_phone || supportPhone;
   const supportEmail = settings?.support_email || process.env.NEXT_PUBLIC_SUPPORT_EMAIL || "info@sarvadnyainfotech.com";
-  
-  // Helper to extract src from iframe tag if provided
+
   const getMapSrc = (input: string) => {
     if (!input || typeof input !== 'string') return "";
     const trimmed = input.trim();
     if (trimmed.includes('<iframe')) {
-        // Find src attribute anywhere in the HTML string
         const match = trimmed.match(/src=["']([^"']+)["']/i);
         return match ? match[1] : "";
     }
     return trimmed;
   };
 
-  const mapSrc = getMapSrc(settings?.map_iframe_url || process.env.NEXT_PUBLIC_MAP_IFRAME_URL || "");
+  const mapSrc = getMapSrc(settings?.map_iframe_url || process.env.NEXT_PUBLIC_MAP_IFRAME_URL || "") || "https://maps.google.com/maps?q=Kuberje%20Complex%2C%20Belapur%2C%20Navi%20Mumbai%2C%20MH&t=&z=15&ie=UTF8&iwloc=&output=embed";
 
   const socialMedia = [
     { name: 'WhatsApp', handle: whatsappPhone, url: `https://wa.me/${whatsappPhone.replace(/\D/g, '')}`, iconColor: 'text-[#25D366]', bgColor: 'bg-[#25D366]/10' },
@@ -123,70 +135,210 @@ export default function ContactPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-white text-slate-900">
-      {/* Centered Tighter Hero Section */}
-      <section 
-        className="bg-white pt-8 pb-8 md:pt-12 md:pb-12 px-6 text-center relative overflow-hidden flex flex-col items-center border-b border-[#316852]/10"
-      >
-        <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-40">
-          <div className="absolute top-0 right-0 w-[70%] h-[70%] bg-white/10 blur-[130px] -mr-32 -mt-32" />
-          <div className="absolute bottom-0 left-0 w-[50%] h-[50%] bg-green-200/20 blur-[110px] -ml-24 -mb-24" />
-        </div>
-        
-        <div className="max-w-4xl mx-auto relative z-10 w-full flex flex-col items-center">
-          <div className="inline-flex items-center gap-1.5 px-2 py-1 rounded-full bg-slate-900/5 border border-slate-900/10 text-slate-500 text-[10px] font-bold uppercase tracking-[0.2em] mb-4 backdrop-blur-sm">
-            <span className="flex h-1 w-1 rounded-full bg-slate-400"></span>
+    <div className="min-h-screen w-full bg-[#FAFAF7] font-inter text-[#14291B]">
+      {/* Header */}
+      <section className="px-6 pt-16 pb-10 md:pt-24 md:pb-14 text-center bg-[#FAFAF7]">
+        <div className="max-w-3xl mx-auto">
+          <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#14291B]/5 border border-[#14291B]/10 text-[#14291B] text-[10px] font-bold uppercase tracking-[0.2em] mb-5">
+            <span className="h-1.5 w-1.5 rounded-full bg-[#316852]" />
             Contact Us
-          </div>
-          <div className="relative inline-block mb-4 text-center">
-            <h1 className="text-4xl md:text-6xl font-black text-slate-900 leading-tight tracking-tight">
-              Get in <span className="text-transparent bg-clip-text bg-linear-to-r from-[#316852] via-[#4a9e6a] to-[#316852] drop-shadow-[0_2px_15px_rgba(49,104,82,0.3)]">Touch</span>
-            </h1>
-          </div>
-          <p className="text-slate-600/80 text-[10px] md:text-sm max-w-xl mx-auto leading-relaxed font-semibold text-center">
+          </span>
+          <h1 className="font-playfair text-4xl md:text-6xl font-semibold tracking-tight text-[#14291B] leading-tight">
+            Let&apos;s talk about <span className="italic text-[#316852]">your business</span>
+          </h1>
+          <p className="mt-4 text-[#5A5F5A] text-sm md:text-base font-medium leading-relaxed max-w-xl mx-auto">
             Have questions about Tally? Need a custom module? Our team is here to help you optimize your business workflows.
           </p>
         </div>
       </section>
 
-      <section className="max-w-7xl mx-auto px-6 py-12">
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
-          {supportPhone.split(',').map((num, i) => (
-            <a 
-              key={i}
-              href={`tel:${num.trim()}`}
-              className="w-full sm:w-auto px-8 py-4 bg-[#1e4d3a] text-white rounded-full font-bold shadow-lg hover:scale-105 transition-transform flex items-center justify-center gap-2 text-sm"
-            >
-              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-              </svg>
-              {formatPhoneDisplay(num.trim())}
-            </a>
-          ))}
-          <a 
-            href={`mailto:${supportEmail}`}
-            className="w-full sm:w-auto px-8 py-4 bg-white text-slate-900 border border-slate-200 rounded-full font-bold shadow-sm hover:bg-slate-50 transition-colors flex items-center justify-center gap-2 text-sm"
+      {/* Contact Band */}
+      <section className="bg-[#14291B] text-white">
+        <div className="max-w-7xl mx-auto px-6 py-8 md:py-10 flex flex-col md:flex-row items-center justify-center gap-6 md:gap-10">
+          <a
+            href={`tel:${supportPhone.split(',')[0].trim()}`}
+            className="flex items-center gap-4 group"
           >
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-            </svg>
-            Email Support
+            <span className="w-11 h-11 rounded-full bg-white/10 flex items-center justify-center shrink-0 group-hover:bg-[#316852] transition-colors">
+              <Phone className="w-5 h-5" />
+            </span>
+            <span>
+              <span className="block text-[10px] uppercase tracking-[0.2em] text-white/50 font-bold">Call Us</span>
+              <span className="block text-base md:text-lg font-bold mt-0.5">{formatPhoneDisplay(supportPhone.split(',')[0].trim())}</span>
+            </span>
           </a>
+          <span className="hidden md:block w-px h-10 bg-white/15" />
+          <a
+            href={`mailto:${supportEmail}`}
+            className="flex items-center gap-4 group"
+          >
+            <span className="w-11 h-11 rounded-full bg-white/10 flex items-center justify-center shrink-0 group-hover:bg-[#316852] transition-colors">
+              <Mail className="w-5 h-5" />
+            </span>
+            <span>
+              <span className="block text-[10px] uppercase tracking-[0.2em] text-white/50 font-bold">Email Support</span>
+              <span className="block text-base md:text-lg font-bold mt-0.5">{supportEmail}</span>
+            </span>
+          </a>
+          <span className="hidden md:block w-px h-10 bg-white/15" />
+          <div className="flex items-center gap-4 group">
+            <span className="w-11 h-11 rounded-full bg-white/10 flex items-center justify-center shrink-0 transition-colors group-hover:bg-[#316852]">
+              <Clock className="w-5 h-5" />
+            </span>
+            <span>
+              <span className="block text-[10px] uppercase tracking-[0.2em] text-white/50 font-bold">Support Hours</span>
+              <span className="block text-sm font-bold mt-0.5">Mon–Sat: 10AM – 7PM</span>
+            </span>
+          </div>
         </div>
-        <div className="pt-4 flex items-center justify-center gap-2 text-[#316852] font-bold uppercase tracking-wider text-xs">
-          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-          Mon-Sat: 10am - 7:00pm (Support Call)
+      </section>
+
+      {/* Form + Location */}
+      <section className="max-w-7xl mx-auto px-6 py-14 md:py-20">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 items-start">
+          {/* Form Column */}
+          <div className="bg-white rounded-[2rem] border border-[#14291B]/10 p-8 md:p-12 shadow-[0_20px_60px_rgba(20,41,27,0.06)]">
+            <h2 className="font-playfair text-3xl md:text-4xl font-semibold tracking-tight">
+              Send us a <span className="italic text-[#316852]">request</span>
+            </h2>
+            <p className="mt-2 text-sm text-[#5A5F5A] font-medium">
+              Fill out the form and our team will get back to you within 15 minutes.
+            </p>
+
+            {isSuccess ? (
+              <div className="mt-10 py-12 text-center">
+                <div className="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-bold text-[#14291B] mb-1">Request Received!</h3>
+                <p className="text-sm text-[#5A5F5A] font-medium">Our team will call you back within 15 minutes.</p>
+              </div>
+            ) : (
+              <form onSubmit={handleSubmit} className="mt-10 space-y-8">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-8">
+                  <div>
+                    <label className="block text-[10px] font-bold uppercase tracking-[0.2em] text-[#14291B]/40 mb-1.5">First Name</label>
+                    <input
+                      required
+                      type="text"
+                      value={formData.firstName}
+                      onChange={e => setFormData({...formData, firstName: e.target.value})}
+                      placeholder="e.g. John Doe"
+                      className="w-full bg-transparent border-b border-[#14291B]/20 py-2.5 text-sm text-[#14291B] placeholder:text-[#14291B]/30 focus:outline-none focus:border-[#316852] transition-colors"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[10px] font-bold uppercase tracking-[0.2em] text-[#14291B]/40 mb-1.5">Email Address</label>
+                    <input
+                      required
+                      type="email"
+                      value={formData.email}
+                      onChange={e => setFormData({...formData, email: e.target.value})}
+                      placeholder="john@example.com"
+                      className="w-full bg-transparent border-b border-[#14291B]/20 py-2.5 text-sm text-[#14291B] placeholder:text-[#14291B]/30 focus:outline-none focus:border-[#316852] transition-colors"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[10px] font-bold uppercase tracking-[0.2em] text-[#14291B]/40 mb-1.5">Phone Number</label>
+                    <input
+                      required
+                      type="tel"
+                      value={formData.phone}
+                      onChange={e => setFormData({...formData, phone: e.target.value.replace(/[^0-9+]/g, '')})}
+                      placeholder="+91 00000 00000"
+                      className="w-full bg-transparent border-b border-[#14291B]/20 py-2.5 text-sm text-[#14291B] placeholder:text-[#14291B]/30 focus:outline-none focus:border-[#316852] transition-colors"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[10px] font-bold uppercase tracking-[0.2em] text-[#14291B]/40 mb-1.5">Service Sector</label>
+                    <div className="relative">
+                      <select
+                        value={formData.serviceSector}
+                        onChange={e => setFormData({...formData, serviceSector: e.target.value})}
+                        className="w-full appearance-none bg-transparent border-b border-[#14291B]/20 py-2.5 text-sm text-[#14291B] focus:outline-none focus:border-[#316852] transition-colors cursor-pointer"
+                      >
+                        <option value="">Select a service</option>
+                        {serviceSectors.map(s => (
+                          <option key={s} value={s}>{s}</option>
+                        ))}
+                      </select>
+                      <ChevronDown className="w-4 h-4 absolute right-0 top-1/2 -translate-y-1/2 pointer-events-none text-[#14291B]/40" />
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-[10px] font-bold uppercase tracking-[0.2em] text-[#14291B]/40 mb-1.5">Message</label>
+                  <textarea
+                    required
+                    value={formData.message}
+                    onChange={e => setFormData({...formData, message: e.target.value})}
+                    placeholder="How can we help you today?"
+                    rows={4}
+                    className="w-full bg-transparent border-b border-[#14291B]/20 py-2.5 text-sm text-[#14291B] placeholder:text-[#14291B]/30 focus:outline-none focus:border-[#316852] transition-colors resize-none"
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="group relative w-full py-4 bg-[#14291B] text-white rounded-full font-bold text-xs uppercase tracking-[0.2em] shadow-[0_20px_40px_rgba(20,41,27,0.25)] hover:bg-[#316852] hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-3 disabled:opacity-70"
+                >
+                  {isSubmitting ? (
+                    <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  ) : (
+                    <>
+                      Send Request Now
+                      <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+                    </>
+                  )}
+                </button>
+              </form>
+            )}
+          </div>
+
+          {/* Location Column */}
+          <div className="bg-[#14291B] text-white rounded-[2rem] p-8 relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-40 h-40 bg-[#316852]/20 rounded-full blur-[100px] -mr-16 -mt-16" />
+            <div className="relative z-10">
+              <div className="flex items-center gap-2 text-white/50 text-[10px] uppercase tracking-[0.2em] font-bold mb-5">
+                <MapPin className="w-4 h-4" />
+                Our Location
+              </div>
+              <h3 className="font-playfair text-2xl font-semibold mb-3">Visit Our Office</h3>
+              <p className="text-sm text-white/70 font-medium leading-relaxed">
+                {settings?.office_address || "Sarvadnya Infotech LLP, Business Hub, Pune, Maharashtra, India"}
+              </p>
+              <div className="mt-6 flex items-center gap-2">
+                <span className="text-2xl font-bold">4.9</span>
+                <span className="text-amber-400 tracking-widest text-sm">★★★★★</span>
+                <span className="text-xs text-white/50 font-medium">(34 reviews)</span>
+              </div>
+              <div className="mt-6 rounded-[1.5rem] overflow-hidden border border-white/10 relative h-56 bg-slate-100">
+                <iframe
+                  src={mapSrc}
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  allowFullScreen={false}
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  className="absolute inset-0"
+                />
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
       {/* Social Media Grid */}
-      <section className="pb-20 px-6 sm:px-12 lg:px-24 max-w-7xl mx-auto animate-rise-up" style={{ animationDelay: '200ms' }}>
+      <section className="pb-20 px-6 sm:px-12 lg:px-24 max-w-7xl mx-auto">
         <h2 className="text-xl font-bold text-[#316852] mb-6 text-center md:text-left">Connect with Us</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {socialMedia.map((social) => (
-            <a 
+            <a
               key={social.name}
               href={social.url}
               className={`p-5 min-h-20 rounded-2xl ${social.bgColor} border border-transparent hover:border-slate-200 transition-all duration-300 group shadow-sm flex items-center gap-4`}
@@ -203,173 +355,6 @@ export default function ContactPage() {
               </div>
             </a>
           ))}
-        </div>
-      </section>
-
-      {/* Detailed Contact Section & Support Form */}
-      <section className="pb-20 px-6 max-w-7xl mx-auto animate-rise-up" style={{ animationDelay: '400ms' }}>
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12">
-          {/* Support Form */}
-          <div className="lg:col-span-3 relative overflow-hidden bg-white p-8 md:p-10 rounded-[2.5rem] shadow-[0_40px_100px_rgba(49,104,82,0.1)] text-slate-900 border border-slate-100 group">
-            {/* Decorative Background Elements */}
-            <div className="absolute top-0 right-0 w-96 h-96 bg-[#E8F5E9] rounded-full blur-[120px] opacity-60 -mr-48 -mt-48 transition-transform duration-1000 group-hover:scale-110" />
-            <div className="absolute bottom-0 left-0 w-64 h-64 bg-[#f0f7f3] rounded-full blur-[100px] opacity-60 -ml-32 -mb-32 transition-transform duration-1000 group-hover:scale-110" />
-            
-            <div className="relative z-10">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#E8F5E9] border border-[#1e4d3a]/20 text-[#316852] text-[10px] font-bold uppercase tracking-widest mb-4">
-                <span className="flex h-2 w-2 rounded-full bg-[#1e4d3a] animate-pulse"></span>
-                Priority Support
-              </div>
-              <h2 className="text-3xl md:text-4xl font-black mb-4 tracking-tight leading-tight text-[#316852]">
-                Request a <span className="text-[#1e4d3a]">Callback</span>
-              </h2>
-              <p className="text-slate-500 mb-8 leading-relaxed text-sm max-w-lg font-medium">
-                Certified experts will call you back within <span className="text-[#1e4d3a] font-bold underline decoration-[#1e4d3a]/30 underline-offset-4">15 minutes</span>.
-              </p>
-              
-              {isSuccess ? (
-                <div className="py-8 sm:py-12 text-center animate-in fade-in zoom-in-95 duration-500">
-                  <div className="w-16 h-16 sm:w-20 sm:h-20 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6 shadow-inner">
-                    <svg className="w-8 h-8 sm:w-10 sm:h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" />
-                    </svg>
-                  </div>
-                  <h3 className="text-xl sm:text-2xl font-black text-[#316852] mb-2">Request Received!</h3>
-                  <p className="text-slate-500 font-medium">Our team will call you back within 15 minutes.</p>
-                </div>
-              ) : (
-                <form onSubmit={handleSubmit} className="sm:space-y-5 space-y-4">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
-                    <div className="space-y-1.5">
-                      <label className="text-[10px] font-bold uppercase tracking-widest text-slate-400 ml-1">Full Name</label>
-                      <input
-                        required
-                        type="text"
-                        value={formData.name}
-                        onChange={e => setFormData({...formData, name: e.target.value})}
-                        placeholder="e.g. John Doe"
-                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 sm:py-3 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#316852]/20 focus:border-[#316852] transition-all shadow-sm"
-                      />
-                    </div>
-                    <div className="space-y-1.5">
-                      <label className="text-[10px] font-bold uppercase tracking-widest text-slate-400 ml-1">Email Address</label>
-                      <input
-                        required
-                        type="email"
-                        value={formData.email}
-                        onChange={e => setFormData({...formData, email: e.target.value})}
-                        placeholder="john@example.com"
-                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 sm:py-3 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#316852]/20 focus:border-[#316852] transition-all shadow-sm"
-                      />
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
-                    <div className="space-y-1.5">
-                      <label className="text-[10px] font-bold uppercase tracking-widest text-slate-400 ml-1">Phone Number</label>
-                      <input
-                        required
-                        type="tel"
-                        value={formData.contact}
-                        onChange={e => setFormData({...formData, contact: e.target.value.replace(/[^0-9+]/g, '')})}
-                        placeholder="+91 00000 00000"
-                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 sm:py-3 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#316852]/20 focus:border-[#316852] transition-all shadow-sm"
-                      />
-                    </div>
-                    <div className="space-y-1.5">
-                      <label className="text-[10px] font-bold uppercase tracking-widest text-slate-400 ml-1">Service Needed</label>
-                      <input
-                        type="text"
-                        value={formData.service}
-                        onChange={e => setFormData({...formData, service: e.target.value})}
-                        placeholder="e.g. TallyPrime Upgrade"
-                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 sm:py-3 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#316852]/20 focus:border-[#316852] transition-all shadow-sm"
-                      />
-                    </div>
-                  </div>
-                  <div className="space-y-1.5">
-                    <label className="text-[10px] font-bold uppercase tracking-widest text-slate-400 ml-1">Message</label>
-                    <textarea
-                      value={formData.message}
-                      onChange={e => setFormData({...formData, message: e.target.value})}
-                      placeholder="How can we help you today?"
-                      rows={3}
-                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 sm:py-3 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#316852]/20 focus:border-[#316852] resize-none transition-all shadow-sm"
-                    />
-                  </div>
-                  <button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className="group relative w-full mt-1 sm:mt-2 py-3.5 sm:py-4 bg-[#1e4d3a] text-white rounded-xl font-black text-xs uppercase tracking-[0.2em] shadow-[0_20px_40px_rgba(30,77,58,0.25)] hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-3 overflow-hidden disabled:opacity-70"
-                  >
-                    {isSubmitting ? (
-                      <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                    ) : (
-                      <>
-                        <span className="relative z-10">Send Request Now</span>
-                        <svg className="w-4 h-4 relative z-10 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                        </svg>
-                      </>
-                    )}
-                    <div className="absolute inset-0 bg-linear-to-r from-[#1e4d3a] via-[#316852] to-[#1e4d3a] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  </button>
-                </form>
-              )}
-              
-              <div className="mt-6 pt-6 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4">
-                <p className="text-[9px] text-slate-400 font-medium">
-                  🔒 Your data is secure with Sarvadnya Infotech LLP.
-                </p>
-                <div className="flex items-center gap-2">
-                  <div className="flex -space-x-2">
-                    {[1,2,3].map(i => (
-                      <div key={i} className="w-5 h-5 rounded-full border-2 border-white bg-slate-100 overflow-hidden shadow-sm">
-                        <Image src={`/sa.png`} alt="Support" width={20} height={20} className="object-cover" />
-                      </div>
-                    ))}
-                  </div>
-                  <span className="text-[9px] text-slate-500 font-bold">10+ Support Team Online</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Map Column */}
-          <div className="lg:col-span-2 flex flex-col gap-6">
-            <div className="bg-white p-6 rounded-[2.5rem] border border-slate-100 shadow-sm h-full flex flex-col">
-               <h3 className="text-lg font-bold text-[#316852] mb-4 flex items-center gap-2">
-                  <svg className="w-5 h-5 text-[#1e4d3a]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                  </svg>
-                  Our Location
-               </h3>
-               <div className="flex-1 min-h-75 rounded-3xl overflow-hidden border border-slate-100 relative group">
-                  {mapSrc ? (
-                    <iframe 
-                      src={mapSrc}
-                      width="100%" 
-                      height="100%" 
-                      style={{ border: 0 }} 
-                      allowFullScreen={false} 
-                      loading="lazy" 
-                      referrerPolicy="no-referrer-when-downgrade"
-                      className="absolute inset-0"
-                    ></iframe>
-                  ) : (
-                    <div className="absolute inset-0 bg-slate-50 flex items-center justify-center text-slate-400 text-xs font-bold uppercase tracking-widest">
-                      Map Not Configured
-                    </div>
-                  )}
-               </div>
-               <div className="mt-4 p-4 bg-[#f0f7f3] rounded-2xl border border-[#E8F5E9]">
-                  <p className="text-[10px] font-black uppercase tracking-widest text-[#1e4d3a] mb-1">Office Address</p>
-                  <p className="text-xs text-[#316852] leading-relaxed font-medium">
-                    {settings?.office_address || "Sarvadnya Infotech LLP, Business Hub, Pune, Maharashtra, India"}
-                  </p>
-               </div>
-            </div>
-          </div>
         </div>
       </section>
 

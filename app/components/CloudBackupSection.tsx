@@ -17,8 +17,8 @@ const CloudBackupSection = () => {
       tag: "Scalable"
     },
     {
-      title: "NoSky Performance",
-      desc: "Optimized Tally hosting on NoSky for lightning-fast speeds and zero latency.",
+      title: "Backup for Tally Performance",
+      desc: "Optimized Tally hosting for lightning-fast speeds and zero latency.",
       icon: (
         <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
@@ -127,12 +127,12 @@ const CloudBackupSection = () => {
                 </div>
               </div>
 
-              {/* NoSky Satellite */}
+              {/* Backup for Tally Satellite */}
               <div className="absolute -bottom-8 right-8 w-[45%] h-[25%] rounded-[2rem] overflow-hidden border-2 border-white shadow-2xl z-30 bg-[#131921] p-6 transform -rotate-2 hover:rotate-0 transition-transform duration-700 flex items-center justify-center">
                  <div className="relative w-full h-full">
                     <Image 
                       src="/hero/brand-nosky-1779439419186.webp" 
-                      alt="NoSky Cloud" 
+                      alt="Backup for Tally Cloud" 
                       fill 
                       className="object-contain"
                     />

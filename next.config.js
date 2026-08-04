@@ -14,6 +14,15 @@ const csp = [
 
 const nextConfig = {
   allowedDevOrigins: ['26.186.62.193','192.168.7.7','192.168.1.245'],
+  async redirects() {
+    return [
+      {
+        source: '/cloud/nosky',
+        destination: '/cloud/backup-for-tally',
+        permanent: true,
+      },
+    ];
+  },
   images: {
     remotePatterns: [
       {

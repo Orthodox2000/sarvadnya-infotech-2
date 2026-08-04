@@ -36,7 +36,7 @@ export interface EmailDiagnostic {
   destinations: Record<string, string[]>;
 }
 
-export const FORM_TYPES = ['quote', 'enquire', 'support', 'callback', 'demo', 'general'] as const;
+export const FORM_TYPES = ['quote', 'enquire', 'support', 'callback', 'demo', 'general', 'tss-renewal'] as const;
 
 export type FormType = (typeof FORM_TYPES)[number];
 
@@ -50,6 +50,7 @@ const FORM_TYPE_LABELS: Record<string, string> = {
   callback: 'Callback Request',
   demo: 'Demo Request',
   general: 'Contact Request',
+  'tss-renewal': 'TSS Renewal',
 };
 
 export function isValidEmail(value: string): boolean {
@@ -267,17 +268,28 @@ export async function sendInternalFormCopy(
   }
 
   const resend = new Resend(apiKey);
-  const { data, error } = await resend.emails.send({
+  const sendPayload: {
+    from: string;
+    to: string[];
+    subject: string;
+    html: string;
+    replyTo?: string;
+    tags: { name: string; value: string }[];
+  } = {
     from,
     to: recipients,
     subject: getSubject(submission.formType),
     html: buildFormEmailHtml(submission),
-    replyTo: submission.email,
     tags: [
       { name: 'source', value: 'web-form' },
       { name: 'form_type', value: submission.formType || 'general' },
     ],
-  });
+  };
+  // Reply-to points at the enquirer when they gave a real email; enquiry forms
+  // that only collect a phone number skip it so Resend never rejects the send.
+  if (isValidEmail(submission.email)) sendPayload.replyTo = submission.email;
+
+  const { data, error } = await resend.emails.send(sendPayload);
 
   if (error) {
     return { ok: false, recipients, error: error.message || 'Resend send failed' };

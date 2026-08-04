@@ -234,6 +234,16 @@ export async function deleteReview(id: string) {
   return result;
 }
 
+export async function updateReview(id: string, data: any) {
+  const col = await getCollection('reviews');
+  const { _id, ...updateData } = data;
+  const result = await col.updateOne(
+    { _id: new ObjectId(id) },
+    { $set: { ...updateData, updatedAt: new Date() } }
+  );
+  return result;
+}
+
 // Partners helpers
 async function fetchPartners(type?: string) {
   const col = await getCollection('partners');
