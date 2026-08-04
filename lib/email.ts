@@ -48,7 +48,7 @@ const FORM_TYPE_LABELS: Record<string, string> = {
   enquire: 'Product Enquiry',
   support: 'Priority Support',
   callback: 'Callback Request',
-  demo: 'Demo Request',
+  demo: 'Enquiry Request',
   general: 'Contact Request',
   'tss-renewal': 'TSS Renewal',
 };

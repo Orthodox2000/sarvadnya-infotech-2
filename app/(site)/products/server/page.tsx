@@ -502,7 +502,7 @@ export default function TallyServerPage() {
             <section className="bg-white rounded-xl border border-slate-200 p-6">
               <div className="text-center mb-5">
                 <h2 className="text-lg font-bold text-slate-900">Want to test the power of Server?</h2>
-                <p className="text-sm text-slate-500 mt-1">Tell us about your team size, and we can arrange a free 10-day trial of TallyPrime Server to prove how fast your system can be.</p>
+                <p className="text-sm text-slate-500 mt-1">Tell us about your team size, and we can set up a trial of TallyPrime Server to prove how fast your system can be.</p>
               </div>
               <form onSubmit={handleInquirySubmit} className="max-w-xl mx-auto space-y-3">
                 <input

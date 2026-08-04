@@ -177,7 +177,7 @@ export default function MobileAppBizPage() {
               onClick={() => openModal('callback')}
               className="px-7 py-3.5 bg-white text-[#4A6E62] rounded-xl font-black text-xs uppercase tracking-widest hover:bg-emerald-50 transition-all"
             >
-              Start Your Free Trial
+              Start Your Trial
             </button>
             <button
               onClick={() => openModal('enquire')}
