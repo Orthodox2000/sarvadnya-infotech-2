@@ -1,0 +1,16 @@
+# Sarvadnya Infotech LLP — static export routing (cPanel / Apache)
+# With trailingSlash: true, every route is exported as <route>/index.html.
+# mod_dir already serves /services -> /services/, but this fallback makes
+# extension-less deep links resolve cleanly on hard refresh too.
+
+RewriteEngine On
+
+# Never rewrite real files or directories
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Redirect extension-less routes to their trailing-slash folder
+RewriteRule ^(.+)$ /$1/ [R=301,L]
+
+# Custom 404
+ErrorDocument 404 /404.html
