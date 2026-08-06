@@ -6,8 +6,8 @@ import Link from 'next/link';
 import Footer from '../../../components/Footer';
 import UnifiedContactModal, { FormType } from '../../../components/UnifiedContactModal';
 
-const BRAND_PRIMARY = '#316852';
-const BRAND_SECONDARY = '#1e4d3a';
+const BRAND_PRIMARY = '#006569';
+const BRAND_SECONDARY = '#045A57';
 
 const features = [
   { title: 'Automated Tax Compliance', desc: 'Generate tax-ready invoices and automated return files tailored to your local tax laws (like VAT or GST) instantly, keeping you penalty-free.' },
@@ -179,9 +179,9 @@ export default function TallySilverPage() {
         <div className="max-w-7xl mx-auto px-6">
           <div className="py-2.5">
             <ul className="flex items-center gap-1.5 text-[11px] font-medium text-slate-500">
-              <li><Link href="/" className="hover:text-[#316852] transition-colors">Home</Link></li>
+              <li><Link href="/" className="hover:text-[#006569] transition-colors">Home</Link></li>
               <li className="text-slate-300 mx-0.5">/</li>
-              <li><Link href="/products" className="hover:text-[#316852] transition-colors">Products</Link></li>
+              <li><Link href="/products" className="hover:text-[#006569] transition-colors">Products</Link></li>
               <li className="text-slate-300 mx-0.5">/</li>
               <li className="text-slate-800 font-semibold">TallyPrime Silver</li>
             </ul>
@@ -526,7 +526,7 @@ export default function TallySilverPage() {
                 {inquiryStatus && (
                   <p
                     className={`text-[11px] text-center leading-relaxed font-medium ${
-                      inquiryStatus.type === 'success' ? 'text-emerald-600' : 'text-red-500'
+                      inquiryStatus.type === 'success' ? 'text-teal-600' : 'text-red-500'
                     }`}
                   >
                     {inquiryStatus.text}
@@ -584,9 +584,9 @@ export default function TallySilverPage() {
                         <td className="px-4 py-3 text-slate-600">1,458</td>
                         <td className="px-4 py-3">
                           <span className="text-slate-400 line-through mr-1.5">9,558</span>
-                          <span className="font-bold text-emerald-600">8,496/-</span>
-                          <span className="inline-flex items-center rounded-full px-2 py-0.5 ml-2 text-[10px] font-bold bg-emerald-50 text-emerald-600 border border-emerald-200">10% OFF</span>
-                          <p className="text-[10px] text-emerald-600 mt-0.5 font-medium">You save 1,062/-</p>
+                          <span className="font-bold text-teal-600">8,496/-</span>
+                          <span className="inline-flex items-center rounded-full px-2 py-0.5 ml-2 text-[10px] font-bold bg-teal-50 text-teal-600 border border-teal-200">10% OFF</span>
+                          <p className="text-[10px] text-teal-600 mt-0.5 font-medium">You save 1,062/-</p>
                         </td>
                       </tr>
                     </tbody>
@@ -663,7 +663,7 @@ export default function TallySilverPage() {
                 {formMsg && (
                   <p
                     className={`text-[11px] text-center leading-relaxed font-medium ${
-                      formMsg.type === 'success' ? 'text-emerald-600' : 'text-red-500'
+                      formMsg.type === 'success' ? 'text-teal-600' : 'text-red-500'
                     }`}
                   >
                     {formMsg.text}
@@ -697,7 +697,7 @@ export default function TallySilverPage() {
                       {item.name.charAt(0)}
                     </div>
                     <div className="min-w-0 flex-1">
-                      <p className="text-sm font-bold text-slate-700 group-hover:text-[#316852] transition-colors truncate">
+                      <p className="text-sm font-bold text-slate-700 group-hover:text-[#006569] transition-colors truncate">
                         {item.name}
                       </p>
                       <span className="inline-flex items-center gap-1 text-[11px] text-slate-400">
@@ -735,7 +735,7 @@ export default function TallySilverPage() {
                     <Link
                       key={link.label}
                       href={link.href!}
-                      className="block text-sm text-slate-600 hover:text-[#316852] transition-colors py-1"
+                      className="block text-sm text-slate-600 hover:text-[#006569] transition-colors py-1"
                     >
                       {link.label}
                     </Link>
@@ -744,7 +744,7 @@ export default function TallySilverPage() {
                       key={link.label}
                       type="button"
                       onClick={() => openModal(link.type!, 'TallyPrime Silver')}
-                      className="block w-full text-left text-sm text-slate-600 hover:text-[#316852] transition-colors py-1"
+                      className="block w-full text-left text-sm text-slate-600 hover:text-[#006569] transition-colors py-1"
                     >
                       {link.label}
                     </button>

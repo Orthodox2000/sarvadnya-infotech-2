@@ -51,7 +51,7 @@ export default function SupportButton({ initialSettings }: { initialSettings?: a
         <button
           onClick={() => setIsOpen(true)}
           aria-label="Ask AI"
-          className="flex flex-col items-center gap-1.5 bg-[#316852] text-white hover:bg-white hover:text-[#25D366] hover:border-[#25D366]/30 border border-white/20 w-[42px] py-2.5 group shadow-md rounded-l-[8px] transition-colors duration-300"
+          className="flex flex-col items-center gap-1.5 bg-[#006569] text-white hover:bg-white hover:text-[#25D366] hover:border-[#25D366]/30 border border-white/20 w-[42px] py-2.5 group shadow-md rounded-l-[8px] transition-colors duration-300"
         >
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />

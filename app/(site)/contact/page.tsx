@@ -135,16 +135,16 @@ export default function ContactPage() {
   ];
 
   return (
-    <div className="min-h-screen w-full bg-[#FAFAF7] font-inter text-[#14291B]">
+    <div className="min-h-screen w-full bg-[#FAFAF7] font-inter text-[#033B38]">
       {/* Header */}
       <section className="px-6 pt-16 pb-10 md:pt-24 md:pb-14 text-center bg-[#FAFAF7]">
         <div className="max-w-3xl mx-auto">
-          <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#14291B]/5 border border-[#14291B]/10 text-[#14291B] text-[10px] font-bold uppercase tracking-[0.2em] mb-5">
-            <span className="h-1.5 w-1.5 rounded-full bg-[#316852]" />
+          <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#033B38]/5 border border-[#033B38]/10 text-[#033B38] text-[10px] font-bold uppercase tracking-[0.2em] mb-5">
+            <span className="h-1.5 w-1.5 rounded-full bg-[#006569]" />
             Contact Us
           </span>
-          <h1 className="font-playfair text-4xl md:text-6xl font-semibold tracking-tight text-[#14291B] leading-tight">
-            Let&apos;s talk about <span className="italic text-[#316852]">your business</span>
+          <h1 className="font-playfair text-4xl md:text-6xl font-semibold tracking-tight text-[#033B38] leading-tight">
+            Let&apos;s talk about <span className="italic text-[#006569]">your business</span>
           </h1>
           <p className="mt-4 text-[#5A5F5A] text-sm md:text-base font-medium leading-relaxed max-w-xl mx-auto">
             Have questions about Tally? Need a custom module? Our team is here to help you optimize your business workflows.
@@ -153,13 +153,13 @@ export default function ContactPage() {
       </section>
 
       {/* Contact Band */}
-      <section className="bg-[#14291B] text-white">
+      <section className="bg-[#033B38] text-white">
         <div className="max-w-7xl mx-auto px-6 py-8 md:py-10 flex flex-col md:flex-row items-center justify-center gap-6 md:gap-10">
           <a
             href={`tel:${supportPhone.split(',')[0].trim()}`}
             className="flex items-center gap-4 group"
           >
-            <span className="w-11 h-11 rounded-full bg-white/10 flex items-center justify-center shrink-0 group-hover:bg-[#316852] transition-colors">
+            <span className="w-11 h-11 rounded-full bg-white/10 flex items-center justify-center shrink-0 group-hover:bg-[#006569] transition-colors">
               <Phone className="w-5 h-5" />
             </span>
             <span>
@@ -172,7 +172,7 @@ export default function ContactPage() {
             href={`mailto:${supportEmail}`}
             className="flex items-center gap-4 group"
           >
-            <span className="w-11 h-11 rounded-full bg-white/10 flex items-center justify-center shrink-0 group-hover:bg-[#316852] transition-colors">
+            <span className="w-11 h-11 rounded-full bg-white/10 flex items-center justify-center shrink-0 group-hover:bg-[#006569] transition-colors">
               <Mail className="w-5 h-5" />
             </span>
             <span>
@@ -182,7 +182,7 @@ export default function ContactPage() {
           </a>
           <span className="hidden md:block w-px h-10 bg-white/15" />
           <div className="flex items-center gap-4 group">
-            <span className="w-11 h-11 rounded-full bg-white/10 flex items-center justify-center shrink-0 transition-colors group-hover:bg-[#316852]">
+            <span className="w-11 h-11 rounded-full bg-white/10 flex items-center justify-center shrink-0 transition-colors group-hover:bg-[#006569]">
               <Clock className="w-5 h-5" />
             </span>
             <span>
@@ -197,9 +197,9 @@ export default function ContactPage() {
       <section className="max-w-7xl mx-auto px-6 py-14 md:py-20">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 items-start">
           {/* Form Column */}
-          <div className="bg-white rounded-[2rem] border border-[#14291B]/10 p-8 md:p-12 shadow-[0_20px_60px_rgba(20,41,27,0.06)]">
+          <div className="bg-white rounded-[2rem] border border-[#033B38]/10 p-8 md:p-12 shadow-[0_20px_60px_rgba(3,59,56,0.06)]">
             <h2 className="font-playfair text-3xl md:text-4xl font-semibold tracking-tight">
-              Send us a <span className="italic text-[#316852]">request</span>
+              Send us a <span className="italic text-[#006569]">request</span>
             </h2>
             <p className="mt-2 text-sm text-[#5A5F5A] font-medium">
               Fill out the form and our team will get back to you within 15 minutes.
@@ -207,84 +207,84 @@ export default function ContactPage() {
 
             {isSuccess ? (
               <div className="mt-10 py-12 text-center">
-                <div className="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                <div className="w-16 h-16 bg-teal-100 text-teal-600 rounded-full flex items-center justify-center mx-auto mb-4">
                   <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" />
                   </svg>
                 </div>
-                <h3 className="text-xl font-bold text-[#14291B] mb-1">Request Received!</h3>
+                <h3 className="text-xl font-bold text-[#033B38] mb-1">Request Received!</h3>
                 <p className="text-sm text-[#5A5F5A] font-medium">Our team will call you back within 15 minutes.</p>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="mt-10 space-y-8">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-8">
                   <div>
-                    <label className="block text-[10px] font-bold uppercase tracking-[0.2em] text-[#14291B]/40 mb-1.5">First Name</label>
+                    <label className="block text-[10px] font-bold uppercase tracking-[0.2em] text-[#033B38]/40 mb-1.5">First Name</label>
                     <input
                       required
                       type="text"
                       value={formData.firstName}
                       onChange={e => setFormData({...formData, firstName: e.target.value})}
                       placeholder="e.g. John Doe"
-                      className="w-full bg-transparent border-b border-[#14291B]/20 py-2.5 text-sm text-[#14291B] placeholder:text-[#14291B]/30 focus:outline-none focus:border-[#316852] transition-colors"
+                      className="w-full bg-transparent border-b border-[#033B38]/20 py-2.5 text-sm text-[#033B38] placeholder:text-[#033B38]/30 focus:outline-none focus:border-[#006569] transition-colors"
                     />
                   </div>
                   <div>
-                    <label className="block text-[10px] font-bold uppercase tracking-[0.2em] text-[#14291B]/40 mb-1.5">Email Address</label>
+                    <label className="block text-[10px] font-bold uppercase tracking-[0.2em] text-[#033B38]/40 mb-1.5">Email Address</label>
                     <input
                       required
                       type="email"
                       value={formData.email}
                       onChange={e => setFormData({...formData, email: e.target.value})}
                       placeholder="john@example.com"
-                      className="w-full bg-transparent border-b border-[#14291B]/20 py-2.5 text-sm text-[#14291B] placeholder:text-[#14291B]/30 focus:outline-none focus:border-[#316852] transition-colors"
+                      className="w-full bg-transparent border-b border-[#033B38]/20 py-2.5 text-sm text-[#033B38] placeholder:text-[#033B38]/30 focus:outline-none focus:border-[#006569] transition-colors"
                     />
                   </div>
                   <div>
-                    <label className="block text-[10px] font-bold uppercase tracking-[0.2em] text-[#14291B]/40 mb-1.5">Phone Number</label>
+                    <label className="block text-[10px] font-bold uppercase tracking-[0.2em] text-[#033B38]/40 mb-1.5">Phone Number</label>
                     <input
                       required
                       type="tel"
                       value={formData.phone}
                       onChange={e => setFormData({...formData, phone: e.target.value.replace(/[^0-9+]/g, '')})}
                       placeholder="+91 00000 00000"
-                      className="w-full bg-transparent border-b border-[#14291B]/20 py-2.5 text-sm text-[#14291B] placeholder:text-[#14291B]/30 focus:outline-none focus:border-[#316852] transition-colors"
+                      className="w-full bg-transparent border-b border-[#033B38]/20 py-2.5 text-sm text-[#033B38] placeholder:text-[#033B38]/30 focus:outline-none focus:border-[#006569] transition-colors"
                     />
                   </div>
                   <div>
-                    <label className="block text-[10px] font-bold uppercase tracking-[0.2em] text-[#14291B]/40 mb-1.5">Service Sector</label>
+                    <label className="block text-[10px] font-bold uppercase tracking-[0.2em] text-[#033B38]/40 mb-1.5">Service Sector</label>
                     <div className="relative">
                       <select
                         value={formData.serviceSector}
                         onChange={e => setFormData({...formData, serviceSector: e.target.value})}
-                        className="w-full appearance-none bg-transparent border-b border-[#14291B]/20 py-2.5 text-sm text-[#14291B] focus:outline-none focus:border-[#316852] transition-colors cursor-pointer"
+                        className="w-full appearance-none bg-transparent border-b border-[#033B38]/20 py-2.5 text-sm text-[#033B38] focus:outline-none focus:border-[#006569] transition-colors cursor-pointer"
                       >
                         <option value="">Select a service</option>
                         {serviceSectors.map(s => (
                           <option key={s} value={s}>{s}</option>
                         ))}
                       </select>
-                      <ChevronDown className="w-4 h-4 absolute right-0 top-1/2 -translate-y-1/2 pointer-events-none text-[#14291B]/40" />
+                      <ChevronDown className="w-4 h-4 absolute right-0 top-1/2 -translate-y-1/2 pointer-events-none text-[#033B38]/40" />
                     </div>
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-[10px] font-bold uppercase tracking-[0.2em] text-[#14291B]/40 mb-1.5">Message</label>
+                  <label className="block text-[10px] font-bold uppercase tracking-[0.2em] text-[#033B38]/40 mb-1.5">Message</label>
                   <textarea
                     required
                     value={formData.message}
                     onChange={e => setFormData({...formData, message: e.target.value})}
                     placeholder="How can we help you today?"
                     rows={4}
-                    className="w-full bg-transparent border-b border-[#14291B]/20 py-2.5 text-sm text-[#14291B] placeholder:text-[#14291B]/30 focus:outline-none focus:border-[#316852] transition-colors resize-none"
+                    className="w-full bg-transparent border-b border-[#033B38]/20 py-2.5 text-sm text-[#033B38] placeholder:text-[#033B38]/30 focus:outline-none focus:border-[#006569] transition-colors resize-none"
                   />
                 </div>
 
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="group relative w-full py-4 bg-[#14291B] text-white rounded-full font-bold text-xs uppercase tracking-[0.2em] shadow-[0_20px_40px_rgba(20,41,27,0.25)] hover:bg-[#316852] hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-3 disabled:opacity-70"
+                  className="group relative w-full py-4 bg-[#033B38] text-white rounded-full font-bold text-xs uppercase tracking-[0.2em] shadow-[0_20px_40px_rgba(3,59,56,0.25)] hover:bg-[#006569] hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-3 disabled:opacity-70"
                 >
                   {isSubmitting ? (
                     <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
@@ -300,8 +300,8 @@ export default function ContactPage() {
           </div>
 
           {/* Location Column */}
-          <div className="bg-[#14291B] text-white rounded-[2rem] p-8 relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-40 h-40 bg-[#316852]/20 rounded-full blur-[100px] -mr-16 -mt-16" />
+          <div className="bg-[#033B38] text-white rounded-[2rem] p-8 relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-40 h-40 bg-[#006569]/20 rounded-full blur-[100px] -mr-16 -mt-16" />
             <div className="relative z-10">
               <div className="flex items-center gap-2 text-white/50 text-[10px] uppercase tracking-[0.2em] font-bold mb-5">
                 <MapPin className="w-4 h-4" />
@@ -335,7 +335,7 @@ export default function ContactPage() {
 
       {/* Social Media Grid */}
       <section className="pb-20 px-6 sm:px-12 lg:px-24 max-w-7xl mx-auto">
-        <h2 className="text-xl font-bold text-[#316852] mb-6 text-center md:text-left">Connect with Us</h2>
+        <h2 className="text-xl font-bold text-[#006569] mb-6 text-center md:text-left">Connect with Us</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {socialMedia.map((social) => (
             <a
@@ -350,7 +350,7 @@ export default function ContactPage() {
                 {social.name === 'LinkedIn' && <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>}
               </div>
               <div className="min-w-0 flex-1">
-                <p className="font-bold text-sm text-[#316852] leading-none mb-1.5">{social.name}</p>
+                <p className="font-bold text-sm text-[#006569] leading-none mb-1.5">{social.name}</p>
                 <p className="text-xs opacity-60 font-medium truncate">{social.handle}</p>
               </div>
             </a>

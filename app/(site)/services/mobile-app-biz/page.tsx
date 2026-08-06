@@ -59,7 +59,7 @@ export default function MobileAppBizPage() {
   return (
     <div className="min-h-screen bg-[linear-gradient(90deg,rgba(249,251,245,1)_0%,rgba(244,242,234,1)_53%,rgba(238,236,223,1)_100%)]  text-slate-900">
       {/* Cinematic Hero Section (Themed Hero) */}
-      <section className="bg-white relative overflow-hidden flex items-center min-h-[200px] md:min-h-[350px] border-b border-[#4A6E62]/10">
+      <section className="bg-white relative overflow-hidden flex items-center min-h-[200px] md:min-h-[350px] border-b border-[#006569]/10">
         {/* Cinematic Image Side - Hidden on mobile, full height on desktop */}
         <div className="hidden lg:block absolute right-0 top-0 bottom-0 w-1/2 z-0">
           <div className="relative h-full w-full">
@@ -78,15 +78,15 @@ export default function MobileAppBizPage() {
         <div className="max-w-7xl mx-auto w-full px-6 relative z-10 py-12 ">
           <div className="max-w-2xl lg:pr-6">
             <div className="flex items-center gap-4 mb-6">
-              <div className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-white/40 border border-[#4A6E62]/10 text-[#4A6E62] text-xs font-bold uppercase tracking-widest backdrop-blur-sm">
-                <span className="flex h-0.5 w-0.5 rounded-full bg-[#4A6E62]"></span>
+              <div className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-white/40 border border-[#006569]/10 text-[#006569] text-xs font-bold uppercase tracking-widest backdrop-blur-sm">
+                <span className="flex h-0.5 w-0.5 rounded-full bg-[#006569]"></span>
                 Mobile Intelligence
               </div>
               
             </div>
             <h1 className="text-4xl md:text-5xl font-black text-slate-900 mb-6 leading-tight tracking-tight">
               Total Control Over Your Business{' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#4A6E62] via-[#5D887A] to-[#4A6E62]">& Cash Flow</span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#006569] via-[#006569] to-[#006569]">& Cash Flow</span>
             </h1>
             <p className="text-slate-600 text-base md:text-lg max-w-xl leading-relaxed mb-8 font-semibold">
               Stop calling your accountant for reports. Access live Tally data, track your field sales team, and send WhatsApp payment reminders directly from your smartphone—anytime, anywhere.
@@ -94,7 +94,7 @@ export default function MobileAppBizPage() {
             <div className="flex flex-wrap gap-4">
               <button 
                 onClick={() => openModal('demo')}
-                className="px-4 py-4 bg-[#4A6E62] text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-[#5D887A] transition-all shadow-xl shadow-[#4A6E62]/20"
+                className="px-4 py-4 bg-[#006569] text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-[#006569] transition-all shadow-xl shadow-[#006569]/20"
               >
                 Get Now
               </button>
@@ -112,7 +112,7 @@ export default function MobileAppBizPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {mobileFeatures.map((feature, i) => (
             <div key={i} className="p-8 bg-white rounded-3xl border border-slate-100 shadow-sm hover:shadow-xl transition-all duration-300 group">
-              <div className="w-12 h-12 bg-[#E8F0EB] text-[#4A6E62] rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+              <div className="w-12 h-12 bg-[#E5F4F4] text-[#006569] rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
                 {feature.icon}
               </div>
               <h3 className="text-lg font-black text-slate-900 mb-3">{feature.title}</h3>
@@ -134,7 +134,7 @@ export default function MobileAppBizPage() {
             />
           </div>
           <div className="space-y-8">
-            <h2 className="text-3xl md:text-4xl font-black text-slate-900 leading-tight">Your Entire Business At <span className="text-[#4A6E62]">Your Fingertips</span></h2>
+            <h2 className="text-3xl md:text-4xl font-black text-slate-900 leading-tight">Your Entire Business At <span className="text-[#006569]">Your Fingertips</span></h2>
             <div className="space-y-6">
               {[
                 { title: "Instant Sales Analysis", desc: "Track your top-performing customers, fast-moving items, and monthly sales trends at a glance." },
@@ -143,7 +143,7 @@ export default function MobileAppBizPage() {
                 { title: "AES-256 Encryption", desc: "Your Tally data is 100% encrypted, safely synced, and accessible even if you lose internet access." }
               ].map((benefit, i) => (
                 <div key={i} className="flex gap-4">
-                  <div className="mt-1 shrink-0 w-5 h-5 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center">
+                  <div className="mt-1 shrink-0 w-5 h-5 rounded-full bg-teal-100 text-teal-600 flex items-center justify-center">
                     <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="4"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
                   </div>
                   <div>
@@ -156,7 +156,7 @@ export default function MobileAppBizPage() {
             <div className="pt-6">
                <button 
                   onClick={() => openModal('quote')}
-                  className="px-10 py-4 bg-slate-900 text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-[#4A6E62] transition-all shadow-lg"
+                  className="px-10 py-4 bg-slate-900 text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-[#006569] transition-all shadow-lg"
                >
               Contact Us
                </button>
@@ -166,16 +166,16 @@ export default function MobileAppBizPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="bg-[#4A6E62] py-14 px-6">
+      <section className="bg-[#006569] py-14 px-6">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-2xl md:text-3xl font-black text-white mb-3">Stop Waiting for Reports. Take Control Today.</h2>
-          <p className="text-emerald-100 text-sm mb-8 max-w-md mx-auto">
+          <p className="text-teal-100 text-sm mb-8 max-w-md mx-auto">
             Join thousands of smart business owners who use the Biz Analyst app to run their operations independently.
           </p>
           <div className="flex flex-wrap justify-center gap-3">
             <button
               onClick={() => openModal('callback')}
-              className="px-7 py-3.5 bg-white text-[#4A6E62] rounded-xl font-black text-xs uppercase tracking-widest hover:bg-emerald-50 transition-all"
+              className="px-7 py-3.5 bg-white text-[#006569] rounded-xl font-black text-xs uppercase tracking-widest hover:bg-teal-50 transition-all"
             >
               Start Your Trial
             </button>

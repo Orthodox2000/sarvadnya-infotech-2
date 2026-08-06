@@ -67,7 +67,7 @@ export default function TSSPage() {
   return (
     <div className="min-h-screen bg-[linear-gradient(90deg,rgba(249,251,245,1)_0%,rgba(244,242,234,1)_53%,rgba(238,236,223,1)_100%)] text-slate-900">
       {/* Cinematic Hero Section (Themed Hero) */}
-      <section className="bg-[linear-gradient(90deg,rgba(249,251,245,1)_0%,rgba(244,242,234,1)_53%,rgba(238,236,223,1)_100%)] relative overflow-hidden flex items-center min-h-[200px] md:min-h-[350px] border-b border-[#4A6E62]/10">
+      <section className="bg-[linear-gradient(90deg,rgba(249,251,245,1)_0%,rgba(244,242,234,1)_53%,rgba(238,236,223,1)_100%)] relative overflow-hidden flex items-center min-h-[200px] md:min-h-[350px] border-b border-[#006569]/10">
         {/* Cinematic Image Side - Hidden on mobile, full height on desktop */}
         <div className="hidden lg:block absolute right-0 top-0 bottom-0 w-1/2 z-0">
           <div className="relative h-full w-full">
@@ -85,13 +85,13 @@ export default function TSSPage() {
         
         <div className="max-w-7xl mx-auto w-full px-6 relative z-10 py-12">
           <div className="max-w-2xl lg:pr-6">
-            <div className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-white/40 border border-[#4A6E62]/10 text-[#4A6E62] text-[10px] font-bold uppercase tracking-widest mb-6 backdrop-blur-sm">
-              <span className="flex h-0.5 w-0.5 rounded-full bg-[#4A6E62]"></span>
+            <div className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-white/40 border border-[#006569]/10 text-[#006569] text-[10px] font-bold uppercase tracking-widest mb-6 backdrop-blur-sm">
+              <span className="flex h-0.5 w-0.5 rounded-full bg-[#006569]"></span>
                Software Continuity
             </div>
             <h1 className="text-3xl md:text-5xl font-black text-slate-900 mb-6 leading-tight tracking-tight">
               Renew Your {' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#4A6E62] via-[#5D887A] to-[#4A6E62]">Tally Software Service (TSS)</span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#006569] via-[#006569] to-[#006569]">Tally Software Service (TSS)</span>
             </h1>
             <p className="text-slate-600 text-base md:text-lg max-w-xl leading-relaxed mb-8 font-semibold">
               Don&apos;t let your E-invoicing and GST features expire. Renew your TSS today to keep generating 1-click E-way bills, auto-reconcile your bank statements, and stay perfectly compliant with the latest tax laws.
@@ -99,7 +99,7 @@ export default function TSSPage() {
             <div className="flex flex-wrap gap-4">
               <button 
                 onClick={() => openModal('quote')}
-                className="px-8 py-4 bg-[#4A6E62] text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-[#5D887A] transition-all shadow-xl shadow-[#4A6E62]/20"
+                className="px-8 py-4 bg-[#006569] text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-[#006569] transition-all shadow-xl shadow-[#006569]/20"
               >
                 Get Renewal Pricing
               </button>
@@ -117,7 +117,7 @@ export default function TSSPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {tssFeatures.map((feature, i) => (
             <div key={i} className="p-8 bg-white rounded-3xl border border-slate-100 shadow-sm hover:shadow-xl transition-all duration-300 group">
-              <div className="w-12 h-12 bg-[#E8F0EB] text-[#4A6E62] rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+              <div className="w-12 h-12 bg-[#E5F4F4] text-[#006569] rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
                 {feature.icon}
               </div>
               <h3 className="text-lg font-black text-slate-900 mb-3">{feature.title}</h3>
@@ -139,18 +139,18 @@ export default function TSSPage() {
              />
           </div>
           <div className="space-y-8">
-            <h2 className="text-3xl md:text-4xl font-black text-slate-900 leading-tight">Included in Your {' '}<span className="text-[#4A6E62]">TSS Renewal ! </span></h2>
+            <h2 className="text-3xl md:text-4xl font-black text-slate-900 leading-tight">Included in Your {' '}<span className="text-[#006569]">TSS Renewal ! </span></h2>
             <div className="space-y-4">
               {deliverableList.map((benefit, i) => (
                 <div key={i} className="flex items-center gap-4 p-4 bg-white rounded-2xl border border-slate-100 shadow-sm">
-                  <div className="shrink-0 w-6 h-6 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center">
+                  <div className="shrink-0 w-6 h-6 rounded-full bg-teal-100 text-teal-600 flex items-center justify-center">
                     <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="4"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
                   </div>
                   <span className="font-bold text-slate-700 text-sm">{benefit}</span>
                 </div>
               ))}
             </div>
-            <p className="text-slate-500 font-medium leading-relaxed italic border-l-4 border-[#4A6E62] pl-4">
+            <p className="text-slate-500 font-medium leading-relaxed italic border-l-4 border-[#006569] pl-4">
               "An active TSS subscription is the difference between a smooth, automated audit and a stressful, manual tax season."
             </p>
           </div>
@@ -182,7 +182,7 @@ export default function TSSPage() {
                 <td className="px-6 py-4 text-slate-600">1 Year</td>
                 <td className="px-6 py-4 text-slate-600">4,500</td>
                 <td className="px-6 py-4 text-slate-600">810</td>
-                <td className="px-6 py-4 font-bold text-[#316852]">5,310/-</td>
+                <td className="px-6 py-4 font-bold text-[#006569]">5,310/-</td>
               </tr>
               <tr className="border-b border-slate-100">
                 <td className="px-6 py-4 font-bold text-slate-900">TSS Single User (2 Years)</td>
@@ -191,9 +191,9 @@ export default function TSSPage() {
                 <td className="px-6 py-4 text-slate-600">1,458</td>
                 <td className="px-6 py-4">
                   <span className="text-slate-400 line-through mr-1.5">9,558</span>
-                  <span className="font-bold text-emerald-600">8,496/-</span>
-                  <span className="inline-flex items-center rounded-full px-2 py-0.5 ml-2 text-[10px] font-bold bg-emerald-50 text-emerald-600 border border-emerald-200">10% OFF</span>
-                  <p className="text-[10px] text-emerald-600 mt-0.5 font-medium">You save 1,062/-</p>
+                  <span className="font-bold text-teal-600">8,496/-</span>
+                  <span className="inline-flex items-center rounded-full px-2 py-0.5 ml-2 text-[10px] font-bold bg-teal-50 text-teal-600 border border-teal-200">10% OFF</span>
+                  <p className="text-[10px] text-teal-600 mt-0.5 font-medium">You save 1,062/-</p>
                 </td>
               </tr>
               <tr className="border-b border-slate-100">
@@ -201,7 +201,7 @@ export default function TSSPage() {
                 <td className="px-6 py-4 text-slate-600">1 Year</td>
                 <td className="px-6 py-4 text-slate-600">13,500</td>
                 <td className="px-6 py-4 text-slate-600">2,430</td>
-                <td className="px-6 py-4 font-bold text-[#316852]">15,930/-</td>
+                <td className="px-6 py-4 font-bold text-[#006569]">15,930/-</td>
               </tr>
               <tr className="border-b border-slate-100">
                 <td className="px-6 py-4 font-bold text-slate-900">TSS Multi User (2 Years)</td>
@@ -210,9 +210,9 @@ export default function TSSPage() {
                 <td className="px-6 py-4 text-slate-600">4,374</td>
                 <td className="px-6 py-4">
                   <span className="text-slate-400 line-through mr-1.5">28,674</span>
-                  <span className="font-bold text-emerald-600">25,488/-</span>
-                  <span className="inline-flex items-center rounded-full px-2 py-0.5 ml-2 text-[10px] font-bold bg-emerald-50 text-emerald-600 border border-emerald-200">10% OFF</span>
-                  <p className="text-[10px] text-emerald-600 mt-0.5 font-medium">You save 3,186/-</p>
+                  <span className="font-bold text-teal-600">25,488/-</span>
+                  <span className="inline-flex items-center rounded-full px-2 py-0.5 ml-2 text-[10px] font-bold bg-teal-50 text-teal-600 border border-teal-200">10% OFF</span>
+                  <p className="text-[10px] text-teal-600 mt-0.5 font-medium">You save 3,186/-</p>
                 </td>
               </tr>
               <tr className="border-b border-slate-100">
@@ -220,7 +220,7 @@ export default function TSSPage() {
                 <td className="px-6 py-4 text-slate-600">1 Year</td>
                 <td className="px-6 py-4 text-slate-600">6,750</td>
                 <td className="px-6 py-4 text-slate-600">1,215</td>
-                <td className="px-6 py-4 font-bold text-[#316852]">7,965/-</td>
+                <td className="px-6 py-4 font-bold text-[#006569]">7,965/-</td>
               </tr>
               <tr>
                 <td className="px-6 py-4 font-bold text-slate-900">TSS Auditor (2 Years)</td>
@@ -229,9 +229,9 @@ export default function TSSPage() {
                 <td className="px-6 py-4 text-slate-600">2,187</td>
                 <td className="px-6 py-4">
                   <span className="text-slate-400 line-through mr-1.5">14,337</span>
-                  <span className="font-bold text-emerald-600">12,744/-</span>
-                  <span className="inline-flex items-center rounded-full px-2 py-0.5 ml-2 text-[10px] font-bold bg-emerald-50 text-emerald-600 border border-emerald-200">10% OFF</span>
-                  <p className="text-[10px] text-emerald-600 mt-0.5 font-medium">You save 1,593/-</p>
+                  <span className="font-bold text-teal-600">12,744/-</span>
+                  <span className="inline-flex items-center rounded-full px-2 py-0.5 ml-2 text-[10px] font-bold bg-teal-50 text-teal-600 border border-teal-200">10% OFF</span>
+                  <p className="text-[10px] text-teal-600 mt-0.5 font-medium">You save 1,593/-</p>
                 </td>
               </tr>
             </tbody>
@@ -255,7 +255,7 @@ export default function TSSPage() {
               <div className="flex items-center justify-between mb-3">
                 <h3 className="font-bold text-slate-900 text-sm">{row.plan}</h3>
                 {row.discount && (
-                  <span className="shrink-0 inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-bold bg-emerald-50 text-emerald-600 border border-emerald-200">{row.discount}</span>
+                  <span className="shrink-0 inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-bold bg-teal-50 text-teal-600 border border-teal-200">{row.discount}</span>
                 )}
               </div>
               <div className="space-y-2 text-xs">
@@ -266,10 +266,10 @@ export default function TSSPage() {
                   <span className="text-slate-400 font-medium">Total</span>
                   <div className="text-right">
                     {row.originalTotal && <span className="text-slate-400 line-through mr-1.5">₹{row.originalTotal}</span>}
-                    <span className="font-bold text-[#316852] text-base">₹{row.total}</span>
+                    <span className="font-bold text-[#006569] text-base">₹{row.total}</span>
                   </div>
                 </div>
-                {row.save && <p className="text-[10px] text-emerald-600 font-medium text-right">You save ₹{row.save}</p>}
+                {row.save && <p className="text-[10px] text-teal-600 font-medium text-right">You save ₹{row.save}</p>}
               </div>
             </div>
           ))}
@@ -278,11 +278,11 @@ export default function TSSPage() {
       </section>
 
       {/* Renewal Form Section */}
-      <section className="bg-[#4A6E62] py-14 px-6">
+      <section className="bg-[#006569] py-14 px-6">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-8">
             <h2 className="text-2xl md:text-3xl font-black text-white mb-3">Renew Your TSS Now</h2>
-            <p className="text-emerald-100 text-sm max-w-md mx-auto">
+            <p className="text-teal-100 text-sm max-w-md mx-auto">
               Enter your serial number and details below. Our team will process your renewal immediately.
             </p>
           </div>
@@ -293,11 +293,11 @@ export default function TSSPage() {
       {/* Contact CTA */}
       <section className="bg-[#3a5c52] py-10 px-6">
         <div className="max-w-3xl mx-auto text-center">
-          <p className="text-emerald-100 text-sm mb-6">Have questions? Need help finding your serial number?</p>
+          <p className="text-teal-100 text-sm mb-6">Have questions? Need help finding your serial number?</p>
           <div className="flex flex-wrap justify-center gap-3">
             <button
               onClick={() => openModal('callback')}
-              className="px-7 py-3.5 bg-white text-[#4A6E62] rounded-xl font-black text-xs uppercase tracking-widest hover:bg-emerald-50 transition-all"
+              className="px-7 py-3.5 bg-white text-[#006569] rounded-xl font-black text-xs uppercase tracking-widest hover:bg-teal-50 transition-all"
             >
               Request Callback
             </button>

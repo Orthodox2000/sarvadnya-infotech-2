@@ -118,7 +118,7 @@ export default function QuickAccessHubDemo() {
       title: "Core Services",
       description: "Fundamental Tally solutions to streamline accounting.",
       iconName: "core",
-      theme: { accent: "bg-emerald-500", bg: "bg-emerald-50", text: "text-emerald-600", hoverBg: "hover:bg-emerald-600", border: "border-emerald-100" },
+      theme: { accent: "bg-teal-500", bg: "bg-teal-50", text: "text-teal-600", hoverBg: "hover:bg-teal-600", border: "border-teal-100" },
       links: [
         { label: "Tally Prime", href: "/products/tally-prime" },
         { label: "AMC", href: "/services/amc" },
@@ -130,7 +130,7 @@ export default function QuickAccessHubDemo() {
       title: "Cloud Access",
       description: "Anytime secure access to your Tally data.",
       iconName: "cloud",
-      theme: { accent: "bg-emerald-500", bg: "bg-emerald-50", text: "text-emerald-600", hoverBg: "hover:bg-emerald-600", border: "border-emerald-100" },
+      theme: { accent: "bg-teal-500", bg: "bg-teal-50", text: "text-teal-600", hoverBg: "hover:bg-teal-600", border: "border-teal-100" },
       links: [
         { label: "Cloud Hosting", href: "/cloud/aws" },
         { label: "Mobile App", href: "/services/mobile-app-biz" },
@@ -158,7 +158,7 @@ export default function QuickAccessHubDemo() {
       title: "Technical Support",
       description: "Priority technical assistance and troubleshooting.",
       iconName: "support",
-      theme: { accent: "bg-emerald-500", bg: "bg-emerald-50", text: "text-emerald-600", hoverBg: "hover:bg-emerald-600", border: "border-emerald-100" },
+      theme: { accent: "bg-teal-500", bg: "bg-teal-50", text: "text-teal-600", hoverBg: "hover:bg-teal-600", border: "border-teal-100" },
       links: [
         { label: "Priority Help", href: "/contact" },
         { label: "WhatsApp", href: `https://wa.me/${whatsappPhone.replace(/\D/g, '')}` },
@@ -170,7 +170,7 @@ export default function QuickAccessHubDemo() {
 
   const categories = dbCategories.length > 0 ? dbCategories : defaultCategories;
 
-  if (loading) return <div className="w-full h-96 bg-white flex items-center justify-center"><div className="w-8 h-8 border-4 border-emerald-600 border-t-transparent rounded-full animate-spin"></div></div>;
+  if (loading) return <div className="w-full h-96 bg-white flex items-center justify-center"><div className="w-8 h-8 border-4 border-teal-600 border-t-transparent rounded-full animate-spin"></div></div>;
 
   return (
     <section className="w-full bg-slate-50 py-16 md:py-24 px-5 border-y border-slate-100">
@@ -179,11 +179,11 @@ export default function QuickAccessHubDemo() {
         {/* Header - Compact */}
         <div className="flex flex-col md:flex-row items-end justify-between gap-6 mb-12 border-b border-slate-200 pb-8">
           <div className="max-w-xl text-left">
-            <span className="text-[10px] font-black uppercase tracking-[0.3em] text-emerald-600 block mb-2">
+            <span className="text-[10px] font-black uppercase tracking-[0.3em] text-teal-600 block mb-2">
               Solutions Directory
             </span>
             <h2 className="text-3xl lg:text-4xl font-black text-slate-900 tracking-tighter mb-2 leading-tight">
-              Quick Access <span className="text-emerald-600/50">Hub</span>
+              Quick Access <span className="text-teal-600/50">Hub</span>
             </h2>
             <p className="text-[13px] text-slate-500 font-bold leading-relaxed max-w-lg opacity-80">
               Complete Sarvadnya ecosystem. A unified dashboard designed for professional business management and instant technical support.
@@ -191,7 +191,7 @@ export default function QuickAccessHubDemo() {
           </div>
           <Link 
             href="/contact"
-            className="inline-flex h-12 px-10 items-center justify-center rounded-full bg-emerald-600 text-white font-black text-[10px] uppercase tracking-widest hover:bg-emerald-700 transition-all active:scale-95 shadow-xl shadow-emerald-200"
+            className="inline-flex h-12 px-10 items-center justify-center rounded-full bg-teal-600 text-white font-black text-[10px] uppercase tracking-widest hover:bg-teal-700 transition-all active:scale-95 shadow-xl shadow-teal-200"
           >
             Get Professional Help Now
           </Link>
@@ -203,7 +203,7 @@ export default function QuickAccessHubDemo() {
           {/* Column 1: Core & Cloud (Stacked vertical lists) */}
           <div className="flex flex-col gap-6 md:col-span-1">
             {categories.slice(0, 2).map((cat, idx) => (
-              <div key={idx} className="group flex flex-col bg-white rounded-[2rem] p-8 border border-slate-200 hover:shadow-2xl hover:shadow-emerald-500/5 transition-all duration-500 relative overflow-hidden h-full">
+              <div key={idx} className="group flex flex-col bg-white rounded-[2rem] p-8 border border-slate-200 hover:shadow-2xl hover:shadow-teal-500/5 transition-all duration-500 relative overflow-hidden h-full">
                 <div className={`absolute top-0 left-0 w-1.5 h-full ${cat.theme.accent}`} />
                 <div className="flex items-center gap-4 mb-5">
                   <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${cat.theme.bg} ${cat.theme.text} transition-colors duration-500 group-hover:scale-110`}>
@@ -215,7 +215,7 @@ export default function QuickAccessHubDemo() {
                 
                 <div className="flex flex-col gap-2 mt-auto">
                   {cat.links.map((link, li) => (
-                    <Link key={li} href={link.href} className="flex items-center justify-between group/link px-5 py-4 rounded-2xl bg-slate-50 border border-slate-100 text-[13px] font-black text-slate-800 hover:text-white hover:bg-emerald-600 hover:border-emerald-600 transition-all duration-300 shadow-sm">
+                    <Link key={li} href={link.href} className="flex items-center justify-between group/link px-5 py-4 rounded-2xl bg-slate-50 border border-slate-100 text-[13px] font-black text-slate-800 hover:text-white hover:bg-teal-600 hover:border-teal-600 transition-all duration-300 shadow-sm">
                       <span className="truncate mr-4">{link.label}</span>
                       <svg className="w-5 h-5 opacity-0 group-hover/link:opacity-100 transition-opacity -translate-x-2 group-hover/link:translate-x-0 duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -230,7 +230,7 @@ export default function QuickAccessHubDemo() {
           {/* Column 2: Custom Modules (Full Height Stack) */}
           <div className="md:col-span-1 h-full">
             {categories[2] && (
-              <div className="group flex flex-col bg-white rounded-[2.5rem] p-8 border border-emerald-100 hover:shadow-2xl hover:shadow-emerald-500/10 transition-all duration-500 relative overflow-hidden h-full min-h-[500px]">
+              <div className="group flex flex-col bg-white rounded-[2.5rem] p-8 border border-teal-100 hover:shadow-2xl hover:shadow-teal-500/10 transition-all duration-500 relative overflow-hidden h-full min-h-[500px]">
                 <div className={`absolute top-0 left-0 w-full h-2 ${categories[2].theme.accent}`} />
                 <div className="flex flex-col items-center text-center mb-10 shrink-0 pt-2">
                   <div className={`w-20 h-20 rounded-[2rem] flex items-center justify-center ${categories[2].theme.bg} ${categories[2].theme.text} shadow-inner mb-6 transition-transform duration-500 group-hover:scale-110`}>
@@ -242,7 +242,7 @@ export default function QuickAccessHubDemo() {
                 
                 <div className="flex-1 space-y-3 pb-8">
                   {categories[2].links.map((link, li) => (
-                    <Link key={li} href={link.href} className="flex items-center justify-between group/link px-6 py-5 rounded-2xl bg-slate-50/50 border border-slate-100 text-[13px] font-black text-slate-800 hover:text-white hover:bg-emerald-600 hover:border-emerald-600 transition-all duration-300 shadow-sm">
+                    <Link key={li} href={link.href} className="flex items-center justify-between group/link px-6 py-5 rounded-2xl bg-slate-50/50 border border-slate-100 text-[13px] font-black text-slate-800 hover:text-white hover:bg-teal-600 hover:border-teal-600 transition-all duration-300 shadow-sm">
                       <span className="truncate mr-4">{link.label}</span>
                       <svg className="w-5 h-5 opacity-0 group-hover/link:opacity-100 transition-opacity -translate-x-2 group-hover/link:translate-x-0 duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -252,7 +252,7 @@ export default function QuickAccessHubDemo() {
                 </div>
                 
                 <div className="mt-auto pt-8 border-t border-slate-100 text-center shrink-0">
-                  <Link href="/modules" className="text-[10px] font-black uppercase tracking-[0.2em] text-emerald-600 hover:text-emerald-800 transition-colors inline-flex items-center gap-2">
+                  <Link href="/modules" className="text-[10px] font-black uppercase tracking-[0.2em] text-teal-600 hover:text-teal-800 transition-colors inline-flex items-center gap-2">
                     Explore All Industrial Modules 
                     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M13 7l5 5m0 0l-5 5m5-5H6" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"/></svg>
                   </Link>
@@ -264,7 +264,7 @@ export default function QuickAccessHubDemo() {
           {/* Column 3: Expert Support (Full Height Stack) */}
           <div className="md:col-span-1 h-full">
             {categories[3] && (
-              <div className="group flex flex-col bg-white rounded-[2rem] p-8 border border-slate-200 hover:shadow-2xl hover:shadow-emerald-500/5 transition-all duration-500 relative overflow-hidden h-full min-h-[500px]">
+              <div className="group flex flex-col bg-white rounded-[2rem] p-8 border border-slate-200 hover:shadow-2xl hover:shadow-teal-500/5 transition-all duration-500 relative overflow-hidden h-full min-h-[500px]">
                 <div className={`absolute top-0 right-0 w-2 h-full ${categories[3].theme.accent}`} />
                 <div className="flex items-center gap-5 mb-8 shrink-0">
                   <div className={`w-16 h-16 rounded-xl flex items-center justify-center ${categories[3].theme.bg} ${categories[3].theme.text} transition-colors duration-500 group-hover:rotate-12`}>
@@ -272,14 +272,14 @@ export default function QuickAccessHubDemo() {
                   </div>
                   <div>
                     <h3 className="text-2xl lg:text-3xl font-black text-slate-900 tracking-tight leading-none mb-1.5">{categories[3].title}</h3>
-                    <p className="text-[11px] text-emerald-600 font-black uppercase tracking-widest">Priority Access</p>
+                    <p className="text-[11px] text-teal-600 font-black uppercase tracking-widest">Priority Access</p>
                   </div>
                 </div>
                 <p className="text-[13px] text-slate-500 leading-relaxed mb-8 font-bold opacity-70 shrink-0">{categories[3].description}</p>
                 
                 <div className="flex-1 space-y-3 pb-8">
                   {categories[3].links.map((link, li) => (
-                    <Link key={li} href={link.href} className="flex items-center justify-between group/link px-6 py-5 rounded-2xl bg-slate-50 border border-slate-100 text-[13px] font-black text-slate-800 hover:text-white hover:bg-emerald-600 hover:border-emerald-600 transition-all duration-300 shadow-sm">
+                    <Link key={li} href={link.href} className="flex items-center justify-between group/link px-6 py-5 rounded-2xl bg-slate-50 border border-slate-100 text-[13px] font-black text-slate-800 hover:text-white hover:bg-teal-600 hover:border-teal-600 transition-all duration-300 shadow-sm">
                       <span className="truncate mr-4">{link.label}</span>
                       <svg className="w-5 h-5 opacity-0 group-hover/link:opacity-100 transition-opacity -translate-x-2 group-hover/link:translate-x-0 duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -289,11 +289,11 @@ export default function QuickAccessHubDemo() {
                 </div>
 
                 <div className="mt-auto shrink-0">
-                  <div className="bg-emerald-50 rounded-[1.5rem] p-6 border border-emerald-100 text-center shadow-inner relative overflow-hidden">
-                    <div className="absolute -top-10 -right-10 w-24 h-24 bg-emerald-100/50 rounded-full blur-2xl" />
-                    <p className="text-[10px] font-black text-emerald-800 uppercase tracking-widest mb-2.5 relative z-10">Instant Callback</p>
-                    <p className="text-2xl font-black text-emerald-900 mb-5 relative z-10">{formatPhoneDisplay(supportPhone.split(',')[0])}</p>
-                    <Link href="/contact" className="inline-block px-10 py-3 rounded-full bg-emerald-600 text-white text-[10px] font-black uppercase tracking-[0.2em] hover:bg-emerald-700 transition-all hover:scale-105 shadow-xl shadow-emerald-200 relative z-10">
+                  <div className="bg-teal-50 rounded-[1.5rem] p-6 border border-teal-100 text-center shadow-inner relative overflow-hidden">
+                    <div className="absolute -top-10 -right-10 w-24 h-24 bg-teal-100/50 rounded-full blur-2xl" />
+                    <p className="text-[10px] font-black text-teal-800 uppercase tracking-widest mb-2.5 relative z-10">Instant Callback</p>
+                    <p className="text-2xl font-black text-teal-900 mb-5 relative z-10">{formatPhoneDisplay(supportPhone.split(',')[0])}</p>
+                    <Link href="/contact" className="inline-block px-10 py-3 rounded-full bg-teal-600 text-white text-[10px] font-black uppercase tracking-[0.2em] hover:bg-teal-700 transition-all hover:scale-105 shadow-xl shadow-teal-200 relative z-10">
                       Request Call Now
                     </Link>
                   </div>
@@ -317,7 +317,7 @@ export default function QuickAccessHubDemo() {
                   </div>
                   <div className="space-y-2">
                     {cat.links.slice(0, 3).map((link, li) => (
-                      <Link key={li} href={link.href} className="flex items-center justify-between text-[11px] font-bold text-slate-500 hover:text-emerald-600 transition-colors">
+                      <Link key={li} href={link.href} className="flex items-center justify-between text-[11px] font-bold text-slate-500 hover:text-teal-600 transition-colors">
                         {link.label}
                         <svg className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M9 5l7 7-7 7" strokeWidth={3} strokeLinecap="round" strokeLinejoin="round"/></svg>
                       </Link>

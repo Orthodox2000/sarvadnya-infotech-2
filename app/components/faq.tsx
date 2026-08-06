@@ -40,7 +40,7 @@ const FAQ = ({ initialData, initialSettings }: { initialData?: any[], initialSet
 
     if (loading && faqData.length === 0) return (
         <div className="w-full h-96 flex items-center justify-center">
-            <div className="w-10 h-10 border-4 border-[#316852] border-t-transparent rounded-full animate-spin"></div>
+            <div className="w-10 h-10 border-4 border-[#006569] border-t-transparent rounded-full animate-spin"></div>
         </div>
     );
 
@@ -58,8 +58,8 @@ const FAQ = ({ initialData, initialSettings }: { initialData?: any[], initialSet
                             onClick={() => { setActiveCategory(cat); setActiveIndex(null); }}
                             className={`px-6 py-2 rounded-lg text-sm font-bold transition-colors ${
                                 activeCategory === cat
-                                    ? 'bg-[#316852] text-white'
-                                    : 'bg-transparent text-[#5D5F5F] hover:bg-[#f0f9ff] hover:text-[#316852]'
+                                    ? 'bg-[#006569] text-white'
+                                    : 'bg-transparent text-[#5D5F5F] hover:bg-[#f0f9ff] hover:text-[#006569]'
                             }`}
                         >
                             {cat}
@@ -109,8 +109,8 @@ const FAQ = ({ initialData, initialSettings }: { initialData?: any[], initialSet
                                 key={index}
                                 className={`w-full border rounded-xl overflow-hidden transition-colors ${
                                     activeIndex === index
-                                        ? 'bg-white shadow-sm border-[#316852]/30'
-                                        : 'bg-white border-[#E9F1FA] hover:bg-[#f0f9ff]/50 hover:border-[#316852]/20'
+                                        ? 'bg-white shadow-sm border-[#006569]/30'
+                                        : 'bg-white border-[#E9F1FA] hover:bg-[#f0f9ff]/50 hover:border-[#006569]/20'
                                 }`}
                             >
                                 <div
@@ -121,14 +121,14 @@ const FAQ = ({ initialData, initialSettings }: { initialData?: any[], initialSet
                                         {item.question}
                                     </span>
                                     <div className={`w-6 h-6 rounded-full flex items-center justify-center shrink-0 transition-transform duration-200 ${
-                                        activeIndex === index ? 'bg-[#316852] rotate-180' : 'bg-[#f0f9ff]'
+                                        activeIndex === index ? 'bg-[#006569] rotate-180' : 'bg-[#f0f9ff]'
                                     }`}>
                                         <svg
                                             xmlns="http://www.w3.org/2000/svg"
                                             width="24" height="24" viewBox="0 0 24 24"
                                             fill="none" stroke="currentColor"
                                             strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
-                                            className={`w-4 h-4 ${activeIndex === index ? 'text-white' : 'text-[#316852]'}`}
+                                            className={`w-4 h-4 ${activeIndex === index ? 'text-white' : 'text-[#006569]'}`}
                                         >
                                             <path d="m6 9 6 6 6-6"></path>
                                         </svg>

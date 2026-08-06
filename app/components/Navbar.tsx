@@ -91,7 +91,7 @@ export default function Navbar({ initialSettings }: { initialSettings?: any }) {
         <div className="hidden lg:flex items-center gap-3 xl:gap-5">
            <Link
             href="/colour"
-            className={`text-[11px] font-bold uppercase tracking-widest transition-colors ${isActive('/colour') ? 'text-[#4A4A4A] underline underline-offset-8 decoration-[#316852] decoration-2' : 'text-[#4A4A4A] hover:text-[#316852]'}`}
+            className={`text-[11px] font-bold uppercase tracking-widest transition-colors ${isActive('/colour') ? 'text-[#4A4A4A] underline underline-offset-8 decoration-[#006569] decoration-2' : 'text-[#4A4A4A] hover:text-[#006569]'}`}
           >
             Palette
           </Link> 
@@ -102,9 +102,9 @@ export default function Navbar({ initialSettings }: { initialSettings?: any }) {
 
           <Link
             href="/find-solution"
-            className={`whitespace-nowrap inline-flex items-center justify-center rounded-lg border-[0.5px] px-5 py-2 text-[11px] font-bold uppercase tracking-wider transition-all duration-500 ease-in-out shadow-sm ${isActive('/find-solution') ? 'text-[#316852] underline underline-offset-8 decoration-[#316852] decoration-2 border-[#316852] bg-white' : 'text-[#316852] border-[#316852] bg-white hover:bg-green-50'}`}
+            className={`whitespace-nowrap inline-flex items-center justify-center rounded-lg border-[0.5px] px-5 py-2 text-[11px] font-bold uppercase tracking-wider transition-all duration-500 ease-in-out shadow-sm ${isActive('/find-solution') ? 'text-[#006569] underline underline-offset-8 decoration-[#006569] decoration-2 border-[#006569] bg-white' : 'text-[#006569] border-[#006569] bg-white hover:bg-teal-50'}`}
           >
-            <svg className="w-4 h-4 mr-1.5 text-[#316852] shrink-0" fill="currentColor" viewBox="0 0 463.771 463.771">
+            <svg className="w-4 h-4 mr-1.5 text-[#006569] shrink-0" fill="currentColor" viewBox="0 0 463.771 463.771">
               <path d="M173.073,349.604c-4.825,0-8.961-3.444-9.835-8.188c-10.587-57.508-20.312-92.657-41.352-113.697 S65.695,196.954,8.189,186.367C3.444,185.493,0,181.357,0,176.532s3.445-8.961,8.189-9.835c57.506-10.586,92.657-20.311,113.697-41.352 s30.765-56.191,41.352-113.697c0.874-4.745,5.01-8.189,9.835-8.189s8.961,3.445,9.835,8.189 c10.586,57.506,20.312,92.657,41.352,113.697c21.041,21.04,56.191,30.765,113.697,41.352 c4.746,0.874,8.189,5.01,8.189,9.835s-3.445,8.961-8.189,9.835c-57.506,10.586-92.656,20.312-113.697,41.352 c-21.04,21.04-30.765,56.191-41.352,113.697C182.034,346.16,177.897,349.604,173.073,349.604z M58.669,176.532 c35.099,8.738,59.633,19.319,77.359,37.044s28.307,42.26,37.044,77.359c8.738-35.099,19.319-59.633,37.044-77.359 s42.261-28.307,77.358-37.044c-35.098-8.738-59.632-19.319-77.358-37.044s-28.307-42.26-37.044-77.359 c-8.738,35.099-19.319,59.633-37.044,77.359S93.768,167.794,58.669,176.532z"/>
               <path d="M350.064,460.312c-4.826,0-8.961-3.444-9.836-8.188c-6.6-35.85-12.584-57.686-25.291-70.393 c-12.709-12.708-34.543-18.692-70.393-25.292c-4.744-0.873-8.188-5.01-8.188-9.834c0-4.826,3.444-8.962,8.188-9.836 c35.85-6.599,57.686-12.584,70.393-25.292s18.691-34.543,25.291-70.392c0.875-4.745,5.012-8.189,9.836-8.189 s8.961,3.445,9.834,8.189c6.602,35.849,12.586,57.686,25.293,70.392c12.707,12.708,34.543,18.693,70.393,25.292 c4.744,0.874,8.188,5.01,8.188,9.836c0,4.824-3.443,8.961-8.188,9.834c-35.85,6.6-57.686,12.584-70.393,25.292 c-12.707,12.707-18.691,34.543-25.293,70.393C359.025,456.868,354.889,460.312,350.064,460.312z M290.773,346.604 c33.689,10.467,48.824,25.602,59.291,59.292c10.465-33.69,25.602-48.825,59.291-59.292 c-33.689-10.466-48.824-25.601-59.291-59.292C339.598,321.003,324.463,336.138,290.773,346.604z"/>
             </svg>
@@ -112,14 +112,14 @@ export default function Navbar({ initialSettings }: { initialSettings?: any }) {
           </Link>
           <Link
             href="/careers"
-            className={`inline-flex items-center justify-center rounded-lg border-[0.5px] px-5 py-2 text-[11px] font-bold uppercase tracking-wider transition-all duration-500 ease-in-out shadow-sm ${isActive('/careers') ? 'text-[#316852] underline underline-offset-8 decoration-[#316852] decoration-2 border-[#316852] bg-white' : 'text-[#316852] border-[#316852] bg-white hover:bg-green-50'}`}
+            className={`inline-flex items-center justify-center rounded-lg border-[0.5px] px-5 py-2 text-[11px] font-bold uppercase tracking-wider transition-all duration-500 ease-in-out shadow-sm ${isActive('/careers') ? 'text-[#006569] underline underline-offset-8 decoration-[#006569] decoration-2 border-[#006569] bg-white' : 'text-[#006569] border-[#006569] bg-white hover:bg-teal-50'}`}
           >
             Careers
           </Link>
            
           <Link
             href="/contact"
-            className="inline-flex items-center justify-center rounded-lg bg-[#316852] text-white px-5 py-2 text-[11px] font-bold uppercase tracking-wider shadow-lg shadow-[#4B6780]/20 transition-all duration-500 ease-in-out border border-transparent hover:bg-white hover:text-[#4B6780] hover:border-[#4B6780]"
+            className="inline-flex items-center justify-center rounded-lg bg-[#006569] text-white px-5 py-2 text-[11px] font-bold uppercase tracking-wider shadow-lg shadow-[#4B6780]/20 transition-all duration-500 ease-in-out border border-transparent hover:bg-white hover:text-[#4B6780] hover:border-[#4B6780]"
           >
             Contact
           </Link>
@@ -160,8 +160,8 @@ export default function Navbar({ initialSettings }: { initialSettings?: any }) {
           {/* Admin Section 
           <div className="space-y-3">
             <div className="flex items-center gap-2 px-2">
-              <span className="h-1.5 w-1.5 rounded-full bg-[#316852]" />
-              <span className="text-[10px] font-black uppercase tracking-[0.2em] text-[#316852]">Admin Management</span>
+              <span className="h-1.5 w-1.5 rounded-full bg-[#006569]" />
+              <span className="text-[10px] font-black uppercase tracking-[0.2em] text-[#006569]">Admin Management</span>
             </div>
             <div className="grid grid-cols-1 gap-2">
               {adminLinks.map((link) => (
@@ -169,9 +169,9 @@ export default function Navbar({ initialSettings }: { initialSettings?: any }) {
                   key={link.label}
                   href={link.href}
                   onClick={() => setIsMenuOpen(false)}
-                  className="flex items-center gap-4 h-12 px-4 rounded-xl border border-[#316852]/5 bg-white text-[11px] font-bold uppercase tracking-widest text-slate-700 hover:bg-[#E9F1FA] hover:text-[#316852] transition-all shadow-sm"
+                  className="flex items-center gap-4 h-12 px-4 rounded-xl border border-[#006569]/5 bg-white text-[11px] font-bold uppercase tracking-widest text-slate-700 hover:bg-[#E9F1FA] hover:text-[#006569] transition-all shadow-sm"
                 >
-                  <svg className="w-4 h-4 text-[#316852]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg className="w-4 h-4 text-[#006569]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d={link.icon} />
                   </svg>
                   {link.label}
@@ -194,7 +194,7 @@ export default function Navbar({ initialSettings }: { initialSettings?: any }) {
               onClick={() => setIsMenuOpen(false)}
               className="flex items-center justify-center h-12 rounded-lg border border-[#E5E2D9] bg-[#F7F6F2] text-[11px] font-black uppercase tracking-widest text-[#4A4A4A] shadow-sm hover:bg-gray-50"
             >
-              <svg className="w-4 h-4 mr-1.5 text-[#316852] shrink-0" fill="currentColor" viewBox="0 0 463.771 463.771">
+              <svg className="w-4 h-4 mr-1.5 text-[#006569] shrink-0" fill="currentColor" viewBox="0 0 463.771 463.771">
                 <path d="M173.073,349.604c-4.825,0-8.961-3.444-9.835-8.188c-10.587-57.508-20.312-92.657-41.352-113.697 S65.695,196.954,8.189,186.367C3.444,185.493,0,181.357,0,176.532s3.445-8.961,8.189-9.835c57.506-10.586,92.657-20.311,113.697-41.352 s30.765-56.191,41.352-113.697c0.874-4.745,5.01-8.189,9.835-8.189s8.961,3.445,9.835,8.189 c10.586,57.506,20.312,92.657,41.352,113.697c21.041,21.04,56.191,30.765,113.697,41.352 c4.746,0.874,8.189,5.01,8.189,9.835s-3.445,8.961-8.189,9.835c-57.506,10.586-92.656,20.312-113.697,41.352 c-21.04,21.04-30.765,56.191-41.352,113.697C182.034,346.16,177.897,349.604,173.073,349.604z M58.669,176.532 c35.099,8.738,59.633,19.319,77.359,37.044s28.307,42.26,37.044,77.359c8.738-35.099,19.319-59.633,37.044-77.359 s42.261-28.307,77.358-37.044c-35.098-8.738-59.632-19.319-77.358-37.044s-28.307-42.26-37.044-77.359 c-8.738,35.099-19.319,59.633-37.044,77.359S93.768,167.794,58.669,176.532z"/>
                 <path d="M350.064,460.312c-4.826,0-8.961-3.444-9.836-8.188c-6.6-35.85-12.584-57.686-25.291-70.393 c-12.709-12.708-34.543-18.692-70.393-25.292c-4.744-0.873-8.188-5.01-8.188-9.834c0-4.826,3.444-8.962,8.188-9.836 c35.85-6.599,57.686-12.584,70.393-25.292s18.691-34.543,25.291-70.392c0.875-4.745,5.012-8.189,9.836-8.189 s8.961,3.445,9.834,8.189c6.602,35.849,12.586,57.686,25.293,70.392c12.707,12.708,34.543,18.693,70.393,25.292 c4.744,0.874,8.188,5.01,8.188,9.836c0,4.824-3.443,8.961-8.188,9.834c-35.85,6.6-57.686,12.584-70.393,25.292 c-12.707,12.707-18.691,34.543-25.293,70.393C359.025,456.868,354.889,460.312,350.064,460.312z M290.773,346.604 c33.689,10.467,48.824,25.602,59.291,59.292c10.465-33.69,25.602-48.825,59.291-59.292 c-33.689-10.466-48.824-25.601-59.291-59.292C339.598,321.003,324.463,336.138,290.773,346.604z"/>
               </svg>

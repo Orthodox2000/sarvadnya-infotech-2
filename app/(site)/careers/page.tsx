@@ -33,10 +33,10 @@ export default function CareersPage() {
   return (
     <div className="min-h-screen bg-white text-slate-900">
       {/* Centered Tighter Hero Section */}
-      <section className="bg-white pt-12 pb-16 px-6 text-center relative overflow-hidden flex flex-col items-center border-b border-[#4A6E62]/10">
+      <section className="bg-white pt-12 pb-16 px-6 text-center relative overflow-hidden flex flex-col items-center border-b border-[#006569]/10">
         <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-40">
           <div className="absolute top-0 right-0 w-[70%] h-[70%] bg-white/10 blur-[130px] -mr-32 -mt-32" />
-          <div className="absolute bottom-0 left-0 w-[50%] h-[50%] bg-emerald-200/20 blur-[110px] -ml-24 -mb-24" />
+          <div className="absolute bottom-0 left-0 w-[50%] h-[50%] bg-teal-200/20 blur-[110px] -ml-24 -mb-24" />
         </div>
         
         <div className="max-w-4xl mx-auto relative z-10 w-full flex flex-col items-center">
@@ -46,7 +46,7 @@ export default function CareersPage() {
           </div>
           <h1 className="text-3xl md:text-5xl font-black text-slate-900 mb-6 leading-tight tracking-tight">
             Build the Future of <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#4A6E62] via-[#5D887A] to-[#4A6E62] drop-shadow-[0_2px_15px_rgba(93,136,122,0.3)]">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#006569] via-[#006569] to-[#006569] drop-shadow-[0_2px_15px_rgba(0,101,105,0.3)]">
               Business Intelligence
             </span>
           </h1>
@@ -64,7 +64,7 @@ export default function CareersPage() {
             <h2 className="text-2xl md:text-3xl font-black text-slate-900 mb-4 tracking-tight">Current Openings</h2>
             <p className="text-slate-500 text-xs md:text-sm font-bold">
               Explore our available positions and find the perfect fit for your skills. 
-              Don't see a role that fits? <a href="/contact" className="text-[#4A6E62] font-black hover:underline decoration-2 underline-offset-4">Send us your CV anyway!</a>
+              Don't see a role that fits? <a href="/contact" className="text-[#006569] font-black hover:underline decoration-2 underline-offset-4">Send us your CV anyway!</a>
             </p>
           </div>
 
@@ -78,8 +78,8 @@ export default function CareersPage() {
                 />
               ))
             ) : (
-              <div className="text-center py-16 bg-[#F5F4ED]/50 rounded-[2.5rem] border-2 border-dashed border-[#F0F5F2]">
-                <p className="text-[#4A6E62]/40 font-black uppercase tracking-widest text-[10px]">No active openings at the moment.</p>
+              <div className="text-center py-16 bg-[#F5F4ED]/50 rounded-[2.5rem] border-2 border-dashed border-[#E5F4F4]">
+                <p className="text-[#006569]/40 font-black uppercase tracking-widest text-[10px]">No active openings at the moment.</p>
               </div>
             )}
           </div>
@@ -102,7 +102,7 @@ export default function CareersPage() {
                 title: 'Health & Wellness', 
                 desc: 'Comprehensive health coverage for you and your family.', 
                 icon: (
-                  <svg className="w-6 h-6 text-[#4A6E62]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg className="w-6 h-6 text-[#006569]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                   </svg>
                 )
@@ -111,7 +111,7 @@ export default function CareersPage() {
                 title: 'Flexible Work', 
                 desc: 'Maintain a great work-life balance with flexible scheduling.', 
                 icon: (
-                  <svg className="w-6 h-6 text-[#4A6E62]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg className="w-6 h-6 text-[#006569]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                   </svg>
                 )
@@ -120,13 +120,13 @@ export default function CareersPage() {
                 title: 'Global Exposure', 
                 desc: 'Work with clients and technologies on an international scale.', 
                 icon: (
-                  <svg className="w-6 h-6 text-[#4A6E62]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg className="w-6 h-6 text-[#006569]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
                   </svg>
                 )
               },
             ].map((perk, i) => (
-              <div key={i} className="p-8 bg-white rounded-[2.5rem] border border-slate-100 shadow-sm hover:shadow-2xl hover:border-[#4A6E62]/20 transition-all duration-500">
+              <div key={i} className="p-8 bg-white rounded-[2.5rem] border border-slate-100 shadow-sm hover:shadow-2xl hover:border-[#006569]/20 transition-all duration-500">
                 <div className="w-12 h-12 bg-slate-50 rounded-2xl flex items-center justify-center mb-6 border border-slate-100">
                   {perk.icon}
                 </div>

@@ -142,7 +142,7 @@ export default function AdminEmailConfig() {
     const styles: Record<string, string> = {
       pending: 'bg-amber-50 text-amber-600',
       processing: 'bg-blue-50 text-blue-600',
-      sent: 'bg-green-50 text-green-600',
+      sent: 'bg-teal-50 text-teal-600',
       failed: 'bg-orange-50 text-orange-600',
       dead: 'bg-red-50 text-red-600',
     };
@@ -185,7 +185,7 @@ export default function AdminEmailConfig() {
       </header>
 
       {message.text && (
-        <div className={`mb-6 p-4 rounded-2xl font-bold text-sm ${message.type === 'success' ? 'bg-green-50 text-green-600' : 'bg-red-50 text-red-600'}`}>
+        <div className={`mb-6 p-4 rounded-2xl font-bold text-sm ${message.type === 'success' ? 'bg-teal-50 text-teal-600' : 'bg-red-50 text-red-600'}`}>
           {message.text}
         </div>
       )}
@@ -282,7 +282,7 @@ export default function AdminEmailConfig() {
               {[
                 { label: 'Pending', value: stats?.pending ?? 0, color: 'text-amber-600' },
                 { label: 'Processing', value: stats?.processing ?? 0, color: 'text-blue-600' },
-                { label: 'Sent', value: stats?.sent ?? 0, color: 'text-green-600' },
+                { label: 'Sent', value: stats?.sent ?? 0, color: 'text-teal-600' },
                 { label: 'Failed', value: stats?.failed ?? 0, color: 'text-orange-600' },
                 { label: 'Dead', value: stats?.dead ?? 0, color: 'text-red-600' },
                 { label: 'Total', value: stats?.total ?? 0, color: 'text-slate-900' },
@@ -298,7 +298,7 @@ export default function AdminEmailConfig() {
           <button
             onClick={handleProcessNow}
             disabled={processing}
-            className="w-full bg-[#316852] text-white px-6 py-4 rounded-2xl font-black text-xs uppercase tracking-widest hover:shadow-xl transition-all disabled:opacity-50"
+            className="w-full bg-[#006569] text-white px-6 py-4 rounded-2xl font-black text-xs uppercase tracking-widest hover:shadow-xl transition-all disabled:opacity-50"
           >
             {processing ? 'Retrying...' : 'Retry Failed Sends'}
           </button>

@@ -312,7 +312,7 @@ export default function LearnSaraPage() {
   };
 
   const BotAvatar = () => (
-    <div className="w-8 h-8 rounded-full bg-[#4A6E62] flex items-center justify-center shrink-0 shadow-md shadow-[#4A6E62]/20">
+    <div className="w-8 h-8 rounded-full bg-[#006569] flex items-center justify-center shrink-0 shadow-md shadow-[#006569]/20">
       <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
         <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5s3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
       </svg>
@@ -345,13 +345,13 @@ export default function LearnSaraPage() {
                 {/* Message bubble */}
                 <div className={`rounded-2xl px-4 py-3 text-[13px] leading-relaxed shadow-sm ${
                   msg.role === 'user'
-                    ? 'bg-[#4A6E62] text-white rounded-br-md'
+                    ? 'bg-[#006569] text-white rounded-br-md'
                     : 'bg-white text-slate-700 rounded-bl-md border border-slate-100'
                 }`}>
                   {msg.role === 'user' ? (
                     <SaraText text={msg.text} plain />
                   ) : (
-                    <SaraText text={msg.text} accent="#4A6E62" />
+                    <SaraText text={msg.text} accent="#006569" />
                   )}
                 </div>
 
@@ -363,7 +363,7 @@ export default function LearnSaraPage() {
                 {/* Audio Prompt */}
                 {msg.role === 'assistant' && msg.showAudioPrompt && showAudioPromptId === msg.id && (
                   <div className="mt-2 flex flex-wrap items-center gap-2">
-                    <span className="text-[10px] text-[#4A6E62] font-bold uppercase tracking-wider">
+                    <span className="text-[10px] text-[#006569] font-bold uppercase tracking-wider">
                       {isSpeaking ? "Speaking..." : "Read aloud?"}
                     </span>
                     <div className="flex gap-1">
@@ -389,8 +389,8 @@ export default function LearnSaraPage() {
                             }}
                             className={`px-2 py-1 border text-[9px] font-black uppercase rounded-lg transition-colors shadow-sm ${
                               autoPlayMode === 'summary'
-                                ? 'bg-[#4A6E62] border-[#4A6E62] text-white'
-                                : 'bg-white border-[#4A6E62]/30 text-[#4A6E62] hover:bg-[#F0F5F2]'
+                                ? 'bg-[#006569] border-[#006569] text-white'
+                                : 'bg-white border-[#006569]/30 text-[#006569] hover:bg-[#E5F4F4]'
                             }`}
                           >
                             Summary
@@ -403,8 +403,8 @@ export default function LearnSaraPage() {
                             }}
                             className={`px-2 py-1 border text-[9px] font-black uppercase rounded-lg transition-colors shadow-sm ${
                               autoPlayMode === 'full'
-                                ? 'bg-[#4A6E62] border-[#4A6E62] text-white'
-                                : 'bg-white border-[#4A6E62]/30 text-[#4A6E62] hover:bg-[#F0F5F2]'
+                                ? 'bg-[#006569] border-[#006569] text-white'
+                                : 'bg-white border-[#006569]/30 text-[#006569] hover:bg-[#E5F4F4]'
                             }`}
                           >
                             Full
@@ -431,7 +431,7 @@ export default function LearnSaraPage() {
                       <button
                         key={ti}
                         onClick={() => handleFollowUp(topic)}
-                        className="px-3 py-1.5 bg-[#F0F5F2] hover:bg-[#4A6E62] hover:text-white text-[#4A6E62] rounded-full text-[11px] font-bold transition-all border border-[#4A6E62]/15 hover:border-[#4A6E62] hover:shadow-md active:scale-95"
+                        className="px-3 py-1.5 bg-[#E5F4F4] hover:bg-[#006569] hover:text-white text-[#006569] rounded-full text-[11px] font-bold transition-all border border-[#006569]/15 hover:border-[#006569] hover:shadow-md active:scale-95"
                       >
                         {topic.label}
                       </button>
@@ -441,8 +441,8 @@ export default function LearnSaraPage() {
 
                 {/* Suggested tutorials */}
                 {msg.role === 'assistant' && msg.suggestedTutorials && msg.suggestedTutorials.length > 0 && (
-                  <div className="mt-3 bg-[#F5F4ED] rounded-2xl p-3 border border-[#E0EDE6]">
-                    <p className="text-[9px] font-bold text-[#4A6E62] uppercase tracking-widest mb-2">
+                  <div className="mt-3 bg-[#F5F4ED] rounded-2xl p-3 border border-[#D4EAEA]">
+                    <p className="text-[9px] font-bold text-[#006569] uppercase tracking-widest mb-2">
                       Related tutorials
                     </p>
                     <div className="space-y-1.5">
@@ -450,26 +450,26 @@ export default function LearnSaraPage() {
                         <Link
                           key={tutorial._id}
                           href="/tutorials"
-                          className="flex items-center gap-2.5 p-2 bg-white rounded-xl border border-[#E0EDE6]/50 hover:border-[#4A6E62]/30 hover:shadow-sm transition-all group"
+                          className="flex items-center gap-2.5 p-2 bg-white rounded-xl border border-[#D4EAEA]/50 hover:border-[#006569]/30 hover:shadow-sm transition-all group"
                         >
                           <div className="w-12 h-8 rounded-lg overflow-hidden bg-slate-100 shrink-0 flex items-center justify-center">
                             {tutorial.type === 'video' ? (
                               <img src={getYoutubeThumbnail(tutorial.url)} alt="" className="w-full h-full object-cover" />
                             ) : (
-                              <svg className="w-4 h-4 text-[#4A6E62]/30" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                              <svg className="w-4 h-4 text-[#006569]/30" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
                               </svg>
                             )}
                           </div>
                           <div className="min-w-0 flex-1">
-                            <p className="text-[11px] font-bold text-slate-900 group-hover:text-[#4A6E62] transition-colors leading-snug truncate">
+                            <p className="text-[11px] font-bold text-slate-900 group-hover:text-[#006569] transition-colors leading-snug truncate">
                               {tutorial.title}
                             </p>
                             <p className="text-[9px] text-slate-400 font-medium">
                               {tutorial.folder || 'Tutorial'} {tutorial.type === 'video' && '· Video'}
                             </p>
                           </div>
-                          <svg className="w-3.5 h-3.5 text-slate-300 group-hover:text-[#4A6E62] shrink-0 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                          <svg className="w-3.5 h-3.5 text-slate-300 group-hover:text-[#006569] shrink-0 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
                           </svg>
                         </Link>
@@ -490,9 +490,9 @@ export default function LearnSaraPage() {
               <BotAvatar />
               <div className="bg-white rounded-2xl rounded-bl-md px-4 py-3 border border-slate-100 shadow-sm">
                 <div className="flex items-center gap-1.5">
-                  <span className="w-2 h-2 bg-[#4A6E62]/40 rounded-full animate-bounce [animation-delay:0ms] [animation-duration:1.2s]" />
-                  <span className="w-2 h-2 bg-[#4A6E62]/40 rounded-full animate-bounce [animation-delay:200ms] [animation-duration:1.2s]" />
-                  <span className="w-2 h-2 bg-[#4A6E62]/40 rounded-full animate-bounce [animation-delay:400ms] [animation-duration:1.2s]" />
+                  <span className="w-2 h-2 bg-[#006569]/40 rounded-full animate-bounce [animation-delay:0ms] [animation-duration:1.2s]" />
+                  <span className="w-2 h-2 bg-[#006569]/40 rounded-full animate-bounce [animation-delay:200ms] [animation-duration:1.2s]" />
+                  <span className="w-2 h-2 bg-[#006569]/40 rounded-full animate-bounce [animation-delay:400ms] [animation-duration:1.2s]" />
                 </div>
               </div>
             </div>
@@ -507,14 +507,14 @@ export default function LearnSaraPage() {
         <div className="max-w-3xl mx-auto px-4 py-3">
           <div className="flex items-center justify-between gap-2 mb-2">
             <div className="flex items-center gap-2 min-w-0">
-              <div className="w-7 h-7 rounded-full bg-[#4A6E62] flex items-center justify-center shrink-0">
+              <div className="w-7 h-7 rounded-full bg-[#006569] flex items-center justify-center shrink-0">
                 <svg className="w-3.5 h-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5s3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                 </svg>
               </div>
               <div className="min-w-0">
                 <h3 className="text-[11px] font-black text-slate-900 leading-none truncate">Learn Sara</h3>
-                <p className="text-[8px] text-[#4A6E62] font-bold uppercase tracking-widest leading-none mt-0.5 truncate">Your TallyPrime Teacher</p>
+                <p className="text-[8px] text-[#006569] font-bold uppercase tracking-widest leading-none mt-0.5 truncate">Your TallyPrime Teacher</p>
               </div>
             </div>
             <div className="flex items-center gap-1.5 shrink-0">
@@ -527,7 +527,7 @@ export default function LearnSaraPage() {
                     setIsSpeaking(false);
                   }
                 }}
-                className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${voiceEnabled ? 'bg-slate-100 text-[#4A6E62] hover:bg-slate-200' : 'bg-[#4A6E62] text-white'}`}
+                className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${voiceEnabled ? 'bg-slate-100 text-[#006569] hover:bg-slate-200' : 'bg-[#006569] text-white'}`}
                 title={voiceEnabled ? 'Mute Sara' : 'Unmute Sara'}
               >
                 {voiceEnabled ? (
@@ -552,7 +552,7 @@ export default function LearnSaraPage() {
             </div>
           </div>
           <form onSubmit={handleSubmit}>
-            <div className="flex items-center gap-2 bg-slate-50 rounded-full border border-slate-200 focus-within:border-[#4A6E62]/40 focus-within:ring-2 focus-within:ring-[#4A6E62]/10 transition-all px-1">
+            <div className="flex items-center gap-2 bg-slate-50 rounded-full border border-slate-200 focus-within:border-[#006569]/40 focus-within:ring-2 focus-within:ring-[#006569]/10 transition-all px-1">
               <input
                 ref={inputRef}
                 type="text"
@@ -565,7 +565,7 @@ export default function LearnSaraPage() {
               <button
                 type="submit"
                 disabled={!inputValue.trim() || isTyping}
-                className="w-10 h-10 rounded-full bg-[#4A6E62] text-white flex items-center justify-center shrink-0 hover:bg-[#3D5E52] disabled:opacity-30 disabled:hover:bg-[#4A6E62] transition-all active:scale-90 shadow-lg shadow-[#4A6E62]/20"
+                className="w-10 h-10 rounded-full bg-[#006569] text-white flex items-center justify-center shrink-0 hover:bg-[#006569] disabled:opacity-30 disabled:hover:bg-[#006569] transition-all active:scale-90 shadow-lg shadow-[#006569]/20"
               >
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />

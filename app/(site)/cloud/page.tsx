@@ -7,8 +7,8 @@ import Footer from "../../components/Footer";
 import UnifiedContactModal, { FormType } from "../../components/UnifiedContactModal";
 
 const TAG_STYLES: Record<string, { bg: string; txt: string }> = {
-  green: { bg: '#dcf0e0', txt: '#2b6338' },
-  blue: { bg: '#E0EDE6', txt: '#3D5E52' },
+  green: { bg: '#cdebe5', txt: '#006569' },
+  blue: { bg: '#D4EAEA', txt: '#006569' },
   purple: { bg: '#dcd1f3', txt: '#4f3183' },
   yellow: { bg: '#f6e4bd', txt: '#85601c' },
 };
@@ -173,7 +173,7 @@ export default function CloudPage() {
       {/* Why Cloud Section */}
       <section className=" bg-[linear-gradient(90deg,rgba(249,251,245,1)_0%,rgba(244,242,234,1)_53%,rgba(238,236,223,1)_100%)] py-20 px-6 border-y border-slate-100">
         <div className="max-w-7xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#316852]/10 text-[#316852] text-[10px] font-black uppercase tracking-widest mb-6">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#006569]/10 text-[#006569] text-[10px] font-black uppercase tracking-widest mb-6">
             WHY GO CLOUD?
           </div>
           <h2 className="text-3xl md:text-4xl font-black text-slate-900 mb-3 leading-tight">
@@ -206,7 +206,7 @@ export default function CloudPage() {
         <div className="bg-white rounded-[2rem] p-7 md:p-8 border border-slate-100 shadow-sm">
           <div className="flex flex-col lg:flex-row items-start lg:items-end justify-between gap-6 mb-8">
             <div>
-              <div className="text-[10px] font-black uppercase tracking-[0.3em] text-[#316852] mb-3">HELP MENU</div>
+              <div className="text-[10px] font-black uppercase tracking-[0.3em] text-[#006569] mb-3">HELP MENU</div>
               <h2 className="text-2xl md:text-3xl font-black tracking-tight">Not sure which cloud setup you need?</h2>
             </div>
             <p className="text-slate-500 max-w-2xl leading-relaxed">
@@ -218,7 +218,7 @@ export default function CloudPage() {
             {ctaGroups.map((group) => (
               <div key={group.title} className="space-y-4">
                 <div className="flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#316852]" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#006569]" />
                   <h3 className="font-black text-slate-900 text-sm">{group.title}</h3>
                 </div>
                 <div className="flex flex-col gap-1.5">
@@ -227,7 +227,7 @@ export default function CloudPage() {
                       <button
                         key={button.label}
                         onClick={() => openModal(button.type as FormType, 'Cloud Consultation')}
-                        className="text-left text-sm text-slate-600 hover:text-[#316852] transition-colors py-1.5 px-3 rounded-xl hover:bg-slate-50"
+                        className="text-left text-sm text-slate-600 hover:text-[#006569] transition-colors py-1.5 px-3 rounded-xl hover:bg-slate-50"
                       >
                         {button.label}{' ->'}
                       </button>
@@ -235,7 +235,7 @@ export default function CloudPage() {
                       <Link
                         key={button.label}
                         href={button.href}
-                        className="text-left text-sm text-slate-600 hover:text-[#316852] transition-colors py-1.5 px-3 rounded-xl hover:bg-slate-50"
+                        className="text-left text-sm text-slate-600 hover:text-[#006569] transition-colors py-1.5 px-3 rounded-xl hover:bg-slate-50"
                       >
                         {button.label}{' ->'}
                       </Link>
@@ -250,16 +250,16 @@ export default function CloudPage() {
 
       {/* Backup for Tally Section */}
       {/* <section className="py-20 px-6  bg-[linear-gradient(90deg,rgba(249,251,245,1)_0%,rgba(244,242,234,1)_53%,rgba(238,236,223,1)_100%)]border-y border-slate-100 overflow-hidden relative">
-        <div className="absolute top-0 right-0 w-1/3 h-full bg-[#316852]/5 -skew-x-12 transform translate-x-1/2" />
+        <div className="absolute top-0 right-0 w-1/3 h-full bg-[#006569]/5 -skew-x-12 transform translate-x-1/2" />
 
         <div className="max-w-7xl mx-auto relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#316852]/10 text-[#316852] text-[10px] font-black uppercase tracking-widest mb-6">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#006569]/10 text-[#006569] text-[10px] font-black uppercase tracking-widest mb-6">
               Secure cloud backup
             </div>
             <h2 className="text-3xl md:text-5xl font-black text-slate-900 mb-6 leading-tight">
               Secure Your Data with <br />
-              <span className="text-[#316852]">Backup for Tally</span>
+              <span className="text-[#006569]">Backup for Tally</span>
             </h2>
             <p className="text-slate-600 text-lg leading-relaxed mb-8 font-medium max-w-2xl">
               Backup for Tally provides secure cloud storage for TallyPrime company backups. It stores backups online, helps protect against local system failures, and supports automatic scheduling.
@@ -280,7 +280,7 @@ export default function CloudPage() {
                   desc: 'Restore the latest backup or any previous version stored on cloud.',
                 },
               ].map((item) => (
-                <div key={item.title} className="p-5 bg-[#f0f7f3] rounded-2xl border border-[#316852]/10">
+                <div key={item.title} className="p-5 bg-[#E5F4F4] rounded-2xl border border-[#006569]/10">
                   <h4 className="font-black text-slate-900 mb-2">{item.title}</h4>
                   <p className="text-sm text-slate-500 leading-relaxed font-semibold">{item.desc}</p>
                 </div>
@@ -289,7 +289,7 @@ export default function CloudPage() {
           </div>
 
           <div className="bg-white rounded-[2rem] p-7 md:p-8 text-slate-900 relative overflow-hidden shadow-xl border border-slate-100">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-[#316852]/5 blur-[80px]" />
+            <div className="absolute top-0 right-0 w-32 h-32 bg-[#006569]/5 blur-[80px]" />
 
             <h3 className="text-2xl font-black mb-6 relative z-10 border-b border-slate-100 pb-4">Storage with active TSS</h3>
             <div className="space-y-4 relative z-10">
@@ -298,16 +298,16 @@ export default function CloudPage() {
                   <span className="block font-black text-slate-900">Single-User TallyPrime</span>
                   <span className="text-xs text-slate-500 font-medium">Free storage with active TSS</span>
                 </div>
-                <span className="font-black text-[#316852]">1 GB</span>
+                <span className="font-black text-[#006569]">1 GB</span>
               </div>
               <div className="flex items-center justify-between gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-100">
                 <div>
                   <span className="block font-black text-slate-900">Multi-User TallyPrime</span>
                   <span className="text-xs text-slate-500 font-medium">Free storage with active TSS</span>
                 </div>
-                <span className="font-black text-[#316852]">3 GB</span>
+                <span className="font-black text-[#006569]">3 GB</span>
               </div>
-              <div className="p-4 rounded-2xl bg-[#f0f7f3] border border-[#316852]/10">
+              <div className="p-4 rounded-2xl bg-[#E5F4F4] border border-[#006569]/10">
                 <p className="text-sm text-slate-600 leading-relaxed font-medium">
                   Use the backup management report to monitor, download, and delete company backups, and manage storage and user rights.
                 </p>
@@ -316,7 +316,7 @@ export default function CloudPage() {
 
             <button
               onClick={() => openModal('callback', 'Backup for Tally')}
-              className="mt-8 w-full py-4 bg-[#316852] text-white rounded-xl font-black text-xs uppercase tracking-widest hover:bg-[#1e4d3a] transition-all shadow-lg"
+              className="mt-8 w-full py-4 bg-[#006569] text-white rounded-xl font-black text-xs uppercase tracking-widest hover:bg-[#045A57] transition-all shadow-lg"
             >
               Consult Backup Strategy
             </button>

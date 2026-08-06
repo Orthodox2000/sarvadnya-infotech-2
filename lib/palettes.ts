@@ -44,44 +44,44 @@ export const palettes: Palette[] = [
   },
   {
     id: "emerald-pro",
-    name: "Emerald Professional",
-    description: "Trustworthy and growth-oriented, utilizing forest greens and emerald accents for financial clarity.",
-    primary: "#10b981",
-    secondary: "#065f46",
-    accent: "#34d399",
-    heading: "#064e3b",
-    paragraph: "#065f46",
+    name: "Teal Corporate",
+    description: "Trustworthy and growth-oriented, utilizing deep teals and aqua accents for financial clarity.",
+    primary: "#00897b",
+    secondary: "#005a4e",
+    accent: "#2dd4bf",
+    heading: "#00433a",
+    paragraph: "#005a4e",
     backgrounds: [
       { name: "Plain White", value: "#ffffff" },
-      { name: "Mint Mist", value: "#f0fdf4" },
-      { name: "Sage Light", value: "#f1f5f9" },
-      { name: "Forest Shade", value: "#022c22", isDark: true }
+      { name: "Mint Mist", value: "#e6f4f4" },
+      { name: "Sage Light", value: "#eef3f3" },
+      { name: "Forest Shade", value: "#032e2f", isDark: true }
     ],
     combinations: [
-      { name: "Nature Duo", colors: ["#10b981", "#065f46"] },
-      { name: "Spring Fresh", colors: ["#10b981", "#34d399", "#f0fdf4"] },
-      { name: "Corporate Green", colors: ["#065f46", "#064e3b"] }
+      { name: "Nature Duo", colors: ["#00897b", "#005a4e"] },
+      { name: "Spring Fresh", colors: ["#00897b", "#2dd4bf", "#e6f4f4"] },
+      { name: "Corporate Green", colors: ["#005a4e", "#00433a"] }
     ]
   },
   {
     id: "ocean-deep",
     name: "Ocean Deep",
-    description: "A classic corporate green palette that conveys stability, intelligence, and professional reliability.",
-    primary: "#5D887A",
-    secondary: "#4A6E62",
-    accent: "#72B896",
-    heading: "#2C3F36",
-    paragraph: "#4A6E62",
+    description: "A classic corporate teal palette that conveys stability, intelligence, and professional reliability.",
+    primary: "#006569",
+    secondary: "#006569",
+    accent: "#14b8a6",
+    heading: "#006569",
+    paragraph: "#006569",
     backgrounds: [
       { name: "Pure White", value: "#ffffff" },
-      { name: "Sky Tint", value: "#F0F5F2" },
+      { name: "Sky Tint", value: "#E5F4F4" },
       { name: "Slate Wash", value: "#f8fafc" },
-      { name: "Midnight Navy", value: "#1A2E25", isDark: true }
+      { name: "Midnight Navy", value: "#032e2f", isDark: true }
     ],
     combinations: [
-      { name: "Tech Blue", colors: ["#5D887A", "#4A6E62"] },
-      { name: "Clean Cloud", colors: ["#5D887A", "#72B896", "#ffffff"] },
-      { name: "Ocean Gradient", colors: ["#4A6E62", "#2C3F36"] }
+      { name: "Tech Blue", colors: ["#006569", "#006569"] },
+      { name: "Clean Cloud", colors: ["#006569", "#14b8a6", "#ffffff"] },
+      { name: "Ocean Gradient", colors: ["#006569", "#006569"] }
     ]
   },
   {

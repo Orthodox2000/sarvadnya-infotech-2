@@ -110,13 +110,13 @@ export default function DoMorePage() {
                 <div className="flex flex-col gap-2 mt-auto">
                   <button
                     onClick={() => openModal('quote', s.name, s.description)}
-                    className="w-full bg-[#1A4731] hover:bg-[#123323] text-white font-semibold py-2.5 rounded-lg transition-colors text-sm tracking-wide"
+                    className="w-full bg-[#006569] hover:bg-[#045A57] text-white font-semibold py-2.5 rounded-lg transition-colors text-sm tracking-wide"
                   >
                     GET PRICING
                   </button>
                   <Link
                     href={s.link}
-                    className="w-full bg-[#EAF2ED] hover:bg-[#dcede3] text-[#1A4731] border border-[#C5DACF] font-semibold py-2.5 rounded-lg transition-colors text-sm tracking-wide text-center"
+                    className="w-full bg-[#DDEFEF] hover:bg-[#C5E3E3] text-[#006569] border border-[#B8DEDE] font-semibold py-2.5 rounded-lg transition-colors text-sm tracking-wide text-center"
                   >
                     VIEW DETAILS
                   </Link>

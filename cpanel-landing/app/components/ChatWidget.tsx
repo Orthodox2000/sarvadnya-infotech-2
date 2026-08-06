@@ -93,7 +93,7 @@ export default function ChatWidget() {
             <div className="flex items-center gap-2.5">
               <div className="relative flex h-8 w-8 items-center justify-center rounded-full bg-white/20 text-xs font-black">
                 S
-                <span className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full bg-emerald-400 ring-2 ring-white" />
+                <span className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full bg-teal-400 ring-2 ring-white" />
               </div>
               <div>
                 <p className="text-sm font-semibold leading-tight">Ask Sara</p>

@@ -323,7 +323,7 @@ export default function LandingPage() {
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {whyUs.map((w) => (
               <div key={w.title} className="rounded-2xl bg-white p-6 ring-1 ring-slate-100">
-                <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-full bg-emerald-50 text-emerald-600">
+                <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-full bg-teal-50 text-teal-600">
                   {icons.check}
                 </div>
                 <h3 className="text-sm font-bold text-slate-900">{w.title}</h3>

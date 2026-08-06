@@ -190,7 +190,7 @@ export default function AdminModules() {
           {!isReorderMode && (
             <button 
               onClick={startAdd}
-              className="bg-[#4A6E62] text-white px-8 py-3 rounded-2xl font-bold hover:shadow-lg transition-all"
+              className="bg-[#006569] text-white px-8 py-3 rounded-2xl font-bold hover:shadow-lg transition-all"
             >
               + Create New Module
             </button>
@@ -199,7 +199,7 @@ export default function AdminModules() {
             <button 
               onClick={handleReorder}
               disabled={reordering}
-              className="bg-green-600 text-white px-8 py-3 rounded-2xl font-bold hover:shadow-lg transition-all disabled:opacity-50"
+              className="bg-teal-600 text-white px-8 py-3 rounded-2xl font-bold hover:shadow-lg transition-all disabled:opacity-50"
             >
               {reordering ? 'Saving Order...' : '✓ Save New Order'}
             </button>
@@ -208,7 +208,7 @@ export default function AdminModules() {
       </header>
 
       {message.text && (
-        <div className={`mb-6 p-4 rounded-2xl font-bold text-sm ${message.type === 'success' ? 'bg-green-50 text-green-600' : 'bg-red-50 text-red-600'}`}>
+        <div className={`mb-6 p-4 rounded-2xl font-bold text-sm ${message.type === 'success' ? 'bg-teal-50 text-teal-600' : 'bg-red-50 text-red-600'}`}>
           {message.text}
         </div>
       )}
@@ -227,7 +227,7 @@ export default function AdminModules() {
                   <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">Module Title</label>
                   <input 
                     required
-                    className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#4A6E62] font-bold"
+                    className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#006569] font-bold"
                     value={editingModule.title}
                     onChange={e => setEditingModule({...editingModule, title: e.target.value})}
                   />
@@ -235,7 +235,7 @@ export default function AdminModules() {
                 <div>
                   <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">Category</label>
                   <select 
-                    className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#4A6E62] font-bold"
+                    className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#006569] font-bold"
                     value={editingModule.category}
                     onChange={e => setEditingModule({...editingModule, category: e.target.value})}
                   >
@@ -249,7 +249,7 @@ export default function AdminModules() {
                   <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">Short Description</label>
                   <textarea 
                     required
-                    className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#4A6E62] h-24"
+                    className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#006569] h-24"
                     value={editingModule.shortDescription}
                     onChange={e => setEditingModule({...editingModule, shortDescription: e.target.value})}
                   />
@@ -258,7 +258,7 @@ export default function AdminModules() {
                   <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">Full Description</label>
                   <textarea 
                     required
-                    className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#4A6E62] h-32"
+                    className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#006569] h-32"
                     value={editingModule.fullDescription}
                     onChange={e => setEditingModule({...editingModule, fullDescription: e.target.value})}
                   />
@@ -281,7 +281,7 @@ export default function AdminModules() {
                         type="file" 
                         accept="image/*"
                         onChange={handleImageUpload}
-                        className="text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-emerald-50 file:text-[#4A6E62] hover:file:bg-emerald-100"
+                        className="text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-teal-50 file:text-[#006569] hover:file:bg-teal-100"
                       />
                       <p className="text-[10px] text-slate-400 mt-2">Images are stored directly in MongoDB.</p>
                     </div>
@@ -290,7 +290,7 @@ export default function AdminModules() {
                 <div>
                   <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">Video URL (Embed)</label>
                   <input 
-                    className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#4A6E62]"
+                    className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#006569]"
                     value={editingModule.videoUrl}
                     placeholder="https://www.youtube.com/embed/..."
                     onChange={e => setEditingModule({...editingModule, videoUrl: e.target.value})}
@@ -299,7 +299,7 @@ export default function AdminModules() {
                 <div>
                   <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">Brochure URL</label>
                   <input 
-                    className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#4A6E62]"
+                    className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#006569]"
                     value={editingModule.brochureUrl}
                     onChange={e => setEditingModule({...editingModule, brochureUrl: e.target.value})}
                   />
@@ -311,7 +311,7 @@ export default function AdminModules() {
               <div>
                 <div className="flex justify-between items-center mb-4">
                   <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400">Core Features</label>
-                  <button type="button" onClick={() => addListItem('features')} className="text-[#4A6E62] text-xs font-bold">+ Add Feature</button>
+                  <button type="button" onClick={() => addListItem('features')} className="text-[#006569] text-xs font-bold">+ Add Feature</button>
                 </div>
                 <div className="space-y-3">
                   {editingModule.features.map((feature: string, idx: number) => (
@@ -330,7 +330,7 @@ export default function AdminModules() {
               <div>
                 <div className="flex justify-between items-center mb-4">
                   <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400">Business Benefits</label>
-                  <button type="button" onClick={() => addListItem('benefits')} className="text-[#4A6E62] text-xs font-bold">+ Add Benefit</button>
+                  <button type="button" onClick={() => addListItem('benefits')} className="text-[#006569] text-xs font-bold">+ Add Benefit</button>
                 </div>
                 <div className="space-y-3">
                   {editingModule.benefits.map((benefit: string, idx: number) => (
@@ -379,14 +379,14 @@ export default function AdminModules() {
                     <button 
                       onClick={() => moveModule(idx, 'up')}
                       disabled={idx === 0}
-                      className="w-12 h-12 bg-white rounded-full flex items-center justify-center font-bold text-xl hover:bg-[#4A6E62] hover:text-white transition-all disabled:opacity-30 disabled:hover:bg-white disabled:hover:text-black"
+                      className="w-12 h-12 bg-white rounded-full flex items-center justify-center font-bold text-xl hover:bg-[#006569] hover:text-white transition-all disabled:opacity-30 disabled:hover:bg-white disabled:hover:text-black"
                     >
                       ↑
                     </button>
                     <button 
                       onClick={() => moveModule(idx, 'down')}
                       disabled={idx === modules.length - 1}
-                      className="w-12 h-12 bg-white rounded-full flex items-center justify-center font-bold text-xl hover:bg-[#4A6E62] hover:text-white transition-all disabled:opacity-30 disabled:hover:bg-white disabled:hover:text-black"
+                      className="w-12 h-12 bg-white rounded-full flex items-center justify-center font-bold text-xl hover:bg-[#006569] hover:text-white transition-all disabled:opacity-30 disabled:hover:bg-white disabled:hover:text-black"
                     >
                       ↓
                     </button>
@@ -395,7 +395,7 @@ export default function AdminModules() {
               </div>
               <div className="mb-4">
                 <div className="flex justify-between items-start">
-                   <span className="text-[9px] font-black uppercase tracking-widest text-emerald-400">{m.category}</span>
+                   <span className="text-[9px] font-black uppercase tracking-widest text-teal-400">{m.category}</span>
                    {isReorderMode && <span className="bg-slate-900 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">#{idx + 1}</span>}
                 </div>
                 <h3 className="font-bold text-[#0f172a] mt-1">{m.title}</h3>
@@ -405,7 +405,7 @@ export default function AdminModules() {
                   <>
                     <button 
                       onClick={() => setEditingModule(m)}
-                      className="flex-1 py-2 bg-emerald-50 text-[#4A6E62] rounded-xl text-xs font-bold hover:bg-emerald-100 transition-all"
+                      className="flex-1 py-2 bg-teal-50 text-[#006569] rounded-xl text-xs font-bold hover:bg-teal-100 transition-all"
                     >
                       Edit
                     </button>

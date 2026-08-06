@@ -29,7 +29,7 @@ const ServiceDetailPopup = ({ isOpen, onClose, service, onEnquire }: ServicePopu
   return (
     <div className="fixed inset-0 z-[100000] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200" onClick={onClose}>
       <div className="bg-[linear-gradient(135deg,rgba(249,251,245,0.98)_0%,rgba(244,242,234,0.98)_53%,rgba(238,236,223,0.98)_100%)] rounded-2xl p-6 md:p-8 max-w-2xl w-full shadow-2xl relative animate-in zoom-in-95 duration-200 max-h-[90vh] overflow-y-auto border border-[#E5E2D9]" onClick={e => e.stopPropagation()}>
-        <button className="absolute top-6 right-6 text-slate-400 hover:text-[#316852] transition-colors" onClick={onClose}>
+        <button className="absolute top-6 right-6 text-slate-400 hover:text-[#006569] transition-colors" onClick={onClose}>
           <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
         </button>
         
@@ -38,28 +38,28 @@ const ServiceDetailPopup = ({ isOpen, onClose, service, onEnquire }: ServicePopu
              {service.icon}
           </div>
           <div>
-            <span className="px-3 py-2 rounded-full bg-slate-50 text-[#316852] text-[9px] font-black uppercase tracking-widest border border-slate-100 mb-2 inline-block">
+            <span className="px-3 py-2 rounded-full bg-slate-50 text-[#006569] text-[9px] font-black uppercase tracking-widest border border-slate-100 mb-2 inline-block">
               {service.tag}
             </span>
             <h3 className="text-2xl md:text-3xl font-black text-slate-900 leading-tight tracking-tight">{service.title}</h3>
           </div>
         </div>
 
-        <div className="bg-[#f0f7f3] p-6 rounded-3xl border border-[#316852]/10 mb-8">
+        <div className="bg-[#E5F4F4] p-6 rounded-3xl border border-[#006569]/10 mb-8">
           <p className="text-slate-600 leading-relaxed text-sm md:text-base italic font-medium">
             "{service.detailedDesc}"
           </p>
         </div>
 
         <div className="space-y-6">
-          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[#316852] flex items-center gap-2">
-            <span className="h-px w-8 bg-[#316852]/20" />
+          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[#006569] flex items-center gap-2">
+            <span className="h-px w-8 bg-[#006569]/20" />
             Core Deliverables
           </p>
           <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {service.features.map((f: string, i: number) => (
-              <li key={i} className="text-[12px] font-bold text-slate-700 flex items-start gap-3 bg-white p-3 rounded-xl border border-slate-50 shadow-sm hover:border-[#316852]/20 transition-colors">
-                <div className="mt-0.5 flex-shrink-0 w-5 h-5 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center border border-emerald-100">
+              <li key={i} className="text-[12px] font-bold text-slate-700 flex items-start gap-3 bg-white p-3 rounded-xl border border-slate-50 shadow-sm hover:border-[#006569]/20 transition-colors">
+                <div className="mt-0.5 flex-shrink-0 w-5 h-5 rounded-full bg-teal-50 text-teal-600 flex items-center justify-center border border-teal-100">
                   <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="4" d="M5 13l4 4L19 7" />
                   </svg>
@@ -117,7 +117,7 @@ export default function ServicesPage() {
       detailedDesc: "Our Corporate Training is a strategic investment in your human capital. We move beyond basic entries to teach advanced statutory features, audit trails, and complex management reporting. The program includes hands-on workshops on multi-company management and security configurations, ensuring your team can maximize TallyPrime's potential to drive business growth.",
       features: ["GST/TDS Statutory mastery", "Advanced MIS Reporting", "Audit Trail implementation", "Automated BRS workflows", "Multi-company management", "Security configuration"],
       tag: "Training",
-      iconBg: "bg-[#316852]",
+      iconBg: "bg-[#006569]",
       link: "/services/corporate-training",
       icon: (
         <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -131,7 +131,7 @@ export default function ServicesPage() {
       detailedDesc: "Break down data silos across your organization. We architect custom integration layers that allow real-time data flow between TallyPrime and external applications. Whether it is syncing sales from Shopify, leads from Salesforce, or payroll from an external HRMS, our integration services ensure data integrity and eliminate the risk of human error.",
       features: ["Real-time API sync", "Excel bulk migration", "CRM & Marketplace sync", "Database bridge development", "Automated data scheduling", "Error validation logic"],
       tag: "Integration",
-      iconBg: "bg-[#1e4d3a]",
+      iconBg: "bg-[#045A57]",
       icon: (
         <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
@@ -158,7 +158,7 @@ export default function ServicesPage() {
       detailedDesc: "Every business has a unique DNA. We build custom TDL modules that extend Tally's core functionality to match your specific operational needs. From specialized invoice formats and field-level validations to complex analytical reports, we ensure Tally works exactly the way your business does, not the other way around.",
       features: ["Industry module design", "Customized Invoices", "Field-level validations", "Analytical reports", "Digital Signatures", "Email/SMS automation"],
       tag: "TDL",
-      iconBg: "bg-[#316852]",
+      iconBg: "bg-[#006569]",
       link: "/services/tdl",
       icon: (
         <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -173,7 +173,7 @@ export default function ServicesPage() {
       detailedDesc: "Empower your leadership with data-driven decision making on the go. Our mobile solutions bridge the gap between the office and the field, allowing secure access to critical Tally reports. With end-to-end encryption and real-time sync, you can monitor business health and approve transactions without being tied to a desk.",
       features: ["Live Sales Dashboards", "WhatsApp sharing", "Ageing & Alert sync", "End-to-end encryption", "Customer info on the go", "Stock status tracking"],
       tag: "Mobile",
-      iconBg: "bg-[#1e4d3a]",
+      iconBg: "bg-[#045A57]",
       link: "/services/mobile-app-biz",
       icon: (
         <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -223,12 +223,12 @@ export default function ServicesPage() {
       {/* Clean Header Section */}
       <section className="bg-[linear-gradient(90deg,rgba(249,251,245,1)_0%,rgba(244,242,234,1)_53%,rgba(238,236,223,1)_100%)] pt-8 pb-16 px-6 text-center relative overflow-hidden flex flex-col items-center">
         <div className="max-w-4xl mx-auto relative z-10 w-full">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/40 border border-[#316852]/10 text-[#316852] text-[9px] font-black uppercase tracking-widest mb-8 backdrop-blur-sm">
-            <span className="flex h-1.5 w-1.5 rounded-full bg-[#316852] animate-pulse"></span>
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/40 border border-[#006569]/10 text-[#006569] text-[9px] font-black uppercase tracking-widest mb-8 backdrop-blur-sm">
+            <span className="flex h-1.5 w-1.5 rounded-full bg-[#006569] animate-pulse"></span>
             Professional Support Directory
           </div>
           <h1 className="text-4xl md:text-7xl font-black text-slate-900 mb-6 leading-tight tracking-tight">
-            Expert Tally <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#316852] to-[#1e4d3a]">Services</span>
+            Expert Tally <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#006569] to-[#045A57]">Services</span>
           </h1>
           <p className="text-slate-600 text-sm md:text-lg max-w-2xl mx-auto leading-relaxed font-semibold mb-0">
             Certified technical expertise to architect and support your TallyPrime environment for maximum business impact and seamless compliance.
@@ -242,7 +242,7 @@ export default function ServicesPage() {
           {supportServices.map((s) => (
             <div 
               key={s.title} 
-              className="group relative bg-white rounded-xl p-6 border border-slate-100 shadow-sm hover:shadow-2xl hover:shadow-[#316852]/15 transition-all duration-500 flex flex-col h-full hover:-translate-y-2"
+              className="group relative bg-white rounded-xl p-6 border border-slate-100 shadow-sm hover:shadow-2xl hover:shadow-[#006569]/15 transition-all duration-500 flex flex-col h-full hover:-translate-y-2"
             >
               {/* Icon Container */}
               <div className={`w-14 h-14 rounded-lg flex items-center justify-center ${s.iconBg} text-white mb-8 shadow-lg transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3`}>
@@ -251,10 +251,10 @@ export default function ServicesPage() {
 
               {/* Text Content */}
               <div className="flex-1">
-                <span className="text-[9px] font-black uppercase tracking-widest text-[#316852] block mb-3 opacity-60">
+                <span className="text-[9px] font-black uppercase tracking-widest text-[#006569] block mb-3 opacity-60">
                   {s.tag}
                 </span>
-                <h3 className="text-xl font-black text-slate-900 tracking-tight mb-4 group-hover:text-[#316852] transition-colors leading-tight">
+                <h3 className="text-xl font-black text-slate-900 tracking-tight mb-4 group-hover:text-[#006569] transition-colors leading-tight">
                   {s.title}
                 </h3>
                 <p className="text-[13px] text-slate-500 font-bold leading-relaxed opacity-70 mb-8">
@@ -266,7 +266,7 @@ export default function ServicesPage() {
               <div className="space-y-3">
                  <button 
                   onClick={() => setSelectedService(s)}
-                  className="w-full py-3.5 bg-slate-50 text-[#316852] rounded-lg font-black text-[10px] uppercase tracking-widest hover:bg-[#316852] hover:text-white transition-all duration-500 flex items-center justify-center gap-2"
+                  className="w-full py-3.5 bg-slate-50 text-[#006569] rounded-lg font-black text-[10px] uppercase tracking-widest hover:bg-[#006569] hover:text-white transition-all duration-500 flex items-center justify-center gap-2"
                 >
                   View Details
                   <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
@@ -287,19 +287,19 @@ export default function ServicesPage() {
       </section>
 
       {/* Contact Section */}
-      <section className="py-24 px-6 bg-[#f0f7f3]">
+      <section className="py-24 px-6 bg-[#E5F4F4]">
         <div className="max-w-6xl mx-auto rounded-[3.5rem] p-12 bg-slate-900 text-white text-center relative overflow-hidden shadow-2xl">
-          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#316852]/20 rounded-full blur-[100px] -mr-64 -mt-64" />
-          <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-[#1e4d3a]/10 rounded-full blur-[100px] -ml-48 -mb-48" />
+          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#006569]/20 rounded-full blur-[100px] -mr-64 -mt-64" />
+          <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-[#045A57]/10 rounded-full blur-[100px] -ml-48 -mb-48" />
           
           <div className="relative z-10 max-w-4xl mx-auto">
-            <h2 className="text-3xl md:text-5xl font-black mb-8 tracking-tight">Need a <span className="text-[#1e4d3a]">Custom Solution?</span></h2>
+            <h2 className="text-3xl md:text-5xl font-black mb-8 tracking-tight">Need a <span className="text-[#045A57]">Custom Solution?</span></h2>
             <p className="text-slate-400 font-bold mb-12 max-w-2xl mx-auto leading-relaxed">
               Our technical architects are ready to design a personalized TallyPrime environment tailored to your specific industry requirements.
             </p>
             <button 
                onClick={() => openModal('general')}
-               className="px-12 py-5 bg-white text-black rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-[#1e4d3a] hover:text-white transition-all duration-500 shadow-xl"
+               className="px-12 py-5 bg-white text-black rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-[#045A57] hover:text-white transition-all duration-500 shadow-xl"
             >
                Request Professional Consultation
             </button>

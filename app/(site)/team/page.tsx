@@ -56,10 +56,10 @@ export default function TeamPage() {
   return (
     <main className="min-h-screen bg-white text-slate-900">
       {/* Hero: Team Photo & Common Message (Themed Hero) */}
-      <section className="bg-white py-20 px-6 sm:px-12 lg:px-24 relative overflow-hidden flex flex-col items-center border-b border-[#4A6E62]/10">
+      <section className="bg-white py-20 px-6 sm:px-12 lg:px-24 relative overflow-hidden flex flex-col items-center border-b border-[#006569]/10">
         <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-40">
           <div className="absolute top-0 right-0 w-[70%] h-[70%] bg-white/10 blur-[130px] -mr-32 -mt-32" />
-          <div className="absolute bottom-0 left-0 w-[50%] h-[50%] bg-emerald-200/20 blur-[110px] -ml-24 -mb-24" />
+          <div className="absolute bottom-0 left-0 w-[50%] h-[50%] bg-teal-200/20 blur-[110px] -ml-24 -mb-24" />
         </div>
 
         <div className="mx-auto max-w-7xl relative z-10 w-full flex flex-col lg:flex-row items-center gap-12">
@@ -69,10 +69,10 @@ export default function TeamPage() {
               Our Family
             </div>
             <h1 className="text-3xl md:text-5xl lg:text-6xl font-black text-slate-900 leading-tight tracking-tight">
-              Meet the <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#4A6E62] via-[#5D887A] to-[#4A6E62] drop-shadow-[0_2px_15px_rgba(93,136,122,0.3)]">Experts</span><br/>
+              Meet the <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#006569] via-[#006569] to-[#006569] drop-shadow-[0_2px_15px_rgba(0,101,105,0.3)]">Experts</span><br/>
               Behind Your Success
             </h1>
-            <p className="text-lg md:text-xl text-slate-600/80 font-medium leading-relaxed italic border-l-4 border-[#4A6E62] pl-6 max-w-2xl mx-auto lg:mx-0">
+            <p className="text-lg md:text-xl text-slate-600/80 font-medium leading-relaxed italic border-l-4 border-[#006569] pl-6 max-w-2xl mx-auto lg:mx-0">
               {content.hero_quote}
             </p>
           </div>
@@ -83,7 +83,7 @@ export default function TeamPage() {
                   <img src={content.hero_image} className="w-full h-full object-cover" alt="Team Hero" />
                 ) : (
                   <div className="w-full h-full bg-slate-50 flex items-center justify-center">
-                    <div className="text-center p-8 opacity-20 text-[#4A6E62]">
+                    <div className="text-center p-8 opacity-20 text-[#006569]">
                       <svg className="w-24 h-24 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                       </svg>
@@ -109,10 +109,10 @@ export default function TeamPage() {
               <div key={member._id} className="group flex flex-col items-center text-center">
                  <div className="relative w-full aspect-square rounded-[3rem] overflow-hidden bg-white shadow-lg border border-slate-100 mb-8 group-hover:shadow-2xl transition-all duration-500 group-hover:-translate-y-2">
                     <img src={member.imageUrl} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt={member.name} />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#4A6E62]/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#006569]/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                  </div>
-                 <h4 className="font-black text-slate-900 text-xl mb-1 leading-tight group-hover:text-[#4A6E62] transition-colors">{member.name}</h4>
-                 <p className="text-[10px] sm:text-xs font-black text-[#4A6E62] uppercase tracking-[0.2em] opacity-80">{member.description || 'Expert Consultant'}</p>
+                 <h4 className="font-black text-slate-900 text-xl mb-1 leading-tight group-hover:text-[#006569] transition-colors">{member.name}</h4>
+                 <p className="text-[10px] sm:text-xs font-black text-[#006569] uppercase tracking-[0.2em] opacity-80">{member.description || 'Expert Consultant'}</p>
               </div>
             ))}
           </div>
@@ -126,7 +126,7 @@ export default function TeamPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {(content.culture_items || []).map((item: any, idx: number) => (
               <div key={idx} className="p-8 rounded-[2.5rem] bg-white border border-slate-100 shadow-sm hover:shadow-xl transition-all duration-500 group">
-                <div className="w-14 h-14 bg-slate-50 group-hover:bg-[#F0F5F2] rounded-2xl flex items-center justify-center mx-auto mb-6 text-[#4A6E62] transition-colors">
+                <div className="w-14 h-14 bg-slate-50 group-hover:bg-[#E5F4F4] rounded-2xl flex items-center justify-center mx-auto mb-6 text-[#006569] transition-colors">
                   {idx === 0 ? (
                     <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M13 10V3L4 14h7v7l9-11h-7z" />

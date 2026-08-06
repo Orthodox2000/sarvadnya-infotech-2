@@ -94,8 +94,8 @@ export function buildFormEmailHtml(submission: FormSubmissionPayload): string {
     .map(
       (row) => `
       <tr>
-        <td style="padding:10px 14px;background:#f6f8f7;border:1px solid #e5ebe8;border-radius:8px;font-weight:700;color:#1e4d3a;font-size:12px;white-space:nowrap;vertical-align:top;">${escapeHtml(row.label)}</td>
-        <td style="padding:10px 14px;border:1px solid #e5ebe8;border-radius:8px;color:#2a2d34;font-size:13px;word-break:break-word;">${escapeHtml(row.value)}</td>
+        <td style="padding:10px 14px;background:#E8F0F0;border:1px solid #D9E8E8;border-radius:8px;font-weight:700;color:#045A57;font-size:12px;white-space:nowrap;vertical-align:top;">${escapeHtml(row.label)}</td>
+        <td style="padding:10px 14px;border:1px solid #D9E8E8;border-radius:8px;color:#2a2d34;font-size:13px;word-break:break-word;">${escapeHtml(row.value)}</td>
       </tr>`
     )
     .join('');
@@ -109,7 +109,7 @@ export function buildFormEmailHtml(submission: FormSubmissionPayload): string {
         <td align="center">
           <table role="presentation" width="100%" style="max-width:560px;background:#ffffff;border-radius:14px;overflow:hidden;box-shadow:0 8px 24px rgba(31,77,58,0.08);">
             <tr>
-              <td style="background:#316852;padding:22px 24px;">
+              <td style="background:#006569;padding:22px 24px;">
                 <p style="margin:0;color:#ffffff;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;">Sarvadnya Infotech LLP</p>
                 <h1 style="margin:6px 0 0;color:#ffffff;font-size:20px;font-weight:800;">New ${escapeHtml(getFormTypeLabel(submission.formType))}</h1>
               </td>

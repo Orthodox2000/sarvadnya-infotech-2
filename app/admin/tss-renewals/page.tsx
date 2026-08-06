@@ -64,7 +64,7 @@ export default function AdminTssRenewalsPage() {
   const statusBadge = (status: string) => {
     switch (status) {
       case 'contacted': return 'bg-blue-50 text-blue-600 border-blue-100';
-      case 'renewed': return 'bg-emerald-50 text-emerald-600 border-emerald-100';
+      case 'renewed': return 'bg-teal-50 text-teal-600 border-teal-100';
       case 'rejected': return 'bg-rose-50 text-rose-600 border-rose-100';
       default: return 'bg-amber-50 text-amber-600 border-amber-100';
     }
@@ -74,7 +74,7 @@ export default function AdminTssRenewalsPage() {
     <div className="relative">
       <header className="mb-8 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
         <div>
-          <p className="text-[10px] font-black uppercase tracking-[0.3em] text-[#4A6E62] mb-2">Admin Support</p>
+          <p className="text-[10px] font-black uppercase tracking-[0.3em] text-[#006569] mb-2">Admin Support</p>
           <h1 className="text-3xl font-black tracking-tight text-slate-900">TSS Renewal Requests</h1>
           <p className="mt-1 text-sm font-medium text-slate-500">
             Customers requesting TSS renewal with their serial number.
@@ -82,7 +82,7 @@ export default function AdminTssRenewalsPage() {
         </div>
         <button
           onClick={fetchData}
-          className="rounded-full bg-[#4A6E62] px-5 py-2.5 text-[10px] font-black uppercase tracking-[0.2em] text-white transition-all hover:shadow-lg hover:shadow-emerald-900/15"
+          className="rounded-full bg-[#006569] px-5 py-2.5 text-[10px] font-black uppercase tracking-[0.2em] text-white transition-all hover:shadow-lg hover:shadow-teal-900/15"
         >
           Refresh
         </button>
@@ -183,7 +183,7 @@ export default function AdminTssRenewalsPage() {
           >
             <div className="flex shrink-0 items-center justify-between border-b border-slate-100 bg-slate-50/70 p-6 sm:p-8">
               <div>
-                <p className="mb-1 text-[10px] font-black uppercase tracking-[0.25em] text-[#4A6E62]">Renewal Request</p>
+                <p className="mb-1 text-[10px] font-black uppercase tracking-[0.25em] text-[#006569]">Renewal Request</p>
                 <h2 className="text-2xl font-black tracking-tight text-slate-900">{selected.name}</h2>
               </div>
               <button onClick={() => setSelected(null)} className="rounded-full p-2 text-slate-400 transition-colors hover:text-slate-900">
@@ -240,7 +240,7 @@ export default function AdminTssRenewalsPage() {
               </button>
               <a
                 href={`mailto:${selected.email}?subject=Your TSS Renewal Request&body=Hi ${selected.name},%0A%0AWe received your TSS renewal request (Serial: ${selected.serialNumber}). Please share the latest pricing to proceed.`}
-                className="inline-flex items-center gap-2 rounded-xl bg-[#4A6E62] px-6 py-3 text-[11px] font-black uppercase tracking-[0.2em] text-white transition-all hover:shadow-lg hover:shadow-emerald-900/20"
+                className="inline-flex items-center gap-2 rounded-xl bg-[#006569] px-6 py-3 text-[11px] font-black uppercase tracking-[0.2em] text-white transition-all hover:shadow-lg hover:shadow-teal-900/20"
               >
                 Reply via Email
               </a>

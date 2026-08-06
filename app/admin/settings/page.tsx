@@ -121,7 +121,7 @@ export default function AdminSettings() {
       </header>
 
       {message.text && (
-        <div className={`mb-6 p-4 rounded-2xl font-bold text-sm ${message.type === 'success' ? 'bg-green-50 text-green-600' : 'bg-red-50 text-red-600'}`}>
+        <div className={`mb-6 p-4 rounded-2xl font-bold text-sm ${message.type === 'success' ? 'bg-teal-50 text-teal-600' : 'bg-red-50 text-red-600'}`}>
           {message.text}
         </div>
       )}

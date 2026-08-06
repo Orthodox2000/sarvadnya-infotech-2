@@ -20,13 +20,13 @@ export default function CapabilitiesPage() {
       <section className="bg-white border-b border-slate-100">
         <div className="max-w-6xl mx-auto px-6 pt-12 pb-10 md:pt-16 md:pb-14">
           <div className="max-w-2xl">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#F0F5F2] text-[#4A6E62] text-[10px] font-bold uppercase tracking-widest mb-5">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#5D887A]"></span>
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#E5F4F4] text-[#006569] text-[10px] font-bold uppercase tracking-widest mb-5">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#006569]"></span>
               What TallyPrime Can Do
             </div>
             <h1 className="text-3xl md:text-5xl font-black text-slate-900 mb-4 leading-tight">
               Every feature you need.{' '}
-              <span className="text-[#4A6E62]">Nothing you don&apos;t.</span>
+              <span className="text-[#006569]">Nothing you don&apos;t.</span>
             </h1>
             <p className="text-slate-500 text-sm md:text-base leading-relaxed max-w-lg">
               From invoicing to payroll, TallyPrime handles it all. Explore {totalFeatures} capabilities 
@@ -42,7 +42,7 @@ export default function CapabilitiesPage() {
               { num: '100%', label: 'GST Ready' },
             ].map((s, i) => (
               <div key={i} className="flex items-baseline gap-2">
-                <span className="text-xl font-black text-[#4A6E62]">{s.num}</span>
+                <span className="text-xl font-black text-[#006569]">{s.num}</span>
                 <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{s.label}</span>
               </div>
             ))}
@@ -60,7 +60,7 @@ export default function CapabilitiesPage() {
                 onClick={() => setActiveCat(cat.id)}
                 className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all
                   ${activeCat === cat.id 
-                    ? 'bg-[#4A6E62] text-white shadow-md shadow-[#4A6E62]/20' 
+                    ? 'bg-[#006569] text-white shadow-md shadow-[#006569]/20' 
                     : 'bg-slate-50 text-slate-500 hover:bg-slate-100'}`}
               >
                 <span className="hidden sm:inline">{cat.title}</span>
@@ -120,8 +120,8 @@ export default function CapabilitiesPage() {
                       <p className="text-xs text-slate-500 leading-relaxed mb-3">{feature.description}</p>
                     )}
                     {feature.example && (
-                      <div className="bg-[#F0F5F2] rounded-xl px-4 py-3 border border-[#4A6E62]/10">
-                        <p className="text-[10px] font-bold text-[#4A6E62] uppercase tracking-widest mb-1">Example</p>
+                      <div className="bg-[#E5F4F4] rounded-xl px-4 py-3 border border-[#006569]/10">
+                        <p className="text-[10px] font-bold text-[#006569] uppercase tracking-widest mb-1">Example</p>
                         <p className="text-[11px] text-slate-600 leading-relaxed">
                           {feature.example.split('[RUPEE_ICON]').map((part, i, arr) => (
                             <span key={i}>
@@ -146,7 +146,7 @@ export default function CapabilitiesPage() {
           {capabilityCategories.indexOf(currentCat) > 0 ? (
             <button
               onClick={() => setActiveCat(capabilityCategories[capabilityCategories.indexOf(currentCat) - 1].id)}
-              className="flex items-center gap-2 text-sm font-bold text-slate-400 hover:text-[#4A6E62] transition-colors"
+              className="flex items-center gap-2 text-sm font-bold text-slate-400 hover:text-[#006569] transition-colors"
             >
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
@@ -158,7 +158,7 @@ export default function CapabilitiesPage() {
           {capabilityCategories.indexOf(currentCat) < capabilityCategories.length - 1 ? (
             <button
               onClick={() => setActiveCat(capabilityCategories[capabilityCategories.indexOf(currentCat) + 1].id)}
-              className="flex items-center gap-2 text-sm font-bold text-slate-400 hover:text-[#4A6E62] transition-colors"
+              className="flex items-center gap-2 text-sm font-bold text-slate-400 hover:text-[#006569] transition-colors"
             >
               {capabilityCategories[capabilityCategories.indexOf(currentCat) + 1].title}
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
@@ -170,16 +170,16 @@ export default function CapabilitiesPage() {
       </section>
 
       {/* CTA */}
-      <section className="bg-[#4A6E62] py-14 px-6">
+      <section className="bg-[#006569] py-14 px-6">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-2xl md:text-3xl font-black text-white mb-3">Ready to see it in action?</h2>
-          <p className="text-emerald-100 text-sm mb-8 max-w-md mx-auto">
+          <p className="text-teal-100 text-sm mb-8 max-w-md mx-auto">
             Our team will walk you through every feature that matters to your business.
           </p>
           <div className="flex flex-wrap justify-center gap-3">
             <Link
               href="/products"
-              className="px-7 py-3.5 bg-white text-[#4A6E62] rounded-xl font-black text-xs uppercase tracking-widest hover:bg-emerald-50 transition-all"
+              className="px-7 py-3.5 bg-white text-[#006569] rounded-xl font-black text-xs uppercase tracking-widest hover:bg-teal-50 transition-all"
             >
               Get Now
             </Link>

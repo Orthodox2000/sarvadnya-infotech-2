@@ -19,11 +19,11 @@ const categories = [
       { label: "Renewal", href: "/services#amc" }
     ],
     theme: {
-      bg: "bg-emerald-50",
-      accent: "bg-emerald-500",
-      text: "text-emerald-600",
-      hoverBg: "hover:bg-emerald-600",
-      hoverBorder: "hover:border-emerald-200"
+      bg: "bg-teal-50",
+      accent: "bg-teal-500",
+      text: "text-teal-600",
+      hoverBg: "hover:bg-teal-600",
+      hoverBorder: "hover:border-teal-200"
     }
   },
   {
@@ -41,11 +41,11 @@ const categories = [
       { label: "Recovery", href: "/contact" }
     ],
     theme: {
-      bg: "bg-emerald-50",
-      accent: "bg-emerald-500",
-      text: "text-emerald-600",
-      hoverBg: "hover:bg-emerald-600",
-      hoverBorder: "hover:border-emerald-200"
+      bg: "bg-teal-50",
+      accent: "bg-teal-500",
+      text: "text-teal-600",
+      hoverBg: "hover:bg-teal-600",
+      hoverBorder: "hover:border-teal-200"
     }
   },
   {
@@ -65,11 +65,11 @@ const categories = [
       { label: "Excel Tool", href: "/modules?id=excel-to-tally" }
     ],
     theme: {
-      bg: "bg-emerald-50",
-      accent: "bg-emerald-500",
-      text: "text-emerald-600",
-      hoverBg: "hover:bg-emerald-600",
-      hoverBorder: "hover:border-emerald-200"
+      bg: "bg-teal-50",
+      accent: "bg-teal-500",
+      text: "text-teal-600",
+      hoverBg: "hover:bg-teal-600",
+      hoverBorder: "hover:border-teal-200"
     }
   },
   {
@@ -103,7 +103,7 @@ export default function QuickReference() {
         <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-10 text-center md:text-left px-2">
           <div className="space-y-1">
             <h2 className="text-2xl md:text-3xl font-black text-white tracking-tight">
-              Quick Access <span className="text-emerald-400">Hub</span>
+              Quick Access <span className="text-teal-400">Hub</span>
             </h2>
             <p className="text-[13px] md:text-sm text-slate-400 font-medium opacity-80">
               Complete Tally ecosystem in one compact view.
@@ -111,7 +111,7 @@ export default function QuickReference() {
           </div>
           <Link 
             href="/contact" 
-            className="h-10 px-6 flex items-center justify-center rounded-lg bg-emerald-600 text-white font-bold text-[11px] uppercase tracking-wider hover:bg-emerald-700 transition-all shadow-sm active:scale-95"
+            className="h-10 px-6 flex items-center justify-center rounded-lg bg-teal-600 text-white font-bold text-[11px] uppercase tracking-wider hover:bg-teal-700 transition-all shadow-sm active:scale-95"
           >
             Request Consultation
           </Link>

@@ -138,7 +138,7 @@ export default function UnifiedContactModal({
       >
         {/* Decorative Header */}
         <div className="bg-white sm:p-6 p-6 md:p-8 lg:p-4 text-slate-900 relative overflow-hidden border-b border-slate-100">
-          <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-50 rounded-full blur-[60px] opacity-60 -mr-16 -mt-16" />
+          <div className="absolute top-0 right-0 w-32 h-32 bg-teal-50 rounded-full blur-[60px] opacity-60 -mr-16 -mt-16" />
           <div className="absolute bottom-0 left-0 w-24 h-24 bg-violet-50 rounded-full blur-[50px] opacity-40 -ml-12 -mb-12" />
           
           <button 
@@ -157,12 +157,12 @@ export default function UnifiedContactModal({
 
           <div className="relative z-10">
             <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 text-[9px] font-bold uppercase tracking-[0.2em] text-slate-500 mb-2 sm:mb-3 border border-slate-200">
-              <span className="flex h-1.5 w-1.5 rounded-full bg-[#316852] animate-pulse"></span>
+              <span className="flex h-1.5 w-1.5 rounded-full bg-[#006569] animate-pulse"></span>
               {getBadge()}
             </span>
             <h2 className="text-2xl sm:text-3xl font-black tracking-tight leading-tight text-[#0f0529]">{getTitle()}</h2>
             <p className="mt-1.5 sm:mt-2 text-[11px] md:text-xs text-slate-500 leading-relaxed font-medium">
-              Fill in the details below and our team will get back to you within <span className="text-[#316852] font-bold">15 minutes</span>.
+              Fill in the details below and our team will get back to you within <span className="text-[#006569] font-bold">15 minutes</span>.
             </p>
           </div>
         </div>
@@ -171,7 +171,7 @@ export default function UnifiedContactModal({
         <div className="sm:p-6 p-6 md:p-8 lg:p-4 bg-slate-50/50">
           {isSuccess ? (
             <div className="py-6 sm:py-8 text-center animate-in fade-in zoom-in-95 duration-500">
-              <div className="w-14 h-14 sm:w-16 sm:h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4 shadow-inner">
+              <div className="w-14 h-14 sm:w-16 sm:h-16 bg-teal-100 text-teal-600 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4 shadow-inner">
                 <svg className="w-7 h-7 sm:w-8 sm:h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" />
                 </svg>
@@ -190,7 +190,7 @@ export default function UnifiedContactModal({
                     value={formData.name}
                     onChange={e => setFormData({...formData, name: e.target.value})}
                     placeholder="John Doe"
-                    className="w-full rounded-xl bg-white border border-slate-200 px-4 py-2 sm:py-2.5 text-sm text-slate-900 placeholder:text-slate-300 focus:outline-none focus:ring-2 focus:ring-[#316852]/20 focus:border-[#316852] transition-all shadow-sm"
+                    className="w-full rounded-xl bg-white border border-slate-200 px-4 py-2 sm:py-2.5 text-sm text-slate-900 placeholder:text-slate-300 focus:outline-none focus:ring-2 focus:ring-[#006569]/20 focus:border-[#006569] transition-all shadow-sm"
                   />
                 </div>
                 <div className="space-y-1.5">
@@ -201,7 +201,7 @@ export default function UnifiedContactModal({
                     value={formData.email}
                     onChange={e => setFormData({...formData, email: e.target.value})}
                     placeholder="john@example.com"
-                    className="w-full rounded-xl bg-white border border-slate-200 px-4 py-2 sm:py-2.5 text-sm text-slate-900 placeholder:text-slate-300 focus:outline-none focus:ring-2 focus:ring-[#316852]/20 focus:border-[#316852] transition-all shadow-sm"
+                    className="w-full rounded-xl bg-white border border-slate-200 px-4 py-2 sm:py-2.5 text-sm text-slate-900 placeholder:text-slate-300 focus:outline-none focus:ring-2 focus:ring-[#006569]/20 focus:border-[#006569] transition-all shadow-sm"
                   />
                 </div>
               </div>
@@ -215,7 +215,7 @@ export default function UnifiedContactModal({
                     value={formData.contact}
                     onChange={e => setFormData({...formData, contact: e.target.value.replace(/[^0-9+]/g, '')})}
                     placeholder="+91 00000 00000"
-                    className="w-full rounded-xl bg-white border border-slate-200 px-4 py-2 sm:py-2.5 text-sm text-slate-900 placeholder:text-slate-300 focus:outline-none focus:ring-2 focus:ring-[#316852]/20 focus:border-[#316852] transition-all shadow-sm"
+                    className="w-full rounded-xl bg-white border border-slate-200 px-4 py-2 sm:py-2.5 text-sm text-slate-900 placeholder:text-slate-300 focus:outline-none focus:ring-2 focus:ring-[#006569]/20 focus:border-[#006569] transition-all shadow-sm"
                   />
                 </div>
                 <div className="space-y-1.5">
@@ -225,7 +225,7 @@ export default function UnifiedContactModal({
                     value={formData.service}
                     onChange={e => setFormData({...formData, service: e.target.value})}
                     placeholder="e.g. TallyPrime Gold"
-                    className="w-full rounded-xl bg-white border border-slate-200 px-4 py-2 sm:py-2.5 text-sm text-slate-900 placeholder:text-slate-300 focus:outline-none focus:ring-2 focus:ring-[#316852]/20 focus:border-[#316852] transition-all shadow-sm"
+                    className="w-full rounded-xl bg-white border border-slate-200 px-4 py-2 sm:py-2.5 text-sm text-slate-900 placeholder:text-slate-300 focus:outline-none focus:ring-2 focus:ring-[#006569]/20 focus:border-[#006569] transition-all shadow-sm"
                   />
                 </div>
               </div>
@@ -237,14 +237,14 @@ export default function UnifiedContactModal({
                   onChange={e => setFormData({...formData, description: e.target.value})}
                   placeholder="Tell us more about your needs..."
                   rows={2}
-                  className="w-full rounded-xl bg-white border border-slate-200 px-4 py-2.5 sm:py-3 text-sm text-slate-900 placeholder:text-slate-300 focus:outline-none focus:ring-2 focus:ring-[#316852]/20 focus:border-[#316852] transition-all shadow-sm resize-none"
+                  className="w-full rounded-xl bg-white border border-slate-200 px-4 py-2.5 sm:py-3 text-sm text-slate-900 placeholder:text-slate-300 focus:outline-none focus:ring-2 focus:ring-[#006569]/20 focus:border-[#006569] transition-all shadow-sm resize-none"
                 />
               </div>
 
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="group relative w-full h-11 sm:h-12 bg-[#316852] text-white rounded-xl font-black text-xs uppercase tracking-widest shadow-lg shadow-emerald-100 hover:bg-[#316852] transition-all flex items-center justify-center gap-3 overflow-hidden active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed"
+                className="group relative w-full h-11 sm:h-12 bg-[#006569] text-white rounded-xl font-black text-xs uppercase tracking-widest shadow-lg shadow-teal-100 hover:bg-[#006569] transition-all flex items-center justify-center gap-3 overflow-hidden active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed"
               >
                 {isSubmitting ? (
                   <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />

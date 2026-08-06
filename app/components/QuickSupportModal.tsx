@@ -379,22 +379,22 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
   return (
     <div className="fixed bottom-24 left-0 right-0 px-4 sm:left-auto sm:right-6 sm:px-0 z-[3001] sm:w-[380px] max-w-[380px] animate-in slide-in-from-bottom-4 fade-in duration-300 pointer-events-none">
       <div 
-        className="relative overflow-hidden w-full mx-auto rounded-[2rem] flex flex-col h-[550px] max-h-[calc(100vh-140px)] text-slate-900 shadow-[0_20px_50px_rgba(93,136,122,0.2)] border border-slate-100 bg-white/95 backdrop-blur-md pointer-events-auto"
+        className="relative overflow-hidden w-full mx-auto rounded-[2rem] flex flex-col h-[550px] max-h-[calc(100vh-140px)] text-slate-900 shadow-[0_20px_50px_rgba(0,101,105,0.2)] border border-slate-100 bg-white/95 backdrop-blur-md pointer-events-auto"
         onClick={e => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="p-5 border-b border-white/10 bg-[#316852] text-white shrink-0">
+        <div className="p-5 border-b border-white/10 bg-[#006569] text-white shrink-0">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="relative w-10 h-10">
                 <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center border border-white/20 overflow-hidden">
-                   <div className="bg-[#70f2f2] w-full h-full flex items-center justify-center font-black text-[#316852] text-lg">S</div>
+                   <div className="bg-[#70f2f2] w-full h-full flex items-center justify-center font-black text-[#006569] text-lg">S</div>
                 </div>
-                <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-[#316852] rounded-full"></span>
+                <span className="absolute bottom-0 right-0 w-3 h-3 bg-teal-500 border-2 border-[#006569] rounded-full"></span>
               </div>
               <div>
                 <h3 className="text-sm font-black tracking-tight">Ask Sara</h3>
-                <p className="text-[10px] text-emerald-200 font-bold uppercase tracking-widest leading-none mt-0.5">Sarvadnya Assistant</p>
+                <p className="text-[10px] text-teal-200 font-bold uppercase tracking-widest leading-none mt-0.5">Sarvadnya Assistant</p>
               </div>
             </div>
             <div className="flex items-center gap-2">
@@ -407,7 +407,7 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
                     setIsSpeaking(false);
                   }
                 }}
-                className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${voiceEnabled ? 'bg-white/20 text-white' : 'bg-white/5 text-emerald-300'}`}
+                className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${voiceEnabled ? 'bg-white/20 text-white' : 'bg-white/5 text-teal-300'}`}
                 title={voiceEnabled ? 'Mute Sara' : 'Unmute Sara'}
               >
                 {voiceEnabled ? (
@@ -446,17 +446,17 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
               <div 
                 className={`max-w-[85%] px-4 py-3 rounded-2xl text-xs font-medium shadow-sm leading-relaxed break-words overflow-wrap-anywhere ${
                   msg.sender === 'user' 
-                    ? 'bg-[#316852] text-white rounded-tr-none' 
+                    ? 'bg-[#006569] text-white rounded-tr-none' 
                     : 'bg-white text-slate-700 border border-slate-100 rounded-tl-none'
                 }`}
               >
-                <SaraText text={msg.text} plain={msg.sender === 'user'} accent="#316852" onNavigate={onClose} />
+                <SaraText text={msg.text} plain={msg.sender === 'user'} accent="#006569" onNavigate={onClose} />
               </div>
 
               {/* Audio Prompt */}
               {msg.sender === 'ai' && msg.showAudioPrompt && showAudioPromptId === msg.id && (
                 <div className="mt-2 flex flex-wrap items-center gap-2 animate-in fade-in slide-in-from-top-1 duration-300">
-                  <span className="text-[10px] text-[#316852] font-bold uppercase tracking-wider ml-2">
+                  <span className="text-[10px] text-[#006569] font-bold uppercase tracking-wider ml-2">
                     {isSpeaking ? "Speaking..." : "Read aloud?"}
                   </span>
                   <div className="flex gap-1">
@@ -482,8 +482,8 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
                           }}
                           className={`px-2 py-1 border text-[9px] font-black uppercase rounded-lg transition-colors shadow-sm ${
                             autoPlayMode === 'summary' 
-                              ? 'bg-[#316852] border-[#316852] text-white' 
-                              : 'bg-white border-emerald-200 text-[#316852] hover:bg-emerald-50'
+                              ? 'bg-[#006569] border-[#006569] text-white' 
+                              : 'bg-white border-teal-200 text-[#006569] hover:bg-teal-50'
                           }`}
                         >
                           Summary
@@ -496,8 +496,8 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
                           }}
                           className={`px-2 py-1 border text-[9px] font-black uppercase rounded-lg transition-colors shadow-sm ${
                             autoPlayMode === 'full' 
-                              ? 'bg-[#316852] border-[#316852] text-white' 
-                              : 'bg-white border-emerald-200 text-[#316852] hover:bg-emerald-50'
+                              ? 'bg-[#006569] border-[#006569] text-white' 
+                              : 'bg-white border-teal-200 text-[#006569] hover:bg-teal-50'
                           }`}
                         >
                           Full
@@ -524,7 +524,7 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
                     <button
                       key={ti}
                       onClick={() => handleFollowUp(topic)}
-                      className="px-2 py-1 bg-emerald-50 hover:bg-[#316852] hover:text-white text-[#316852] rounded-full text-[9px] font-bold transition-all border border-[#316852]/15 hover:border-[#316852] active:scale-95"
+                      className="px-2 py-1 bg-teal-50 hover:bg-[#006569] hover:text-white text-[#006569] rounded-full text-[9px] font-bold transition-all border border-[#006569]/15 hover:border-[#006569] active:scale-95"
                     >
                       {topic.label}
                     </button>
@@ -535,7 +535,7 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
               {/* Suggested tutorials */}
               {msg.sender === 'ai' && msg.suggestedTutorials && msg.suggestedTutorials.length > 0 && (
                 <div className="mt-2 ml-2 max-w-[90%]">
-                  <p className="text-[8px] font-bold text-[#316852] uppercase tracking-widest mb-1.5">
+                  <p className="text-[8px] font-bold text-[#006569] uppercase tracking-widest mb-1.5">
                     You can also refer to these for additional info
                   </p>
                   <div className="space-y-1.5">
@@ -544,26 +544,26 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
                         key={tutorial._id}
                         href="/tutorials"
                         onClick={onClose}
-                        className="flex items-center gap-2 p-2 bg-white rounded-lg border border-emerald-100 hover:border-[#316852]/30 hover:shadow-sm transition-all group"
+                        className="flex items-center gap-2 p-2 bg-white rounded-lg border border-teal-100 hover:border-[#006569]/30 hover:shadow-sm transition-all group"
                       >
                         <div className="w-10 h-7 rounded overflow-hidden bg-slate-100 shrink-0 flex items-center justify-center">
                           {tutorial.type === 'video' ? (
                             <svg className="w-4 h-4 text-rose-400" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
                           ) : (
-                            <svg className="w-4 h-4 text-[#316852]/40" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                            <svg className="w-4 h-4 text-[#006569]/40" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                               <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
                             </svg>
                           )}
                         </div>
                         <div className="min-w-0 flex-1">
-                          <p className="text-[10px] font-bold text-slate-900 group-hover:text-[#316852] transition-colors leading-snug truncate">
+                          <p className="text-[10px] font-bold text-slate-900 group-hover:text-[#006569] transition-colors leading-snug truncate">
                             {tutorial.title}
                           </p>
                           <p className="text-[8px] text-slate-400 font-medium">
                             {tutorial.folder || 'Tutorial'}
                           </p>
                         </div>
-                        <svg className="w-3 h-3 text-slate-300 group-hover:text-[#316852] shrink-0 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                        <svg className="w-3 h-3 text-slate-300 group-hover:text-[#006569] shrink-0 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
                           <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
                         </svg>
                       </Link>
@@ -576,9 +576,9 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
           {(isTyping || isAiResponding) && (
             <div className="flex justify-start">
               <div className="bg-white px-4 py-3 rounded-2xl rounded-tl-none border border-slate-100 shadow-sm flex gap-1">
-                <span className="w-1.5 h-1.5 bg-[#316852]/40 rounded-full animate-bounce"></span>
-                <span className="w-1.5 h-1.5 bg-[#316852]/40 rounded-full animate-bounce [animation-delay:0.2s]"></span>
-                <span className="w-1.5 h-1.5 bg-[#316852]/40 rounded-full animate-bounce [animation-delay:0.4s]"></span>
+                <span className="w-1.5 h-1.5 bg-[#006569]/40 rounded-full animate-bounce"></span>
+                <span className="w-1.5 h-1.5 bg-[#006569]/40 rounded-full animate-bounce [animation-delay:0.2s]"></span>
+                <span className="w-1.5 h-1.5 bg-[#006569]/40 rounded-full animate-bounce [animation-delay:0.4s]"></span>
               </div>
             </div>
           )}
@@ -591,7 +591,7 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
               ref={inputRef}
               type="text"
               placeholder={isAiResponding ? "Sara is responding... (click ■ to stop)" : "Type your message..."}
-              className="flex-1 bg-slate-50 border border-slate-100 rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-[#316852]/10 focus:border-[#316852] transition-all"
+              className="flex-1 bg-slate-50 border border-slate-100 rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-[#006569]/10 focus:border-[#006569] transition-all"
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
             />
@@ -603,7 +603,7 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
               className={`hidden sm:flex w-10 h-10 rounded-xl items-center justify-center transition-all active:scale-95 ${
                 isListening
                   ? 'bg-red-500 text-white shadow-lg shadow-red-500/20 animate-pulse'
-                  : 'bg-slate-100 text-[#316852] hover:bg-emerald-50 hover:border-emerald-200 border border-slate-100 disabled:opacity-40 disabled:hover:bg-slate-100'
+                  : 'bg-slate-100 text-[#006569] hover:bg-teal-50 hover:border-teal-200 border border-slate-100 disabled:opacity-40 disabled:hover:bg-slate-100'
               }`}
             >
               {isListening ? (
@@ -631,7 +631,7 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
               <button 
                 type="submit"
                 disabled={!inputText.trim() || isTyping}
-                className="w-10 h-10 rounded-xl bg-[#316852] text-white flex items-center justify-center shadow-lg shadow-[#316852]/20 disabled:opacity-50 transition-all active:scale-95"
+                className="w-10 h-10 rounded-xl bg-[#006569] text-white flex items-center justify-center shadow-lg shadow-[#006569]/20 disabled:opacity-50 transition-all active:scale-95"
               >
                 <svg className="w-5 h-5 rotate-90" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />

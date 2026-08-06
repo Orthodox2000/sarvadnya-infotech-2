@@ -73,7 +73,7 @@ const AdminSidebar = ({ isOpen, onClose }: AdminSidebarProps) => {
               <img src={adminLogo} alt="Admin Logo" className="h-10 w-auto object-contain" />
             ) : (
               <h2 className="text-2xl font-black tracking-tighter">
-                ADMIN<span className="text-[#5D887A]">PANEL</span>
+                ADMIN<span className="text-[#006569]">PANEL</span>
               </h2>
             )}
             <p className="text-[10px] text-slate-400 font-bold uppercase tracking-[0.2em] mt-1">
@@ -100,12 +100,12 @@ const AdminSidebar = ({ isOpen, onClose }: AdminSidebarProps) => {
               }}
               className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all group ${
                 pathname === item.href
-                  ? 'bg-[#4A6E62] text-white shadow-xl shadow-[#4A6E62]/20'
+                  ? 'bg-[#006569] text-white shadow-xl shadow-[#006569]/20'
                   : 'text-slate-400 hover:bg-white/5 hover:text-white'
               }`}
             >
               {item.icon && (
-                <svg className={`w-5 h-5 flex-shrink-0 transition-colors ${pathname === item.href ? 'text-[#5D887A]' : 'group-hover:text-[#5D887A]'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg className={`w-5 h-5 flex-shrink-0 transition-colors ${pathname === item.href ? 'text-[#006569]' : 'group-hover:text-[#006569]'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d={item.icon} />
                 </svg>
               )}
@@ -117,7 +117,7 @@ const AdminSidebar = ({ isOpen, onClose }: AdminSidebarProps) => {
         <div className="mt-auto pt-6 border-t border-white/5 space-y-1.5">
           <Link
             href="/"
-            className="flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-[#5D887A] transition-colors group"
+            className="flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-[#006569] transition-colors group"
           >
             <svg className="w-5 h-5 group-hover:-translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M10 19l-7-7m0 0l7-7m-7 7h18" />

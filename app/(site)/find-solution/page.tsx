@@ -414,7 +414,7 @@ export default function FindSolutionPage() {
                       </label>
                     </div>
                     {answers[q.id] && (
-                      <div className="w-5 h-5 rounded-full bg-emerald-500 shrink-0 flex items-center justify-center shadow-sm">
+                      <div className="w-5 h-5 rounded-full bg-teal-500 shrink-0 flex items-center justify-center shadow-sm">
                         <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="4" d="M5 13l4 4L19 7" />
                         </svg>
@@ -509,7 +509,7 @@ export default function FindSolutionPage() {
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
               {[
                 { label: 'Efficiency', val: `${businessScores.efficiency}%`, color: 'text-[#00ABE4]' },
-                { label: 'Growth', val: `${businessScores.growth}%`, color: 'text-emerald-500' },
+                { label: 'Growth', val: `${businessScores.growth}%`, color: 'text-teal-500' },
                 { label: 'Automation', val: businessScores.automation, color: 'text-blue-600' },
                 { label: 'Risk Level', val: businessScores.risk, color: businessScores.risk === 'High' ? 'text-red-500' : 'text-amber-500' }
               ].map((m, i) => (
@@ -602,7 +602,7 @@ export default function FindSolutionPage() {
               </div>
             ) : (
               <div className="p-10 pt-20 pb-12 text-center space-y-4">
-                <div className="w-16 h-16 bg-emerald-500 rounded-full flex items-center justify-center mx-auto shadow-xl shadow-emerald-500/20">
+                <div className="w-16 h-16 bg-teal-500 rounded-full flex items-center justify-center mx-auto shadow-xl shadow-teal-500/20">
                   <svg className="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="4" d="M5 13l4 4L19 7" /></svg>
                 </div>
                 <h4 className="text-3xl font-black text-slate-900">Protocol Initiated.</h4>

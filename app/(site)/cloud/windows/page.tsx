@@ -5,8 +5,8 @@ import Link from 'next/link';
 import Footer from '../../../components/Footer';
 import UnifiedContactModal, { FormType } from '../../../components/UnifiedContactModal';
 
-const BRAND_PRIMARY = '#316852';
-const BRAND_SECONDARY = '#1e4d3a';
+const BRAND_PRIMARY = '#006569';
+const BRAND_SECONDARY = '#045A57';
 
 const features = [
   { title: 'Feels Just Like Your Office PC', desc: 'A full Windows desktop in the cloud. Your team sees the same familiar screen they always have — no training needed.' },
@@ -174,9 +174,9 @@ export default function WindowsVMPage() {
         <div className="max-w-7xl mx-auto px-6">
           <div className="py-2.5">
             <ul className="flex items-center gap-1.5 text-[11px] font-medium text-slate-500">
-              <li><Link href="/" className="hover:text-[#316852] transition-colors">Home</Link></li>
+              <li><Link href="/" className="hover:text-[#006569] transition-colors">Home</Link></li>
               <li className="text-slate-300 mx-0.5">/</li>
-              <li><Link href="/cloud" className="hover:text-[#316852] transition-colors">Cloud</Link></li>
+              <li><Link href="/cloud" className="hover:text-[#006569] transition-colors">Cloud</Link></li>
               <li className="text-slate-300 mx-0.5">/</li>
               <li className="text-slate-800 font-semibold">Windows Cloud Desktop</li>
             </ul>
@@ -491,7 +491,7 @@ export default function WindowsVMPage() {
                 {inquiryStatus && (
                   <p
                     className={`text-[11px] text-center leading-relaxed font-medium ${
-                      inquiryStatus.type === 'success' ? 'text-emerald-600' : 'text-red-500'
+                      inquiryStatus.type === 'success' ? 'text-teal-600' : 'text-red-500'
                     }`}
                   >
                     {inquiryStatus.text}
@@ -610,7 +610,7 @@ export default function WindowsVMPage() {
                 {formMsg && (
                   <p
                     className={`text-[11px] text-center leading-relaxed font-medium ${
-                      formMsg.type === 'success' ? 'text-emerald-600' : 'text-red-500'
+                      formMsg.type === 'success' ? 'text-teal-600' : 'text-red-500'
                     }`}
                   >
                     {formMsg.text}
@@ -644,7 +644,7 @@ export default function WindowsVMPage() {
                       {item.name.charAt(0)}
                     </div>
                     <div className="min-w-0 flex-1">
-                      <p className="text-sm font-bold text-slate-700 group-hover:text-[#316852] transition-colors truncate">
+                      <p className="text-sm font-bold text-slate-700 group-hover:text-[#006569] transition-colors truncate">
                         {item.name}
                       </p>
                       <span className="inline-flex items-center gap-1 text-[11px] text-slate-400">
@@ -682,7 +682,7 @@ export default function WindowsVMPage() {
                     <Link
                       key={link.label}
                       href={link.href!}
-                      className="block text-sm text-slate-600 hover:text-[#316852] transition-colors py-1"
+                      className="block text-sm text-slate-600 hover:text-[#006569] transition-colors py-1"
                     >
                       {link.label}
                     </Link>
@@ -691,7 +691,7 @@ export default function WindowsVMPage() {
                       key={link.label}
                       type="button"
                       onClick={() => openModal(link.type!, 'Windows Cloud Desktop')}
-                      className="block w-full text-left text-sm text-slate-600 hover:text-[#316852] transition-colors py-1"
+                      className="block w-full text-left text-sm text-slate-600 hover:text-[#006569] transition-colors py-1"
                     >
                       {link.label}
                     </button>

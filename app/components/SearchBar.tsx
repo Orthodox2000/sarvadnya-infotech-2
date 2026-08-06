@@ -27,14 +27,14 @@ export default function SearchBar() {
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
           placeholder="Search Sarvadnya..."
-          className={`w-full bg-white border border-[#316852]/30 rounded-lg text-[11px] text-[#4A4A4A] placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#316852]/30 focus:border-[#316852] transition-all shadow-sm focus:placeholder:text-transparent ${isFocused ? 'pl-9 pr-20' : 'pl-4 pr-20'} py-2`}
+          className={`w-full bg-white border border-[#006569]/30 rounded-lg text-[11px] text-[#4A4A4A] placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#006569]/30 focus:border-[#006569] transition-all shadow-sm focus:placeholder:text-transparent ${isFocused ? 'pl-9 pr-20' : 'pl-4 pr-20'} py-2`}
         />
         <button 
           type="submit"
           title="Search"
           className={`absolute left-2.5 inset-y-0 flex items-center transition-all duration-200 ${isFocused ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-3 pointer-events-none'}`}
         >
-          <span className="w-4 h-4 text-[#316852]">
+          <span className="w-4 h-4 text-[#006569]">
             <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
@@ -42,7 +42,7 @@ export default function SearchBar() {
         </button>
         <button 
           type="submit"
-          className="absolute right-0 inset-y-0 bg-[#316852] text-white rounded-r-md px-3 hover:bg-[#245a40] transition-all shadow-sm flex items-center"
+          className="absolute right-0 inset-y-0 bg-[#006569] text-white rounded-r-md px-3 hover:bg-[#245a40] transition-all shadow-sm flex items-center"
         >
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />

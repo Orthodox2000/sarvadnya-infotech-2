@@ -53,7 +53,7 @@ export default function NotificationToast() {
         <div 
           key={toast.id}
           className={`px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-3 animate-in slide-in-from-right-10 duration-300 pointer-events-auto ${
-            toast.type === 'success' ? 'bg-emerald-500 text-white' :
+            toast.type === 'success' ? 'bg-teal-500 text-white' :
             toast.type === 'error' ? 'bg-red-500 text-white' :
             'bg-[#0f0529] text-white'
           }`}

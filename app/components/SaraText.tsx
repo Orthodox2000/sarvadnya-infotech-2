@@ -63,7 +63,7 @@ function renderInline(segment: string, accent: string, onNavigate?: () => void) 
   });
 }
 
-export default function SaraText({ text, accent = '#316852', onNavigate, plain = false }: SaraTextProps) {
+export default function SaraText({ text, accent = '#006569', onNavigate, plain = false }: SaraTextProps) {
   if (plain) {
     const plainLines = text.split('\n');
     return (
@@ -90,7 +90,7 @@ export default function SaraText({ text, accent = '#316852', onNavigate, plain =
           return (
             <pre
               key={i}
-              className="my-2 rounded-xl bg-slate-900 text-emerald-200 p-3 overflow-x-auto text-[0.85em] leading-relaxed font-mono whitespace-pre border border-white/5"
+              className="my-2 rounded-xl bg-slate-900 text-teal-200 p-3 overflow-x-auto text-[0.85em] leading-relaxed font-mono whitespace-pre border border-white/5"
             >
               {code}
             </pre>

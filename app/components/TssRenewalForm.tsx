@@ -49,19 +49,19 @@ export default function TssRenewalForm({ variant = 'default', source = 'website'
       <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
         <h3 className="text-sm font-black text-slate-900 mb-3">Renew Your TSS</h3>
         {result && (
-          <div className={`mb-3 px-3 py-2 rounded-lg text-xs font-semibold ${result.type === 'success' ? 'bg-emerald-50 text-emerald-700' : 'bg-red-50 text-red-700'}`}>
+          <div className={`mb-3 px-3 py-2 rounded-lg text-xs font-semibold ${result.type === 'success' ? 'bg-teal-50 text-teal-700' : 'bg-red-50 text-red-700'}`}>
             {result.message}
           </div>
         )}
         <form onSubmit={handleSubmit} className="space-y-2.5">
           <input type="text" placeholder="Serial Number *" required value={serialNumber} onChange={e => setSerialNumber(e.target.value)}
-            className="w-full px-3 py-2 text-xs rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#4A6E62]/30 focus:border-[#4A6E62]" />
+            className="w-full px-3 py-2 text-xs rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#006569]/30 focus:border-[#006569]" />
           <input type="text" placeholder="Your Name *" required value={name} onChange={e => setName(e.target.value)}
-            className="w-full px-3 py-2 text-xs rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#4A6E62]/30 focus:border-[#4A6E62]" />
+            className="w-full px-3 py-2 text-xs rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#006569]/30 focus:border-[#006569]" />
           <input type="email" placeholder="Email Address *" required value={email} onChange={e => setEmail(e.target.value)}
-            className="w-full px-3 py-2 text-xs rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#4A6E62]/30 focus:border-[#4A6E62]" />
+            className="w-full px-3 py-2 text-xs rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#006569]/30 focus:border-[#006569]" />
           <button type="submit" disabled={submitting}
-            className="w-full px-4 py-2.5 bg-[#4A6E62] text-white rounded-lg text-xs font-bold uppercase tracking-wider hover:bg-[#5D887A] transition-all disabled:opacity-50">
+            className="w-full px-4 py-2.5 bg-[#006569] text-white rounded-lg text-xs font-bold uppercase tracking-wider hover:bg-[#006569] transition-all disabled:opacity-50">
             {submitting ? 'Submitting...' : 'Renew Now'}
           </button>
         </form>
@@ -73,7 +73,7 @@ export default function TssRenewalForm({ variant = 'default', source = 'website'
     return (
       <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
         {result && (
-          <div className={`mb-3 px-3 py-2 rounded-lg text-xs font-semibold ${result.type === 'success' ? 'bg-emerald-100 text-emerald-800' : 'bg-red-100 text-red-800'}`}>
+          <div className={`mb-3 px-3 py-2 rounded-lg text-xs font-semibold ${result.type === 'success' ? 'bg-teal-100 text-teal-800' : 'bg-red-100 text-red-800'}`}>
             {result.message}
           </div>
         )}
@@ -85,7 +85,7 @@ export default function TssRenewalForm({ variant = 'default', source = 'website'
           <input type="email" placeholder="Email *" required value={email} onChange={e => setEmail(e.target.value)}
             className="flex-1 min-w-[140px] px-3 py-2 text-xs rounded-lg border border-white/20 bg-white/10 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-white/30" />
           <button type="submit" disabled={submitting}
-            className="px-6 py-2 bg-white text-[#4A6E62] rounded-lg text-xs font-bold uppercase tracking-wider hover:bg-emerald-50 transition-all disabled:opacity-50">
+            className="px-6 py-2 bg-white text-[#006569] rounded-lg text-xs font-bold uppercase tracking-wider hover:bg-teal-50 transition-all disabled:opacity-50">
             {submitting ? 'Submitting...' : 'Renew Now'}
           </button>
         </form>
@@ -98,7 +98,7 @@ export default function TssRenewalForm({ variant = 'default', source = 'website'
       <h3 className="text-lg font-black text-slate-900 mb-1">Renew Your TSS</h3>
       <p className="text-slate-500 text-xs font-medium mb-5">Enter your details and we will process your renewal.</p>
       {result && (
-        <div className={`mb-4 px-4 py-3 rounded-xl text-sm font-semibold ${result.type === 'success' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-red-50 text-red-700 border border-red-200'}`}>
+        <div className={`mb-4 px-4 py-3 rounded-xl text-sm font-semibold ${result.type === 'success' ? 'bg-teal-50 text-teal-700 border border-teal-200' : 'bg-red-50 text-red-700 border border-red-200'}`}>
           {result.message}
         </div>
       )}
@@ -107,22 +107,22 @@ export default function TssRenewalForm({ variant = 'default', source = 'website'
           <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Serial Number</label>
           <input type="text" required value={serialNumber} onChange={e => setSerialNumber(e.target.value)}
             placeholder="Enter your TSS serial number"
-            className="w-full px-4 py-3 text-sm rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#4A6E62]/30 focus:border-[#4A6E62] transition-all" />
+            className="w-full px-4 py-3 text-sm rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#006569]/30 focus:border-[#006569] transition-all" />
         </div>
         <div>
           <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Your Name</label>
           <input type="text" required value={name} onChange={e => setName(e.target.value)}
             placeholder="Full name"
-            className="w-full px-4 py-3 text-sm rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#4A6E62]/30 focus:border-[#4A6E62] transition-all" />
+            className="w-full px-4 py-3 text-sm rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#006569]/30 focus:border-[#006569] transition-all" />
         </div>
         <div>
           <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Email Address *</label>
           <input type="email" required value={email} onChange={e => setEmail(e.target.value)}
             placeholder="you@company.com"
-            className="w-full px-4 py-3 text-sm rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#4A6E62]/30 focus:border-[#4A6E62] transition-all" />
+            className="w-full px-4 py-3 text-sm rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#006569]/30 focus:border-[#006569] transition-all" />
         </div>
         <button type="submit" disabled={submitting}
-          className="w-full px-6 py-3.5 bg-[#4A6E62] text-white rounded-xl font-black text-xs uppercase tracking-widest hover:bg-[#5D887A] transition-all shadow-lg shadow-[#4A6E62]/20 disabled:opacity-50 disabled:cursor-not-allowed">
+          className="w-full px-6 py-3.5 bg-[#006569] text-white rounded-xl font-black text-xs uppercase tracking-widest hover:bg-[#006569] transition-all shadow-lg shadow-[#006569]/20 disabled:opacity-50 disabled:cursor-not-allowed">
           {submitting ? 'Submitting...' : 'Renew Now'}
         </button>
       </form>

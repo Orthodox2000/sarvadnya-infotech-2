@@ -149,7 +149,7 @@ export default function AdminAssets() {
         <a 
           href={tabInfo[activeTab].url}
           target="_blank"
-          className="text-xs font-bold text-[#4A6E62] bg-emerald-50 px-4 py-3 rounded-2xl hover:bg-emerald-100 transition-colors"
+          className="text-xs font-bold text-[#006569] bg-teal-50 px-4 py-3 rounded-2xl hover:bg-teal-100 transition-colors"
         >
           View Live {activeTab.charAt(0).toUpperCase() + activeTab.slice(1)} Section
         </a>
@@ -161,7 +161,7 @@ export default function AdminAssets() {
           <button
             key={id}
             onClick={() => setActiveTab(id as any)}
-            className={`px-6 py-2 rounded-xl font-bold transition-all text-xs uppercase tracking-widest ${activeTab === id ? 'bg-[#4A6E62] text-white' : 'bg-slate-100 text-slate-500 hover:bg-slate-200'}`}
+            className={`px-6 py-2 rounded-xl font-bold transition-all text-xs uppercase tracking-widest ${activeTab === id ? 'bg-[#006569] text-white' : 'bg-slate-100 text-slate-500 hover:bg-slate-200'}`}
           >
             {info.label}
           </button>
@@ -169,16 +169,16 @@ export default function AdminAssets() {
       </div>
 
       <div className="mb-8 p-4 bg-sky-50 rounded-2xl border border-sky-100 flex items-center gap-3">
-        <div className="w-8 h-8 bg-emerald-500 rounded-full flex items-center justify-center text-white shrink-0">
+        <div className="w-8 h-8 bg-teal-500 rounded-full flex items-center justify-center text-white shrink-0">
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
         </div>
-        <p className="text-xs font-bold text-emerald-700 tracking-tight">
+        <p className="text-xs font-bold text-teal-700 tracking-tight">
             {tabInfo[activeTab].hint}
         </p>
       </div>
 
       {message.text && (
-        <div className={`mb-6 p-4 rounded-2xl font-bold text-sm ${message.type === 'success' ? 'bg-green-50 text-green-600' : 'bg-red-50 text-red-600'}`}>
+        <div className={`mb-6 p-4 rounded-2xl font-bold text-sm ${message.type === 'success' ? 'bg-teal-50 text-teal-600' : 'bg-red-50 text-red-600'}`}>
           {message.text}
         </div>
       )}
@@ -190,7 +190,7 @@ export default function AdminAssets() {
             <h2 className="text-xl font-bold text-slate-900 mb-6">Add New Partner</h2>
             <form onSubmit={handleAddAsset} className="space-y-4">
               <input 
-                className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#4A6E62]"
+                className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#006569]"
                 placeholder="Partner Name"
                 value={newAsset.name}
                 onChange={e => setNewAsset({...newAsset, name: e.target.value})}
@@ -231,15 +231,15 @@ export default function AdminAssets() {
               <button 
                 type="submit" 
                 disabled={submitting || !!uploading}
-                className="w-full bg-[#4A6E62] text-white p-4 rounded-2xl font-bold hover:shadow-lg transition-all disabled:opacity-50"
+                className="w-full bg-[#006569] text-white p-4 rounded-2xl font-bold hover:shadow-lg transition-all disabled:opacity-50"
               >
                 {submitting ? 'Adding...' : 'Add to Brand Partners'}
               </button>
             </form>
           </div>
         ) : (
-          <div className="bg-emerald-50/50 p-8 rounded-3xl border border-emerald-100 flex flex-col items-center justify-center text-center space-y-4">
-            <div className="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-500">
+          <div className="bg-teal-50/50 p-8 rounded-3xl border border-teal-100 flex flex-col items-center justify-center text-center space-y-4">
+            <div className="w-12 h-12 bg-teal-100 rounded-full flex items-center justify-center text-teal-500">
                 <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
             </div>
             <div>

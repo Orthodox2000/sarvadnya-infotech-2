@@ -72,8 +72,8 @@ export default function EnquiryForm() {
 
   if (status === 'done') {
     return (
-      <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-8 text-center">
-        <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-emerald-600 text-white">
+      <div className="rounded-2xl border border-teal-200 bg-teal-50 p-8 text-center">
+        <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-teal-600 text-white">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="h-7 w-7">
             <path d="m5 13 4 4L19 7" strokeLinecap="round" strokeLinejoin="round" />
           </svg>

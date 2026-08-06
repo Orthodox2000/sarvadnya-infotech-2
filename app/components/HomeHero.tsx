@@ -33,7 +33,7 @@ const DEFAULT_HERO: HeroContent[] = [
       "badge": "3 star Tally Partner",
       "titleText": "Fueling MSME Ambition Through Smarter Tally Systems",
       "colorFrom": "#232F3E",
-      "colorTo": "#5D887A",
+      "colorTo": "#006569",
       "description": "We don't just implement software; we clear the path for your growth. Maximize your Tally investment with certified experts who care about your bottom line as much as you do.",
       "image": "/certified partner person.png",
       "layout": "single",
@@ -49,7 +49,7 @@ const DEFAULT_HERO: HeroContent[] = [
       "badge": "TallyPrime 7.1 Now Available",
       "titleText": "Revolutionizing Business with Smart Tally Automation",
       "colorFrom": "#232F3E",
-      "colorTo": "#5D887A",
+      "colorTo": "#006569",
       "description": "Unleash TallyPrime 7.0 with PrimeBanking and SmartFind. We build the financial engine that turns your accounting into a growth machine.",
       "image": "/sa2.png",
       "layout": "standard",
@@ -67,7 +67,7 @@ const DEFAULT_HERO: HeroContent[] = [
       "badge": "Certified Cloud Solutions",
       "titleText": "Tally on Cloud: Absolute Freedom.",
       "colorFrom": "#232F3E",
-      "colorTo": "#5D887A",
+      "colorTo": "#006569",
       "description": "Your office, now in your pocket. Secure AWS-powered hosting with 100% uptime and zero-loss military encryption for your business data.",
       "image": "/hero/dedicated-to-cloud-hosting.jpg",
       "layout": "ecosystem",
@@ -83,7 +83,7 @@ const DEFAULT_HERO: HeroContent[] = [
       "badge": "Industry Leading Support",
       "titleText": "Instant Solutions. Zero Downtime.",
       "colorFrom": "#232F3E",
-      "colorTo": "#5D887A",
+      "colorTo": "#006569",
       "description": "Stop waiting for answers. Our 90% First Call Resolution standard means your technical hurdles disappear before you hang up.",
       "image": "/trainning.png",
       "layout": "standard",
@@ -101,7 +101,7 @@ const DEFAULT_HERO: HeroContent[] = [
       "badge": "Smart Business Integration",
       "titleText": "WhatsApp Sync: Real-Time Growth.",
       "colorFrom": "#232F3E",
-      "colorTo": "#5D887A",
+      "colorTo": "#006569",
       "description": "Bridge the gap between accounting and communication. Send invoices and collection alerts directly to your customers instantly.",
       "image": "/sa3.png",
       "layout": "standard",
@@ -209,7 +209,7 @@ const processHeroData = (data: any[]): HeroContent[] => {
   const merged = hasSingle ? data : [DEFAULT_HERO[0], ...data];
   return merged.map((item: any) => {
     if (item.layout === 'single') {
-      return { ...item, colorFrom: '#232F3E', colorTo: '#5D887A' };
+      return { ...item, colorFrom: '#232F3E', colorTo: '#006569' };
     }
 
     const title = (item.titleText || '').toLowerCase();
@@ -252,7 +252,7 @@ const processHeroData = (data: any[]): HeroContent[] => {
       image: mainImg,
       layout: isCloud ? 'ecosystem' : 'standard',
       colorFrom: '#232F3E',
-      colorTo: '#5D887A',
+      colorTo: '#006569',
       sub1Img,
       sub2Img,
       ctaPrimary: (!isCloud && !isSupport && !isTraining && !isWhatsApp) 
@@ -360,7 +360,7 @@ export default function HomeHero({ initialData, variant = 'standard', emailCopy 
       badge: `DEV SLIDE #${n}`,
       titleText: `Development Slide ${n} — New Feature Set`,
       colorFrom: '#232F3E',
-      colorTo: '#5D887A',
+      colorTo: '#006569',
       description: `Temporary dev slide for testing. Edit DEFAULT_HERO or push via API to finalize this group (Slide ${n}).`,
       image: '/sa2.png',
       layout: 'standard',
@@ -401,7 +401,7 @@ export default function HomeHero({ initialData, variant = 'standard', emailCopy 
             
             {/* Left: Content */}
             <div key={`content-${stableIndex}`} className="w-full lg:w-1/2 space-y-3 lg:space-y-4">
-              <div className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#316852] shadow-sm ${getAnimationClasses('delay-0')}`}>
+              <div className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#006569] shadow-sm ${getAnimationClasses('delay-0')}`}>
                 <span className="flex h-2 w-2 rounded-full animate-pulse bg-white/60" />
                 <span className="text-[9px] font-black uppercase tracking-[0.2em] text-white">{current.badge}</span>
               </div>
@@ -432,20 +432,20 @@ export default function HomeHero({ initialData, variant = 'standard', emailCopy 
                     return (
                       <span key={i} className="contents">
                         {shouldBreak && <div className="basis-full h-0" />}
-                        <span className={isHighlight ? "text-[#316852]" : ""}>
+                        <span className={isHighlight ? "text-[#006569]" : ""}>
                           {word}&nbsp;
                         </span>
                       </span>
                     );
                   })}
-                  {isTyping && <span className="inline-block w-1 h-7 md:h-10 ml-0.5 animate-pulse bg-[#316852]" />}
+                  {isTyping && <span className="inline-block w-1 h-7 md:h-10 ml-0.5 animate-pulse bg-[#006569]" />}
                 </h1>
               </div>
 
               <p className={`text-sm md:text-[15px] text-[#4a5056] max-w-xl leading-relaxed font-medium ${getAnimationClasses('delay-300')}`}>{current.description}</p>
 
               <div className={`flex flex-wrap gap-3 pt-1 ${getAnimationClasses('delay-500')}`}>
-                <Link href="/products" className="group relative overflow-hidden px-6 py-3 rounded-xl bg-[#316852] text-white font-bold text-xs uppercase tracking-wide transition-all duration-500 ease-in-out hover:bg-[#4a7a6a] hover:scale-[1.03] active:scale-95 shadow-md">
+                <Link href="/products" className="group relative overflow-hidden px-6 py-3 rounded-xl bg-[#006569] text-white font-bold text-xs uppercase tracking-wide transition-all duration-500 ease-in-out hover:bg-[#0aa6a6] hover:scale-[1.03] active:scale-95 shadow-md">
                   <span className="relative z-10">View Tally Products</span>
                   <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
                 </Link>
@@ -459,7 +459,7 @@ export default function HomeHero({ initialData, variant = 'standard', emailCopy 
 
               {/* Trusted badge */}
               <div className={`inline-flex items-center gap-2 bg-white/70 backdrop-blur-sm px-4 py-2 rounded-full border border-gray-200/60 shadow-sm ${getAnimationClasses('delay-700')}`}>
-                <svg className="w-4 h-4 text-[#558273]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                <svg className="w-4 h-4 text-[#006569]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                 <span className="text-sm text-gray-600">Trusted by <strong className="text-[#2a2d34] font-bold">1,500+ MSMEs</strong></span>
               </div>
             </div>
@@ -490,7 +490,7 @@ export default function HomeHero({ initialData, variant = 'standard', emailCopy 
                   </div>
                 ) : (
                   <div className="relative w-full h-full scale-[0.8]">
-                    <div className={`absolute top-[10%] right-0 w-[80%] aspect-square rounded-[4rem] overflow-hidden border-2 border-gray-200/60 shadow-[0_50px_100px_-20px_rgba(49,104,82,0.3)] z-40 transform bg-white
+                    <div className={`absolute top-[10%] right-0 w-[80%] aspect-square rounded-[4rem] overflow-hidden border-2 border-gray-200/60 shadow-[0_50px_100px_-20px_rgba(0,101,105,0.3)] z-40 transform bg-white
                       ${isExiting ? 'opacity-0 scale-90 translate-y-12 transition-all duration-[800ms]' : isEntering ? `opacity-100 transition-all duration-1200 ${scheme.main}` : 'opacity-0 translate-y-4'}`}>
                       <Image src={current.image} alt="Backdrop" fill className="object-cover opacity-30 blur-2xl scale-110" sizes="(max-width: 1024px) 100vw, 540px" />
                       <div className="absolute inset-0 w-full h-full"><Image src={current.image} alt={current.titleText} fill priority className="object-contain p-10" sizes="(max-width: 1024px) 100vw, 540px" /></div>
@@ -522,14 +522,14 @@ export default function HomeHero({ initialData, variant = 'standard', emailCopy 
       {/* Navigation arrows — commented out, single slide only */}
       {/* <button
         onClick={() => setStableIndex(prev => (prev - 1 + heroContents.length) % heroContents.length)}
-        className="absolute left-4 sm:left-2 top-1/2 -translate-y-1/2 z-40 w-8 h-8 flex items-center justify-center rounded-full bg-white/70 backdrop-blur-md text-[#558273] border border-gray-200/60 hover:bg-white active:scale-90 transition-all shadow-sm"
+        className="absolute left-4 sm:left-2 top-1/2 -translate-y-1/2 z-40 w-8 h-8 flex items-center justify-center rounded-full bg-white/70 backdrop-blur-md text-[#006569] border border-gray-200/60 hover:bg-white active:scale-90 transition-all shadow-sm"
         title="Previous slide"
       >
         <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3"><path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" /></svg>
       </button>
       <button
         onClick={() => setStableIndex(prev => (prev + 1) % heroContents.length)}
-        className="absolute right-4 sm:right-2 top-1/2 -translate-y-1/2 z-40 w-8 h-8 flex items-center justify-center rounded-full bg-white/70 backdrop-blur-md text-[#558273] border border-gray-200/60 hover:bg-white active:scale-90 transition-all shadow-sm"
+        className="absolute right-4 sm:right-2 top-1/2 -translate-y-1/2 z-40 w-8 h-8 flex items-center justify-center rounded-full bg-white/70 backdrop-blur-md text-[#006569] border border-gray-200/60 hover:bg-white active:scale-90 transition-all shadow-sm"
         title="Next slide"
       >
         <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
@@ -564,14 +564,14 @@ export default function HomeHero({ initialData, variant = 'standard', emailCopy 
               <Link
                 key={idx}
                 href={card.href}
-                className="group relative bg-white rounded-lg lg:rounded-2xl p-2.5 lg:p-6 border border-gray-100 shadow-sm lg:shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1 lg:hover:-translate-y-2 hover:border-[#558273]/30"
+                className="group relative bg-white rounded-lg lg:rounded-2xl p-2.5 lg:p-6 border border-gray-100 shadow-sm lg:shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1 lg:hover:-translate-y-2 hover:border-[#006569]/30"
               >
                 <div className="flex items-center gap-2 lg:block">
-                  <div className="w-7 h-7 lg:w-12 lg:h-12 rounded-md lg:rounded-xl bg-[#f0f5f3] flex items-center justify-center shrink-0 overflow-hidden group-hover:scale-110 transition-transform duration-300">
+                  <div className="w-7 h-7 lg:w-12 lg:h-12 rounded-md lg:rounded-xl bg-[#e8f6f6] flex items-center justify-center shrink-0 overflow-hidden group-hover:scale-110 transition-transform duration-300">
                     <Image src={card.img} alt={card.title} width={48} height={48} className="object-contain w-full h-full" />
                   </div>
                   <div className="min-w-0">
-                    <h3 className="text-[10px] lg:text-base font-bold text-[#2a2d34] group-hover:text-[#558273] transition-colors leading-tight truncate">
+                    <h3 className="text-[10px] lg:text-base font-bold text-[#2a2d34] group-hover:text-[#006569] transition-colors leading-tight truncate">
                       {card.title}
                     </h3>
                     <p className="text-[10px] lg:text-xs text-gray-500 leading-tight font-medium mt-0.5">
@@ -580,7 +580,7 @@ export default function HomeHero({ initialData, variant = 'standard', emailCopy 
                     </p>
                   </div>
                 </div>
-                <div className="mt-1 lg:mt-4 flex items-center gap-1 text-[7px] lg:text-[10px] font-bold uppercase tracking-wider text-gray-400 group-hover:text-[#558273] transition-colors">
+                <div className="mt-1 lg:mt-4 flex items-center gap-1 text-[7px] lg:text-[10px] font-bold uppercase tracking-wider text-gray-400 group-hover:text-[#006569] transition-colors">
                   Explore
                   <svg className="w-2 h-2 lg:w-3.5 lg:h-3.5 transition-transform duration-300 group-hover:translate-x-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
                 </div>

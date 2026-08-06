@@ -6,8 +6,8 @@ import Link from 'next/link';
 import Footer from '../../../components/Footer';
 import UnifiedContactModal, { FormType } from '../../../components/UnifiedContactModal';
 
-const BRAND_PRIMARY = '#316852';
-const BRAND_SECONDARY = '#1e4d3a';
+const BRAND_PRIMARY = '#006569';
+const BRAND_SECONDARY = '#045A57';
 
 const fundingOptions = [
   {
@@ -169,9 +169,9 @@ export default function TallyCapitalPage() {
         <div className="max-w-7xl mx-auto px-6">
           <div className="py-2.5">
             <ul className="flex items-center gap-1.5 text-[11px] font-medium text-slate-500">
-              <li><Link href="/" className="hover:text-[#316852] transition-colors">Home</Link></li>
+              <li><Link href="/" className="hover:text-[#006569] transition-colors">Home</Link></li>
               <li className="text-slate-300 mx-0.5">/</li>
-              <li><Link href="/products" className="hover:text-[#316852] transition-colors">Products</Link></li>
+              <li><Link href="/products" className="hover:text-[#006569] transition-colors">Products</Link></li>
               <li className="text-slate-300 mx-0.5">/</li>
               <li className="text-slate-800 font-semibold">TallyCapital</li>
             </ul>
@@ -222,7 +222,7 @@ export default function TallyCapitalPage() {
               <div className="flex flex-wrap gap-3">
                 <button
                   onClick={() => openModal('quote', 'TallyCapital', 'I want to check my TallyCapital loan eligibility.')}
-                  className="px-7 py-3.5 bg-[#1A4731] hover:bg-[#123323] text-white font-bold rounded-lg transition-all text-sm tracking-wide shadow-lg hover:shadow-xl hover:scale-[1.02]"
+                  className="px-7 py-3.5 bg-[#006569] hover:bg-[#045A57] text-white font-bold rounded-lg transition-all text-sm tracking-wide shadow-lg hover:shadow-xl hover:scale-[1.02]"
                 >
                   Check My Eligibility Now
                 </button>
@@ -230,7 +230,7 @@ export default function TallyCapitalPage() {
                   href="https://tallycapital.tallysolutions.com/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-7 py-3.5 bg-white hover:bg-gray-50 text-[#1A4731] border border-[#C5DACF] font-bold rounded-lg transition-all text-sm tracking-wide text-center hover:shadow-md"
+                  className="px-7 py-3.5 bg-white hover:bg-gray-50 text-[#006569] border border-[#B8DEDE] font-bold rounded-lg transition-all text-sm tracking-wide text-center hover:shadow-md"
                 >
                   Visit TallyCapital Website
                 </a>
@@ -315,22 +315,22 @@ export default function TallyCapitalPage() {
       <section className="relative   py-14 px-4 sm:px-6 lg:px-8 font-sans text-slate-800 antialiased overflow-hidden">
         {/* Decorative Background Elements */}
         {/* <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
-          <div className="absolute -top-[10%] -right-[5%] w-[40%] h-[40%] rounded-full bg-emerald-100/30 blur-3xl mix-blend-multiply"></div>
+          <div className="absolute -top-[10%] -right-[5%] w-[40%] h-[40%] rounded-full bg-teal-100/30 blur-3xl mix-blend-multiply"></div>
           <div className="absolute top-[40%] -left-[10%] w-[30%] h-[30%] rounded-full bg-blue-100/30 blur-3xl mix-blend-multiply"></div>
         </div> */}
 
         <div className="max-w-7xl mx-auto relative z-10">
           <div className="text-center mb-12 max-w-5xl mx-auto">
-            <div className="inline-flex items-center justify-center space-x-2 bg-white text-emerald-700 px-4 py-1.5 rounded-full text-xs font-semibold tracking-wide uppercase mb-5 shadow-sm border border-emerald-100/60 ring-1 ring-emerald-50">
+            <div className="inline-flex items-center justify-center space-x-2 bg-white text-teal-700 px-4 py-1.5 rounded-full text-xs font-semibold tracking-wide uppercase mb-5 shadow-sm border border-teal-100/60 ring-1 ring-teal-50">
               <span className="relative flex h-2.5 w-2.5">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-teal-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-teal-500"></span>
               </span>
               <span>Why Choose TallyCapital?</span>
             </div>
 
             <h2 className="text-2xl md:text-3xl lg:text-5xl font-extrabold text-slate-900 mb-4 tracking-tight leading-tight">
-              The Smart Way for MSMEs to <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-600">Grow</span>
+              The Smart Way for MSMEs to <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-600 to-teal-600">Grow</span>
             </h2>
 
             <p className="text-base md:text-lg text-slate-600 leading-relaxed font-medium">
@@ -346,13 +346,13 @@ export default function TallyCapitalPage() {
                   key={index}
                   className="group bg-white p-5 rounded-2xl border border-slate-100 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 relative overflow-hidden"
                 >
-                  <div className="absolute inset-0 bg-gradient-to-br from-emerald-50/0 via-emerald-50/0 to-emerald-50/50 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+                  <div className="absolute inset-0 bg-gradient-to-br from-teal-50/0 via-teal-50/0 to-teal-50/50 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
 
                   <div className="relative z-10">
-                    <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center mb-3 group-hover:scale-110 group-hover:bg-emerald-100 transition-transform duration-300">
+                    <div className="w-10 h-10 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center mb-3 group-hover:scale-110 group-hover:bg-teal-100 transition-transform duration-300">
                       <feature.icon className="w-5 h-5" strokeWidth={1.5} />
                     </div>
-                    <h3 className="text-base font-bold text-slate-900 mb-1.5 group-hover:text-emerald-700 transition-colors duration-300">{feature.title}</h3>
+                    <h3 className="text-base font-bold text-slate-900 mb-1.5 group-hover:text-teal-700 transition-colors duration-300">{feature.title}</h3>
                     <p className="text-slate-600 text-sm leading-relaxed">{feature.description}</p>
                   </div>
                 </div>
@@ -364,9 +364,9 @@ export default function TallyCapitalPage() {
               <div className="sticky top-10 bg-white/60 backdrop-blur-xl rounded-[2rem] p-6 sm:p-7 border border-white shadow-2xl shadow-slate-200/50">
                 <div className="mb-6 text-center sm:text-left">
                   <h3 className="text-4xl font-extrabold text-slate-900 mb-2 tracking-tight">
-                    How it <span className="text-emerald-600 relative inline-block">
+                    How it <span className="text-teal-600 relative inline-block">
                       works
-                      <svg className="absolute w-full h-3 -bottom-1 left-0 text-emerald-200/60" viewBox="0 0 100 10" preserveAspectRatio="none">
+                      <svg className="absolute w-full h-3 -bottom-1 left-0 text-teal-200/60" viewBox="0 0 100 10" preserveAspectRatio="none">
                         <path d="M0 5 Q 50 10 100 5" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
                       </svg>
                     </span>
@@ -375,17 +375,17 @@ export default function TallyCapitalPage() {
                 </div>
 
                 <div className="relative">
-                  <div className="absolute left-5 top-5 bottom-5 w-0.5 bg-emerald-100 z-0 hidden sm:block"></div>
+                  <div className="absolute left-5 top-5 bottom-5 w-0.5 bg-teal-100 z-0 hidden sm:block"></div>
 
                   <div className="space-y-5 relative z-10">
                     {steps.map((step, index) => (
                       <div key={index} className="flex flex-col sm:flex-row gap-3 items-start group">
-                        <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-white border-2 border-emerald-100 text-emerald-600 flex items-center justify-center font-bold text-base shadow-sm group-hover:bg-emerald-600 group-hover:text-white group-hover:border-emerald-600 group-hover:shadow-emerald-200 transition-all duration-300 relative z-10 self-center sm:self-start">
+                        <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-white border-2 border-teal-100 text-teal-600 flex items-center justify-center font-bold text-base shadow-sm group-hover:bg-teal-600 group-hover:text-white group-hover:border-teal-600 group-hover:shadow-teal-200 transition-all duration-300 relative z-10 self-center sm:self-start">
                           {step.id}
                         </div>
 
                         <div className="pt-0.5 text-center sm:text-left w-full">
-                          <h4 className="text-sm font-bold text-slate-900 mb-0.5 group-hover:text-emerald-700 transition-colors duration-200">{step.title}</h4>
+                          <h4 className="text-sm font-bold text-slate-900 mb-0.5 group-hover:text-teal-700 transition-colors duration-200">{step.title}</h4>
                           <p className="text-slate-600 text-sm leading-relaxed">{step.description}</p>
                         </div>
                       </div>
@@ -402,7 +402,7 @@ export default function TallyCapitalPage() {
       {/* ===== SECTION 3: FUNDING OPTIONS ===== */}
       <section className="py-8 px-6 max-w-7xl mx-auto">
         <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#316852]/10 text-[#316852] text-[10px] font-black uppercase tracking-widest mb-4">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#006569]/10 text-[#006569] text-[10px] font-black uppercase tracking-widest mb-4">
             Funding Options
           </div>
           <h2 className="text-3xl md:text-4xl font-black text-slate-900 mb-3 leading-tight">
@@ -441,7 +441,7 @@ export default function TallyCapitalPage() {
           <div>
             <h2 className="text-3xl md:text-4xl font-black text-slate-900 mb-5 leading-tight">
               Your Tally Software is Now Your{' '}
-              <span className="text-[#316852]">Financial Unfair Advantage</span>
+              <span className="text-[#006569]">Financial Unfair Advantage</span>
             </h2>
             <p className="text-slate-600 text-sm md:text-base leading-relaxed mb-6 font-medium">
               Lenders love data, and because you already maintain your books on Tally, lenders already trust your business. TallyCapital turns your everyday accounting software into a fast-track pass for business funding — giving you faster approvals, better rates, and zero hassle.
@@ -479,7 +479,7 @@ export default function TallyCapitalPage() {
               />
               <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors duration-300 flex items-center justify-center">
                 <div className="w-16 h-16 rounded-full bg-white/90 flex items-center justify-center shadow-xl group-hover:scale-110 transition-transform duration-300">
-                  <svg className="w-7 h-7 text-[#316852] ml-1" fill="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-7 h-7 text-[#006569] ml-1" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M8 5v14l11-7z" />
                   </svg>
                 </div>
@@ -543,13 +543,13 @@ export default function TallyCapitalPage() {
 
               <div className="space-y-3">
                 <div className="flex items-center gap-3">
-                  <svg className="w-4 h-4 text-[#316852] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                  <svg className="w-4 h-4 text-[#006569] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                   </svg>
                   <span className="text-sm text-slate-600 font-medium">+91 98213 09060</span>
                 </div>
                 <div className="flex items-start gap-3">
-                  <svg className="w-4 h-4 text-[#316852] shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                  <svg className="w-4 h-4 text-[#006569] shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                     <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                   </svg>
@@ -614,9 +614,9 @@ export default function TallyCapitalPage() {
                 href={link.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="p-4 rounded-xl border border-slate-200 hover:border-[#316852]/30 hover:shadow-md transition-all group"
+                className="p-4 rounded-xl border border-slate-200 hover:border-[#006569]/30 hover:shadow-md transition-all group"
               >
-                <p className="text-sm font-bold text-slate-900 group-hover:text-[#316852] transition-colors flex items-center gap-1.5">
+                <p className="text-sm font-bold text-slate-900 group-hover:text-[#006569] transition-colors flex items-center gap-1.5">
                   {link.label}
                   <svg className="w-3.5 h-3.5 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
@@ -680,7 +680,7 @@ export default function TallyCapitalPage() {
           <div className="pt-4 text-center">
             <button
               onClick={() => openModal('quote', 'TallyCapital', 'I have more questions about TallyCapital.')}
-              className="text-sm font-bold text-[#316852] hover:underline"
+              className="text-sm font-bold text-[#006569] hover:underline"
             >
               Have more questions? Contact Us →
             </button>

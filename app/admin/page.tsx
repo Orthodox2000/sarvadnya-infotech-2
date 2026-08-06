@@ -59,7 +59,7 @@ export default function AdminDashboard() {
     {
       title: 'Leads & Inquiries',
       items: [
-        { label: 'Contact Submissions', desc: 'Customer inquiries and general messages', value: stats?.submissions || 0, href: '/admin/submissions', icon: 'M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z', color: 'bg-emerald-50 text-emerald-600' },
+        { label: 'Contact Submissions', desc: 'Customer inquiries and general messages', value: stats?.submissions || 0, href: '/admin/submissions', icon: 'M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z', color: 'bg-teal-50 text-teal-600' },
         { label: 'Bug & Issue Reports', desc: 'Reported problems and technical issues', value: stats?.problemReports || 0, href: '/admin/problem-reports', icon: 'M12 9v2m0 4h.01M4.75 20h14.5a2.25 2.25 0 001.95-3.38L14.2 4.62a2.25 2.25 0 00-3.9 0L2.8 16.62A2.25 2.25 0 004.75 20z', color: 'bg-amber-50 text-amber-600' },
         { label: 'TSS Renewals', desc: 'TSS renewal requests with serial numbers', value: stats?.tssRenewals || 0, href: '/admin/tss-renewals', icon: 'M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15', color: 'bg-cyan-50 text-cyan-600' },
         { label: 'Job Applications', desc: 'Candidate applications for open positions', value: stats?.applications || 0, href: '/admin/careers', icon: 'M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z', color: 'bg-blue-50 text-blue-600' },
@@ -94,25 +94,25 @@ export default function AdminDashboard() {
         <div className="bg-white px-5 py-3.5 rounded-2xl border border-slate-100 shadow-sm flex items-center gap-5">
           <div className="flex items-center gap-2">
             <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">System</span>
-            <div className={`w-2 h-2 rounded-full ${health?.status === 'ok' ? 'bg-green-500' : 'bg-red-500'} animate-pulse`}></div>
+            <div className={`w-2 h-2 rounded-full ${health?.status === 'ok' ? 'bg-teal-500' : 'bg-red-500'} animate-pulse`}></div>
             <span className="text-sm font-bold text-slate-700">{loading ? 'Checking...' : health?.status === 'ok' ? 'Operational' : 'Error'}</span>
           </div>
           <div className="h-6 w-px bg-slate-100"></div>
           <div className="flex items-center gap-2">
             <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Database</span>
-            <span className={`text-sm font-bold ${health?.mongodb === 'connected' ? 'text-green-600' : 'text-red-600'}`}>
+            <span className={`text-sm font-bold ${health?.mongodb === 'connected' ? 'text-teal-600' : 'text-red-600'}`}>
               {loading ? '...' : health?.mongodb === 'connected' ? 'Connected' : 'Disconnected'}
             </span>
           </div>
           <div className="h-6 w-px bg-slate-100"></div>
           <div className="flex items-center gap-2">
             <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Version</span>
-            <span className="text-sm font-bold text-[#4A6E62]">{health?.version || 'v1.1.389'}</span>
+            <span className="text-sm font-bold text-[#006569]">{health?.version || 'v1.1.389'}</span>
           </div>
           <button 
             onClick={fetchData}
             disabled={refreshing}
-            className={`p-1.5 rounded-lg transition-all ${refreshing ? 'animate-spin text-slate-300' : 'text-[#4A6E62] hover:bg-emerald-50'}`}
+            className={`p-1.5 rounded-lg transition-all ${refreshing ? 'animate-spin text-slate-300' : 'text-[#006569] hover:bg-teal-50'}`}
           >
             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
               <path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"></path>
@@ -151,7 +151,7 @@ export default function AdminDashboard() {
                       <p className="text-xs font-bold text-slate-700 truncate">{item.label}</p>
                       <p className="text-[10px] text-slate-400 truncate">{item.desc}</p>
                     </div>
-                    <svg className="w-4 h-4 text-slate-200 group-hover:text-[#4A6E62] shrink-0 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg className="w-4 h-4 text-slate-200 group-hover:text-[#006569] shrink-0 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 5l7 7-7 7" />
                     </svg>
                   </div>

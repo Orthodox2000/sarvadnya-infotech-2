@@ -152,7 +152,7 @@ const Productbar = ({ initialSettings }: { initialSettings?: any }) => {
 
   return (
     <div 
-      className={`w-full border-b border-[#E5E2D9] relative z-30 flex items-center justify-center no-scrollbar transition-opacity duration-300 ease-in-out shadow-sm bg-[#069494] h-7 lg:h-10
+      className={`w-full border-b border-[#E5E2D9] relative z-30 flex items-center justify-center no-scrollbar transition-opacity duration-300 ease-in-out shadow-sm bg-[linear-gradient(90deg,rgba(249,251,245,1)_0%,rgba(244,242,234,1)_53%,rgba(238,236,223,1)_100%)] h-7 lg:h-10
         ${isVisible ? 'opacity-100' : 'opacity-0 pointer-events-none invisible'}`}
     >
       <div className="w-full max-w-7xl  flex justify-around items-stretch h-full">
@@ -168,7 +168,7 @@ const Productbar = ({ initialSettings }: { initialSettings?: any }) => {
             <button
               onClick={(e) => handleMenuToggle(e, item.label)}
               className={`flex items-center gap-1 lg:gap-3.5 px-1.5 lg:px-5 text-[8.5px] lg:text-[13.5px] font-bold transition-all h-full
-                ${activeMenu === item.label ? 'text-[#316852] bg-white' : 'text-gray-800 hover:bg-slate-50'}`}
+                ${activeMenu === item.label ? 'text-[#006569] bg-white' : 'text-gray-800 hover:bg-slate-50'}`}
             >
               <span className="opacity-100 scale-90 lg:scale-110">
                 {iconMap[item.label]}

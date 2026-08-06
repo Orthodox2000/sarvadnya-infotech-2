@@ -56,7 +56,7 @@ export default function ModulesPage() {
         {/* Background Effects */}
         <div className="absolute inset-0 opacity-40 pointer-events-none">
           <div className="absolute top-0 right-0 w-[60%] h-[60%] bg-white/40 blur-[130px] -mr-32 -mt-32" />
-          <div className="absolute bottom-0 left-0 w-[40%] h-[40%] bg-emerald-200/30 blur-[110px] -ml-24 -mb-24" />
+          <div className="absolute bottom-0 left-0 w-[40%] h-[40%] bg-teal-200/30 blur-[110px] -ml-24 -mb-24" />
         </div>
 
         <div className="relative z-10 max-w-7xl mx-auto text-center">
@@ -67,7 +67,7 @@ export default function ModulesPage() {
           </div>
           <h1 className="text-3xl md:text-5xl font-black text-slate-900 mb-6 leading-tight tracking-tight">
             Ready-to-Run<br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#4A6E62] via-[#5D887A] to-[#4A6E62] drop-shadow-[0_2px_15px_rgba(93,136,122,0.2)]">Industry Modules</span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#006569] via-[#006569] to-[#006569] drop-shadow-[0_2px_15px_rgba(0,101,105,0.2)]">Industry Modules</span>
           </h1>
           <p className="text-slate-600/80 text-sm md:text-xl max-w-5xl mx-auto leading-relaxed font-semibold">
             Why start from scratch? We&apos;ve already designed and tested the exact features your business needs. Simply plug in our pre-built modules to transform your Tally into a complete, easy-to-use system that handles your daily operations instantly.
@@ -113,7 +113,7 @@ export default function ModulesPage() {
       {/* Trust Banner (High Contrast CTA) */}
       <section className="py-16 px-6 bg-slate-950 relative overflow-hidden">
         {/* Subtle decorative glow */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-full bg-[#4A6E62]/10 blur-[120px] pointer-events-none"></div>
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-full bg-[#006569]/10 blur-[120px] pointer-events-none"></div>
         
         <div className="max-w-4xl mx-auto text-center relative z-10">
           <h2 className="text-2xl md:text-4xl font-black text-white mb-6">Need a Custom TDL Solution?</h2>
@@ -123,7 +123,7 @@ export default function ModulesPage() {
           </p>
           <button 
             onClick={() => setContactModalConfig({ isOpen: true, type: 'callback', service: 'Bespoke TDL Customization' })}
-            className="group px-10 py-4 bg-[#4A6E62] text-white rounded-full font-bold hover:bg-[#5D887A] transition-all shadow-xl shadow-emerald-900/20 flex items-center gap-3 mx-auto"
+            className="group px-10 py-4 bg-[#006569] text-white rounded-full font-bold hover:bg-[#006569] transition-all shadow-xl shadow-teal-900/20 flex items-center gap-3 mx-auto"
           >
             Consult Our Team
             <svg className="w-5 h-5 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>

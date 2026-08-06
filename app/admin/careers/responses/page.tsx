@@ -80,7 +80,7 @@ export default function AdminResponses() {
         </div>
         <button 
             onClick={fetchApplications}
-            className="bg-[#4A6E62] text-white px-6 py-2.5 rounded-xl font-semibold text-xs hover:shadow-lg transition-all flex items-center gap-2"
+            className="bg-[#006569] text-white px-6 py-2.5 rounded-xl font-semibold text-xs hover:shadow-lg transition-all flex items-center gap-2"
         >
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
             Refresh
@@ -120,7 +120,7 @@ export default function AdminResponses() {
                       {app.job_title}
                     </td>
                     <td className="p-4">
-                      <span className="text-[10px] font-bold text-[#4A6E62] bg-emerald-50 px-3 py-1 rounded-full border border-emerald-100 uppercase tracking-widest">
+                      <span className="text-[10px] font-bold text-[#006569] bg-teal-50 px-3 py-1 rounded-full border border-teal-100 uppercase tracking-widest">
                         {app.experience}
                       </span>
                     </td>
@@ -169,12 +169,12 @@ export default function AdminResponses() {
             <div className="p-8 md:p-10 border-b border-slate-100 flex items-center justify-between bg-slate-50/50 shrink-0">
               <div className="flex items-center gap-4">
                 <div className="p-3 rounded-2xl bg-white shadow-sm border border-slate-100">
-                   <svg className="w-6 h-6 text-[#4A6E62]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                   <svg className="w-6 h-6 text-[#006569]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                    </svg>
                 </div>
                 <div>
-                  <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#4A6E62] mb-1 block">Applicant Profile</span>
+                  <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#006569] mb-1 block">Applicant Profile</span>
                   <h2 className="text-2xl font-bold text-slate-900 tracking-tight leading-none">
                     {selectedApp.full_name}
                   </h2>
@@ -200,8 +200,8 @@ export default function AdminResponses() {
 
                   <div className="group relative">
                     <p className="text-[9px] font-bold uppercase tracking-widest text-slate-400 mb-2">Phone Number</p>
-                    <div className="flex items-center justify-between bg-emerald-50/50 px-4 py-3 rounded-2xl border border-emerald-100">
-                        <span className="text-sm font-bold text-[#4A6E62] tabular-nums">{selectedApp.phone}</span>
+                    <div className="flex items-center justify-between bg-teal-50/50 px-4 py-3 rounded-2xl border border-teal-100">
+                        <span className="text-sm font-bold text-[#006569] tabular-nums">{selectedApp.phone}</span>
                     </div>
                   </div>
 
@@ -214,7 +214,7 @@ export default function AdminResponses() {
 
                   <div>
                     <p className="text-[9px] font-bold uppercase tracking-widest text-slate-400 mb-2">Experience Level</p>
-                    <div className="inline-block bg-sky-50 text-[#4A6E62] px-4 py-3 rounded-2xl border border-sky-100 text-sm font-bold uppercase tracking-widest">
+                    <div className="inline-block bg-sky-50 text-[#006569] px-4 py-3 rounded-2xl border border-sky-100 text-sm font-bold uppercase tracking-widest">
                       {selectedApp.experience}
                     </div>
                   </div>
@@ -225,7 +225,7 @@ export default function AdminResponses() {
                <div className="grid grid-cols-1 gap-8">
                     <div>
                         <p className="text-[9px] font-bold uppercase tracking-widest text-slate-400 mb-3">Targeted Job Role</p>
-                        <div className="inline-flex items-center gap-3 bg-[#4A6E62] text-white px-5 py-3 rounded-2xl shadow-md shadow-emerald-900/10">
+                        <div className="inline-flex items-center gap-3 bg-[#006569] text-white px-5 py-3 rounded-2xl shadow-md shadow-teal-900/10">
                             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
                             <span className="text-sm font-bold tracking-tight">{selectedApp.job_title}</span>
                         </div>
@@ -253,7 +253,7 @@ export default function AdminResponses() {
                 </button>
                 <button 
                    onClick={() => openResume(selectedApp.resume_url)}
-                   className="bg-[#4A6E62] text-white px-8 py-3 rounded-xl font-bold text-xs hover:shadow-xl transition-all flex items-center gap-2 shadow-lg shadow-emerald-900/20"
+                   className="bg-[#006569] text-white px-8 py-3 rounded-xl font-bold text-xs hover:shadow-xl transition-all flex items-center gap-2 shadow-lg shadow-teal-900/20"
                 >
                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
                    Download Resume

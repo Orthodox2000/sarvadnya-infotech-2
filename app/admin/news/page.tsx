@@ -64,7 +64,7 @@ export default function AdminNews() {
         </div>
         <button 
           onClick={() => setEditingItem({ title: '', date: new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }), category: 'Product Update', description: '', content: '', link: '#' })}
-          className="bg-[#4A6E62] text-white px-6 py-3 rounded-2xl font-bold hover:shadow-lg transition-all"
+          className="bg-[#006569] text-white px-6 py-3 rounded-2xl font-bold hover:shadow-lg transition-all"
         >
           Add News Item
         </button>
@@ -78,7 +78,7 @@ export default function AdminNews() {
               <input 
                 type="text" 
                 placeholder="Title" 
-                className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#4A6E62]"
+                className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#006569]"
                 value={editingItem.title || ''}
                 onChange={e => setEditingItem({...editingItem, title: e.target.value})}
                 required
@@ -86,7 +86,7 @@ export default function AdminNews() {
               <input 
                 type="text" 
                 placeholder="Category (e.g. Product Update, Achievement)" 
-                className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#4A6E62]"
+                className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#006569]"
                 value={editingItem.category || ''}
                 onChange={e => setEditingItem({...editingItem, category: e.target.value})}
                 required
@@ -94,7 +94,7 @@ export default function AdminNews() {
               <input 
                 type="text" 
                 placeholder="Date" 
-                className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#4A6E62]"
+                className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#006569]"
                 value={editingItem.date || ''}
                 onChange={e => setEditingItem({...editingItem, date: e.target.value})}
                 required
@@ -102,7 +102,7 @@ export default function AdminNews() {
               <input 
                 type="text" 
                 placeholder="Link (e.g. /products or #)" 
-                className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#4A6E62]"
+                className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#006569]"
                 value={editingItem.link || ''}
                 onChange={e => setEditingItem({...editingItem, link: e.target.value})}
                 required
@@ -111,7 +111,7 @@ export default function AdminNews() {
             
             <textarea 
               placeholder="Short Description" 
-              className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#4A6E62] h-24"
+              className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#006569] h-24"
               value={editingItem.description || ''}
               onChange={e => setEditingItem({...editingItem, description: e.target.value})}
               required
@@ -119,7 +119,7 @@ export default function AdminNews() {
             
             <textarea 
               placeholder="Full Content" 
-              className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#4A6E62] h-48"
+              className="w-full p-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#006569] h-48"
               value={editingItem.content || ''}
               onChange={e => setEditingItem({...editingItem, content: e.target.value})}
               required

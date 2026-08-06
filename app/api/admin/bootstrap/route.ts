@@ -36,8 +36,8 @@ export async function GET() {
     {
       badge: "Certified Expertise",
       titleText: "Why Choose Certified Partner?",
-      colorFrom: "#5D887A",
-      colorTo: "#5D887A",
+      colorFrom: "#006569",
+      colorTo: "#006569",
       description: "Experience unparalleled reliability with Tally Certified Partners. We ensure your business software is always optimized, secure, and compliant.",
       image: "/certified.png",
       features: [
@@ -51,8 +51,8 @@ export async function GET() {
     {
       badge: "Vertical Solutions",
       titleText: "Custom Tally Modules",
-      colorFrom: "#059669",
-      colorTo: "#0d9488",
+      colorFrom: "#0d9488",
+      colorTo: "#006569",
       description: "Tailored solutions built directly into Tally to optimize your unique industry workflows and reporting.",
       image: "/sa.png",
       features: [

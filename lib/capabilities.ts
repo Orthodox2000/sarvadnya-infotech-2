@@ -18,8 +18,8 @@ export const capabilityCategories: CapabilityCategory[] = [
     id: "accounting",
     title: "Accounting Management",
     description: "Your financial nerve center — track every rupee without breaking a sweat.",
-    color: "#4A6E62",
-    bgLight: "#F0F5F2",
+    color: "#006569",
+    bgLight: "#E5F4F4",
     features: [
       {
         title: "Flexible Chart of Accounts",
@@ -116,7 +116,7 @@ export const capabilityCategories: CapabilityCategory[] = [
     id: "sales-purchase",
     title: "Sales & Purchase",
     description: "From quote to cash, every step automated. Zero manual bottlenecks.",
-    color: "#5D887A",
+    color: "#006569",
     bgLight: "#F5F4ED",
     features: [
       {
@@ -165,8 +165,8 @@ export const capabilityCategories: CapabilityCategory[] = [
     id: "banking",
     title: "Banking Operations",
     description: "Reconcile in seconds, not hours. Banking that actually works for you.",
-    color: "#3D5E52",
-    bgLight: "#E8F0EB",
+    color: "#006569",
+    bgLight: "#E5F4F4",
     features: [
       {
         title: "Auto Bank Reconciliation",
@@ -215,7 +215,7 @@ export const capabilityCategories: CapabilityCategory[] = [
     title: "Statutory Compliance",
     description: "Never miss a deadline. Built-in error detection keeps you safe.",
     color: "#6B8F7B",
-    bgLight: "#F0F7F3",
+    bgLight: "#E5F4F4",
     features: [
       {
         title: "E-Invoicing & E-Way Bill",
@@ -312,8 +312,8 @@ export const capabilityCategories: CapabilityCategory[] = [
     id: "security",
     title: "Data Security & Cloud",
     description: "Your data is yours. Encrypted, backed up, and under your control.",
-    color: "#4A6E62",
-    bgLight: "#F0F5F2",
+    color: "#006569",
+    bgLight: "#E5F4F4",
     features: [
       {
         title: "TallyVault Encryption",

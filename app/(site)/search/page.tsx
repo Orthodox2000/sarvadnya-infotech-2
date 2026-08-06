@@ -47,11 +47,11 @@ function SearchContent() {
   return (
     <div className="min-h-screen bg-white">
       {/* Search Header Section (Themed) */}
-      <section className="bg-white relative pt-12 pb-16 px-6 overflow-hidden border-b border-[#4A6E62]/10">
+      <section className="bg-white relative pt-12 pb-16 px-6 overflow-hidden border-b border-[#006569]/10">
         {/* Background Effects */}
         <div className="absolute inset-0 opacity-40 pointer-events-none">
           <div className="absolute top-0 right-0 w-[60%] h-[40%] bg-white/40 blur-[130px] -mr-32 -mt-32" />
-          <div className="absolute bottom-0 left-0 w-[40%] h-[20%] bg-emerald-200/30 blur-[110px] -ml-24 -mb-24" />
+          <div className="absolute bottom-0 left-0 w-[40%] h-[20%] bg-teal-200/30 blur-[110px] -ml-24 -mb-24" />
         </div>
 
         <div className="relative z-10 max-w-4xl mx-auto text-center">
@@ -60,10 +60,10 @@ function SearchContent() {
             Intelligent Search
           </div>
           <h1 className="text-3xl md:text-5xl font-black text-slate-900 mb-4 leading-tight tracking-tight">
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#4A6E62] via-[#5D887A] to-[#4A6E62] drop-shadow-[0_2px_15px_rgba(93,136,122,0.2)]">Search Results</span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#006569] via-[#006569] to-[#006569] drop-shadow-[0_2px_15px_rgba(0,101,105,0.2)]">Search Results</span>
           </h1>
           <p className="text-slate-600 font-semibold text-sm md:text-lg">
-            Showing results for "<span className="text-[#4A6E62] font-bold">{query}</span>"
+            Showing results for "<span className="text-[#006569] font-bold">{query}</span>"
           </p>
         </div>
       </section>
@@ -85,20 +85,20 @@ function SearchContent() {
             <div className="space-y-8">
               {/* AI Summary Section */}
               {summary && results.length > 0 && (
-                <div className="bg-white border border-slate-200 rounded-[2rem] p-6 md:p-8 text-slate-900 shadow-xl shadow-emerald-900/5 relative overflow-hidden group">
-                  <div className="absolute top-0 right-0 p-8 opacity-[0.03] group-hover:scale-110 transition-transform text-[#4A6E62] pointer-events-none">
+                <div className="bg-white border border-slate-200 rounded-[2rem] p-6 md:p-8 text-slate-900 shadow-xl shadow-teal-900/5 relative overflow-hidden group">
+                  <div className="absolute top-0 right-0 p-8 opacity-[0.03] group-hover:scale-110 transition-transform text-[#006569] pointer-events-none">
                     <svg className="w-24 h-24" fill="currentColor" viewBox="0 0 24 24">
                       <path d="M13 10V3L4 14h7v7l9-11h-7z" />
                     </svg>
                   </div>
                   <div className="relative z-10">
                     <div className="flex items-center gap-2 mb-4">
-                      <span className="w-7 h-7 rounded-full bg-emerald-50 flex items-center justify-center border border-emerald-100">
-                        <svg className="w-4 h-4 text-[#4A6E62]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <span className="w-7 h-7 rounded-full bg-teal-50 flex items-center justify-center border border-teal-100">
+                        <svg className="w-4 h-4 text-[#006569]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M13 10V3L4 14h7v7l9-11h-7z" />
                         </svg>
                       </span>
-                      <span className="text-[10px] font-black uppercase tracking-[0.2em] text-[#4A6E62]">Quick AI Overview</span>
+                      <span className="text-[10px] font-black uppercase tracking-[0.2em] text-[#006569]">Quick AI Overview</span>
                     </div>
                     <p className="text-sm md:text-[15px] font-semibold leading-relaxed text-slate-700 max-w-3xl">
                       {summary.split('\n').map((line, i) => {
@@ -112,7 +112,7 @@ function SearchContent() {
                                   <Link 
                                     key={j}
                                     href={url}
-                                    className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-emerald-100 text-[#4A6E62] rounded-lg font-bold hover:bg-[#4A6E62] hover:text-white transition-all my-1 border border-emerald-200 shadow-sm mx-1"
+                                    className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-teal-100 text-[#006569] rounded-lg font-bold hover:bg-[#006569] hover:text-white transition-all my-1 border border-teal-200 shadow-sm mx-1"
                                   >
                                     <span className="text-[9px] uppercase tracking-wider">{label}</span>
                                     <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3"><path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" /></svg>
@@ -154,27 +154,27 @@ function SearchContent() {
                     const isAskSara = result.url === '#ask-sara';
                     const itemContent = (
                       <div className="flex items-start gap-4 md:gap-6">
-                        <div className={`w-14 h-14 rounded-2xl flex items-center justify-center border transition-all duration-500 ${result.type === 'AI Recommend' || result.type === 'AI Assistant' ? 'bg-[#4A6E62] border-[#0371a3] shadow-lg shadow-emerald-900/20' : 'bg-emerald-50 border-emerald-100 group-hover:bg-[#4A6E62] group-hover:border-[#0371a3] group-hover:shadow-lg group-hover:shadow-emerald-900/20'}`}>
-                          <svg className={`w-7 h-7 transition-colors duration-500 ${result.type === 'AI Recommend' || result.type === 'AI Assistant' ? 'text-white' : 'text-[#4A6E62] group-hover:text-white'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <div className={`w-14 h-14 rounded-2xl flex items-center justify-center border transition-all duration-500 ${result.type === 'AI Recommend' || result.type === 'AI Assistant' ? 'bg-[#006569] border-[#0371a3] shadow-lg shadow-teal-900/20' : 'bg-teal-50 border-teal-100 group-hover:bg-[#006569] group-hover:border-[#0371a3] group-hover:shadow-lg group-hover:shadow-teal-900/20'}`}>
+                          <svg className={`w-7 h-7 transition-colors duration-500 ${result.type === 'AI Recommend' || result.type === 'AI Assistant' ? 'text-white' : 'text-[#006569] group-hover:text-white'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d={result.icon} />
                           </svg>
                         </div>
                         <div className="flex-fill">
                           <div className="flex items-center gap-3 mb-2">
-                            <span className={`text-[10px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full border transition-all ${result.type === 'AI Recommend' || result.type === 'AI Assistant' ? 'bg-[#4A6E62] text-white border-[#0371a3] animate-pulse' : 'bg-slate-50 text-slate-500 border-slate-100 group-hover:bg-emerald-50 group-hover:text-[#4A6E62] group-hover:border-emerald-100'}`}>
+                            <span className={`text-[10px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full border transition-all ${result.type === 'AI Recommend' || result.type === 'AI Assistant' ? 'bg-[#006569] text-white border-[#0371a3] animate-pulse' : 'bg-slate-50 text-slate-500 border-slate-100 group-hover:bg-teal-50 group-hover:text-[#006569] group-hover:border-teal-100'}`}>
                               {result.type === 'AI Recommend' ? 'Smart Suggestion' : result.type}
                             </span>
                             <span className="text-[10px] text-slate-400 font-black uppercase tracking-widest">
                               Official Solution
                             </span>
                           </div>
-                          <h3 className="text-xl font-black text-slate-900 mb-2 group-hover:text-[#4A6E62] transition-colors leading-tight">
+                          <h3 className="text-xl font-black text-slate-900 mb-2 group-hover:text-[#006569] transition-colors leading-tight">
                             {result.title}
                           </h3>
                           <p className="text-slate-600 leading-relaxed text-sm font-medium">
                             {result.description}
                           </p>
-                          <div className="mt-5 flex items-center text-[#4A6E62] text-[11px] font-black uppercase tracking-widest gap-2">
+                          <div className="mt-5 flex items-center text-[#006569] text-[11px] font-black uppercase tracking-widest gap-2">
                             {isAskSara ? 'Open AI Chat' : 'View Full Details'}
                             <svg className="w-4 h-4 translate-x-0 group-hover:translate-x-1.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
                               <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
@@ -192,7 +192,7 @@ function SearchContent() {
                             const btn = document.querySelector('[aria-label="Ask AI"]') as HTMLButtonElement;
                             btn?.click();
                           }}
-                          className="w-full text-left block bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm hover:shadow-2xl hover:border-[#4A6E62]/30 hover:-translate-y-1 transition-all group"
+                          className="w-full text-left block bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm hover:shadow-2xl hover:border-[#006569]/30 hover:-translate-y-1 transition-all group"
                         >
                           {itemContent}
                         </button>
@@ -203,7 +203,7 @@ function SearchContent() {
                       <Link 
                         key={idx} 
                         href={result.url}
-                        className="block bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm hover:shadow-2xl hover:border-[#4A6E62]/30 hover:-translate-y-1 transition-all group"
+                        className="block bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm hover:shadow-2xl hover:border-[#006569]/30 hover:-translate-y-1 transition-all group"
                       >
                         {itemContent}
                       </Link>
@@ -219,18 +219,18 @@ function SearchContent() {
                   </div>
                   <h2 className="text-lg md:text-xl font-black text-slate-900 mb-1.5">I cannot find an exact match</h2>
                   <p className="text-slate-500 max-w-md mx-auto font-medium text-sm mb-5 leading-relaxed">
-                    We couldn't find anything matching "<span className="text-[#4A6E62] font-bold">{query}</span>". Our AI assistant can help you find exactly what you need.
+                    We couldn't find anything matching "<span className="text-[#006569] font-bold">{query}</span>". Our AI assistant can help you find exactly what you need.
                   </p>
                   <div className="flex flex-wrap justify-center gap-3">
                     <Link 
                         href="/contact"
-                        className="px-6 py-2.5 bg-slate-900 text-white font-black text-[10px] uppercase tracking-widest rounded-full hover:bg-[#4A6E62] transition-all shadow-md shadow-slate-200"
+                        className="px-6 py-2.5 bg-slate-900 text-white font-black text-[10px] uppercase tracking-widest rounded-full hover:bg-[#006569] transition-all shadow-md shadow-slate-200"
                     >
                         Contact Support
                     </Link>
                     <Link 
                         href="/"
-                        className="px-6 py-2.5 bg-[#4A6E62] text-white font-black text-[10px] uppercase tracking-widest rounded-full shadow-md shadow-emerald-900/20 hover:bg-[#5D887A] transition-all"
+                        className="px-6 py-2.5 bg-[#006569] text-white font-black text-[10px] uppercase tracking-widest rounded-full shadow-md shadow-teal-900/20 hover:bg-[#006569] transition-all"
                     >
                         Return Home
                     </Link>
@@ -241,7 +241,7 @@ function SearchContent() {
               {/* Constant Footer Help (High Contrast CTA) */}
               <div className="mt-20 p-8 md:p-12 rounded-[3rem] bg-slate-950 relative overflow-hidden group">
                 {/* Subtle decorative glow */}
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-full bg-[#4A6E62]/10 blur-[120px] pointer-events-none transition-all duration-700 group-hover:bg-[#4A6E62]/20"></div>
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-full bg-[#006569]/10 blur-[120px] pointer-events-none transition-all duration-700 group-hover:bg-[#006569]/20"></div>
                 
                 <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-10 text-center md:text-left">
                   <div>
@@ -260,7 +260,7 @@ function SearchContent() {
                           const btn = document.querySelector('[aria-label="Ask AI"]') as HTMLButtonElement;
                           btn?.click();
                       }}
-                      className="px-8 py-4 bg-[#4A6E62] text-white font-black text-[11px] uppercase tracking-widest rounded-full shadow-2xl shadow-emerald-900/30 hover:bg-[#5D887A] transition-all flex items-center gap-2"
+                      className="px-8 py-4 bg-[#006569] text-white font-black text-[11px] uppercase tracking-widest rounded-full shadow-2xl shadow-teal-900/30 hover:bg-[#006569] transition-all flex items-center gap-2"
                     >
                       <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                           <path d="M13 10V3L4 14h7v7l9-11h-7z" />
@@ -286,7 +286,7 @@ export default function SearchPage() {
   return (
     <Suspense fallback={
       <div className="min-h-screen bg-white flex items-center justify-center">
-        <div className="w-12 h-12 border-4 border-emerald-100 border-t-[#0371a3] rounded-full animate-spin" />
+        <div className="w-12 h-12 border-4 border-teal-100 border-t-[#0371a3] rounded-full animate-spin" />
       </div>
     }>
       <SearchContent />
