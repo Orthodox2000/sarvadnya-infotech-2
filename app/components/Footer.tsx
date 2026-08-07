@@ -130,10 +130,10 @@ export default function Footer({ settings: initialSettings }: { settings?: SiteS
     ];
 
     return (
-        <footer className="relative text-white pt-20 pb-8 px-6 overflow-hidden border-t border-white/10" style={{ background: 'linear-gradient(0deg, hsla(154, 60%, 6%, 1) 0%, hsla(154, 40%, 18%, 1) 100%)' }}>
+        <footer className="relative text-white pt-20 pb-8 px-6 overflow-hidden border-t border-white/10" style={{ background: 'linear-gradient(0deg, #033B38 0%, #045A57 100%)' }}>
             {/* Background Orbs */}
             <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#006569]/10 rounded-full blur-[120px] -mr-64 -mt-64 pointer-events-none" />
-            <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-[#E9F1FA]/5 rounded-full blur-[100px] -ml-48 -mb-48 pointer-events-none" />
+            <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-[#D4EAEA]/10 rounded-full blur-[100px] -ml-48 -mb-48 pointer-events-none" />
 
             <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-12 mb-16 relative z-10">
                 {/* Company Info */}
@@ -190,7 +190,7 @@ export default function Footer({ settings: initialSettings }: { settings?: SiteS
                     <ul className="space-y-4 text-sm text-white/80">
                         {products.map((item) => (
                             <li key={item.name}>
-                                <Link href={item.href} className="hover:text-[#E9F1FA] transition-colors hover-underline-animation py-1 font-bold">
+                                <Link href={item.href} className="hover:text-[#B8DEDE] transition-colors hover-underline-animation py-1 font-bold">
                                     {item.name}
                                 </Link>
                             </li>
@@ -204,7 +204,7 @@ export default function Footer({ settings: initialSettings }: { settings?: SiteS
                     <ul className="space-y-4 text-sm text-white/80">
                         {doMoreWithTally.map((item) => (
                             <li key={item.name}>
-                                <Link href={item.href} className="hover:text-[#E9F1FA] transition-colors hover-underline-animation py-1 font-bold">
+                                <Link href={item.href} className="hover:text-[#B8DEDE] transition-colors hover-underline-animation py-1 font-bold">
                                     {item.name}
                                 </Link>
                             </li>
@@ -218,7 +218,7 @@ export default function Footer({ settings: initialSettings }: { settings?: SiteS
                     <ul className="space-y-4 text-sm text-white/80">
                         {customizedModules.map((item) => (
                             <li key={item.name}>
-                                <Link href={item.href} className="hover:text-[#E9F1FA] transition-colors hover-underline-animation py-1 font-bold">
+                                <Link href={item.href} className="hover:text-[#B8DEDE] transition-colors hover-underline-animation py-1 font-bold">
                                     {item.name}
                                 </Link>
                             </li>
@@ -232,7 +232,7 @@ export default function Footer({ settings: initialSettings }: { settings?: SiteS
                     <ul className="space-y-4 text-sm text-white/80">
                         {supportOnTally.map((item) => (
                             <li key={item.name}>
-                                <Link href={item.href} className="hover:text-[#E9F1FA] transition-colors hover-underline-animation py-1 font-bold">
+                                <Link href={item.href} className="hover:text-[#B8DEDE] transition-colors hover-underline-animation py-1 font-bold">
                                     {item.name}
                                 </Link>
                             </li>
@@ -248,7 +248,7 @@ export default function Footer({ settings: initialSettings }: { settings?: SiteS
                             <svg className="w-5 h-5 text-[#006569] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                             </svg>
-                            <a href={`mailto:${supportEmail}`} className="hover:text-[#E9F1FA] transition-colors font-bold">{supportEmail}</a>
+                            <a href={`mailto:${supportEmail}`} className="hover:text-[#B8DEDE] transition-colors font-bold">{supportEmail}</a>
                         </li>
                         <li className="flex items-start gap-3">
                             <svg className="w-5 h-5 text-[#006569] shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -256,7 +256,7 @@ export default function Footer({ settings: initialSettings }: { settings?: SiteS
                             </svg>
                             <div className="flex flex-col gap-3">
                                 {supportPhone.split(',').map((num, i) => (
-                                    <a key={i} href={`tel:${num.trim()}`} className="hover:text-[#E9F1FA] transition-colors block leading-tight font-black">
+                                    <a key={i} href={`tel:${num.trim()}`} className="hover:text-[#B8DEDE] transition-colors block leading-tight font-black">
                                         {formatPhoneDisplay(num.trim())}
                                     </a>
                                 ))}

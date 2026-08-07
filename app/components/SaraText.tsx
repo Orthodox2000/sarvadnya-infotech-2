@@ -16,7 +16,7 @@ function renderInline(segment: string, accent: string, onNavigate?: () => void) 
   const lines = segment.split('\n');
 
   return lines.map((line, li) => {
-    const parts = line.split(/(\[\[.*?\|.*?\]\]|`[^`]+`|\*\*[\s\S]+?\*\*)/g);
+    const parts = line.split(/(\[\[.*?\|.*?\]\]|`[^`]+`|\*\*[\s\S]+?\*\*|\*[^*\s][^*]*\*)/g);
 
     const nodes = parts.map((part, pi) => {
       if (part.startsWith('[[') && part.endsWith(']]')) {
@@ -48,6 +48,13 @@ function renderInline(segment: string, accent: string, onNavigate?: () => void) 
         return (
           <strong key={pi} className="font-black" style={{ color: accent }}>
             {part.slice(2, -2)}
+          </strong>
+        );
+      }
+      if (part.startsWith('*') && part.endsWith('*') && part.length > 2 && part[1] !== ' ') {
+        return (
+          <strong key={pi} className="font-black" style={{ color: accent }}>
+            {part.slice(1, -1)}
           </strong>
         );
       }

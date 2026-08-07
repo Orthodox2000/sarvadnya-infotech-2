@@ -1,7 +1,7 @@
 'use client';
 
 import { Suspense, useState, useEffect } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 
 interface SearchResult {
@@ -12,12 +12,46 @@ interface SearchResult {
   icon: string;
 }
 
+const QUICK_LINKS = [
+  { label: 'TallyPrime Editions', href: '/products' },
+  { label: 'Cloud Access', href: '/cloud' },
+  { label: 'Services', href: '/services' },
+  { label: 'Modules', href: '/modules' },
+  { label: 'HRMS', href: '/hrms' },
+  { label: 'Tutorials', href: '/tutorials' },
+  { label: 'Find Solution', href: '/find-solution' },
+  { label: 'Careers', href: '/careers' },
+  { label: 'Contact', href: '/contact' },
+];
+
+const POPULAR_SEARCHES = [
+  'TallyPrime Silver',
+  'GST',
+  'Cloud Backup',
+  'Tally on WhatsApp',
+  'HRMS',
+  'Tally Tutorials',
+  'TSS Renewal',
+];
+
 function SearchContent() {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const query = searchParams.get('q') || '';
+  const [input, setInput] = useState(query);
   const [results, setResults] = useState<SearchResult[]>([]);
   const [summary, setSummary] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    setInput(query);
+  }, [query]);
+
+  const runSearch = (q: string) => {
+    const trimmed = (q || '').trim();
+    if (!trimmed) return;
+    router.push(`/search?q=${encodeURIComponent(trimmed)}`);
+  };
 
   useEffect(() => {
     if (!query) {
@@ -44,6 +78,102 @@ function SearchContent() {
     fetchResults();
   }, [query]);
 
+  if (!query) {
+    return (
+      <div className="min-h-screen bg-white flex flex-col items-center justify-center px-4 py-16 relative overflow-hidden">
+        <div className="absolute top-[-8%] right-[-12%] w-[42%] h-[42%] bg-teal-50 blur-[140px] pointer-events-none" />
+        <div className="absolute bottom-[-8%] left-[-12%] w-[42%] h-[42%] bg-[#E5F4F4]/70 blur-[140px] pointer-events-none" />
+
+        <div className="relative z-10 w-full max-w-2xl text-center animate-in fade-in duration-500">
+          <div className="mb-9 flex flex-col items-center gap-4">
+            <div className="w-20 h-20 rounded-3xl bg-[#006569] flex items-center justify-center shadow-xl shadow-teal-900/20">
+              <svg className="w-10 h-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-4.35-4.35M17 10a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </div>
+            <div>
+              <h1 className="font-playfair text-4xl sm:text-5xl font-black text-slate-900 tracking-tight">
+                Sarvadnya <span className="text-[#006569]">Infotech</span>
+              </h1>
+              <p className="mt-2 text-[10px] font-black uppercase tracking-[0.45em] text-slate-400">Site Search</p>
+            </div>
+          </div>
+
+          <form
+            onSubmit={(e) => { e.preventDefault(); runSearch(input); }}
+            className="flex items-center gap-3 bg-white border-2 border-slate-200 rounded-full pl-5 pr-2 py-2.5 sm:pl-6 sm:py-3 shadow-lg shadow-slate-200/60 hover:shadow-xl focus-within:border-[#006569]/40 focus-within:shadow-xl transition-all duration-300"
+          >
+            <svg className="w-5 h-5 text-slate-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-4.35-4.35M17 10a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+            <input
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              placeholder="Search products, services, tutorials & more..."
+              autoFocus
+              className="flex-1 bg-transparent outline-none text-sm sm:text-base font-medium text-slate-900 placeholder:text-slate-400 min-w-0"
+            />
+            {input && (
+              <button
+                type="button"
+                onClick={() => setInput('')}
+                className="hidden sm:flex w-7 h-7 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 items-center justify-center transition-colors"
+                aria-label="Clear search"
+              >
+                <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12" /></svg>
+              </button>
+            )}
+            <button type="submit" className="shrink-0 px-5 sm:px-6 py-2 sm:py-2.5 rounded-full bg-[#006569] text-white text-[10px] sm:text-xs font-black uppercase tracking-wider hover:bg-[#045A57] active:scale-95 transition-all">
+              Search
+            </button>
+          </form>
+
+          <div className="mt-6 flex flex-wrap justify-center gap-3">
+            <button
+              onClick={() => runSearch(input)}
+              className="px-5 py-2.5 bg-[#F5F4ED] text-[#006569] rounded-full text-[10px] font-black uppercase tracking-widest hover:bg-[#E5F4F4] border border-[#006569]/10 transition-all"
+            >
+              Site Search
+            </button>
+            <Link href="/ask-sara" className="px-5 py-2.5 bg-[#F5F4ED] text-[#006569] rounded-full text-[10px] font-black uppercase tracking-widest hover:bg-[#E5F4F4] border border-[#006569]/10 transition-all">
+              Ask Sara AI Assistant
+            </Link>
+          </div>
+
+          <div className="mt-12">
+            <p className="text-[9px] font-black uppercase tracking-[0.4em] text-slate-400 mb-4">Quick Reference</p>
+            <div className="flex flex-wrap justify-center gap-2">
+              {QUICK_LINKS.map(l => (
+                <Link key={l.href} href={l.href} className="px-4 py-2 bg-white border border-slate-200 rounded-full text-[11px] font-bold text-slate-600 hover:text-[#006569] hover:border-[#006569]/30 hover:shadow-sm transition-all">
+                  {l.label}
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          <div className="mt-8">
+            <p className="text-[9px] font-black uppercase tracking-[0.4em] text-slate-400 mb-4">Popular Searches</p>
+            <div className="flex flex-wrap justify-center gap-2">
+              {POPULAR_SEARCHES.map(s => (
+                <button
+                  key={s}
+                  onClick={() => runSearch(s)}
+                  className="px-4 py-1.5 bg-teal-50 text-[#006569] rounded-full text-[11px] font-bold border border-teal-100 hover:bg-[#006569] hover:text-white transition-all active:scale-95"
+                >
+                  {s}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <p className="mt-10 text-[9px] text-slate-300 font-bold uppercase tracking-[0.5em]">
+            Sarvadnya Infotech LLP &bull; Certified Tally Partner
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-white">
       {/* Search Header Section (Themed) */}
@@ -62,9 +192,27 @@ function SearchContent() {
           <h1 className="text-3xl md:text-5xl font-black text-slate-900 mb-4 leading-tight tracking-tight">
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#006569] via-[#006569] to-[#006569] drop-shadow-[0_2px_15px_rgba(0,101,105,0.2)]">Search Results</span>
           </h1>
-          <p className="text-slate-600 font-semibold text-sm md:text-lg">
+          <p className="text-slate-600 font-semibold text-sm md:text-lg mb-6">
             Showing results for "<span className="text-[#006569] font-bold">{query}</span>"
           </p>
+
+          <form
+            onSubmit={(e) => { e.preventDefault(); runSearch(input); }}
+            className="flex items-center gap-3 max-w-2xl mx-auto bg-white border-2 border-slate-200 rounded-full pl-5 pr-2 py-2 shadow-md hover:shadow-lg focus-within:border-[#006569]/40 transition-all"
+          >
+            <svg className="w-4 h-4 text-slate-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-4.35-4.35M17 10a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+            <input
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              className="flex-1 bg-transparent outline-none text-sm font-medium text-slate-900 placeholder:text-slate-400 min-w-0"
+              placeholder="Refine your search..."
+            />
+            <button type="submit" className="shrink-0 px-4 py-1.5 rounded-full bg-[#006569] text-white text-[10px] font-black uppercase tracking-wider hover:bg-[#045A57] active:scale-95 transition-all">
+              Search
+            </button>
+          </form>
         </div>
       </section>
 

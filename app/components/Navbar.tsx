@@ -69,8 +69,8 @@ export default function Navbar({ initialSettings }: { initialSettings?: any }) {
   ];
 
   return (
-    <header className="relative z-1000 w-full border-[#E5E2D9] bg-[linear-gradient(90deg,rgba(249,251,245,1)_0%,rgba(244,242,234,1)_53%,rgba(238,236,223,1)_100%)]">
-      <nav className="flex h-10 lg:h-14 w-full max-w-full items-center justify-between pr-3">
+    <header className="relative z-1000 w-full border-[#E5E2D9] bg-white">
+      <nav className="flex h-10 lg:h-16 w-full max-w-full items-center justify-between pr-3">
         <Link
           href="/"
           className="flex items-center h-full justify-center group transition-transform hover:scale-[1.01]"
@@ -84,18 +84,15 @@ export default function Navbar({ initialSettings }: { initialSettings?: any }) {
               className="h-full w-auto object-contain"
               priority
             />
-          </div>  
+          </div>
+          <span className="ml-1.5 text-[13px] sm:text-[16px] lg:text-[18.9px] font-bold leading-tight text-slate-900">
+            Sarvadnya <span className="text-[#006569]">Infotech LLP</span>
+            <span className="block text-[9px] sm:text-[11px] lg:text-[13.5px] font-medium uppercase tracking-widest text-slate-400">Certified Tally Partner</span>
+          </span>
         </Link>
 
         {/* Desktop Navigation */}
         <div className="hidden lg:flex items-center gap-3 xl:gap-5">
-           <Link
-            href="/colour"
-            className={`text-[11px] font-bold uppercase tracking-widest transition-colors ${isActive('/colour') ? 'text-[#4A4A4A] underline underline-offset-8 decoration-[#006569] decoration-2' : 'text-[#4A4A4A] hover:text-[#006569]'}`}
-          >
-            Palette
-          </Link> 
-
           <div className="hidden lg:flex items-center">
              <SearchBar />
             </div>
@@ -119,7 +116,7 @@ export default function Navbar({ initialSettings }: { initialSettings?: any }) {
            
           <Link
             href="/contact"
-            className="inline-flex items-center justify-center rounded-lg bg-[#006569] text-white px-5 py-2 text-[11px] font-bold uppercase tracking-wider shadow-lg shadow-[#4B6780]/20 transition-all duration-500 ease-in-out border border-transparent hover:bg-white hover:text-[#4B6780] hover:border-[#4B6780]"
+            className="inline-flex items-center justify-center rounded-lg bg-[#006569] text-white px-5 py-2 text-[11px] font-bold uppercase tracking-wider shadow-lg shadow-[#4B6780]/20 transition-all duration-500 ease-in-out border border-transparent hover:bg-white hover:text-[#006569] hover:border-[#006569]"
           >
             Contact
           </Link>

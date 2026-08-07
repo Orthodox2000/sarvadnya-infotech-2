@@ -36,12 +36,24 @@ export default function SupportButton({ initialSettings }: { initialSettings?: a
     const checkOpen = () => {
       if (window.location.hash === '#ask-sara' || window.location.search.includes('ask-sara=true')) {
         setIsOpen(true);
+        const cleanUrl = window.location.href
+          .replace(/[?&]ask-sara=true/, '')
+          .replace(/#ask-sara/, '');
+        if (cleanUrl !== window.location.href) {
+          window.history.replaceState(null, '', cleanUrl);
+        }
       }
     };
     checkOpen();
+    const interval = setInterval(checkOpen, 400);
     window.addEventListener('hashchange', checkOpen);
-    return () => window.removeEventListener('hashchange', checkOpen);
-  }, []);
+    window.addEventListener('popstate', checkOpen);
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener('hashchange', checkOpen);
+      window.removeEventListener('popstate', checkOpen);
+    };
+  }, [pathname]);
 
   return (
     <>

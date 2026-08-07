@@ -355,8 +355,8 @@ export default function FindSolutionPage() {
     <div className="min-h-screen bg-white flex flex-col font-sans overflow-hidden">
       {/* Radiant Atmosphere */}
       <div className="fixed inset-0 pointer-events-none opacity-40">
-        <div className="absolute top-0 left-0 w-[50%] h-[50%] bg-[#f0f9ff] rounded-full blur-[140px]" />
-        <div className="absolute bottom-0 right-0 w-[50%] h-[50%] bg-[#e0f2fe] rounded-full blur-[140px]" />
+        <div className="absolute top-0 left-0 w-[50%] h-[50%] bg-[#E5F4F4] rounded-full blur-[140px]" />
+        <div className="absolute bottom-0 right-0 w-[50%] h-[50%] bg-[#D4EAEA] rounded-full blur-[140px]" />
       </div>
 
       {!showResults ? (
@@ -364,7 +364,7 @@ export default function FindSolutionPage() {
           {/* Header */}
           <div className="max-w-5xl mx-auto px-4 pt-8 pb-4 lg:pt-12 lg:pb-6">
               <div className="space-y-2 text-center lg:text-left">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#f0f9ff] border border-blue-100 text-[#00ABE4] text-[9px] font-black uppercase tracking-[0.2em]">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#E5F4F4] border border-teal-100 text-[#006569] text-[9px] font-black uppercase tracking-[0.2em]">
                 Consultation Compass
               </div>
               <h1 className="text-3xl lg:text-4xl font-black text-slate-900 tracking-tighter leading-none">
@@ -384,7 +384,7 @@ export default function FindSolutionPage() {
             <div className="flex items-center gap-3">
               <div className="flex-1 h-1.5 bg-slate-100 rounded-full overflow-hidden">
                 <div
-                  className="h-full bg-[#00ABE4] rounded-full transition-all duration-700"
+                  className="h-full bg-[#006569] rounded-full transition-all duration-700"
                   style={{ width: `${(answeredCount / QUESTIONS.length) * 100}%` }}
                 />
               </div>
@@ -401,7 +401,7 @@ export default function FindSolutionPage() {
                 <div
                   key={q.id}
                   title={q.hint}
-                  className="bg-white rounded-2xl border border-slate-100 p-4 lg:p-5 space-y-3 transition-all duration-300 hover:border-[#00ABE4]/20 hover:shadow-md"
+                  className="bg-white rounded-2xl border border-slate-100 p-4 lg:p-5 space-y-3 transition-all duration-300 hover:border-[#006569]/20 hover:shadow-md"
                 >
                   <div className="flex items-start justify-between gap-2">
                     <div className="space-y-1 min-w-0">
@@ -427,7 +427,7 @@ export default function FindSolutionPage() {
                       id={`q-${q.id}`}
                       value={answers[q.id] || ''}
                       onChange={e => handleSelect(q.id, e.target.value)}
-                      className="w-full appearance-none bg-slate-50 border-2 border-slate-100 rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-900 focus:outline-none focus:border-[#00ABE4] focus:bg-[#f0f9ff] transition-all cursor-pointer hover:border-slate-200"
+                      className="w-full appearance-none bg-slate-50 border-2 border-slate-100 rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-900 focus:outline-none focus:border-[#006569] focus:bg-[#E5F4F4] transition-all cursor-pointer hover:border-slate-200"
                     >
                       <option value="">Select the closest match</option>
                       {q.options.map(o => (
@@ -466,7 +466,7 @@ export default function FindSolutionPage() {
               )}
               <button
                 onClick={handleSubmit}
-                className="group relative px-10 py-4 bg-[#00ABE4] text-white rounded-2xl font-black uppercase tracking-[0.2em] text-[10px] shadow-lg shadow-blue-500/10 hover:bg-[#0371a3] hover:shadow-blue-500/20 transition-all duration-500 active:scale-[0.98] flex items-center justify-center gap-3 mx-auto"
+                className="group relative px-10 py-4 bg-[#006569] text-white rounded-2xl font-black uppercase tracking-[0.2em] text-[10px] shadow-lg shadow-teal-900/10 hover:bg-[#045A57] hover:shadow-teal-900/20 transition-all duration-500 active:scale-[0.98] flex items-center justify-center gap-3 mx-auto"
               >
                 <span>Generate Recommendation</span>
                 <svg className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform duration-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -487,7 +487,7 @@ export default function FindSolutionPage() {
             {/* Header */}
             <div className="flex flex-col md:flex-row items-center md:items-end justify-between gap-6 border-b border-slate-100 pb-8">
               <div className="space-y-2 text-center md:text-left">
-                <div className="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-[#f0f9ff] text-[#00ABE4] text-[9px] font-black uppercase tracking-[0.3em]">
+                <div className="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-[#E5F4F4] text-[#006569] text-[9px] font-black uppercase tracking-[0.3em]">
                   Consultation Complete
                 </div>
                 <h2 className="text-3xl lg:text-5xl font-black text-slate-900 tracking-tighter leading-none italic">Your Consultation Summary.</h2>
@@ -495,7 +495,7 @@ export default function FindSolutionPage() {
               <div className="flex flex-wrap items-center justify-center md:justify-end gap-3">
                 <a
                   href="#top-recommendations"
-                  className="px-5 py-2.5 bg-[#f0f9ff] text-[#0371a3] rounded-full font-bold uppercase tracking-widest text-[9px] hover:bg-[#e0f2fe] transition-all border border-blue-100 shadow-sm"
+                  className="px-5 py-2.5 bg-[#E5F4F4] text-[#045A57] rounded-full font-bold uppercase tracking-widest text-[9px] hover:bg-[#D4EAEA] transition-all border border-teal-100 shadow-sm"
                 >
                   Jump to Recommendations
                 </a>
@@ -508,9 +508,9 @@ export default function FindSolutionPage() {
             {/* Metrics Dashboard */}
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
               {[
-                { label: 'Efficiency', val: `${businessScores.efficiency}%`, color: 'text-[#00ABE4]' },
+                { label: 'Efficiency', val: `${businessScores.efficiency}%`, color: 'text-[#006569]' },
                 { label: 'Growth', val: `${businessScores.growth}%`, color: 'text-teal-500' },
-                { label: 'Automation', val: businessScores.automation, color: 'text-blue-600' },
+                { label: 'Automation', val: businessScores.automation, color: 'text-teal-600' },
                 { label: 'Risk Level', val: businessScores.risk, color: businessScores.risk === 'High' ? 'text-red-500' : 'text-amber-500' }
               ].map((m, i) => (
                 <div key={i} className="bg-[#f8fafc] p-5 lg:p-6 rounded-2xl border border-slate-100 space-y-0.5 text-center">
@@ -524,41 +524,41 @@ export default function FindSolutionPage() {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               <div id="top-recommendations" className="lg:col-span-2 space-y-6 scroll-mt-8">
                 <h3 className="text-xl font-black text-slate-900 tracking-tight flex items-center gap-4">
-                  <span className="w-6 h-px bg-[#00ABE4]" /> Top Recommendations
+                  <span className="w-6 h-px bg-[#006569]" /> Top Recommendations
                 </h3>
                 <div className="space-y-3">
                   {topRecommendations.map((rec, i) => (
-                    <div key={i} className="group bg-[#f8fafc] border border-slate-100 p-5 lg:p-6 rounded-2xl hover:border-[#00ABE4]/20 hover:shadow-lg transition-all duration-500 flex items-center justify-between">
+                    <div key={i} className="group bg-[#f8fafc] border border-slate-100 p-5 lg:p-6 rounded-2xl hover:border-[#006569]/20 hover:shadow-lg transition-all duration-500 flex items-center justify-between">
                       <div className="space-y-0.5">
-                        <div className="text-[9px] font-black text-[#00ABE4] uppercase tracking-[0.2em]">{rec.category}</div>
+                        <div className="text-[9px] font-black text-[#006569] uppercase tracking-[0.2em]">{rec.category}</div>
                         <div className="text-xl font-black text-slate-900 tracking-tight">{rec.label}</div>
                       </div>
-                      <div className="text-3xl font-black text-slate-200 group-hover:text-[#00ABE4]/20 transition-colors">0{i+1}</div>
+                      <div className="text-3xl font-black text-slate-200 group-hover:text-[#006569]/20 transition-colors">0{i+1}</div>
                     </div>
                   ))}
                 </div>
               </div>
 
               {/* Strategic Insight */}
-              <div className="bg-[#f0f9ff] p-6 lg:p-8 rounded-[2rem] border border-blue-100 space-y-6 relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-24 h-24 bg-[#00ABE4]/5 rounded-full -translate-y-12 translate-x-12 blur-2xl" />
-                <h3 className="text-lg font-black tracking-tight text-[#0371a3] flex items-center gap-3">
-                  <svg className="w-5 h-5 text-[#00ABE4]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+              <div className="bg-[#E5F4F4] p-6 lg:p-8 rounded-[2rem] border border-teal-100 space-y-6 relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-24 h-24 bg-[#006569]/5 rounded-full -translate-y-12 translate-x-12 blur-2xl" />
+                <h3 className="text-lg font-black tracking-tight text-[#045A57] flex items-center gap-3">
+                  <svg className="w-5 h-5 text-[#006569]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
                   Strategic Insight
                 </h3>
                 {isLoadingInsight ? (
                   <div className="space-y-3 animate-pulse">
-                    <div className="h-4 bg-blue-200/50 rounded-full w-full" />
-                    <div className="h-4 bg-blue-200/50 rounded-full w-[90%]" />
-                    <div className="h-4 bg-blue-200/50 rounded-full w-[80%]" />
+                    <div className="h-4 bg-teal-200/50 rounded-full w-full" />
+                    <div className="h-4 bg-teal-200/50 rounded-full w-[90%]" />
+                    <div className="h-4 bg-teal-200/50 rounded-full w-[80%]" />
                   </div>
                 ) : (
                   <p className="text-slate-600 text-sm lg:text-base font-medium leading-relaxed italic animate-in fade-in duration-1000">
                     &ldquo;{aiInsight || `Based on your inputs, a ${topRecommendations[0]?.label || 'Tally solution'} is the most suitable fit for your business needs.`}&rdquo;
                   </p>
                 )}
-                <div className="pt-4 border-t border-blue-200/50">
-                  <button onClick={() => setShowLeadModal(true)} className="w-full py-4 bg-[#0371a3] text-white rounded-xl font-black uppercase tracking-widest text-[10px] hover:bg-[#00ABE4] transition-all shadow-lg shadow-blue-900/10">
+                <div className="pt-4 border-t border-teal-200/50">
+                  <button onClick={() => setShowLeadModal(true)} className="w-full py-4 bg-[#045A57] text-white rounded-xl font-black uppercase tracking-widest text-[10px] hover:bg-[#006569] transition-all shadow-lg shadow-teal-900/10">
                     Get Implementation Roadmap
                   </button>
                 </div>
@@ -590,12 +590,12 @@ export default function FindSolutionPage() {
                 </div>
                 <form onSubmit={handleSubmitLead} className="space-y-4">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <input required type="text" placeholder="Full Name" value={formData.name} onChange={e => setFormData(prev => ({ ...prev, name: e.target.value }))} className="w-full bg-slate-50 border border-slate-100 rounded-xl px-5 py-3 text-sm font-semibold focus:outline-none focus:border-[#00ABE4] focus:bg-white transition-all" />
-                    <input required type="email" placeholder="Work Email" value={formData.email} onChange={e => setFormData(prev => ({ ...prev, email: e.target.value }))} className="w-full bg-slate-50 border border-slate-100 rounded-xl px-5 py-3 text-sm font-semibold focus:outline-none focus:border-[#00ABE4] focus:bg-white transition-all" />
-                    <input required type="tel" placeholder="Mobile Number" value={formData.phone} onChange={e => setFormData(prev => ({ ...prev, phone: e.target.value.replace(/[^0-9+]/g, '') }))} className="w-full bg-slate-50 border border-slate-100 rounded-xl px-5 py-3 text-sm font-semibold focus:outline-none focus:border-[#00ABE4] focus:bg-white transition-all" />
-                    <input type="text" placeholder="Company Name" value={formData.company} onChange={e => setFormData(prev => ({ ...prev, company: e.target.value }))} className="w-full bg-slate-50 border border-slate-100 rounded-xl px-5 py-3 text-sm font-semibold focus:outline-none focus:border-[#00ABE4] focus:bg-white transition-all" />
+                    <input required type="text" placeholder="Full Name" value={formData.name} onChange={e => setFormData(prev => ({ ...prev, name: e.target.value }))} className="w-full bg-slate-50 border border-slate-100 rounded-xl px-5 py-3 text-sm font-semibold focus:outline-none focus:border-[#006569] focus:bg-white transition-all" />
+                    <input required type="email" placeholder="Work Email" value={formData.email} onChange={e => setFormData(prev => ({ ...prev, email: e.target.value }))} className="w-full bg-slate-50 border border-slate-100 rounded-xl px-5 py-3 text-sm font-semibold focus:outline-none focus:border-[#006569] focus:bg-white transition-all" />
+                    <input required type="tel" placeholder="Mobile Number" value={formData.phone} onChange={e => setFormData(prev => ({ ...prev, phone: e.target.value.replace(/[^0-9+]/g, '') }))} className="w-full bg-slate-50 border border-slate-100 rounded-xl px-5 py-3 text-sm font-semibold focus:outline-none focus:border-[#006569] focus:bg-white transition-all" />
+                    <input type="text" placeholder="Company Name" value={formData.company} onChange={e => setFormData(prev => ({ ...prev, company: e.target.value }))} className="w-full bg-slate-50 border border-slate-100 rounded-xl px-5 py-3 text-sm font-semibold focus:outline-none focus:border-[#006569] focus:bg-white transition-all" />
                   </div>
-                  <button type="submit" disabled={isSubmitting} className="w-full py-4 bg-[#00ABE4] text-white rounded-2xl font-black uppercase tracking-[0.2em] text-[10px] hover:bg-[#0371a3] transition-all shadow-xl shadow-blue-500/20 flex items-center justify-center gap-2 active:scale-[0.98]">
+                  <button type="submit" disabled={isSubmitting} className="w-full py-4 bg-[#006569] text-white rounded-2xl font-black uppercase tracking-[0.2em] text-[10px] hover:bg-[#045A57] transition-all shadow-xl shadow-teal-900/20 flex items-center justify-center gap-2 active:scale-[0.98]">
                     {isSubmitting ? <div className="w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin" /> : 'Get Solution Blueprint \u2192'}
                   </button>
                 </form>

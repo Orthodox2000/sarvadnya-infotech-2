@@ -102,7 +102,7 @@ const CustomerReviews = ({ initialData }: { initialData?: Review[] }) => {
     const speed = Math.max(25, reviews.length * 6);
 
     return (
-        <section ref={sectionRef} className="w-full py-8 px-6 overflow-hidden bg-[linear-gradient(90deg,rgba(249,251,245,1)_0%,rgba(244,242,234,1)_53%,rgba(238,236,223,1)_100%)]">
+        <section ref={sectionRef} className="w-full py-8 px-6 overflow-hidden bg-[linear-gradient(90deg,rgba(249,251,245,1)_0%,rgba(244,242,234,1)_53%,rgba(238,236,223,1)_100%)] bg[#006569]md:background: linear-gradient(90deg, rgba(0, 101, 105, 1) 11%, rgba(237, 234, 223, 1) 78%);">
             <div className="max-w-7xl mx-auto">
                 <div className={`flex flex-col items-start transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
                     <div className="relative w-64 h-16 opacity-80">

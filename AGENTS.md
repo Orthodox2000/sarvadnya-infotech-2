@@ -89,6 +89,15 @@ Vercel serverless functions reject request bodies over ~4.5 MB, so all uploads a
 4. **External uptime/heartbeat monitors** (UptimeRobot, Cronitor, Google Cloud Scheduler free tier) pinging the retry endpoint periodically.
 5. **Client-visible queue fallback** — keep `processEmailQueue()` behind the admin panel for one-off manual drains if a batch of sends ever fails.
 
+### 7. Brand & Theme (Teal #006569)
+
+- **Primary:** `#006569` — the single brand color across the entire site. Dark variants `#045A57` and `#033B38` for depth and gradients.
+- **Light tints:** `#E5F4F4` / `#D4EAEA` / `#B8DEDE` / `#DDEFEF` / `#C5E3E3` / `#D9E8E8` / `#E8F0F0` for section backgrounds, borders and chips.
+- **WhatsApp green is preserved:** `#25D366` (buttons) + hover `#1ebe5b` — never change these.
+- **Tailwind utilities:** use the `teal-NN` scale (`bg-teal-50`, `text-teal-600`, `border-teal-100`, …). The `green-*`/`emerald-*` families and all hex greens are retired as the brand (bulk-swapped out in commit `dbcb347 teal`) — do not reintroduce them.
+- **cPanel landing (`cpanel-landing/app/globals.css`):** local `--color-brand-*` ramp keyed to teal — 50 `#e6f5f5` … 500 `#1b8a8a`, 600 `#006569`, 700 `#005659`, 800 `#044a4b`, 900 `#033d3e`, 950 `#032e2f` — with WhatsApp `#25D366` buttons kept.
+- **Palette pickers (`lib/palettes.ts`, `app/(site)/products/product-theme.ts`):** teal-anchored (teal palette "Teal Corporate" `#00897b`/`#005a4e`/`#2dd4bf`, accent `#14b8a6`). Palette ids must stay stable (referenced by stored product data).
+
 ## Developer Guidelines
 - **Surgical Updates:** Always prefer targeted `replace` over complete file rewrites for existing files.
 - **Accessibility:** Maintain high contrast ratios and ensure interactive elements have clear focus states.
@@ -96,4 +105,4 @@ Vercel serverless functions reject request bodies over ~4.5 MB, so all uploads a
 - **GPU Hints:** Use `will-change` and `translateZ(0)` sparingly for elements with complex animations.
 
 ---
-*Last Updated: 2026-08-03*
+*Last Updated: 2026-08-06*

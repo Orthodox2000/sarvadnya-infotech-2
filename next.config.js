@@ -13,6 +13,7 @@ const csp = [
 ].join('; ');
 
 const nextConfig = {
+  
   allowedDevOrigins: ['26.186.62.193','192.168.7.7','192.168.1.245'],
   async redirects() {
     return [
@@ -68,6 +69,7 @@ const nextConfig = {
       },
     ];
   },
+  
 };
 
 module.exports = nextConfig;

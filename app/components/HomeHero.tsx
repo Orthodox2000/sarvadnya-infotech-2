@@ -1,121 +1,23 @@
 'use client';
 
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import UnifiedContactModal, { FormType } from './UnifiedContactModal';
 
-interface HeroCTA {
-  text: string;
-  href: string;
-}
-
-interface HeroFeature {
-  text: string;
-}
-
 interface HeroContent {
   badge: string;
   titleText: string;
-  colorFrom: string;
-  colorTo: string;
   description: string;
   image: string;
-  layout?: 'standard' | 'ecosystem' | 'single';
-  features: HeroFeature[];
-  ctaPrimary: HeroCTA;
-  sub1Img?: string;
-  sub2Img?: string;
 }
 
-const DEFAULT_HERO: HeroContent[] = [
-    {
-      "badge": "3 star Tally Partner",
-      "titleText": "Fueling MSME Ambition Through Smarter Tally Systems",
-      "colorFrom": "#232F3E",
-      "colorTo": "#006569",
-      "description": "We don't just implement software; we clear the path for your growth. Maximize your Tally investment with certified experts who care about your bottom line as much as you do.",
-      "image": "/certified partner person.png",
-      "layout": "single",
-      "features": [
-        { "text": "Certified Tally Expertise" },
-        { "text": "1,500+ Active Clients" },
-        { "text": "Unrestricted Remote Support" },
-        { "text": "Custom TDL Solutions" }
-      ],
-      "ctaPrimary": { "text": "Why Choose Us", "href": "/about" }
-    },
-    {
-      "badge": "TallyPrime 7.1 Now Available",
-      "titleText": "Revolutionizing Business with Smart Tally Automation",
-      "colorFrom": "#232F3E",
-      "colorTo": "#006569",
-      "description": "Unleash TallyPrime 7.0 with PrimeBanking and SmartFind. We build the financial engine that turns your accounting into a growth machine.",
-      "image": "/sa2.png",
-      "layout": "standard",
-      "features": [
-        { "text": "PrimeBanking Payments" },
-        { "text": "TallyDrive Cloud Backup" },
-        { "text": "SmartFind Global Search" },
-        { "text": "Bharat Connect Plug-in" }
-      ],
-      "ctaPrimary": { "text": "Know More", "href": "/about" },
-      "sub1Img": "/hero/tssgold.png",
-      "sub2Img": "/hero/hero-main.png"
-    },
-    {
-      "badge": "Certified Cloud Solutions",
-      "titleText": "Tally on Cloud: Absolute Freedom.",
-      "colorFrom": "#232F3E",
-      "colorTo": "#006569",
-      "description": "Your office, now in your pocket. Secure AWS-powered hosting with 100% uptime and zero-loss military encryption for your business data.",
-      "image": "/hero/dedicated-to-cloud-hosting.jpg",
-      "layout": "ecosystem",
-      "features": [
-        { "text": "Official AWS Hosting" },
-        { "text": "Backup for Tally Cloud Performance" },
-        { "text": "24/7 Remote Access" },
-        { "text": "Automated Server Backup" }
-      ],
-      "ctaPrimary": { "text": "View Cloud Plans", "href": "/cloud" }
-    },
-    {
-      "badge": "Industry Leading Support",
-      "titleText": "Instant Solutions. Zero Downtime.",
-      "colorFrom": "#232F3E",
-      "colorTo": "#006569",
-      "description": "Stop waiting for answers. Our 90% First Call Resolution standard means your technical hurdles disappear before you hang up.",
-      "image": "/trainning.png",
-      "layout": "standard",
-      "features": [
-        { "text": "Instant Remote Support" },
-        { "text": "Expert TDL Debugging" },
-        { "text": "Data Recovery Services" },
-        { "text": "90% FCR Track Record" }
-      ],
-      "ctaPrimary": { "text": "Get Priority Support", "href": "/contact" },
-      "sub1Img": "/PartnerBrands/Tally-Software.png",
-      "sub2Img": "/sa2.png"
-    },
-    {
-      "badge": "Smart Business Integration",
-      "titleText": "WhatsApp Sync: Real-Time Growth.",
-      "colorFrom": "#232F3E",
-      "colorTo": "#006569",
-      "description": "Bridge the gap between accounting and communication. Send invoices and collection alerts directly to your customers instantly.",
-      "image": "/sa3.png",
-      "layout": "standard",
-      "features": [
-        { "text": "Automated PDF Sending" },
-        { "text": "Real-time Notifications" },
-        { "text": "Customer Support Sync" },
-        { "text": "Bulk Report Sharing" }
-      ],
-      "ctaPrimary": { "text": "Get WhatsApp Sync", "href": "/services/whatsapp" },
-      "sub1Img": "/hero/hero-sub1.png",
-      "sub2Img": "/TDLandCustom.jpg"
-    }
-];
+const HERO_CONTENT: HeroContent = {
+  badge: "Certified Tally Partner · Trusted Since 2008",
+  titleText: "Tally that works as hard as your business.",
+  description: "We don't just implement software; we clear the path for your growth. Maximize your Tally investment with certified experts who care about your bottom line as much as you do.",
+  image: "/certified partner person.png",
+};
 
 const QUICK_ACCESS_CARDS = [
   {
@@ -148,168 +50,28 @@ const QUICK_ACCESS_CARDS = [
   }
 ];
 
-const VISUAL_SCHEMES = [
-  {
-    main: "scale-105 -rotate-2 -translate-x-2 hover:rotate-0",
-    sub1: "rotate-6 -translate-y-8 hover:rotate-0",
-    sub2: "-rotate-6 translate-x-8 hover:rotate-0",
-    logo: "rotate-12 translate-y-6 hover:rotate-0",
-    sub1Img: "/hero/hero-sub1.png",
-    sub2Img: "/hero/hero-sub2.png"
-  },
-  {
-    main: "scale-100 rotate-2 translate-x-2 hover:rotate-0",
-    sub1: "-rotate-12 translate-y-8 hover:rotate-0",
-    sub2: "rotate-12 -translate-x-8 hover:rotate-0",
-    logo: "-rotate-12 -translate-y-6 hover:rotate-0",
-    sub1Img: "/hero/tssgold.png",
-    sub2Img: "/hero/brand-nosky-1779439419186.webp"
-  },
-  {
-    main: "scale-110 rotate-0 translate-y-2 hover:scale-100",
-    sub1: "rotate-3 -translate-x-12 -translate-y-4 hover:rotate-0",
-    sub2: "-rotate-3 translate-x-12 translate-y-4 hover:rotate-0",
-    logo: "rotate-0 translate-x-6 hover:scale-110",
-    sub1Img: "/PartnerBrands/Tally-Software.png",
-    sub2Img: "/hero/tssgold.png"
-  },
-  {
-    main: "scale-105 rotate-1 translate-x-1 hover:rotate-0",
-    sub1: "rotate-12 translate-x-8 hover:rotate-0",
-    sub2: "-rotate-12 -translate-y-8 hover:rotate-0",
-    logo: "rotate-6 -translate-x-6 hover:rotate-0",
-    sub1Img: "/hero/brand-nosky-1779439419186.webp",
-    sub2Img: "/hero/hero-sub1.png"
-  },
-  {
-    main: "scale-100 -rotate-1 -translate-y-1 hover:scale-105",
-    sub1: "-rotate-6 -translate-x-8 hover:rotate-0",
-    sub2: "rotate-6 translate-y-8 hover:rotate-0",
-    logo: "-rotate-3 translate-x-4 hover:rotate-0",
-    sub1Img: "/hero/hero-sub2.png",
-    sub2Img: "/PartnerBrands/Tally-Software.png"
-  }
-];
+const HIGHLIGHT_WORDS = ['your', 'business', 'certified', 'partner', 'trusted', 'msme', 'smarter'];
 
-const ECOSYSTEM_SCHEMES = [
-  {
-    main: "-rotate-3 translate-x-2 translate-y-2",
-    aws: "rotate-6 translate-x-0 translate-y-0",
-    nosky: "-rotate-2 translate-x-0 translate-y-0"
-  },
-  {
-    main: "rotate-3 -translate-x-2 -translate-y-2",
-    aws: "-rotate-6 -translate-x-2 translate-y-2",
-    nosky: "rotate-6 translate-x-2 -translate-y-2"
-  }
-];
-
-const processHeroData = (data: any[]): HeroContent[] => {
-  const hasSingle = data.some((item: any) => item.layout === 'single');
-  const merged = hasSingle ? data : [DEFAULT_HERO[0], ...data];
-  return merged.map((item: any) => {
-    if (item.layout === 'single') {
-      return { ...item, colorFrom: '#232F3E', colorTo: '#006569' };
-    }
-
-    const title = (item.titleText || '').toLowerCase();
-    const isCloud = title.includes('cloud');
-    const isSupport = title.includes('Solution') || title.includes('Downtime');
-    const isTraining = title.includes('train') || title.includes('master');
-    const isWhatsApp = title.includes('whatsapp') || title.includes('automation') || title.includes('custom') || title.includes('module');
-    
-    const baseTitle = (item.titleText || '').split(' - ')[0].trim();
-    
-    let sub1Img = "/hero/hero-sub1.png";
-    let sub2Img = "/hero/hero-sub2.png";
-    let mainImg = item.image;
-
-    if (!mainImg || mainImg === '/sa.png') {
-        mainImg = isCloud ? "/hero/dedicated-to-cloud-hosting.jpg" : "/sa2.png";
-    }
-    
-    if (isSupport) {
-      sub1Img = "/PartnerBrands/Tally-Software.png";
-      sub2Img = "/sa2.png";
-      mainImg = "/support.png"; 
-    } else if (isTraining) {
-      sub1Img = "/PartnerBrands/Tally-Software.png";
-      sub2Img = "/sa2.png";
-      mainImg = "/trainning.png";
-    } else if (isWhatsApp) {
-      mainImg = "/sa3.png";
-      sub1Img = "/hero/hero-sub1.png";
-      sub2Img = "/TDLandCustom.jpg";
-    } else if (!isCloud) { 
-      mainImg = "/sa2.png";
-      sub1Img = "/hero/tssgold.png";
-      sub2Img = "/hero/hero-main.png";
-    }
-
-    return {
-      ...item,
-      titleText: baseTitle || (isCloud ? "Reliable Cloud & Zero-Loss Backup" : "Why Choose Certified Partner?"),
-      image: mainImg,
-      layout: isCloud ? 'ecosystem' : 'standard',
-      colorFrom: '#232F3E',
-      colorTo: '#006569',
-      sub1Img,
-      sub2Img,
-      ctaPrimary: (!isCloud && !isSupport && !isTraining && !isWhatsApp) 
-        ? { text: "Know More", href: "/about" } 
-        : item.ctaPrimary
-    };
-  });
-};
-
-export default function HomeHero({ initialData, variant = 'standard', emailCopy = false }: { initialData?: HeroContent[], variant?: 'standard' | 'radiant' | 'creative', emailCopy?: boolean }) {
-  const [heroContents, setHeroContents] = useState<HeroContent[]>(processHeroData(initialData || DEFAULT_HERO));
-  const [stableIndex, setStableIndex] = useState(0);
-  const [isExiting, setIsExiting] = useState(false);
+export default function HomeHero({ hero = HERO_CONTENT, emailCopy = false }: { hero?: HeroContent; emailCopy?: boolean }) {
   const [isEntering, setIsEntering] = useState(false);
   const [displayText, setDisplayText] = useState('');
   const [isTyping, setIsTyping] = useState(false);
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
   const typingIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const typingIndexRef = useRef(0);
   const typingTextRef = useRef('');
-
-  // [CAROUSEL DISABLED] Auto-slide logic commented out — single slide only
-  // useEffect(() => {
-  //   if (heroContents.length <= 1) return;
-  //   const runCarousel = () => {
-  //     timerRef.current = setTimeout(() => {
-  //       if (document.hidden) { runCarousel(); return; }
-  //       setIsExiting(true);
-  //       setIsEntering(false);
-  //       setTimeout(() => {
-  //         setStableIndex((prev) => (prev + 1) % heroContents.length);
-  //         setTimeout(() => {
-  //           setIsExiting(false);
-  //           setIsEntering(true);
-  //           runCarousel();
-  //         }, 150);
-  //       }, 800);
-  //     }, 1500050);
-  //   };
-  //   const initialEntry = setTimeout(() => setIsEntering(true), 100);
-  //   runCarousel();
-  //   return () => { if (timerRef.current) clearTimeout(timerRef.current); clearTimeout(initialEntry); };
-  // }, [heroContents.length]);
+  const [modalConfig, setModalConfig] = useState<{ isOpen: boolean; type: FormType; service: string; details: string }>({ isOpen: false, type: 'general', service: '', details: '' });
 
   useEffect(() => {
     const t = setTimeout(() => setIsEntering(true), 100);
     return () => clearTimeout(t);
   }, []);
 
-  const current = heroContents[stableIndex] || DEFAULT_HERO[0];
-
   useEffect(() => {
-    if (!current?.titleText || !isEntering || isExiting) { setDisplayText(''); return; }
+    if (!isEntering) { setDisplayText(''); return; }
     if (typingIntervalRef.current) clearInterval(typingIntervalRef.current);
 
     typingIndexRef.current = 0;
-    typingTextRef.current = current.titleText;
+    typingTextRef.current = hero.titleText;
     setIsTyping(true);
     setDisplayText('');
 
@@ -333,61 +95,18 @@ export default function HomeHero({ initialData, variant = 'standard', emailCopy 
         typingIntervalRef.current = null;
       }
     };
-  }, [stableIndex, isEntering, isExiting, current.titleText]);
-
-  const [modalConfig, setModalConfig] = useState<{ isOpen: boolean; type: FormType; service: string; details: string }>({ isOpen: false, type: 'general', service: '', details: '' });
-
-  const scheme = {
-    ...VISUAL_SCHEMES[stableIndex % VISUAL_SCHEMES.length],
-    sub1Img: (current as any).sub1Img || VISUAL_SCHEMES[stableIndex % VISUAL_SCHEMES.length].sub1Img,
-    sub2Img: (current as any).sub2Img || VISUAL_SCHEMES[stableIndex % VISUAL_SCHEMES.length].sub2Img
-  };
-  const ecoScheme = ECOSYSTEM_SCHEMES[stableIndex % ECOSYSTEM_SCHEMES.length];
+  }, [isEntering, hero.titleText]);
 
   const getAnimationClasses = (delayClass: string) => {
-    if (isExiting) return 'opacity-0 translate-y-4 blur-sm transition-all duration-[800ms]';
     if (!isEntering) return 'opacity-0 translate-y-4 blur-sm';
-    const motionPaths = ['translate-y-0', '-translate-x-0', 'translate-x-0', 'scale-100'];
-    const initialStates = ['translate-y-8', '-translate-x-12', 'translate-x-12', 'scale-90'];
-    const pathIdx = stableIndex % motionPaths.length;
-    const isActive = isEntering && !isExiting;
-    return `transition-all duration-[1000ms] ${delayClass} ${isActive ? `opacity-100 ${motionPaths[pathIdx]} blur-0` : `opacity-0 ${initialStates[pathIdx]} blur-sm`}`;
+    return `transition-all duration-[1000ms] ${delayClass} opacity-100 translate-y-0 blur-0`;
   };
 
-  const addDevSlide = useCallback(() => {
-    const n = heroContents.length + 1;
-    const newSlide: HeroContent = {
-      badge: `DEV SLIDE #${n}`,
-      titleText: `Development Slide ${n} — New Feature Set`,
-      colorFrom: '#232F3E',
-      colorTo: '#006569',
-      description: `Temporary dev slide for testing. Edit DEFAULT_HERO or push via API to finalize this group (Slide ${n}).`,
-      image: '/sa2.png',
-      layout: 'standard',
-      features: [
-        { text: 'Feature A' },
-        { text: 'Feature B' },
-        { text: 'Feature C' },
-        { text: 'Feature D' },
-      ],
-      ctaPrimary: { text: 'Explore Dev Slide', href: '/products' },
-      sub1Img: '/hero/tssgold.png',
-      sub2Img: '/hero/hero-main.png',
-    };
-    setHeroContents(prev => [...prev, newSlide]);
-  }, [heroContents.length]);
+  const isHighlight = (cleanWord: string) => HIGHLIGHT_WORDS.includes(cleanWord);
 
   return (
     <>
     <main suppressHydrationWarning className={`relative w-full bg-[#fbfaf8] bg-[url('/bg.png')] bg-cover bg-center bg-no-repeat min-h-[20rem] sm:min-h-[26rem] md:min-h-[400px] lg:min-h-[500px]  flex flex-col`}>
-      <div className="absolute -z-[100] invisible h-0 w-0 overflow-hidden pointer-events-none">
-        {heroContents.map((content, idx) => (
-          <div key={`preload-wrap-${idx}`} className="relative h-1 w-1">
-            <Image key={`preload-${idx}`} src={content.image} alt="preload" fill priority sizes="1px" />
-          </div>
-        ))}
-      </div>
-
       {/* Background decorative blobs */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         <div className="absolute top-[-10%] left-[-8%] w-[50%] h-[50%] rounded-full blur-[120px]" style={{ backgroundColor: 'rgba(85,130,115,0.08)' }} />
@@ -398,157 +117,89 @@ export default function HomeHero({ initialData, variant = 'standard', emailCopy 
       <div className="relative z-10 flex items-center h-[400px]">
         <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-0 pb-6 lg:pb-0">
           <div className="flex flex-col lg:flex-row items-center lg:mt-8 lg:pb-4 gap-8 lg:gap-16">
-            
+
             {/* Left: Content */}
-            <div key={`content-${stableIndex}`} className="w-full lg:w-1/2 space-y-3 lg:space-y-4">
-              <div className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#006569] shadow-sm ${getAnimationClasses('delay-0')}`}>
-                <span className="flex h-2 w-2 rounded-full animate-pulse bg-white/60" />
-                <span className="text-[9px] font-black uppercase tracking-[0.2em] text-white">{current.badge}</span>
+            <div className="w-full lg:w-1/2 space-y-3 lg:space-y-4">
+              <div className={`mt-16 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-[#006569]/20 shadow-sm ${getAnimationClasses('delay-0')}`}>
+                <span className="flex h-1.5 w-1.5 rounded-full bg-[#006569]" />
+                <span className="text-xs font-semibold text-[#006569]">{hero.badge}</span>
               </div>
 
               <div className={`relative min-h-[70px] md:min-h-[60px] ${getAnimationClasses('delay-200')}`}>
-                <h1 className="text-4xl font-[900] text-[#2a2d34] leading-tight tracking-tight invisible">{current.titleText}</h1>
-                <h1 className="absolute top-0 left-0 text-4xl font-[900] text-[#2a2d34] leading-tight tracking-tight w-full flex flex-wrap items-baseline">
+                <h1 className="font-playfair text-4xl font-bold leading-tight tracking-tight text-slate-900 sm:text-5xl lg:text-[3.4rem] invisible">{hero.titleText}</h1>
+                <h1 className="absolute top-0 left-0 font-playfair text-4xl font-bold leading-tight tracking-tight text-slate-900 sm:text-5xl lg:text-[3.4rem] w-full flex flex-wrap items-baseline">
                   {displayText.split(' ').map((word, i) => {
                     const cleanWord = word.replace(/[.,%]/g, '').toLowerCase();
-                    const titleLower = (current.titleText || '').toLowerCase();
-                    const isCloudSlide = titleLower.includes('cloud');
-                    const isDemoSlide = titleLower.includes('demo') || titleLower.includes('future') || titleLower.includes('witness');
-                    const isModuleSlide = titleLower.includes('module');
-                    
-                    let isHighlight = false;
-                    if (isCloudSlide) {
-                      isHighlight = cleanWord === 'backup' || cleanWord === 'reliable' || cleanWord === 'cloud';
-                    } else if (isDemoSlide) {
-                      isHighlight = cleanWord === 'automation' || cleanWord === 'future' || cleanWord === 'witness' || cleanWord === 'explore' || cleanWord === 'business' || cleanWord === 'modules';
-                    } else if (isModuleSlide) {
-                      isHighlight = cleanWord === 'modules' || cleanWord === 'custom' || cleanWord === 'tally';
-                    } else {
-                      isHighlight = word.includes('90%') || cleanWord === 'certified' || cleanWord === 'partner' || cleanWord === 'trusted' || cleanWord === 'msme' || cleanWord === 'smarter';
-                    }
-
-                    const shouldBreak = isModuleSlide && cleanWord === 'modules';
-                    
                     return (
                       <span key={i} className="contents">
-                        {shouldBreak && <div className="basis-full h-0" />}
-                        <span className={isHighlight ? "text-[#006569]" : ""}>
+                        <span className={isHighlight(cleanWord) ? "text-[#006569]" : ""}>
                           {word}&nbsp;
                         </span>
                       </span>
                     );
                   })}
-                  {isTyping && <span className="inline-block w-1 h-7 md:h-10 ml-0.5 animate-pulse bg-[#006569]" />}
+                  {isTyping && <span className="inline-block w-1 h-8 md:h-12 ml-0.5 animate-pulse bg-[#006569]" />}
                 </h1>
               </div>
 
-              <p className={`text-sm md:text-[15px] text-[#4a5056] max-w-xl leading-relaxed font-medium ${getAnimationClasses('delay-300')}`}>{current.description}</p>
+              <p className={`text-sm md:text-[15px] text-[#4a5056] max-w-xl leading-relaxed font-medium ${getAnimationClasses('delay-300')}`}>{hero.description}</p>
+
+              {/* Trusted stats badges */}
+               <div className={`flex flex-wrap items-center gap-2 ${getAnimationClasses('delay-700')}`}>
+               
+                
+                <div className="inline-flex items-center gap-2 bg-white/70 backdrop-blur-sm px-2 py-4 rounded-full border border-gray-200/60 shadow-sm h-6 w-38">
+                  <svg className="w-4 h-4 text-[#006569]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                  <span className="text-[11px] text-gray-600"><strong className="text-[#2a2d34] font-bold">15+ Years</strong> Experience</span>
+                </div> 
+                <div className="inline-flex items-center gap-2 bg-white/70 backdrop-blur-sm px-2 py-4 rounded-full border border-gray-200/60 shadow-sm h-6 w-48">
+                  <svg className="w-4 h-4 text-[#006569]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                  <span className="text-[11px] text-gray-600"><strong className="text-[#2a2d34] font-bold">150+</strong> Queries Solved Weekly</span>
+                </div>
+
+                 <div className="inline-flex h-6 w-44 items-center gap-2 bg-white/70 backdrop-blur-sm px-2 py-4 rounded-full border border-gray-200/60 shadow-sm">
+                  <svg className="w-4 h-4 text-[#006569]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                  <span className="text-[11px] text-gray-600">Trusted by <strong className="text-[#2a2d34] font-bold">1,500+ MSMEs</strong></span>
+                </div>
+
+                
+              </div>
 
               <div className={`flex flex-wrap gap-3 pt-1 ${getAnimationClasses('delay-500')}`}>
                 <Link href="/products" className="group relative overflow-hidden px-6 py-3 rounded-xl bg-[#006569] text-white font-bold text-xs uppercase tracking-wide transition-all duration-500 ease-in-out hover:bg-[#0aa6a6] hover:scale-[1.03] active:scale-95 shadow-md">
                   <span className="relative z-10">View Tally Products</span>
                   <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
                 </Link>
-                <button 
-                  onClick={() => setModalConfig({ isOpen: true, type: 'demo', service: 'TallyPrime', details: 'Requesting a personalized demo' })} 
+                <button
+                  onClick={() => setModalConfig({ isOpen: true, type: 'demo', service: 'TallyPrime', details: 'Requesting a personalized demo' })}
                   className="group px-6 py-3 rounded-xl bg-[#365275] font-bold text-xs uppercase tracking-wide transition-all duration-500 ease-in-out text-white hover:bg-[#283e5a] hover:scale-[1.03] active:scale-95 shadow-md"
                 >
                   Enquire Now
                 </button>
               </div>
 
-              {/* Trusted badge */}
-              <div className={`inline-flex items-center gap-2 bg-white/70 backdrop-blur-sm px-4 py-2 rounded-full border border-gray-200/60 shadow-sm ${getAnimationClasses('delay-700')}`}>
-                <svg className="w-4 h-4 text-[#006569]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                <span className="text-sm text-gray-600">Trusted by <strong className="text-[#2a2d34] font-bold">1,500+ MSMEs</strong></span>
-              </div>
+              
             </div>
 
             {/* Right: Image */}
-            <div key={`visual-${stableIndex}`} className="hidden lg:flex lg:w-1/2 relative items-center justify-center px-4 xl:px-8 lg:-mt-38 max-md:-mt-20 z-10">
-              <div className="relative w-full max-w-[700px] group">
-                {current.layout === 'single' ? (
-                  <div className={`relative w-full aspect-[3/4] max-h-[550px] md:h-[500px]
-                    ${isExiting ? 'opacity-0 scale-90 translate-y-12 transition-all duration-[800ms]' : isEntering ? 'opacity-100 transition-all duration-1200' : 'opacity-0 translate-y-4'}`}>
-                    <Image src={current.image} alt={current.titleText} fill className="mt-20 object-contain" sizes="(max-width: 1024px) 100vw, 480px" priority />
-                  </div>
-                ) : current.layout === 'ecosystem' ? (
-                  <div className="relative w-full h-full scale-[1.0]">
-                    <div className={`absolute top-[10%] left-[15%] w-[75%] aspect-square rounded-[3.5rem] overflow-hidden border border-gray-200/60 shadow-[0_50px_100px_-20px_rgba(0,0,0,0.06)] z-30 transform bg-white
-                      ${isExiting ? 'opacity-0 scale-90 translate-y-12 transition-all duration-800' : isEntering ? `opacity-100 transition-all duration-1200 ${ecoScheme.main}` : 'opacity-0 translate-y-4'}`}>
-                      <Image src={current.image} alt="Main" fill className="object-cover opacity-20 blur-xl scale-110" sizes="(max-width: 1024px) 100vw, 540px" />
-                      <div className="absolute inset-0 w-full h-full"><Image src={current.image} alt="Ecosystem" fill className="object-contain p-8" sizes="(max-width: 1024px) 100vw, 540px" /></div>
-                    </div>
-                    <div className={`absolute top-[-8%] right-[-5%] w-[45%] aspect-square rounded-[2rem] overflow-hidden border border-gray-200/60 shadow-2xl z-50 bg-white p-4
-                      ${isExiting ? 'opacity-0 translate-x-12 -translate-y-12 transition-all duration-800' : isEntering ? `opacity-100 transition-all duration-1000 delay-200 ${ecoScheme.aws}` : 'opacity-0 translate-y-4'}`}>
-                      <Image src="/hero/AWS.png" alt="AWS Infrastructure" fill className="object-contain p-4" sizes="200px" />
-                    </div>
-                    <div className={`absolute bottom-[-8%] left-[-5%] w-[40%] aspect-square rounded-[2rem] overflow-hidden border border-gray-200/60 shadow-2xl z-40 bg-[#232F3E] p-4
-                      ${isExiting ? 'opacity-0 -translate-x-12 translate-y-12 transition-all duration-800' : isEntering ? `opacity-100 flex items-center justify-center transition-all duration-1000 delay-400 ${ecoScheme.nosky}` : 'opacity-0 translate-y-4'}`}>
-                      <div className="relative w-full h-full"><Image src="/hero/brand-nosky-1779439419186.webp" alt="NoSky Node" fill className="object-contain" sizes="250px" /></div>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="relative w-full h-full scale-[0.8]">
-                    <div className={`absolute top-[10%] right-0 w-[80%] aspect-square rounded-[4rem] overflow-hidden border-2 border-gray-200/60 shadow-[0_50px_100px_-20px_rgba(0,101,105,0.3)] z-40 transform bg-white
-                      ${isExiting ? 'opacity-0 scale-90 translate-y-12 transition-all duration-[800ms]' : isEntering ? `opacity-100 transition-all duration-1200 ${scheme.main}` : 'opacity-0 translate-y-4'}`}>
-                      <Image src={current.image} alt="Backdrop" fill className="object-cover opacity-30 blur-2xl scale-110" sizes="(max-width: 1024px) 100vw, 540px" />
-                      <div className="absolute inset-0 w-full h-full"><Image src={current.image} alt={current.titleText} fill priority className="object-contain p-10" sizes="(max-width: 1024px) 100vw, 540px" /></div>
-                    </div>
-                    <div className={`absolute top-[-10%] left-0 w-[50%] aspect-square rounded-[2.5rem] overflow-hidden border border-gray-200/60 shadow-2xl z-50 bg-white
-                      ${isExiting ? 'opacity-0 -translate-x-12 -translate-y-12 transition-all duration-800' : isEntering ? `opacity-100 transition-all duration-1400 delay-200 ${scheme.sub1}` : 'opacity-0 translate-y-4'}`}>
-                      <Image src={scheme.sub1Img} alt="Enterprise Logic" fill className="object-cover opacity-10 blur-lg" sizes="250px" />
-                      <div className="absolute inset-0 w-full h-full"><Image src={scheme.sub1Img} alt="Tally ERP" fill className="object-contain" sizes="250px" /></div>
-                    </div>
-                    <div className={`absolute bottom-[-10%] left-[-10%] w-[45%] aspect-square rounded-[2rem] overflow-hidden border border-gray-200/60 shadow-2xl z-30 bg-white
-                      ${isExiting ? 'opacity-0 -translate-x-16 translate-y-16 transition-all duration-800' : isEntering ? `opacity-100 transition-all duration-1600 delay-400 ${scheme.sub2}` : 'opacity-0 translate-y-4'}`}>
-                      <Image src={scheme.sub2Img} alt="Analytics View" fill className="object-cover opacity-10 blur-md" sizes="200px" />
-                      <div className="absolute inset-0 w-full h-full"><Image src={scheme.sub2Img} alt="Business Data" fill className="object-contain" sizes="200px" /></div>
-                    </div>
-                  </div>
-                )}
-                {current.layout !== 'single' && (
-                  <div className={`absolute bottom-[5%] right-[-5%] w-[30%] h-[30%] rounded-[2rem] overflow-hidden border-2 border-gray-200/60 shadow-2xl z-50 scale-[0.8] bg-white p-6
-                    ${isExiting ? 'opacity-0 translate-x-20 scale-50 transition-all duration-800' : isEntering ? `opacity-100 transition-all duration-1800 delay-600 ${scheme.logo}` : 'opacity-0 translate-y-4'}`}>
-                    <Image src="/logo.svg" alt="Logo" fill className="object-contain" sizes="200px" style={{ filter: 'invert(49%) sepia(12%) saturate(746%) hue-rotate(116deg) brightness(93%) contrast(86%)' }} />
-                  </div>
-                )}
+            <div className="hidden lg:flex lg:w-1/2 relative items-center justify-center px-4 xl:px-8 lg:-mt-18 max-md:-mt-20 z-10">
+              <div className="relative w-full max-w-[700px]">
+                <div className={`relative w-full aspect-[3/4] max-h-[650px] md:h-[500px]
+                  ${isEntering ? 'opacity-100 transition-all duration-1200' : 'opacity-0 translate-y-4'}`}>
+                  <Image src={hero.image} alt={hero.titleText} fill priority className="mt-20 object-contain" sizes="(max-width: 1024px) 100vw, 480px" />
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Navigation arrows — commented out, single slide only */}
-      {/* <button
-        onClick={() => setStableIndex(prev => (prev - 1 + heroContents.length) % heroContents.length)}
-        className="absolute left-4 sm:left-2 top-1/2 -translate-y-1/2 z-40 w-8 h-8 flex items-center justify-center rounded-full bg-white/70 backdrop-blur-md text-[#006569] border border-gray-200/60 hover:bg-white active:scale-90 transition-all shadow-sm"
-        title="Previous slide"
-      >
-        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3"><path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" /></svg>
-      </button>
-      <button
-        onClick={() => setStableIndex(prev => (prev + 1) % heroContents.length)}
-        className="absolute right-4 sm:right-2 top-1/2 -translate-y-1/2 z-40 w-8 h-8 flex items-center justify-center rounded-full bg-white/70 backdrop-blur-md text-[#006569] border border-gray-200/60 hover:bg-white active:scale-90 transition-all shadow-sm"
-        title="Next slide"
-      >
-        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
-      </button> */}
-
-      {/* <button
-        onClick={addDevSlide}
-        className="fixed top-2 right-4 sm:right-12 z-[999] px-2 py-1 text-[9px] font-bold uppercase tracking-wider bg-yellow-400 text-black rounded-md shadow-lg hover:bg-yellow-300 active:scale-95 border border-yellow-500/50"
-        title="Add a new dev hero slide"
-      >
-        + Dev
-      </button> */}
-
       {/* Mobile: Hero Image */}
-      <div className="lg:hidden relative w-full max-w-sm mx-auto px-4 -mt-4 mb-2">
+      <div className="lg:hidden relative w-full max-w-sm mx-auto px-4 -mt-2 mb-2">
         <div className="relative w-full aspect-square">
           <Image
-            src={current.image}
-            alt={current.titleText}
+            src={hero.image}
+            alt={hero.titleText}
             fill
             className="object-contain"
             sizes="(max-width: 1024px) 100vw, 0px"
@@ -557,7 +208,7 @@ export default function HomeHero({ initialData, variant = 'standard', emailCopy 
       </div>
 
       {/* QuickAccess Cards */}
-      <div className="relative z-30 -mt-12 lg:mt-0 lg:pt-4 pb-4 lg:pb-8">
+      <div className="relative z-30 -mt-12 lg:mt-8 lg:pt-4 pb-4 lg:pb-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-6">
             {QUICK_ACCESS_CARDS.map((card, idx) => (
@@ -567,7 +218,7 @@ export default function HomeHero({ initialData, variant = 'standard', emailCopy 
                 className="group relative bg-white rounded-lg lg:rounded-2xl p-2.5 lg:p-6 border border-gray-100 shadow-sm lg:shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1 lg:hover:-translate-y-2 hover:border-[#006569]/30"
               >
                 <div className="flex items-center gap-2 lg:block">
-                  <div className="w-7 h-7 lg:w-12 lg:h-12 rounded-md lg:rounded-xl bg-[#e8f6f6] flex items-center justify-center shrink-0 overflow-hidden group-hover:scale-110 transition-transform duration-300">
+                  <div className="w-7 h-7 lg:w-12 lg:h-12 rounded-md lg:rounded-xl bg-white flex items-center justify-center shrink-0 overflow-hidden group-hover:scale-110 transition-transform duration-300">
                     <Image src={card.img} alt={card.title} width={48} height={48} className="object-contain w-full h-full" />
                   </div>
                   <div className="min-w-0">

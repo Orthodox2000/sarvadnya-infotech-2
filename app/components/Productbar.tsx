@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { productItems, type ProductSubItem } from "@/lib/product-nav";
+import { productItems, type ProductItem, type ProductSubItem } from "@/lib/product-nav";
 import { fetchWithCache, prefetchData } from "@/lib/client-api";
 
 // Simple Minimalist Icons for Apple-style bar
@@ -13,19 +13,22 @@ const BoxIcon = () => <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" s
 const ToolIcon = () => <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.77 3.77z"/></svg>;
 const GraduationIcon = () => <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M12 14l9-5-9-5-9 5 9 5z"/><path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/><path d="M5 14v7a3 3 0 003 3h8a3 3 0 003-3v-7"/></svg>;
 const BuildingIcon = () => <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01"/><path d="M16 6h.01"/><path d="M12 6h.01"/><path d="M12 10h.01"/><path d="M12 14h.01"/><path d="M16 10h.01"/><path d="M16 14h.01"/><path d="M8 10h.01"/><path d="M8 14h.01"/></svg>;
+const SparklesIcon = () => <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9L12 3z"/><path d="M19 15l.9 2.4L22.3 18.3l-2.4.9L19 21.6l-.9-2.4-2.4-.9 2.4-.9L19 15z"/></svg>;
 
 TallyIcon.displayName = 'TallyIcon';
 BoxIcon.displayName = 'BoxIcon';
 ToolIcon.displayName = 'ToolIcon';
 GraduationIcon.displayName = 'GraduationIcon';
 BuildingIcon.displayName = 'BuildingIcon';
+SparklesIcon.displayName = 'SparklesIcon';
 
 const iconMap: Record<string, React.ReactNode> = {
   "Products": <TallyIcon />,
   "Modules": <BoxIcon />,
   "Services": <ToolIcon />,
   "Learning": <GraduationIcon />,
-  "Company": <BuildingIcon />
+  "Company": <BuildingIcon />,
+  "AI": <SparklesIcon />
 };
 
 const Productbar = ({ initialSettings }: { initialSettings?: any }) => {
@@ -110,6 +113,19 @@ const Productbar = ({ initialSettings }: { initialSettings?: any }) => {
     return item;
   });
 
+  const aiItem: ProductItem & { desktopOnly?: boolean } = {
+    label: "AI",
+    href: "/find-solution",
+    desktopOnly: true,
+    subItems: [
+      { id: "ai-chat", label: "Chat with Sara", href: "/ask-sara", description: "Your AI sales consultant — instant answers." },
+      { id: "ai-learn", label: "Learn with Sara", href: "/learn-sara", description: "Interactive lessons to master Tally." },
+      { id: "ai-suggest", label: "Smart Suggest", href: "/find-solution", description: "Find the right solution for your business." },
+      { id: "ai-search", label: "Site Search", href: "/search", description: "Search products, services, guides & more." },
+    ],
+  };
+  const allItems = [...items, aiItem];
+
   // Background warmer for sub-items on hover
   const handleItemHover = (label: string) => {
     // Only set active menu on hover for desktop
@@ -152,23 +168,23 @@ const Productbar = ({ initialSettings }: { initialSettings?: any }) => {
 
   return (
     <div 
-      className={`w-full border-b border-[#E5E2D9] relative z-30 flex items-center justify-center no-scrollbar transition-opacity duration-300 ease-in-out shadow-sm bg-[linear-gradient(90deg,rgba(249,251,245,1)_0%,rgba(244,242,234,1)_53%,rgba(238,236,223,1)_100%)] h-7 lg:h-10
+      className={`w-full border-b border-[#E5E2D9] relative z-30 flex items-center justify-center no-scrollbar transition-opacity duration-300 ease-in-out shadow-sm bg-white h-7 
         ${isVisible ? 'opacity-100' : 'opacity-0 pointer-events-none invisible'}`}
     >
-      <div className="w-full max-w-7xl  flex justify-around items-stretch h-full">
+      <div className="w-full max-w-7xl  flex justify-around items-start h-full">
         
 
-        {items.map((item, index) => (
+        {allItems.map((item, index) => (
           <div 
             key={item.label} 
-            className="relative flex items-center h-full group"
+            className={`relative flex items-center justify-center h-full group ${(item as any).desktopOnly ? 'hidden md:flex' : ''}`}
             onMouseEnter={() => handleItemHover(item.label)}
             onMouseLeave={() => window.innerWidth >= 640 && setActiveMenu(null)}
           >
             <button
               onClick={(e) => handleMenuToggle(e, item.label)}
               className={`flex items-center gap-1 lg:gap-3.5 px-1.5 lg:px-5 text-[8.5px] lg:text-[13.5px] font-bold transition-all h-full
-                ${activeMenu === item.label ? 'text-[#006569] bg-white' : 'text-gray-800 hover:bg-slate-50'}`}
+                ${activeMenu === item.label ? 'text-[#006569] bg-teal-100' : 'text-gray-800 hover:text-[#006569] hover:bg-teal-100'}`}
             >
               <span className="opacity-100 scale-90 lg:scale-110">
                 {iconMap[item.label]}
@@ -197,7 +213,7 @@ const Productbar = ({ initialSettings }: { initialSettings?: any }) => {
                       <div key={subItem.id} className="flex flex-col gap-1.5">
                         <Link
                           href={subItem.href}
-                          className="flex flex-col rounded-lg px-3 py-2 transition-all group/item border border-transparent"
+                          className="flex flex-col rounded-lg px-3 py-2 transition-all group/item border border-transparent hover:bg-teal-100"
                           onClick={handleLinkClick}
                           onMouseEnter={() => {
                             if (subItem.href.includes('section=')) prefetchData(`/api/content?section=${subItem.href.split('section=')[1]}`);
@@ -222,7 +238,7 @@ const Productbar = ({ initialSettings }: { initialSettings?: any }) => {
                               <Link
                                 key={nestedItem.id}
                                 href={nestedItem.href}
-                                className="block py-1.5 px-3 rounded-md text-[12px] font-bold text-slate-500 hover:text-[#0C3353] transition-all"
+                                className="block py-1.5 px-3 rounded-md text-[12px] font-bold text-slate-500 hover:text-[#0C3353] transition-all hover:bg-teal-100"
                                 onClick={handleLinkClick}
                               >
                                 {nestedItem.label}

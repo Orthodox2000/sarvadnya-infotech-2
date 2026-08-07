@@ -13,7 +13,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/cloud/windows',
     '/cloud/backup-for-tally',
     '/cloud/tallycloudaccess',
-    '/colour',
     '/contact',
     '/demo',
     '/do-more',

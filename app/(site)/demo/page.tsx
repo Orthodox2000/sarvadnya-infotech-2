@@ -67,7 +67,7 @@ export default function DemoPage() {
   return (
     <main className="min-h-screen bg-white">
       {/* High-Impact Creative Hero Section with Factual DB Content */}
-      <HomeHero initialData={demoHeroData} variant="creative" emailCopy />
+      <HomeHero hero={demoHeroData[0]} emailCopy />
 
       <CertifiedPartners />
       <QuickAccessHubDemo />
