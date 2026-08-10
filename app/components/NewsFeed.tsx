@@ -136,7 +136,7 @@ export default function NewsFeed({ initialData }: { initialData?: NewsItem[] }) 
             </p>
             <Link
               href="/news"
-              className="inline-flex items-center gap-1.5 px-4 py-2 bg-[#006569] text-white text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-[#1e4a3a] transition-all shadow-lg shadow-teal-100"
+              className="inline-flex items-center gap-1.5 px-4 py-2 bg-[#006569] text-white text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-[#045A57] transition-all shadow-lg shadow-teal-100"
             >
               Read Full Story
               <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">

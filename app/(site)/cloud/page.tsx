@@ -116,7 +116,7 @@ export default function CloudPage() {
                 className="bg-white rounded-[24px] flex flex-col shadow-[0_12px_40px_-10px_rgba(0,0,0,0.15)] overflow-hidden transition-transform duration-300 hover:-translate-y-1 border border-gray-100"
               >
                 {/* Header Gradient */}
-                <div className="bg-gradient-to-r from-[#2d6a46] to-[#428f81] px-5 py-3.5 h-[58px] flex items-center justify-between relative overflow-hidden">
+                <div className="bg-gradient-to-r from-[#006569] to-[#14b8a6] px-5 py-3.5 h-[58px] flex items-center justify-between relative overflow-hidden">
                   <h2 className="text-[1.1rem] font-bold text-white tracking-wide relative z-10">{card.name}</h2>
                   <div className="relative z-10 scale-[0.85] origin-right">{card.icon}</div>
                 </div>
@@ -152,7 +152,7 @@ export default function CloudPage() {
                   <div className="flex gap-2 mt-auto">
                     <button
                       onClick={() => openModal('quote', card.name, card.features[0])}
-                      className="flex-1 bg-[#2e6b4b] hover:bg-[#225239] text-white text-[0.65rem] font-bold py-2 px-2 rounded-full transition-colors shadow-sm text-center"
+                      className="flex-1 bg-[#006569] hover:bg-[#045A57] text-white text-[0.65rem] font-bold py-2 px-2 rounded-full transition-colors shadow-sm text-center"
                     >
                       REQUEST QUOTE
                     </button>

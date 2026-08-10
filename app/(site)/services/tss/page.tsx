@@ -291,7 +291,7 @@ export default function TSSPage() {
       </section>
 
       {/* Contact CTA */}
-      <section className="bg-[#3a5c52] py-10 px-6">
+      <section className="bg-[#045A57] py-10 px-6">
         <div className="max-w-3xl mx-auto text-center">
           <p className="text-teal-100 text-sm mb-6">Have questions? Need help finding your serial number?</p>
           <div className="flex flex-wrap justify-center gap-3">

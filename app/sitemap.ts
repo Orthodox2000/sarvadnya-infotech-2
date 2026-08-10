@@ -40,7 +40,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/team',
     '/terms',
     '/tutorials',
-    '/ask-sara',
   ];
 
   return routes.map((route) => ({

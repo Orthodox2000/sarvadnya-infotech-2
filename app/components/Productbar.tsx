@@ -168,7 +168,7 @@ const Productbar = ({ initialSettings }: { initialSettings?: any }) => {
 
   return (
     <div 
-      className={`w-full border-b border-white/10 relative z-30 flex items-center justify-center no-scrollbar transition-opacity duration-300 ease-in-out shadow-sm bg-[#006569] h-7 
+      className={`w-full border-b border-white/10 relative z-30 flex items-center justify-center no-scrollbar transition-opacity duration-300 ease-in-out shadow-sm bg-teal-700/90 h-7 
         ${isVisible ? 'opacity-100' : 'opacity-0 pointer-events-none invisible'}`}
     >
       <div className="w-full max-w-7xl  flex justify-around items-start h-full">
