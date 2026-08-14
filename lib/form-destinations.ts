@@ -64,8 +64,3 @@ export function getDestinationFromPath(pathname: string | null | undefined): str
   const match = FORM_DESTINATIONS.find((d) => d.paths.includes(path));
   return match?.key;
 }
-
-export function getDestinationCategory(destinationKey: string | undefined): DestinationCategory {
-  const found = FORM_DESTINATIONS.find((d) => d.key === destinationKey);
-  return found?.category ?? 'others';
-}

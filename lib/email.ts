@@ -1,5 +1,7 @@
 import { Resend } from 'resend';
 import { getSettings } from '@/lib/mongodb-utils';
+import { parseDevice } from '@/lib/visitors';
+import type { GeoInfo } from '@/lib/visitors';
 
 export interface FormSubmissionPayload {
   name: string;
@@ -9,6 +11,11 @@ export interface FormSubmissionPayload {
   description?: string;
   formType?: string;
   destination?: string;
+  ip?: string;
+  ipMasked?: string;
+  userAgent?: string;
+  geo?: GeoInfo | null;
+  sessionId?: string;
 }
 
 export interface SendResult {
@@ -81,12 +88,48 @@ export function getSubject(formType?: string): string {
 }
 
 export function buildFormEmailHtml(submission: FormSubmissionPayload): string {
+  const gpcOptOut = submission.ipMasked === 'gpc-opt-out' || (!submission.geo && !submission.ip);
+
+  const location = submission.geo
+    ? [submission.geo.city, submission.geo.region, submission.geo.country]
+        .filter(Boolean)
+        .join(', ') +
+      (submission.geo.countryCode ? ` (${submission.geo.countryCode})` : '')
+    : gpcOptOut
+      ? 'Privacy opt-out (Global Privacy Control)'
+      : '—';
+
+  const connection = submission.geo
+    ? [submission.geo.isp && `ISP: ${submission.geo.isp}`, submission.geo.asn && `ASN: ${submission.geo.asn}`]
+        .filter(Boolean)
+        .join(' · ')
+    : '';
+
+  const ipValue =
+    gpcOptOut
+      ? '—'
+      : submission.ipMasked && submission.ipMasked !== 'gpc-opt-out'
+        ? submission.ipMasked
+        : submission.ip || '—';
+
+  const device = submission.userAgent
+    ? (() => {
+        const d = parseDevice(submission.userAgent);
+        const label = `${d.browser} on ${d.os}${d.type !== 'desktop' && d.type !== 'unknown' ? ` (${d.type})` : ''}`;
+        return label;
+      })()
+    : '';
+
   const rows = [
     { label: 'Name', value: submission.name },
     { label: 'Email', value: submission.email },
     { label: 'Contact No.', value: submission.contact },
     { label: 'Service / Product', value: submission.service || '—' },
     { label: 'Form Type', value: getFormTypeLabel(submission.formType) },
+    { label: 'Visitor Location', value: location },
+    { label: 'IP Address', value: ipValue },
+    ...(connection ? [{ label: 'Connection', value: connection }] : []),
+    ...(device ? [{ label: 'Device', value: device }] : []),
     { label: 'Message', value: submission.description || '—' },
   ];
 
@@ -120,7 +163,7 @@ export function buildFormEmailHtml(submission: FormSubmissionPayload): string {
                 <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse:collapse;">
                   ${rowsHtml}
                 </table>
-                <p style="margin:20px 0 0;color:#8a9a92;font-size:11px;line-height:1.5;">This is an automated notification. Reply to this email to respond to the enquirer directly (their address is set as the reply-to).</p>
+                <p style="margin:20px 0 0;color:#8a9a92;font-size:11px;line-height:1.5;">This is an automated notification. Reply to this email to respond to the enquirer directly (their address is set as the reply-to).${submission.sessionId ? ` Captured via passive visitor identification · Session ${submission.sessionId.slice(0, 8)}…` : ' Captured via passive visitor identification.'}</p>
               </td>
             </tr>
           </table>
@@ -241,10 +284,6 @@ export async function resolveRecipients(input: {
   return resolveFormRecipients(input.formType);
 }
 
-export function isInternalRecipient(email: string, recipients: string[]): boolean {
-  return recipients.includes(String(email).trim().toLowerCase());
-}
-
 export async function sendInternalFormCopy(
   submission: FormSubmissionPayload,
   options?: { recipients?: string[]; from?: string }
@@ -283,6 +322,7 @@ export async function sendInternalFormCopy(
     tags: [
       { name: 'source', value: 'web-form' },
       { name: 'form_type', value: submission.formType || 'general' },
+      { name: 'has_geo', value: submission.geo ? '1' : '0' },
     ],
   };
   // Reply-to points at the enquirer when they gave a real email; enquiry forms

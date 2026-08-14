@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import { getDestinationFromPath } from '@/lib/form-destinations';
+import { useVisitor } from './VisitorProvider';
 
 export type FormType = 'quote' | 'enquire' | 'support' | 'callback' | 'demo' | 'general';
 
@@ -26,6 +27,7 @@ export default function UnifiedContactModal({
   destination
 }: UnifiedContactModalProps) {
   const pathname = usePathname();
+  const { sessionId } = useVisitor();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -81,6 +83,7 @@ export default function UnifiedContactModal({
         body: JSON.stringify({
           ...formData,
           formType: type,
+          ...(sessionId ? { sessionId } : {}),
           ...(dest ? { destination: dest, requestId } : {})
         })
       });

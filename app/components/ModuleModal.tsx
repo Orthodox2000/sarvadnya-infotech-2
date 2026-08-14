@@ -73,6 +73,35 @@ export default function ModuleModal({ isOpen, onClose, module, onEnquire }: Modu
           </div>
         </div>
 
+        {module.pricing && module.pricing.length > 0 && (
+          <div className="mb-10">
+            <h4 className="text-xs font-black uppercase tracking-widest text-[#006569] mb-4 flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#006569]"></span>
+              Module Pricing
+            </h4>
+            <div className="overflow-hidden rounded-xl border border-teal-100">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="bg-teal-50 text-[#006569]">
+                    <th className="text-left px-3 py-2.5 font-black text-[10px] uppercase tracking-wider">Package</th>
+                    <th className="text-right px-3 py-2.5 font-black text-[10px] uppercase tracking-wider">Single User</th>
+                    <th className="text-right px-3 py-2.5 font-black text-[10px] uppercase tracking-wider">Multi User</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {module.pricing.map((row, i) => (
+                    <tr key={i} className={i % 2 === 1 ? 'bg-teal-50/40' : 'bg-white'}>
+                      <td className="px-3 py-2.5 text-slate-700 text-[12px] font-semibold">{row.label}</td>
+                      <td className="px-3 py-2.5 text-right text-slate-900 text-[12px] font-bold whitespace-nowrap">{row.singleUser}</td>
+                      <td className="px-3 py-2.5 text-right text-slate-900 text-[12px] font-bold whitespace-nowrap">{row.multiUser}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+
         <div className="flex flex-col sm:flex-row gap-4">
           <button 
             onClick={() => onEnquire(module)}

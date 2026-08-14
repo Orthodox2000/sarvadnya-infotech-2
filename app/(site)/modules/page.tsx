@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import Image from 'next/image';
 import { Module } from '@/lib/modules';
 import ModuleCard from "../../components/ModuleCard";
 import ModuleModal from "../../components/ModuleModal";

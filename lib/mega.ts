@@ -50,8 +50,3 @@ export async function uploadToMega(buffer: Buffer, fileName: string, folderName:
 
   return link;
 }
-
-export async function deleteFromMega(link: string) {
-  // Deleting by link is complex with megajs, usually you'd need the file object.
-  // For now, we'll focus on upload and retrieval.
-}

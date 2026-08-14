@@ -13,7 +13,7 @@ export async function getCollection(name: string) {
 }
 
 // Serialization helper for Next.js Client Components
-function serializeData(data: any): any {
+export function serializeData(data: any): any {
   if (data === null || data === undefined) return data;
   
   if (Array.isArray(data)) {
@@ -59,11 +59,6 @@ async function fetchSettings() {
 }
 
 export const getSettings = async () => fetchSettings();
-
-export async function getSetting(key: string, defaultValue: string = '') {
-  const settings = await getSettings();
-  return settings[key] || defaultValue;
-}
 
 export async function updateSetting(key: string, value: string) {
   const col = await getCollection('settings');
@@ -118,11 +113,6 @@ async function fetchModules() {
 }
 
 export const getModules = async () => fetchModules();
-
-export async function getModule(id: string) {
-  const modules = await getModules();
-  return modules.find((m: any) => m.id === id || m._id.toString() === id);
-}
 
 export async function addModule(data: any) {
   const col = await getCollection('modules');
@@ -256,11 +246,6 @@ export async function getPartners(type?: string) {
   return fetchPartners(type);
 }
 
-export async function getPartnersByType(type: string) {
-  const data = await fetchPartners(type);
-  return serializeData(data);
-}
-
 export async function addPartner(data: any) {
   const col = await getCollection('partners');
   const result = await col.insertOne({
@@ -333,12 +318,6 @@ export async function saveSubmission(data: any) {
     ...data,
     createdAt: new Date()
   });
-}
-
-export async function getSubmissions() {
-  const col = await getCollection('form_submissions');
-  const data = await col.find({}).sort({ createdAt: -1 }).toArray();
-  return serializeData(data);
 }
 
 const SUBMISSION_SORT_KEYS = ['createdAt', 'name', 'contact', 'formType', 'service'];

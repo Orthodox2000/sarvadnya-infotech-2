@@ -5,9 +5,9 @@ import Productbar from "../components/Productbar";
 import { theme as defaultTheme } from "@/lib/theme";
 import { getSettings, getNews } from "@/lib/mongodb-utils";
 import { palettes } from "@/lib/palettes";
-import { Geist } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next"
 import { SpeedInsights } from "@vercel/speed-insights/next"
+import { VisitorProvider } from "../components/VisitorProvider";
 
 const NewsFeed = dynamic(() => import("../components/NewsFeed"), {
   loading: () => (
@@ -80,9 +80,11 @@ export default async function SiteLayout({
         <Productbar initialSettings={settings} />
       </div>
 
-      {children}
-      <SupportButton initialSettings={settings} />
-      <NotificationToast />
+      <VisitorProvider>
+        {children}
+        <SupportButton initialSettings={settings} />
+        <NotificationToast />
+      </VisitorProvider>
       <Analytics />
       <SpeedInsights />
     </>

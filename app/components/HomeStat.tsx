@@ -68,7 +68,6 @@ const DEFAULT_STATS = [
 
 export default function HomeStat({ initialData }: { initialData?: any[] }) {
   const [stats, setStats] = useState<any[]>(initialData || DEFAULT_STATS);
-  const [loading, setLoading] = useState(!initialData);
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
 
@@ -87,8 +86,6 @@ export default function HomeStat({ initialData }: { initialData?: any[] }) {
         }
       } catch (err) {
         console.error('Failed to fetch stats:', err);
-      } finally {
-        setLoading(false);
       }
     };
     fetchStats();

@@ -22,6 +22,8 @@ type AdminStats = {
   news: number;
   partners: number;
   faq: number;
+  visitors: number;
+  visitorsToday: number;
 };
 
 export default function AdminDashboard() {
@@ -63,6 +65,7 @@ export default function AdminDashboard() {
         { label: 'Bug & Issue Reports', desc: 'Reported problems and technical issues', value: stats?.problemReports || 0, href: '/admin/problem-reports', icon: 'M12 9v2m0 4h.01M4.75 20h14.5a2.25 2.25 0 001.95-3.38L14.2 4.62a2.25 2.25 0 00-3.9 0L2.8 16.62A2.25 2.25 0 004.75 20z', color: 'bg-amber-50 text-amber-600' },
         { label: 'TSS Renewals', desc: 'TSS renewal requests with serial numbers', value: stats?.tssRenewals || 0, href: '/admin/tss-renewals', icon: 'M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15', color: 'bg-cyan-50 text-cyan-600' },
         { label: 'Job Applications', desc: 'Candidate applications for open positions', value: stats?.applications || 0, href: '/admin/careers', icon: 'M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z', color: 'bg-blue-50 text-blue-600' },
+        { label: 'Site Visitors', desc: 'Tracked browsing sessions (passive identification)', value: stats?.visitors || 0, href: '/admin/visitors', icon: 'M12 21a9 9 0 100-18 9 9 0 000 18zm0 0c2.5 0 4-2.5 4-9s-1.5-9-4-9-4 2.5-4 9 1.5 9 4 9zM3.5 12h17', color: 'bg-cyan-50 text-cyan-600' },
       ]
     },
     {

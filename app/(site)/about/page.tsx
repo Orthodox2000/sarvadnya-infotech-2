@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from "react";
-import Image from "next/image";
 import Footer from "../../components/Footer";
 
 const DEFAULTS = {
@@ -23,7 +22,6 @@ const DEFAULTS = {
 export default function AboutPage() {
   const [content, setContent] = useState<any>(DEFAULTS);
   const [gallery, setGallery] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchContent();
@@ -51,8 +49,6 @@ export default function AboutPage() {
       }
     } catch (err) {
       console.error(err);
-    } finally {
-      setLoading(false);
     }
   };
 

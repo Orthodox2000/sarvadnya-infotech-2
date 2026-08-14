@@ -407,6 +407,7 @@ export default function LandingPage() {
             </p>
             <div className="mt-5 flex gap-3">
               {[
+                ['YouTube', 'https://www.youtube.com/@sarvadnyainfotechtally'],
                 ['Instagram', 'https://instagram.com/sarvadnyainfotech'],
                 ['Facebook', 'https://facebook.com/sarvadnyainfotech'],
                 ['LinkedIn', 'https://linkedin.com/company/sarvadnyainfotech'],

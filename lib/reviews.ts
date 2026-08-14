@@ -23,7 +23,7 @@ export const staticReviews: Review[] = [
     {
         name: "Suresh Mehta",
         rating: 4,
-        text: "Professional team and great technical knowledge. The Excel to Tally import tool works perfectly for our large data volume.",
+        text: "Professional team and great technical knowledge. Their Tally modules work perfectly for our large data volume.",
         date: "3 weeks ago"
     },
     {

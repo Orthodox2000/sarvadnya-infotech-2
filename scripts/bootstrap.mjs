@@ -286,12 +286,12 @@ async function run() {
         iconName: "custom",
         description: "Industry-specific TDL solutions tailored to your unique business logic.",
         links: [
-          { label: "Logistics & Transport", href: "/modules?id=logistics-transport" },
-          { label: "Retail & Garment", href: "/modules?id=garment-retail" },
-          { label: "Housing Societies", href: "/modules?id=housing-societies" },
-          { label: "Excel to Tally Tool", href: "/modules?id=excel-to-tally" },
-          { label: "C&F Agencies", href: "/modules?id=cf-agencies" },
-          { label: "Sales Commission", href: "/modules?id=sales-commission" }
+          { label: "CFA Module (Clearing & Forwarding)", href: "/modules?id=cf-agencies" },
+          { label: "Housing Society Module", href: "/modules?id=housing-societies" },
+          { label: "SalesMan / Agent Module", href: "/modules?id=sales-commission" },
+          { label: "Transport Module", href: "/modules?id=logistics-transport" },
+          { label: "Container Handling Module", href: "/modules?id=container-handling" },
+          { label: "Garment / Footwear Module", href: "/modules?id=garment-retail" }
         ],
         theme: {
           bg: "bg-emerald-50",
@@ -356,6 +356,19 @@ async function run() {
       },
     ];
     for (const setting of emailSettings) {
+      await settingsCol.updateOne(
+        { key: setting.key },
+        { $setOnInsert: { key: setting.key, value: setting.value, updatedAt: new Date() } }
+      );
+      console.log(`Seeded setting (if missing): ${setting.key}`);
+    }
+
+    // ── Social media settings (seeded only if missing, so admin edits persist) ──
+    const socialSettings = [
+      { key: 'NEXT_PUBLIC_YOUTUBE_URL', value: 'https://www.youtube.com/@sarvadnyainfotechtally' },
+      { key: 'NEXT_PUBLIC_YOUTUBE_HANDLE', value: '@sarvadnyainfotechtally' },
+    ];
+    for (const setting of socialSettings) {
       await settingsCol.updateOne(
         { key: setting.key },
         { $setOnInsert: { key: setting.key, value: setting.value, updatedAt: new Date() } }

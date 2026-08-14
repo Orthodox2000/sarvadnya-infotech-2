@@ -7,7 +7,3 @@ export async function fetchWithCache(url: string) {
 export function prefetchData(_url: string) {
   // Caching disabled — no-op
 }
-
-export function clearClientCache(_pattern?: string) {
-  // Caching disabled — no-op
-}

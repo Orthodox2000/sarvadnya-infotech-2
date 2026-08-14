@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import { saveTssRenewal } from '@/lib/mongodb-utils';
 import { sendEmailDirect } from '@/lib/email-queue';
+import { getRequestMeta, lookupGeo, maskIp, isValidSessionId, markConversion } from '@/lib/visitors';
+import type { GeoInfo } from '@/lib/visitors';
 
 function sanitize(str: string) {
   if (typeof str !== 'string') return '';
@@ -27,7 +29,26 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Please enter a valid email address' }, { status: 400 });
     }
 
-    const result = await saveTssRenewal(data);
+    // Passive enrichment: IP, UA, geo (cache-first) + browsing session id.
+    const meta = getRequestMeta(request);
+    const sessionId = isValidSessionId(rawData.sessionId) ? String(rawData.sessionId) : '';
+    let geo: GeoInfo | null = null;
+    if (meta.secGpc !== true) {
+      const lookup = await lookupGeo(meta.ip);
+      geo = lookup.geo;
+    }
+    if (sessionId) await markConversion(sessionId);
+
+    const enriched = {
+      ...data,
+      ip: meta.secGpc ? undefined : meta.ip,
+      ipMasked: maskIp(meta.ip),
+      userAgent: meta.userAgent || undefined,
+      geo,
+      ...(sessionId ? { sessionId } : {}),
+    };
+
+    const result = await saveTssRenewal(enriched);
     const renewalId = result.insertedId.toString();
 
     // Send the internal TSS-renewal email copy DIRECTLY (inline). Recipients are
@@ -45,6 +66,11 @@ export async function POST(request: Request) {
         description: `TSS renewal requested from ${data.source || 'website'}`,
         formType: 'tss-renewal',
         destination: 'tss-renewal',
+        ip: enriched.ip,
+        ipMasked: enriched.ipMasked,
+        userAgent: enriched.userAgent,
+        geo,
+        ...(sessionId ? { sessionId } : {}),
       },
     });
 

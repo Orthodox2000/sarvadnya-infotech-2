@@ -1,8 +1,11 @@
 'use server';
 
+import { headers } from 'next/headers';
 import { uploadToMega } from '@/lib/mega';
 import { saveApplication } from '@/lib/mongodb-utils';
 import { revalidatePath } from 'next/cache';
+import { getRequestMetaFromHeaders, lookupGeo, maskIp } from '@/lib/visitors';
+import type { GeoInfo } from '@/lib/visitors';
 
 export async function submitApplication(formData: FormData) {
   try {
@@ -32,7 +35,20 @@ export async function submitApplication(formData: FormData) {
       throw new Error('Failed to upload resume to storage.');
     }
 
-    // 2. Save Data to MongoDB
+    // 2. Passive enrichment: IP, UA, geo (cache-first). GPC opt-out → none.
+    let meta = { ip: 'anonymous', userAgent: '', language: '', secGpc: false, secFetchSite: '', referrer: '' };
+    try {
+      meta = getRequestMetaFromHeaders(await headers());
+    } catch {
+      // headers() unavailable outside a request scope — degrade gracefully.
+    }
+    let geo: GeoInfo | null = null;
+    if (!meta.secGpc && meta.ip !== 'anonymous') {
+      const lookup = await lookupGeo(meta.ip);
+      geo = lookup.geo;
+    }
+
+    // 3. Save Data to MongoDB
     await saveApplication({
       job_id: jobId,
       job_title: jobTitle,
@@ -42,6 +58,10 @@ export async function submitApplication(formData: FormData) {
       experience,
       message,
       resume_url: resumeUrl,
+      ip: meta.secGpc ? undefined : meta.ip,
+      ipMasked: maskIp(meta.ip),
+      userAgent: meta.userAgent || undefined,
+      geo,
     });
 
     revalidatePath('/admin/careers/responses');

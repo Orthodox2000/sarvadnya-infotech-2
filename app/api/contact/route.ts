@@ -3,6 +3,15 @@ import { saveSubmission } from '@/lib/mongodb-utils';
 import { isValidEmail } from '@/lib/email';
 import { sendEmailDirect } from '@/lib/email-queue';
 import { getDestinationFromPath } from '@/lib/form-destinations';
+import {
+  getRequestMeta,
+  lookupGeo,
+  maskIp,
+  isValidSessionId,
+  markConversion,
+  visitorLog,
+} from '@/lib/visitors';
+import type { GeoInfo } from '@/lib/visitors';
 
 export const runtime = 'nodejs';
 export const maxDuration = 60;
@@ -114,8 +123,31 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
+    // Passive lead enrichment: capture IP, UA, geo (cache-first) and the
+    // browsing session id. GPC opt-out → no IP, no geo.
+    const meta = getRequestMeta(request);
+    const sessionId = isValidSessionId(rawData.sessionId) ? String(rawData.sessionId) : '';
+    let geo: GeoInfo | null = null;
+    if (meta.secGpc !== true) {
+      const lookup = await lookupGeo(meta.ip);
+      geo = lookup.geo;
+    }
+    const submissionData = {
+      ...data,
+      ip: meta.secGpc ? undefined : meta.ip,
+      ipMasked: maskIp(meta.ip),
+      userAgent: meta.userAgent || undefined,
+      geo,
+      ...(sessionId ? { sessionId } : {}),
+    };
+    if (sessionId) await markConversion(sessionId);
+    visitorLog('debug', 'submission enriched', {
+      session: sessionId.slice(0, 8),
+      country: geo?.country ?? null,
+    });
+
     // Always persist the submission first so no enquiry is ever lost.
-    const result = await saveSubmission(data);
+    const result = await saveSubmission(submissionData);
     const submissionId = result.insertedId.toString();
 
     // No destination (unknown page) → keep the legacy save-only behavior.
@@ -135,8 +167,8 @@ export async function POST(request: Request) {
       // it in the saved record, but only surface a valid email to the sender
       // (a bad replyTo would otherwise fail the Resend call).
       submission: {
-        ...data,
-        email: isValidEmail(data.email) ? data.email : '',
+        ...submissionData,
+        email: isValidEmail(submissionData.email) ? submissionData.email : '',
       },
     });
 

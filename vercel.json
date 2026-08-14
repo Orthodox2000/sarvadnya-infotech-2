@@ -1,2 +1,8 @@
 {
+  "functions": {
+    "app/api/identify/route.ts": {
+      "maxDuration": 10,
+      "memory": 1024
+    }
+  }
 }

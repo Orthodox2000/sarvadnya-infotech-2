@@ -12,9 +12,11 @@ export async function GET() {
       facebook_url: settingsMap['NEXT_PUBLIC_FACEBOOK_URL'] || process.env.NEXT_PUBLIC_FACEBOOK_URL || '',
       instagram_url: settingsMap['NEXT_PUBLIC_INSTAGRAM_URL'] || process.env.NEXT_PUBLIC_INSTAGRAM_URL || '',
       linkedin_url: settingsMap['NEXT_PUBLIC_LINKEDIN_URL'] || process.env.NEXT_PUBLIC_LINKEDIN_URL || '',
+      youtube_url: settingsMap['NEXT_PUBLIC_YOUTUBE_URL'] || process.env.NEXT_PUBLIC_YOUTUBE_URL || 'https://www.youtube.com/@sarvadnyainfotechtally',
       facebook_handle: settingsMap['NEXT_PUBLIC_FACEBOOK_HANDLE'] || 'Sarvadnya Infotech',
       instagram_handle: settingsMap['NEXT_PUBLIC_INSTAGRAM_HANDLE'] || '@sarvadnya_infotech',
       linkedin_handle: settingsMap['NEXT_PUBLIC_LINKEDIN_HANDLE'] || 'Sarvadnya Infotech LLP',
+      youtube_handle: settingsMap['NEXT_PUBLIC_YOUTUBE_HANDLE'] || '@sarvadnyainfotechtally',
       map_iframe_url: settingsMap['NEXT_PUBLIC_MAP_IFRAME_URL'] || process.env.NEXT_PUBLIC_MAP_IFRAME_URL || '',
     };
     return NextResponse.json(settings);

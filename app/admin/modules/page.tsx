@@ -7,7 +7,6 @@ import { uploadFileChunked } from '@/lib/uploadClient';
 
 export default function AdminModules() {
   const [modules, setModules] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
   const [editingModule, setEditingModule] = useState<any | null>(null);
   const [saving, setSaving] = useState(false);
   const [isReorderMode, setIsReorderMode] = useState(false);
@@ -19,7 +18,6 @@ export default function AdminModules() {
   }, []);
 
   const fetchModules = async () => {
-    setLoading(true);
     try {
       const response = await fetch('/api/modules');
       const data = await response.json();
@@ -29,8 +27,6 @@ export default function AdminModules() {
     } catch (err) {
       console.error(err);
       setMessage({ text: 'Failed to fetch modules.', type: 'error' });
-    } finally {
-      setLoading(false);
     }
   };
 

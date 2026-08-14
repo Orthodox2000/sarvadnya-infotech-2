@@ -73,7 +73,6 @@ export default function TallyServerPage() {
   const [activeNav, setActiveNav] = useState('overview');
   const [openFaq, setOpenFaq] = useState<number | null>(0);
   const [stickyNav, setStickyNav] = useState(false);
-  const [showPricing, setShowPricing] = useState(false);
   const [formName, setFormName] = useState('');
   const [formEmail, setFormEmail] = useState('');
   const [formPhone, setFormPhone] = useState('');

@@ -10,18 +10,15 @@ export default function CareersPage() {
   const [jobs, setJobs] = useState<Job[]>([]);
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetch('/api/admin/careers')
       .then(res => res.json())
       .then(data => {
         setJobs(data);
-        setLoading(false);
       })
       .catch(err => {
         console.error('Failed to fetch jobs:', err);
-        setLoading(false);
       });
   }, []);
 

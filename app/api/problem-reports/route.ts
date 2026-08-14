@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import { saveProblemReport } from '@/lib/mongodb-utils';
 import { sendEmailDirect } from '@/lib/email-queue';
+import { getRequestMeta, lookupGeo, maskIp, isValidSessionId, markConversion } from '@/lib/visitors';
+import type { GeoInfo } from '@/lib/visitors';
 
 const allowedIssueTypes = new Set([
   'broken-link',
@@ -47,7 +49,26 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Please provide a valid email address' }, { status: 400 });
     }
 
-    const result = await saveProblemReport(data);
+    // Passive enrichment: IP, UA, geo (cache-first) + browsing session id.
+    const meta = getRequestMeta(request);
+    const sessionId = isValidSessionId(rawData.sessionId) ? String(rawData.sessionId) : '';
+    let geo: GeoInfo | null = null;
+    if (meta.secGpc !== true) {
+      const lookup = await lookupGeo(meta.ip);
+      geo = lookup.geo;
+    }
+    if (sessionId) await markConversion(sessionId);
+
+    const enriched = {
+      ...data,
+      ip: meta.secGpc ? undefined : meta.ip,
+      ipMasked: maskIp(meta.ip),
+      userAgent: meta.userAgent || undefined,
+      geo,
+      ...(sessionId ? { sessionId } : {}),
+    };
+
+    const result = await saveProblemReport(enriched);
 
     // Route an internal copy to the admin-configured "Report a Problem"
     // destination receiver (opt-in via the admin email config → DB). No
@@ -63,6 +84,11 @@ export async function POST(request: Request) {
         contact: data.contact,
         service: data.issueType,
         description: data.pageUrl ? `${data.pageUrl}\n\n${data.description}` : data.description,
+        ip: enriched.ip,
+        ipMasked: enriched.ipMasked,
+        userAgent: enriched.userAgent,
+        geo,
+        ...(sessionId ? { sessionId } : {}),
       },
     });
 

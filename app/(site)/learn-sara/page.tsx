@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import Link from 'next/link';
 import SaraText from '@/app/components/SaraText';
 import { findMatchingTutorials, type Tutorial } from '@/lib/tutorial-matcher';
-import { saraTopics, matchTopic, getTeachingFallbackResponse, type Topic } from '@/lib/sara-topics';
+import { matchTopic, getTeachingFallbackResponse, type Topic } from '@/lib/sara-topics';
 
 type Message = {
   id: string;

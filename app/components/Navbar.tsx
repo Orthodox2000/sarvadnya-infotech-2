@@ -14,9 +14,11 @@ export type SiteSettings = {
   facebook_url: string;
   instagram_url: string;
   linkedin_url: string;
+  youtube_url: string;
   facebook_handle: string;
   instagram_handle: string;
   linkedin_handle: string;
+  youtube_handle: string;
   map_iframe_url: string;
 };
 

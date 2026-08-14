@@ -11,6 +11,21 @@ type Submission = {
   service: string;
   description: string;
   formType: string;
+  ip?: string;
+  ipMasked?: string;
+  userAgent?: string;
+  sessionId?: string;
+  geo?: {
+    country: string;
+    countryCode: string;
+    region: string;
+    city: string;
+    isp: string;
+    asn: string;
+    timezone: string;
+    latitude: number;
+    longitude: number;
+  } | null;
 };
 
 type Pagination = {
@@ -467,6 +482,43 @@ export default function AdminSubmissions() {
                             </div>
                         </div>
                     )}
+
+                    {selectedItem.ipMasked || selectedItem.geo ? (
+                        <div>
+                            <p className="text-[9px] font-bold uppercase tracking-widest text-slate-400 mb-3">Visitor Identification</p>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                              <div className="bg-slate-50 px-4 py-3 rounded-2xl border border-slate-100">
+                                <p className="text-[9px] font-bold uppercase tracking-widest text-slate-400 mb-1">Location</p>
+                                {selectedItem.ipMasked === 'gpc-opt-out' ? (
+                                  <p className="text-sm font-semibold text-amber-600">Privacy opt-out (GPC)</p>
+                                ) : selectedItem.geo ? (
+                                  <p className="text-sm font-semibold text-slate-700">
+                                    {[selectedItem.geo.city, selectedItem.geo.region, selectedItem.geo.country].filter(Boolean).join(', ')}
+                                    {selectedItem.geo.countryCode ? ` (${selectedItem.geo.countryCode})` : ''}
+                                  </p>
+                                ) : (
+                                  <p className="text-sm font-semibold text-slate-400">—</p>
+                                )}
+                              </div>
+                              <div className="bg-slate-50 px-4 py-3 rounded-2xl border border-slate-100">
+                                <p className="text-[9px] font-bold uppercase tracking-widest text-slate-400 mb-1">IP Address</p>
+                                <p className="text-sm font-semibold text-slate-700 tabular-nums">{selectedItem.ipMasked || selectedItem.ip || '—'}</p>
+                              </div>
+                              {selectedItem.geo?.isp && (
+                                <div className="bg-slate-50 px-4 py-3 rounded-2xl border border-slate-100">
+                                  <p className="text-[9px] font-bold uppercase tracking-widest text-slate-400 mb-1">ISP / ASN</p>
+                                  <p className="text-sm font-semibold text-slate-700">{selectedItem.geo.isp}{selectedItem.geo.asn ? ` (${selectedItem.geo.asn})` : ''}</p>
+                                </div>
+                              )}
+                              {selectedItem.sessionId && (
+                                <div className="bg-slate-50 px-4 py-3 rounded-2xl border border-slate-100">
+                                  <p className="text-[9px] font-bold uppercase tracking-widest text-slate-400 mb-1">Session</p>
+                                  <p className="text-sm font-semibold text-slate-700">{selectedItem.sessionId.slice(0, 8)}…</p>
+                                </div>
+                              )}
+                            </div>
+                        </div>
+                    ) : null}
 
                     <div>
                         <p className="text-[9px] font-bold uppercase tracking-widest text-slate-400 mb-3">Business Requirements</p>

@@ -1,7 +1,6 @@
 'use client';
 
-import { useState, useEffect, useMemo } from "react";
-import Image from "next/image";
+import { useState, useEffect } from "react";
 import Footer from "../../components/Footer";
 
 const DEFAULTS = {
@@ -20,7 +19,6 @@ const DEFAULTS = {
 export default function TeamPage() {
   const [content, setContent] = useState<any>(DEFAULTS);
   const [teamMembers, setTeamMembers] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchContent();
@@ -48,8 +46,6 @@ export default function TeamPage() {
       }
     } catch (err) {
       console.error(err);
-    } finally {
-      setLoading(false);
     }
   };
 

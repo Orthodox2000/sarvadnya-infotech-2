@@ -16,6 +16,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/contact',
     '/demo',
     '/do-more',
+    '/eula',
     '/find-solution',
     '/hrms',
     '/learn-sara',

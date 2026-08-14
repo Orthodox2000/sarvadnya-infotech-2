@@ -31,18 +31,34 @@ export default function TermsPage() {
         </section>
 
         <section>
-          <h2 className="text-xl font-black text-slate-900 mb-4 uppercase tracking-tight">3. Use of Services</h2>
+          <h2 className="text-xl font-black text-slate-900 mb-4 uppercase tracking-tight">3. Data Collection, Storage & Privacy</h2>
+          <p>By using this website and submitting any form, you acknowledge and consent to the collection, storage, and processing of the following data:</p>
+          <ul className="list-disc pl-6 space-y-1.5 mt-2">
+            <li><strong className="text-slate-900">Information you provide</strong> — name, email, phone number, business details, service/product of interest, enquiry description, and any resume/CV you upload for a job application.</li>
+            <li><strong className="text-slate-900">Technical information collected automatically</strong> — your masked IP address, approximate geolocation (country, region, city, ISP), browser and device details, screen resolution, language, pages visited, entry path, referring URL, timestamps, and a pseudonymous session identifier stored in a first-party cookie (<code className="text-teal-700 bg-[#E5F4F4] px-1.5 py-0.5 rounded font-mono text-xs">svd_vid</code>).</li>
+          </ul>
+          <p className="mt-2">This data is stored in our secure database, used to respond to you, route submissions to the correct team, improve our services, and prevent fraud. A copy of each submission, including your location and device details, is sent to our internal team. We do not sell your data. If your browser sends a Global Privacy Control (GPC) opt-out signal, we collect only a minimal record without your IP address or location.</p>
+          <p className="mt-2">Full details, including our data retention periods and your rights, are described in our <a href="/privacy" className="text-[#006569] font-bold underline underline-offset-4">Privacy Policy</a>. Software and custom modules we provide are governed by our <a href="/eula" className="text-[#006569] font-bold underline underline-offset-4">End-User License Agreement (EULA)</a>.</p>
+        </section>
+
+        <section>
+          <h2 className="text-xl font-black text-slate-900 mb-4 uppercase tracking-tight">4. Use of Services</h2>
           <p>Users are responsible for maintaining the confidentiality of their Tally license information and for any activities that occur under their account or during remote support sessions.</p>
         </section>
 
         <section>
-          <h2 className="text-xl font-black text-slate-900 mb-4 uppercase tracking-tight">4. Intellectual Property</h2>
-          <p>All custom modules (TDL), content, and branding on this site are the intellectual property of Sarvadnya Infotech LLP unless otherwise stated. Unauthorized reproduction is prohibited.</p>
+          <h2 className="text-xl font-black text-slate-900 mb-4 uppercase tracking-tight">5. Intellectual Property</h2>
+          <p>All custom modules (TDL), content, and branding on this site are the intellectual property of Sarvadnya Infotech LLP unless otherwise stated. Unauthorized reproduction is prohibited. Use of our software is subject to the End-User License Agreement.</p>
         </section>
 
         <section>
-          <h2 className="text-xl font-black text-slate-900 mb-4 uppercase tracking-tight">5. Limitation of Liability</h2>
+          <h2 className="text-xl font-black text-slate-900 mb-4 uppercase tracking-tight">6. Limitation of Liability</h2>
           <p>Sarvadnya Infotech LLP shall not be liable for any indirect, incidental, or consequential damages arising out of the use or inability to use our Tally services or third-party cloud hosting.</p>
+        </section>
+
+        <section>
+          <h2 className="text-xl font-black text-slate-900 mb-4 uppercase tracking-tight">7. Contact Us</h2>
+          <p>Questions about these terms can be directed to info@sarvadnyainfotech.com.</p>
         </section>
       </div>
 

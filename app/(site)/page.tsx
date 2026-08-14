@@ -3,7 +3,7 @@ import CertifiedPartners from '../components/CertifiedPartners'
 import CustomerReviews from '../components/CustomerReviews'
 import FAQ from '../components/faq'
 import Footer from '../components/Footer'
-import { getContent, getPartners, getReviews, getModules, getSettings } from '@/lib/mongodb-utils'
+import { getContent, getPartners, getReviews, getSettings } from '@/lib/mongodb-utils'
 
 export default async function Home() {
   // Fetch all data in parallel on the server
@@ -11,13 +11,11 @@ export default async function Home() {
     partnersData,
     reviewsData,
     faqData,
-    modulesData,
     settingsData
   ] = await Promise.all([
     getPartners('brand'),
     getReviews(),
     getContent('home_faq'),
-    getModules(),
     getSettings()
   ]);
 

@@ -13,12 +13,21 @@ export async function GET() {
       reviews: 0,
       news: 0,
       partners: 0,
-      faq: 0
+      faq: 0,
+      visitors: 0,
+      visitorsToday: 0
     };
 
     // Submissions count
     const submissionsCol = await getCollection('form_submissions');
     stats.submissions = await submissionsCol.countDocuments();
+
+    // Visitors count (passive identification)
+    const visitorsCol = await getCollection('visitors');
+    stats.visitors = await visitorsCol.countDocuments();
+    const startOfToday = new Date();
+    startOfToday.setHours(0, 0, 0, 0);
+    stats.visitorsToday = await visitorsCol.countDocuments({ firstSeen: { $gte: startOfToday } });
 
     // Problem reports count
     const problemReportsCol = await getCollection('problem_reports');

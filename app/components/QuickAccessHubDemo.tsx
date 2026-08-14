@@ -146,12 +146,12 @@ export default function QuickAccessHubDemo() {
       links: dynamicModules.length > 0 
         ? dynamicModules.map(m => ({ label: m.title, href: `/modules?id=${m.id || m._id}` }))
         : [
-            { label: "Logistics & Transport", href: "/modules?id=logistics-transport" },
-            { label: "Retail & Garment", href: "/modules?id=garment-retail" },
-            { label: "Housing Societies", href: "/modules?id=housing-societies" },
-            { label: "Excel to Tally Tool", href: "/modules?id=excel-to-tally" },
-            { label: "C&F Agencies", href: "/modules?id=cf-agencies" },
-            { label: "Sales Commission", href: "/modules?id=sales-commission" }
+            { label: "CFA Module (Clearing & Forwarding)", href: "/modules?id=cf-agencies" },
+            { label: "Housing Society Module", href: "/modules?id=housing-societies" },
+            { label: "SalesMan / Agent Module", href: "/modules?id=sales-commission" },
+            { label: "Transport Module", href: "/modules?id=logistics-transport" },
+            { label: "Container Handling Module", href: "/modules?id=container-handling" },
+            { label: "Garment / Footwear Module", href: "/modules?id=garment-retail" }
           ]
     },
     {
