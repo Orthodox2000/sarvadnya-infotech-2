@@ -12,8 +12,7 @@ export interface Module {
   benefits: string[];
   pricing?: {
     label: string;
-    singleUser: string;
-    multiUser: string;
+    price: string;
   }[];
   category: string;
   sequence?: number;

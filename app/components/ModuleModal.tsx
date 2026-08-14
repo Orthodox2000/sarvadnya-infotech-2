@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { Module } from '@/lib/modules';
 
 interface ModuleModalProps {
@@ -11,16 +11,40 @@ interface ModuleModalProps {
 }
 
 export default function ModuleModal({ isOpen, onClose, module, onEnquire }: ModuleModalProps) {
+  const [showPricing, setShowPricing] = useState(false);
+  const [mathA, setMathA] = useState(0);
+  const [mathB, setMathB] = useState(0);
+  const [mathInput, setMathInput] = useState('');
+  const [mathError, setMathError] = useState(false);
+
+  const newQuestion = useCallback(() => {
+    setMathA(Math.floor(Math.random() * 20) + 5);
+    setMathB(Math.floor(Math.random() * 10) + 3);
+    setMathInput('');
+    setMathError(false);
+  }, []);
+
+  const revealPricing = () => {
+    if (Number(mathInput.trim()) === mathA + mathB) {
+      setShowPricing(true);
+      setMathError(false);
+    } else {
+      setMathError(true);
+    }
+  };
+
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
+      setShowPricing(false);
+      newQuestion();
     } else {
       document.body.style.overflow = 'unset';
     }
     return () => {
       document.body.style.overflow = 'unset';
     };
-  }, [isOpen]);
+  }, [isOpen, newQuestion]);
 
   if (!isOpen || !module) return null;
 
@@ -79,26 +103,72 @@ export default function ModuleModal({ isOpen, onClose, module, onEnquire }: Modu
               <span className="w-1.5 h-1.5 rounded-full bg-[#006569]"></span>
               Module Pricing
             </h4>
-            <div className="overflow-hidden rounded-xl border border-teal-100">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="bg-teal-50 text-[#006569]">
-                    <th className="text-left px-3 py-2.5 font-black text-[10px] uppercase tracking-wider">Package</th>
-                    <th className="text-right px-3 py-2.5 font-black text-[10px] uppercase tracking-wider">Single User</th>
-                    <th className="text-right px-3 py-2.5 font-black text-[10px] uppercase tracking-wider">Multi User</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {module.pricing.map((row, i) => (
-                    <tr key={i} className={i % 2 === 1 ? 'bg-teal-50/40' : 'bg-white'}>
-                      <td className="px-3 py-2.5 text-slate-700 text-[12px] font-semibold">{row.label}</td>
-                      <td className="px-3 py-2.5 text-right text-slate-900 text-[12px] font-bold whitespace-nowrap">{row.singleUser}</td>
-                      <td className="px-3 py-2.5 text-right text-slate-900 text-[12px] font-bold whitespace-nowrap">{row.multiUser}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+
+            {!showPricing ? (
+              <div>
+                <button
+                  onClick={revealPricing}
+                  className="inline-flex items-center gap-2 rounded-xl px-5 py-2.5 bg-[#006569] text-white text-xs font-bold uppercase tracking-wider shadow-lg shadow-teal-900/10 transition-all hover:bg-[#045A57]"
+                >
+                  View Price
+                  <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+
+                <div className="mt-4 rounded-xl border border-teal-100 bg-teal-50/40 p-4">
+                  <p className="text-sm text-slate-700 font-medium mb-3">
+                    Solve to reveal pricing: <span className="font-black text-[#006569]">{mathA} + {mathB} = ?</span>
+                  </p>
+                  <div className="flex flex-col sm:flex-row gap-2">
+                    <input
+                      type="number"
+                      value={mathInput}
+                      onChange={(e) => setMathInput(e.target.value)}
+                      onKeyDown={(e) => { if (e.key === 'Enter') revealPricing(); }}
+                      placeholder="Your answer"
+                      className="flex-1 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-[#006569]/30"
+                    />
+                    <button
+                      onClick={revealPricing}
+                      className="rounded-lg bg-[#006569] px-5 py-2 text-xs font-bold uppercase tracking-wider text-white hover:bg-[#045A57] transition-all"
+                    >
+                      Reveal Price
+                    </button>
+                  </div>
+                  {mathError && (
+                    <p className="mt-2 text-xs font-bold text-red-600">Wrong answer — try again.</p>
+                  )}
+                </div>
+              </div>
+            ) : (
+              <div>
+                <div className="overflow-hidden rounded-xl border border-teal-100">
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="bg-teal-50 text-[#006569]">
+                        <th className="text-left px-3 py-2.5 font-black text-[10px] uppercase tracking-wider">Package</th>
+                        <th className="text-right px-3 py-2.5 font-black text-[10px] uppercase tracking-wider">Price</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {module.pricing.map((row, i) => (
+                        <tr key={i} className={i % 2 === 1 ? 'bg-teal-50/40' : 'bg-white'}>
+                          <td className="px-3 py-2.5 text-slate-700 text-[12px] font-semibold">{row.label}</td>
+                          <td className="px-3 py-2.5 text-right text-[#006569] text-[12px] font-black whitespace-nowrap">{row.price}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+                <button
+                  onClick={() => { setShowPricing(false); newQuestion(); }}
+                  className="mt-3 inline-flex items-center gap-1.5 text-xs font-bold text-[#006569] hover:underline"
+                >
+                  Hide Pricing
+                </button>
+              </div>
+            )}
           </div>
         )}
 

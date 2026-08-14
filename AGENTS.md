@@ -32,6 +32,7 @@ The application implements several advanced optimization strategies to ensure sm
 | `CertifiedPartners` | Showcases network reliability. | Automated Rise-up animations, lazy-loaded partner logos. |
 | `FAQ` | Dynamic accordion with keyword search. | `useMemo` for search filtering, partial list rendering (Expandable). |
 | `QuickSupportModal` | AI-powered sales consultant chatbot (Ask Sara). | Groq API with local fallback, stop/interrupt, typewriter, voice, tutorials. |
+| `ModuleCard` / `ModuleModal` | Modules grid + detail modal (`/modules`). Card action buttons fixed `h-10 whitespace-nowrap` and pinned to card bottom via `mt-auto` for consistent alignment. Modal pricing is hidden behind a "View Price" reveal gated by a simple addition game (`X + Y = ?`) before showing the 2-column Package|Price table. | Data served from MongoDB `modules` collection (seeded by `scripts/seed_modules.mjs`); `lib/modules.ts` holds only the `Module` type. |
 
 ### 4. AI Chatbot Architecture (Sara)
 
@@ -105,4 +106,4 @@ Vercel serverless functions reject request bodies over ~4.5 MB, so all uploads a
 - **GPU Hints:** Use `will-change` and `translateZ(0)` sparingly for elements with complex animations.
 
 ---
-*Last Updated: 2026-08-06*
+*Last Updated: 2026-08-14*

@@ -30,8 +30,7 @@ const modules = [
       "E-invoices generated free by Tally itself"
     ],
     pricing: [
-      { label: "CFA (Basic) — Invoicing System for Clearing & Forwarding Agencies", singleUser: "Rs. 10,000", multiUser: "Rs. 10,000" },
-      { label: "CFA (Advance) — Business Module for Clearing & Forwarding Agencies", singleUser: "Rs. 25,000", multiUser: "Rs. 35,000" }
+      { label: "CFA Module (Clearing & Forwarding Agencies)", price: "Rs. 25,000/-" }
     ],
     category: "Vertical Solution"
   },
@@ -59,7 +58,7 @@ const modules = [
       "GST compliant as per the Society Act"
     ],
     pricing: [
-      { label: "Housing Society Module", singleUser: "Rs. 22,000", multiUser: "Rs. 32,000" }
+      { label: "Housing Society Module (implementation charges extra)", price: "Rs. 18,000/-" }
     ],
     category: "Vertical Solution"
   },
@@ -86,7 +85,7 @@ const modules = [
       "Works for any industry that sells through salesmen or agents"
     ],
     pricing: [
-      { label: "SalesMan / Agent Module (Standard)", singleUser: "TBD", multiUser: "TBD" }
+      { label: "SalesMan / Agent Module", price: "Rs. 4,500/-" }
     ],
     category: "Business Booster"
   },
@@ -113,7 +112,7 @@ const modules = [
       "Can be customized further to fit how you work"
     ],
     pricing: [
-      { label: "Transport Module (Standard)", singleUser: "TBD", multiUser: "TBD" }
+      { label: "Transport Module", price: "TBD" }
     ],
     category: "Vertical Solution"
   },
@@ -140,7 +139,7 @@ const modules = [
       "Track container handling activity from one place"
     ],
     pricing: [
-      { label: "Container Handling Module (Standard)", singleUser: "TBD", multiUser: "TBD" }
+      { label: "Container Handling Module (invoice format not included)", price: "Rs. 18,000/-" }
     ],
     category: "Vertical Solution"
   },
@@ -166,7 +165,7 @@ const modules = [
       "Buy smarter — a clear picture of what actually sells"
     ],
     pricing: [
-      { label: "Garment / Footwear Wholesale Module with Invoice print", singleUser: "Rs. 15,000", multiUser: "Rs. 18,000" }
+      { label: "Garment / Footwear Sales Module", price: "Rs. 15,000/-" }
     ],
     category: "Vertical Solution"
   }
