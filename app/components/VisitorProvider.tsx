@@ -61,6 +61,14 @@ export function VisitorProvider({ children }: { children: React.ReactNode }) {
       const sectionViews = sectionBuf.current;
       sectionBuf.current = [];
 
+      // CHANGE: 2026-08-18 — Parse UTM params from URL for campaign tracking.
+      const params = new URLSearchParams(window.location.search);
+      const utmSource = params.get('utm_source') || undefined;
+      const utmMedium = params.get('utm_medium') || undefined;
+      const utmCampaign = params.get('utm_campaign') || undefined;
+      const utmTerm = params.get('utm_term') || undefined;
+      const utmContent = params.get('utm_content') || undefined;
+
       const body = JSON.stringify({
         sessionId,
         path,
@@ -69,6 +77,11 @@ export function VisitorProvider({ children }: { children: React.ReactNode }) {
         language: navigator.language || '',
         screen: `${window.screen?.width || 0}x${window.screen?.height || 0}`,
         sectionViews: sectionViews.slice(0, MAX_SECTION_VIEWS),
+        ...(utmSource ? { utmSource } : {}),
+        ...(utmMedium ? { utmMedium } : {}),
+        ...(utmCampaign ? { utmCampaign } : {}),
+        ...(utmTerm ? { utmTerm } : {}),
+        ...(utmContent ? { utmContent } : {}),
       });
 
       const now = Date.now();

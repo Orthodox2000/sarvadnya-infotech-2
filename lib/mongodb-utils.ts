@@ -320,7 +320,9 @@ export async function saveSubmission(data: any) {
   });
 }
 
-const SUBMISSION_SORT_KEYS = ['createdAt', 'name', 'contact', 'formType', 'service'];
+// CHANGE: 2026-08-18 — Extended submissions: text search across name/email/ip/service,
+// new sort keys (ip, geo.country, createdAt with _id tiebreak), and exportAllSubmissions().
+const SUBMISSION_SORT_KEYS = ['createdAt', 'name', 'contact', 'formType', 'service', 'ip'];
 
 export type SubmissionQuery = {
   page: number;
@@ -328,12 +330,33 @@ export type SubmissionQuery = {
   formType?: string;
   sortBy: string;
   sortDir: 'asc' | 'desc';
+  search?: string;
 };
 
 export async function getSubmissionsPaginated(query: SubmissionQuery) {
   const col = await getCollection('form_submissions');
-  const filter =
-    query.formType && query.formType !== 'all' ? { formType: query.formType } : {};
+  const filter: any = {};
+  if (query.formType && query.formType !== 'all') {
+    filter.formType = query.formType;
+  }
+  // Text search across multiple fields (case-insensitive partial match).
+  if (query.search && query.search.trim()) {
+    const term = query.search.trim();
+    const regex = new RegExp(term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i');
+    filter.$or = [
+      { name: regex },
+      { email: regex },
+      { ip: regex },
+      { ipMasked: regex },
+      { service: regex },
+      { contact: regex },
+      { description: regex },
+      { 'reverseDns': regex },
+      { 'geo.country': regex },
+      { 'geo.city': regex },
+      { 'geo.isp': regex },
+    ];
+  }
   const sortKey = SUBMISSION_SORT_KEYS.includes(query.sortBy) ? query.sortBy : 'createdAt';
   const sortDir = query.sortDir === 'asc' ? 1 : -1;
   const [total, data] = await Promise.all([
@@ -346,6 +369,36 @@ export async function getSubmissionsPaginated(query: SubmissionQuery) {
       .toArray(),
   ]);
   return { data: serializeData(data), total };
+}
+
+// CHANGE: 2026-08-18 — Export all matching submissions (no pagination) for Excel download.
+export async function exportAllSubmissions(query: { formType?: string; search?: string; sortBy?: string; sortDir?: 'asc' | 'desc' }) {
+  const col = await getCollection('form_submissions');
+  const filter: any = {};
+  if (query.formType && query.formType !== 'all') {
+    filter.formType = query.formType;
+  }
+  if (query.search && query.search.trim()) {
+    const term = query.search.trim();
+    const regex = new RegExp(term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i');
+    filter.$or = [
+      { name: regex },
+      { email: regex },
+      { ip: regex },
+      { ipMasked: regex },
+      { service: regex },
+      { contact: regex },
+      { description: regex },
+      { 'reverseDns': regex },
+      { 'geo.country': regex },
+      { 'geo.city': regex },
+      { 'geo.isp': regex },
+    ];
+  }
+  const sortKey = SUBMISSION_SORT_KEYS.includes(query.sortBy || '') ? query.sortBy! : 'createdAt';
+  const sortDir = query.sortDir === 'asc' ? 1 : -1;
+  const data = await col.find(filter).sort({ [sortKey]: sortDir, _id: -1 } as any).toArray();
+  return serializeData(data);
 }
 
 export function isValidObjectId(id: string): boolean {

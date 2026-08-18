@@ -8,6 +8,7 @@ import {
   maskIp,
   isValidSessionId,
   markConversion,
+  lookupReverseDns,
   visitorLog,
 } from '@/lib/visitors';
 import type { GeoInfo } from '@/lib/visitors';
@@ -105,23 +106,30 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Invalid email address' }, { status: 400 });
     }
 
-    // Passive lead enrichment: capture IP, UA, geo (cache-first) and the
-    // browsing session id so the lead can be tied back to its visitor record.
-    // GPC opt-out (Sec-GPC: 1) → no IP, no geo — only the submission itself.
+    // CHANGE: 2026-08-18 — Removed GPC gating. Full IP, geo, UTM always collected.
+    // Passive lead enrichment: capture IP, UA, geo (cache-first), UTM params,
+    // and the browsing session id so the lead can be tied back to its visitor record.
     const meta = getRequestMeta(request);
     const sessionId = isValidSessionId(rawData.sessionId) ? String(rawData.sessionId) : '';
-    let geo: GeoInfo | null = null;
-    if (meta.secGpc !== true) {
-      const lookup = await lookupGeo(meta.ip);
-      geo = lookup.geo;
-    }
+    const { geo } = await lookupGeo(meta.ip);
+
+    // CHANGE: 2026-08-18 — Capture UTM params passed from client for campaign tracking.
+    const utmParams = rawData.utmParams && typeof rawData.utmParams === 'object' ? {
+      source: String(rawData.utmParams.source || '').slice(0, 100) || undefined,
+      medium: String(rawData.utmParams.medium || '').slice(0, 100) || undefined,
+      campaign: String(rawData.utmParams.campaign || '').slice(0, 200) || undefined,
+      term: String(rawData.utmParams.term || '').slice(0, 200) || undefined,
+      content: String(rawData.utmParams.content || '').slice(0, 200) || undefined,
+    } : undefined;
+
     const submissionData = {
       ...data,
-      ip: meta.secGpc ? undefined : meta.ip,
+      ip: meta.ip,
       ipMasked: maskIp(meta.ip),
       userAgent: meta.userAgent || undefined,
       geo,
       ...(sessionId ? { sessionId } : {}),
+      ...(utmParams && Object.keys(utmParams).length > 0 ? { utmParams } : {}),
     };
     if (sessionId) await markConversion(sessionId);
     visitorLog('debug', 'submission enriched', {
@@ -132,6 +140,21 @@ export async function POST(request: Request) {
     // Always persist the submission first so no enquiry is ever lost
     const result = await saveSubmission(submissionData);
     const submissionId = result.insertedId.toString();
+
+    // CHANGE: 2026-08-18 — Background reverse DNS lookup (non-blocking, best-effort).
+    lookupReverseDns(meta.ip)
+      .then((rdns) => {
+        if (rdns) {
+          const { getDb } = require('@/lib/mongodb-utils');
+          getDb().then((db: any) =>
+            db.collection('form_submissions').updateOne(
+              { _id: result.insertedId },
+              { $set: { reverseDns: rdns } }
+            )
+          ).catch(() => {});
+        }
+      })
+      .catch(() => {});
 
     // Idempotency key: the modal generates one requestId per open, so a retried
     // POST re-uses the same jobKey and can never fire a second email → exactly

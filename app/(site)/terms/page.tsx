@@ -31,13 +31,17 @@ export default function TermsPage() {
         </section>
 
         <section>
+          {/* CHANGE: 2026-08-18 — Updated Section 3: added reverse DNS, proxy/VPN, UTM, marketing consent. */}
           <h2 className="text-xl font-black text-slate-900 mb-4 uppercase tracking-tight">3. Data Collection, Storage & Privacy</h2>
           <p>By using this website and submitting any form, you acknowledge and consent to the collection, storage, and processing of the following data:</p>
           <ul className="list-disc pl-6 space-y-1.5 mt-2">
             <li><strong className="text-slate-900">Information you provide</strong> — name, email, phone number, business details, service/product of interest, enquiry description, and any resume/CV you upload for a job application.</li>
-            <li><strong className="text-slate-900">Technical information collected automatically</strong> — your masked IP address, approximate geolocation (country, region, city, ISP), browser and device details, screen resolution, language, pages visited, entry path, referring URL, timestamps, and a pseudonymous session identifier stored in a first-party cookie (<code className="text-teal-700 bg-[#E5F4F4] px-1.5 py-0.5 rounded font-mono text-xs">svd_vid</code>).</li>
+            <li><strong className="text-slate-900">Technical information collected automatically</strong> — your full IP address, approximate geolocation (country, region, city, ISP, ASN), reverse DNS hostname, proxy/VPN/Tor/datacenter detection flags, browser and device details, screen resolution, language, pages visited, entry path, referring URL, timestamps, UTM campaign parameters, and a pseudonymous session identifier stored in a first-party cookie (<code className="text-teal-700 bg-[#E5F4F4] px-1.5 py-0.5 rounded font-mono text-xs">svd_vid</code>).</li>
           </ul>
-          <p className="mt-2">This data is stored in our secure database, used to respond to you, route submissions to the correct team, improve our services, and prevent fraud. A copy of each submission, including your location and device details, is sent to our internal team. We do not sell your data. If your browser sends a Global Privacy Control (GPC) opt-out signal, we collect only a minimal record without your IP address or location.</p>
+          <p className="mt-2">This data is stored in our secure database, used to respond to you, route submissions to the correct team, improve our services, detect fraud and abuse, and for marketing and campaign analytics. A copy of each submission, including your location and device details, is sent to our internal team. We do not sell your data.</p>
+          <p className="mt-2 bg-[#E5F4F4] p-4 rounded-xl border border-[#006569]/10 text-slate-900 font-bold text-sm">
+            By visiting this website, you consent to Sarvadnya Infotech collecting and using your data for marketing, remarketing, and campaign analytics purposes.
+          </p>
           <p className="mt-2">Full details, including our data retention periods and your rights, are described in our <a href="/privacy" className="text-[#006569] font-bold underline underline-offset-4">Privacy Policy</a>. Software and custom modules we provide are governed by our <a href="/eula" className="text-[#006569] font-bold underline underline-offset-4">End-User License Agreement (EULA)</a>.</p>
         </section>
 

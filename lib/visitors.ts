@@ -1,10 +1,17 @@
+// CHANGE: 2026-08-18 — Extended data collection: reverse DNS, proxy/VPN/Tor flags, UTM params.
+// GPC opt-out gating removed — full IP and geo always collected (see AGENTS.md: never assume).
 import { ObjectId } from 'mongodb';
 import { getDb } from '@/lib/mongodb-utils';
+import dns from 'dns';
+import { promisify } from 'util';
+
+const reverseDnsLookup = promisify(dns.reverse);
 
 // ---------------------------------------------------------------------------
 // Types
 // ---------------------------------------------------------------------------
 
+// CHANGE: 2026-08-18 — Added reverseDns, isProxy, isVpn, isTor for enhanced IP intelligence.
 export interface GeoInfo {
   country: string;
   countryCode: string;
@@ -20,6 +27,10 @@ export interface GeoInfo {
   currency: string;
   proxy: boolean;
   hosting: boolean;
+  reverseDns?: string;
+  isProxy?: boolean;
+  isVpn?: boolean;
+  isTor?: boolean;
 }
 
 export interface DeviceInfo {
@@ -28,6 +39,15 @@ export interface DeviceInfo {
   os: string;
   engine?: string;
   mobile: boolean;
+}
+
+// CHANGE: 2026-08-18 — Added utmParams type for marketing campaign tracking.
+export interface UtmParams {
+  source?: string;
+  medium?: string;
+  campaign?: string;
+  term?: string;
+  content?: string;
 }
 
 export interface VisitorRecord {
@@ -57,6 +77,8 @@ export interface VisitorRecord {
   geoAt?: Date | null;
   gpcRespected: boolean;
   lastFormAt?: Date;
+  reverseDns?: string;
+  utmParams?: UtmParams;
 }
 
 export interface IpCacheRecord {
@@ -67,6 +89,7 @@ export interface IpCacheRecord {
   expireAt: Date;
 }
 
+// CHANGE: 2026-08-18 — Added UTM fields to TrackPayload for campaign tracking.
 export interface TrackPayload {
   sessionId: string;
   path: string;
@@ -75,6 +98,11 @@ export interface TrackPayload {
   language: string;
   screen: string;
   sectionViews: string[];
+  utmSource?: string;
+  utmMedium?: string;
+  utmCampaign?: string;
+  utmTerm?: string;
+  utmContent?: string;
 }
 
 export interface RequestMeta {
@@ -231,6 +259,7 @@ export function sanitizeTrackPayload(raw: unknown): TrackPayload | null {
     sectionViews = [...new Set(sectionViews)];
   }
 
+// CHANGE: 2026-08-18 — Sanitize UTM fields from beacon payload.
   return {
     sessionId,
     path: cleanStr(r.path, 500) || '/',
@@ -239,6 +268,11 @@ export function sanitizeTrackPayload(raw: unknown): TrackPayload | null {
     language: cleanStr(r.language, 60),
     screen: cleanStr(r.screen, 30),
     sectionViews,
+    utmSource: cleanStr(r.utmSource, 100) || undefined,
+    utmMedium: cleanStr(r.utmMedium, 100) || undefined,
+    utmCampaign: cleanStr(r.utmCampaign, 200) || undefined,
+    utmTerm: cleanStr(r.utmTerm, 200) || undefined,
+    utmContent: cleanStr(r.utmContent, 200) || undefined,
   };
 }
 
@@ -268,6 +302,7 @@ export function normalizeGeo(raw: unknown): GeoInfo | null {
     return Number.isFinite(n) ? n : 0;
   };
 
+// CHANGE: 2026-08-18 — Extended normalizeGeo to populate isProxy, isVpn, isTor flags.
   return {
     country: clamp(r.country, 60),
     countryCode: clamp(r.country_code, 4).toUpperCase(),
@@ -283,6 +318,9 @@ export function normalizeGeo(raw: unknown): GeoInfo | null {
     currency: clamp(cur.code ?? '', 8),
     proxy: Boolean(r.proxy || r.anonymous),
     hosting: Boolean(conn.hosting || r.hosting),
+    isProxy: Boolean(r.proxy || r.anonymous),
+    isVpn: Boolean(r.vpn),
+    isTor: Boolean(r.tor),
   };
 }
 
@@ -346,15 +384,28 @@ export async function lookupGeo(
 // Session recording (dedup core)
 // ---------------------------------------------------------------------------
 
+// CHANGE: 2026-08-18 — Removed respectGpc parameter. Full IP, geo, device always stored.
+// UTM params and reverse DNS stored when available.
 export async function recordVisitor(input: {
   payload: TrackPayload;
   meta: RequestMeta;
-  respectGpc: boolean;
 }): Promise<{ created: boolean; needsGeo: boolean; existingGeoAt: Date | null }> {
   await ensureVisitorIndexes();
-  const { payload, meta, respectGpc } = input;
+  const { payload, meta } = input;
   const now = new Date();
   const col = await getDb().then((db) => db.collection<VisitorRecord>('visitors'));
+
+  // Build UTM params object — only include fields that have values.
+  const utmParams: UtmParams | undefined =
+    payload.utmSource || payload.utmMedium || payload.utmCampaign || payload.utmTerm || payload.utmContent
+      ? {
+          ...(payload.utmSource ? { source: payload.utmSource } : {}),
+          ...(payload.utmMedium ? { medium: payload.utmMedium } : {}),
+          ...(payload.utmCampaign ? { campaign: payload.utmCampaign } : {}),
+          ...(payload.utmTerm ? { term: payload.utmTerm } : {}),
+          ...(payload.utmContent ? { content: payload.utmContent } : {}),
+        }
+      : undefined;
 
   const rawResult = await col.findOneAndUpdate(
     { sessionId: payload.sessionId },
@@ -372,15 +423,15 @@ export async function recordVisitor(input: {
         title: payload.title,
         language: payload.language || meta.language,
         screen: payload.screen,
-        device: respectGpc ? null : parseDevice(meta.userAgent),
-        userAgent: respectGpc ? '' : meta.userAgent,
-        ip: respectGpc ? '' : meta.ip,
-        ipMasked: respectGpc ? 'gpc-opt-out' : maskIp(meta.ip),
+        device: parseDevice(meta.userAgent),
+        userAgent: meta.userAgent,
+        ip: meta.ip,
+        ipMasked: maskIp(meta.ip),
         secGpc: meta.secGpc,
         secFetchSite: meta.secFetchSite,
-        gpcRespected: respectGpc,
+        gpcRespected: false,
         updatedAt: now,
-        ...(respectGpc ? { geo: null, geoAt: null } : {}),
+        ...(utmParams ? { utmParams } : {}),
       },
       $push: { paths: { $each: [{ path: payload.path, at: now }], $slice: -30 } },
       $addToSet: { sectionViews: { $each: payload.sectionViews } },
@@ -395,10 +446,9 @@ export async function recordVisitor(input: {
   const created = Boolean(result?.lastErrorObject?.upserted) || result?.value == null;
   const existingGeoAt: Date | null = result?.value?.geoAt ?? null;
   const needsGeo =
-    !respectGpc &&
-    (created ||
-      !existingGeoAt ||
-      now.getTime() - existingGeoAt.getTime() > GEO_REFRESH_MS);
+    created ||
+    !existingGeoAt ||
+    now.getTime() - existingGeoAt.getTime() > GEO_REFRESH_MS;
 
   visitorLog('debug', created ? 'session created' : 'session updated', {
     session: maskSessionId(payload.sessionId),
@@ -423,6 +473,39 @@ export async function markConversion(sessionId: string): Promise<void> {
   await col.updateOne(
     { sessionId },
     { $set: { lastFormAt: new Date(), updatedAt: new Date() } }
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Reverse DNS lookup (background/lazy — non-blocking, called async)
+// ---------------------------------------------------------------------------
+
+// CHANGE: 2026-08-18 — Added reverse DNS and proxy/VPN flag enrichment.
+const RDNS_TIMEOUT_MS = 3000;
+const RDNS_NEGATIVE_TTL_MS = 60 * 60 * 1000; // cache failures for 1 hour
+
+export async function lookupReverseDns(ip: string): Promise<string | null> {
+  if (!isPublicIp(ip)) return null;
+  try {
+    const timeoutPromise = new Promise<never>((_, reject) =>
+      setTimeout(() => reject(new Error('rdns timeout')), RDNS_TIMEOUT_MS)
+    );
+    const addrs = await Promise.race([reverseDnsLookup(ip), timeoutPromise]);
+    if (Array.isArray(addrs) && addrs.length > 0) {
+      return addrs[0].slice(0, 255);
+    }
+  } catch {
+    // Silently ignore — this is best-effort background enrichment.
+  }
+  return null;
+}
+
+export async function applyReverseDns(sessionId: string, rdns: string | null): Promise<void> {
+  if (!rdns || !isValidSessionId(sessionId)) return;
+  const col = await getDb().then((db) => db.collection<VisitorRecord>('visitors'));
+  await col.updateOne(
+    { sessionId },
+    { $set: { reverseDns: rdns, updatedAt: new Date() } }
   );
 }
 

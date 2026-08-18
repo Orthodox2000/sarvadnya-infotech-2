@@ -40,6 +40,7 @@ This document provides a comprehensive historical and technical record of the Sa
 
 | Date | Key Accomplishments | Version |
 | :--- | :--- | :--- |
+| **August 14** | Module Catalog Rebuild (official 6 modules, MSME tone), Single-Price Model + View Price addition-game reveal, YouTube Global Link, Production module-image fix, Site Dead-Code Cleanup. | v1.1.390 |
 | **June 18** | Consultation Logic Codification, Form Hardening, Chat UX Smart Interaction. | v1.1.380 |
 | **June 17** | AI Voice Restoration (TTS), TallyDrive UI Polishing, Chat Stability. | v1.1.376 |
 | **June 3** | Automated Visual Capture (Puppeteer), Total Content Extraction (Soft Copy), Final Security Audit. | v1.1.370 |
@@ -59,6 +60,7 @@ Date,Version,Module,Activity,Status
 2026-06-17,v1.1.376,Chat,AI Voice Restoration (TTS) & API Stability,Complete
 2026-06-18,v1.1.380,Core,Consultation Logic Codification & Form Hardening,Complete
 2026-08-03,v1.1.389,Email,Async Email Queue + Per-Form Recipient Config (Exactly-Once),Complete
+2026-08-14,v1.1.390,Modules,Module Catalog Rebuild + Single-Price Reveal Game + YouTube Global Link + Dead-Code Cleanup,Complete
 ```
 
 ---

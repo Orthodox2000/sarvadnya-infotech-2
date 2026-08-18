@@ -1,7 +1,10 @@
 'use client';
 
 import React, { useCallback, useEffect, useState } from 'react';
+// CHANGE: 2026-08-18 — Added xlsx (SheetJS) for client-side Excel export.
+import * as XLSX from 'xlsx';
 
+// CHANGE: 2026-08-18 — Extended Submission type with reverse DNS, proxy flags, UTM, referrer, device.
 type Submission = {
   _id: string;
   createdAt: string;
@@ -15,6 +18,8 @@ type Submission = {
   ipMasked?: string;
   userAgent?: string;
   sessionId?: string;
+  reverseDns?: string;
+  utmParams?: { source?: string; medium?: string; campaign?: string; term?: string; content?: string };
   geo?: {
     country: string;
     countryCode: string;
@@ -25,6 +30,11 @@ type Submission = {
     timezone: string;
     latitude: number;
     longitude: number;
+    proxy?: boolean;
+    hosting?: boolean;
+    isProxy?: boolean;
+    isVpn?: boolean;
+    isTor?: boolean;
   } | null;
 };
 
@@ -77,6 +87,8 @@ export default function AdminSubmissions() {
   const [selectedItem, setSelectedItem] = useState<Submission | null>(null);
   const [expandedDesc, setExpandedDesc] = useState<string | null>(null);
   const [pagination, setPagination] = useState<Pagination>({ page: 1, limit: 10, total: 0, totalPages: 1 });
+  // CHANGE: 2026-08-18 — Added search state for text filtering across name/email/ip/service.
+  const [searchQuery, setSearchQuery] = useState('');
 
   const fetchData = useCallback(async () => {
     setLoading(true);
@@ -89,6 +101,8 @@ export default function AdminSubmissions() {
         sortDir: sortConfig.direction,
       });
       if (filterType !== 'all') params.set('formType', filterType);
+      // CHANGE: 2026-08-18 — Pass search query to API for text filtering.
+      if (searchQuery.trim()) params.set('search', searchQuery.trim());
 
       const res = await fetch(`/api/admin/submissions?${params.toString()}`);
       const data = await res.json();
@@ -103,7 +117,7 @@ export default function AdminSubmissions() {
     } finally {
       setLoading(false);
     }
-  }, [pagination.page, pagination.limit, sortConfig.key, sortConfig.direction, filterType]);
+  }, [pagination.page, pagination.limit, sortConfig.key, sortConfig.direction, filterType, searchQuery]);
 
   useEffect(() => {
     fetchData();
@@ -151,6 +165,52 @@ export default function AdminSubmissions() {
     setPagination({ page: 1, limit, total: pagination.total, totalPages: 1 });
   };
 
+  // CHANGE: 2026-08-18 — Excel export: fetch ALL filtered records then generate .xlsx client-side.
+  const handleExportExcel = async () => {
+    try {
+      const params = new URLSearchParams({ export: '1' });
+      if (filterType !== 'all') params.set('formType', filterType);
+      if (searchQuery.trim()) params.set('search', searchQuery.trim());
+      params.set('sortBy', sortConfig.key);
+      params.set('sortDir', sortConfig.direction);
+
+      const res = await fetch(`/api/admin/submissions?${params.toString()}`);
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Export failed');
+
+      const rows = (data.submissions || []).map((s: Submission) => ({
+        Date: s.createdAt ? new Date(s.createdAt).toLocaleString() : '',
+        Name: s.name || '',
+        Email: s.email || '',
+        Phone: s.contact || '',
+        'Form Type': s.formType || '',
+        Service: s.service || '',
+        Description: s.description || '',
+        IP: s.ip || s.ipMasked || '',
+        'Reverse DNS': s.reverseDns || '',
+        'Proxy/VPN': [s.geo?.isProxy ? 'Proxy' : '', s.geo?.isVpn ? 'VPN' : '', s.geo?.isTor ? 'Tor' : ''].filter(Boolean).join(', ') || 'No',
+        Country: s.geo?.country || '',
+        City: s.geo?.city || '',
+        Region: s.geo?.region || '',
+        ISP: s.geo?.isp || '',
+        ASN: s.geo?.asn || '',
+        'User Agent': s.userAgent || '',
+        'UTM Source': s.utmParams?.source || '',
+        'UTM Medium': s.utmParams?.medium || '',
+        'UTM Campaign': s.utmParams?.campaign || '',
+        'Session ID': s.sessionId || '',
+      }));
+
+      const ws = XLSX.utils.json_to_sheet(rows);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, 'Submissions');
+      XLSX.writeFile(wb, `submissions_${filterType}_${new Date().toISOString().slice(0, 10)}.xlsx`);
+    } catch (err) {
+      console.error('Export error:', err);
+      alert('Failed to export. Please try again.');
+    }
+  };
+
   const getFormTypeBadge = (type: string) => {
     const colors: any = {
       quote: 'bg-amber-50 text-amber-600 border-amber-100',
@@ -175,7 +235,8 @@ export default function AdminSubmissions() {
         <td className="p-3"><div className="h-4 bg-slate-100 rounded w-28"></div></td>
         <td className="p-3"><div className="h-4 bg-slate-100 rounded w-20"></div></td>
         <td className="p-3"><div className="h-4 bg-slate-100 rounded w-28"></div></td>
-        <td className="p-3"><div className="h-4 bg-slate-100 rounded w-40"></div></td>
+        <td className="p-3"><div className="h-4 bg-slate-100 rounded w-16"></div></td>
+        <td className="p-3"><div className="h-4 bg-slate-100 rounded w-20"></div></td>
         <td className="p-3 text-right"><div className="h-8 bg-slate-100 rounded w-8 ml-auto"></div></td>
       </tr>
     ));
@@ -193,6 +254,15 @@ export default function AdminSubmissions() {
         </div>
 
         <div className="flex items-center gap-3">
+            {/* CHANGE: 2026-08-18 — Added Excel export button (exports all filtered records). */}
+            <button
+                onClick={handleExportExcel}
+                disabled={loading}
+                className="bg-emerald-600 text-white px-6 py-2.5 rounded-xl font-semibold text-xs hover:shadow-lg transition-all flex items-center gap-2 disabled:opacity-50"
+            >
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                Export Excel
+            </button>
             <button
                 onClick={fetchData}
                 disabled={loading}
@@ -232,7 +302,18 @@ export default function AdminSubmissions() {
            </div>
          </div>
 
+         {/* CHANGE: 2026-08-18 — Added search input for text filtering across name/email/ip/service. */}
          <div className="flex items-center gap-3 px-2">
+           <div className="relative">
+             <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+             <input
+               type="text"
+               value={searchQuery}
+               onChange={(e) => { setSearchQuery(e.target.value); setPagination(prev => ({ ...prev, page: 1 })); }}
+               placeholder="Search name, email, IP, service..."
+               className="bg-slate-50 border border-slate-100 rounded-xl pl-9 pr-4 py-2 text-xs font-semibold text-slate-600 focus:ring-2 focus:ring-[#006569] w-56"
+             />
+           </div>
            <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Show</span>
            <select
              value={pagination.limit}
@@ -248,7 +329,7 @@ export default function AdminSubmissions() {
 
       <div className="bg-white rounded-[2.5rem] border border-slate-100 shadow-sm overflow-hidden min-h-[400px]">
         <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse table-fixed min-w-[880px]">
+          <table className="w-full text-left border-collapse table-fixed min-w-[1400px]">
             <thead>
               <tr className="bg-slate-50/50 border-b border-slate-100">
                 <th
@@ -258,31 +339,33 @@ export default function AdminSubmissions() {
                   Date {sortConfig.key === 'createdAt' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
                 </th>
                 <th
-                    className="p-3 w-[160px] text-[10px] font-bold uppercase tracking-widest text-slate-400 cursor-pointer hover:text-slate-900 transition-colors"
+                    className="p-3 w-[140px] text-[10px] font-bold uppercase tracking-widest text-slate-400 cursor-pointer hover:text-slate-900 transition-colors"
                     onClick={() => handleSort('name')}
                 >
-                  Contact Person {sortConfig.key === 'name' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
+                  Contact {sortConfig.key === 'name' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
                 </th>
                 <th
-                    className="p-3 w-[120px] text-[10px] font-bold uppercase tracking-widest text-slate-400 cursor-pointer hover:text-slate-900 transition-colors"
+                    className="p-3 w-[110px] text-[10px] font-bold uppercase tracking-widest text-slate-400 cursor-pointer hover:text-slate-900 transition-colors"
                     onClick={() => handleSort('contact')}
                 >
-                  Phone Number {sortConfig.key === 'contact' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
+                  Phone {sortConfig.key === 'contact' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
                 </th>
                 <th
-                    className="p-3 w-[90px] text-[10px] font-bold uppercase tracking-widest text-slate-400 cursor-pointer hover:text-slate-900 transition-colors"
+                    className="p-3 w-[80px] text-[10px] font-bold uppercase tracking-widest text-slate-400 cursor-pointer hover:text-slate-900 transition-colors"
                     onClick={() => handleSort('formType')}
                 >
                   Type {sortConfig.key === 'formType' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
                 </th>
+                {/* CHANGE: 2026-08-18 — Added IP, Proxy, Country columns for enhanced data visibility. */}
                 <th
-                    className="p-3 w-[150px] text-[10px] font-bold uppercase tracking-widest text-slate-400 cursor-pointer hover:text-slate-900 transition-colors"
-                    onClick={() => handleSort('service')}
+                    className="p-3 w-[120px] text-[10px] font-bold uppercase tracking-widest text-slate-400 cursor-pointer hover:text-slate-900 transition-colors"
+                    onClick={() => handleSort('ip')}
                 >
-                  Service/Product {sortConfig.key === 'service' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
+                  IP {sortConfig.key === 'ip' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
                 </th>
-                <th className="p-3 w-[140px] text-[10px] font-bold uppercase tracking-widest text-slate-400">Requirements</th>
-                <th className="p-3 w-[60px] text-[10px] font-bold uppercase tracking-widest text-slate-400 text-right">Actions</th>
+                <th className="p-3 w-[70px] text-[10px] font-bold uppercase tracking-widest text-slate-400">Proxy</th>
+                <th className="p-3 w-[90px] text-[10px] font-bold uppercase tracking-widest text-slate-400">Country</th>
+                <th className="p-3 w-[90px] text-[10px] font-bold uppercase tracking-widest text-slate-400 text-right">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -300,8 +383,8 @@ export default function AdminSubmissions() {
                       <span className="text-[9px] opacity-60 font-medium">{formatTime(item.createdAt)}</span>
                     </td>
                     <td className="p-3">
-                      <div className="text-sm font-semibold text-slate-900 truncate max-w-[180px]">{item.name || '—'}</div>
-                      <div className="text-[10px] text-slate-400 font-medium truncate max-w-[180px]">{item.email || ''}</div>
+                      <div className="text-sm font-semibold text-slate-900 truncate max-w-[150px]">{item.name || '—'}</div>
+                      <div className="text-[10px] text-slate-400 font-medium truncate max-w-[150px]">{item.email || ''}</div>
                     </td>
                     <td className="p-3">
                       <div className="text-sm font-bold text-[#006569] tabular-nums whitespace-nowrap">{item.contact || '—'}</div>
@@ -309,27 +392,23 @@ export default function AdminSubmissions() {
                     <td className="p-3">
                       {getFormTypeBadge(item.formType)}
                     </td>
-                    <td className="p-3 text-sm font-medium text-slate-600 italic truncate max-w-[160px]">
-                      {item.service || '-'}
+                    {/* CHANGE: 2026-08-18 — Added IP, proxy flag, and country columns. */}
+                    <td className="p-3">
+                      <div className="text-[11px] font-mono text-slate-600 truncate max-w-[120px]">{item.ip || item.ipMasked || '—'}</div>
                     </td>
                     <td className="p-3">
-                        <button
-                          type="button"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setExpandedDesc(expandedDesc === item._id ? null : item._id);
-                          }}
-                          className="block w-full text-left group max-w-[140px]"
-                        >
-                          <p className={`text-[11px] text-slate-500 leading-snug font-medium ${expandedDesc === item._id ? '' : 'line-clamp-1'}`}>
-                            {item.description || 'No additional requirements.'}
-                          </p>
-                          {item.description && item.description.length > 50 && (
-                            <span className="text-[9px] font-bold uppercase tracking-wider text-[#006569] group-hover:underline">
-                              {expandedDesc === item._id ? '− Collapse' : '+ Expand'}
-                            </span>
-                          )}
-                        </button>
+                      {item.geo?.isProxy || item.geo?.isVpn || item.geo?.isTor ? (
+                        <span className="px-2 py-0.5 rounded-full text-[9px] font-bold bg-amber-50 text-amber-600 border border-amber-100">
+                          {[item.geo?.isProxy && 'Proxy', item.geo?.isVpn && 'VPN', item.geo?.isTor && 'Tor'].filter(Boolean).join(', ')}
+                        </span>
+                      ) : (
+                        <span className="text-[10px] text-slate-300 font-semibold">Clean</span>
+                      )}
+                    </td>
+                    <td className="p-3">
+                      <div className="text-[11px] font-semibold text-slate-600 truncate max-w-[90px]">
+                        {item.geo?.country ? `${item.geo.country}${item.geo.city ? `, ${item.geo.city}` : ''}` : '—'}
+                      </div>
                     </td>
                     <td className="p-3 text-right" onClick={e => e.stopPropagation()}>
                       <button
@@ -345,7 +424,7 @@ export default function AdminSubmissions() {
                 ))
               ) : (
                 <tr>
-                  <td colSpan={7} className="p-20 text-center">
+                  <td colSpan={8} className="p-20 text-center">
                     <div className="text-slate-300 mb-2">
                       <svg className="w-12 h-12 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
                     </div>
@@ -472,6 +551,7 @@ export default function AdminSubmissions() {
 
                <div className="h-px bg-slate-100 w-full"></div>
 
+               {/* CHANGE: 2026-08-18 — Enhanced detail modal with IP intelligence, UTM, device info. */}
                <div className="grid grid-cols-1 gap-8">
                     {selectedItem.service && (
                         <div>
@@ -483,15 +563,17 @@ export default function AdminSubmissions() {
                         </div>
                     )}
 
-                    {selectedItem.ipMasked || selectedItem.geo ? (
+                    {(selectedItem.ipMasked || selectedItem.ip || selectedItem.geo) && (
                         <div>
-                            <p className="text-[9px] font-bold uppercase tracking-widest text-slate-400 mb-3">Visitor Identification</p>
+                            <p className="text-[9px] font-bold uppercase tracking-widest text-slate-400 mb-3">IP Intelligence & Location</p>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                               <div className="bg-slate-50 px-4 py-3 rounded-2xl border border-slate-100">
+                                <p className="text-[9px] font-bold uppercase tracking-widest text-slate-400 mb-1">Full IP Address</p>
+                                <p className="text-sm font-semibold text-slate-700 tabular-nums font-mono">{selectedItem.ip || selectedItem.ipMasked || '—'}</p>
+                              </div>
+                              <div className="bg-slate-50 px-4 py-3 rounded-2xl border border-slate-100">
                                 <p className="text-[9px] font-bold uppercase tracking-widest text-slate-400 mb-1">Location</p>
-                                {selectedItem.ipMasked === 'gpc-opt-out' ? (
-                                  <p className="text-sm font-semibold text-amber-600">Privacy opt-out (GPC)</p>
-                                ) : selectedItem.geo ? (
+                                {selectedItem.geo ? (
                                   <p className="text-sm font-semibold text-slate-700">
                                     {[selectedItem.geo.city, selectedItem.geo.region, selectedItem.geo.country].filter(Boolean).join(', ')}
                                     {selectedItem.geo.countryCode ? ` (${selectedItem.geo.countryCode})` : ''}
@@ -500,25 +582,88 @@ export default function AdminSubmissions() {
                                   <p className="text-sm font-semibold text-slate-400">—</p>
                                 )}
                               </div>
-                              <div className="bg-slate-50 px-4 py-3 rounded-2xl border border-slate-100">
-                                <p className="text-[9px] font-bold uppercase tracking-widest text-slate-400 mb-1">IP Address</p>
-                                <p className="text-sm font-semibold text-slate-700 tabular-nums">{selectedItem.ipMasked || selectedItem.ip || '—'}</p>
-                              </div>
+                              {selectedItem.reverseDns && (
+                                <div className="bg-slate-50 px-4 py-3 rounded-2xl border border-slate-100">
+                                  <p className="text-[9px] font-bold uppercase tracking-widest text-slate-400 mb-1">Reverse DNS</p>
+                                  <p className="text-sm font-semibold text-slate-700 font-mono truncate">{selectedItem.reverseDns}</p>
+                                </div>
+                              )}
                               {selectedItem.geo?.isp && (
                                 <div className="bg-slate-50 px-4 py-3 rounded-2xl border border-slate-100">
                                   <p className="text-[9px] font-bold uppercase tracking-widest text-slate-400 mb-1">ISP / ASN</p>
                                   <p className="text-sm font-semibold text-slate-700">{selectedItem.geo.isp}{selectedItem.geo.asn ? ` (${selectedItem.geo.asn})` : ''}</p>
                                 </div>
                               )}
+                              {/* Proxy / VPN / Tor flags */}
+                              {(selectedItem.geo?.isProxy || selectedItem.geo?.isVpn || selectedItem.geo?.isTor || selectedItem.geo?.proxy || selectedItem.geo?.hosting) && (
+                                <div className="bg-slate-50 px-4 py-3 rounded-2xl border border-slate-100">
+                                  <p className="text-[9px] font-bold uppercase tracking-widest text-slate-400 mb-1">Network Flags</p>
+                                  <div className="flex flex-wrap gap-2 mt-1">
+                                    {selectedItem.geo?.isProxy && <span className="px-2 py-0.5 rounded-full text-[9px] font-bold bg-amber-50 text-amber-600 border border-amber-100">Proxy</span>}
+                                    {selectedItem.geo?.isVpn && <span className="px-2 py-0.5 rounded-full text-[9px] font-bold bg-orange-50 text-orange-600 border border-orange-100">VPN</span>}
+                                    {selectedItem.geo?.isTor && <span className="px-2 py-0.5 rounded-full text-[9px] font-bold bg-red-50 text-red-600 border border-red-100">Tor</span>}
+                                    {selectedItem.geo?.hosting && <span className="px-2 py-0.5 rounded-full text-[9px] font-bold bg-blue-50 text-blue-600 border border-blue-100">Datacenter</span>}
+                                  </div>
+                                </div>
+                              )}
                               {selectedItem.sessionId && (
                                 <div className="bg-slate-50 px-4 py-3 rounded-2xl border border-slate-100">
                                   <p className="text-[9px] font-bold uppercase tracking-widest text-slate-400 mb-1">Session</p>
-                                  <p className="text-sm font-semibold text-slate-700">{selectedItem.sessionId.slice(0, 8)}…</p>
+                                  <p className="text-sm font-semibold text-slate-700 font-mono">{selectedItem.sessionId}</p>
                                 </div>
                               )}
                             </div>
                         </div>
-                    ) : null}
+                    )}
+
+                    {/* UTM Parameters */}
+                    {selectedItem.utmParams && Object.values(selectedItem.utmParams).some(Boolean) && (
+                        <div>
+                            <p className="text-[9px] font-bold uppercase tracking-widest text-slate-400 mb-3">Campaign Attribution (UTM)</p>
+                            <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                              {selectedItem.utmParams.source && (
+                                <div className="bg-slate-50 px-3 py-2 rounded-xl border border-slate-100">
+                                  <p className="text-[8px] font-bold uppercase text-slate-400">Source</p>
+                                  <p className="text-xs font-semibold text-slate-700">{selectedItem.utmParams.source}</p>
+                                </div>
+                              )}
+                              {selectedItem.utmParams.medium && (
+                                <div className="bg-slate-50 px-3 py-2 rounded-xl border border-slate-100">
+                                  <p className="text-[8px] font-bold uppercase text-slate-400">Medium</p>
+                                  <p className="text-xs font-semibold text-slate-700">{selectedItem.utmParams.medium}</p>
+                                </div>
+                              )}
+                              {selectedItem.utmParams.campaign && (
+                                <div className="bg-slate-50 px-3 py-2 rounded-xl border border-slate-100">
+                                  <p className="text-[8px] font-bold uppercase text-slate-400">Campaign</p>
+                                  <p className="text-xs font-semibold text-slate-700">{selectedItem.utmParams.campaign}</p>
+                                </div>
+                              )}
+                              {selectedItem.utmParams.term && (
+                                <div className="bg-slate-50 px-3 py-2 rounded-xl border border-slate-100">
+                                  <p className="text-[8px] font-bold uppercase text-slate-400">Term</p>
+                                  <p className="text-xs font-semibold text-slate-700">{selectedItem.utmParams.term}</p>
+                                </div>
+                              )}
+                              {selectedItem.utmParams.content && (
+                                <div className="bg-slate-50 px-3 py-2 rounded-xl border border-slate-100">
+                                  <p className="text-[8px] font-bold uppercase text-slate-400">Content</p>
+                                  <p className="text-xs font-semibold text-slate-700">{selectedItem.utmParams.content}</p>
+                                </div>
+                              )}
+                            </div>
+                        </div>
+                    )}
+
+                    {/* User Agent */}
+                    {selectedItem.userAgent && (
+                        <div>
+                            <p className="text-[9px] font-bold uppercase tracking-widest text-slate-400 mb-3">Device / Browser</p>
+                            <div className="bg-slate-50 px-4 py-3 rounded-2xl border border-slate-100">
+                              <p className="text-xs font-semibold text-slate-600 break-all">{selectedItem.userAgent}</p>
+                            </div>
+                        </div>
+                    )}
 
                     <div>
                         <p className="text-[9px] font-bold uppercase tracking-widest text-slate-400 mb-3">Business Requirements</p>

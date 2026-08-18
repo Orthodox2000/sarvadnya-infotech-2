@@ -1,10 +1,11 @@
 import { NextResponse } from 'next/server';
-import { getSubmissionsPaginated, deleteSubmission, isValidObjectId } from '@/lib/mongodb-utils';
+import { getSubmissionsPaginated, exportAllSubmissions, deleteSubmission, isValidObjectId } from '@/lib/mongodb-utils';
 
 const DEFAULT_LIMIT = 10;
 const MAX_LIMIT = 100;
 const FORM_TYPES = ['quote', 'enquire', 'support', 'callback', 'demo', 'general'];
-const SORT_KEYS = ['createdAt', 'name', 'contact', 'formType', 'service'];
+// CHANGE: 2026-08-18 — Added 'ip' as a sortable column for enhanced data view.
+const SORT_KEYS = ['createdAt', 'name', 'contact', 'formType', 'service', 'ip'];
 
 function clampInt(raw: string | null, fallback: number, min: number, max: number): number {
   const parsed = Number(raw);
@@ -25,17 +26,26 @@ export async function GET(request: Request) {
     const sortBy = SORT_KEYS.includes(searchParams.get('sortBy') || '') ? (searchParams.get('sortBy') as string) : 'createdAt';
     const sortDir = searchParams.get('sortDir') === 'asc' ? 'asc' : 'desc';
 
+    // CHANGE: 2026-08-18 — Added search param for text filtering and export mode.
+    const search = (searchParams.get('search') || '').slice(0, 200);
+    const exportMode = searchParams.get('export') === '1';
+
+    // Export mode: return ALL matching records (no pagination) for Excel download.
+    if (exportMode) {
+      const allData = await exportAllSubmissions({ formType, search, sortBy, sortDir });
+      return NextResponse.json({ submissions: allData, total: allData.length });
+    }
+
     const { data, total } = await getSubmissionsPaginated({
       page: Math.max(1, page),
       limit,
       formType,
       sortBy,
       sortDir,
+      search,
     });
 
     const totalPages = Math.max(1, Math.ceil(total / limit));
-    // Clamp to the last page so a request beyond the range (e.g. after the
-    // final item on the last page was deleted) never returns an empty page.
     const safePage = Math.min(Math.max(1, page), totalPages);
 
     const finalData =
@@ -48,6 +58,7 @@ export async function GET(request: Request) {
               formType,
               sortBy,
               sortDir,
+              search,
             })
           ).data;
 

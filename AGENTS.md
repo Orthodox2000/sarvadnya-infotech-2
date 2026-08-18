@@ -104,6 +104,10 @@ Vercel serverless functions reject request bodies over ~4.5 MB, so all uploads a
 - **Accessibility:** Maintain high contrast ratios and ensure interactive elements have clear focus states.
 - **Mobile First:** All new components must be verified for performance and layout on small screens (minimum 360px).
 - **GPU Hints:** Use `will-change` and `translateZ(0)` sparingly for elements with complex animations.
+- **Never Assume:** If in doubt about any requirement, requirement scope, or implementation detail, ALWAYS ask the user for clarification before proceeding. Never guess or fill gaps with assumptions.
+- **Minimal Code / Use Libraries:** Do not over-engineer. If a library or npm package solves the problem in fewer lines, use it. Avoid writing 200 lines when 30 lines + a dependency does the same job. Prefer `xlsx` over custom CSV builders, `date-fns` over hand-rolled date logic, etc.
+- **Document All Changes:** Every file edit must include a comment or commit message explaining WHAT changed and WHY. We maintain daily changelogs and an Excel tracker — AI-generated changes must be traceable. Use `// CHANGE: <date> — <reason>` inline comments for non-obvious edits.
+- **Validate Before Completing:** Before marking any task as done, re-read the original user request, re-check every todo item, and verify each requirement is actually satisfied. Requirements get silently dropped during scope — always do a second pass against the original prompt to ensure nothing was missed.
 
 ---
-*Last Updated: 2026-08-14*
+*Last Updated: 2026-08-18*

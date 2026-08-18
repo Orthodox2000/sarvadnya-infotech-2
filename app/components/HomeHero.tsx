@@ -52,7 +52,9 @@ const QUICK_ACCESS_CARDS = [
 
 const HIGHLIGHT_WORDS = ['your', 'business', 'certified', 'partner', 'trusted', 'msme', 'smarter'];
 
-export default function HomeHero({ hero = HERO_CONTENT, emailCopy = false }: { hero?: HeroContent; emailCopy?: boolean }) {
+// CHANGE: 2026-08-18 — Added optional backgroundVideo prop. When set, renders a muted
+// autoplaying video as the hero background instead of the static bg.png image.
+export default function HomeHero({ hero = HERO_CONTENT, emailCopy = false, backgroundVideo }: { hero?: HeroContent; emailCopy?: boolean; backgroundVideo?: string }) {
   const [isEntering, setIsEntering] = useState(false);
   const [displayText, setDisplayText] = useState('');
   const [isTyping, setIsTyping] = useState(false);
@@ -104,14 +106,26 @@ export default function HomeHero({ hero = HERO_CONTENT, emailCopy = false }: { h
 
   const isHighlight = (cleanWord: string) => HIGHLIGHT_WORDS.includes(cleanWord);
 
+  const isDark = !!backgroundVideo;
+
   return (
     <>
-    <main suppressHydrationWarning className={`relative w-full bg-[#fbfaf8] bg-[url('/bg.png')] bg-cover bg-center bg-no-repeat min-h-[20rem] sm:min-h-[26rem] md:min-h-[400px] lg:min-h-[500px]  flex flex-col`}>
-      {/* Background decorative blobs */}
+    <main suppressHydrationWarning className={`relative w-full ${backgroundVideo ? 'bg-transparent' : "bg-[#fbfaf8] bg-[url('/bg.png')] bg-cover bg-center bg-no-repeat"} min-h-[20rem] sm:min-h-[26rem] md:min-h-[400px] lg:min-h-[500px]  flex flex-col`}>
+      {backgroundVideo && (
+        <>
+          <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover z-0 pointer-events-none" style={{ opacity: 0.75 }}>
+            <source src={backgroundVideo} type="video/mp4" />
+          </video>
+          <div className="absolute inset-0 bg-black/40 z-0 pointer-events-none" />
+        </>
+      )}
+      {/* Background decorative blobs — hidden when video bg */}
+      {!isDark && (
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         <div className="absolute top-[-10%] left-[-8%] w-[50%] h-[50%] rounded-full blur-[120px]" style={{ backgroundColor: 'rgba(85,130,115,0.08)' }} />
         <div className="absolute bottom-[-10%] right-[-8%] w-[50%] h-[50%] rounded-full blur-[120px]" style={{ backgroundColor: 'rgba(54,82,117,0.06)' }} />
       </div>
+      )}
 
       {/* Hero main row */}
       <div className="relative z-10 flex items-center h-[400px]">
@@ -120,49 +134,44 @@ export default function HomeHero({ hero = HERO_CONTENT, emailCopy = false }: { h
 
             {/* Left: Content */}
             <div className="w-full lg:w-1/2 space-y-3 lg:space-y-4">
-              <div className={`mt-16 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-[#006569]/20 shadow-sm ${getAnimationClasses('delay-0')}`}>
-                <span className="flex h-1.5 w-1.5 rounded-full bg-[#006569]" />
-                <span className="text-xs font-semibold text-[#006569]">{hero.badge}</span>
+              <div className={`mt-16 inline-flex items-center gap-2 px-4 py-1.5 rounded-full ${isDark ? 'bg-white/10 border-white/20' : 'bg-white border-[#006569]/20'} shadow-sm ${getAnimationClasses('delay-0')}`}>
+                <span className={`flex h-1.5 w-1.5 rounded-full ${isDark ? 'bg-teal-300' : 'bg-[#006569]'}`} />
+                <span className={`text-xs font-semibold ${isDark ? 'text-teal-200' : 'text-[#006569]'}`}>{hero.badge}</span>
               </div>
 
               <div className={`relative min-h-[70px] md:min-h-[60px] ${getAnimationClasses('delay-200')}`}>
-                <h1 className="font-playfair text-4xl font-bold leading-tight tracking-tight text-slate-900 sm:text-5xl lg:text-[3.4rem] invisible">{hero.titleText}</h1>
-                <h1 className="absolute top-0 left-0 font-playfair text-4xl font-bold leading-tight tracking-tight text-slate-900 sm:text-5xl lg:text-[3.4rem] w-full flex flex-wrap items-baseline">
+                <h1 className={`font-playfair text-4xl font-bold leading-tight tracking-tight ${isDark ? 'text-white' : 'text-slate-900'} sm:text-5xl lg:text-[3.4rem] invisible`}>{hero.titleText}</h1>
+                <h1 className={`absolute top-0 left-0 font-playfair text-4xl font-bold leading-tight tracking-tight ${isDark ? 'text-white' : 'text-slate-900'} sm:text-5xl lg:text-[3.4rem] w-full flex flex-wrap items-baseline`}>
                   {displayText.split(' ').map((word, i) => {
                     const cleanWord = word.replace(/[.,%]/g, '').toLowerCase();
                     return (
                       <span key={i} className="contents">
-                        <span className={isHighlight(cleanWord) ? "text-[#006569]" : ""}>
+                        <span className={isHighlight(cleanWord) ? (isDark ? "text-teal-300" : "text-[#006569]") : ""}>
                           {word}&nbsp;
                         </span>
                       </span>
                     );
                   })}
-                  {isTyping && <span className="inline-block w-1 h-8 md:h-12 ml-0.5 animate-pulse bg-[#006569]" />}
+                  {isTyping && <span className={`inline-block w-1 h-8 md:h-12 ml-0.5 animate-pulse ${isDark ? 'bg-teal-300' : 'bg-[#006569]'}`} />}
                 </h1>
               </div>
 
-              <p className={`text-sm md:text-[15px] text-[#4a5056] max-w-xl leading-relaxed font-medium ${getAnimationClasses('delay-300')}`}>{hero.description}</p>
+              <p className={`text-sm md:text-[15px] ${isDark ? 'text-white/80' : 'text-[#4a5056]'} max-w-xl leading-relaxed font-medium ${getAnimationClasses('delay-300')}`}>{hero.description}</p>
 
               {/* Trusted stats badges */}
                <div className={`flex flex-wrap items-center gap-2 ${getAnimationClasses('delay-700')}`}>
-               
-                
-                <div className="inline-flex items-center gap-2 bg-white/70 backdrop-blur-sm px-2 py-4 rounded-full border border-gray-200/60 shadow-sm h-6 w-38">
-                  <svg className="w-4 h-4 text-[#006569]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
-                  <span className="text-[11px] text-gray-600"><strong className="text-[#2a2d34] font-bold">15+ Years</strong> Experience</span>
+                <div className={`inline-flex items-center gap-2 backdrop-blur-sm px-2 py-4 rounded-full border shadow-sm h-6 w-38 ${isDark ? 'bg-white/10 border-white/20' : 'bg-white/70 border-gray-200/60'}`}>
+                  <svg className={`w-4 h-4 ${isDark ? 'text-teal-300' : 'text-[#006569]'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                  <span className={`text-[11px] ${isDark ? 'text-white/70' : 'text-gray-600'}`}><strong className={`${isDark ? 'text-white' : 'text-[#2a2d34]'} font-bold`}>15+ Years</strong> Experience</span>
                 </div> 
-                <div className="inline-flex items-center gap-2 bg-white/70 backdrop-blur-sm px-2 py-4 rounded-full border border-gray-200/60 shadow-sm h-6 w-48">
-                  <svg className="w-4 h-4 text-[#006569]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
-                  <span className="text-[11px] text-gray-600"><strong className="text-[#2a2d34] font-bold">150+</strong> Queries Solved Weekly</span>
+                <div className={`inline-flex items-center gap-2 backdrop-blur-sm px-2 py-4 rounded-full border shadow-sm h-6 w-48 ${isDark ? 'bg-white/10 border-white/20' : 'bg-white/70 border-gray-200/60'}`}>
+                  <svg className={`w-4 h-4 ${isDark ? 'text-teal-300' : 'text-[#006569]'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                  <span className={`text-[11px] ${isDark ? 'text-white/70' : 'text-gray-600'}`}><strong className={`${isDark ? 'text-white' : 'text-[#2a2d34]'} font-bold`}>150+</strong> Queries Solved Weekly</span>
                 </div>
-
-                 <div className="inline-flex h-6 w-44 items-center gap-2 bg-white/70 backdrop-blur-sm px-2 py-4 rounded-full border border-gray-200/60 shadow-sm">
-                  <svg className="w-4 h-4 text-[#006569]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                  <span className="text-[11px] text-gray-600">Trusted by <strong className="text-[#2a2d34] font-bold">1,500+ MSMEs</strong></span>
+                <div className={`inline-flex h-6 w-44 items-center gap-2 backdrop-blur-sm px-2 py-4 rounded-full border shadow-sm ${isDark ? 'bg-white/10 border-white/20' : 'bg-white/70 border-gray-200/60'}`}>
+                  <svg className={`w-4 h-4 ${isDark ? 'text-teal-300' : 'text-[#006569]'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                  <span className={`text-[11px] ${isDark ? 'text-white/70' : 'text-gray-600'}`}>Trusted by <strong className={`${isDark ? 'text-white' : 'text-[#2a2d34]'} font-bold`}>1,500+ MSMEs</strong></span>
                 </div>
-
-                
               </div>
 
               <div className={`flex flex-wrap gap-3 pt-1 ${getAnimationClasses('delay-500')}`}>

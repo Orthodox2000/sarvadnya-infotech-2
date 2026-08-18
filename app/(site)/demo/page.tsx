@@ -1,5 +1,8 @@
 'use client';
 
+// CHANGE: 2026-08-18 — Added video background preview on /demo via HomeHero backgroundVideo prop.
+// All original content, layout, and components kept exactly as-is.
+
 import { useState } from "react";
 import HomeHero from "../../components/HomeHero";
 import Footer from "../../components/Footer";
@@ -17,7 +20,7 @@ const demoHeroData = [
     colorFrom: "#232F3E",
     colorTo: "#00ABE4",
     description: "Beyond Software Sales — Guiding You to Maximize Your Tally Investment with Certified Support.",
-    image: "/sa2.png",
+    image: "/certified partner person.png",
     layout: "standard" as const,
     features: [
       { text: "TallyPrime v7.0 Ready" },
@@ -66,8 +69,9 @@ export default function DemoPage() {
 
   return (
     <main className="min-h-screen bg-white">
-      {/* High-Impact Creative Hero Section with Factual DB Content */}
-      <HomeHero hero={demoHeroData[0]} emailCopy />
+      <div className="pt-0">
+      <HomeHero hero={demoHeroData[0]} emailCopy backgroundVideo="/sarvadnya trial 2.mp4" />
+      </div>
 
       <CertifiedPartners />
       <QuickAccessHubDemo />

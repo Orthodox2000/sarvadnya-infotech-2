@@ -123,18 +123,14 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
-    // Passive lead enrichment: capture IP, UA, geo (cache-first) and the
-    // browsing session id. GPC opt-out → no IP, no geo.
+    // CHANGE: 2026-08-18 — Removed GPC gating. Full IP, geo always collected.
+    // Passive lead enrichment: capture IP, UA, geo (cache-first) and session id.
     const meta = getRequestMeta(request);
     const sessionId = isValidSessionId(rawData.sessionId) ? String(rawData.sessionId) : '';
-    let geo: GeoInfo | null = null;
-    if (meta.secGpc !== true) {
-      const lookup = await lookupGeo(meta.ip);
-      geo = lookup.geo;
-    }
+    const { geo } = await lookupGeo(meta.ip);
     const submissionData = {
       ...data,
-      ip: meta.secGpc ? undefined : meta.ip,
+      ip: meta.ip,
       ipMasked: maskIp(meta.ip),
       userAgent: meta.userAgent || undefined,
       geo,

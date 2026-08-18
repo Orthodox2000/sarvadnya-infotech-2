@@ -5,6 +5,8 @@ import {
   recordVisitor,
   lookupGeo,
   applyGeo,
+  lookupReverseDns,
+  applyReverseDns,
   maskIp,
   visitorLog,
 } from '@/lib/visitors';
@@ -85,14 +87,14 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'invalid payload' }, { status: 400 });
   }
 
-  // 5) Session-dedup upsert. GPC opt-out (Sec-GPC: 1) → minimal record, no geo.
+  // CHANGE: 2026-08-18 — Removed respectGpc. Full IP/geo always collected.
+  // 5) Session-dedup upsert. Always collect full data regardless of GPC signal.
   const { needsGeo } = await recordVisitor({
     payload,
     meta,
-    respectGpc: meta.secGpc,
   });
 
-  // 6) Geo enrichment only when permitted AND the session is new / geo stale.
+  // 6) Geo enrichment when the session is new / geo stale.
   if (needsGeo) {
     const { geo } = await lookupGeo(meta.ip);
     await applyGeo(payload.sessionId, geo);
@@ -100,6 +102,11 @@ export async function POST(request: Request) {
       session: payload.sessionId.slice(0, 8),
       country: geo?.country ?? null,
     });
+
+    // CHANGE: 2026-08-18 — Background reverse DNS lookup (non-blocking, best-effort).
+    lookupReverseDns(meta.ip)
+      .then((rdns) => applyReverseDns(payload.sessionId, rdns))
+      .catch(() => {});
   }
 
   return new Response(null, { status: 204 });

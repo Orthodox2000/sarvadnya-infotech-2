@@ -77,6 +77,15 @@ export default function UnifiedContactModal({
     
     try {
       const endpoint = dest ? '/api/email/submit' : '/api/contact';
+      // CHANGE: 2026-08-18 — Pass UTM params for campaign tracking.
+      const urlParams = new URLSearchParams(window.location.search);
+      const utmParams = {
+        ...(urlParams.get('utm_source') ? { source: urlParams.get('utm_source') } : {}),
+        ...(urlParams.get('utm_medium') ? { medium: urlParams.get('utm_medium') } : {}),
+        ...(urlParams.get('utm_campaign') ? { campaign: urlParams.get('utm_campaign') } : {}),
+        ...(urlParams.get('utm_term') ? { term: urlParams.get('utm_term') } : {}),
+        ...(urlParams.get('utm_content') ? { content: urlParams.get('utm_content') } : {}),
+      };
       const res = await fetch(endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -84,7 +93,8 @@ export default function UnifiedContactModal({
           ...formData,
           formType: type,
           ...(sessionId ? { sessionId } : {}),
-          ...(dest ? { destination: dest, requestId } : {})
+          ...(dest ? { destination: dest, requestId } : {}),
+          ...(Object.keys(utmParams).length > 0 ? { utmParams } : {}),
         })
       });
 
