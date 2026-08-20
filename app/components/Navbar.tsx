@@ -71,7 +71,7 @@ export default function Navbar({ initialSettings }: { initialSettings?: any }) {
   ];
 
   return (
-    <header className="relative z-1000 w-full border-[#E5E2D9] bg-white">
+    <header className="relative z-1000 w-full border-[#E5E2D9] bg-[linear-gradient(90deg,_rgba(249,251,245,1)_0%,_rgba(244,242,234,1)_53%,_rgba(238,236,223,1)_100%)]">
       <nav className="flex h-10 lg:h-16 w-full max-w-full items-center justify-between pr-3">
         <Link
           href="/"

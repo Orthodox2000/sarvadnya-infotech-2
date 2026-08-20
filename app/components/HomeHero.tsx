@@ -62,6 +62,13 @@ export default function HomeHero({ hero = HERO_CONTENT, emailCopy = false, backg
   const typingIndexRef = useRef(0);
   const typingTextRef = useRef('');
   const [modalConfig, setModalConfig] = useState<{ isOpen: boolean; type: FormType; service: string; details: string }>({ isOpen: false, type: 'general', service: '', details: '' });
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.playbackRate = 0.9;
+    }
+  }, [backgroundVideo]);
 
   useEffect(() => {
     const t = setTimeout(() => setIsEntering(true), 100);
@@ -113,7 +120,7 @@ export default function HomeHero({ hero = HERO_CONTENT, emailCopy = false, backg
     <main suppressHydrationWarning className={`relative w-full ${backgroundVideo ? 'bg-transparent' : "bg-[#fbfaf8] bg-[url('/bg.png')] bg-cover bg-center bg-no-repeat"} min-h-[20rem] sm:min-h-[26rem] md:min-h-[400px] lg:min-h-[450px] lg:h-[550px] flex flex-col`}>
       {backgroundVideo && (
         <>
-          <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover z-0 pointer-events-none" style={{ opacity: 0.75 }}>
+          <video ref={videoRef} autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover z-0 pointer-events-none" style={{ opacity: 0.75 }}>
             <source src={backgroundVideo} type="video/mp4" />
           </video>
           <div className="absolute inset-0 bg-black/50 z-0 pointer-events-none" />
