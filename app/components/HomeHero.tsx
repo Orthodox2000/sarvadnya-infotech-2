@@ -110,13 +110,13 @@ export default function HomeHero({ hero = HERO_CONTENT, emailCopy = false, backg
 
   return (
     <>
-    <main suppressHydrationWarning className={`relative w-full ${backgroundVideo ? 'bg-transparent' : "bg-[#fbfaf8] bg-[url('/bg.png')] bg-cover bg-center bg-no-repeat"} min-h-[20rem] sm:min-h-[26rem] md:min-h-[400px] lg:min-h-[500px]  flex flex-col`}>
+    <main suppressHydrationWarning className={`relative w-full ${backgroundVideo ? 'bg-transparent' : "bg-[#fbfaf8] bg-[url('/bg.png')] bg-cover bg-center bg-no-repeat"} min-h-[20rem] sm:min-h-[26rem] md:min-h-[400px] lg:min-h-[450px] lg:h-[550px] flex flex-col`}>
       {backgroundVideo && (
         <>
           <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover z-0 pointer-events-none" style={{ opacity: 0.75 }}>
             <source src={backgroundVideo} type="video/mp4" />
           </video>
-          <div className="absolute inset-0 bg-black/40 z-0 pointer-events-none" />
+          <div className="absolute inset-0 bg-black/50 z-0 pointer-events-none" />
         </>
       )}
       {/* Background decorative blobs — hidden when video bg */}
@@ -191,14 +191,14 @@ export default function HomeHero({ hero = HERO_CONTENT, emailCopy = false, backg
             </div>
 
             {/* Right: Image */}
-            <div className="hidden lg:flex lg:w-1/2 relative items-center justify-center px-4 xl:px-8 lg:-mt-18 max-md:-mt-20 z-10">
+            {/* <div className="hidden lg:flex lg:w-1/2 relative items-center justify-center px-4 xl:px-8 lg:-mt-18 max-md:-mt-20 z-10">
               <div className="relative w-full max-w-[700px]">
                 <div className={`relative w-full aspect-[3/4] max-h-[650px] md:h-[500px]
                   ${isEntering ? 'opacity-100 transition-all duration-1200' : 'opacity-0 translate-y-4'}`}>
                   <Image src={hero.image} alt={hero.titleText} fill priority className="mt-20 object-contain" sizes="(max-width: 1024px) 100vw, 480px" />
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

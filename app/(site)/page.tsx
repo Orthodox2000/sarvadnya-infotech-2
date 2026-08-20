@@ -21,7 +21,7 @@ export default async function Home() {
 
   return (
     <main className="bg-white">
-      <HomeHero />
+      <HomeHero emailCopy backgroundVideo="/sarvadnya trial 2.mp4"/>
       <CertifiedPartners initialData={partnersData} />
   
       <CustomerReviews initialData={reviewsData} />

@@ -8,9 +8,9 @@ const __dirname = path.dirname(__filename);
 const modules = [
   {
     id: "cf-agencies",
-    title: "CFA Module (Clearing & Forwarding Agencies)",
-    shortDescription: "For Clearing & Forwarding agencies tired of tracking jobs on Excel — billing and reimbursables handled inside Tally itself.",
-    fullDescription: "Clearing & forwarding means a lot of jobs, a lot of expenses, and a lot of bills — and somewhere in between, reimbursable expenses get missed. This module keeps every job's expenses and income connected in Tally. When you bill, the reimbursable amounts come up on their own — no digging through old files. Print CFA-format invoices with QR / IRN, bill in multiple currencies for forwarding work, and close jobs once billing is done. Billing and books stay in one place, so nothing slips.",
+    title: "CFA Module",
+    shortDescription: "Job billing and reimbursables for CFA agencies — all inside Tally.",
+    fullDescription: "Clearing & forwarding means many jobs, expenses, and bills — and reimbursables get missed. This module keeps every job's expenses and income connected in Tally. Reimbursable amounts auto-fill when you bill — no digging through files. Print CFA-format invoices with QR / IRN, bill in multiple currencies, and close jobs once done. Billing and books stay in one place.",
     videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
     brochureUrl: "/brochures/cf-agent-module.pdf",
     image: "/assets/images/1586528116311-ad8dd3c8310d.jpg",
@@ -30,18 +30,18 @@ const modules = [
       "E-invoices generated free by Tally itself"
     ],
     pricing: [
-      { label: "CFA Module (Clearing & Forwarding Agencies)", price: "Rs. 25,000/-" }
+      { label: "CFA Module", price: "Rs. 25,000/-" }
     ],
     category: "Vertical Solution"
   },
   {
     id: "housing-societies",
     title: "Housing Society Module",
-    shortDescription: "For societies with 70+ members tired of doing maintenance bills and interest by hand — Tally does it automatically.",
-    fullDescription: "If your society has more than 70 members, maintenance bills and interest take forever every month. Set each member's charges once, and the module generates the bills and interest vouchers itself — monthly, quarterly, or your own cycle. Bills print with outstanding and interest details, late-payment interest is calculated for you, and GST is handled as per the Society Act. You stop doing the math; Tally does it.",
+    shortDescription: "Auto maintenance bills and interest for 70+ member societies.",
+    fullDescription: "If your society has 70+ members, maintenance bills and interest take forever each month. Set each member's charges once, and the module generates bills and interest vouchers itself — monthly, quarterly, or your cycle. Bills print with outstanding and interest details, late-payment interest is auto-calculated, and GST is handled per the Society Act. You stop doing the math.",
     videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
     brochureUrl: "/brochures/society-module.pdf",
-    image: "/assets/images/1486406146926-c627a92ad1ab.jpg",
+    image: "/housing society.png",
     features: [
       "Set each member's maintenance charges once — bills generate themselves",
       "Auto bill generation monthly, quarterly, or your custom cycle",
@@ -65,8 +65,8 @@ const modules = [
   {
     id: "sales-commission",
     title: "SalesMan / Agent Module",
-    shortDescription: "For businesses selling through brokers or agents — commission and rate differences sorted in Tally, no month-end arguments.",
-    fullDescription: "Selling through agents means month-end chaos — calculating commission, rate differences, and who's been paid. This module keeps it all in Tally. Set commission at item or broker level, pick the agent in any sale, and the system works out commission on your rate only — not on the rate difference. Tag amounts as paid when you settle, and pull broker-wise reports anytime. Your agents see exactly what they're owed, and so do you.",
+    shortDescription: "Broker commission and rate difference tracking in Tally.",
+    fullDescription: "Selling through agents means month-end chaos — commission, rate differences, and who's been paid. This module keeps it in Tally. Set commission at item or broker level, pick the agent in any sale, and commission calculates on your rate only. Tag amounts as paid when settled, and pull broker-wise reports anytime. Your agents see exactly what they're owed.",
     videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
     brochureUrl: "/brochures/commission-module.pdf",
     image: "/assets/images/1554224155-6726b3ff858f.jpg",
@@ -92,8 +92,8 @@ const modules = [
   {
     id: "logistics-transport",
     title: "Transport Module",
-    shortDescription: "For transport businesses generating LRs (lorry receipts) — create, track and bill them from Tally without manual mistakes.",
-    fullDescription: "Transport businesses live on LRs — lorry receipts. This module lets you create LRs with all the details you need, see every LR on one page, and auto-create invoices from the unbilled ones. Bill one LR or many in a single invoice, print with LR details, and export the annexure. Billing runs off the LR itself, so manual errors go down and nothing sits unbilled.",
+    shortDescription: "Create, track and bill lorry receipts from Tally.",
+    fullDescription: "Transport businesses live on LRs. This module lets you create LRs with all details, see every LR on one page, and auto-create invoices from unbilled ones. Bill one LR or many in a single invoice, print with LR details, and export the annexure. Billing runs off the LR itself, so errors go down and nothing sits unbilled.",
     videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
     brochureUrl: "/brochures/transport-module.pdf",
     image: "/assets/images/1519003722824-194d4455a60c.jpg",
@@ -119,11 +119,11 @@ const modules = [
   {
     id: "container-handling",
     title: "Container Handling Module",
-    shortDescription: "For container handling firms drowning in log sheets — bill them from Tally and never let unbilled work slip.",
-    fullDescription: "In container handling, log sheets pile up and billing gets messy. Create log sheets with container and vehicle details, pick the ones to bill — one party or several at once — and print the bill with its annexure. The unbilled log sheet report shows exactly what's pending, so no work goes out unpaid.",
+    shortDescription: "Log sheet billing for container handling firms.",
+    fullDescription: "In container handling, log sheets pile up and billing gets messy. Create log sheets with container and vehicle details, pick the ones to bill — one party or several — and print the bill with annexure. The unbilled log sheet report shows exactly what's pending, so nothing goes unpaid.",
     videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
     brochureUrl: "/brochures/container-handling-module.pdf",
-    image: "/assets/images/1552664730-d307ca884978.jpg",
+    image: "/contaner-mgt.jpg",
     features: [
       "Create log sheets with container & vehicle details",
       "Bill selected log sheets — bulk or single, party-wise",
@@ -146,8 +146,8 @@ const modules = [
   {
     id: "garment-retail",
     title: "Garment / Footwear Sales Module",
-    shortDescription: "For garment & footwear sellers — color and size stock tracked in Tally without slowing down billing.",
-    fullDescription: "In garments and footwear, one design comes in many colors and sizes, and that makes stock a headache. This module creates items automatically as you enter purchases or sales, tracks them by color and size, and keeps billing fast. Invoices print with color and size columns so you fit more items per page, and the closing stock report shows exactly what's left, in which color and size.",
+    shortDescription: "Color and size stock tracking for garment and footwear sellers.",
+    fullDescription: "In garments and footwear, one design comes in many colors and sizes — stock becomes a headache. This module creates items as you enter purchases or sales, tracks by color and size, and keeps billing fast. Invoices print with color and size columns for more items per page, and the closing stock report shows exactly what's left.",
     videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
     brochureUrl: "/brochures/garment-module.pdf",
     image: "/assets/images/1523381210434-271e8be1f52b.jpg",
