@@ -1,4 +1,4 @@
-export type DestinationCategory = 'products' | 'services' | 'cloud' | 'modules' | 'others';
+export type DestinationCategory = 'products' | 'services' | 'cloud' | 'modules' | 'addons' | 'others';
 
 export type FormDestination = {
   key: string;
@@ -15,6 +15,7 @@ export const DESTINATION_CATEGORIES: { key: DestinationCategory; label: string; 
   { key: 'services', label: 'Services Enquiries', description: 'TSS, TDL, AMC, training and other service page forms.' },
   { key: 'cloud', label: 'Cloud Enquiries', description: 'AWS / Windows / Backup for Tally / Tally Cloud Access page forms.' },
   { key: 'modules', label: 'Modules Enquiries', description: 'Custom Tally modules page forms.' },
+  { key: 'addons', label: 'Addons Enquiries', description: 'Tally TDL add-on requirement submissions from /addons.' },
   { key: 'others', label: 'Other Pages', description: 'Home, demo, HRMS, contact and any other form pages.' },
 ];
 
@@ -46,6 +47,9 @@ export const FORM_DESTINATIONS: FormDestination[] = [
 
   // Modules
   { key: 'modules', label: 'Modules', paths: ['/modules'], category: 'modules' },
+
+  // Addons
+  { key: 'addons', label: 'Tally Add-ons', paths: ['/addons'], category: 'addons' },
 
   // Other pages
   { key: 'home', label: 'Home Page', paths: ['/'], category: 'others' },

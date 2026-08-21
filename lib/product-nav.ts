@@ -46,49 +46,43 @@ export const productItems: ProductItem[] = [
   {
     label: "Modules",
     href: "/modules",
+    // CHANGE: 2026-08-21 — Split Modules dropdown into 2 groups (like Products): Business Modules + new Addons column.
+    // Productbar merge logic fills group "m-group" subItems with dynamic modules from /api/modules.
     subItems: [
       {
-        id: "m-cf",
-        label: "CFA Module (Clearing & Forwarding)",
-        href: "/modules?id=cf-agencies",
-        description: "Job billing and reimbursables for CFA agencies.",
+        id: "m-group",
+        label: "Business Modules",
+        href: "/modules",
+        description: "Industry modules for TallyPrime.",
+        subItems: [
+          { id: "m-cf", label: "CFA Module", href: "/modules?id=cf-agencies" },
+          { id: "m-soc", label: "Housing Society Module", href: "/modules?id=housing-societies" },
+          { id: "m-sales", label: "SalesMan / Agent Module", href: "/modules?id=sales-commission" },
+          { id: "m-trans", label: "Transport Module", href: "/modules?id=logistics-transport" },
+          { id: "m-container", label: "Container Handling Module", href: "/modules?id=container-handling" },
+          { id: "m-garment", label: "Garment / Footwear Module", href: "/modules?id=garment-retail" },
+          // {
+          //   id: "m-excel",
+          //   label: "Excel to Tally",
+          //   href: "/modules?id=excel-to-tally",
+          //   description: "Bulk data import tools.",
+          // },
+        ]
       },
       {
-        id: "m-soc",
-        label: "Housing Society Module",
-        href: "/modules?id=housing-societies",
-        description: "Auto maintenance bills and interest for societies.",
+        id: "a-group",
+        label: "Addons",
+        href: "/addons",
+        description: "Ready TDL add-ons for TallyPrime.",
+        subItems: [
+          { id: "a-email-inv", label: "Auto Email Sales Invoices", href: "/addons#auto-email-sales-invoices" },
+          { id: "a-double-disc", label: "Double Discount", href: "/addons#double-discount" },
+          { id: "a-maker-checker", label: "Single Level Maker & Checker", href: "/addons#single-level-maker-checker" },
+          { id: "a-lock-rate", label: "Lock Sales Below Last Purchase Rate", href: "/addons#lock-sales-below-last-purchase-rate" },
+          { id: "a-auto-receipt", label: "Auto Receipt in Sales", href: "/addons#auto-receipt-in-sales" },
+          { id: "a-view-all", label: "View All Add-ons", href: "/addons" },
+        ]
       },
-      {
-        id: "m-sales",
-        label: "SalesMan / Agent Module",
-        href: "/modules?id=sales-commission",
-        description: "Broker commission and rate difference tracking.",
-      },
-      {
-        id: "m-trans",
-        label: "Transport Module",
-        href: "/modules?id=logistics-transport",
-        description: "Create, track and bill lorry receipts.",
-      },
-      {
-        id: "m-container",
-        label: "Container Handling Module",
-        href: "/modules?id=container-handling",
-        description: "Log sheet billing for container handling.",
-      },
-      {
-        id: "m-garment",
-        label: "Garment / Footwear Module",
-        href: "/modules?id=garment-retail",
-        description: "Color and size stock tracking for retail.",
-      },
-      // {
-      //   id: "m-excel",
-      //   label: "Excel to Tally",
-      //   href: "/modules?id=excel-to-tally",
-      //   description: "Bulk data import tools.",
-      // },
     ],
   },
   {

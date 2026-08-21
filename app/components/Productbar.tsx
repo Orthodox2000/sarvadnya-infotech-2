@@ -88,11 +88,11 @@ const Productbar = ({ initialSettings }: { initialSettings?: any }) => {
       try {
         const data = await fetchWithCache('/api/modules');
         if (Array.isArray(data)) {
+          // CHANGE: 2026-08-21 — Drop per-item descriptions in the nav (rows got too tall); label-only links.
           setDynamicModules(data.map(m => ({
             id: m.id || m._id,
             label: m.title,
-            href: `/modules?id=${m.id || m._id}`,
-            description: m.shortDescription
+            href: `/modules?id=${m.id || m._id}`
           })));
         }
       } catch (err) {
@@ -103,11 +103,17 @@ const Productbar = ({ initialSettings }: { initialSettings?: any }) => {
   }, []);
 
   // Merge dynamic modules into productItems
+  // CHANGE: 2026-08-21 — Modules dropdown now has 2 groups (Business Modules + Addons); fill only the
+  // "m-group" group's nested subItems with fetched modules instead of replacing the whole subItems array.
   const items = (productItems || []).map(item => {
     if (item.label === 'Modules' && dynamicModules.length > 0) {
       return {
         ...item,
-        subItems: dynamicModules
+        subItems: item.subItems.map(group =>
+          group.id === 'm-group'
+            ? { ...group, subItems: dynamicModules }
+            : group
+        )
       };
     }
     return item;
@@ -210,7 +216,7 @@ const Productbar = ({ initialSettings }: { initialSettings?: any }) => {
                 <div className="bg-white/95 backdrop-blur-xl border border-[#E9F1FA] rounded-b-2xl shadow-2xl overflow-hidden">
                   <div className="p-3 sm:p-5 grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4 max-h-[70vh] overflow-y-auto no-scrollbar">
                     {(item.subItems || []).map((subItem: ProductSubItem) => (
-                      <div key={subItem.id} className="flex flex-col gap-1.5">
+                      <div key={subItem.id} className="flex flex-col gap-0.5">
                         <Link
                           href={subItem.href}
                           className="flex flex-col rounded-lg px-3 py-2 transition-all group/item border border-transparent hover:bg-teal-100"
@@ -233,12 +239,12 @@ const Productbar = ({ initialSettings }: { initialSettings?: any }) => {
                         </Link>
                         
                         {(subItem.subItems?.length ?? 0) > 0 && (
-                          <div className="flex flex-col gap-2 ml-4 pl-4 border-l border-[#E9F1FA]">
+                          <div className="flex flex-col gap-0.5 ml-2.5 pl-3 border-l border-[#E9F1FA]">
                             {(subItem.subItems || []).map((nestedItem: ProductSubItem) => (
                               <Link
                                 key={nestedItem.id}
                                 href={nestedItem.href}
-                                className="block py-1.5 px-3 rounded-md text-[12px] font-bold text-slate-500 hover:text-[#0C3353] transition-all hover:bg-teal-100"
+                                className="block py-1 px-3 rounded-md text-[12px] font-bold text-slate-500 hover:text-[#0C3353] transition-all hover:bg-teal-100"
                                 onClick={handleLinkClick}
                               >
                                 {nestedItem.label}

@@ -562,3 +562,13 @@ main > div:first-of-type {
 .font-inter {
   font-family: var(--font-sans), 'Inter', ui-sans-serif, system-ui, sans-serif;
 }
+/* CHANGE: 2026-08-21 - Zoho SalesIQ runs TRACKING-ONLY: hide the chat button/widget UI completely.
+   Targets the client-provided DOM node (#zs_fl_chat span) plus all known SalesIQ mounts as fallback.
+   The zsiqscript itself keeps loading, so visitor tracking/analytics continue unaffected. */
+#zs_fl_chat,
+span.siqico-chat.zsiq-chat-icn,
+#zsiqwidget,
+#zsiq_float,
+iframe[src*='salesiq'] {
+  display: none !important;
+}
