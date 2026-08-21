@@ -33,6 +33,7 @@ The application implements several advanced optimization strategies to ensure sm
 | `FAQ` | Dynamic accordion with keyword search. | `useMemo` for search filtering, partial list rendering (Expandable). |
 | `QuickSupportModal` | AI-powered sales consultant chatbot (Ask Sara). | Groq API with local fallback, stop/interrupt, typewriter, voice, tutorials. |
 | `ModuleCard` / `ModuleModal` | Modules grid + detail modal (`/modules`). Card action buttons fixed `h-10 whitespace-nowrap` and pinned to card bottom via `mt-auto` for consistent alignment. Modal pricing is hidden behind a "View Price" reveal gated by a simple addition game (`X + Y = ?`) before showing the 2-column Package|Price table. | Data served from MongoDB `modules` collection (seeded by `scripts/seed_modules.mjs`); `lib/modules.ts` holds only the `Module` type. |
+| `AddonsPage` (`/addons`) | Searchable catalog of top-20 Tally TDL add-ons. Full-width single-column cards with "Submit Requirement" CTA → `UnifiedContactModal` prefilled `Add-on: <title>` + explicit `destination="addons"`. Cards carry anchor ids (`scroll-mt-28`) so ProductBar deep links (`/addons#slug`) scroll past the sticky search bar. | Static data in `lib/addons.ts` (`Addon { id, title, description }` — no DB/admin). Sticky search via `useMemo` over title+description; memoized `AddonCard`; live result counter. |
 
 ### 4. AI Chatbot Architecture (Sara)
 
@@ -65,7 +66,7 @@ Vercel serverless functions reject request bodies over ~4.5 MB, so all uploads a
 
 **Architecture:** Web forms that send an internal email copy **send the email directly (inline)** in the request. Vercel's Hobby plan allows only 2 cron jobs at a minimum of once/day, so scheduled/queue-drain sending is not viable — delivery therefore never depends on a cron. Every form route sanitizes → validates → saves the submission → resolves recipients → calls Resend synchronously → records the outcome in a MongoDB send ledger. The unique `jobKey` claim gives exactly-once semantics: a retried/duplicate POST can never fire a second email.
 
-**Per-page destinations (single routing model):** every page's form — the `UnifiedContactModal` (client resolves `getDestinationFromPath()` in `lib/form-destinations.ts`, override via the `destination` prop → `POST /api/email/submit`) **and** the inline sidebar forms (→ `POST /api/contact`, destination resolved server-side from the body `destination` or the `Referer` URL) — routes to its page destination. Recipients resolve destination-first from the admin-editable `EMAIL_DESTINATION_RECIPIENTS` map (opt-in — a page with no configured recipient saves the submission but sends **no** email, only `demo` is pre-wired). The legacy per-form-type fallback (`EMAIL_FORM_RECIPIENTS` JSON) then `RESEND_INTERNAL_TO` still applies only to submissions that have no page destination at all. Destinations are grouped into categories (`products` / `services` / `cloud` / `modules` / `others`) in the admin UI.
+**Per-page destinations (single routing model):** every page's form — the `UnifiedContactModal` (client resolves `getDestinationFromPath()` in `lib/form-destinations.ts`, override via the `destination` prop → `POST /api/email/submit`) **and** the inline sidebar forms (→ `POST /api/contact`, destination resolved server-side from the body `destination` or the `Referer` URL) — routes to its page destination. Recipients resolve destination-first from the admin-editable `EMAIL_DESTINATION_RECIPIENTS` map (opt-in — a page with no configured recipient saves the submission but sends **no** email, only `demo` is pre-wired). The legacy per-form-type fallback (`EMAIL_FORM_RECIPIENTS` JSON) then `RESEND_INTERNAL_TO` still applies only to submissions that have no page destination at all. Destinations are grouped into categories (`products` / `services` / `cloud` / `modules` / `addons` / `others`) in the admin UI.
 
 **Why not a cron/queue?** Vercel cron jobs max out at 2/day on Hobby — fine for maintenance, impossible for email scheduling. The old enqueue + `after()`/cron drain design left emails stuck as `pending` if the drain never ran. Direct inline sending removes the scheduler entirely. A failed Resend call is saved in the ledger as `failed` with a `nextRetryAt` and retried on demand (admin panel "Retry Failed Sends") or by an **optional external scheduler**.
 
@@ -99,6 +100,24 @@ Vercel serverless functions reject request bodies over ~4.5 MB, so all uploads a
 - **cPanel landing (`cpanel-landing/app/globals.css`):** local `--color-brand-*` ramp keyed to teal — 50 `#e6f5f5` … 500 `#1b8a8a`, 600 `#006569`, 700 `#005659`, 800 `#044a4b`, 900 `#033d3e`, 950 `#032e2f` — with WhatsApp `#25D366` buttons kept.
 - **Palette pickers (`lib/palettes.ts`, `app/(site)/products/product-theme.ts`):** teal-anchored (teal palette "Teal Corporate" `#00897b`/`#005a4e`/`#2dd4bf`, accent `#14b8a6`). Palette ids must stay stable (referenced by stored product data).
 
+### 8. Zoho SalesIQ — Tracking-Only Embed (No Chat UI)
+
+The site loads the client's Zoho SalesIQ widget script **for visitor tracking/analytics only** — the visible chat button is suppressed. Do not re-add a chat widget without explicit instruction.
+
+| File | Role |
+| :--- | :--- |
+| `app/layout.tsx` | End of `<body>`: raw SSR'd `<script>` tags (NOT `next/script` — order must be guaranteed): inline `window.$zoho` init + `$zoho.salesiq.ready(...)` hook that hides the chat button (`floatbutton.visible("hide")` / `chatbutton.visible("hide")`, try/catch both), then deferred `#zsiqscript` from `salesiq.zohopublic.in`. Root layout → present on every page. |
+| `app/globals.css` | CSS suppression layer (bottom of file): `#zs_fl_chat`, `span.siqico-chat.zsiq-chat-icn`, `#zsiqwidget`, `#zsiq_float`, `iframe[src*='salesiq']` → `display:none !important`. The script keeps loading so analytics continue; only the UI is hidden. |
+| `next.config.js` | CSP must keep the Zoho domains or tracking silently dies: `script-src`/`connect-src`(incl. `wss:`)/`img-src`/`frame-src` allow `*.zohopublic.in` (+ `*.zohocdn.com` for CDN assets). |
+
+**Permanent alternative:** the chat button can also be disabled server-side in the SalesIQ dashboard (Settings → Widgets → visibility off) — tracking stays on there too.
+
+### 9. Build Discipline (Local Machine)
+
+- **Never run `npm run dev` and `npm run build` at the same time.** Turbopack dev rewrites `.next` while the production build reads it → random `PageNotFoundError: Cannot find module for page: X` failures during "Collecting page data" (the failing page name differs each run).
+- This machine has 7.5 GB RAM (~1.3 GB free); `next.config.js` sets `experimental.cpus: 1` to keep build workers from starving. Builds take ~2–4 min.
+- If a build fails with that error: stop all node dev processes, delete `.next`, rebuild.
+
 ## Developer Guidelines
 - **Surgical Updates:** Always prefer targeted `replace` over complete file rewrites for existing files.
 - **Accessibility:** Maintain high contrast ratios and ensure interactive elements have clear focus states.
@@ -110,4 +129,4 @@ Vercel serverless functions reject request bodies over ~4.5 MB, so all uploads a
 - **Validate Before Completing:** Before marking any task as done, re-read the original user request, re-check every todo item, and verify each requirement is actually satisfied. Requirements get silently dropped during scope — always do a second pass against the original prompt to ensure nothing was missed.
 
 ---
-*Last Updated: 2026-08-18*
+*Last Updated: 2026-08-21*
