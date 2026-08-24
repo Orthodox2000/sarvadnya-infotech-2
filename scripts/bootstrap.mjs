@@ -356,22 +356,28 @@ async function run() {
       },
     ];
     for (const setting of emailSettings) {
+      // CHANGE: 2026-08-24 — Added upsert:true; previously a missing key was silently skipped (no insert ever happened).
       await settingsCol.updateOne(
         { key: setting.key },
-        { $setOnInsert: { key: setting.key, value: setting.value, updatedAt: new Date() } }
+        { $setOnInsert: { key: setting.key, value: setting.value, updatedAt: new Date() } },
+        { upsert: true }
       );
       console.log(`Seeded setting (if missing): ${setting.key}`);
     }
 
     // ── Social media settings (seeded only if missing, so admin edits persist) ──
     const socialSettings = [
+      { key: 'NEXT_PUBLIC_INSTAGRAM_URL', value: 'https://www.instagram.com/sarvadnya.infotech/' },
+      { key: 'NEXT_PUBLIC_INSTAGRAM_HANDLE', value: '@sarvadnya.infotech' },
       { key: 'NEXT_PUBLIC_YOUTUBE_URL', value: 'https://www.youtube.com/@sarvadnyainfotechtally' },
       { key: 'NEXT_PUBLIC_YOUTUBE_HANDLE', value: '@sarvadnyainfotechtally' },
     ];
     for (const setting of socialSettings) {
+      // CHANGE: 2026-08-24 — Added upsert:true (same fix as email settings above).
       await settingsCol.updateOne(
         { key: setting.key },
-        { $setOnInsert: { key: setting.key, value: setting.value, updatedAt: new Date() } }
+        { $setOnInsert: { key: setting.key, value: setting.value, updatedAt: new Date() } },
+        { upsert: true }
       );
       console.log(`Seeded setting (if missing): ${setting.key}`);
     }

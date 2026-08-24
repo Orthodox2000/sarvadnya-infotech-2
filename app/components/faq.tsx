@@ -5,11 +5,16 @@ import { fetchWithCache } from '@/lib/client-api';
 
 const CATEGORIES = ['All', 'Products', 'Services', 'Technical', 'Contact'];
 
+// CHANGE: 2026-08-24 — View More pagination so users don't scroll through the whole FAQ list; PAGE_SIZE shown initially.
+const PAGE_SIZE = 5;
+
 const FAQ = ({ initialData, initialSettings }: { initialData?: any[], initialSettings?: any }) => {
     const [faqData, setFaqData] = useState<any[]>(initialData || []);
     const [loading, setLoading] = useState(!initialData);
     const [activeIndex, setActiveIndex] = useState<number | null>(null);
     const [activeCategory, setActiveCategory] = useState('All');
+    // CHANGE: 2026-08-24 — How many FAQs are currently revealed.
+    const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
     const sectionRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -28,6 +33,8 @@ const FAQ = ({ initialData, initialSettings }: { initialData?: any[], initialSet
     }, [initialData]);
 
     const filteredFaq = activeCategory === 'All' ? faqData : faqData.filter(item => item.category === activeCategory);
+    // CHANGE: 2026-08-24 — Only the first visibleCount FAQs are rendered.
+    const visibleFaq = filteredFaq.slice(0, visibleCount);
 
     const ERP_NOTICE = {
         question: "Has Tally stopped ERP renewals?",
@@ -55,7 +62,7 @@ const FAQ = ({ initialData, initialSettings }: { initialData?: any[], initialSet
                     {CATEGORIES.map(cat => (
                         <button
                             key={cat}
-                            onClick={() => { setActiveCategory(cat); setActiveIndex(null); }}
+                            onClick={() => { setActiveCategory(cat); setActiveIndex(null); setVisibleCount(PAGE_SIZE); }}
                             className={`px-6 py-2 rounded-lg text-sm font-bold transition-colors ${
                                 activeCategory === cat
                                     ? 'bg-[#006569] text-white'
@@ -104,7 +111,7 @@ const FAQ = ({ initialData, initialSettings }: { initialData?: any[], initialSet
                             <p className="text-[#5D5F5F]">No FAQs found for this category.</p>
                         </div>
                     ) : (
-                        filteredFaq.map((item, index) => (
+                        visibleFaq.map((item, index) => (
                             <div
                                 key={index}
                                 className={`w-full border rounded-xl overflow-hidden transition-colors ${
@@ -146,6 +153,26 @@ const FAQ = ({ initialData, initialSettings }: { initialData?: any[], initialSet
                             </div>
                         ))
                     )}
+
+                    {/* CHANGE: 2026-08-24 — View More / Show Less controls under the list. */}
+                    {filteredFaq.length > visibleCount ? (
+                        <button
+                            onClick={() => setVisibleCount(c => c + PAGE_SIZE)}
+                            className="mt-4 mx-auto inline-flex items-center gap-2 px-8 py-3 rounded-xl bg-white border border-[#006569]/30 text-[#006569] font-bold text-sm shadow-sm hover:bg-[#006569] hover:text-white transition-colors"
+                        >
+                            View More FAQs
+                            <span className="text-xs font-semibold opacity-70">({filteredFaq.length - visibleCount} more)</span>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6"></path></svg>
+                        </button>
+                    ) : visibleCount > PAGE_SIZE && filteredFaq.length > PAGE_SIZE ? (
+                        <button
+                            onClick={() => setVisibleCount(PAGE_SIZE)}
+                            className="mt-4 mx-auto inline-flex items-center gap-2 px-8 py-3 rounded-xl bg-transparent border border-[#E9F1FA] text-[#5D5F5F] font-bold text-sm hover:border-[#006569]/30 hover:text-[#006569] transition-colors"
+                        >
+                            Show Less
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m18 15-6-6-6 6"></path></svg>
+                        </button>
+                    ) : null}
                 </div>
             </div>
         </section>

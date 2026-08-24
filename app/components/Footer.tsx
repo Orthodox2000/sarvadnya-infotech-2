@@ -85,9 +85,7 @@ export default function Footer({ settings: initialSettings }: { settings?: SiteS
     };
 
     const socialLinks = [
-        { name: 'WhatsApp', url: `https://wa.me/${whatsappPhone.replace(/\D/g, '').length === 10 ? '91' + whatsappPhone.replace(/\D/g, '') : whatsappPhone.replace(/\D/g, '')}`, hoverColor: 'hover:bg-[#25D366] hover:border-[#25D366]', icon: (
-            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.414 0 .004 5.411.002 12.048c0 2.12.54 4.19 1.563 6.024L0 24l6.135-1.608a11.81 11.81 0 005.908 1.567h.005c6.635 0 12.045-5.411 12.047-12.047 0-3.217-1.252-6.242-3.525-8.514z"/></svg>
-        )},
+        // CHANGE: 2026-08-24 — Removed WhatsApp from footer social icons per user request (floating WhatsApp button elsewhere is unaffected).
         { name: 'Facebook', url: settings?.facebook_url || '#', hoverColor: 'hover:bg-[#1877F2] hover:border-[#1877F2]', icon: (
             <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
         )},
@@ -159,11 +157,12 @@ export default function Footer({ settings: initialSettings }: { settings?: SiteS
                     </p>
 
                     <div className="flex gap-3">
+                        {/* CHANGE: 2026-08-24 — Square-ish buttons instead of circles per user request. */}
                         {socialLinks.map((social) => (
                             <a 
                                 key={social.name}
                                 href={social.url}
-                                className={`w-9 h-9 rounded-full border border-white/20 flex items-center justify-center ${social.hoverColor} hover:text-white transition-all duration-300 bg-white/5`}
+                                className={`w-9 h-9 rounded-lg border border-white/20 flex items-center justify-center ${social.hoverColor} hover:text-white transition-all duration-300 bg-white/5`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                             >
@@ -172,25 +171,7 @@ export default function Footer({ settings: initialSettings }: { settings?: SiteS
                         ))}
                     </div>
 
-                    <div className="pt-4 flex flex-col gap-3">
-                        <Link href="/privacy" className="text-[10px] font-black uppercase tracking-widest text-white/40 hover:text-[#006569] transition-colors flex items-center gap-2 group/link">
-                            <span className="w-1.5 h-1.5 rounded-full bg-[#006569] opacity-0 group-hover/link:opacity-100 transition-opacity" />
-                            Privacy Policy
-                        </Link>
-                        <Link href="/terms" className="text-[10px] font-black uppercase tracking-widest text-white/40 hover:text-[#006569] transition-colors flex items-center gap-2 group/link">
-                            <span className="w-1.5 h-1.5 rounded-full bg-[#006569] opacity-0 group-hover/link:opacity-100 transition-opacity" />
-                            Terms & Conditions
-                        </Link>
-                        <Link href="/eula" className="text-[10px] font-black uppercase tracking-widest text-white/40 hover:text-[#006569] transition-colors flex items-center gap-2 group/link">
-                            <span className="w-1.5 h-1.5 rounded-full bg-[#006569] opacity-0 group-hover/link:opacity-100 transition-opacity" />
-                            EULA
-                        </Link>
-                        <Link href="/report-problem" className="text-[10px] font-black uppercase tracking-widest text-white/40 hover:text-[#006569] transition-colors flex items-center gap-2 group/link">
-                            <span className="w-1.5 h-1.5 rounded-full bg-[#006569] opacity-0 group-hover/link:opacity-100 transition-opacity" />
-                            Report a Problem
-                        </Link>
-                    </div>
-         
+                    {/* CHANGE: 2026-08-24 — Removed duplicate legal links here; they now live only once in the bottom bar (single line). */}
                 </div>
 
                 {/* TallyPrime Products */}
@@ -254,13 +235,14 @@ export default function Footer({ settings: initialSettings }: { settings?: SiteS
                     <h3 className="text-white font-black uppercase tracking-widest text-xs mb-8">Get In Touch</h3>
                     <ul className="space-y-5 text-sm mb-6 text-white/90">
                         <li className="flex items-center gap-3">
-                            <svg className="w-5 h-5 text-[#006569] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <svg className="w-5 h-5 text-white shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                             </svg>
-                            <a href={`mailto:${supportEmail}`} className="hover:text-[#B8DEDE] transition-colors font-bold">{supportEmail}</a>
+                            {/* CHANGE: 2026-08-24 — break-all + min-w-0 so the long email wraps instead of overflowing to the right. */}
+                            <a href={`mailto:${supportEmail}`} className="hover:text-[#B8DEDE] transition-colors font-bold break-all min-w-0">{supportEmail}</a>
                         </li>
                         <li className="flex items-start gap-3">
-                            <svg className="w-5 h-5 text-[#006569] shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <svg className="w-5 h-5 text-white shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                             </svg>
                             <div className="flex flex-col gap-3">
@@ -293,11 +275,13 @@ export default function Footer({ settings: initialSettings }: { settings?: SiteS
             {/* Bottom Bar */}
             <div className="max-w-7xl mx-auto pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-white/60">
                 <p>© {year} Sarvadnya Infotech LLP. All Rights Reserved.</p>
-                <div className="flex gap-6">
+                {/* CHANGE: 2026-08-24 — Single legal-links row (added Report a Problem) — the left-column duplicates were removed. */}
+                <div className="flex flex-wrap justify-center gap-x-6 gap-y-2">
                     <Link href="/careers" className="hover:text-white transition-colors">Careers</Link>
                     <Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
-                    <Link href="/terms" className="hover:text-white transition-colors">Terms & Conditions</Link>
+                    <Link href="/terms" className="hover:text-white transition-colors">Terms &amp; Conditions</Link>
                     <Link href="/eula" className="hover:text-white transition-colors">EULA</Link>
+                    <Link href="/report-problem" className="hover:text-white transition-colors">Report a Problem</Link>
                 </div>
             </div>
         </footer>

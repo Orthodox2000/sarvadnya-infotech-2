@@ -68,6 +68,11 @@ const Productbar = ({ initialSettings }: { initialSettings?: any }) => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // CHANGE: 2026-08-24 — Broadcast visibility so the Navbar can toggle its bottom shadow in sync.
+  useEffect(() => {
+    window.dispatchEvent(new CustomEvent('productbar:visibility', { detail: { visible: isVisible } }));
+  }, [isVisible]);
+
   useEffect(() => {
     if (!initialSettings) {
       const fetchSettings = async () => {
@@ -173,8 +178,9 @@ const Productbar = ({ initialSettings }: { initialSettings?: any }) => {
   }, [activeMenu]);
 
   return (
+    // CHANGE: 2026-08-24 — Removed transparency: solid bg-teal-700 instead of teal-700/90 per user request.
     <div 
-      className={`w-full border-b border-white/10 relative z-30 flex items-center justify-center no-scrollbar transition-opacity duration-300 ease-in-out shadow-sm bg-teal-700/90 h-7 
+      className={`w-full border-b border-white/10 relative z-30 flex items-center justify-center no-scrollbar transition-opacity duration-300 ease-in-out shadow-sm bg-teal-700 h-7 
         ${isVisible ? 'opacity-100' : 'opacity-0 pointer-events-none invisible'}`}
     >
       <div className="w-full max-w-7xl  flex justify-around items-start h-full">
@@ -216,7 +222,8 @@ const Productbar = ({ initialSettings }: { initialSettings?: any }) => {
                 <div className="bg-white/95 backdrop-blur-xl border border-[#E9F1FA] rounded-b-2xl shadow-2xl overflow-hidden">
                   <div className="p-3 sm:p-5 grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4 max-h-[70vh] overflow-y-auto no-scrollbar">
                     {(item.subItems || []).map((subItem: ProductSubItem) => (
-                      <div key={subItem.id} className="flex flex-col gap-0.5">
+                      // CHANGE: 2026-08-24 — Slightly increased vertical gap between submenu items (0.5 -> 1).
+                      <div key={subItem.id} className="flex flex-col gap-1">
                         <Link
                           href={subItem.href}
                           className="flex flex-col rounded-lg px-3 py-2 transition-all group/item border border-transparent hover:bg-teal-100"
@@ -239,7 +246,7 @@ const Productbar = ({ initialSettings }: { initialSettings?: any }) => {
                         </Link>
                         
                         {(subItem.subItems?.length ?? 0) > 0 && (
-                          <div className="flex flex-col gap-0.5 ml-2.5 pl-3 border-l border-[#E9F1FA]">
+                          <div className="flex flex-col gap-1 ml-2.5 pl-3 border-l border-[#E9F1FA]">
                             {(subItem.subItems || []).map((nestedItem: ProductSubItem) => (
                               <Link
                                 key={nestedItem.id}

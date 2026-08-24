@@ -25,12 +25,24 @@ export type SiteSettings = {
 export default function Navbar({ initialSettings }: { initialSettings?: any }) {
   const [settings, setSettings] = useState<any>(initialSettings || null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  // CHANGE: 2026-08-24 — Track Productbar visibility to show a small bottom shadow only while it is hidden.
+  const [productBarHidden, setProductBarHidden] = useState(false);
 
   const pathname = usePathname();
 
   useEffect(() => {
     if (!initialSettings) fetchSettings();
   }, [initialSettings]);
+
+  // CHANGE: 2026-08-24 — Listen for Productbar visibility events; shadow appears when it hides, disappears when it returns.
+  useEffect(() => {
+    const syncShadow = (e: Event) => {
+      const visible = (e as CustomEvent<{ visible?: boolean }>).detail?.visible ?? true;
+      setProductBarHidden(!visible);
+    };
+    window.addEventListener('productbar:visibility', syncShadow);
+    return () => window.removeEventListener('productbar:visibility', syncShadow);
+  }, []);
 
   const fetchSettings = async () => {
     try {
@@ -71,13 +83,14 @@ export default function Navbar({ initialSettings }: { initialSettings?: any }) {
   ];
 
   return (
-    <header className="relative z-1000 w-full border-[#E5E2D9] bg-[linear-gradient(90deg,_rgba(249,251,245,1)_0%,_rgba(244,242,234,1)_53%,_rgba(238,236,223,1)_100%)]">
+    // CHANGE: 2026-08-24 — Lightened header gradient a second step (near-white cream) + conditional small bottom shadow while Productbar is hidden.
+    <header className={`relative z-1000 w-full border-[#E5E2D9] bg-[linear-gradient(90deg,_rgba(254,254,252,1)_0%,_rgba(251,250,246,1)_53%,_rgba(248,247,240,1)_100%)] transition-shadow duration-300 ${productBarHidden ? 'shadow-[0_3px_10px_rgba(0,0,0,0.15)]' : 'shadow-none'}`}>
       <nav className="flex h-10 lg:h-16 w-full max-w-full items-center justify-between pr-3">
         <Link
           href="/"
           className="flex items-center h-full justify-center group transition-transform hover:scale-[1.01]"
         >
-          <div className="relative block h-full shrink-0 ml-2 lg:ml-3opacity-90 group-hover:opacity-100 transition-opacity">
+          <div className="relative block h-full shrink-0 ml-2 lg:ml-3 opacity-90 group-hover:opacity-100 transition-opacity">
             <Image
               src="/TallyCertificate.png"
               alt="e-consultation logo"
