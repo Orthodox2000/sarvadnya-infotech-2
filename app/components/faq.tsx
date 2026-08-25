@@ -15,6 +15,7 @@ const FAQ = ({ initialData, initialSettings }: { initialData?: any[], initialSet
     const [activeCategory, setActiveCategory] = useState('All');
     // CHANGE: 2026-08-24 — How many FAQs are currently revealed.
     const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
+    const [isVisible, setIsVisible] = useState(false);
     const sectionRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -31,6 +32,17 @@ const FAQ = ({ initialData, initialSettings }: { initialData?: any[], initialSet
         };
         fetchData();
     }, [initialData]);
+
+    useEffect(() => {
+        const el = sectionRef.current;
+        if (!el) return;
+        const observer = new IntersectionObserver(
+            ([entry]) => { if (entry.isIntersecting) { setIsVisible(true); observer.disconnect(); } },
+            { threshold: 0.1 }
+        );
+        observer.observe(el);
+        return () => observer.disconnect();
+    }, []);
 
     const filteredFaq = activeCategory === 'All' ? faqData : faqData.filter(item => item.category === activeCategory);
     // CHANGE: 2026-08-24 — Only the first visibleCount FAQs are rendered.
@@ -52,8 +64,8 @@ const FAQ = ({ initialData, initialSettings }: { initialData?: any[], initialSet
     );
 
     return (
-        <section ref={sectionRef} className="w-full py-16 md:py-20 bg-[linear-gradient(90deg,_rgba(249,251,245,1)_0%,_rgba(244,242,234,1)_53%,_rgba(238,236,223,1)_100%)] md:bg-[linear-gradient(90deg,_rgba(255,255,255,1)_25%,_rgba(238,236,223,1)_100%)] ">
-            <div className="max-w-[800px] mx-auto flex flex-col items-center px-6">
+        <section ref={sectionRef} className="w-full py-16 md:py-20 bg-[linear-gradient(90deg,_rgba(249,251,245,1)_0%,_rgba(244,242,234,1)_53%,_rgba(238,236,223,1)_100%)]">
+            <div className={`max-w-[800px] mx-auto flex flex-col items-center px-6 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
                 <h2 className="text-[32px] font-semibold text-[#1C1B1B] text-center mb-10">
                     Frequently Asked Questions
                 </h2>

@@ -117,7 +117,7 @@ export default function HomeHero({ hero = HERO_CONTENT, emailCopy = false, backg
 
   return (
     <>
-    <main suppressHydrationWarning className={`relative w-full ${backgroundVideo ? 'bg-transparent' : "bg-[#fbfaf8] bg-[url('/bg.png')] bg-cover bg-center bg-no-repeat"} min-h-[20rem] sm:min-h-[26rem] md:min-h-[400px] lg:min-h-[450px] lg:h-[550px] flex flex-col`}>
+    <main suppressHydrationWarning className={`relative w-full ${backgroundVideo ? 'bg-transparent' : "bg-[#fbfaf8] bg-[url('/bg.png')] bg-cover bg-center bg-no-repeat"} min-h-[20rem] sm:min-h-[26rem] md:min-h-[420px] lg:min-h-[480px] flex flex-col`}>
       {backgroundVideo && (
         <>
           <video ref={videoRef} autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover z-0 pointer-events-none" style={{ opacity: 0.75 }}>
@@ -135,7 +135,7 @@ export default function HomeHero({ hero = HERO_CONTENT, emailCopy = false, backg
       )}
 
       {/* Hero main row */}
-      <div className="relative z-10 flex items-center h-[400px]">
+      <div className="relative z-10 flex items-center">
         <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-0 pb-6 lg:pb-0">
           <div className="flex flex-col lg:flex-row items-center lg:mt-8 lg:pb-4 gap-8 lg:gap-16">
 
@@ -167,17 +167,17 @@ export default function HomeHero({ hero = HERO_CONTENT, emailCopy = false, backg
 
               {/* Trusted stats badges */}
                <div className={`flex flex-wrap items-center gap-2 ${getAnimationClasses('delay-700')}`}>
-                <div className={`inline-flex items-center gap-2 backdrop-blur-sm px-2 py-4 rounded-full border shadow-sm h-6 w-38 ${isDark ? 'bg-white/10 border-white/20' : 'bg-white/70 border-gray-200/60'}`}>
-                  <svg className={`w-4 h-4 ${isDark ? 'text-teal-300' : 'text-[#006569]'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
-                  <span className={`text-[11px] ${isDark ? 'text-white/70' : 'text-gray-600'}`}><strong className={`${isDark ? 'text-white' : 'text-[#2a2d34]'} font-bold`}>15+ Years</strong> Experience</span>
-                </div> 
-                <div className={`inline-flex items-center gap-2 backdrop-blur-sm px-2 py-4 rounded-full border shadow-sm h-6 w-48 ${isDark ? 'bg-white/10 border-white/20' : 'bg-white/70 border-gray-200/60'}`}>
-                  <svg className={`w-4 h-4 ${isDark ? 'text-teal-300' : 'text-[#006569]'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
-                  <span className={`text-[11px] ${isDark ? 'text-white/70' : 'text-gray-600'}`}><strong className={`${isDark ? 'text-white' : 'text-[#2a2d34]'} font-bold`}>150+</strong> Queries Solved Weekly</span>
+                <div className={`inline-flex items-center gap-2 backdrop-blur-sm px-3 py-1.5 rounded-full border shadow-sm ${isDark ? 'bg-white/10 border-white/20' : 'bg-white/70 border-gray-200/60'}`}>
+                  <svg className={`w-4 h-4 shrink-0 ${isDark ? 'text-teal-300' : 'text-[#006569]'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                  <span className={`text-[11px] whitespace-nowrap ${isDark ? 'text-white/70' : 'text-gray-600'}`}><strong className={`${isDark ? 'text-white' : 'text-[#2a2d34]'} font-bold`}>15+ Years</strong> Experience</span>
                 </div>
-                <div className={`inline-flex h-6 w-44 items-center gap-2 backdrop-blur-sm px-2 py-4 rounded-full border shadow-sm ${isDark ? 'bg-white/10 border-white/20' : 'bg-white/70 border-gray-200/60'}`}>
-                  <svg className={`w-4 h-4 ${isDark ? 'text-teal-300' : 'text-[#006569]'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                  <span className={`text-[11px] ${isDark ? 'text-white/70' : 'text-gray-600'}`}>Trusted by <strong className={`${isDark ? 'text-white' : 'text-[#2a2d34]'} font-bold`}>1,500+ MSMEs</strong></span>
+                <div className={`inline-flex items-center gap-2 backdrop-blur-sm px-3 py-1.5 rounded-full border shadow-sm ${isDark ? 'bg-white/10 border-white/20' : 'bg-white/70 border-gray-200/60'}`}>
+                  <svg className={`w-4 h-4 shrink-0 ${isDark ? 'text-teal-300' : 'text-[#006569]'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                  <span className={`text-[11px] whitespace-nowrap ${isDark ? 'text-white/70' : 'text-gray-600'}`}><strong className={`${isDark ? 'text-white' : 'text-[#2a2d34]'} font-bold`}>150+</strong> Queries Solved Weekly</span>
+                </div>
+                <div className={`inline-flex items-center gap-2 backdrop-blur-sm px-3 py-1.5 rounded-full border shadow-sm ${isDark ? 'bg-white/10 border-white/20' : 'bg-white/70 border-gray-200/60'}`}>
+                  <svg className={`w-4 h-4 shrink-0 ${isDark ? 'text-teal-300' : 'text-[#006569]'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                  <span className={`text-[11px] whitespace-nowrap ${isDark ? 'text-white/70' : 'text-gray-600'}`}>Trusted by <strong className={`${isDark ? 'text-white' : 'text-[#2a2d34]'} font-bold`}>1,500+ MSMEs</strong></span>
                 </div>
               </div>
 
@@ -224,7 +224,7 @@ export default function HomeHero({ hero = HERO_CONTENT, emailCopy = false, backg
       </div>
 
       {/* QuickAccess Cards */}
-      <div className="relative z-30 -mt-12 lg:mt-8 lg:pt-4 pb-4 lg:pb-8">
+      <div className="relative z-30 -mt-6 lg:mt-6 lg:pt-4 pb-4 lg:pb-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-6">
             {QUICK_ACCESS_CARDS.map((card, idx) => (
