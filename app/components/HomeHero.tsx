@@ -117,7 +117,7 @@ export default function HomeHero({ hero = HERO_CONTENT, emailCopy = false, backg
 
   return (
     <>
-    <main suppressHydrationWarning className={`relative w-full ${backgroundVideo ? 'bg-transparent' : "bg-[#fbfaf8] bg-[url('/bg.png')] bg-cover bg-center bg-no-repeat"} min-h-[20rem] sm:min-h-[26rem] md:min-h-[420px] lg:min-h-[480px] flex flex-col`}>
+    <main suppressHydrationWarning className={`relative w-full ${backgroundVideo ? 'bg-transparent' : "bg-[#fbfaf8] bg-[url('/bg.png')] bg-cover bg-center bg-no-repeat"} min-h-[18rem] sm:min-h-[22rem] md:min-h-[360px] lg:min-h-[420px] flex flex-col`}>
       {backgroundVideo && (
         <>
           <video ref={videoRef} autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover z-0 pointer-events-none" style={{ opacity: 0.75 }}>
@@ -136,12 +136,12 @@ export default function HomeHero({ hero = HERO_CONTENT, emailCopy = false, backg
 
       {/* Hero main row */}
       <div className="relative z-10 flex items-center">
-        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-0 pb-6 lg:pb-0">
-          <div className="flex flex-col lg:flex-row items-center lg:mt-8 lg:pb-4 gap-8 lg:gap-16">
+        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-0 pb-4 lg:pb-0">
+          <div className="flex flex-col lg:flex-row items-center lg:mt-6 lg:pb-2 gap-6 lg:gap-12">
 
             {/* Left: Content */}
-            <div className="w-full lg:w-1/2 space-y-3 lg:space-y-4">
-              <div className={`mt-16 inline-flex items-center gap-2 px-4 py-1.5 rounded-full ${isDark ? 'bg-white/10 border-white/20' : 'bg-white border-[#006569]/20'} shadow-sm ${getAnimationClasses('delay-0')}`}>
+            <div className="w-full lg:w-1/2 space-y-2 lg:space-y-3">
+              <div className={`mt-12 inline-flex items-center gap-2 px-4 py-1.5 rounded-full ${isDark ? 'bg-white/10 border-white/20' : 'bg-white border-[#006569]/20'} shadow-sm ${getAnimationClasses('delay-0')}`}>
                 <span className={`flex h-1.5 w-1.5 rounded-full ${isDark ? 'bg-teal-300' : 'bg-[#006569]'}`} />
                 <span className={`text-xs font-semibold ${isDark ? 'text-teal-200' : 'text-[#006569]'}`}>{hero.badge}</span>
               </div>
@@ -211,7 +211,7 @@ export default function HomeHero({ hero = HERO_CONTENT, emailCopy = false, backg
       </div>
 
       {/* Mobile: Hero Image */}
-      <div className="lg:hidden relative w-full max-w-sm mx-auto px-4 -mt-2 mb-2">
+      <div className="lg:hidden relative w-full max-w-sm mx-auto px-4 -mt-4 mb-0">
         <div className="relative w-full aspect-square">
           <Image
             src={hero.image}
@@ -223,40 +223,39 @@ export default function HomeHero({ hero = HERO_CONTENT, emailCopy = false, backg
         </div>
       </div>
 
-      {/* QuickAccess Cards */}
-      <div className="relative z-30 -mt-6 lg:mt-6 lg:pt-4 pb-4 lg:pb-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-6">
-            {QUICK_ACCESS_CARDS.map((card, idx) => (
-              <Link
-                key={idx}
-                href={card.href}
-                className="group relative bg-white rounded-lg lg:rounded-2xl p-2.5 lg:p-6 border border-gray-100 shadow-sm lg:shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1 lg:hover:-translate-y-2 hover:border-[#006569]/30"
-              >
-                <div className="flex items-center gap-2 lg:block">
-                  <div className="w-7 h-7 lg:w-12 lg:h-12 rounded-md lg:rounded-xl bg-white flex items-center justify-center shrink-0 overflow-hidden group-hover:scale-110 transition-transform duration-300">
-                    <Image src={card.img} alt={card.title} width={48} height={48} className="object-contain w-full h-full" />
-                  </div>
-                  <div className="min-w-0">
-                    <h3 className="text-[10px] lg:text-base font-bold text-[#2a2d34] group-hover:text-[#006569] transition-colors leading-tight truncate">
-                      {card.title}
-                    </h3>
-                    <p className="text-[10px] lg:text-xs text-gray-500 leading-tight font-medium mt-0.5">
-                      <span className="lg:hidden">{card.shortDesc}</span>
-                      <span className="hidden lg:inline">{card.description}</span>
-                    </p>
-                  </div>
-                </div>
-                <div className="mt-1 lg:mt-4 flex items-center gap-1 text-[7px] lg:text-[10px] font-bold uppercase tracking-wider text-gray-400 group-hover:text-[#006569] transition-colors">
-                  Explore
-                  <svg className="w-2 h-2 lg:w-3.5 lg:h-3.5 transition-transform duration-300 group-hover:translate-x-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </div>
     </main>
+    {/* QuickAccess Cards — straddle hero/next-section boundary.
+       Negative mt pulls them up over the hero's bottom; pb on hero above makes room. */}
+    <div className="relative z-30 -mt-10 lg:-mt-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-5">
+        {QUICK_ACCESS_CARDS.map((card, idx) => (
+          <Link
+            key={idx}
+            href={card.href}
+            className="group relative bg-white rounded-xl lg:rounded-2xl p-3 lg:p-5 border border-gray-100 shadow-lg lg:shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 lg:hover:-translate-y-2 hover:border-[#006569]/30"
+          >
+            <div className="flex items-center gap-3 lg:block">
+              <div className="w-9 h-9 lg:w-12 lg:h-12 rounded-lg lg:rounded-xl bg-white flex items-center justify-center shrink-0 overflow-hidden group-hover:scale-110 transition-transform duration-300 shadow-sm">
+                <Image src={card.img} alt={card.title} width={48} height={48} className="object-contain w-full h-full" />
+              </div>
+              <div className="min-w-0">
+                <h3 className="text-[11px] lg:text-base font-bold text-[#2a2d34] group-hover:text-[#006569] transition-colors leading-tight truncate">
+                  {card.title}
+                </h3>
+                <p className="text-[10px] lg:text-xs text-gray-500 leading-tight font-medium mt-0.5">
+                  <span className="lg:hidden">{card.shortDesc}</span>
+                  <span className="hidden lg:inline">{card.description}</span>
+                </p>
+              </div>
+            </div>
+            <div className="mt-2 lg:mt-4 flex items-center gap-1 text-[8px] lg:text-[10px] font-bold uppercase tracking-wider text-gray-400 group-hover:text-[#006569] transition-colors">
+              Explore
+              <svg className="w-2.5 h-2.5 lg:w-3.5 lg:h-3.5 transition-transform duration-300 group-hover:translate-x-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+            </div>
+          </Link>
+        ))}
+      </div>
+    </div>
     <UnifiedContactModal isOpen={modalConfig.isOpen} onClose={() => setModalConfig(prev => ({ ...prev, isOpen: false }))} type={modalConfig.type} prefillService={modalConfig.service} prefillDetails={modalConfig.details} emailCopy={emailCopy} />
     </>
   );
