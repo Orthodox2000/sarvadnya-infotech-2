@@ -59,7 +59,9 @@ export default function MobileAppBizPage() {
   return (
     <div className="min-h-screen bg-[linear-gradient(90deg,rgba(249,251,245,1)_0%,rgba(244,242,234,1)_53%,rgba(238,236,223,1)_100%)]  text-slate-900">
       {/* Cinematic Hero Section (Themed Hero) */}
-      <section className="bg-white relative overflow-hidden flex items-center min-h-[200px] md:min-h-[350px] border-b border-[#006569]/10">
+      {/* CHANGE: 2026-08-26 — Removed the solid bg-white band so the hero blends into the page's
+          cream/teal gradient (matches AMC/TDL/other service page heroes). */}
+      <section className="relative overflow-hidden flex items-center min-h-[200px] md:min-h-[350px] border-b border-[#006569]/10">
         {/* Cinematic Image Side - Hidden on mobile, full height on desktop */}
         <div className="hidden lg:block absolute right-0 top-0 bottom-0 w-1/2 z-0">
           <div className="relative h-full w-full">
@@ -70,15 +72,16 @@ export default function MobileAppBizPage() {
               className="object-cover"
               priority
             />
-            {/* Cinematic Overlay - Fades image into the light background */}
-            <div className="absolute inset-0 bg-gradient-to-r from-[#ffffff] via-[#F4F2EA]/80 to-transparent" />
+            {/* Cinematic Overlay - Fades image into the page cream background */}
+            <div className="absolute inset-0 bg-gradient-to-r from-[#F9FBF5] via-[#F4F2EA]/80 to-transparent" />
           </div>
         </div>
         
         <div className="max-w-7xl mx-auto w-full px-6 relative z-10 py-12 ">
           <div className="max-w-2xl lg:pr-6">
             <div className="flex items-center gap-4 mb-6">
-              <div className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-white/40 border border-[#006569]/10 text-[#006569] text-xs font-bold uppercase tracking-widest backdrop-blur-sm">
+              {/* CHANGE: 2026-08-26 — Badge aligned to house style (solid white pill + border + shadow, as on AMC/TDL). */}
+              <div className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-white border border-[#006569]/10 text-[#006569] text-xs font-bold uppercase tracking-widest shadow-sm">
                 <span className="flex h-0.5 w-0.5 rounded-full bg-[#006569]"></span>
                 Mobile Intelligence
               </div>

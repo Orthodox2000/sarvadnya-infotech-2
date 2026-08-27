@@ -247,8 +247,10 @@ export default function Footer({ settings: initialSettings }: { settings?: SiteS
                             </svg>
                             <div className="flex flex-col gap-3">
                                 {/* CHANGE: 2026-08-26 — Landline (022-49742200 / 49647959) added above the support mobile.
-                                    Hardcoded so it always shows even if DB settings only hold the mobile number. */}
-                                <a href="tel:+912249742200" className="hover:text-[#B8DEDE] transition-colors block leading-tight font-black whitespace-nowrap">
+                                    Hardcoded so it always shows even if DB settings only hold the mobile number.
+                                    2026-08-26 — Removed whitespace-nowrap: it forced the line onto one width and
+                                    overflowed the narrow (1/6) footer column on PC. It now wraps naturally. */}
+                                <a href="tel:+912249742200" className="hover:text-[#B8DEDE] transition-colors block leading-tight font-black">
                                     022-49742200 / 49647959
                                 </a>
                                 {supportPhone.split(',').map((num, i) => (

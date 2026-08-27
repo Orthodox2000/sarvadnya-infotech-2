@@ -121,7 +121,7 @@ const modules = [
     title: "Container Handling Module",
     shortDescription: "Log sheet billing for container handling firms.",
     fullDescription: "In container handling, log sheets pile up and billing gets messy. Create log sheets with container and vehicle details, pick the ones to bill — one party or several — and print the bill with annexure. The unbilled log sheet report shows exactly what's pending, so nothing goes unpaid.",
-    videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+    videoUrl: "https://youtu.be/YqqtzzDL6o8",
     brochureUrl: "/brochures/container-handling-module.pdf",
     image: "/contaner-mgt.jpg",
     features: [

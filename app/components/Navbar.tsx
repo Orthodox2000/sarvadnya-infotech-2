@@ -3,7 +3,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { usePathname } from "next/navigation";
 import SearchBar from "./SearchBar";
 
 export type SiteSettings = {
@@ -28,8 +27,6 @@ export default function Navbar() {
   // CHANGE: 2026-08-24 — Track Productbar visibility to show a small bottom shadow only while it is hidden.
   const [productBarHidden, setProductBarHidden] = useState(false);
 
-  const pathname = usePathname();
-
   // CHANGE: 2026-08-24 — Listen for Productbar visibility events; shadow appears when it hides, disappears when it returns.
   useEffect(() => {
     const syncShadow = (e: Event) => {
@@ -40,9 +37,8 @@ export default function Navbar() {
     return () => window.removeEventListener('productbar:visibility', syncShadow);
   }, []);
 
-  const navLinks: { label: string; href: string }[] = [];
-
-  const isActive = (href: string) => pathname === href;
+  // CHANGE: 2026-08-26 — Removed unused navLinks + isActive helpers (active-tab underline removed per user
+  // request; Smart Suggest & Careers no longer change style on the current route).
 
   // CHANGE: 2026-08-26 — Admin links removed for frontend-only deployment.
   // Admin panel lives in a separate deployment. Restore from admin.bak if needed.
@@ -90,7 +86,7 @@ export default function Navbar() {
 
           <Link
             href="/find-solution"
-            className={`whitespace-nowrap inline-flex items-center justify-center rounded-lg border-[0.5px] px-5 py-2 text-[11px] font-bold uppercase tracking-wider transition-all duration-500 ease-in-out shadow-sm ${isActive('/find-solution') ? 'text-[#006569] underline underline-offset-8 decoration-[#006569] decoration-2 border-[#006569] bg-white' : 'text-[#006569] border-[#006569] bg-white hover:bg-teal-50'}`}
+            className="whitespace-nowrap inline-flex items-center justify-center rounded-lg border-[0.5px] px-5 py-2 text-[11px] font-bold uppercase tracking-wider transition-all duration-500 ease-in-out shadow-sm text-[#006569] border-[#006569] bg-white hover:bg-teal-50"
           >
             <svg className="w-4 h-4 mr-1.5 text-[#006569] shrink-0" fill="currentColor" viewBox="0 0 463.771 463.771">
               <path d="M173.073,349.604c-4.825,0-8.961-3.444-9.835-8.188c-10.587-57.508-20.312-92.657-41.352-113.697 S65.695,196.954,8.189,186.367C3.444,185.493,0,181.357,0,176.532s3.445-8.961,8.189-9.835c57.506-10.586,92.657-20.311,113.697-41.352 s30.765-56.191,41.352-113.697c0.874-4.745,5.01-8.189,9.835-8.189s8.961,3.445,9.835,8.189 c10.586,57.506,20.312,92.657,41.352,113.697c21.041,21.04,56.191,30.765,113.697,41.352 c4.746,0.874,8.189,5.01,8.189,9.835s-3.445,8.961-8.189,9.835c-57.506,10.586-92.656,20.312-113.697,41.352 c-21.04,21.04-30.765,56.191-41.352,113.697C182.034,346.16,177.897,349.604,173.073,349.604z M58.669,176.532 c35.099,8.738,59.633,19.319,77.359,37.044s28.307,42.26,37.044,77.359c8.738-35.099,19.319-59.633,37.044-77.359 s42.261-28.307,77.358-37.044c-35.098-8.738-59.632-19.319-77.358-37.044s-28.307-42.26-37.044-77.359 c-8.738,35.099-19.319,59.633-37.044,77.359S93.768,167.794,58.669,176.532z"/>
@@ -100,7 +96,7 @@ export default function Navbar() {
           </Link>
           <Link
             href="/careers"
-            className={`inline-flex items-center justify-center rounded-lg border-[0.5px] px-5 py-2 text-[11px] font-bold uppercase tracking-wider transition-all duration-500 ease-in-out shadow-sm ${isActive('/careers') ? 'text-[#006569] underline underline-offset-8 decoration-[#006569] decoration-2 border-[#006569] bg-white' : 'text-[#006569] border-[#006569] bg-white hover:bg-teal-50'}`}
+            className="inline-flex items-center justify-center rounded-lg border-[0.5px] px-5 py-2 text-[11px] font-bold uppercase tracking-wider transition-all duration-500 ease-in-out shadow-sm text-[#006569] border-[#006569] bg-white hover:bg-teal-50"
           >
             Careers
           </Link>
