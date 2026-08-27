@@ -68,7 +68,7 @@ const CustomerReviews = ({ initialData }: { initialData?: Review[] }) => {
         if (initialData) return;
         const fetchReviews = async () => {
             try {
-                const response = await fetch('/api/admin/reviews');
+                const response = await fetch('/api/reviews');
                 const data = await response.json();
                 if (data && !data.error) {
                     setReviews(data);

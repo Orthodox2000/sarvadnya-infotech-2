@@ -117,7 +117,7 @@ export default function HomeHero({ hero = HERO_CONTENT, emailCopy = false, backg
 
   return (
     <>
-    <main suppressHydrationWarning className={`relative w-full ${backgroundVideo ? 'bg-transparent' : "bg-[#fbfaf8] bg-[url('/bg.png')] bg-cover bg-center bg-no-repeat"} min-h-[18rem] sm:min-h-[22rem] md:min-h-[360px] lg:min-h-[420px] flex flex-col`}>
+    <main suppressHydrationWarning className={`relative w-full ${backgroundVideo ? 'bg-transparent' : "bg-[#fbfaf8] bg-[url('/bg.png')] bg-cover bg-center bg-no-repeat"} min-h-[18rem] sm:min-h-[22rem] md:min-h-[360px] lg:min-h-[420px] flex flex-col pb-16 lg:pb-20`}>
       {backgroundVideo && (
         <>
           <video ref={videoRef} autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover z-0 pointer-events-none" style={{ opacity: 0.75 }}>

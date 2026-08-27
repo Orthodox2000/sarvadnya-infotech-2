@@ -31,7 +31,7 @@ const CertifiedPartners = ({ initialData }: { initialData?: Partner[] }) => {
         if (initialData) return;
         const fetchPartners = async () => {
             try {
-                const data = await fetchWithCache('/api/admin/partners?type=brand');
+                const data = await fetchWithCache('/api/partners?type=brand');
                 if (Array.isArray(data)) {
                     setPartners(data);
                 }
@@ -71,10 +71,10 @@ const CertifiedPartners = ({ initialData }: { initialData?: Partner[] }) => {
                     <div 
                         key={partner._id || partner.name} 
                         style={{ transitionDelay: `${index * 100}ms` }}
-                        className={`group relative w-32 h-20 sm:w-40 sm:h-24 md:w-48 md:h-28 bg-white rounded-2xl border border-[#E9F1FA] shadow-sm flex items-center justify-center p-3 sm:p-4 transition-all duration-700 hover:shadow-xl hover:border-[#006569]/20 hover:-translate-y-2
+                        className={`group relative w-32 h-24 sm:w-40 sm:h-28 md:w-48 md:h-32 bg-white rounded-2xl border border-[#E9F1FA] shadow-sm flex flex-col items-center justify-center p-3 sm:p-4 transition-all duration-700 hover:shadow-xl hover:border-[#006569]/20 hover:-translate-y-2
                             ${isVisible ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-12 scale-95'}`}
                     >
-                        <div className="relative w-full h-full transition-all duration-500 group-hover:scale-110">
+                        <div className="relative w-full flex-1 min-h-0 transition-all duration-500 group-hover:scale-110">
                             <Image
                                 src={partner.imageUrl}
                                 alt={partner.name}
@@ -84,6 +84,10 @@ const CertifiedPartners = ({ initialData }: { initialData?: Partner[] }) => {
                                 priority={index < 5}
                             />
                         </div>
+                        {/* CHANGE: 2026-08-26 — Partner name shown under each logo so partners are identifiable. */}
+                        <span className="mt-2 text-[10px] sm:text-[11px] font-bold text-slate-600 group-hover:text-[#006569] transition-colors text-center leading-tight truncate max-w-full">
+                            {partner.name}
+                        </span>
                         {/* Shimmer Effect on Hover */}
                         <div className="absolute inset-0 bg-gradient-to-tr from-[#006569]/0 via-[#006569]/5 to-[#006569]/0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
                     </div>

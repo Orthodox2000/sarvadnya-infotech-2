@@ -21,7 +21,8 @@ export async function uploadFileChunked(options: UploadFileOptions): Promise<Upl
     type,
     name,
     oldUrl,
-    endpoint = '/api/admin/upload/chunk',
+    // CHANGE: 2026-08-26 — Default endpoint changed to public route for frontend deployment.
+    endpoint = '/api/upload/chunk',
     onProgress,
   } = options;
 

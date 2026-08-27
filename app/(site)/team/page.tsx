@@ -39,7 +39,7 @@ export default function TeamPage() {
 
   const fetchTeam = async () => {
     try {
-      const response = await fetch('/api/admin/partners?type=team');
+      const response = await fetch('/api/partners?type=team');
       const data = await response.json();
       if (Array.isArray(data)) {
         setTeamMembers(data);

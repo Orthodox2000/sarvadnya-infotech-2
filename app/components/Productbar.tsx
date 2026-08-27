@@ -1,11 +1,10 @@
 'use client';
 
 import { useState, useEffect, useRef } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { productItems, type ProductItem, type ProductSubItem } from "@/lib/product-nav";
-import { fetchWithCache, prefetchData } from "@/lib/client-api";
+import { prefetchData } from "@/lib/client-api";
 
 // Simple Minimalist Icons for Apple-style bar
 const TallyIcon = () => <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>;
@@ -31,10 +30,8 @@ const iconMap: Record<string, React.ReactNode> = {
   "AI": <SparklesIcon />
 };
 
-const Productbar = ({ initialSettings }: { initialSettings?: any }) => {
-  const [settings, setSettings] = useState<any>(initialSettings || null);
+const Productbar = () => {
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
-  const [dynamicModules, setDynamicModules] = useState<ProductSubItem[]>([]);
   const [isVisible, setIsVisible] = useState(true);
   const lastScrollYRef = useRef(0);
   const scrollThresholdRef = useRef(0);
@@ -68,61 +65,14 @@ const Productbar = ({ initialSettings }: { initialSettings?: any }) => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // CHANGE: 2026-08-24 — Broadcast visibility so the Navbar can toggle its bottom shadow in sync.
+  // CHANGE: 2026-08-26 — Broadcast visibility so the Navbar can toggle its bottom shadow in sync.
   useEffect(() => {
     window.dispatchEvent(new CustomEvent('productbar:visibility', { detail: { visible: isVisible } }));
   }, [isVisible]);
 
-  useEffect(() => {
-    if (!initialSettings) {
-      const fetchSettings = async () => {
-        try {
-          const data = await fetchWithCache('/api/settings');
-          if (data && !data.error) setSettings(data);
-        } catch (err) {
-          console.error('Failed to fetch settings:', err);
-        }
-      };
-      fetchSettings();
-    }
-  }, [initialSettings]);
-
-  // Fetch dynamic modules with client-side caching
-  useEffect(() => {
-    const fetchModules = async () => {
-      try {
-        const data = await fetchWithCache('/api/modules');
-        if (Array.isArray(data)) {
-          // CHANGE: 2026-08-21 — Drop per-item descriptions in the nav (rows got too tall); label-only links.
-          setDynamicModules(data.map(m => ({
-            id: m.id || m._id,
-            label: m.title,
-            href: `/modules?id=${m.id || m._id}`
-          })));
-        }
-      } catch (err) {
-        console.error('Failed to fetch modules for productbar:', err);
-      }
-    };
-    fetchModules();
-  }, []);
-
-  // Merge dynamic modules into productItems
-  // CHANGE: 2026-08-21 — Modules dropdown now has 2 groups (Business Modules + Addons); fill only the
-  // "m-group" group's nested subItems with fetched modules instead of replacing the whole subItems array.
-  const items = (productItems || []).map(item => {
-    if (item.label === 'Modules' && dynamicModules.length > 0) {
-      return {
-        ...item,
-        subItems: item.subItems.map(group =>
-          group.id === 'm-group'
-            ? { ...group, subItems: dynamicModules }
-            : group
-        )
-      };
-    }
-    return item;
-  });
+  // CHANGE: 2026-08-26 — Nav content is fully hardcoded (lib/product-nav.ts). Removed the /api/settings
+  // fetch (its state was never rendered) and the /api/modules fetch + merge (avoids DB-dependent nav).
+  const items = productItems || [];
 
   const aiItem: ProductItem & { desktopOnly?: boolean } = {
     label: "AI",

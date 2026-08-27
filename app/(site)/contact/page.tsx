@@ -158,8 +158,10 @@ export default function ContactPage() {
       {/* Contact Band */}
       <section className="bg-[#045A57] text-white">
         <div className="max-w-7xl mx-auto px-6 py-8 md:py-10 flex flex-col md:flex-row items-center justify-center gap-6 md:gap-10">
+          {/* CHANGE: 2026-08-26 — Call Us now shows the office landline (022-49742200 / 49647959) plus the 9821309060
+              support mobile below it. WhatsApp number (whatsappPhone) left unchanged. */}
           <a
-            href={`tel:${supportPhone.split(',')[0].trim()}`}
+            href="tel:+912249742200"
             className="flex items-center gap-4 group"
           >
             <span className="w-11 h-11 rounded-full bg-white/10 flex items-center justify-center shrink-0 group-hover:bg-[#006569] transition-colors">
@@ -167,7 +169,8 @@ export default function ContactPage() {
             </span>
             <span>
               <span className="block text-[10px] uppercase tracking-[0.2em] text-white/50 font-bold">Call Us</span>
-              <span className="block text-base md:text-lg font-bold mt-0.5">{formatPhoneDisplay(supportPhone.split(',')[0].trim())}</span>
+              <span className="block text-base md:text-lg font-bold mt-0.5">022-49742200 / 49647959</span>
+              <span className="block text-sm font-semibold mt-0.5 text-white/80">{formatPhoneDisplay(supportPhone.split(',')[0].trim())}</span>
             </span>
           </a>
           <span className="hidden md:block w-px h-10 bg-white/15" />

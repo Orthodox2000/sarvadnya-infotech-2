@@ -12,7 +12,7 @@ export default function CareersPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
-    fetch('/api/admin/careers')
+    fetch('/api/careers')
       .then(res => res.json())
       .then(data => {
         setJobs(data);

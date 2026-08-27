@@ -1,5 +1,6 @@
 import clientPromise from './mongodb';
 import { ObjectId } from 'mongodb';
+import { staticPartners } from './partners';
 // Caching disabled
 
 export async function getDb() {
@@ -237,6 +238,39 @@ export async function updateReview(id: string, data: any) {
 // Partners helpers
 async function fetchPartners(type?: string) {
   const col = await getCollection('partners');
+
+  // CHANGE: 2026-08-26 — The home "Certified Industry Partners" showcase (type=brand) is owned by the
+  // FRONTEND canonical list in lib/partners.ts (AWS → Biz Analyst → TallyPrime → OTU → NoSky). Every read
+  // reconciles the DB to that list (delete stale entries, upsert missing, enforce order) so the sequence and
+  // logos stay correct even if the DB still holds old seed data (e.g. CredFlow / "Tally Software").
+  // Admin-managed types (about / team) are left untouched.
+  if (type === 'brand') {
+    const canonical = staticPartners.map(({ _id, ...p }) => ({
+      name: p.name,
+      imageUrl: p.imageUrl,
+      type: 'brand' as const,
+    }));
+
+    const existing = await col.find({ type: 'brand' }).toArray();
+    const canonicalNames = new Set(canonical.map(p => p.name));
+
+    const stale = existing.filter((doc: any) => !canonicalNames.has(doc.name)).map((doc: any) => doc._id);
+    if (stale.length) await col.deleteMany({ _id: { $in: stale } });
+
+    for (const p of canonical) {
+      await col.updateOne(
+        { type: 'brand', name: p.name },
+        { $set: { imageUrl: p.imageUrl }, $setOnInsert: { name: p.name, type: 'brand', createdAt: new Date() } },
+        { upsert: true }
+      );
+    }
+
+    const data = await col.find({ type: 'brand' }).toArray();
+    const order = new Map(canonical.map((p, i) => [p.name, i]));
+    data.sort((a: any, b: any) => (order.get(a.name) ?? 999) - (order.get(b.name) ?? 999));
+    return serializeData(data);
+  }
+
   const query = type ? { type } : {};
   const data = await col.find(query).sort({ createdAt: 1 }).toArray();
   return serializeData(data);

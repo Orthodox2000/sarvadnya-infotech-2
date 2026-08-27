@@ -76,8 +76,9 @@ export default async function SiteLayout({
     <>
       <div className="sticky top-0 z-[2000] w-full flex flex-col">
         <NewsFeed initialData={newsData} />
-        <Navbar initialSettings={settings} />
-        <Productbar initialSettings={settings} />
+        {/* CHANGE: 2026-08-26 — Navbar & Productbar are fully hardcoded now; settings no longer passed. */}
+        <Navbar />
+        <Productbar />
       </div>
 
       <VisitorProvider>

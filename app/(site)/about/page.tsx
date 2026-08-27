@@ -42,7 +42,7 @@ export default function AboutPage() {
 
   const fetchGallery = async () => {
     try {
-      const response = await fetch('/api/admin/partners?type=about');
+      const response = await fetch('/api/partners?type=about');
       const data = await response.json();
       if (Array.isArray(data)) {
         setGallery(data);

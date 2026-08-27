@@ -185,12 +185,14 @@ export const productItems: ProductItem[] = [
         href: "/careers",
         description: "Join our growing team and build your career with us.",
       },
-      {
-        id: "c-admin",
-        label: "Admin Access",
-        href: "/admin",
-        description: "Secure administrative dashboard for internal management.",
-      },
+      // CHANGE: 2026-08-26 — Admin Access link removed for frontend-only deployment.
+      // Admin panel lives in a separate deployment. Restore from admin-panel-backup if needed.
+      // {
+      //   id: "c-admin",
+      //   label: "Admin Access",
+      //   href: "/admin",
+      //   description: "Secure administrative dashboard for internal management.",
+      // },
     ],
   },
 ];
