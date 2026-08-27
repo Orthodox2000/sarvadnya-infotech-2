@@ -1,5 +1,6 @@
 import dynamic from 'next/dynamic'
 import type { CSSProperties } from "react";
+import type { Metadata } from 'next';
 import Navbar from "../components/Navbar";
 import Productbar from "../components/Productbar";
 import { theme as defaultTheme } from "@/lib/theme";
@@ -23,6 +24,14 @@ const NewsFeed = dynamic(() => import("../components/NewsFeed"), {
 const SupportButton = dynamic(() => import("../components/SupportButton"));
 
 const NotificationToast = dynamic(() => import("../components/NotificationToast"));
+
+// CHANGE: 2026-08-27 — site-wide title template + default description so every
+// (site) route gets AI/search-friendly fallback metadata.
+export const metadata: Metadata = {
+  title: { default: 'Sarvadnya Infotech LLP — Certified Tally Partner Since 2008', template: '%s | Sarvadnya Infotech LLP' },
+  description:
+    'Certified Tally Partner trusted by 1500+ businesses. TallyPrime, Tally on Cloud, AMC, Tally on WhatsApp, TallyDrive cloud backup, HRMS, TDL customization & corporate training.',
+};
 
 async function getTheme() {
   try {

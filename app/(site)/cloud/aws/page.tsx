@@ -5,7 +5,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import Footer from '../../../components/Footer';
 import UnifiedContactModal, { FormType } from '../../../components/UnifiedContactModal';
-
 const BRAND_PRIMARY = '#006569';
 const BRAND_SECONDARY = '#045A57';
 

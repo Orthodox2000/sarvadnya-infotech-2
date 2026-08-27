@@ -2,6 +2,15 @@ import React from 'react';
 import Link from 'next/link';
 import { getNews } from '@/lib/mongodb-utils';
 import { NewsItem } from '@/lib/news';
+import { seoMetadata } from "@/lib/seo";
+
+// CHANGE: 2026-08-27 — SEO metadata for AI/search indexing.
+export const metadata = seoMetadata({
+  title: "News & Updates",
+  description: "Stay informed about the latest Tally updates, statutory changes, and Sarvadnya Infotech LLP announcements.",
+  path: "/news",
+  keywords: ["sarvadnya news", "tally news", "tally updates", "tally announcements"],
+});
 
 export default async function NewsPage() {
   const newsItems: NewsItem[] = await getNews();

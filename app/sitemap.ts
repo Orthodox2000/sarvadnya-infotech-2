@@ -1,7 +1,9 @@
 import { MetadataRoute } from 'next';
+import { SITE_URL } from '@/lib/seo';
 
+// CHANGE: 2026-08-27 — baseUrl now sourced from central lib/seo.ts (new canonical domain).
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://sarvadnya-infotech.vercel.app'; // Replace with actual production domain
+  const baseUrl = SITE_URL;
 
   const routes = [
     '',

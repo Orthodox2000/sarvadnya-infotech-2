@@ -10,7 +10,12 @@ const FRONTEND_ALLOWED_ORIGINS = ('https://en.sarvadnyainfotech.com')
   .filter(Boolean);
 
 // Same-site default so the Vercel deployment can always call itself.
-const DEFAULT_ALLOWED_ORIGINS = ['https://sarvadnya-infotech.vercel.app'];
+// CHANGE: 2026-08-27 — added new canonical domain (+ www) for /api/* CORS; kept .vercel.app.
+const DEFAULT_ALLOWED_ORIGINS = [
+  'https://sarvadnya-infotech.vercel.app',
+  'https://sarvadnyainfotech.com',
+  'https://www.sarvadnyainfotech.com',
+];
 
 const ALLOWED_ORIGINS = new Set([...DEFAULT_ALLOWED_ORIGINS, ...FRONTEND_ALLOWED_ORIGINS]);
 

@@ -4,7 +4,6 @@ import { useState } from 'react';
 import Link from 'next/link';
 import Footer from "../../components/Footer";
 import UnifiedContactModal, { FormType } from "../../components/UnifiedContactModal";
-
 const TAG_STYLES: Record<string, { bg: string; txt: string }> = {
   green: { bg: '#cdebe5', txt: '#006569' },
   blue: { bg: '#D4EAEA', txt: '#006569' },

@@ -4,6 +4,15 @@ import CustomerReviews from '../../components/CustomerReviews'
 import FAQ from '../../components/faq'
 import Footer from '../../components/Footer'
 import { getContent, getPartners, getReviews, getSettings } from '@/lib/mongodb-utils'
+import { seoMetadata } from "@/lib/seo";
+
+// CHANGE: 2026-08-27 — SEO metadata for AI/search indexing.
+export const metadata = seoMetadata({
+  title: "Demo — Sarvadnya Infotech LLP",
+  description: "Tally that works as hard as your business — certified Tally partner trusted by 1,500+ MSMEs. A design-review preview of the Sarvadnya Infotech homepage.",
+  path: "/demo",
+  keywords: ["sarvadnya infotech", "tally partner", "tallyprime", "demo"],
+});
 
 // CHANGE: 2026-08-25 — /demo is an exact duplicate of the homepage with all visual fixes applied.
 // Used for design review and A/B comparison against the production homepage.

@@ -1,4 +1,13 @@
 import { theme } from "@/lib/theme";
+import { seoMetadata } from "@/lib/seo";
+
+// CHANGE: 2026-08-27 — full-SEO coverage; every (site) route now emits metadata.
+export const metadata = seoMetadata({
+  title: "Theme Settings",
+  description:
+    "Theme colour reference for the Sarvadnya Infotech website — primary, secondary, buttons, headings, paragraph and background colours.",
+  path: "/theme-settings",
+});
 
 const entries = [
   { label: "Primary Color", value: theme.primaryColor, cssVar: "--primary-color" },

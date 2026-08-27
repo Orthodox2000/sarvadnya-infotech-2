@@ -62,13 +62,6 @@ export default function HomeHero({ hero = HERO_CONTENT, emailCopy = false, backg
   const typingIndexRef = useRef(0);
   const typingTextRef = useRef('');
   const [modalConfig, setModalConfig] = useState<{ isOpen: boolean; type: FormType; service: string; details: string }>({ isOpen: false, type: 'general', service: '', details: '' });
-  const videoRef = useRef<HTMLVideoElement>(null);
-
-  useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.playbackRate = 0.9;
-    }
-  }, [backgroundVideo]);
 
   useEffect(() => {
     const t = setTimeout(() => setIsEntering(true), 100);
@@ -120,7 +113,7 @@ export default function HomeHero({ hero = HERO_CONTENT, emailCopy = false, backg
     <main suppressHydrationWarning className={`relative w-full ${backgroundVideo ? 'bg-transparent' : "bg-[#fbfaf8] bg-[url('/bg.png')] bg-cover bg-center bg-no-repeat"} min-h-[18rem] sm:min-h-[22rem] md:min-h-[360px] lg:min-h-[420px] flex flex-col pb-16 lg:pb-20`}>
       {backgroundVideo && (
         <>
-          <video ref={videoRef} autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover z-0 pointer-events-none" style={{ opacity: 0.75 }}>
+          <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover z-0 pointer-events-none" style={{ opacity: 0.75 }}>
             <source src={backgroundVideo} type="video/mp4" />
           </video>
           <div className="absolute inset-0 bg-black/50 z-0 pointer-events-none" />
@@ -225,8 +218,10 @@ export default function HomeHero({ hero = HERO_CONTENT, emailCopy = false, backg
 
     </main>
     {/* QuickAccess Cards — straddle hero/next-section boundary.
-       Negative mt pulls them up over the hero's bottom; pb on hero above makes room. */}
-    <div className="relative z-30 -mt-10 lg:-mt-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+       Negative mt pulls them up over the hero's bottom; pb on hero above makes room.
+       CHANGE: 2026-08-27 — overhang bumped to match the hero's pb-16/lg:pb-20 so the cards sit
+       flush against the video bottom, removing the leftover white band between hero and cards. */}
+    <div className="relative z-30 -mt-16 lg:-mt-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-5">
         {QUICK_ACCESS_CARDS.map((card, idx) => (
           <Link

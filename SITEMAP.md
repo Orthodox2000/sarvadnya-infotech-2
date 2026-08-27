@@ -42,5 +42,6 @@ This document serves as a structured map of the Sarvadnya Infotech LLP website t
 - **Priority Callbacks**: Request a call back from our technical team via the Home or Contact pages.
 
 ---
-*Version: v1.1.380*
-*Last Updated: June 18, 2026*
+*Canonical domain: https://sarvadnyainfotech.com (legacy `.vercel.app` still resolves)*
+*Version: v1.1.389*
+*Last Updated: August 27, 2026*
