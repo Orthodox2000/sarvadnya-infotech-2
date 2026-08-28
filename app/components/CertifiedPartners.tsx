@@ -59,7 +59,7 @@ const CertifiedPartners = ({ initialData }: { initialData?: Partner[] }) => {
     return (
         <section 
             id="partners-section"
-            className="w-full py-16 md:py-20 bg-[linear-gradient(90deg,_rgba(249,251,245,1)_0%,_rgba(244,242,234,1)_53%,_rgba(238,236,223,1)_100%)] border-y border-[#E9F1FA] overflow-hidden"
+            className="w-full py-16 md:py-20 bg-[linear-gradient(90deg,_rgba(249,251,245,1)_0%,_rgba(244,242,234,1)_53%,_rgba(238,236,223,1)_100%)]  overflow-hidden"
         >
             <div className={`max-w-7xl mx-auto px-6 mb-12 text-center transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
                 <p className="text-[10px] font-black uppercase tracking-[0.3em] text-[#006569] mb-3">Our Global Network</p>

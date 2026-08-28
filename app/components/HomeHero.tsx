@@ -109,8 +109,8 @@ export default function HomeHero({ hero = HERO_CONTENT, emailCopy = false, backg
   const isDark = !!backgroundVideo;
 
   return (
-    <>
-    <main suppressHydrationWarning className={`relative w-full ${backgroundVideo ? 'bg-transparent' : "bg-[#fbfaf8] bg-[url('/bg.png')] bg-cover bg-center bg-no-repeat"} min-h-[18rem] sm:min-h-[22rem] md:min-h-[360px] lg:min-h-[420px] flex flex-col pb-16 lg:pb-20`}>
+    <div>
+    <main suppressHydrationWarning className={`relative w-full ${backgroundVideo ? 'bg-transparent' : "bg-[linear-gradient(90deg,_rgba(254,254,252,1)_0%,_rgba(251,250,246,1)_53%,_rgba(248,247,240,1)_100%)] bg-[url('/bg.png')] bg-cover bg-center bg-no-repeat"} min-h-[18rem] sm:min-h-[22rem] md:min-h-[360px] lg:min-h-[420px] flex flex-col pb-16 lg:pb-20`}>
       {backgroundVideo && (
         <>
           <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover z-0 pointer-events-none" style={{ opacity: 0.75 }}>
@@ -204,7 +204,7 @@ export default function HomeHero({ hero = HERO_CONTENT, emailCopy = false, backg
       </div>
 
       {/* Mobile: Hero Image */}
-      <div className="lg:hidden relative w-full max-w-sm mx-auto px-4 -mt-4 mb-0">
+      {/* <div className="lg:hidden relative w-full max-w-sm mx-auto px-4 -mt-4 mb-0">
         <div className="relative w-full aspect-square">
           <Image
             src={hero.image}
@@ -214,20 +214,20 @@ export default function HomeHero({ hero = HERO_CONTENT, emailCopy = false, backg
             sizes="(max-width: 1024px) 100vw, 0px"
           />
         </div>
-      </div>
+      </div> */}
 
     </main>
     {/* QuickAccess Cards — straddle hero/next-section boundary.
        Negative mt pulls them up over the hero's bottom; pb on hero above makes room.
        CHANGE: 2026-08-27 — overhang bumped to match the hero's pb-16/lg:pb-20 so the cards sit
        flush against the video bottom, removing the leftover white band between hero and cards. */}
-    <div className="relative z-30 -mt-16 lg:-mt-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="relative z-30 -mt-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 bg-transparent">
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-5">
         {QUICK_ACCESS_CARDS.map((card, idx) => (
           <Link
             key={idx}
             href={card.href}
-            className="group relative bg-white rounded-xl lg:rounded-2xl p-3 lg:p-5 border border-gray-100 shadow-lg lg:shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 lg:hover:-translate-y-2 hover:border-[#006569]/30"
+            className="group relative bg-white  rounded-xl lg:rounded-2xl p-3 lg:p-5 border border-gray-100 shadow-lg lg:shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 lg:hover:-translate-y-2 hover:border-[#006569]/30"
           >
             <div className="flex items-center gap-3 lg:block">
               <div className="w-9 h-9 lg:w-12 lg:h-12 rounded-lg lg:rounded-xl bg-white flex items-center justify-center shrink-0 overflow-hidden group-hover:scale-110 transition-transform duration-300 shadow-sm">
@@ -252,6 +252,6 @@ export default function HomeHero({ hero = HERO_CONTENT, emailCopy = false, backg
       </div>
     </div>
     <UnifiedContactModal isOpen={modalConfig.isOpen} onClose={() => setModalConfig(prev => ({ ...prev, isOpen: false }))} type={modalConfig.type} prefillService={modalConfig.service} prefillDetails={modalConfig.details} emailCopy={emailCopy} />
-    </>
+    </div>
   );
 }
