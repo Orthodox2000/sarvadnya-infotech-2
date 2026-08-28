@@ -61,7 +61,7 @@ export default function Footer({ settings: initialSettings }: { settings?: SiteS
     const supportPhone = settings?.support_phone || process.env.NEXT_PUBLIC_SUPPORT_PHONE || "9821309060";
     const whatsappPhone = settings?.whatsapp_phone || supportPhone;
     const supportEmail = settings?.support_email || process.env.NEXT_PUBLIC_SUPPORT_EMAIL || "info@sarvadnyainfotech.com";
-    const officeAddress = settings?.office_address || process.env.NEXT_PUBLIC_OFFICE_ADDRESS || "123, Business Center, Main Road, Pune - 411001";
+    const officeAddress = settings?.office_address || process.env.NEXT_PUBLIC_OFFICE_ADDRESS || "Belapur";
     const mapUrl = settings?.map_iframe_url || process.env.NEXT_PUBLIC_MAP_IFRAME_URL || "";
     
     // Helper to extract src from iframe tag if provided
@@ -251,7 +251,7 @@ export default function Footer({ settings: initialSettings }: { settings?: SiteS
                                     2026-08-26 — Removed whitespace-nowrap: it forced the line onto one width and
                                     overflowed the narrow (1/6) footer column on PC. It now wraps naturally. */}
                                 <a href="tel:+912249742200" className="hover:text-[#B8DEDE] transition-colors block leading-tight font-black">
-                                    022-49742200 / 49647959
+                                    +022-4974 2200 / +022-4964 7959
                                 </a>
                                 {supportPhone.split(',').map((num, i) => (
                                     <a key={i} href={`tel:${num.trim()}`} className="hover:text-[#B8DEDE] transition-colors block leading-tight font-black">

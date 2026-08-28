@@ -64,7 +64,10 @@ export default function RootLayout({
         {children}
         {/* CHANGE: 2026-08-27 — Zoho SalesIQ TRACKING-ONLY embed (reactivated; Leadfeeder now commented out in <head>).
             The chat button is suppressed via the hide hook so the script only serves visitor analytics. */}
-        <script dangerouslySetInnerHTML={{ __html: `window.$zoho=window.$zoho || {};$zoho.salesiq=$zoho.salesiq||{ready:function(){}};$zoho.salesiq.ready(function(){try{$zoho.salesiq.floatbutton&&$zoho.salesiq.floatbutton.visible&&$zoho.salesiq.floatbutton.visible("hide")}catch(e){}try{$zoho.salesiq.chatbutton&&$zoho.salesiq.chatbutton.visible&&$zoho.salesiq.chatbutton.visible("hide")}catch(e){}})` }} />
+        {/* CHANGE: 2026-08-28 — Zoho SalesIQ consent/info prompt hidden too.
+            The chat button AND the first-visit consent/welcome bar are both suppressed so the
+            embed is purely tracking-only. A small delay ensures the widget's DOM has mounted. */}
+        <script dangerouslySetInnerHTML={{ __html: `window.$zoho=window.$zoho || {};$zoho.salesiq=$zoho.salesiq||{ready:function(){}};$zoho.salesiq.ready(function(){var h=function(){try{$zoho.salesiq.floatbutton&&$zoho.salesiq.floatbutton.visible&&$zoho.salesiq.floatbutton.visible("hide")}catch(e){}try{$zoho.salesiq.chatbutton&&$zoho.salesiq.chatbutton.visible&&$zoho.salesiq.chatbutton.visible("hide")}catch(e){}};h();setTimeout(h,1000);setTimeout(h,3000);});` }} />
         <script id="zsiqscript" defer src="https://salesiq.zohopublic.in/widget?wc=siq539386e56b76884f928a8048a569c499cd2f211af4903e74d1fcabc147a596a7" />
       </body>
     </html>

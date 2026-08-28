@@ -32,7 +32,7 @@ export default async function Home() {
     <main className="bg-[linear-gradient(90deg,_rgba(249,251,245,1)_0%,_rgba(244,242,234,1)_53%,_rgba(238,236,223,1)_100%)] ">
       {/* CHANGE: 2026-08-27 — LocalBusiness structured data for local/AI indexing. */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessJsonLd()) }} />
-      <HomeHero emailCopy backgroundVideo="/sarvadnya trial 2.mp4"/>
+      <HomeHero emailCopy backgroundVideoMobile="/sarvadnya-mobile.mp4" backgroundVideoDesktop="/sarvadnya trial 2.mp4"/>
       <CertifiedPartners initialData={partnersData} />
   
       <CustomerReviews initialData={reviewsData} />

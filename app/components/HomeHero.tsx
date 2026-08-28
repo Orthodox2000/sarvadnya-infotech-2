@@ -52,9 +52,10 @@ const QUICK_ACCESS_CARDS = [
 
 const HIGHLIGHT_WORDS = ['your', 'business', 'certified', 'partner', 'trusted', 'msme', 'smarter'];
 
-// CHANGE: 2026-08-18 — Added optional backgroundVideo prop. When set, renders a muted
-// autoplaying video as the hero background instead of the static bg.png image.
-export default function HomeHero({ hero = HERO_CONTENT, emailCopy = false, backgroundVideo }: { hero?: HeroContent; emailCopy?: boolean; backgroundVideo?: string }) {
+// CHANGE: 2026-08-28 — Split backgroundVideo into backgroundVideoMobile (< md) and
+// backgroundVideoDesktop (md+). Both are optional; either/both can be set. When either
+// is present, isDark activates the dark text palette.
+export default function HomeHero({ hero = HERO_CONTENT, emailCopy = false, backgroundVideoMobile, backgroundVideoDesktop }: { hero?: HeroContent; emailCopy?: boolean; backgroundVideoMobile?: string; backgroundVideoDesktop?: string }) {
   const [isEntering, setIsEntering] = useState(false);
   const [displayText, setDisplayText] = useState('');
   const [isTyping, setIsTyping] = useState(false);
@@ -106,18 +107,26 @@ export default function HomeHero({ hero = HERO_CONTENT, emailCopy = false, backg
 
   const isHighlight = (cleanWord: string) => HIGHLIGHT_WORDS.includes(cleanWord);
 
-  const isDark = !!backgroundVideo;
+  const isDark = !!(backgroundVideoMobile || backgroundVideoDesktop);
 
   return (
     <div>
-    <main suppressHydrationWarning className={`relative w-full ${backgroundVideo ? 'bg-transparent' : "bg-[linear-gradient(90deg,_rgba(254,254,252,1)_0%,_rgba(251,250,246,1)_53%,_rgba(248,247,240,1)_100%)] bg-[url('/bg.png')] bg-cover bg-center bg-no-repeat"} min-h-[18rem] sm:min-h-[22rem] md:min-h-[360px] lg:min-h-[420px] flex flex-col pb-16 lg:pb-20`}>
-      {backgroundVideo && (
-        <>
-          <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover z-0 pointer-events-none" style={{ opacity: 0.75 }}>
-            <source src={backgroundVideo} type="video/mp4" />
-          </video>
-          <div className="absolute inset-0 bg-black/50 z-0 pointer-events-none" />
-        </>
+    <main suppressHydrationWarning className={`relative w-full ${(backgroundVideoMobile || backgroundVideoDesktop) ? 'bg-transparent' : "bg-[linear-gradient(90deg,_rgba(254,254,252,1)_0%,_rgba(251,250,246,1)_53%,_rgba(248,247,240,1)_100%)] bg-[url('/bg.png')] bg-cover bg-center bg-no-repeat"} min-h-[18rem] sm:min-h-[22rem] md:min-h-[360px] lg:min-h-[420px] flex flex-col pb-16 lg:pb-20`}>
+      {/* Mobile video — visible below md breakpoint */}
+      {backgroundVideoMobile && (
+        <video autoPlay loop muted playsInline className="md:hidden absolute inset-0 w-full h-full object-cover z-0 pointer-events-none" style={{ opacity: 0.75 }}>
+          <source src={backgroundVideoMobile} type="video/mp4" />
+        </video>
+      )}
+      {/* Desktop video — visible at md breakpoint and above */}
+      {backgroundVideoDesktop && (
+        <video autoPlay loop muted playsInline className="hidden md:block absolute inset-0 w-full h-full object-cover z-0 pointer-events-none" style={{ opacity: 0.75 }}>
+          <source src={backgroundVideoDesktop} type="video/mp4" />
+        </video>
+      )}
+      {/* Dark overlay for text readability */}
+      {(backgroundVideoMobile || backgroundVideoDesktop) && (
+        <div className="absolute inset-0 bg-black/50 z-0 pointer-events-none" />
       )}
       {/* Background decorative blobs — hidden when video bg */}
       {!isDark && (

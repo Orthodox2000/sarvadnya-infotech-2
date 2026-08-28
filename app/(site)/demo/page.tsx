@@ -27,7 +27,7 @@ export default async function DemoPage() {
 
   return (
     <main className="bg-white">
-      <HomeHero emailCopy backgroundVideo="/sarvadnya trial 2.mp4" />
+      <HomeHero emailCopy backgroundVideoMobile="/sarvadnya-mobile.mp4" backgroundVideoDesktop="/sarvadnya trial 2.mp4" />
       <CertifiedPartners initialData={partnersData} />
       <CustomerReviews initialData={reviewsData} />
       <FAQ initialData={faqData} initialSettings={settingsData} />
