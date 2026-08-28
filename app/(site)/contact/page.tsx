@@ -22,7 +22,7 @@ export type SiteSettings = {
 
 const serviceSectors = [
   "TallyPrime",
-  "Tally Certified Partner",
+  "Certified Tally Partner",
   "HRMS / Payroll",
   "Cloud / Hosting",
   "AWS / Windows Server",

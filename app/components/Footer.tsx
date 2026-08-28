@@ -139,16 +139,24 @@ export default function Footer({ settings: initialSettings }: { settings?: SiteS
             <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-[#D4EAEA]/10 rounded-full blur-[100px] -ml-48 -mb-48 pointer-events-none" />
 
             <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-12 mb-16 relative z-10">
-                {/* Company Info */}
+                {/* CHANGE: 2026-08-28 — Footer logo now mirrors the header structure for brand-name
+                   consistency: same /TallyCertificate.png logo + 'Sarvadnya Infotech LLP' + 'Certified
+                   Tally Partner' tagline, restyled for the dark footer. */}
                 <div className="lg:col-span-1 space-y-6">
                     <Link href="/" className="flex items-center gap-3 group">
-                        <Image
-                            src="/footerlogo.png"
-                            alt="Sarvadnya Infotech LLP"
-                            width={120}
-                            height={40}
-                            className="h-11 w-auto object-contain rounded-xs"
-                        />
+                        <div className="relative shrink-0 h-11">
+                            <Image
+                                src="/TallyCertificate.png"
+                                alt="Sarvadnya Infotech LLP"
+                                width={120}
+                                height={40}
+                                className="h-full w-auto object-contain opacity-90 group-hover:opacity-100 transition-opacity"
+                            />
+                        </div>
+                        <span className="text-base lg:text-lg font-bold leading-tight text-white">
+                            Sarvadnya <span className="text-teal-300">Infotech LLP</span>
+                            <span className="block text-[10px] lg:text-[11px] font-medium uppercase tracking-widest text-white/50">Certified Tally Partner</span>
+                        </span>
                     </Link>
                     <p className="text-sm leading-relaxed text-white/90 font-medium">
                         Certified Tally Partner providing end-to-end business solutions, 
