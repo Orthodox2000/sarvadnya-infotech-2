@@ -545,7 +545,7 @@ export default function TallyCapitalPage() {
                 </div>
                 <div>
                   <h2 className="text-2xl md:text-3xl font-black text-slate-900">Sarvadnya Infotech</h2>
-                  <p className="text-xs text-slate-500 font-bold uppercase tracking-wider">Certified Tally Partner</p>
+                  <p className="text-xs text-slate-500 font-bold uppercase tracking-wider">Tally Certified Partner</p>
                 </div>
               </div>
 
@@ -588,7 +588,7 @@ export default function TallyCapitalPage() {
               <h3 className="text-lg font-black text-white mb-6">Why Choose Sarvadnya Infotech LLP?</h3>
               <div className="space-y-6">
                 {[
-                  { icon: '✓', text: '12+ years of association as Certified Tally Partner' },
+                  { icon: '✓', text: '12+ years of association as Tally Certified Partner' },
                   { icon: '✓', text: 'Certified TallyCapital partner' },
                   { icon: '✓', text: 'End-to-end setup & financing guidance' },
                   { icon: '✓', text: 'Trusted by businesses across India' },

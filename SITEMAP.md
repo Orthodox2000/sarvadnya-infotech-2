@@ -6,7 +6,7 @@ This document serves as a structured map of the Sarvadnya Infotech LLP website t
 - **Home (`/`)**: Overview of Sarvadnya Infotech, Tally expertise, and primary calls-to-action.
 - **Products (`/products`)**: Detailed breakdown of TallyPrime editions (Silver, Gold, Server) and **TallyDrive** cloud backup solutions.
 - **Cloud Solutions (`/cloud`)**: Official Tally on Cloud and AWS-hosted solutions.
-- **About Us (`/about`)**: Our history as a Certified Tally Partner since 2008.
+- **About Us (`/about`)**: Our history as a Tally Certified Partner since 2008.
 - **Contact Support (`/contact`)**: Primary hub for priority technical support and callback requests.
 - **Capabilities (`/capabilities`)**: Breakdown of our core technical and industrial competencies.
 - **Careers (`/careers`)**: Job openings and culture at Sarvadnya Infotech.

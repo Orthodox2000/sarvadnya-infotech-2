@@ -28,9 +28,9 @@ const NotificationToast = dynamic(() => import("../components/NotificationToast"
 // CHANGE: 2026-08-27 — site-wide title template + default description so every
 // (site) route gets AI/search-friendly fallback metadata.
 export const metadata: Metadata = {
-  title: { default: 'Sarvadnya Infotech LLP — Certified Tally Partner Since 2008', template: '%s | Sarvadnya Infotech LLP' },
+  title: { default: 'Sarvadnya Infotech LLP — Tally Certified Partner Since 2008', template: '%s | Sarvadnya Infotech LLP' },
   description:
-    'Certified Tally Partner trusted by 1500+ businesses. TallyPrime, Tally on Cloud, AMC, Tally on WhatsApp, TallyDrive cloud backup, HRMS, TDL customization & corporate training.',
+    'Tally Certified Partner trusted by 1500+ businesses. TallyPrime, Tally on Cloud, AMC, Tally on WhatsApp, TallyDrive cloud backup, HRMS, TDL customization & corporate training.',
 };
 
 async function getTheme() {

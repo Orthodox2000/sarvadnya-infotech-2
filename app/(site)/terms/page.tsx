@@ -20,7 +20,7 @@ export default function TermsPage() {
       <div className="max-w-4xl mx-auto px-6 py-16 space-y-10 text-slate-600 leading-relaxed font-medium">
         <section>
           <h2 className="text-xl font-black text-slate-900 mb-4 uppercase tracking-tight">1. Service Agreement</h2>
-          <p>By accessing this website or engaging our services, you agree to comply with these terms. Sarvadnya Infotech LLP provides Tally customization, implementation, and support services as a Certified Tally Partner.</p>
+          <p>By accessing this website or engaging our services, you agree to comply with these terms. Sarvadnya Infotech LLP provides Tally customization, implementation, and support services as a Tally Certified Partner.</p>
         </section>
 
         <section>

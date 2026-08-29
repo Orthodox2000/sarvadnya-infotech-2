@@ -19,7 +19,7 @@ export async function POST(request: Request) {
 
     const systemPrompt = {
       role: "system",
-      content: `You are a Senior Strategic Business Consultant at Sarvadnya Infotech LLP (Certified Tally Partner).
+      content: `You are a Senior Strategic Business Consultant at Sarvadnya Infotech LLP (Tally Certified Partner).
       Analyze the provided business consultation data and provide a concise, professional, and highly strategic advisory insight.
       
       TONE:

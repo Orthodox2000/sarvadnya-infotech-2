@@ -8,10 +8,10 @@ import { seoMetadata, localBusinessJsonLd } from "@/lib/seo";
 
 // CHANGE: 2026-08-27 — SEO metadata for AI/search indexing.
 export const metadata = seoMetadata({
-  title: "Sarvadnya Infotech LLP — Certified Tally Partner Since 2008",
-  description: "Certified Tally Partner trusted by 1500+ MSMEs. TallyPrime (Silver, Gold, Server), Tally on Cloud, AMC, Tally on WhatsApp, TallyDrive cloud backup, HRMS, TDL customization & corporate training.",
+  title: "Sarvadnya Infotech LLP — Tally Certified Partner Since 2008",
+  description: "Tally Certified Partner trusted by 1500+ MSMEs. TallyPrime (Silver, Gold, Server), Tally on Cloud, AMC, Tally on WhatsApp, TallyDrive cloud backup, HRMS, TDL customization & corporate training.",
   path: "/",
-  keywords: ["sarvadnya infotech", "certified tally partner", "tally partner", "tallyprime", "tally on cloud", "tally on whatsapp", "tallydrive"],
+  keywords: ["sarvadnya infotech", "tally certified partner", "tally partner", "tallyprime", "tally on cloud", "tally on whatsapp", "tallydrive"],
 });
 
 export default async function Home() {

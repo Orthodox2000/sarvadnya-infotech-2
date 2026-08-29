@@ -41,7 +41,7 @@ The ultimate search experience. Use global fuzzy search to find any ledger, vouc
 Connect with your business network. Exchange invoices and settle payments with suppliers and customers directly, streamlining your entire supply chain.
 
 ## Why Choose Sarvadnya Infotech LLP?
-As a **Certified Tally Partner since 2008**, we don't just sell software. We provide:
+As a **Tally Certified Partner since 2008**, we don't just sell software. We provide:
 - **Expert Consultation**: Aligning Tally features with your specific business goals.
 - **Rapid Support**: Minimize downtime with our technical support team.
 - **Tailored Modules**: Custom features built using Tally Definition Language (TDL).

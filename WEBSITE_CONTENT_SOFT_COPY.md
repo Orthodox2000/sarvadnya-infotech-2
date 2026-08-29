@@ -38,7 +38,7 @@
 - "Great service from Sarvadnya Infotech LLP. They helped us quickly with our Tally TSS renewal. The process was smooth and hassle-free."
 - "Always get quick response and solutions from the team. The staff is very polite and helpful, clearing all our doubts. Keep doing this to work well with your clients, it will be easy to work with you. Thanks for your support."
 - Find instant answers to the most common queries about TallyPrime, Cloud Hosting, and our support services.
-- Certified Tally Partner providing end-to-end business solutions, cloud migration, and professional technical support to streamline your accounting and compliance workflows.
+- Tally Certified Partner providing end-to-end business solutions, cloud migration, and professional technical support to streamline your accounting and compliance workflows.
 - © 2026 Sarvadnya Infotech LLP. All Rights Reserved.
 - Sara • Smart Assistant
 - Ask Sara about TallyPrime features, hosting, or modules.
@@ -134,8 +134,8 @@ Your Solution Partner
 - GET IN TOUCH
 
 ##### Descriptions
-- Sarvadnya Infotech LLP is a Certified Tally Partner having more than 1,500+ satisfied clients for Tally Software and related Services since 2008. Clients count us for our quality services and transparent consultancy on investment in Softwares Services as we believe in making Business happy and satisfied by providing right Solutions. With the help of our expert and an excellent team who understands the need and pain areas of Client’s Business in a short span of time and fulfill their needs at maximum saturation level too very quickly! We are known for providing the Solutions with ultimate satisfaction.
-- Certified Tally Partner providing end-to-end business solutions, cloud migration, and professional technical support to streamline your accounting and compliance workflows.
+- Sarvadnya Infotech LLP is a Tally Certified Partner having more than 1,500+ satisfied clients for Tally Software and related Services since 2008. Clients count us for our quality services and transparent consultancy on investment in Softwares Services as we believe in making Business happy and satisfied by providing right Solutions. With the help of our expert and an excellent team who understands the need and pain areas of Client’s Business in a short span of time and fulfill their needs at maximum saturation level too very quickly! We are known for providing the Solutions with ultimate satisfaction.
+- Tally Certified Partner providing end-to-end business solutions, cloud migration, and professional technical support to streamline your accounting and compliance workflows.
 - © 2026 Sarvadnya Infotech LLP. All Rights Reserved.
 - Sara • Smart Assistant
 - Ask Sara about TallyPrime features, hosting, or modules.
@@ -289,7 +289,7 @@ Business Intelligence
 - Comprehensive health coverage for you and your family.
 - Maintain a great work-life balance with flexible scheduling.
 - Work with clients and technologies on an international scale.
-- Certified Tally Partner providing end-to-end business solutions, cloud migration, and professional technical support to streamline your accounting and compliance workflows.
+- Tally Certified Partner providing end-to-end business solutions, cloud migration, and professional technical support to streamline your accounting and compliance workflows.
 - © 2026 Sarvadnya Infotech LLP. All Rights Reserved.
 - Sara • Smart Assistant
 - Ask Sara about TallyPrime features, hosting, or modules.
@@ -395,7 +395,7 @@ Zero-Loss Backup
 - Leverage the power of Amazon Web Services for 100% uptime and global scalability.
 - Optimized Tally hosting on NoSky for lightning-fast speeds and zero latency.
 - Scheduled, encrypted backups with TallyDrive ensuring zero data loss, ever.
-- Certified Tally Partner providing end-to-end business solutions, cloud migration, and professional technical support to streamline your accounting and compliance workflows.
+- Tally Certified Partner providing end-to-end business solutions, cloud migration, and professional technical support to streamline your accounting and compliance workflows.
 - © 2026 Sarvadnya Infotech LLP. All Rights Reserved.
 - Sara • Smart Assistant
 - Ask Sara about TallyPrime features, hosting, or modules.
@@ -536,7 +536,7 @@ Got it, thanks
 - Certified experts will call you back within 15 minutes.
 - 🔒 Your data is secure with Sarvadnya Infotech LLP.
 - Sarvadnya Infotech LLP, Business Hub, Pune, Maharashtra, India
-- Certified Tally Partner providing end-to-end business solutions, cloud migration, and professional technical support to streamline your accounting and compliance workflows.
+- Tally Certified Partner providing end-to-end business solutions, cloud migration, and professional technical support to streamline your accounting and compliance workflows.
 - © 2026 Sarvadnya Infotech LLP. All Rights Reserved.
 - Sara • Smart Assistant
 - Ask Sara about TallyPrime features, hosting, or modules.
@@ -645,7 +645,7 @@ Ask Sara about TallyPrime features, hosting, or modules.
 - Tailored vertical modules for specific industries.
 - Certified expert technical help and staff training.
 - Find instant answers to the most common queries about TallyPrime, Cloud Hosting, and our support services.
-- Certified Tally Partner providing end-to-end business solutions, cloud migration, and professional technical support to streamline your accounting and compliance workflows.
+- Tally Certified Partner providing end-to-end business solutions, cloud migration, and professional technical support to streamline your accounting and compliance workflows.
 - © 2026 Sarvadnya Infotech LLP. All Rights Reserved.
 - Sara • Smart Assistant
 - Ask Sara about TallyPrime features, hosting, or modules.
@@ -906,7 +906,7 @@ Your Industry Logic
 - Inventory tracking by size, color, and fabric type for the fashion industry.
 - Automate complex commission rules and payout calculations for sales teams.
 - Don't see a module that fits your specific needs? Our TDL experts can develop a bespoke solution tailored exactly to your business processes.
-- Certified Tally Partner providing end-to-end business solutions, cloud migration, and professional technical support to streamline your accounting and compliance workflows.
+- Tally Certified Partner providing end-to-end business solutions, cloud migration, and professional technical support to streamline your accounting and compliance workflows.
 - © 2026 Sarvadnya Infotech LLP. All Rights Reserved.
 - Sara • Smart Assistant
 - Ask Sara about TallyPrime features, hosting, or modules.
@@ -1152,7 +1152,7 @@ Ask Sara about TallyPrime features, hosting, or modules.
 - We implement industry-standard security measures to protect your personal information from unauthorized access, alteration, or disclosure. Your data is stored securely and accessed only by authorized personnel.
 - We do not sell or rent your personal information to third parties. We may share data with trusted partners (like Tally Solutions) only as necessary to fulfill your service requests.
 - If you have any questions regarding this Privacy Policy, please reach out to us at info@sarvadnyainfotech.com.
-- Certified Tally Partner providing end-to-end business solutions, cloud migration, and professional technical support to streamline your accounting and compliance workflows.
+- Tally Certified Partner providing end-to-end business solutions, cloud migration, and professional technical support to streamline your accounting and compliance workflows.
 - © 2026 Sarvadnya Infotech LLP. All Rights Reserved.
 - Sara • Smart Assistant
 - Ask Sara about TallyPrime features, hosting, or modules.
@@ -1231,7 +1231,7 @@ Editions & Licensing
 
 ##### Descriptions
 - Choose the right edition of TallyPrime designed to scale with your business complexity and user requirements.
-- Certified Tally Partner providing end-to-end business solutions, cloud migration, and professional technical support to streamline your accounting and compliance workflows.
+- Tally Certified Partner providing end-to-end business solutions, cloud migration, and professional technical support to streamline your accounting and compliance workflows.
 - © 2026 Sarvadnya Infotech LLP. All Rights Reserved.
 - Sara • Smart Assistant
 - Ask Sara about TallyPrime features, hosting, or modules.
@@ -1389,7 +1389,7 @@ Got it, thanks
 - Priority technical support with zero downtime.
 - Automated document sharing via WhatsApp.
 - Our technical architects are ready to design a personalized TallyPrime environment tailored to your specific industry requirements.
-- Certified Tally Partner providing end-to-end business solutions, cloud migration, and professional technical support to streamline your accounting and compliance workflows.
+- Tally Certified Partner providing end-to-end business solutions, cloud migration, and professional technical support to streamline your accounting and compliance workflows.
 - © 2026 Sarvadnya Infotech LLP. All Rights Reserved.
 - Sara • Smart Assistant
 - Ask Sara about TallyPrime features, hosting, or modules.
@@ -1565,7 +1565,7 @@ Assistance
 - Scheduled visits for complex issues that need in-person attention.
 - Advanced data recovery services included in case of system failure.
 - Join 2000+ businesses who trust Sarvadnya Infotech for their daily Tally operations.
-- Certified Tally Partner providing end-to-end business solutions, cloud migration, and professional technical support to streamline your accounting and compliance workflows.
+- Tally Certified Partner providing end-to-end business solutions, cloud migration, and professional technical support to streamline your accounting and compliance workflows.
 - © 2026 Sarvadnya Infotech LLP. All Rights Reserved.
 - Sara • Smart Assistant
 - Ask Sara about TallyPrime features, hosting, or modules.
@@ -1664,7 +1664,7 @@ Curriculum
 - On-site or virtual training sessions scheduled at your team's convenience.
 - "Training isn't just about learning buttons; it's about understanding business logic through the lens of TallyPrime."
 - Schedule a consultation to design a training program that fits your company's specific needs.
-- Certified Tally Partner providing end-to-end business solutions, cloud migration, and professional technical support to streamline your accounting and compliance workflows.
+- Tally Certified Partner providing end-to-end business solutions, cloud migration, and professional technical support to streamline your accounting and compliance workflows.
 - © 2026 Sarvadnya Infotech LLP. All Rights Reserved.
 - Sara • Smart Assistant
 - Ask Sara about TallyPrime features, hosting, or modules.
@@ -1766,7 +1766,7 @@ Decision Making
 - View party-wise outstandings and ageing analysis instantly.
 - Your data is encrypted and accessible even without internet.
 - Join thousands of business owners who manage their Tally from their smartphones.
-- Certified Tally Partner providing end-to-end business solutions, cloud migration, and professional technical support to streamline your accounting and compliance workflows.
+- Tally Certified Partner providing end-to-end business solutions, cloud migration, and professional technical support to streamline your accounting and compliance workflows.
 - © 2026 Sarvadnya Infotech LLP. All Rights Reserved.
 - Sara • Smart Assistant
 - Ask Sara about TallyPrime features, hosting, or modules.
@@ -1869,7 +1869,7 @@ Full Automation.
 - Official WhatsApp Cloud API for verified and safe communication.
 - Allow multiple Tally users to send messages from a single number.
 - Businesses using Tally-WhatsApp integration report 30% faster payment collections.
-- Certified Tally Partner providing end-to-end business solutions, cloud migration, and professional technical support to streamline your accounting and compliance workflows.
+- Tally Certified Partner providing end-to-end business solutions, cloud migration, and professional technical support to streamline your accounting and compliance workflows.
 - © 2026 Sarvadnya Infotech LLP. All Rights Reserved.
 - Sara • Smart Assistant
 - Ask Sara about TallyPrime features, hosting, or modules.
@@ -1971,7 +1971,7 @@ Lifecycle
 - Expert TDL coding adhering to Tally's best practices for data integrity.
 - Testing the module with your live data and final implementation.
 - If you can imagine it, we can build it in Tally. Let's discuss your custom module today.
-- Certified Tally Partner providing end-to-end business solutions, cloud migration, and professional technical support to streamline your accounting and compliance workflows.
+- Tally Certified Partner providing end-to-end business solutions, cloud migration, and professional technical support to streamline your accounting and compliance workflows.
 - © 2026 Sarvadnya Infotech LLP. All Rights Reserved.
 - Sara • Smart Assistant
 - Ask Sara about TallyPrime features, hosting, or modules.
@@ -2070,7 +2070,7 @@ Capabilities
 - Instant access to all latest product enhancements and major releases of TallyPrime.
 - "TSS is not an expense; it's an investment in keeping your business compliant and technologically current."
 - Renewal takes less than 5 minutes. Protect your statutory compliance and product features today.
-- Certified Tally Partner providing end-to-end business solutions, cloud migration, and professional technical support to streamline your accounting and compliance workflows.
+- Tally Certified Partner providing end-to-end business solutions, cloud migration, and professional technical support to streamline your accounting and compliance workflows.
 - © 2026 Sarvadnya Infotech LLP. All Rights Reserved.
 - Sara • Smart Assistant
 - Ask Sara about TallyPrime features, hosting, or modules.
@@ -2164,7 +2164,7 @@ Behind Your Success
 - Our team's primary goal is to ensure client satisfaction through efficient support.
 - At Sarvadnya, we believe that a happy team leads to happy clients. Our culture is built on transparency, continuous learning, and a deep-rooted commitment to excellence in the Tally ecosystem.
 - Senior Tally Consultant
-- Certified Tally Partner providing end-to-end business solutions, cloud migration, and professional technical support to streamline your accounting and compliance workflows.
+- Tally Certified Partner providing end-to-end business solutions, cloud migration, and professional technical support to streamline your accounting and compliance workflows.
 - © 2026 Sarvadnya Infotech LLP. All Rights Reserved.
 - Sara • Smart Assistant
 - Ask Sara about TallyPrime features, hosting, or modules.
@@ -2246,12 +2246,12 @@ Ask Sara about TallyPrime features, hosting, or modules.
 
 ##### Descriptions
 - Please read these terms and conditions carefully before using our services.
-- By accessing this website or engaging our services, you agree to comply with these terms. Sarvadnya Infotech LLP provides Tally customization, implementation, and support services as a Certified Tally Partner.
+- By accessing this website or engaging our services, you agree to comply with these terms. Sarvadnya Infotech LLP provides Tally customization, implementation, and support services as a Tally Certified Partner.
 - Please note that product features, specifications, and availability may differ depending on stock, regional restrictions, and Tally Solutions' current release cycle. We reserve the right to modify service offerings based on current availability.
 - Users are responsible for maintaining the confidentiality of their Tally license information and for any activities that occur under their account or during remote support sessions.
 - All custom modules (TDL), content, and branding on this site are the intellectual property of Sarvadnya Infotech LLP unless otherwise stated. Unauthorized reproduction is prohibited.
 - Sarvadnya Infotech LLP shall not be liable for any indirect, incidental, or consequential damages arising out of the use or inability to use our Tally services or third-party cloud hosting.
-- Certified Tally Partner providing end-to-end business solutions, cloud migration, and professional technical support to streamline your accounting and compliance workflows.
+- Tally Certified Partner providing end-to-end business solutions, cloud migration, and professional technical support to streamline your accounting and compliance workflows.
 - © 2026 Sarvadnya Infotech LLP. All Rights Reserved.
 - Sara • Smart Assistant
 - Ask Sara about TallyPrime features, hosting, or modules.

@@ -1054,7 +1054,7 @@
 - **Version Bump:** Updated application version to v1.1.135.
 
 ## Recent Changes (v1.1.134)
-- **Navbar Logo Integration:** Enhanced the primary navigation by adding a dedicated, square company logo (favicon-derived) right before the brand name. This strengthens brand identity while maintaining the professional "Certified Tally Partner" badge.
+- **Navbar Logo Integration:** Enhanced the primary navigation by adding a dedicated, square company logo (favicon-derived) right before the brand name. This strengthens brand identity while maintaining the professional "Tally Certified Partner" badge.
 - **Improved Visual Consistency:** Applied precise square dimensions (`w-8 h-8` on desktop) and rounded borders to the new logo, ensuring it aligns with the modern, high-contrast UI system.
 - **Version Bump:** Updated application version to v1.1.134.
 
@@ -1069,7 +1069,7 @@
 - **Version Bump:** Updated application version to v1.1.132.
 
 ## Recent Changes (v1.1.131)
-- **Hero Branding Integration:** Re-engineered the `HomeHero` visual section to include a high-impact, immersive branding overlay. Replaced the static card with a full-fill `BG3-1.png` background and professional text overlay ("Certified Tally Partner", "Verified Solutions Since 2008").
+- **Hero Branding Integration:** Re-engineered the `HomeHero` visual section to include a high-impact, immersive branding overlay. Replaced the static card with a full-fill `BG3-1.png` background and professional text overlay ("Tally Certified Partner", "Verified Solutions Since 2008").
 - **Partner Grid Restoration:** Reverted the `CertifiedPartners` section from a billboard banner back to its professional industry logo grid, ensuring a balanced ecosystem display.
 - **Visual Depth Enhancement:** Added sophisticated gradient overlays, backdrop blurs, and corner decorations to the hero visual to align with the premium high-contrast design system.
 - **Version Bump:** Updated application version to v1.1.131.

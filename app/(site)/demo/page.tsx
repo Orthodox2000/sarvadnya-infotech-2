@@ -9,7 +9,7 @@ import { seoMetadata } from "@/lib/seo";
 // CHANGE: 2026-08-27 — SEO metadata for AI/search indexing.
 export const metadata = seoMetadata({
   title: "Demo — Sarvadnya Infotech LLP",
-  description: "Tally that works as hard as your business — certified Tally partner trusted by 1,500+ MSMEs. A design-review preview of the Sarvadnya Infotech homepage.",
+  description: "Tally that works as hard as your business — tally certified partner trusted by 1,500+ MSMEs. A design-review preview of the Sarvadnya Infotech homepage.",
   path: "/demo",
   keywords: ["sarvadnya infotech", "tally partner", "tallyprime", "demo"],
 });

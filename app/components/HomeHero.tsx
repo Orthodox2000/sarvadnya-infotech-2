@@ -13,7 +13,7 @@ interface HeroContent {
 }
 
 const HERO_CONTENT: HeroContent = {
-  badge: "Certified Tally Partner · Trusted Since 2008",
+  badge: "Tally Certified Partner · Trusted Since 2008",
   titleText: "Tally that works as hard as your business.",
   description: "We don't just implement software; we clear the path for your growth. Maximize your Tally investment with certified experts who care about your bottom line as much as you do.",
   image: "/certified partner person.png",

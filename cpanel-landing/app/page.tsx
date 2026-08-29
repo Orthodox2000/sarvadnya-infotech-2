@@ -130,7 +130,7 @@ const products = [
 ];
 
 const whyUs = [
-  { title: 'Certified Tally Partner', desc: 'Authorised Tally partner with deep, current product knowledge.' },
+  { title: 'Tally Certified Partner', desc: 'Authorised Tally partner with deep, current product knowledge.' },
   { title: 'Trusted since 2008', desc: '1500+ businesses rely on us for daily Tally operations.' },
   { title: '15-minute AMC SLA', desc: 'Dedicated support response — because downtime is expensive.' },
   { title: 'Transparent consultancy', desc: 'Honest recommendations on what to buy, not a sales pitch.' },
@@ -163,7 +163,7 @@ export default function LandingPage() {
             <Image src="/logo.png" alt="Sarvadnya Infotech LLP" width={36} height={36} className="h-9 w-9 object-contain" priority />
             <span className="text-sm font-bold leading-tight text-slate-900">
               Sarvadnya <span className="text-brand-600">Infotech</span>
-              <span className="block text-[10px] font-medium uppercase tracking-widest text-slate-400">Certified Tally Partner</span>
+              <span className="block text-[10px] font-medium uppercase tracking-widest text-slate-400">Tally Certified Partner</span>
             </span>
           </a>
           <nav className="hidden items-center gap-7 md:flex" aria-label="Main">
@@ -194,7 +194,7 @@ export default function LandingPage() {
             <div>
               <p className="mb-5 inline-flex items-center gap-2 rounded-full border border-brand-200 bg-white px-3.5 py-1.5 text-xs font-semibold text-brand-700 shadow-sm">
                 <span className="h-1.5 w-1.5 rounded-full bg-brand-500" />
-                Certified Tally Partner · Trusted Since 2008
+                Tally Certified Partner · Trusted Since 2008
               </p>
               <h1 className="font-playfair text-4xl font-bold leading-tight tracking-tight text-slate-900 sm:text-5xl lg:text-[3.4rem]">
                 Tally that works as hard as <span className="text-brand-600">your business</span>.
@@ -403,7 +403,7 @@ export default function LandingPage() {
               </span>
             </div>
             <p className="mt-4 max-w-sm text-sm leading-relaxed">
-              Certified Tally Partner helping 1500+ businesses run smoother since 2008.
+              Tally Certified Partner helping 1500+ businesses run smoother since 2008.
             </p>
             <div className="mt-5 flex gap-3">
               {[

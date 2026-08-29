@@ -6,7 +6,7 @@ import Footer from "../../components/Footer";
 const DEFAULTS = {
   hero_title: 'SARVADNYA INFOTECH LLP',
   hero_subtitle: 'Your Solution Partner',
-  hero_description: 'Certified Tally Partner since 2008, serving 1,500+ clients with transparent consultancy and expert solutions. We specialize in understanding business pain areas quickly to deliver maximum saturation and satisfaction through system automation and right technology adoption.',
+  hero_description: 'Tally Certified Partner since 2008, serving 1,500+ clients with transparent consultancy and expert solutions. We specialize in understanding business pain areas quickly to deliver maximum saturation and satisfaction through system automation and right technology adoption.',
   hero_image: '',
   partner1_name: 'Suman Sawant',
   partner1_quote: 'Suman is the Co-founder of Sarvadnya Infotech LLP. An MBA in HR and Finance, she has rich experience in diversified industries. With a zeal for excellence, she helps businesses bridge the knowledge gap in technology adoption for proper finance management. She specializes in replacing manual workflows with system automation and shares her expertise as an occasional lecturer at ICAI on Tally technology for Audit.',

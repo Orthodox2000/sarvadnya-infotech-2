@@ -133,7 +133,7 @@ const STATIC_PAGES = [
   { title: 'TallyPrime Gold', description: 'Multi-user TallyPrime product for growing teams.', url: '/products/gold', type: 'Page' },
   { title: 'TallyPrime Server', description: 'Enterprise TallyPrime product for shared access and stronger control.', url: '/products/server', type: 'Page' },
   { title: 'Cloud Solutions', description: 'TallyPrime Cloud Access and AWS solutions.', url: '/cloud', type: 'Page' },
-  { title: 'About Us', description: 'Certified Tally Partner since 2008.', url: '/about', type: 'Page' },
+  { title: 'About Us', description: 'Tally Certified Partner since 2008.', url: '/about', type: 'Page' },
   { title: 'Contact Support', description: 'Get priority support and technical help.', url: '/contact', type: 'Page' },
   { title: 'Careers', description: 'Join our team at Sarvadnya Infotech.', url: '/careers', type: 'Page' },
   { title: 'Annual Maintenance Contract (AMC)', url: '/services/amc', description: 'Professional Tally AMC services.', type: 'Page' },

@@ -167,7 +167,7 @@ function SearchContent() {
           </div>
 
           <p className="mt-10 text-[9px] text-slate-300 font-bold uppercase tracking-[0.5em]">
-            Sarvadnya Infotech LLP &bull; Certified Tally Partner
+            Sarvadnya Infotech LLP &bull; Tally Certified Partner
           </p>
         </div>
       </div>

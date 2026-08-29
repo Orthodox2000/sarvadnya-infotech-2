@@ -7,11 +7,11 @@ const playfair = Playfair_Display({ subsets: ['latin'], variable: '--font-playfa
 
 export const metadata: Metadata = {
   title: {
-    default: 'Sarvadnya Infotech LLP — Certified Tally Partner Since 2008',
+    default: 'Sarvadnya Infotech LLP — Tally Certified Partner Since 2008',
     template: '%s | Sarvadnya Infotech LLP',
   },
   description:
-    'Certified Tally Partner trusted by 1500+ businesses. TallyPrime, Tally on Cloud, AMC, Tally on WhatsApp, TallyDrive cloud backup and more.',
+    'Tally Certified Partner trusted by 1500+ businesses. TallyPrime, Tally on Cloud, AMC, Tally on WhatsApp, TallyDrive cloud backup and more.',
   icons: { icon: '/logo.png' },
 };
 

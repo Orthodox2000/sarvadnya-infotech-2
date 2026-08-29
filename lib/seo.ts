@@ -5,9 +5,9 @@ import type { Metadata } from 'next';
 export const SITE_URL = 'https://sarvadnyainfotech.com';
 
 export const SITE_NAME = 'Sarvadnya Infotech LLP';
-export const SITE_TITLE = `${SITE_NAME} — Certified Tally Partner Since 2008`;
+export const SITE_TITLE = `${SITE_NAME} — Tally Certified Partner Since 2008`;
 export const SITE_DESCRIPTION =
-  'Certified Tally Partner trusted by 1500+ MSMEs. TallyPrime (Silver, Gold, Server), Tally on Cloud, AMC, Tally on WhatsApp, TallyDrive cloud backup, HRMS, TDL customization & corporate training.';
+  'Tally Certified Partner trusted by 1500+ MSMEs. TallyPrime (Silver, Gold, Server), Tally on Cloud, AMC, Tally on WhatsApp, TallyDrive cloud backup, HRMS, TDL customization & corporate training.';
 
 export const SITE_CONTACT = {
   email: 'info@sarvadnyainfotech.com',

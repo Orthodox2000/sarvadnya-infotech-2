@@ -74,7 +74,7 @@ export default function Navbar() {
           </div>
           <span className="ml-1.5 text-[12px] sm:text-[16px] lg:text-[18.9px] font-bold leading-tight text-slate-900">
             Sarvadnya <span className="text-[#006569]">Infotech LLP</span>
-            <span className="block text-[8.5px] sm:text-[11px] lg:text-[13.5px] font-medium uppercase tracking-widest text-slate-400">Certified Tally Partner</span>
+            <span className="block text-[8.5px] sm:text-[11px] lg:text-[13.5px] font-medium uppercase tracking-widest text-slate-400">Tally Certified Partner</span>
           </span>
         </Link>
 

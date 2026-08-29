@@ -140,8 +140,7 @@ export default function Footer({ settings: initialSettings }: { settings?: SiteS
 
             <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-12 mb-16 relative z-10">
                 {/* CHANGE: 2026-08-28 — Footer logo now mirrors the header structure for brand-name
-                   consistency: same /TallyCertificate.png logo + 'Sarvadnya Infotech LLP' + 'Certified
-                   Tally Partner' tagline, restyled for the dark footer. */}
+                   consistency: same /TallyCertificate.png logo + 'Sarvadnya Infotech LLP' + 'tally certified partner' tagline, restyled for the dark footer. */}
                 {/* CHANGE: 2026-08-29 — Logo block restacked VERTICALLY (image → name → tagline) so it
                    fits the narrow 1/6 desktop column instead of overflowing/overlapping to the right. */}
                 <div className="lg:col-span-1 space-y-6">
@@ -157,11 +156,11 @@ export default function Footer({ settings: initialSettings }: { settings?: SiteS
                         </div>
                         <span className="text-base lg:text-md font-bold whitespace-nowrap leading-tight text-white min-w-0">
                             Sarvadnya <span className="text-teal-300 ">Infotech LLP</span>
-                            <span className="block text-[10px] lg:text-[px] font-medium uppercase tracking-widest text-white/50 min-w-0">Certified Tally Partner</span>
+                            <span className="block text-[10px] lg:text-[11px] font-medium uppercase tracking-widest text-white/50 min-w-0">Tally Certified Partner</span>
                         </span>
                     </Link>
                     <p className="text-sm leading-relaxed text-white/90 font-medium">
-                        Certified Tally Partner providing end-to-end business solutions, 
+                        Tally Certified Partner providing end-to-end business solutions, 
                         cloud migration, and professional technical support to streamline your 
                         accounting and compliance workflows.
                     </p>
