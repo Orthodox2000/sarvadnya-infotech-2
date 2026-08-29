@@ -4,7 +4,7 @@ import { headers } from 'next/headers';
 import { uploadToMega } from '@/lib/mega';
 import { saveApplication } from '@/lib/mongodb-utils';
 import { revalidatePath } from 'next/cache';
-import { getRequestMetaFromHeaders, lookupGeo, maskIp } from '@/lib/visitors';
+import { getRequestMetaFromHeaders, lookupGeo } from '@/lib/visitors';
 import type { GeoInfo } from '@/lib/visitors';
 
 export async function submitApplication(formData: FormData) {
@@ -59,7 +59,6 @@ export async function submitApplication(formData: FormData) {
       message,
       resume_url: resumeUrl,
       ip: meta.secGpc ? undefined : meta.ip,
-      ipMasked: maskIp(meta.ip),
       userAgent: meta.userAgent || undefined,
       geo,
     });

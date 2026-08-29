@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, type ElementType } from 'react';
+import { useState, useEffect, type ElementType } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import Footer from '../../../components/Footer';
@@ -157,6 +157,22 @@ export default function TallyCapitalPage() {
     details: '',
   });
   const [openFaq, setOpenFaq] = useState<number | null>(0);
+
+  // CHANGE: 2026-08-29 — Office address pulled from site settings DB (/api/settings) instead of
+  // the hardcoded placeholder, so the About Us section always shows the current Vindya Complex address.
+  const [officeAddress, setOfficeAddress] = useState<string>('');
+  useEffect(() => {
+    let cancelled = false;
+    fetch('/api/settings')
+      .then((r) => r.json())
+      .then((data) => {
+        if (!cancelled && data && !data.error && data.office_address) {
+          setOfficeAddress(data.office_address);
+        }
+      })
+      .catch(() => {});
+    return () => { cancelled = true; };
+  }, []);
 
   const openModal = (type: FormType, service = 'TallyCapital', details = '') => {
     setModalConfig({ isOpen: true, type, service, details });
@@ -534,8 +550,9 @@ export default function TallyCapitalPage() {
               </div>
 
               <h3 className="text-lg font-bold text-slate-900 mb-3">About Us</h3>
+              {/* CHANGE: 2026-08-29 — 'over 20 years' → '12+ years of association' per user. */}
               <p className="text-sm text-slate-600 leading-relaxed mb-4">
-                We have been authorised Tally Partners for over 20 years, helping businesses across India to set up, manage, and grow with TallyPrime. As a certified TallyCapital partner, we now bring you seamless access to business financing — right from within the software you already use every day.
+                We have been associated as authorised Tally Partners for 12+ years, helping businesses across India to set up, manage, and grow with TallyPrime. As a certified TallyCapital partner, we now bring you seamless access to business financing — right from within the software you already use every day.
               </p>
               <p className="text-sm text-slate-600 leading-relaxed mb-6">
                 Whether you need guidance on getting started with TallyCapital or want to explore your loan options, our team is here to help.
@@ -553,7 +570,8 @@ export default function TallyCapitalPage() {
                     <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                     <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                   </svg>
-                  <span className="text-sm text-slate-600 font-medium">123, Business Center, Main Road, Pune - 411001</span>
+                  {/* CHANGE: 2026-08-29 — Address rendered from site settings DB (Vindya Complex); neutral fallback. */}
+                  <span className="text-sm text-slate-600 font-medium">{officeAddress || 'Vindya Complex, Belapur, Navi Mumbai'}</span>
                 </div>
               </div>
 
@@ -570,7 +588,7 @@ export default function TallyCapitalPage() {
               <h3 className="text-lg font-black text-white mb-6">Why Choose Sarvadnya Infotech LLP?</h3>
               <div className="space-y-6">
                 {[
-                  { icon: '✓', text: 'Over 20 years as Certified Tally Partner' },
+                  { icon: '✓', text: '12+ years of association as Certified Tally Partner' },
                   { icon: '✓', text: 'Certified TallyCapital partner' },
                   { icon: '✓', text: 'End-to-end setup & financing guidance' },
                   { icon: '✓', text: 'Trusted by businesses across India' },

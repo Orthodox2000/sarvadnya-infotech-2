@@ -5,7 +5,6 @@ import { sendEmailDirect } from '@/lib/email-queue';
 import {
   getRequestMeta,
   lookupGeo,
-  maskIp,
   isValidSessionId,
   markConversion,
   lookupReverseDns,
@@ -125,7 +124,6 @@ export async function POST(request: Request) {
     const submissionData = {
       ...data,
       ip: meta.ip,
-      ipMasked: maskIp(meta.ip),
       userAgent: meta.userAgent || undefined,
       geo,
       ...(sessionId ? { sessionId } : {}),

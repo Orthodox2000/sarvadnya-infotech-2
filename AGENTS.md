@@ -106,7 +106,9 @@ The site loads the client's Zoho SalesIQ widget script **for visitor tracking/an
 
 | File | Role |
 | :--- | :--- |
-| `app/layout.tsx` | End of `<body>`: raw SSR'd `<script>` tags (NOT `next/script` — order must be guaranteed): inline `window.$zoho` init + `$zoho.salesiq.ready(...)` hook that hides the chat button (`floatbutton.visible("hide")` / `chatbutton.visible("hide")`, try/catch both), then deferred `#zsiqscript` from `salesiq.zohopublic.in`. Root layout → present on every page. |
+| `app/layout.tsx` | End of `<body>`: raw SSR'd `<script>` tags (NOT `next/script` — order must be guaranteed): inline `window.$zoho` init + `$zoho.salesiq.ready(...)` hook that hides the chat button (`floatbutton.visible("hide")` / `chatbutton.visible("hide")`, try/catch both), then deferred `#zsiqscript` from `salesiq.zohopublic.in`. Root layout → present on every page. **2026-08-29:** widget ID swapped to the newer SalesIQ account (`wc=siq2206…`); the init/hide-hook + CSS suppression stayed identical so the embed remains tracking-only. |
+
+| VISITOR / SUBMISSION IP | Full (unmasked) visitor IP is stored openly in the `ip` field of `visitors` and all submission collections (`form_submissions`, applications, tss-renewals, problem-reports); `maskIp()` is used **only** in console logs. The redundant `ipMasked` field was removed 2026-08-29 — full IP is now what's shown in the internal email copy too. |
 | `app/globals.css` | CSS suppression layer (bottom of file): `#zs_fl_chat`, `span.siqico-chat.zsiq-chat-icn`, `#zsiqwidget`, `#zsiq_float`, `iframe[src*='salesiq']` → `display:none !important`. The script keeps loading so analytics continue; only the UI is hidden. |
 | `next.config.js` | CSP must keep the Zoho domains or tracking silently dies: `script-src`/`connect-src`(incl. `wss:`)/`img-src`/`frame-src` allow `*.zohopublic.in` (+ `*.zohocdn.com` for CDN assets). |
 

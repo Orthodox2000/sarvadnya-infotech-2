@@ -12,7 +12,6 @@ export interface FormSubmissionPayload {
   formType?: string;
   destination?: string;
   ip?: string;
-  ipMasked?: string;
   userAgent?: string;
   geo?: GeoInfo | null;
   sessionId?: string;
@@ -88,7 +87,7 @@ export function getSubject(formType?: string): string {
 }
 
 export function buildFormEmailHtml(submission: FormSubmissionPayload): string {
-  const gpcOptOut = submission.ipMasked === 'gpc-opt-out' || (!submission.geo && !submission.ip);
+  const gpcOptOut = !submission.geo && !submission.ip;
 
   const location = submission.geo
     ? [submission.geo.city, submission.geo.region, submission.geo.country]
@@ -105,12 +104,8 @@ export function buildFormEmailHtml(submission: FormSubmissionPayload): string {
         .join(' · ')
     : '';
 
-  const ipValue =
-    gpcOptOut
-      ? '—'
-      : submission.ipMasked && submission.ipMasked !== 'gpc-opt-out'
-        ? submission.ipMasked
-        : submission.ip || '—';
+  // CHANGE: 2026-08-29 — Full IP shown in the internal email copy (ipMasked removed).
+  const ipValue = submission.ip || '—';
 
   const device = submission.userAgent
     ? (() => {

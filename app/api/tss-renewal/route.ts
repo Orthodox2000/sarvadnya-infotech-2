@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { saveTssRenewal } from '@/lib/mongodb-utils';
 import { sendEmailDirect } from '@/lib/email-queue';
-import { getRequestMeta, lookupGeo, maskIp, isValidSessionId, markConversion } from '@/lib/visitors';
+import { getRequestMeta, lookupGeo, isValidSessionId, markConversion } from '@/lib/visitors';
 import type { GeoInfo } from '@/lib/visitors';
 
 function sanitize(str: string) {
@@ -42,7 +42,6 @@ export async function POST(request: Request) {
     const enriched = {
       ...data,
       ip: meta.secGpc ? undefined : meta.ip,
-      ipMasked: maskIp(meta.ip),
       userAgent: meta.userAgent || undefined,
       geo,
       ...(sessionId ? { sessionId } : {}),
@@ -67,7 +66,6 @@ export async function POST(request: Request) {
         formType: 'tss-renewal',
         destination: 'tss-renewal',
         ip: enriched.ip,
-        ipMasked: enriched.ipMasked,
         userAgent: enriched.userAgent,
         geo,
         ...(sessionId ? { sessionId } : {}),

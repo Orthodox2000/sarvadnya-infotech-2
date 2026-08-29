@@ -67,7 +67,6 @@ export interface VisitorRecord {
   paths: { path: string; at: Date }[];
   sectionViews?: string[];
   ip?: string;
-  ipMasked: string;
   userAgent?: string;
   device?: DeviceInfo | null;
   language?: string;
@@ -386,6 +385,7 @@ export async function lookupGeo(
 
 // CHANGE: 2026-08-18 — Removed respectGpc parameter. Full IP, geo, device always stored.
 // UTM params and reverse DNS stored when available.
+// CHANGE: 2026-08-29 — Dropped ipMasked storage. Full IP persisted openly in `ip` (per user request).
 export async function recordVisitor(input: {
   payload: TrackPayload;
   meta: RequestMeta;
@@ -426,7 +426,6 @@ export async function recordVisitor(input: {
         device: parseDevice(meta.userAgent),
         userAgent: meta.userAgent,
         ip: meta.ip,
-        ipMasked: maskIp(meta.ip),
         secGpc: meta.secGpc,
         secFetchSite: meta.secFetchSite,
         gpcRespected: false,

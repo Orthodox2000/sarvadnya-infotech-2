@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { saveProblemReport } from '@/lib/mongodb-utils';
 import { sendEmailDirect } from '@/lib/email-queue';
-import { getRequestMeta, lookupGeo, maskIp, isValidSessionId, markConversion } from '@/lib/visitors';
+import { getRequestMeta, lookupGeo, isValidSessionId, markConversion } from '@/lib/visitors';
 import type { GeoInfo } from '@/lib/visitors';
 
 const allowedIssueTypes = new Set([
@@ -62,7 +62,6 @@ export async function POST(request: Request) {
     const enriched = {
       ...data,
       ip: meta.secGpc ? undefined : meta.ip,
-      ipMasked: maskIp(meta.ip),
       userAgent: meta.userAgent || undefined,
       geo,
       ...(sessionId ? { sessionId } : {}),
@@ -85,7 +84,6 @@ export async function POST(request: Request) {
         service: data.issueType,
         description: data.pageUrl ? `${data.pageUrl}\n\n${data.description}` : data.description,
         ip: enriched.ip,
-        ipMasked: enriched.ipMasked,
         userAgent: enriched.userAgent,
         geo,
         ...(sessionId ? { sessionId } : {}),

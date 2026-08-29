@@ -6,7 +6,6 @@ import { getDestinationFromPath } from '@/lib/form-destinations';
 import {
   getRequestMeta,
   lookupGeo,
-  maskIp,
   isValidSessionId,
   markConversion,
   visitorLog,
@@ -131,7 +130,6 @@ export async function POST(request: Request) {
     const submissionData = {
       ...data,
       ip: meta.ip,
-      ipMasked: maskIp(meta.ip),
       userAgent: meta.userAgent || undefined,
       geo,
       ...(sessionId ? { sessionId } : {}),

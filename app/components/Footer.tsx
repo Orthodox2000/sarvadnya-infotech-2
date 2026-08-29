@@ -142,20 +142,22 @@ export default function Footer({ settings: initialSettings }: { settings?: SiteS
                 {/* CHANGE: 2026-08-28 — Footer logo now mirrors the header structure for brand-name
                    consistency: same /TallyCertificate.png logo + 'Sarvadnya Infotech LLP' + 'Certified
                    Tally Partner' tagline, restyled for the dark footer. */}
+                {/* CHANGE: 2026-08-29 — Logo block restacked VERTICALLY (image → name → tagline) so it
+                   fits the narrow 1/6 desktop column instead of overflowing/overlapping to the right. */}
                 <div className="lg:col-span-1 space-y-6">
-                    <Link href="/" className="flex items-center gap-3 group">
-                        <div className="relative shrink-0 h-11">
+                    <Link href="/" className="flex flex-col items-start gap-2 group max-w-full">
+                        <div className="relative h-16 w-auto max-w-full shrink-0">
                             <Image
-                                src="/TallyCertificate.png"
+                                src="/footer png inverted.png"
                                 alt="Sarvadnya Infotech LLP"
                                 width={120}
                                 height={40}
-                                className="h-full w-auto object-contain opacity-90 group-hover:opacity-100 transition-opacity"
+                                className="h-full w-auto max-w-full object-contain opacity-90 group-hover:opacity-100 transition-opacity"
                             />
                         </div>
-                        <span className="text-base lg:text-lg font-bold leading-tight text-white">
-                            Sarvadnya <span className="text-teal-300">Infotech LLP</span>
-                            <span className="block text-[10px] lg:text-[11px] font-medium uppercase tracking-widest text-white/50">Certified Tally Partner</span>
+                        <span className="text-base lg:text-md font-bold whitespace-nowrap leading-tight text-white min-w-0">
+                            Sarvadnya <span className="text-teal-300 ">Infotech LLP</span>
+                            <span className="block text-[10px] lg:text-[px] font-medium uppercase tracking-widest text-white/50 min-w-0">Certified Tally Partner</span>
                         </span>
                     </Link>
                     <p className="text-sm leading-relaxed text-white/90 font-medium">
