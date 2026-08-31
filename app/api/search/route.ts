@@ -224,9 +224,11 @@ export async function GET(request: Request) {
     });
 
     news.forEach((n: any) => {
-      if (n.title?.toLowerCase().includes(query) || n.content?.toLowerCase().includes(query)) {
+      if (n.title?.toLowerCase().includes(query) || n.content?.toLowerCase().includes(query) || n.tags?.some((t: string) => t.includes(query))) {
+        // CHANGE: 2026-08-31 — news search results now point to the individual article page (/news/[slug])
+        // instead of the listing page, so each article is a standalone SEO-visible landing.
         dbResults.push({
-          title: n.title, description: n.content?.substring(0, 100) + '...', url: '/news', type: 'News',
+          title: n.title, description: n.excerpt || n.description || n.content?.substring(0, 100) + '...', url: `/news/${n.slug}`, type: 'News',
           icon: 'M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z'
         });
       }

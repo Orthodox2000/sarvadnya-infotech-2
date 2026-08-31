@@ -1,6 +1,7 @@
 import clientPromise from './mongodb';
 import { ObjectId } from 'mongodb';
 import { staticPartners } from './partners';
+import { enrichNews } from './news-utils';
 // Caching disabled
 
 export async function getDb() {
@@ -314,6 +315,9 @@ export async function deletePartner(id: string) {
 // News helpers
 // CHANGE: 2026-08-31 — Sort news so the latest item appears first (newest `date` on top).
 // Falls back to insertion order (_id) for entries without a parseable date.
+// CHANGE: 2026-08-31 — Enriched to the blog shape via enrichNews() so every consumer (news listing,
+// /api/news, search, sitemap, article pages) gets slug/excerpt/readingTime/tags/author/dateIso
+// auto-derived from the legacy admin fields. Explicit values win when present.
 async function fetchNews() {
   const col = await getCollection('news');
   const data = await col.find({}).toArray();
@@ -325,10 +329,25 @@ async function fetchNews() {
     if (va !== vb) return vb - va;
     return String(b._id).localeCompare(String(a._id));
   });
-  return serializeData(data);
+  return serializeData(data.map((d) => enrichNews(d)));
 }
 
 export const getNews = async () => fetchNews();
+
+// CHANGE: 2026-08-31 — Single-article lookup by slug (used by /news/[slug]).
+// Matches the exact final slug from enrichNews() (explicit doc.slug OR auto-derived), so both
+// admin-crafted slugs and auto-generated ones resolve. Returns null when not found.
+export async function getNewsBySlug(slug: string) {
+  if (!slug) return null;
+  const col = await getCollection('news');
+  const data = await col.find({}).toArray();
+  for (const d of data) {
+    if (enrichNews(d).slug === slug) {
+      return serializeData(enrichNews(d));
+    }
+  }
+  return null;
+}
 
 export async function addNews(data: any) {
   const col = await getCollection('news');

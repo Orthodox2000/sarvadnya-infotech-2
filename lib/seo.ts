@@ -133,3 +133,41 @@ export function breadcrumbJsonLd(items: { name: string; path: string }[]): JsonL
     })),
   };
 }
+
+// CHANGE: 2026-08-31 — Article/BlogPosting structured data for individual /news/[slug] pages.
+// headless/author defaults to the company, publisher = the Organization node. datePublished uses the
+// ISO variant when available (falls back to the raw string otherwise, so unparseable dates don't crash).
+export function articleJsonLd({
+  headline,
+  description,
+  slug,
+  datePublished,
+  dateModified,
+  author,
+  image,
+}: {
+  headline: string;
+  description: string;
+  slug: string;
+  datePublished?: string | null;
+  dateModified?: string | null;
+  author?: string;
+  image?: string;
+}): JsonLd {
+  const authorName = author || SITE_NAME;
+  const publisherLogo = `${SITE_URL}/logo.png`;
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'NewsArticle',
+    headline,
+    description,
+    url: parallelPath(`/news/${slug}`),
+    mainEntityOfPage: parallelPath(`/news/${slug}`),
+    ...(datePublished ? { datePublished } : {}),
+    ...(dateModified ? { dateModified } : {}),
+    ...(image ? { image } : {}),
+    author: { '@type': 'Organization', name: authorName, url: SITE_URL },
+    publisher: { '@type': 'Organization', name: SITE_NAME, logo: { '@type': 'ImageObject', url: publisherLogo } },
+    inLanguage: 'en-IN',
+  };
+}

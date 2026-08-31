@@ -5,11 +5,12 @@ import { NewsItem } from '@/lib/news';
 import { seoMetadata } from "@/lib/seo";
 
 // CHANGE: 2026-08-27 — SEO metadata for AI/search indexing.
+// CHANGE: 2026-08-31 — Metadata strengthened with target keywords; cards link internally to /news/[slug].
 export const metadata = seoMetadata({
-  title: "News & Updates",
-  description: "Stay informed about the latest Tally updates, statutory changes, and Sarvadnya Infotech LLP announcements.",
+  title: "Tally News & Software Company Updates in Navi Mumbai",
+  description: "Latest Tally, TSS renewal, cloud and software insights from Sarvadnya Infotech LLP — a certified Tally partner in Belapur, Navi Mumbai. Tips for tally partners & software companies in Mumbai.",
   path: "/news",
-  keywords: ["sarvadnya news", "tally news", "tally updates", "tally announcements"],
+  keywords: ["tally news", "tally partner mumbai", "tally dealers mumbai", "tally erp 9 add ons", "software companies in belapur", "software companies in navi mumbai", "tally updates", "tally announcements"],
 });
 
 export default async function NewsPage() {
@@ -43,17 +44,21 @@ export default async function NewsPage() {
         {/* News Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {newsItems.map((item) => (
-            <div 
+            <Link 
               key={(item as any)._id || item.id} 
+              href={`/news/${item.slug}`}
               className="bg-white/80 backdrop-blur-sm rounded-3xl p-8 border border-slate-200 shadow-sm hover:shadow-xl transition-all duration-300 group flex flex-col"
             >
-              <div className="flex items-center gap-3 mb-6">
+              <div className="flex items-center gap-3 mb-6 flex-wrap">
                 <span className="px-3 py-1 bg-[#E5F4F4] text-[#006569] text-[10px] font-black uppercase tracking-widest rounded-full">
                   {item.category}
                 </span>
                 <span className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">
                   {item.date}
                 </span>
+                {typeof item.readingTime === 'number' && (
+                  <span className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">· {item.readingTime} min read</span>
+                )}
               </div>
               
               <h2 className="text-xl font-bold text-slate-900 mb-4 group-hover:text-[#006569] transition-colors leading-tight">
@@ -62,25 +67,19 @@ export default async function NewsPage() {
               
               <div className="flex flex-col gap-3 flex-grow mb-6">
                 <p className="text-slate-600 text-sm leading-relaxed">
-                  {item.description}
-                </p>
-                <p className="text-slate-500 text-sm leading-relaxed italic border-l-2 border-slate-200 pl-4">
-                  {item.content}
+                  {item.excerpt || item.description}
                 </p>
               </div>
 
               <div className="flex flex-col gap-4">
-                <Link 
-                  href={item.link}
-                  className="inline-flex items-center gap-2 text-[#006569] font-bold text-xs uppercase tracking-widest hover:gap-3 transition-all"
-                >
-                  Learn More
+                <span className="inline-flex items-center gap-2 text-[#006569] font-bold text-xs uppercase tracking-widest group-hover:gap-3 transition-all">
+                  Read Article
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M17 8l4 4m0 0l-4 4m4-4H3" />
                   </svg>
-                </Link>
+                </span>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
         

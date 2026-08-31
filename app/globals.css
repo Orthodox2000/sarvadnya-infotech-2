@@ -531,14 +531,15 @@ main > div:first-of-type {
   100% { transform: translate3d(-50%, 0, 0); }
 }
 
+/* CHANGE: 2026-08-31 — animation properties moved to inline style in NewsFeed.tsx
+   so the duration can be set per-render (measured track width / 35 px/s).
+   Only layout + GPU hints remain here. */
 .animate-marquee-infinite {
   display: flex !important;
   width: max-content !important;
-  animation: news-ticker-scroll 60s linear infinite !important;
   will-change: transform;
   backface-visibility: hidden;
   perspective: 1000px;
-  animation-play-state: running !important;
 }
 
 .pause-marquee-infinite,
