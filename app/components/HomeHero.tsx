@@ -139,7 +139,7 @@ export default function HomeHero({ hero = HERO_CONTENT, emailCopy = false, backg
       {/* Hero main row */}
       <div className="relative z-10 flex items-center">
         <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-0 pb-4 lg:pb-0">
-          <div className="flex flex-col lg:flex-row items-center lg:mt-6 lg:pb-2 gap-6 lg:gap-12">
+          <div className="flex flex-col lg:flex-row items-center lg:mt-1 lg:pb-2 gap-6 lg:gap-12">
 
             {/* Left: Content */}
             <div className="w-full lg:w-1/2 space-y-2 lg:space-y-3">

@@ -62,16 +62,11 @@ export default function RootLayout({
         {/* CHANGE: 2026-08-27 — Organization + WebSite JSON-LD for search/AI indexing. */}
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([orgJsonLd(), webSiteJsonLd()]) }} />
         {children}
-        {/* CHANGE: 2026-08-27 — Zoho SalesIQ TRACKING-ONLY embed (reactivated; Leadfeeder now commented out in <head>).
-            The chat button is suppressed via the hide hook so the script only serves visitor analytics. */}
-        {/* CHANGE: 2026-08-28 — Zoho SalesIQ consent/info prompt hidden too.
-            The chat button AND the first-visit consent/welcome bar are both suppressed so the
-            embed is purely tracking-only. A small delay ensures the widget's DOM has mounted. */}
-        {/* CHANGE: 2026-08-29 — Zoho SalesIQ embed realigned to the canonical 2-tag snippet
-            (init script + widget script, verbatim as provided by Zoho). The tracking-only
-            hide hook stays as its own inline script so the chat/consent UI remains hidden. */}
+        {/* CHANGE: 2026-08-31 — Zoho SalesIQ embed rendered VERBATIM as the canonical 2-tag snippet
+            provided by Zoho (init script + zsiqwidget script, adjacent in one block, nothing split in <head>).
+            The separate hide-hook inline script was removed; the chat/consent UI is now hidden only via the
+            CSS opacity layer in globals.css (hidden, NOT suppressed → display/pointer-events remain intact). */}
         <script dangerouslySetInnerHTML={{ __html: `window.$zoho=window.$zoho || {};$zoho.salesiq=$zoho.salesiq||{ready:function(){}}` }} />
-        <script dangerouslySetInnerHTML={{ __html: `$zoho.salesiq.ready(function(){var h=function(){try{$zoho.salesiq.floatbutton&&$zoho.salesiq.floatbutton.visible&&$zoho.salesiq.floatbutton.visible("hide")}catch(e){}try{$zoho.salesiq.chatbutton&&$zoho.salesiq.chatbutton.visible&&$zoho.salesiq.chatbutton.visible("hide")}catch(e){}};h();setTimeout(h,1000);setTimeout(h,3000);});` }} />
         <script id="zsiqscript" defer src="https://salesiq.zohopublic.in/widget?wc=siq2206f6c142ca693dad0cc4071612c0952f6f7bc1cf08e71cd693f685913813b346a77e21e757c80042de5e8938dd0719" />
       </body>
     </html>

@@ -312,9 +312,19 @@ export async function deletePartner(id: string) {
 }
 
 // News helpers
+// CHANGE: 2026-08-31 — Sort news so the latest item appears first (newest `date` on top).
+// Falls back to insertion order (_id) for entries without a parseable date.
 async function fetchNews() {
   const col = await getCollection('news');
-  const data = await col.find({}).sort({ _id: -1 }).toArray();
+  const data = await col.find({}).toArray();
+  data.sort((a, b) => {
+    const ta = new Date(a.date).getTime();
+    const tb = new Date(b.date).getTime();
+    const va = Number.isNaN(ta) ? 0 : ta;
+    const vb = Number.isNaN(tb) ? 0 : tb;
+    if (va !== vb) return vb - va;
+    return String(b._id).localeCompare(String(a._id));
+  });
   return serializeData(data);
 }
 

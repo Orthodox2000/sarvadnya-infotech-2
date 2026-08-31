@@ -72,9 +72,12 @@ export default function Navbar() {
               priority
             />
           </div>
-          <span className="ml-1.5 text-[12px] sm:text-[16px] lg:text-[18.9px] font-bold leading-tight text-slate-900">
-            Sarvadnya <span className="text-[#006569]">Infotech LLP</span>
-            <span className="block text-[8.5px] sm:text-[11px] lg:text-[13.5px] font-medium uppercase tracking-widest text-slate-400">Tally Certified Partner</span>
+          {/* CHANGE: 2026-08-31 — Two-line wordmark spread to match the logo's height: "Sarvadnya Infotech"
+              on line 1 (dark graphite) + "LLP" on line 2 (teal brand accent), vertically centred to the logo.
+              Industrial-standard professional scheme: dark primary name with brand-colour accent. */}
+          <span className="ml-2 flex flex-col justify-center leading-[1.15]">
+            <span className="text-[13px] sm:text-[18px] lg:text-[21px] font-bold text-slate-900">Sarvadnya Infotech</span>
+            <span className="text-[12px] sm:text-[14.5px] lg:text-[17px] font-black tracking-[0.08em] text-[#006569]">LLP</span>
           </span>
         </Link>
 

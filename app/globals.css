@@ -562,11 +562,10 @@ main > div:first-of-type {
 .font-inter {
   font-family: var(--font-sans), 'Inter', ui-sans-serif, system-ui, sans-serif;
 }
-/* CHANGE: 2026-08-21 - Zoho SalesIQ runs TRACKING-ONLY: hide the chat button/widget UI completely.
-   Targets the client-provided DOM node (#zs_fl_chat span) plus all known SalesIQ mounts as fallback.
-   The zsiqscript itself keeps loading, so visitor tracking/analytics continue unaffected. */
-/* CHANGE: 2026-08-28 — Also hide Zoho's first-visit consent/info prompt (gray bar) plus all
-   widget chrome (floater, livechat, welcome/prechat) so the embed is purely tracking-only. */
+/* CHANGE: 2026-08-31 — Zoho SalesIQ tracking-only: hide the chat/consent UI via OPACITY:0 (NOT suppressed).
+   Uses opacity (not display:none) so the widget stays mounted and tracking/analytics are fully intact —
+   the chatbox and consent banners are made invisible without disabling/reflowing them.
+   Targets all known SalesIQ mounts (chat button, floaters, livechat, welcome/prechat, consent forms). */
 #zs_fl_chat,
 span.siqico-chat.zsiq-chat-icn,
 #zsiqwidget,
@@ -577,6 +576,13 @@ iframe[src*='salesiq'],
 .zsiq_theme1,
 #zsiq_float a,
 .zsiq_flt_rel,
-#zs_enq_form {
-  display: none !important;
+#zs_enq_form,
+#zs_consent_bar,
+#zs_consent,
+.zs_consent_banner,
+#zsiq_prechat,
+#zsiq_welcomediv,
+#zsiq_maintitle,
+#zsiq_float_main {
+  opacity: 0 !important;
 }

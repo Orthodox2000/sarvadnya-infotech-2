@@ -154,10 +154,13 @@ export default function Footer({ settings: initialSettings }: { settings?: SiteS
                                 className="h-full w-auto max-w-full object-contain opacity-90 group-hover:opacity-100 transition-opacity"
                             />
                         </div>
-                        <span className="text-base lg:text-md font-bold whitespace-nowrap leading-tight text-white min-w-0">
-                            Sarvadnya <span className="text-teal-300 ">Infotech LLP</span>
-                            <span className="block text-[10px] lg:text-[11px] font-medium uppercase tracking-widest text-white/50 min-w-0">Tally Certified Partner</span>
-                        </span>
+                        {/* CHANGE: 2026-08-31 — Footer wordmark matches navbar: two-line (Sarvadnya Infotech / LLP),
+                           LLP on its own line, spread to the logo height. Colour adapted for the dark footer —
+                           white primary name + teal (teal-300) brand accent; tagline removed (consistent with navbar). */}
+                            <span className="flex flex-col justify-center leading-[1.15] min-w-0">
+                                <span className="text-base lg:text-[16px] font-bold text-white">Sarvadnya Infotech</span>
+                                <span className="text-sm lg:text-[13px] font-black tracking-[0.08em] text-teal-300">LLP</span>
+                            </span>
                     </Link>
                     <p className="text-sm leading-relaxed text-white/90 font-medium">
                         Tally Certified Partner providing end-to-end business solutions, 
