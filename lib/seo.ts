@@ -113,6 +113,22 @@ export function webSiteJsonLd(): JsonLd {
   };
 }
 
+// CHANGE: 2026-08-31 — VideoObject structured data for homepage hero video (GSC video indexing).
+// Google requires thumbnailUrl to index videos; the <video> tag alone is not enough.
+export function videoJsonLd(): JsonLd {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'VideoObject',
+    name: 'Sarvadnya Infotech — Tally Certified Partner',
+    description: 'Tally Certified Partner trusted by 1500+ MSMEs. TallyPrime products, cloud access, customizations, HRMS and more.',
+    thumbnailUrl: `${SITE_URL}/logo.png`,
+    uploadDate: '2026-06-03',
+    duration: 'PT48S',
+    contentUrl: `${SITE_URL}/sarvadnya-mobile.mp4`,
+    embedUrl: SITE_URL,
+  };
+}
+
 export function faqJsonLd(question: string, answer: string): JsonLd {
   return {
     '@context': 'https://schema.org',
