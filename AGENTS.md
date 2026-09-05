@@ -42,8 +42,10 @@ The application implements several advanced optimization strategies to ensure sm
 | :--- | :--- |
 | `app/api/chat/route.ts` | Server-side API. Calls Groq SDK with multi-key rotation, 25s timeout, bulletproof think-tag cleanup. System prompt defines Sara as a senior sales consultant with full product catalog. |
 | `app/components/QuickSupportModal.tsx` | Floating button chat UI. AI API call with local keyword fallback. Stop/interrupt button during typewriter. Input stays focused. 20-40 char chunks at 5-8ms. |
-| `lib/sara-topics.ts` | Shared knowledge base. 7 topic trees with follow-ups, `matchTopic()` keyword scorer, `getFallbackResponse()` with 20+ contextual patterns. Used by both Ask Sara and Learn Sara. |
+| `lib/sara-topics.ts` | Shared knowledge base. 7 topic trees with follow-ups, `matchTopic()` keyword scorer (+5 per synonym hit, word-boundary safe), `getFallbackResponse()` with 20+ contextual patterns. Used by both Ask Sara and Learn Sara. |
 | `app/(site)/learn-sara/page.tsx` | Full-page Sara chatbot. Imports from `lib/sara-topics.ts`. Local keyword matching, no API calls. |
+
+**2026-09-05 (token-saving matcher + AI double-validation):** `Topic` gained optional `keywords?: string[]` so the 7 core topics resolve **deterministically** in `matchTopic()` — "stock" now hits Inventory (+5 keyword score) instead of falling through to the LLM, which had drifted into a long off-syllabus TSS-renewal reply. Zero token spend for core-syllabus queries. `LEARN_SYSTEM_PROMPT` in `app/api/chat/route.ts` gained a TSS guard (discuss TSS/renewal/subscription only when explicitly asked). Tests: `scripts/sara-topics-test.mjs` (standalone, 20 cases, `npm run test:sara-local`); `scripts/sara-test.mjs` gained a token-compressed independent AI judge (`gemini-3.5-flash-lite` / Groq `gpt-oss-20b`, reply truncated to 1,400 chars, max tokens 64/128, temp 0; `SARA_AI_VALIDATE=0` skips the judge). `test:all` now runs the local matcher suite last.
 
 ### 5. Chunked Upload System (Vercel Large-Payload Compatibility)
 

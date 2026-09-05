@@ -1,12 +1,17 @@
+// CHANGE: 2026-09-05 — added optional `keywords` so synonyms like "stock" resolve
+// deterministically to their topic; prevents over-matching falling through to the
+// LLM (avoiding off-syllabus TSS replies and saving LLM token spend).
 export type Topic = {
   label: string;
   answer: string;
+  keywords?: string[];
   followUp?: Topic[];
 };
 
 export const saraTopics: Topic[] = [
   {
     label: "GST & Tax Filing",
+    keywords: ["gst return", "gstr1", "gstr-1", "gstr", "tax filing", "e invoice", "einvoice", "eway bill", "e-way bill", "ewaybill"],
     answer: "TallyPrime handles GST automatically. Here's what you need to know:\n\n- Enable GST: Go to Company Features (F11) > Enable GST\n- Auto-calculation: Tally calculates CGST, SGST, IGST on every invoice\n- E-Invoicing: Generate directly from Tally (one click)\n- GSTR-1: Gateway > Reports > Statutory Reports > GST > GSTR-1\n- GSTR-3B: Same path, select GSTR-3B\n- E-Way Bill: Generate for shipments above ₹50,000\n\nTallyPrime also auto-reconciles your GSTR-2A/2B with purchase records.",
     followUp: [
       { label: "How to file GSTR-1?", answer: "Steps to file GSTR-1:\n\n1. Gateway > Reports > Statutory Reports > GST > GSTR-1\n2. Review all outward supplies\n3. Check for errors (Tally highlights mismatches)\n4. Click 'Export' to generate JSON\n5. Upload to GST portal or use direct upload\n\nTally also auto-filters B2B, B2C, CDNR, and HSN summaries for you." },
@@ -15,6 +20,7 @@ export const saraTopics: Topic[] = [
   },
   {
     label: "Inventory Management",
+    keywords: ["stock", "stock item", "stock items", "stock entry", "items", "item", "goods", "product", "products", "godown", "godowns", "batch", "batches", "reorder", "barcode", "bom", "multi location", "multi-location"],
     answer: "TallyPrime's inventory is more powerful than most people realize:\n\n- Stock Items: Create with units, opening balance, and godown\n- Godowns: Track stock across multiple locations (F11 > Enable Godowns)\n- Batches: For medicines, food, or perishables with expiry tracking\n- BOM: Bill of Materials for manufacturing businesses\n- Reorder Levels: Set minimum stock and get alerts\n- Valuation: FIFO, LIFO, or Average — pick your method\n\nPro tip: Use 'Stock Summary' report to see real-time inventory across all locations.",
     followUp: [
       { label: "Multi-location tracking", answer: "Multi-godown tracking:\n\n1. Enable Godowns: F11 > Inventory Features > Maintain Multiple Godowns\n2. Create Godowns: Inventory Info > Godowns > Create\n3. Transfer Stock: Use Stock Journal (Alt+F7) for inter-godown transfers\n4. Reports: Stock Summary shows per-godown quantities\n\nYou can also see godown-wise balance in any stock item report." },
@@ -23,6 +29,7 @@ export const saraTopics: Topic[] = [
   },
   {
     label: "Banking & Reconciliation",
+    keywords: ["brs", "cheque", "bank statement", "neft", "rtgs", "upi", "reconcile", "reconciliation"],
     answer: "TallyPrime makes banking effortless:\n\n- Auto BRS: Import bank statement (CSV/OFX) and match entries automatically\n- Cheque Printing: Design and print cheques directly\n- E-Payments: Send payments to vendors via NEFT/RTGS from Tally\n- Post-Dated Cheques: Track PDCs with maturity reminders\n- Cash Flow Reports: Predict future cash positions\n\nTo start auto-reconciliation: Go to Banking > Bank Reconciliation > select your bank > Import Statement.",
     followUp: [
       { label: "Auto bank reconciliation", answer: "Auto BRS steps:\n\n1. Go to Banking > Bank Reconciliation\n2. Select your bank ledger\n3. Click 'Import Bank Statement'\n4. Choose CSV, OFX, or QIF format\n5. Tally auto-matches entries by amount and date\n6. Review unmatched entries and manually match\n7. Accept — your BRS is done\n\nTime saved: Usually 2-3 hours of manual work becomes 5 minutes." },
@@ -30,6 +37,7 @@ export const saraTopics: Topic[] = [
   },
   {
     label: "Payroll & Employees",
+    keywords: ["salary", "salaries", "pay structure", "pf", "esi", "attendance", "payslip", "employee", "employees", "hra"],
     answer: "TallyPrime's built-in payroll handles everything:\n\n- Employee Profiles: Create with category, group, and statutory details\n- Pay Structure: Define basic, HRA, PF, ESI, and custom components\n- Attendance: Daily or production-based tracking\n- Auto PF/ESI: Employer and employee shares calculated automatically\n- Income Tax: Monthly projections and Form 16 generation\n- Payslips: Bulk print or email password-protected payslips\n\nEnable it: F11 > Payroll Features > Enable Payroll.",
     followUp: [
       { label: "Creating pay structure", answer: "Pay structure setup:\n\n1. Gateway > Payroll Info > Pay Heads > Create\n2. Create components:\n   - Basic (under Earnings, affects PF/ESI)\n   - HRA (under Earnings, statutory)\n   - PF Employee (under Deductions, statutory)\n   - PF Employer (under Contributions, statutory)\n3. Group components into Salary Details\n4. Assign to employees\n\nTally auto-calculates everything based on your structure." },
@@ -37,6 +45,7 @@ export const saraTopics: Topic[] = [
   },
   {
     label: "Reports & Analysis",
+    keywords: ["report", "reports", "balance sheet", "profit", "cash flow", "dashboard", "ratio"],
     answer: "TallyPrime has 400+ built-in reports:\n\n- Balance Sheet: Real-time, drill-down to any ledger\n- Profit & Loss: See your business health at a glance\n- Cash Flow: Day-wise cash position\n- Stock Analysis: Aging, movement, slow/fast moving items\n- Ratio Analysis: Key financial ratios auto-calculated\n- Excel Export: Any report can be exported to Excel\n- Multi-period: Compare reports across different periods\n\nKeyboard shortcuts: Alt+F1 for detailed view, Ctrl+F for search, F12 for configuration.",
     followUp: [
       { label: "Custom reports", answer: "Creating custom views:\n\n1. Open any standard report\n2. Press F12 (Configure)\n3. Change columns, rows, sorting, or grouping\n4. Save configuration — it becomes your custom view\n\nFor advanced needs:\n- Use Columnar reports (multiple periods side by side)\n- Use Cost Centre reports for department-wise tracking\n- Export to Excel and create your own dashboards\n\nTally also supports ODBC for real-time data in PowerBI or Excel." },
@@ -44,13 +53,7 @@ export const saraTopics: Topic[] = [
   },
   {
     label: "Keyboard Shortcuts",
-    answer: "Master these shortcuts and TallyPrime becomes lightning fast:\n\n- Alt+G — Go To (find any feature instantly)\n- F1 — Switch between companies\n- F2 — Change date\n- F4 — Contra voucher\n- F5 — Payment voucher\n- F6 — Receipt voucher\n- F7 — Journal voucher\n- F8 — Sales voucher\n- F9 — Purchase voucher\n- Ctrl+A — Accept/Save\n- Ctrl+F — Search\n- Alt+F1 — Detailed view\n\nPro tip: Press Alt+G and type what you need — Tally finds it for you.",
-    followUp: [
-      { label: "Voucher shortcuts", answer: "Every voucher type has a shortcut:\n\n- F4 — Contra (bank-to-cash transfers)\n- F5 — Payment (outgoing money)\n- F6 — Receipt (incoming money)\n- F7 — Journal (adjustments)\n- F8 — Sales (your invoices)\n- F9 — Purchase (supplier bills)\n- F10 — Reversal Journal\n- Ctrl+F5 — Credit Note\n- Ctrl+F8 — Debit Note\n\nPlus: Ctrl+K opens the calculator panel from anywhere." },
-    ]
-  },
-  {
-    label: "Keyboard Shortcuts",
+    keywords: ["shortcut", "shortcuts", "hotkey", "hotkeys", "keys", "f4", "f5", "f6", "f7", "f8", "f9", "f10", "alt g", "ctrl a", "ctrl f"],
     answer: "Master these shortcuts and TallyPrime becomes lightning fast:\n\n- Alt+G — Go To (find any feature instantly)\n- F1 — Switch between companies\n- F2 — Change date\n- F4 — Contra voucher\n- F5 — Payment voucher\n- F6 — Receipt voucher\n- F7 — Journal voucher\n- F8 — Sales voucher\n- F9 — Purchase voucher\n- Ctrl+A — Accept/Save\n- Ctrl+F — Search\n- Alt+F1 — Detailed view\n\nPro tip: Press Alt+G and type what you need — Tally finds it for you.",
     followUp: [
       { label: "Voucher shortcuts", answer: "Every voucher type has a shortcut:\n\n- F4 — Contra (bank-to-cash transfers)\n- F5 — Payment (outgoing money)\n- F6 — Receipt (incoming money)\n- F7 — Journal (adjustments)\n- F8 — Sales (your invoices)\n- F9 — Purchase (supplier bills)\n- F10 — Reversal Journal\n- Ctrl+F5 — Credit Note\n- Ctrl+F8 — Debit Note\n\nPlus: Ctrl+K opens the calculator panel from anywhere." },
@@ -58,6 +61,7 @@ export const saraTopics: Topic[] = [
   },
   {
     label: "TSS Renewal & Subscription",
+    keywords: ["tss", "renew", "renewal", "subscription", "serial number", "manage license"],
     answer: "TSS (Tally Software Service / Tally Subscription Service) is the subscription that keeps TallyPrime's connected features active — e-invoicing, e-way bills, GST filing, and auto bank reconciliation.\n\nYes, you can renew TSS directly from inside TallyPrime:\n\n1. From the Gateway of Tally, press Alt+R (Manage TSS Renewal) — this shortcut shows when a renewal is due (about 15 days before expiry).\n2. Or go to F1 (Help) > Settings > License > Manage License, then press F9 (Renew TSS).\n3. Tally opens the Tally Solutions TSS Renewal Portal in your web browser with your serial number and billing details pre-filled.\n4. Choose your duration — 1 Year, or 2 Years for a 10% discount.\n5. Complete the payment. The updated validity syncs back into Tally automatically (see the About page).\n\nTip: Renew before expiry to get one extra month of validity. A red TSS warning appears about 15 days before expiry. When TSS is red/expired, connected features stop — e-invoicing, e-way bills, GST auto-filing and GSTR-2A/2B download, bank payments and auto-BRS, and mobile/WhatsApp reports — but offline data entry keeps working.\n\nIf the option is not visible on your screen, tell us your serial number and we can renew it for you: [[Renew TSS|/services/tss]]",
     followUp: [
       { label: "What stops when TSS expires?", answer: "When TSS is red or expired, these stop working:\n\n- E-invoicing & e-way bill generation/cancellation\n- GST auto-download of GSTR-2A/2B and direct return filing\n- Banking utilities — direct payments and auto bank reconciliation\n- Remote Access & WhatsApp — mobile/browser reports and WhatsApp invoice sharing\n\nOffline data entry keeps working. Renew before expiry to get one extra month of validity. [[Renew TSS|/services/tss]]" },
@@ -80,6 +84,17 @@ export function matchTopic(query: string): { topic: Topic; score: number } | nul
     for (const word of queryWords) {
       if (labelLower.includes(word)) score += 5;
       if (answerLower.includes(word)) score += 2;
+    }
+
+    // CHANGE: 2026-09-05 — synonym keywords keep short/ambiguous queries ("stock",
+    // "godown", "renew") on-syllabus without burning an LLM call or drifting to TSS.
+    if (t.keywords) {
+      for (const kw of t.keywords) {
+        // \b boundaries stop short keywords (e.g. "keys") from matching longer words.
+        if (new RegExp(`\\b${kw.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`).test(queryLower)) {
+          score += 5;
+        }
+      }
     }
 
     if (t.followUp) {

@@ -1,6 +1,7 @@
 import path from 'path';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
+import { Groq } from 'groq-sdk';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const envPath = path.join(__dirname, '../.env');
@@ -241,6 +242,116 @@ async function run() {
       }),
     });
     expect(res.status).toBe(200);
+  });
+
+  // ─── Double AI-Validation (token-compressed) ────────────────
+  // CHANGE: 2026-09-05 — regression for the "stock -> TSS renewal" bug. The reply is
+  // generated once through the production /api/chat path, then validated AGAIN by an
+  // independent AI judge. Token-friendly by design: markdown/buttons stripped, reply
+  // truncated to 1400 chars, tiny max-tokens, cheap models, temperature 0. The stock
+  // reply is fetched ONCE and reused across both tests. Set SARA_AI_VALIDATE=0 to skip
+  // the judge (the deterministic backstop still runs) and save all judge tokens.
+  console.log('\n🔁 Double AI-Validation — stock stays on-syllabus');
+  const RUN_AI_JUDGE = process.env.SARA_AI_VALIDATE !== '0';
+  const STOCK_QUERY = 'How do I track stock in TallyPrime?';
+  let stockReply = '';
+
+  const compressReply = (text) =>
+    (text || '')
+      .replace(/\[\[.*?\|.*?\]\]/g, ' ')   // strip [[label|url]] buttons
+      .replace(/[*#`]/g, '')               // strip markdown
+      .replace(/\s+/g, ' ').trim()
+      .slice(0, 1400);                     // hard cap on tokens sent to the judge
+
+  const GEMINI_JUDGE_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent';
+
+  const fetchStockReply = async () => {
+    const res = await request('POST', '/api/chat', {
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages: [{ role: 'user', content: STOCK_QUERY }], mode: 'learn' }),
+    });
+    expect(res.status).toBe(200);
+    expect(res.data).toHaveProperty('message');
+    return res.data.message || '';
+  };
+
+  async function validateWithAI(question, reply) {
+    const judge = `You are a strict content verifier for a TallyPrime teaching chatbot.
+QUESTION: ${question}
+ASSISTANT REPLY: ${compressReply(reply)}
+Judge PASS only if the reply properly teaches TallyPrime STOCK/INVENTORY and does NOT discuss TSS renewal, subscription, serial numbers, or license renewal. Reply with exactly one line: "PASS" or "FAIL".`;
+
+    const geminiKeys = (process.env.GEMINI_API_KEY || '').split(',').map(k => k.trim()).filter(Boolean);
+    const groqKeys = (process.env.GROQ_API_KEY || '').split(',').map(k => k.trim()).filter(Boolean);
+
+    if (geminiKeys.length) {
+      try {
+        const headers = { 'Content-Type': 'application/json' }; // AIza... = key, AQ... = Bearer token
+        headers[geminiKeys[0].startsWith('AIza') ? 'x-goog-api-key' : 'Authorization'] =
+          geminiKeys[0].startsWith('AIza') ? geminiKeys[0] : `Bearer ${geminiKeys[0]}`;
+        const res = await fetch(GEMINI_JUDGE_URL, {
+          method: 'POST', headers,
+          body: JSON.stringify({
+            contents: [{ role: 'user', parts: [{ text: judge }] }],
+            generationConfig: { maxOutputTokens: 64, temperature: 0 },
+          }),
+        });
+        const data = await res.json().catch(() => ({}));
+        const verdict = data?.candidates?.[0]?.content?.parts?.map(p => p.text).join('') || '';
+        if (verdict) return { verdict };
+      } catch { /* fall through to Groq */ }
+    }
+    if (groqKeys.length) {
+      try {
+        const groq = new Groq({ apiKey: groqKeys[0] });
+        const data = await groq.chat.completions.create({
+          model: 'openai/gpt-oss-20b',
+          messages: [{ role: 'user', content: judge }],
+          temperature: 0, max_tokens: 128,
+        });
+        return { verdict: data?.choices?.[0]?.message?.content || '' };
+      } catch { return { verdict: '' }; }
+    }
+    return { verdict: '', skipped: true };
+  }
+
+  const assertOnSyllabus = (reply) => {
+    const r = (reply || '').toLowerCase();
+    if (!/stock|item|godown|inventory/.test(r)) throw new Error('Reply does not teach inventory/stock');
+    if (/\btss\b|renew|subscription|serial number/.test(r)) throw new Error('Off-syllabus TSS content leaked into a stock answer');
+  };
+
+  await test('learn mode answers stock with inventory, no TSS drift (deterministic backstop)', async () => {
+    stockReply = await fetchStockReply();
+    assertOnSyllabus(stockReply);
+  });
+
+  if (RUN_AI_JUDGE) {
+    await test('AI judge re-validates the stock reply as PASS', async () => {
+      if (!stockReply) stockReply = await fetchStockReply();
+      assertOnSyllabus(stockReply); // hard backstop even if the judge is skipped later
+      const { verdict, skipped } = await validateWithAI(STOCK_QUERY, stockReply);
+      if (skipped) {
+        console.log('    (judge skipped — no AI keys configured)');
+        return; // counts as passed
+      }
+      if (!/PASS/i.test(verdict)) throw new Error(`AI judge rejected the reply: ${verdict.slice(0, 120)}`);
+    });
+  } else {
+    console.log('  AI judge skipped (SARA_AI_VALIDATE=0) — deterministic backstop still active');
+  }
+
+  await test('learn mode still answers TSS renewal correctly', async () => {
+    const res = await request('POST', '/api/chat', {
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        messages: [{ role: 'user', content: 'How do I renew my TSS?' }],
+        mode: 'learn',
+      }),
+    });
+    expect(res.status).toBe(200);
+    expect(res.data).toHaveProperty('message');
+    if (!/\brenew\b|\btss\b/.test(res.data.message.toLowerCase())) throw new Error('TSS query did not get a renewal answer');
   });
 
   // ─── TSS Renewal API ───────────────────────────────────────
