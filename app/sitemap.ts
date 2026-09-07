@@ -6,6 +6,7 @@ import { parseDateIso } from '@/lib/news-utils';
 // CHANGE: 2026-08-27 — baseUrl now sourced from central lib/seo.ts (new canonical domain).
 // CHANGE: 2026-08-31 — Sitemap now appends every /news/[slug] article (newest-aware lastModified)
 // so each blog article is independently crawlable/indexable. DB failures degrade to the static list.
+// CHANGE: 2026-09-07 — removed '/demo', '/search', '/learn-sara' (now noindexed utility pages).
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = SITE_URL;
 
@@ -21,12 +22,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     '/cloud/backup-for-tally',
     '/cloud/tallycloudaccess',
     '/contact',
-    '/demo',
     '/do-more',
     '/eula',
     '/find-solution',
     '/hrms',
-    '/learn-sara',
     '/modules',
     '/news',
     '/privacy',
@@ -37,7 +36,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     '/products/tallydrive',
     '/products/tallycapital',
     '/report-problem',
-    '/search',
     '/services',
     '/services/amc',
     '/services/corporate-training',

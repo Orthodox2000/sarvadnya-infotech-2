@@ -23,16 +23,19 @@ const parallelPath = (path: string) =>
   path === '' ? SITE_URL : `${SITE_URL}${path.startsWith('/') ? path : `/${path}`}`;
 
 // CHANGE: 2026-08-27 — helper to stamp canonical + OG/Twitter defaults onto Metadata.
+// CHANGE: 2026-09-07 — added noindex param to suppress indexing on low-value utility pages.
 export function seoMetadata({
   title,
   description,
   path,
   keywords,
+  noindex,
 }: {
   title: string;
   description: string;
   path: string;
   keywords?: string[];
+  noindex?: boolean;
 }): Metadata {
   const canonical = parallelPath(path);
   // CHANGE: 2026-08-27 — build the FINAL <title> here and mark it `absolute` so the
@@ -60,6 +63,7 @@ export function seoMetadata({
       title: finalTitle,
       description: finalDescription,
     },
+    ...(noindex ? { robots: { index: false, follow: false } } : {}),
   };
 }
 

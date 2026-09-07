@@ -1,13 +1,18 @@
 import { theme } from "@/lib/theme";
 import { seoMetadata } from "@/lib/seo";
+import type { Metadata } from 'next';
 
 // CHANGE: 2026-08-27 — full-SEO coverage; every (site) route now emits metadata.
-export const metadata = seoMetadata({
-  title: "Theme Settings",
-  description:
-    "Theme colour reference for the Sarvadnya Infotech website — primary, secondary, buttons, headings, paragraph and background colours.",
-  path: "/theme-settings",
-});
+// CHANGE: 2026-09-07 — dev colour reference page, noindex to clear GSC "not indexed" rows.
+export const metadata: Metadata = {
+  ...seoMetadata({
+    title: "Theme Settings",
+    description:
+      "Theme colour reference for the Sarvadnya Infotech website — primary, secondary, buttons, headings, paragraph and background colours.",
+    path: "/theme-settings",
+  }),
+  robots: { index: false, follow: false },
+};
 
 const entries = [
   { label: "Primary Color", value: theme.primaryColor, cssVar: "--primary-color" },
