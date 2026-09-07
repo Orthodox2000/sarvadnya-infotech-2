@@ -42,6 +42,7 @@ export interface DeviceInfo {
 }
 
 // CHANGE: 2026-08-18 — Added utmParams type for marketing campaign tracking.
+// CHANGE: 2026-09-07 — All five UTM params kept (source required / others optional per owner request).
 export interface UtmParams {
   source?: string;
   medium?: string;
