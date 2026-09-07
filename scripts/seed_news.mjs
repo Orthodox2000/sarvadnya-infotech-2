@@ -26,7 +26,7 @@ const posts = [
   {
     slug: 'tally-partner-mumbai',
     title: 'How to Choose the Right Tally Partner in Mumbai: Checklist (Star Rating, TSS, AMC)',
-    date: 'August 30, 2026',
+    date: 'August 31, 2026',
     category: 'Tally Partner',
     description: 'A practical checklist for choosing a Tally partner in Mumbai - star certification, TSS renewal, support SLA, cloud backup and add-on capability - plus how to verify a claim.',
     tags: ['tally partner mumbai', 'tally dealer', 'tally support', 'tally certified partner'],
@@ -52,7 +52,7 @@ At Sarvadnya Infotech LLP we have supported Tally for businesses since 2008 - Ta
   {
     slug: 'tally-dealers-mumbai',
     title: 'Tally Dealers in Mumbai: Resellers vs Certified Partners and the Services to Expect',
-    date: 'August 26, 2026',
+    date: 'September 1, 2026',
     category: 'Tally Dealers',
     description: 'Tally dealers in Mumbai range from licence resellers to certified partners. Compare what each does after the sale - implementation, training, AMC, cloud hosting and TDL support.',
     tags: ['tally dealers mumbai', 'tally partner', 'tally dealer', 'best tally dealers in mumbai'],
@@ -77,7 +77,7 @@ Sarvadnya Infotech is a Tally certified partner in Navi Mumbai serving 1,500+ bu
   {
     slug: 'tally-erp9-add-ons',
     title: 'Tally ERP 9 Add-Ons That Save Hours: 8 TDL Solutions for Indian Businesses',
-    date: 'August 21, 2026',
+    date: 'August 29, 2026',
     category: 'Tally Add-Ons',
     description: '8 practical Tally ERP 9 add-ons (TDL solutions) for invoicing, dispatch, sales and purchase controls - and when custom TDL beats a manual workaround.',
     tags: ['tally erp 9 add ons', 'tally tdl', 'tally customisation', 'tally addons'],
@@ -105,7 +105,7 @@ If your team is still fixing reports in Excel after Tally exports them, evaluate
   {
     slug: 'tally-tss-renewal-2026',
     title: 'Tally TSS Renewal 2026: Pricing Changes and How to Prepare',
-    date: 'August 15, 2026',
+    date: 'August 28, 2026',
     category: 'TSS & Renewals',
     description: 'Tally TSS renewal 2026 explained - what changes, how Tally ERP 9 renewal pricing works, and the checklist to renew before the price changes.',
     tags: ['tally renewal', 'tally tss', 'tally prime renewal', 'tally tss renewal'],
@@ -128,7 +128,7 @@ Sarvadnya Infotech handles TSS renewals for businesses across Mumbai, Navi Mumba
   {
     slug: 'tally-3-star-partner-mumbai',
     title: 'What to Look for in a Tally 3 Star Partner in Mumbai',
-    date: 'August 10, 2026',
+    date: 'August 30, 2026',
     category: 'Tally Partner',
     description: 'Tally partner tiers explained - what a Tally 3 star partner is, what certification levels mean, and how to verify one in Mumbai.',
     tags: ['tally 3 star partner in mumbai', 'tally partner tier', 'tally certification', 'tally 3 star partner'],
@@ -152,7 +152,7 @@ Sarvadnya Infotech is an official Tally certified 3 star partner (since 2008) se
   {
     slug: 'cloud-tally-cities-agra-patna-lucknow-mumbai',
     title: 'Cloud Tally Setup in Agra, Patna, Lucknow & Mumbai: Pricing and What to Expect',
-    date: 'August 5, 2026',
+    date: 'August 27, 2026',
     category: 'Cloud',
     description: 'Tally on Cloud setup across Indian cities - how remote access, hosting and backup work, what pricing depends on, and the checklist before you switch.',
     tags: ['cloud tally in agra', 'cloud tally in patna', 'cloud tally in lucknow', 'cloud tally in mumbai', 'tally on cloud'],
@@ -177,7 +177,7 @@ Sarvadnya Infotech deploys and supports Tally on Cloud - official Tally licenses
   {
     slug: 'it-companies-in-belapur',
     title: 'IT Companies in Belapur: How Certified Tally Partners Support Navi Mumbai Business',
-    date: 'August 1, 2026',
+    date: 'August 26, 2026',
     category: 'Local Business',
     description: 'How IT companies in Belapur and Navi Mumbai serve local business - software, accounting automation, cloud and support - and how to pick a partner.',
     tags: ['it companies in belapur', 'belapur it companies', 'it companies in cbd belapur', 'navi mumbai software'],
@@ -200,7 +200,7 @@ Sarvadnya Infotech is based in Belapur, Navi Mumbai - a Tally certified partner 
   {
     slug: 'software-companies-in-navi-mumbai',
     title: 'Software Companies in Navi Mumbai (Including for Freshers): What to Look For',
-    date: 'July 28, 2026',
+    date: 'August 25, 2026',
     category: 'Local Business',
     description: 'How to evaluate software companies in Navi Mumbai - whether you need an implementation partner for your business or want to start your career.',
     tags: ['software companies in navi mumbai', 'software companies in navi mumbai for freshers', 'it companies in navi mumbai for freshers', 'navi mumbai tech jobs'],
@@ -227,7 +227,7 @@ Sarvadnya Infotech sits at the intersection - a software company in Navi Mumbai 
   {
     slug: 'tallydrive-cloud-backup',
     title: 'TallyDrive Cloud Backup: Why Every Mumbai and Navi Mumbai Business Needs It',
-    date: 'July 20, 2026',
+    date: 'August 24, 2026',
     category: 'Cloud Backup',
     description: 'TallyDrive cloud backup explained - automated offsite Tally backup, how it protects against data loss, and why Mumbai and Navi Mumbai businesses need it.',
     tags: ['tallydrive', 'tally cloud backup', 'tallydrive cloud backup', 'tally backup'],
@@ -250,7 +250,7 @@ Sarvadnya Infotech provides TallyDrive - automated, cloud-hosted Tally backup wi
   {
     slug: 'smbs-cbd-belapur-certified-tally-partner',
     title: 'Why SMBs in CBD Belapur Choose a Certified Tally Partner',
-    date: 'July 12, 2026',
+    date: 'August 23, 2026',
     category: 'Local Business',
     description: 'Why small and mid-size businesses in CBD Belapur work with a certified Tally partner - compliance, support proximity and automation that answers the phone.',
     tags: ['cbd belapur', 'it companies in cbd belapur', 'tally partner belapur', 'software companies in cbd belapur'],
@@ -273,7 +273,7 @@ Sarvadnya Infotech is a Tally certified partner based in Belapur, Navi Mumbai, s
   {
     slug: 'tally-5-star-partner-mumbai',
     title: 'Tally Partner Tiers in Mumbai: 3 Star vs 5 Star, What the Certification Means',
-    date: 'September 4, 2026',
+    date: 'September 6, 2026',
     category: 'Tally Partner',
     description: 'Tally partner tiers explained - what 3 star and 5 star certification mean, how to verify a partner tier, and why an honest 3 star Tally partner in Mumbai can be the right fit.',
     tags: ['tally 3 star partner in mumbai', 'tally 5 star partner in mumbai', 'tally partner tiers', 'best tally dealers in mumbai'],
@@ -307,7 +307,7 @@ About Sarvadnya Infotech: we are a Tally certified 3 star partner - and we state
   {
     slug: 'tally-partner-near-me',
     title: 'Tally Partner Near Me: How to Find and Verify a Certified Tally Partner',
-    date: 'September 6, 2026',
+    date: 'September 7, 2026',
     category: 'Tally Partner',
     description: 'Searching "tally partner near me"? Here is a repeatable way to find and verify a certified Tally partner in Mumbai, Navi Mumbai and Belapur - and the questions to ask.',
     tags: ['tally partner near me', 'tally partners near me', 'tally partner in mumbai', 'tally partner mumbai'],
@@ -338,7 +338,7 @@ For businesses in Mumbai, Navi Mumbai, CBD Belapur and Vashi, Sarvadnya Infotech
   {
     slug: 'tally-hrms-software',
     title: 'Tally HRMS Explained: Payroll, Attendance and Leave for SMBs',
-    date: 'September 2, 2026',
+    date: 'September 4, 2026',
     category: 'HRMS',
     description: 'Tally HRMS for payroll, attendance and leave management - how an HRMS connects to your Tally data and what small and mid-size businesses should look for.',
     tags: ['tally hrms', 'hrms software', 'tally payroll software', 'tally attendance'],
@@ -396,7 +396,7 @@ Renewal itself is quick with a verified partner. Sarvadnya Infotech handles Tall
   {
     slug: 'tally-cloud-access',
     title: 'Tally Cloud Access: Work on Your Tally from Anywhere, Securely',
-    date: 'August 29, 2026',
+    date: 'September 2, 2026',
     category: 'Cloud',
     description: 'Tally cloud access explained - how to run Tally Prime and ERP 9 over the cloud, what a secure remote access setup includes, and what pricing depends on.',
     tags: ['tally cloud access', 'tally on cloud', 'cloud tally mumbai', 'tally remote access'],
@@ -426,7 +426,7 @@ Sarvadnya Infotech deploys Tally cloud access for businesses in Mumbai, Navi Mum
   {
     slug: 'cbd-belapur-it-companies-list',
     title: 'IT Companies in CBD Belapur, Navi Mumbai: A Working List',
-    date: 'September 1, 2026',
+    date: 'September 3, 2026',
     category: 'Local Business',
     description: 'A practical working list of the IT companies in CBD Belapur, Navi Mumbai - software, support and accounting automation - plus how to filter the list to your need.',
     tags: ['cbd belapur it companies list', 'list of companies in belapur', 'it companies in cbd belapur', 'software companies in cbd belapur'],
@@ -480,7 +480,8 @@ async function seed() {
       if (existing) {
         // CHANGE: 2026-08-31 — skip only when content AND description match,
         // so future description tweaks also get seeded.
-        const same = existing.content === post.content && existing.description === post.description;
+        // CHANGE: 2026-09-07 — also compare date, so purely date refreshes apply.
+        const same = existing.content === post.content && existing.description === post.description && existing.date === post.date;
         if (same) { skipped++; continue; }
         await col.updateOne({ slug: post.slug }, { $set: doc });
         updated++;
