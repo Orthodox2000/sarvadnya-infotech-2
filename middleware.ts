@@ -35,7 +35,16 @@ function isLocalhost(origin: string): boolean {
   }
 }
 
+// CHANGE: 2026-09-07 — canonicalize www → apex (SITE_URL is the bare domain) so Google indexes one host.
+const CANONICAL_HOST = 'sarvadnyainfotech.com';
+const WWW_HOST = 'www.sarvadnyainfotech.com';
+
 export function middleware(request: NextRequest) {
+  const { pathname, search } = request.nextUrl;
+  if (request.nextUrl.hostname === WWW_HOST && !pathname.startsWith('/api/')) {
+    return NextResponse.redirect(new URL(pathname + search, `https://${CANONICAL_HOST}`), 301);
+  }
+
   const origin = request.headers.get('origin');
   const allowed = origin !== null && (ALLOWED_ORIGINS.has(origin) || isLocalhost(origin));
 
@@ -54,5 +63,8 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/api/:path*'],
+  matcher: [
+    '/api/:path*',
+    '/((?!_next/static|_next/image|favicon\\.ico).*)',
+  ],
 };
