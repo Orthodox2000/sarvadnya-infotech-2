@@ -55,16 +55,17 @@ export const productItems: ProductItem[] = [
         href: "/modules",
         description: "Industry modules for TallyPrime.",
         subItems: [
-          { id: "m-cf", label: "CFA Module", href: "/modules?id=cf-agencies" },
-          { id: "m-soc", label: "Housing Society Module", href: "/modules?id=housing-societies" },
-          { id: "m-sales", label: "SalesMan / Agent Module", href: "/modules?id=sales-commission" },
-          { id: "m-trans", label: "Transport Module", href: "/modules?id=logistics-transport" },
-          { id: "m-container", label: "Container Handling Module", href: "/modules?id=container-handling" },
-          { id: "m-garment", label: "Garment / Footwear Module", href: "/modules?id=garment-retail" },
+          // CHANGE: 2026-09-07 — module deep-links now use #fragment instead of a query-string id so Google doesn't crawl them as separate URLs.
+          { id: "m-cf", label: "CFA Module", href: "/modules#cf-agencies" },
+          { id: "m-soc", label: "Housing Society Module", href: "/modules#housing-societies" },
+          { id: "m-sales", label: "SalesMan / Agent Module", href: "/modules#sales-commission" },
+          { id: "m-trans", label: "Transport Module", href: "/modules#logistics-transport" },
+          { id: "m-container", label: "Container Handling Module", href: "/modules#container-handling" },
+          { id: "m-garment", label: "Garment / Footwear Module", href: "/modules#garment-retail" },
           // {
           //   id: "m-excel",
           //   label: "Excel to Tally",
-          //   href: "/modules?id=excel-to-tally",
+          //   href: "/modules#excel-to-tally",
           //   description: "Bulk data import tools.",
           // },
         ]

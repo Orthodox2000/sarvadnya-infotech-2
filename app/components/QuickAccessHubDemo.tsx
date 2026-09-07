@@ -144,14 +144,14 @@ export default function QuickAccessHubDemo() {
       iconName: "custom",
       theme: { accent: "bg-purple-500", bg: "bg-purple-50", text: "text-purple-600", hoverBg: "hover:bg-purple-600", border: "border-purple-100" },
       links: dynamicModules.length > 0 
-        ? dynamicModules.map(m => ({ label: m.title, href: `/modules?id=${m.id || m._id}` }))
+        ? dynamicModules.map(m => ({ label: m.title, href: `/modules#${m.id || m._id}` }))
         : [
-            { label: "CFA Module (Clearing & Forwarding)", href: "/modules?id=cf-agencies" },
-            { label: "Housing Society Module", href: "/modules?id=housing-societies" },
-            { label: "SalesMan / Agent Module", href: "/modules?id=sales-commission" },
-            { label: "Transport Module", href: "/modules?id=logistics-transport" },
-            { label: "Container Handling Module", href: "/modules?id=container-handling" },
-            { label: "Garment / Footwear Module", href: "/modules?id=garment-retail" }
+            { label: "CFA Module (Clearing & Forwarding)", href: "/modules#cf-agencies" },
+            { label: "Housing Society Module", href: "/modules#housing-societies" },
+            { label: "SalesMan / Agent Module", href: "/modules#sales-commission" },
+            { label: "Transport Module", href: "/modules#logistics-transport" },
+            { label: "Container Handling Module", href: "/modules#container-handling" },
+            { label: "Garment / Footwear Module", href: "/modules#garment-retail" }
           ]
     },
     {

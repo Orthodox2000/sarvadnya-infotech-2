@@ -10,8 +10,9 @@ interface ModuleCardProps {
 }
 
 export default function ModuleCard({ module, onViewDetails, onEnquire }: ModuleCardProps) {
+  // CHANGE: 2026-09-07 — anchor id + scroll-mt-40 so #fragment deep-links scroll to the matching module card.
   return (
-    <div className="group relative bg-white rounded-2xl overflow-hidden border border-slate-100 shadow-sm hover:shadow-2xl transition-all duration-500 flex flex-col h-full">
+    <div id={module.id} className="group relative bg-white rounded-2xl overflow-hidden border border-slate-100 shadow-sm hover:shadow-2xl transition-all duration-500 flex flex-col h-full scroll-mt-40">
       {/* Image Container */}
       <div className="relative h-40 w-full overflow-hidden">
         <Image

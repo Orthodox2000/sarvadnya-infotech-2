@@ -205,7 +205,7 @@ export async function GET(request: Request) {
 
     modules.forEach((m: any) => {
       const moduleId = m.id || m._id;
-      const moduleUrl = `/modules?id=${moduleId}`;
+      const moduleUrl = `/modules#${moduleId}`;
       if (m.title?.toLowerCase().includes(query) || m.description?.toLowerCase().includes(query)) {
         dbResults.push({
           title: m.title, description: m.description, url: moduleUrl, type: 'Module',

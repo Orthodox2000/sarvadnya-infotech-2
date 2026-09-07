@@ -50,7 +50,7 @@ export default function Footer({ settings: initialSettings }: { settings?: SiteS
             if (Array.isArray(data)) {
                 setDynamicModules(data.slice(0, 6).map(m => ({
                     name: m.title,
-                    href: `/modules?id=${m.id || m._id}`
+                    href: `/modules#${m.id || m._id}`
                 })));
             }
         } catch (err) {
@@ -115,12 +115,12 @@ export default function Footer({ settings: initialSettings }: { settings?: SiteS
     ];
 
     const customizedModules = dynamicModules.length > 0 ? dynamicModules : [
-        { name: 'CFA Module (Clearing & Forwarding)', href: '/modules?id=cf-agencies' },
-        { name: 'Housing Society Module', href: '/modules?id=housing-societies' },
-        { name: 'SalesMan / Agent Module', href: '/modules?id=sales-commission' },
-        { name: 'Transport Module', href: '/modules?id=logistics-transport' },
-        { name: 'Container Handling Module', href: '/modules?id=container-handling' },
-        { name: 'Garment / Footwear Module', href: '/modules?id=garment-retail' }
+        { name: 'CFA Module (Clearing & Forwarding)', href: '/modules#cf-agencies' },
+        { name: 'Housing Society Module', href: '/modules#housing-societies' },
+        { name: 'SalesMan / Agent Module', href: '/modules#sales-commission' },
+        { name: 'Transport Module', href: '/modules#logistics-transport' },
+        { name: 'Container Handling Module', href: '/modules#container-handling' },
+        { name: 'Garment / Footwear Module', href: '/modules#garment-retail' }
     ];
 
     const supportOnTally = [

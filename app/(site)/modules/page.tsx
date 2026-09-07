@@ -35,6 +35,15 @@ export default function ModulesPage() {
     fetchModules();
   }, []);
 
+  // CHANGE: 2026-09-07 — scroll to the module matching the #fragment deep-link once modules load.
+  useEffect(() => {
+    if (!modules.length) return;
+    const hash = window.location.hash.replace('#', '');
+    if (!hash) return;
+    const el = document.getElementById(hash);
+    if (el) setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'start' }), 300);
+  }, [modules]);
+
   const handleViewDetails = (module: Module) => {
     setSelectedModule(module);
     setIsModalOpen(true);
