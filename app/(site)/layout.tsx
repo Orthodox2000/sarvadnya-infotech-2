@@ -6,6 +6,7 @@ import Productbar from "../components/Productbar";
 import { theme as defaultTheme } from "@/lib/theme";
 import { getSettings, getNews } from "@/lib/mongodb-utils";
 import { palettes } from "@/lib/palettes";
+import { CONTACT_SUFFIX } from "@/lib/seo";
 import { Analytics } from "@vercel/analytics/next"
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import { VisitorProvider } from "../components/VisitorProvider";
@@ -30,7 +31,7 @@ const NotificationToast = dynamic(() => import("../components/NotificationToast"
 export const metadata: Metadata = {
   title: { default: 'Sarvadnya Infotech LLP — Tally Certified Partner Since 2008', template: '%s | Sarvadnya Infotech LLP' },
   description:
-    'Tally Certified Partner trusted by 1500+ businesses. TallyPrime, Tally on Cloud, AMC, Tally on WhatsApp, TallyDrive cloud backup, HRMS, TDL customization & corporate training.',
+    'Tally Certified Partner trusted by 1500+ businesses. TallyPrime, Tally on Cloud, AMC, Tally on WhatsApp, TallyDrive cloud backup, HRMS, TDL customization & corporate training.' + CONTACT_SUFFIX,
 };
 
 async function getTheme() {

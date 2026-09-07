@@ -6,14 +6,18 @@ export const SITE_URL = 'https://sarvadnyainfotech.com';
 
 export const SITE_NAME = 'Sarvadnya Infotech LLP';
 export const SITE_TITLE = `${SITE_NAME} — Tally Certified Partner Since 2008`;
-export const SITE_DESCRIPTION =
-  'Tally Certified Partner trusted by 1500+ MSMEs. TallyPrime (Silver, Gold, Server), Tally on Cloud, AMC, Tally on WhatsApp, TallyDrive cloud backup, HRMS, TDL customization & corporate training.';
 
 export const SITE_CONTACT = {
   email: 'info@sarvadnyainfotech.com',
   phone: '+919821309060',
   address: 'Pune, Maharashtra, India',
 };
+
+// CHANGE: 2026-09-03 — contact suffix auto-appended to every meta description for SEO.
+export const CONTACT_SUFFIX = ' | Call: +91 9821 309060 | Pune';
+
+export const SITE_DESCRIPTION =
+  'Tally Certified Partner trusted by 1500+ MSMEs. TallyPrime (Silver, Gold, Server), Tally on Cloud, AMC, Tally on WhatsApp, TallyDrive cloud backup, HRMS, TDL customization & corporate training.' + CONTACT_SUFFIX;
 
 const parallelPath = (path: string) =>
   path === '' ? SITE_URL : `${SITE_URL}${path.startsWith('/') ? path : `/${path}`}`;
@@ -36,14 +40,16 @@ export function seoMetadata({
   // double "Sarvadnya Infotech LLP"). Titles that already contain the brand are kept.
   const alreadyBranded = title.toLowerCase().includes('sarvadnya infotech');
   const finalTitle = alreadyBranded ? title : `${title} | ${SITE_NAME}`;
+  // CHANGE: 2026-09-03 — append contact details to every meta description for SEO visibility.
+  const finalDescription = `${description}${CONTACT_SUFFIX}`;
   return {
     title: { absolute: finalTitle },
-    description,
+    description: finalDescription,
     keywords,
     alternates: { canonical },
     openGraph: {
       title: finalTitle,
-      description,
+      description: finalDescription,
       url: canonical,
       siteName: SITE_NAME,
       type: 'website',
@@ -52,7 +58,7 @@ export function seoMetadata({
     twitter: {
       card: 'summary_large_image',
       title: finalTitle,
-      description,
+      description: finalDescription,
     },
   };
 }
@@ -121,8 +127,8 @@ export function videoJsonLd(): JsonLd {
     '@type': 'VideoObject',
     name: 'Sarvadnya Infotech — Tally Certified Partner',
     description: 'Tally Certified Partner trusted by 1500+ MSMEs. TallyPrime products, cloud access, customizations, HRMS and more.',
-    thumbnailUrl: `${SITE_URL}/logo.png`,
-    uploadDate: '2026-06-03',
+    thumbnailUrl: `${SITE_URL}/video-thumbnail.png`,
+    uploadDate: '2026-06-03T00:00:00+05:30',
     duration: 'PT48S',
     contentUrl: `${SITE_URL}/sarvadnya-mobile.mp4`,
     embedUrl: SITE_URL,
