@@ -4,7 +4,7 @@ import CustomerReviews from '../components/CustomerReviews'
 import FAQ from '../components/faq'
 import Footer from '../components/Footer'
 import { getContent, getPartners, getReviews, getSettings } from '@/lib/mongodb-utils'
-import { seoMetadata, localBusinessJsonLd, videoJsonLd } from "@/lib/seo";
+import { seoMetadata, localBusinessJsonLd } from "@/lib/seo";
 
 // CHANGE: 2026-08-27 — SEO metadata for AI/search indexing.
 export const metadata = seoMetadata({
@@ -32,8 +32,7 @@ export default async function Home() {
     <main className="bg-[linear-gradient(90deg,_rgba(249,251,245,1)_0%,_rgba(244,242,234,1)_53%,_rgba(238,236,223,1)_100%)] ">
       {/* CHANGE: 2026-08-27 — LocalBusiness structured data for local/AI indexing. */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessJsonLd()) }} />
-      {/* CHANGE: 2026-08-31 — VideoObject structured data so Google can index the hero video (GSC: "No thumbnail URL provided"). */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(videoJsonLd()) }} />
+      {/* CHANGE: 2026-09-11 — VideoObject structured data removed: the hero video is a background/decorative element, not a watch page, so Google flags "Video isn't on a watch page". See videoJsonLd removal in lib/seo.ts. */}
       <HomeHero emailCopy backgroundVideoMobile="/sarvadnya-mobile.mp4" backgroundVideoDesktop="/sarvadnya trial 2.mp4"/>
       <CertifiedPartners initialData={partnersData} />
   

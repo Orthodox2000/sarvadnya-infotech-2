@@ -123,25 +123,6 @@ export function webSiteJsonLd(): JsonLd {
   };
 }
 
-// CHANGE: 2026-08-31 — VideoObject structured data for homepage hero video (GSC video indexing).
-// Google requires thumbnailUrl to index videos; the <video> tag alone is not enough.
-// CHANGE: 2026-09-08 — thumbnailUrl now points to a real asset (public/video-thumbnail.png generated
-// 1280x720, Google's recommended video thumbnail size). uploadDate aligned to the source file mtime
-// (2026-08-28) so the date is truthful for recency signals.
-export function videoJsonLd(): JsonLd {
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'VideoObject',
-    name: 'Sarvadnya Infotech — Tally Certified Partner',
-    description: 'Tally Certified Partner trusted by 1500+ MSMEs. TallyPrime products, cloud access, customizations, HRMS and more.',
-    thumbnailUrl: `${SITE_URL}/video-thumbnail.png`,
-    uploadDate: '2026-08-28T00:00:00+05:30',
-    duration: 'PT48S',
-    contentUrl: `${SITE_URL}/sarvadnya-mobile.mp4`,
-    embedUrl: SITE_URL,
-  };
-}
-
 export function faqJsonLd(question: string, answer: string): JsonLd {
   return {
     '@context': 'https://schema.org',
