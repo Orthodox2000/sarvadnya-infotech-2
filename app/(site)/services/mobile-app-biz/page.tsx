@@ -5,6 +5,10 @@ import Image from 'next/image';
 import Footer from '../../../components/Footer';
 import UnifiedContactModal, { FormType } from '../../../components/UnifiedContactModal';
 
+// CHANGE: 2026-09-11 — Hero is a single compact full-width background image (/biz bg.png).
+// Earlier design used both a 16:9 full-bleed hero and then a rotating slider — both made the
+// section too tall / changed backgrounds. Reverted to ONE static image at a fixed short height.
+
 export default function MobileAppBizPage() {
   const [modalConfig, setModalConfig] = useState<{isOpen: boolean; type: FormType; service: string}>({
     isOpen: false,
@@ -59,22 +63,25 @@ export default function MobileAppBizPage() {
   return (
     <div className="min-h-screen bg-[linear-gradient(90deg,rgba(249,251,245,1)_0%,rgba(244,242,234,1)_53%,rgba(238,236,223,1)_100%)]  text-slate-900">
       {/* Cinematic Hero Section (Themed Hero) */}
-      {/* CHANGE: 2026-08-26 — Removed the solid bg-white band so the hero blends into the page's
+{/* CHANGE: 2026-08-26 — Removed the solid bg-white band so the hero blends into the page's
           cream/teal gradient (matches AMC/TDL/other service page heroes). */}
-      <section className="relative overflow-hidden flex items-center min-h-[200px] md:min-h-[350px] border-b border-[#006569]/10">
-        {/* Cinematic Image Side - Hidden on mobile, full height on desktop */}
-        <div className="hidden lg:block absolute right-0 top-0 bottom-0 w-1/2 z-0">
-          <div className="relative h-full w-full">
-            <Image 
-              src="/ba.png" 
-              alt="Cinematic Tally on Mobile" 
-              fill 
-              className="object-cover"
-              priority
-            />
-            {/* Cinematic Overlay - Fades image into the page cream background */}
-            <div className="absolute inset-0 bg-gradient-to-r from-[#F9FBF5] via-[#F4F2EA]/80 to-transparent" />
-          </div>
+        {/* CHANGE: 2026-09-11 — Hero bg replaced with solid #F3EEE5 (was transparent over the page's
+            cream gradient). Compact hero with ONE static full-width background image (/biz bg.png),
+            right-anchored; left shows the plain #F3EEE5 so the dark text stays readable. */}
+      <section className="relative overflow-hidden flex items-center bg-[#F3EEE5] min-h-[200px] md:min-h-[400px] border-b border-[#006569]/10">
+        {/* Cinematic Background - Hidden on mobile, right-anchored on md+ */}
+        {/* CHANGE: 2026-09-11 — Image keeps its NATURAL 2752x1536 ratio at the hero's full height and is
+            anchored RIGHT (was object-cover full-width, which cropped top/bottom). Any overflow past the
+            left edge is clipped by the section's overflow-hidden. Left stays clear for the headline. */}
+        <div className="hidden md:block absolute inset-y-0 right-0 z-0 pointer-events-none overflow-hidden" aria-hidden="true">
+          <Image
+            src="/biz bg.png"
+            alt="Live Tally business dashboards on your phone"
+            width={2752}
+            height={1536}
+            priority
+            className="h-full w-auto"
+          />
         </div>
         
         <div className="max-w-7xl mx-auto w-full px-6 relative z-10 py-12 ">

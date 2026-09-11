@@ -60,6 +60,13 @@ export const saraTopics: Topic[] = [
     ]
   },
   {
+    // CHANGE: 2026-09-11 — New topic: legacy ERP renewal discontinued. Sits BEFORE TSS so
+    // ERP9/upgrade queries match here first (matcher keeps stable order on equal scores).
+    label: "ERP 9 License Upgrade",
+    keywords: ["erp9", "erp 9", "erp renewal", "erp9 renewal", "erp 9 renewal", "erp renewals", "erp 9 renewals", "discontinued", "legacy erp", "upgrade to tallyprime", "tallyprime upgrade", "erp upgrade"],
+    answer: "Yes, Tally has officially discontinued legacy ERP renewals. Now ERP 9 users are given the option to upgrade their license to TallyPrime. For more customised information, contact Sarvadnya Infotech LLP. [[Contact Us|/contact]]",
+  },
+  {
     label: "TSS Renewal & Subscription",
     keywords: ["tss", "renew", "renewal", "subscription", "serial number", "manage license"],
     answer: "TSS (Tally Software Service / Tally Subscription Service) is the subscription that keeps TallyPrime's connected features active — e-invoicing, e-way bills, GST filing, and auto bank reconciliation.\n\nYes, you can renew TSS directly from inside TallyPrime:\n\n1. From the Gateway of Tally, press Alt+R (Manage TSS Renewal) — this shortcut shows when a renewal is due (about 15 days before expiry).\n2. Or go to F1 (Help) > Settings > License > Manage License, then press F9 (Renew TSS).\n3. Tally opens the Tally Solutions TSS Renewal Portal in your web browser with your serial number and billing details pre-filled.\n4. Choose your duration — 1 Year, or 2 Years for a 10% discount.\n5. Complete the payment. The updated validity syncs back into Tally automatically (see the About page).\n\nTip: Renew before expiry to get one extra month of validity. A red TSS warning appears about 15 days before expiry. When TSS is red/expired, connected features stop — e-invoicing, e-way bills, GST auto-filing and GSTR-2A/2B download, bank payments and auto-BRS, and mobile/WhatsApp reports — but offline data entry keeps working.\n\nIf the option is not visible on your screen, tell us your serial number and we can renew it for you: [[Renew TSS|/services/tss]]",

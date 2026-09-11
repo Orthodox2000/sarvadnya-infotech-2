@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import Link from 'next/link';
 import { fetchWithCache } from '@/lib/client-api';
 
 const CATEGORIES = ['All', 'Products', 'Services', 'Technical', 'Contact'];
@@ -48,9 +49,10 @@ const FAQ = ({ initialData, initialSettings }: { initialData?: any[], initialSet
     // CHANGE: 2026-08-24 — Only the first visibleCount FAQs are rendered.
     const visibleFaq = filteredFaq.slice(0, visibleCount);
 
+    // CHANGE: 2026-09-11 — Question rephrased for SEO/CTR & answer rewritten; contact CTA added below.
     const ERP_NOTICE = {
-        question: "Has Tally stopped ERP renewals?",
-        answer: "Yes. Tally has officially discontinued legacy ERP renewals. Upgrading to TallyPrime with an active TSS subscription is now the only way to stay compliant with the latest GST rules, E-invoicing mandates, and statutory updates. Contact us to upgrade today."
+        question: "Is Tally ERP 9 license renewal discontinued?",
+        answer: "Yes, Tally has officially discontinued legacy ERP renewals. Now ERP 9 users are given the option to upgrade their license to TallyPrime. For more customized information, contact Sarvadnya Infotech LLP."
     };
 
     const toggleIndex = (index: number) => {
@@ -113,6 +115,15 @@ const FAQ = ({ initialData, initialSettings }: { initialData?: any[], initialSet
                                     <p className="text-base text-slate-600 leading-[1.6] border-t border-amber-200 pt-4">
                                         {ERP_NOTICE.answer}
                                     </p>
+                                    {/* CHANGE: 2026-09-11 — Contact CTA button added to the ERP renewal notice. */}
+                                    <div className="mt-4 flex flex-wrap gap-3">
+                                        <Link
+                                            href="/contact"
+                                            className="inline-flex items-center justify-center px-5 py-2.5 bg-[#006569] text-white rounded-xl font-bold text-xs uppercase tracking-wider hover:bg-[#045A57] transition-colors"
+                                        >
+                                            Contact Us
+                                        </Link>
+                                    </div>
                                 </div>
                             </div>
                         </div>

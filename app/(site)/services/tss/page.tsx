@@ -66,21 +66,22 @@ export default function TSSPage() {
 
   return (
     <div className="min-h-screen bg-[linear-gradient(90deg,rgba(249,251,245,1)_0%,rgba(244,242,234,1)_53%,rgba(238,236,223,1)_100%)] text-slate-900">
-      {/* Cinematic Hero Section (Themed Hero) */}
-      <section className="bg-[linear-gradient(90deg,rgba(249,251,245,1)_0%,rgba(244,242,234,1)_53%,rgba(238,236,223,1)_100%)] relative overflow-hidden flex items-center min-h-[200px] md:min-h-[350px] border-b border-[#006569]/10">
-        {/* Cinematic Image Side - Hidden on mobile, full height on desktop */}
-        <div className="hidden lg:block absolute right-0 top-0 bottom-0 w-1/2 z-0">
-          <div className="relative h-full w-full">
-            <Image 
-              src="/tss-icon.png" 
-              alt="Cinematic TSS Renewal" 
-              fill 
-              className="object-cover"
-              priority
-            />
-            {/* Cinematic Overlay - Fades image into the light background */}
-            <div className="absolute inset-0 bg-gradient-to-r from-[#F5F4EC]/20 via-[#EEECDF]/50 to-transparent" />
-          </div>
+      {/* CHANGE: 2026-09-11 — Hero bg replaced with solid #F1EDE5 (was the cream gradient). Image stays right-anchored
+          at full height; plain #F1EDE5 fills the left so dark text stays readable. */}
+      <section className="bg-[#F1EDE5] relative overflow-hidden flex items-center min-h-[200px] md:min-h-[320px] border-b border-[#006569]/10">
+        {/* Cinematic Image Side - Hidden on mobile, right-anchored on md+ */}
+        {/* CHANGE: 2026-09-11 — Image keeps its NATURAL 2752x1536 ratio at the hero's full height and is
+            anchored RIGHT (was full-width object-cover, which cropped top/bottom). Any overflow past the
+            left edge is clipped by the section's overflow-hidden. Left stays clear for the headline. */}
+        <div className="hidden md:block absolute inset-y-0 right-0 z-0 pointer-events-none overflow-hidden" aria-hidden="true">
+          <Image
+            src="/tss-icon.png"
+            alt="Cinematic TSS Renewal"
+            width={2752}
+            height={1536}
+            priority
+            className="h-full w-auto"
+          />
         </div>
         
         <div className="max-w-7xl mx-auto w-full px-6 relative z-10 py-12">

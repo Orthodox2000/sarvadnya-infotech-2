@@ -105,15 +105,20 @@ export default function TallyOnWhatsappPage() {
 
             {/* Hero Abstract Graphic */}
             <div className="relative h-[400px] lg:h-[500px] w-full flex items-center justify-center perspective-1000">
-              <div className="relative w-full max-w-md aspect-square">
+              <div className="relative w-full max-w-md aspect-[11/6]">
                 {/* Main Document Plate */}
                 <div className="absolute inset-0 bg-white rounded-3xl shadow-2xl border border-white/60 transform rotate-[-3deg] transition-transform duration-700 hover:rotate-0 flex flex-col p-8 z-10 overflow-hidden">
 
+                  {/* CHANGE: 2026-09-11 — Frame now uses the image's native 2816x1536 → 11:6 aspect
+                      (was aspect-square), so the OBJECT/IMAGE fits the frame exactly with no top/bottom crop.
+                      Added sizes to match actual container (max-w-md ≈ 28rem) to drop the 3840w oversized
+                      download that caused "not loaded" on slow connections. */}
                   <Image
                     src="/tallytowa.png"
                     alt="WhatsApp Integration in action"
                     fill
                     className="object-cover"
+                    sizes="(min-width: 1024px) 28rem, 90vw"
                   />
 
                   {/* Decorative stamp */}
@@ -318,6 +323,48 @@ export default function TallyOnWhatsappPage() {
             >
               Contact Us
             </button>
+          </div>
+        </div>
+      </section>
+
+      {/* --- BOTTOM SHOWCASE BANNER --- */}
+      {/* CHANGE: 2026-09-11 — Bottom showcase image reuses /tallytowa.png, styled like the TSS/Biz
+          heroes: compact (md 320px), image right-anchored at its natural 2816x1536 ratio on solid
+          #F1EDE5, any left overflow clipped by the section's overflow-hidden. Mobile shows the cream
+          block only (image hidden below md). */}
+      <section className="relative overflow-hidden flex items-center bg-[#F1EDE5] min-h-[200px] md:min-h-[320px] border-t border-[#006569]/10">
+        <div className="hidden md:block absolute inset-y-0 right-0 z-0 pointer-events-none overflow-hidden" aria-hidden="true">
+          <Image
+            src="/tallytowa.png"
+            alt="Tally to WhatsApp integration showcase"
+            width={2816}
+            height={1536}
+            loading="lazy"
+            className="h-full w-auto"
+          />
+        </div>
+        <div className="max-w-7xl mx-auto w-full px-6 relative z-10 py-12">
+          <div className="max-w-2xl">
+            <div className="inline-flex items-center space-x-2 px-3 py-1.5 rounded-full bg-white border border-[#006569]/10 shadow-sm mb-6">
+              <span className="w-2 h-2 rounded-full bg-teal-500 animate-pulse"></span>
+              <span className="text-xs font-bold tracking-widest text-[#006569] uppercase">WhatsApp on Autopilot</span>
+            </div>
+            <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 leading-tight mb-4">
+              Invoices Out. Payments In. <span className="text-[#006569]">Zero Effort.</span>
+            </h2>
+            <p className="text-slate-600 text-base md:text-lg mb-8 font-medium max-w-xl">
+              Every sales voucher you save lands on your customer&apos;s WhatsApp instantly — via the
+              official, ban-proof WhatsApp API. Let us set it up for you.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4">
+              <button
+                onClick={() => openModal('enquire')}
+                className="inline-flex justify-center items-center px-8 py-4 border border-transparent text-base font-bold rounded-2xl shadow-xl text-white bg-[#006569] hover:bg-[#045A57] hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 group"
+              >
+                Get Now
+                <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </button>
+            </div>
           </div>
         </div>
       </section>

@@ -149,8 +149,11 @@ export default function Footer({ settings: initialSettings }: { settings?: SiteS
                             <Image
                                 src="/footer png inverted.png"
                                 alt="Sarvadnya Infotech LLP"
-                                width={120}
-                                height={40}
+                                // CHANGE: 2026-09-11 — width/height now match the real 1955x794 (≈2.46:1)
+                                // ratio at the fixed h-16 (64px) box so object-contain no longer
+                                // letterboxes, aligning the logo flush with the wordmark below.
+                                width={158}
+                                height={64}
                                 className="h-full w-auto max-w-full object-contain opacity-90 group-hover:opacity-100 transition-opacity"
                             />
                         </div>
@@ -158,11 +161,13 @@ export default function Footer({ settings: initialSettings }: { settings?: SiteS
                            LLP on its own line, spread to the logo height. Colour adapted for the dark footer —
                            white primary name + teal (teal-300) brand accent; tagline removed (consistent with navbar). */}
                             <span className="flex flex-col justify-center leading-[1.15] min-w-0">
-                                <span className="text-base lg:text-[16px] font-bold text-white">Sarvadnya Infotech</span>
-                                <span className="text-sm lg:text-[13px] font-black tracking-[0.08em] text-teal-300">LLP</span>
+                                <span className="text-base lg:text-[16px] font-bold text-white">Sarvadnya Infotech LLP</span>
                             </span>
                     </Link>
-                    <p className="text-sm leading-relaxed text-white/90 font-medium">
+                    {/* CHANGE: 2026-09-11 — Body copy below titles demoted to normal weight + dimmer
+                        (white/70) so only titles stay bold; applies to intro text, link columns and contact.
+                        Lower-weight text = font-normal (was font-bold/font-black), lighter = /70 vs /80-/90. */}
+                    <p className="text-sm leading-relaxed text-white/70 font-normal">
                         Tally Certified Partner providing end-to-end business solutions, 
                         cloud migration, and professional technical support to streamline your 
                         accounting and compliance workflows.
@@ -189,10 +194,10 @@ export default function Footer({ settings: initialSettings }: { settings?: SiteS
                 {/* TallyPrime Products */}
                 <div>
                     <h3 className="text-white font-black uppercase tracking-widest text-xs mb-8">TallyPrime Products</h3>
-                    <ul className="space-y-4 text-sm text-white/80">
+                    <ul className="space-y-4 text-sm text-white/70">
                         {products.map((item) => (
                             <li key={item.name}>
-                                <Link href={item.href} className="hover:text-[#B8DEDE] transition-colors hover-underline-animation py-1 font-bold">
+                                <Link href={item.href} className="hover:text-[#B8DEDE] transition-colors hover-underline-animation py-1">
                                     {item.name}
                                 </Link>
                             </li>
@@ -203,10 +208,10 @@ export default function Footer({ settings: initialSettings }: { settings?: SiteS
                 {/* Do More with Tally */}
                 <div>
                     <h3 className="text-white font-black uppercase tracking-widest text-xs mb-8">Do More with Tally</h3>
-                    <ul className="space-y-4 text-sm text-white/80">
+                    <ul className="space-y-4 text-sm text-white/70">
                         {doMoreWithTally.map((item) => (
                             <li key={item.name}>
-                                <Link href={item.href} className="hover:text-[#B8DEDE] transition-colors hover-underline-animation py-1 font-bold">
+                                <Link href={item.href} className="hover:text-[#B8DEDE] transition-colors hover-underline-animation py-1">
                                     {item.name}
                                 </Link>
                             </li>
@@ -217,10 +222,10 @@ export default function Footer({ settings: initialSettings }: { settings?: SiteS
                 {/* Customized Modules */}
                 <div>
                     <h3 className="text-white font-black uppercase tracking-widest text-xs mb-8">Custom Modules</h3>
-                    <ul className="space-y-4 text-sm text-white/80">
+                    <ul className="space-y-4 text-sm text-white/70">
                         {customizedModules.map((item) => (
                             <li key={item.name}>
-                                <Link href={item.href} className="hover:text-[#B8DEDE] transition-colors hover-underline-animation py-1 font-bold">
+                                <Link href={item.href} className="hover:text-[#B8DEDE] transition-colors hover-underline-animation py-1">
                                     {item.name}
                                 </Link>
                             </li>
@@ -231,10 +236,10 @@ export default function Footer({ settings: initialSettings }: { settings?: SiteS
                 {/* Support on Tally */}
                 <div>
                     <h3 className="text-white font-black uppercase tracking-widest text-xs mb-8">Services</h3>
-                    <ul className="space-y-4 text-sm text-white/80">
+                    <ul className="space-y-4 text-sm text-white/70">
                         {supportOnTally.map((item) => (
                             <li key={item.name}>
-                                <Link href={item.href} className="hover:text-[#B8DEDE] transition-colors hover-underline-animation py-1 font-bold">
+                                <Link href={item.href} className="hover:text-[#B8DEDE] transition-colors hover-underline-animation py-1">
                                     {item.name}
                                 </Link>
                             </li>
@@ -245,13 +250,13 @@ export default function Footer({ settings: initialSettings }: { settings?: SiteS
                 {/* Contact & Map */}
                 <div className="space-y-8">
                     <h3 className="text-white font-black uppercase tracking-widest text-xs mb-8">Get In Touch</h3>
-                    <ul className="space-y-5 text-sm mb-6 text-white/90">
+                    <ul className="space-y-5 text-sm mb-6 text-white/70">
                         <li className="flex items-center gap-3">
                             <svg className="w-5 h-5 text-white shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                             </svg>
                             {/* CHANGE: 2026-08-24 — break-all + min-w-0 so the long email wraps instead of overflowing to the right. */}
-                            <a href={`mailto:${supportEmail}`} className="hover:text-[#B8DEDE] transition-colors font-bold break-all min-w-0">{supportEmail}</a>
+                            <a href={`mailto:${supportEmail}`} className="hover:text-[#B8DEDE] transition-colors break-all min-w-0">{supportEmail}</a>
                         </li>
                         <li className="flex items-start gap-3">
                             <svg className="w-5 h-5 text-white shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -262,11 +267,11 @@ export default function Footer({ settings: initialSettings }: { settings?: SiteS
                                     Hardcoded so it always shows even if DB settings only hold the mobile number.
                                     2026-08-26 — Removed whitespace-nowrap: it forced the line onto one width and
                                     overflowed the narrow (1/6) footer column on PC. It now wraps naturally. */}
-                                <a href="tel:+912249742200" className="hover:text-[#B8DEDE] transition-colors block leading-tight font-black">
+                                <a href="tel:+912249742200" className="hover:text-[#B8DEDE] transition-colors block leading-tight">
                                     +022-4974 2200 / +022-4964 7959
                                 </a>
                                 {supportPhone.split(',').map((num, i) => (
-                                    <a key={i} href={`tel:${num.trim()}`} className="hover:text-[#B8DEDE] transition-colors block leading-tight font-black">
+                                    <a key={i} href={`tel:${num.trim()}`} className="hover:text-[#B8DEDE] transition-colors block leading-tight">
                                         {formatPhoneDisplay(num.trim())}
                                     </a>
                                 ))}

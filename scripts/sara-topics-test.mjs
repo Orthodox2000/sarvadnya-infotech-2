@@ -52,6 +52,14 @@ test('"stock" does NOT map to TSS', () => {
   if (r && r.topic.label === 'TSS Renewal & Subscription') throw new Error('"stock" wrongly mapped to TSS');
 });
 
+// ─── ERP 9 upgrade must map to the new topic, never fall through to TSS ─────
+console.log('💼 ERP 9 upgrade isolation');
+// CHANGE: 2026-09-11 — ERP9/renew queries now resolve deterministically to the
+// new ERP 9 License Upgrade topic instead of drifting to TSS or the LLM.
+test('"erp9 renewal" maps to ERP 9 License Upgrade', () => expectMatch('erp9 renewal', 'ERP 9 License Upgrade'));
+test('"has tally stopped erp renewals" maps to ERP 9', () => expectMatch('has tally stopped erp renewals', 'ERP 9 License Upgrade'));
+test('"how do I upgrade my licence to tallyprime" maps to ERP 9', () => expectMatch('how do I upgrade my licence to tallyprime', 'ERP 9 License Upgrade'));
+
 // ─── Other topics still match ──────────────────────────────────────────────
 console.log('🗂 Other topics');
 test('"gst filing" maps to GST & Tax Filing', () => expectMatch('gst filing', 'GST & Tax Filing'));
@@ -67,8 +75,9 @@ test('random gibberish returns null', () => expectNull('zzzz qqqqq qwerty'));
 
 // ─── Data sanity: no duplicate topics ──────────────────────────────────────
 console.log('🧩 Data sanity');
-test('saraTopics has 7 unique topics', () => {
-  if (saraTopics.length !== 7) throw new Error(`expected 7 topics, got ${saraTopics.length}`);
+// CHANGE: 2026-09-11 — expected count 7 → 8 after adding the ERP 9 License Upgrade topic.
+test('saraTopics has 8 unique topics', () => {
+  if (saraTopics.length !== 8) throw new Error(`expected 8 topics, got ${saraTopics.length}`);
 });
 test('Keyboard Shortcuts topic appears exactly once', () => {
   const n = saraTopics.filter(t => t.label === 'Keyboard Shortcuts').length;
