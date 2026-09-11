@@ -14,55 +14,8 @@ const cloudPartners = [
   { name: 'Windows Server', logo: '/PartnerBrands/Windows-Server.svg' },
 ];
 
-const plans = [
-  {
-    name: 'Basic',
-    users: '1 User',
-    price: 'NA',
-    period: '',
-    desc: 'Perfect for solo founders and sole proprietors who need secure, anywhere access to their business data.',
-    features: [
-      'Single user access',
-      'TallyPrime Silver features',
-      'Automatic daily backups',
-      '24/7 cloud access',
-      'Email support',
-    ],
-  },
-  {
-    name: 'Standard',
-    users: 'Up to 5 Users',
-    price: 'NA',
-    period: '',
-    desc: 'Ideal for small teams who want to collaborate in real-time without maintaining an office server.',
-    features: [
-      'Up to 5 concurrent users',
-      'TallyPrime Gold features',
-      'Automatic daily backups',
-      '24/7 cloud access',
-      'Priority support',
-      'Setup assistance',
-    ],
-    popular: true,
-  },
-  {
-    name: 'Professional',
-    users: '10+ Users',
-    price: 'NA',
-    period: '',
-    desc: 'Built for growing businesses and enterprises that need a fully managed, scalable cloud environment.',
-    features: [
-      'Unlimited users',
-      'TallyPrime Server features',
-      'Automatic daily backups',
-      '24/7 cloud access',
-      'Dedicated account manager',
-      'Setup & migration',
-      'Custom integrations',
-    ],
-  },
-];
-
+// CHANGE: 2026-09-11 — Plan cards removed per request; pricing is now shared by contacting
+// sales only. The `plans` array was deleted (was the Simple Cloud Pricing grid).
 const coreFeatures = [
   { title: 'Access From Anywhere', desc: 'Log in from any laptop, desktop, Mac, or tablet with internet. Your TallyPrime data is always available — whether you are at home, office, or traveling.' },
   { title: 'Works on Any Device', desc: 'Use a web browser, Windows client, Mac client, or Linux client. Even old laptops work perfectly since all processing happens on powerful cloud servers.' },
@@ -119,7 +72,7 @@ const compatibleSystems = {
 const navSections = [
   { id: 'overview', label: 'Overview' },
   { id: 'features', label: 'Features' },
-  { id: 'plans', label: 'Plans & Pricing' },
+  { id: 'plans', label: 'Pricing' },
   { id: 'compatibility', label: 'Compatibility' },
   { id: 'faqs', label: 'FAQ' },
 ];
@@ -132,7 +85,6 @@ export default function TallyCloudAccessPage() {
   const [activeNav, setActiveNav] = useState('overview');
   const [openFaq, setOpenFaq] = useState<number | null>(0);
   const [stickyNav, setStickyNav] = useState(false);
-  const [activePlan, setActivePlan] = useState<number | null>(null);
   const [inquiryName, setInquiryName] = useState('');
   const [inquiryContact, setInquiryContact] = useState('');
   const [inquiryMsg, setInquiryMsg] = useState('');
@@ -245,7 +197,8 @@ export default function TallyCloudAccessPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#f5f7fa] text-slate-900 font-sans">
+    // CHANGE: 2026-09-11 — Page bg switched from bluish-gray #f5f7fa to warm neutral #F6F6F6.
+    <div className="min-h-screen bg-[#F6F6F6] text-slate-900 font-sans">
       {/* Breadcrumb */}
       <div className="bg-white border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-6">
@@ -305,7 +258,7 @@ export default function TallyCloudAccessPage() {
                 className="px-6 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider border transition-all hover:scale-[1.02]"
                 style={{ borderColor: BRAND_PRIMARY, color: BRAND_PRIMARY }}
               >
-                View Plans
+                See Pricing
               </button>
             </div>
           </div>
@@ -325,7 +278,7 @@ export default function TallyCloudAccessPage() {
             className="flex-1 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider border transition-all"
             style={{ borderColor: BRAND_PRIMARY, color: BRAND_PRIMARY }}
           >
-            View Plans
+            See Pricing
           </button>
         </div>
       </div>
@@ -502,70 +455,31 @@ export default function TallyCloudAccessPage() {
               </div>
             </section>
 
-            {/* Plans & Pricing */}
+            {/* Pricing — Contact sales only */}
+            {/* CHANGE: 2026-09-11 — Plan cards removed per request; the section is now a simple
+                'contact sales team to know more' CTA since pricing is tailored per setup. */}
             <section id="plans" className="scroll-mt-16 bg-white rounded-xl border border-slate-200 p-6">
-              <div className="mb-6">
-                <h2 className="text-lg font-bold text-slate-900 mb-1">Simple Cloud Pricing</h2>
-                <p className="text-sm text-slate-500">Pay a simple monthly fee per user. No server costs, no IT team needed, no surprises.</p>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {plans.map((plan, idx) => (
-                  <div
-                    key={plan.name}
-                    className={`relative rounded-xl border p-5 transition-all duration-300 cursor-pointer ${
-                      plan.popular
-                        ? 'border-[#006569] shadow-lg ring-1 ring-[#006569]/20'
-                        : 'border-slate-200 hover:border-[#006569]/30 hover:shadow-md'
-                    }`}
-                    style={{
-                      backgroundColor: activePlan === idx ? `${BRAND_PRIMARY}05` : plan.popular ? `${BRAND_PRIMARY}08` : 'transparent',
-                    }}
-                    onMouseEnter={() => setActivePlan(idx)}
-                  >
-                    {plan.popular && (
-                      <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                        <span className="inline-flex items-center gap-1 rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-white shadow-md" style={{ backgroundColor: BRAND_PRIMARY }}>
-                          Most Popular
-                        </span>
-                      </div>
-                    )}
-                    <div className="mb-4">
-                      <h3 className="text-base font-bold text-slate-900">{plan.name}</h3>
-                      <p className="text-[11px] text-slate-500 font-medium mt-0.5">{plan.users}</p>
-                    </div>
-                    <div className="mb-4">
-                      <span className="text-2xl font-black" style={{ color: BRAND_PRIMARY }}>{plan.price}</span>
-                      <span className="text-xs text-slate-500 font-medium">{plan.period}</span>
-                    </div>
-                    <p className="text-[13px] text-slate-600 leading-relaxed mb-4">{plan.desc}</p>
-                    <ul className="space-y-2 mb-5">
-                      {plan.features.map((feature) => (
-                        <li key={feature} className="flex items-start gap-2 text-[12px] text-slate-600">
-                          <svg className="w-3.5 h-3.5 mt-0.5 shrink-0" viewBox="0 0 24 24" fill={BRAND_PRIMARY}>
-                            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" />
-                          </svg>
-                          <span>{feature}</span>
-                        </li>
-                      ))}
-                    </ul>
-                    <button
-                      onClick={() => openModal('quote', `Tally Cloud Access - ${plan.name}`, `Interested in the ${plan.name} plan (${plan.users}). Please share details.`)}
-                      className="w-full py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider transition-all hover:scale-[1.01]"
-                      style={{
-                        backgroundColor: plan.popular ? BRAND_PRIMARY : 'transparent',
-                        color: plan.popular ? '#fff' : BRAND_PRIMARY,
-                        border: plan.popular ? 'none' : `1px solid ${BRAND_PRIMARY}`,
-                      }}
-                    >
-                      Get Started
-                    </button>
-                  </div>
-                ))}
-              </div>
-              <div className="mt-5 p-4 rounded-lg bg-slate-50 border border-slate-100">
-                <p className="text-[11px] text-slate-500 leading-relaxed">
-                  All plans include managed cloud hosting, automatic daily backups, TSS (Tally Software Services), and setup support. Prices shown are indicative. Contact our sales team for the latest pricing, enterprise discounts, and custom configurations.
-                </p>
+              <h2 className="text-lg font-bold text-slate-900 mb-1">Pricing</h2>
+              <p className="text-sm text-slate-500 mb-6 max-w-2xl">
+                Cloud pricing is tailored to your team size and server configuration. Connect with our
+                sales team to know more — we will share the latest plans, enterprise discounts, and a
+                personalised quote for your business.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4">
+                <button
+                  onClick={() => openModal('quote', 'Tally Cloud Access', 'Please share Tally Cloud Access pricing and plans.')}
+                  className="inline-flex justify-center items-center px-6 py-3 rounded-lg text-xs font-bold uppercase tracking-wider text-white shadow-lg transition-all hover:scale-[1.02]"
+                  style={{ backgroundColor: BRAND_PRIMARY }}
+                >
+                  Contact Sales Team
+                </button>
+                <Link
+                  href="/contact"
+                  className="inline-flex justify-center items-center px-6 py-3 rounded-lg text-xs font-bold uppercase tracking-wider border transition-all hover:scale-[1.02]"
+                  style={{ borderColor: BRAND_PRIMARY, color: BRAND_PRIMARY }}
+                >
+                  Contact Us
+                </Link>
               </div>
             </section>
 

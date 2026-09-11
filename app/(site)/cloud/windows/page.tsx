@@ -167,7 +167,8 @@ export default function WindowsVMPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#f5f7fa] text-slate-900 font-sans">
+    // CHANGE: 2026-09-11 — Page bg switched from bluish-gray #f5f7fa to warm neutral #F6F6F6.
+    <div className="min-h-screen bg-[#F6F6F6] text-slate-900 font-sans">
       {/* Breadcrumb */}
       <div className="bg-white border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-6">
