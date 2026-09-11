@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
-import { ArrowRight, CheckCircle2, MessageSquare, Send, BellRing, Megaphone, Users, ShieldCheck, Activity } from 'lucide-react';
+import { ArrowRight, CheckCircle2, MessageSquare, Send, BellRing, Megaphone, Users, ShieldCheck } from 'lucide-react';
 import Footer from '../../../components/Footer';
 import UnifiedContactModal, { FormType } from '../../../components/UnifiedContactModal';
 
@@ -201,68 +201,20 @@ export default function TallyOnWhatsappPage() {
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center relative z-10">
 
-              {/* Left: Enhanced Illustration Card */}
-              <div className="order-2 lg:order-1 relative rounded-[2rem] overflow-hidden   aspect-[4/3] flex items-center justify-center  group">
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.9),transparent)]"></div>
-
-                {/* Abstract UI Composition */}
-                <div className="relative w-full h-full flex items-center justify-center p-8 perspective-1000">
-
-                  {/* Floating Notification */}
-                  <div className="absolute top-1/4 left-8 bg-white/90 backdrop-blur-md p-4 rounded-2xl shadow-xl border border-white z-20 flex items-center gap-3 animate-float transform -rotate-6 group-hover:rotate-0 transition-transform duration-700">
-                    <div className="w-10 h-10 rounded-full bg-teal-100 flex items-center justify-center text-teal-600">
-                      <Send className="w-5 h-5" />
-                    </div>
-                    <div>
-                      <div className="h-2 w-16 bg-slate-200 rounded-full mb-2"></div>
-                      <div className="h-2 w-10 bg-slate-200 rounded-full"></div>
-                    </div>
-                  </div>
-
-                  {/* Main WhatsApp Panel */}
-                  <div className="relative z-10 w-64 h-72 bg-white/80 backdrop-blur-lg rounded-3xl shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] border border-white/60 p-6 flex flex-col transform group-hover:-translate-y-2 transition-transform duration-700">
-                    <div className="flex justify-between items-center mb-8 pb-4 border-b border-slate-100">
-                      <div className="flex items-center gap-2">
-                        <div className="w-8 h-8 rounded-full bg-teal-100 flex items-center justify-center">
-                          <MessageSquare className="w-4 h-4 text-teal-600" />
-                        </div>
-                      </div>
-                      <div className="w-8 h-8 rounded-full bg-teal-50 flex items-center justify-center border border-teal-100">
-                        <Activity className="w-4 h-4 text-teal-600" />
-                      </div>
-                    </div>
-
-                    {/* Simulated Chat Bubbles */}
-                    <div className="flex-1 w-full space-y-5">
-                      {[1, 2, 3].map((_, i) => (
-                        <div key={i} className={`flex items-center gap-2 ${i === 2 ? 'justify-end' : ''}`}>
-                          <div className={`rounded-2xl p-2.5 flex-shrink-0 ${i === 2 ? 'bg-teal-100' : 'bg-slate-100'}`}>
-                            <div className="h-2 w-14 bg-slate-200 rounded-full mb-1.5"></div>
-                            <div className="h-2 w-10 bg-slate-200 rounded-full"></div>
-                          </div>
-                          {i === 2 && (
-                            <svg className="w-3 h-3 text-teal-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
-                              <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                            </svg>
-                          )}
-                        </div>
-                      ))}
-                    </div>
-
-                    {/* Status indicator */}
-                    <div className="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between">
-                      <div className="flex -space-x-2">
-                        <div className="w-8 h-8 rounded-full border-2 border-white bg-slate-200"></div>
-                        <div className="w-8 h-8 rounded-full border-2 border-white bg-slate-300"></div>
-                      </div>
-                      <div className="px-3 py-1 bg-teal-100 text-teal-700 text-xs font-bold rounded-full">Delivered</div>
-                    </div>
-                  </div>
-
-                  {/* Back decorative card */}
-                  <div className="absolute right-12 bottom-1/4 w-48 h-56 bg-slate-800 rounded-3xl shadow-2xl rotate-12 opacity-90 blur-[1px] group-hover:rotate-6 transition-transform duration-700"></div>
-
-                </div>
+              {/* Left: Product Showcase Image */}
+              {/* CHANGE: 2026-09-11 — Abstract UI illustration replaced by the real /tallytowa.png
+                  screenshot in a frame matched to its native 2816x1536 (11:6) ratio, so the whole
+                  image fits with no crop or overflow. Appears left on lg (this column is order-1 there),
+                  below the text on mobile. */}
+              <div className="order-2 lg:order-1 relative rounded-[2rem] overflow-hidden aspect-[11/6] shadow-2xl border border-white/60">
+                <Image
+                  src="/tallytowa.png"
+                  alt="Tally to WhatsApp automated invoicing"
+                  fill
+                  className="object-cover"
+                  sizes="(min-width: 1024px) 44rem, 90vw"
+                  loading="lazy"
+                />
               </div>
 
               {/* Right: Content & List */}
@@ -323,50 +275,6 @@ export default function TallyOnWhatsappPage() {
             >
               Contact Us
             </button>
-          </div>
-        </div>
-      </section>
-
-      {/* --- BOTTOM SHOWCASE BANNER --- */}
-      {/* CHANGE: 2026-09-11 — Bottom showcase image reuses /tallytowa.png. Rendered INSIDE a
-          rounded frame matched to the image's native 2816x1536 (11:6) ratio with object-cover, so the
-          whole image always fits the frame on any screen — no absolute right-anchored strip that could
-          overflow/overflow-cut the subject. Hidden below md. */}
-      <section className="relative overflow-hidden bg-[#F1EDE5] border-t border-[#006569]/10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-            <div>
-              <div className="inline-flex items-center space-x-2 px-3 py-1.5 rounded-full bg-white border border-[#006569]/10 shadow-sm mb-6">
-                <span className="w-2 h-2 rounded-full bg-teal-500 animate-pulse"></span>
-                <span className="text-xs font-bold tracking-widest text-[#006569] uppercase">WhatsApp on Autopilot</span>
-              </div>
-              <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 leading-tight mb-4">
-                Invoices Out. Payments In. <span className="text-[#006569]">Zero Effort.</span>
-              </h2>
-              <p className="text-slate-600 text-base md:text-lg mb-8 font-medium max-w-xl">
-                Every sales voucher you save lands on your customer&apos;s WhatsApp instantly — via the
-                official, ban-proof WhatsApp API. Let us set it up for you.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4">
-                <button
-                  onClick={() => openModal('enquire')}
-                  className="inline-flex justify-center items-center px-8 py-4 border border-transparent text-base font-bold rounded-2xl shadow-xl text-white bg-[#006569] hover:bg-[#045A57] hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 group"
-                >
-                  Get Now
-                  <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                </button>
-              </div>
-            </div>
-            <div className="hidden md:block relative rounded-3xl overflow-hidden shadow-2xl border border-white/60 aspect-[11/6]">
-              <Image
-                src="/tallytowa.png"
-                alt="Tally to WhatsApp integration showcase"
-                fill
-                className="object-cover"
-                sizes="(min-width: 1024px) 44rem, 90vw"
-                loading="lazy"
-              />
-            </div>
           </div>
         </div>
       </section>
