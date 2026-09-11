@@ -328,42 +328,44 @@ export default function TallyOnWhatsappPage() {
       </section>
 
       {/* --- BOTTOM SHOWCASE BANNER --- */}
-      {/* CHANGE: 2026-09-11 — Bottom showcase image reuses /tallytowa.png, styled like the TSS/Biz
-          heroes: compact (md 320px), image right-anchored at its natural 2816x1536 ratio on solid
-          #F1EDE5, any left overflow clipped by the section's overflow-hidden. Mobile shows the cream
-          block only (image hidden below md). */}
-      <section className="relative overflow-hidden flex items-center bg-[#F1EDE5] min-h-[200px] md:min-h-[320px] border-t border-[#006569]/10">
-        <div className="hidden md:block absolute inset-y-0 right-0 z-0 pointer-events-none overflow-hidden" aria-hidden="true">
-          <Image
-            src="/tallytowa.png"
-            alt="Tally to WhatsApp integration showcase"
-            width={2816}
-            height={1536}
-            loading="lazy"
-            className="h-full w-auto"
-          />
-        </div>
-        <div className="max-w-7xl mx-auto w-full px-6 relative z-10 py-12">
-          <div className="max-w-2xl">
-            <div className="inline-flex items-center space-x-2 px-3 py-1.5 rounded-full bg-white border border-[#006569]/10 shadow-sm mb-6">
-              <span className="w-2 h-2 rounded-full bg-teal-500 animate-pulse"></span>
-              <span className="text-xs font-bold tracking-widest text-[#006569] uppercase">WhatsApp on Autopilot</span>
+      {/* CHANGE: 2026-09-11 — Bottom showcase image reuses /tallytowa.png. Rendered INSIDE a
+          rounded frame matched to the image's native 2816x1536 (11:6) ratio with object-cover, so the
+          whole image always fits the frame on any screen — no absolute right-anchored strip that could
+          overflow/overflow-cut the subject. Hidden below md. */}
+      <section className="relative overflow-hidden bg-[#F1EDE5] border-t border-[#006569]/10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+            <div>
+              <div className="inline-flex items-center space-x-2 px-3 py-1.5 rounded-full bg-white border border-[#006569]/10 shadow-sm mb-6">
+                <span className="w-2 h-2 rounded-full bg-teal-500 animate-pulse"></span>
+                <span className="text-xs font-bold tracking-widest text-[#006569] uppercase">WhatsApp on Autopilot</span>
+              </div>
+              <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 leading-tight mb-4">
+                Invoices Out. Payments In. <span className="text-[#006569]">Zero Effort.</span>
+              </h2>
+              <p className="text-slate-600 text-base md:text-lg mb-8 font-medium max-w-xl">
+                Every sales voucher you save lands on your customer&apos;s WhatsApp instantly — via the
+                official, ban-proof WhatsApp API. Let us set it up for you.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4">
+                <button
+                  onClick={() => openModal('enquire')}
+                  className="inline-flex justify-center items-center px-8 py-4 border border-transparent text-base font-bold rounded-2xl shadow-xl text-white bg-[#006569] hover:bg-[#045A57] hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 group"
+                >
+                  Get Now
+                  <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </button>
+              </div>
             </div>
-            <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 leading-tight mb-4">
-              Invoices Out. Payments In. <span className="text-[#006569]">Zero Effort.</span>
-            </h2>
-            <p className="text-slate-600 text-base md:text-lg mb-8 font-medium max-w-xl">
-              Every sales voucher you save lands on your customer&apos;s WhatsApp instantly — via the
-              official, ban-proof WhatsApp API. Let us set it up for you.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4">
-              <button
-                onClick={() => openModal('enquire')}
-                className="inline-flex justify-center items-center px-8 py-4 border border-transparent text-base font-bold rounded-2xl shadow-xl text-white bg-[#006569] hover:bg-[#045A57] hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 group"
-              >
-                Get Now
-                <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </button>
+            <div className="hidden md:block relative rounded-3xl overflow-hidden shadow-2xl border border-white/60 aspect-[11/6]">
+              <Image
+                src="/tallytowa.png"
+                alt="Tally to WhatsApp integration showcase"
+                fill
+                className="object-cover"
+                sizes="(min-width: 1024px) 44rem, 90vw"
+                loading="lazy"
+              />
             </div>
           </div>
         </div>
