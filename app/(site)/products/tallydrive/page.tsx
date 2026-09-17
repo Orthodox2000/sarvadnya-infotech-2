@@ -7,8 +7,15 @@ import Footer from '../../../components/Footer';
 import UnifiedContactModal, { FormType } from '../../../components/UnifiedContactModal';
 import TssRenewalForm from '../../../components/TssRenewalForm';
 
-const BRAND_PRIMARY = '#006569';
-const BRAND_SECONDARY = '#045A57';
+// CHANGE: 2026-09-16 — consistent bg-slate-100 background and silver-page style/token cleanup.
+
+type TallyDrivePlan = { plan: string; storage: string; validity: string; price: string };
+
+const pricingRows: TallyDrivePlan[] = [
+  { plan: 'TallyDrive Basic (Free)', storage: '1 GB', validity: 'Active TSS required', price: 'Included with Single-User TSS' },
+  { plan: 'Multi-User (Gold / Server)', storage: '3 GB', validity: 'Active TSS required', price: 'Included with Multi-User TSS' },
+  { plan: 'Extra Storage', storage: '10 GB', validity: 'Per year', price: '₹1,200/year' },
+];
 
 const features = [
   { title: 'AES-256 Encryption', desc: 'Your financial data is locked with enterprise-grade security. You can even set a custom Recovery Key, meaning absolutely no one can access your data except you.' },
@@ -184,28 +191,26 @@ export default function TallyDrivePage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#C0C0C0]/15 text-slate-900 font-sans">
+    <div className="min-h-screen bg-slate-100 text-slate-900 font-sans">
       {/* Breadcrumb */}
-      <div className="bg-white border-b border-slate-200">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="py-2.5">
-            <ul className="flex items-center gap-1.5 text-[11px] font-medium text-slate-500">
-              <li><Link href="/" className="hover:text-[#006569] transition-colors">Home</Link></li>
-              <li className="text-slate-300 mx-0.5">/</li>
-              <li><Link href="/products" className="hover:text-[#006569] transition-colors">Products</Link></li>
-              <li className="text-slate-300 mx-0.5">/</li>
-              <li className="text-slate-800 font-semibold">TallyDrive</li>
-            </ul>
-          </div>
+      <nav aria-label="Breadcrumb" className="bg-white border-b border-slate-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <ol className="flex items-center gap-1.5 py-2.5 text-xs font-medium text-slate-500">
+            <li><Link href="/" className="hover:text-[#006569] transition-colors rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#006569]">Home</Link></li>
+            <li className="text-slate-300" aria-hidden="true">/</li>
+            <li><Link href="/products" className="hover:text-[#006569] transition-colors rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#006569]">Products</Link></li>
+            <li className="text-slate-300" aria-hidden="true">/</li>
+            <li className="text-slate-800 font-semibold" aria-current="page">TallyDrive</li>
+          </ol>
         </div>
-      </div>
+      </nav>
 
       {/* Product Header */}
       <div className="bg-white border-b border-slate-200">
-        <div className="max-w-7xl mx-auto px-6 py-5">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-5">
           <div className="flex items-start gap-5">
             {/* Logo */}
-            <div className="w-18 h-18 shrink-0 rounded-xl border border-slate-200 bg-white flex items-center justify-center shadow-sm p-2.5">
+            <div className="size-16 sm:size-18 shrink-0 rounded-xl border border-slate-200 bg-white flex items-center justify-center shadow-sm p-2.5">
               <Image src="/tallydrive logo.png" alt="TallyDrive" width={62} height={62} className="object-contain" />
             </div>
 
@@ -213,20 +218,13 @@ export default function TallyDrivePage() {
             <div className="flex-1 min-w-0">
               <div className="flex items-center flex-wrap gap-x-3 gap-y-1">
                 <h1 className="text-xl md:text-2xl font-bold text-slate-900">TallyDrive</h1>
-                <span
-                  className="inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider border"
-                  style={{
-                    backgroundColor: `${BRAND_PRIMARY}10`,
-                    borderColor: `${BRAND_PRIMARY}25`,
-                    color: BRAND_PRIMARY,
-                  }}
-                >
-                  <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: BRAND_PRIMARY }} />
+                <span className="inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-bold uppercase tracking-wider border bg-[#006569]/10 border-[#006569]/25 text-[#006569]">
+                  <span className="size-1.5 rounded-full bg-[#006569]" aria-hidden="true" />
                   Cloud Backup
                 </span>
               </div>
               <div className="flex items-center flex-wrap gap-x-4 gap-y-1 mt-1.5"></div>
-              <p className="text-[13px] text-slate-500 mt-1.5 leading-relaxed max-w-3xl">
+              <p className="text-sm text-slate-600 mt-1.5 leading-relaxed max-w-3xl">
                 Never lose your accounting data again. TallyDrive automatically backs up your TallyPrime data to the cloud — as long as your device is powered on.
               </p>
             </div>
@@ -235,15 +233,13 @@ export default function TallyDrivePage() {
             <div className="hidden md:flex flex-col gap-2 shrink-0">
               <button
                 onClick={() => openModal('demo', 'TallyDrive Backup')}
-                className="px-6 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider text-white shadow-lg transition-all hover:scale-[1.02]"
-                style={{ backgroundColor: BRAND_PRIMARY }}
+                className="px-6 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider text-white shadow-lg transition-all bg-[#006569] hover:bg-[#045A57] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#006569] focus-visible:ring-offset-2"
               >
                 Get Now
               </button>
               <button
                 onClick={() => scrollToSection('pricing')}
-                className="px-6 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider border transition-all hover:scale-[1.02]"
-                style={{ borderColor: BRAND_PRIMARY, color: BRAND_PRIMARY }}
+                className="px-6 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider border border-[#006569] text-[#006569] transition-all hover:bg-[#006569]/5 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#006569] focus-visible:ring-offset-2"
               >
                 Get Pricing
               </button>
@@ -252,18 +248,16 @@ export default function TallyDrivePage() {
         </div>
 
         {/* Mobile action buttons */}
-        <div className="md:hidden flex gap-2 px-6 pb-4">
+        <div className="md:hidden flex gap-2 px-4 pb-4">
           <button
             onClick={() => openModal('demo', 'TallyDrive Backup')}
-            className="flex-1 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider text-white shadow-lg transition-all"
-            style={{ backgroundColor: BRAND_PRIMARY }}
+            className="flex-1 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider text-white shadow-lg transition-all bg-[#006569] hover:bg-[#045A57] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#006569] focus-visible:ring-offset-2"
           >
             Get Now
           </button>
           <button
             onClick={() => scrollToSection('pricing')}
-            className="flex-1 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider border transition-all"
-            style={{ borderColor: BRAND_PRIMARY, color: BRAND_PRIMARY }}
+            className="flex-1 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider border border-[#006569] text-[#006569] transition-all hover:bg-[#006569]/5 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#006569] focus-visible:ring-offset-2"
           >
             Get Pricing
           </button>
@@ -277,20 +271,22 @@ export default function TallyDrivePage() {
           stickyNav ? 'sticky top-0 z-100 shadow-sm' : ''
         }`}
       >
-        <div className="max-w-7xl mx-auto px-6">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="flex items-center gap-1 overflow-x-auto no-scrollbar">
             {navSections.map((section) => (
               <button
                 key={section.id}
+                type="button"
                 onClick={() => scrollToSection(section.id)}
-                className="relative shrink-0 px-4 py-3 text-[11px] font-bold uppercase tracking-wider transition-colors"
-                style={{ color: activeNav === section.id ? BRAND_PRIMARY : '#64748b' }}
+                className={`relative shrink-0 px-4 py-3 text-xs font-bold uppercase tracking-wider transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#006569] ${
+                  activeNav === section.id ? 'text-[#006569]' : 'text-slate-500 hover:text-slate-700'
+                }`}
               >
                 {section.label}
                 {activeNav === section.id && (
                   <span
-                    className="absolute bottom-0 left-0 right-0 h-0.5"
-                    style={{ backgroundColor: BRAND_PRIMARY }}
+                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#006569]"
+                    aria-hidden="true"
                   />
                 )}
               </button>
@@ -300,14 +296,14 @@ export default function TallyDrivePage() {
       </div>
 
       {/* Main Content + Sidebar */}
-      <div className="max-w-7xl mx-auto px-6 py-6">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
 
           {/* ========== LEFT CONTENT (9/12) ========== */}
           <div className="lg:col-span-8 xl:col-span-9 space-y-6">
 
             {/* Overview */}
-            <section id="overview" className="scroll-mt-16 bg-white rounded-xl border border-slate-200 p-6">
+            <section id="overview" className="scroll-mt-16 bg-white rounded-xl border border-slate-200 p-4 sm:p-6">
               <h2 className="text-lg font-bold text-slate-900 mb-3">What is TallyDrive?</h2>
               <div className="text-sm text-slate-600 leading-relaxed space-y-3">
                 <p>
@@ -331,14 +327,10 @@ export default function TallyDrivePage() {
                 ].map((stat) => (
                   <div
                     key={stat.label}
-                    className="rounded-lg border p-3 text-center"
-                    style={{
-                      backgroundColor: `${BRAND_PRIMARY}06`,
-                      borderColor: `${BRAND_PRIMARY}15`,
-                    }}
+                    className="rounded-lg border border-[#006569]/15 p-3 text-center bg-[#006569]/5"
                   >
-                    <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400">{stat.label}</div>
-                    <div className="text-lg font-black mt-0.5" style={{ color: BRAND_PRIMARY }}>{stat.value}</div>
+                    <div className="text-xs font-bold uppercase tracking-wider text-slate-500">{stat.label}</div>
+                    <div className="text-lg font-black mt-0.5 text-[#006569]">{stat.value}</div>
                   </div>
                 ))}
               </div>
@@ -347,7 +339,7 @@ export default function TallyDrivePage() {
 
 
             {/* Features */}
-            <section id="features" className="scroll-mt-16 bg-white rounded-xl border border-slate-200 p-6">
+            <section id="features" className="scroll-mt-16 bg-white rounded-xl border border-slate-200 p-4 sm:p-6">
               <h2 className="text-lg font-bold text-slate-900 mb-1">Why MSME Owners Love TallyDrive</h2>
               <p className="text-sm text-slate-500 mb-5">
                 Set it once, forget it forever. Your data is automatically backed up and instantly recoverable.
@@ -356,25 +348,24 @@ export default function TallyDrivePage() {
                 {features.map((feature) => (
                   <div
                     key={feature.title}
-                    className="rounded-lg border border-slate-100 p-4 hover:shadow-sm transition-shadow"
-                    style={{ backgroundColor: `${BRAND_PRIMARY}03` }}
+                    className="rounded-lg border border-slate-100 p-4 bg-[#006569]/5 hover:shadow-sm hover:border-[#006569]/20 transition-shadow"
                   >
                     <div className="flex items-center gap-2 mb-2">
                       <span
-                        className="w-2 h-2 rounded-full shrink-0"
-                        style={{ backgroundColor: BRAND_PRIMARY }}
+                        className="size-2 rounded-full shrink-0 bg-[#006569]"
+                        aria-hidden="true"
                       />
                       <h3 className="text-sm font-bold text-slate-900">{feature.title}</h3>
                     </div>
-                    <p className="text-[13px] text-slate-600 leading-relaxed">{feature.desc}</p>
+                    <p className="text-sm text-slate-600 leading-relaxed">{feature.desc}</p>
                   </div>
                 ))}
               </div>
             </section>
 
             {/* When TallyDrive is the right choice + Compatible Systems */}
-            <section className="grid sm:grid-cols-2 gap-6">
-              <div className="bg-white rounded-xl border border-slate-200 p-6">
+            <section className="grid sm:grid-cols-2 gap-4 sm:gap-6">
+              <div className="bg-white rounded-xl border border-slate-200 p-4 sm:p-6">
                 <h2 className="text-lg font-bold text-slate-900 mb-4">Is TallyDrive right for you? It is if:</h2>
                 <ul className="space-y-3">
                   {[
@@ -385,10 +376,10 @@ export default function TallyDrivePage() {
                   ].map((item) => (
                     <li key={item} className="flex items-start gap-2.5 text-sm text-slate-600">
                       <span
-                        className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full"
-                        style={{ backgroundColor: `${BRAND_PRIMARY}15` }}
+                        className="mt-0.5 flex size-4 shrink-0 items-center justify-center rounded-full bg-[#006569]/15"
+                        aria-hidden="true"
                       >
-                        <svg className="w-2.5 h-2.5" viewBox="0 0 24 24" fill={BRAND_PRIMARY}>
+                        <svg className="size-2.5 text-[#006569]" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                           <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" />
                         </svg>
                       </span>
@@ -398,44 +389,44 @@ export default function TallyDrivePage() {
                 </ul>
               </div>
 
-              <div className="bg-white rounded-xl border border-slate-200 p-6">
+              <div className="bg-white rounded-xl border border-slate-200 p-4 sm:p-6">
                 <h2 className="text-lg font-bold text-slate-900 mb-4">Compatible Systems</h2>
                 <div className="space-y-4">
                   <div>
-                    <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Backup Sources</h3>
+                    <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Backup Sources</h3>
                     <div className="flex flex-wrap gap-2">
                       {['Tally Company Data', 'Local Business Files'].map((src) => (
-                        <span key={src} className="inline-flex rounded-md px-2.5 py-1 text-[12px] font-medium border" style={{ borderColor: `${BRAND_PRIMARY}25`, backgroundColor: `${BRAND_PRIMARY}06`, color: BRAND_PRIMARY }}>
+                        <span key={src} className="inline-flex rounded-md px-2.5 py-1 text-xs font-medium border border-[#006569]/25 bg-[#006569]/5 text-[#006569]">
                           {src}
                         </span>
                       ))}
                     </div>
                   </div>
                   <div>
-                    <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Backup Destination</h3>
+                    <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Backup Destination</h3>
                     <div className="flex flex-wrap gap-2">
                       {['TallyDrive Cloud', 'Local Drive'].map((dest) => (
-                        <span key={dest} className="inline-flex rounded-md px-2.5 py-1 text-[12px] font-medium border" style={{ borderColor: `${BRAND_PRIMARY}25`, backgroundColor: `${BRAND_PRIMARY}06`, color: BRAND_PRIMARY }}>
+                        <span key={dest} className="inline-flex rounded-md px-2.5 py-1 text-xs font-medium border border-[#006569]/25 bg-[#006569]/5 text-[#006569]">
                           {dest}
                         </span>
                       ))}
                     </div>
                   </div>
                   <div>
-                    <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Security</h3>
+                    <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Security</h3>
                     <div className="flex flex-wrap gap-2">
                       {['AES-256 Encryption', 'Custom Backup Password', 'Private Recovery Key'].map((sec) => (
-                        <span key={sec} className="inline-flex rounded-md px-2.5 py-1 text-[12px] font-medium border" style={{ borderColor: `${BRAND_PRIMARY}25`, backgroundColor: `${BRAND_PRIMARY}06`, color: BRAND_PRIMARY }}>
+                        <span key={sec} className="inline-flex rounded-md px-2.5 py-1 text-xs font-medium border border-[#006569]/25 bg-[#006569]/5 text-[#006569]">
                           {sec}
                         </span>
                       ))}
                     </div>
                   </div>
                   <div>
-                    <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Requirement</h3>
+                    <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Requirement</h3>
                     <div className="flex flex-wrap gap-2">
                       {['TallyPrime Release 7.0 or above'].map((req) => (
-                        <span key={req} className="inline-flex rounded-md px-2.5 py-1 text-[12px] font-medium border" style={{ borderColor: `${BRAND_PRIMARY}25`, backgroundColor: `${BRAND_PRIMARY}06`, color: BRAND_PRIMARY }}>
+                        <span key={req} className="inline-flex rounded-md px-2.5 py-1 text-xs font-medium border border-[#006569]/25 bg-[#006569]/5 text-[#006569]">
                           {req}
                         </span>
                       ))}
@@ -446,113 +437,123 @@ export default function TallyDrivePage() {
             </section>
 
             {/* FAQ */}
-            <section id="faqs" className="scroll-mt-16 bg-white rounded-xl border border-slate-200 p-6">
+            <section id="faqs" className="scroll-mt-16 bg-white rounded-xl border border-slate-200 p-4 sm:p-6">
               <h2 className="text-lg font-bold text-slate-900 mb-1">TallyDrive FAQs</h2>
               <p className="text-sm text-slate-500 mb-5">Frequently asked questions about TallyDrive cloud backup.</p>
               <div className="space-y-0 divide-y divide-slate-100">
-                {faqs.map((faq, idx) => (
-                  <div key={idx}>
-                    <button
-                      type="button"
-                      onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
-                      className="flex items-center justify-between w-full py-3.5 text-left transition-colors"
-                    >
-                      <h3 className="text-sm font-bold text-slate-900 pr-4">{faq.q}</h3>
-                      <span
-                        className="shrink-0 w-5 h-5 rounded-full flex items-center justify-center transition-transform duration-200"
-                        style={{
-                          backgroundColor: openFaq === idx ? BRAND_PRIMARY : '#f1f5f9',
-                          transform: openFaq === idx ? 'rotate(45deg)' : 'rotate(0deg)',
-                        }}
+                {faqs.map((faq, idx) => {
+                  const open = openFaq === idx;
+                  return (
+                    <div key={idx}>
+                      <button
+                        type="button"
+                        onClick={() => setOpenFaq(open ? null : idx)}
+                        aria-expanded={open}
+                        aria-controls={`faq-panel-${idx}`}
+                        className="flex items-center justify-between w-full py-3.5 text-left transition-colors rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#006569]"
                       >
-                        <svg className="w-3 h-3" viewBox="0 0 24 24" fill={openFaq === idx ? '#fff' : '#94a3b8'}>
-                          <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
-                        </svg>
-                      </span>
-                    </button>
-                    {openFaq === idx && (
-                      <div className="pb-3.5 text-sm text-slate-600 leading-relaxed pr-8">
-                        {faq.a}
-                        {faq.cta && (
-                          <div className="mt-3">
-                            {'href' in faq.cta && faq.cta.href ? (
-                              <a
-                                href={faq.cta.href}
-                                className="inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-[10px] font-bold uppercase tracking-wider text-white transition-all hover:scale-[1.02]"
-                                style={{ backgroundColor: BRAND_PRIMARY }}
-                              >
-                                {faq.cta.label}
-                                <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
-                                  <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                                </svg>
-                              </a>
-                            ) : 'type' in faq.cta ? (
-                              <button
-                                type="button"
-                                onClick={() => openModal((faq.cta as { type: string }).type as FormType, 'TallyDrive Backup')}
-                                className="inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-[10px] font-bold uppercase tracking-wider text-white transition-all hover:scale-[1.02]"
-                                style={{ backgroundColor: BRAND_PRIMARY }}
-                              >
-                                {faq.cta.label}
-                                <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
-                                  <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                                </svg>
-                              </button>
-                            ) : null}
-                          </div>
-                        )}
-                      </div>
+                        <h3 className="text-sm font-bold text-slate-900 pr-4">{faq.q}</h3>
+                        <span
+                          className={`shrink-0 size-5 rounded-full flex items-center justify-center transition-transform duration-200 ${
+                            open ? 'bg-[#006569] rotate-45 text-white' : 'bg-slate-100 text-slate-400'
+                          }`}
+                          aria-hidden="true"
+                        >
+                          <svg className="size-3" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
+                          </svg>
+                        </span>
+                      </button>
+                      {open && (
+                        <div id={`faq-panel-${idx}`} className="pb-3.5 text-sm text-slate-600 leading-relaxed pr-8">
+                          {faq.a}
+                          {faq.cta && (
+                            <div className="mt-3">
+                              {'href' in faq.cta && faq.cta.href ? (
+                                <a
+                                  href={faq.cta.href}
+                                  className="inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-xs font-bold uppercase tracking-wider text-white transition-all bg-[#006569] hover:bg-[#045A57] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#006569] focus-visible:ring-offset-2"
+                                >
+                                  {faq.cta.label}
+                                  <svg className="size-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3" aria-hidden="true">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                                  </svg>
+                                </a>
+                              ) : 'type' in faq.cta ? (
+                                <button
+                                  type="button"
+                                  onClick={() => openModal((faq.cta as { type: string }).type as FormType, 'TallyDrive Backup')}
+                                  className="inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-xs font-bold uppercase tracking-wider text-white transition-all bg-[#006569] hover:bg-[#045A57] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#006569] focus-visible:ring-offset-2"
+                                >
+                                  {faq.cta.label}
+                                  <svg className="size-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3" aria-hidden="true">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                                  </svg>
+                                </button>
+                              ) : null}
+                            </div>
+                          )}
+                        </div>
                     )}
                   </div>
-                ))}
-              </div>
-            </section>
+                );
+              })}
+            </div>
+          </section>
 
             {/* Still not satisfied? */}
-            <section className="bg-white rounded-xl border border-slate-200 p-6">
+            <section className="bg-white rounded-xl border border-slate-200 p-4 sm:p-6">
               <div className="text-center mb-5">
                 <h2 className="text-lg font-bold text-slate-900">Have questions about securing your data?</h2>
                 <p className="text-sm text-slate-500 mt-1">Tell us how you currently back up your data, and we&apos;ll show you how TallyDrive can automate it.</p>
               </div>
               <form onSubmit={handleInquirySubmit} className="max-w-xl mx-auto space-y-3">
-                <input
-                  type="text"
-                  placeholder="Your Name *"
-                  value={inquiryName}
-                  onChange={(e) => setInquiryName(e.target.value)}
-                  className="w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm outline-none transition-all focus:ring-2 bg-slate-50"
-                  style={{ '--tw-ring-color': BRAND_PRIMARY } as React.CSSProperties}
-                  required
-                />
-                <input
-                  type="text"
-                  placeholder="Email or Phone *"
-                  value={inquiryContact}
-                  onChange={(e) => setInquiryContact(e.target.value)}
-                  className="w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm outline-none transition-all focus:ring-2 bg-slate-50"
-                  style={{ '--tw-ring-color': BRAND_PRIMARY } as React.CSSProperties}
-                  required
-                />
-                <textarea
-                  placeholder="Describe your requirement *"
-                  value={inquiryMsg}
-                  onChange={(e) => setInquiryMsg(e.target.value)}
-                  rows={3}
-                  className="w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm outline-none transition-all focus:ring-2 bg-slate-50 resize-none"
-                  style={{ '--tw-ring-color': BRAND_PRIMARY } as React.CSSProperties}
-                  required
-                />
+                <div>
+                  <label htmlFor="inquiry-name" className="sr-only">Your Name</label>
+                  <input
+                    id="inquiry-name"
+                    type="text"
+                    placeholder="Your Name *"
+                    value={inquiryName}
+                    onChange={(e) => setInquiryName(e.target.value)}
+                    className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-sm outline-none transition-all focus:border-[#006569] focus:ring-2 focus:ring-[#006569]/20 placeholder:text-slate-400"
+                    required
+                  />
+                </div>
+                <div>
+                  <label htmlFor="inquiry-contact" className="sr-only">Email or Phone</label>
+                  <input
+                    id="inquiry-contact"
+                    type="text"
+                    placeholder="Email or Phone *"
+                    value={inquiryContact}
+                    onChange={(e) => setInquiryContact(e.target.value)}
+                    className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-sm outline-none transition-all focus:border-[#006569] focus:ring-2 focus:ring-[#006569]/20 placeholder:text-slate-400"
+                    required
+                  />
+                </div>
+                <div>
+                  <label htmlFor="inquiry-msg" className="sr-only">Describe your requirement</label>
+                  <textarea
+                    id="inquiry-msg"
+                    placeholder="Describe your requirement *"
+                    value={inquiryMsg}
+                    onChange={(e) => setInquiryMsg(e.target.value)}
+                    rows={3}
+                    className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-sm outline-none transition-all focus:border-[#006569] focus:ring-2 focus:ring-[#006569]/20 placeholder:text-slate-400 resize-none"
+                    required
+                  />
+                </div>
                 <button
                   type="submit"
                   disabled={inquiryLoading}
-                  className="w-full py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider text-white shadow-lg transition-all hover:scale-[1.01] disabled:opacity-60"
-                  style={{ backgroundColor: BRAND_PRIMARY }}
+                  className="w-full py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider text-white shadow-lg transition-all bg-[#006569] hover:bg-[#045A57] active:scale-[0.99] disabled:opacity-60 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#006569] focus-visible:ring-offset-2"
                 >
                   {inquiryLoading ? 'Sending...' : 'Submit Requirement'}
                 </button>
                 {inquiryStatus && (
                   <p
-                    className={`text-[11px] text-center leading-relaxed font-medium ${
+                    className={`text-xs text-center leading-relaxed font-medium ${
                       inquiryStatus.type === 'success' ? 'text-teal-600' : 'text-red-500'
                     }`}
                   >
@@ -563,54 +564,75 @@ export default function TallyDrivePage() {
             </section>
 
             {/* Pricing - Hidden reveal */}
-            <section id="pricing" className="scroll-mt-16 bg-white rounded-xl border border-slate-200 p-6">
+            <section id="pricing" className="scroll-mt-16 bg-white rounded-xl border border-slate-200 p-4 sm:p-6">
               <h2 className="text-lg font-bold text-slate-900 mb-1">TallyDrive Pricing</h2>
               <p className="text-sm text-slate-500 mb-5">TallyDrive storage is automatically included with your active TSS subscription at no extra cost.</p>
               <button
                 type="button"
                 onClick={() => setShowPricing(!showPricing)}
-                className="inline-flex items-center gap-2 rounded-lg px-5 py-2.5 text-xs font-bold uppercase tracking-wider text-white shadow-lg transition-all hover:scale-[1.02]"
-                style={{ backgroundColor: BRAND_PRIMARY }}
+                aria-expanded={showPricing}
+                aria-controls="pricing-panel"
+                className="inline-flex items-center gap-2 rounded-lg px-5 py-2.5 text-xs font-bold uppercase tracking-wider text-white shadow-lg transition-all bg-[#006569] hover:bg-[#045A57] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#006569] focus-visible:ring-offset-2"
               >
                 {showPricing ? 'Hide Plans' : 'View Plans'}
-                <svg className={`w-3.5 h-3.5 transition-transform duration-200 ${showPricing ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
+                <svg className={`size-3.5 transition-transform duration-200 ${showPricing ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
                 </svg>
               </button>
               {showPricing && (
-                <div className="mt-5 overflow-x-auto rounded-lg border border-slate-200">
-                  <table className="w-full text-left text-sm">
-                    <thead>
-                      <tr className="bg-slate-50 text-[10px] font-bold uppercase tracking-wider text-slate-500">
-                        <th className="px-4 py-3">Plan</th>
-                        <th className="px-4 py-3">Storage</th>
-                        <th className="px-4 py-3">Validity</th>
-                        <th className="px-4 py-3">Price</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr className="border-b border-slate-100">
-                        <td className="px-4 py-3 font-bold text-slate-900">TallyDrive Basic (Free)</td>
-                        <td className="px-4 py-3 text-slate-600">1 GB</td>
-                        <td className="px-4 py-3 text-slate-600">Active TSS required</td>
-                        <td className="px-4 py-3 font-bold" style={{ color: BRAND_PRIMARY }}>Included with Single-User TSS</td>
-                      </tr>
-                      <tr>
-                        <td className="px-4 py-3 font-bold text-slate-900">Multi-User (Gold / Server)</td>
-                        <td className="px-4 py-3 text-slate-600">3 GB</td>
-                        <td className="px-4 py-3 text-slate-600">Active TSS required</td>
-                        <td className="px-4 py-3 font-bold" style={{ color: BRAND_PRIMARY }}>Included with Multi-User TSS</td>
-                      </tr>
-                      <tr className="border-b border-slate-100">
-                        <td className="px-4 py-3 font-bold text-slate-900">Extra Storage</td>
-                        <td className="px-4 py-3 text-slate-600">10 GB</td>
-                        <td className="px-4 py-3 text-slate-600">Per year</td>
-                        <td className="px-4 py-3 font-bold" style={{ color: BRAND_PRIMARY }}>₹1,200/year</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                  <div className="px-4 py-4 bg-slate-50 border-t border-slate-200">
-                    <p className="text-[11px] text-slate-500 mb-3">
+                <div id="pricing-panel" className="mt-5">
+                  {/* Desktop table */}
+                  <div className="hidden sm:block overflow-x-auto rounded-lg border border-slate-200">
+                    <table className="w-full text-left text-sm">
+                      <thead>
+                        <tr className="bg-slate-50 text-xs font-bold uppercase tracking-wider text-slate-500">
+                          <th scope="col" className="px-4 py-3">Plan</th>
+                          <th scope="col" className="px-4 py-3">Storage</th>
+                          <th scope="col" className="px-4 py-3">Validity</th>
+                          <th scope="col" className="px-4 py-3">Price</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {pricingRows.map((row) => (
+                          <tr key={row.plan} className="border-b border-slate-100 last:border-0">
+                            <td className="px-4 py-3 font-bold text-slate-900">{row.plan}</td>
+                            <td className="px-4 py-3 text-slate-600">{row.storage}</td>
+                            <td className="px-4 py-3 text-slate-600">{row.validity}</td>
+                            <td className="px-4 py-3 font-bold text-[#006569]">{row.price}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+
+                  {/* Mobile stacked cards */}
+                  <div className="sm:hidden space-y-3">
+                    {pricingRows.map((row) => (
+                      <div key={row.plan} className="rounded-lg border border-slate-200 p-4">
+                        <div className="flex items-center justify-between gap-3">
+                          <p className="text-sm font-bold text-slate-900">{row.plan}</p>
+                          <span className="shrink-0 text-xs font-semibold uppercase tracking-wide text-slate-500">{row.validity}</span>
+                        </div>
+                        <dl className="mt-3 grid grid-cols-3 gap-2">
+                          <div className="rounded-lg bg-slate-50 px-2 py-2 text-center">
+                            <dt className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Storage</dt>
+                            <dd className="text-sm font-bold text-slate-800 mt-0.5">{row.storage}</dd>
+                          </div>
+                          <div className="rounded-lg bg-slate-50 px-2 py-2 text-center">
+                            <dt className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Validity</dt>
+                            <dd className="text-sm font-bold text-slate-800 mt-0.5">{row.validity}</dd>
+                          </div>
+                          <div className="rounded-lg bg-teal-50 px-2 py-2 text-center border border-teal-100">
+                            <dt className="text-[10px] font-bold uppercase tracking-wider text-teal-700">Price</dt>
+                            <dd className="text-sm font-bold text-[#006569] mt-0.5">{row.price}</dd>
+                          </div>
+                        </dl>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="px-4 py-4 bg-slate-50 rounded-lg border border-slate-200 mt-3">
+                    <p className="text-xs text-slate-500 mb-3">
                       Need to renew your TSS to activate TallyDrive? Enter your details below.
                     </p>
                     <TssRenewalForm variant="compact" source="tallydrive-page" />
@@ -627,58 +649,66 @@ export default function TallyDrivePage() {
 
             {/* Get Best Quote */}
             <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
-              <div className="px-5 py-4 text-white" style={{ backgroundColor: BRAND_SECONDARY }}>
-                <h3 className="text-sm font-bold">Get Best Quote for TallyDrive</h3>
-                <p className="text-[12px] text-white/75 mt-1 leading-relaxed">
+              <div className="px-5 py-4 text-white bg-[#045A57]">
+                <h3 className="text-sm font-bold text-white">Get Best Quote for TallyDrive</h3>
+                <p className="text-sm text-white/80 mt-1 leading-relaxed">
                   Tell us your current Tally setup and we will show you how to activate TallyDrive today.
                 </p>
               </div>
               <form onSubmit={handleSidebarSubmit} className="p-5 space-y-3">
-                <input
-                  type="text"
-                  placeholder="Name *"
-                  value={formName}
-                  onChange={(e) => setFormName(e.target.value)}
-                  className="w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm outline-none transition-all focus:ring-2 bg-slate-50"
-                  style={{ '--tw-ring-color': BRAND_PRIMARY } as React.CSSProperties}
-                  required
-                />
-                <input
-                  type="email"
-                  placeholder="Business Email *"
-                  value={formEmail}
-                  onChange={(e) => setFormEmail(e.target.value)}
-                  className="w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm outline-none transition-all focus:ring-2 bg-slate-50"
-                  style={{ '--tw-ring-color': BRAND_PRIMARY } as React.CSSProperties}
-                  required
-                />
-                <input
-                  type="tel"
-                  placeholder="Phone Number *"
-                  value={formPhone}
-                  onChange={(e) => setFormPhone(e.target.value)}
-                  className="w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm outline-none transition-all focus:ring-2 bg-slate-50"
-                  style={{ '--tw-ring-color': BRAND_PRIMARY } as React.CSSProperties}
-                  required
-                />
+                <div>
+                  <label htmlFor="quote-name" className="sr-only">Name</label>
+                  <input
+                    id="quote-name"
+                    type="text"
+                    placeholder="Name *"
+                    value={formName}
+                    onChange={(e) => setFormName(e.target.value)}
+                    className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-sm outline-none transition-all focus:border-[#006569] focus:ring-2 focus:ring-[#006569]/20 placeholder:text-slate-400"
+                    required
+                  />
+                </div>
+                <div>
+                  <label htmlFor="quote-email" className="sr-only">Business Email</label>
+                  <input
+                    id="quote-email"
+                    type="email"
+                    placeholder="Business Email *"
+                    value={formEmail}
+                    onChange={(e) => setFormEmail(e.target.value)}
+                    className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-sm outline-none transition-all focus:border-[#006569] focus:ring-2 focus:ring-[#006569]/20 placeholder:text-slate-400"
+                    required
+                  />
+                </div>
+                <div>
+                  <label htmlFor="quote-phone" className="sr-only">Phone Number</label>
+                  <input
+                    id="quote-phone"
+                    type="tel"
+                    placeholder="Phone Number *"
+                    value={formPhone}
+                    onChange={(e) => setFormPhone(e.target.value)}
+                    className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-sm outline-none transition-all focus:border-[#006569] focus:ring-2 focus:ring-[#006569]/20 placeholder:text-slate-400"
+                    required
+                  />
+                </div>
                 <button
                   type="submit"
                   disabled={formLoading}
-                  className="w-full py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider text-white shadow-lg transition-all hover:scale-[1.01] disabled:opacity-60"
-                  style={{ backgroundColor: BRAND_PRIMARY }}
+                  className="w-full py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider text-white shadow-lg transition-all bg-[#006569] hover:bg-[#045A57] active:scale-[0.99] disabled:opacity-60 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#006569] focus-visible:ring-offset-2"
                 >
                   {formLoading ? 'Sending...' : 'Request a Call Back'}
                 </button>
                 {formMsg && (
                   <p
-                    className={`text-[11px] text-center leading-relaxed font-medium ${
+                    className={`text-xs text-center leading-relaxed font-medium ${
                       formMsg.type === 'success' ? 'text-teal-600' : 'text-red-500'
                     }`}
                   >
                     {formMsg.text}
                   </p>
                 )}
-                <p className="text-[10px] text-slate-400 text-center leading-relaxed">
+                <p className="text-[11px] text-slate-400 text-center leading-relaxed">
                   By submitting, you agree to our Terms of Use and Privacy Policy.
                 </p>
               </form>
@@ -697,11 +727,11 @@ export default function TallyDrivePage() {
                   <Link
                     key={item.name}
                     href={item.slug}
-                    className="flex items-center gap-3 group"
+                    className="flex items-center gap-3 group rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#006569]"
                   >
                     <div
-                      className="w-9 h-9 rounded-lg flex items-center justify-center text-white font-bold text-xs shrink-0"
-                      style={{ backgroundColor: BRAND_PRIMARY }}
+                      className="size-9 rounded-lg flex items-center justify-center text-white font-bold text-xs shrink-0 bg-[#006569]"
+                      aria-hidden="true"
                     >
                       {item.name.charAt(0)}
                     </div>
@@ -709,8 +739,8 @@ export default function TallyDrivePage() {
                       <p className="text-sm font-bold text-slate-700 group-hover:text-[#006569] transition-colors truncate">
                         {item.name}
                       </p>
-                      <span className="inline-flex items-center gap-1 text-[11px] text-slate-400">
-                        <svg className="w-3 h-3" viewBox="0 0 20 20" fill="#f59e0b">
+                      <span className="inline-flex items-center gap-1 text-xs text-slate-400">
+                        <svg className="size-3" viewBox="0 0 20 20" fill="#f59e0b" aria-hidden="true">
                           <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                         </svg>
                         {item.rating}
@@ -722,8 +752,7 @@ export default function TallyDrivePage() {
               </div>
               <Link
                 href="/products"
-                className="block mt-4 pt-3 border-t border-slate-100 text-[11px] font-bold uppercase tracking-wider text-center"
-                style={{ color: BRAND_PRIMARY }}
+                className="block mt-4 pt-3 border-t border-slate-100 text-xs font-bold uppercase tracking-wider text-center text-[#006569] hover:text-[#045A57] transition-colors rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#006569]"
               >
                 View All Products
               </Link>
@@ -744,7 +773,7 @@ export default function TallyDrivePage() {
                     <Link
                       key={link.label}
                       href={link.href!}
-                      className="block text-sm text-slate-600 hover:text-[#006569] transition-colors py-1"
+                      className="block text-sm text-slate-600 hover:text-[#006569] transition-colors py-1 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#006569]"
                     >
                       {link.label}
                     </Link>
@@ -753,7 +782,7 @@ export default function TallyDrivePage() {
                       key={link.label}
                       type="button"
                       onClick={() => openModal(link.type!, 'TallyDrive Backup')}
-                      className="block w-full text-left text-sm text-slate-600 hover:text-[#006569] transition-colors py-1"
+                      className="block w-full text-left text-sm text-slate-600 hover:text-[#006569] transition-colors py-1 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#006569]"
                     >
                       {link.label}
                     </button>

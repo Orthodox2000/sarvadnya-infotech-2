@@ -563,6 +563,22 @@ main > div:first-of-type {
 .font-inter {
   font-family: var(--font-sans), 'Inter', ui-sans-serif, system-ui, sans-serif;
 }
+/* CHANGE: 2026-09-16 — CertifiedPartners radial network: flowing connector dashes. Stroke dash
+   array is 1 unit dash + 3 unit gap (4-unit cycle); animating the dash-offset 4 -> 0 loops seamlessly.
+   Duration is overridden inline (faster on hover) via the element's animation-duration style. */
+@keyframes connect-flow {
+  to {
+    stroke-dashoffset: 4;
+  }
+}
+.connect-flow {
+  animation: connect-flow 2.2s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .connect-flow {
+    animation: none;
+  }
+}
 /* CHANGE: 2026-08-31 — Zoho SalesIQ tracking-only: hide the chat/consent UI via OPACITY:0 (NOT suppressed).
    Uses opacity (not display:none) so the widget stays mounted and tracking/analytics are fully intact —
    the chatbox and consent banners are made invisible without disabling/reflowing them.

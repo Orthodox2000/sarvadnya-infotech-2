@@ -39,8 +39,28 @@ function isLocalhost(origin: string): boolean {
 const CANONICAL_HOST = 'sarvadnyainfotech.com';
 const WWW_HOST = 'www.sarvadnyainfotech.com';
 
+// CHANGE: 2026-09-16 — Deleted old-WordPress/WooCommerce URLs: 410 Gone so Google stops crawling them
+// (consumes crawl budget and inflates the GSC "Pages to index" count vs the real 54 pages).
+const GONE_PATHS = new Set([
+  '/shop/bumper+stickers', '/shop/gallery-boards', '/shop/framed-prints',
+  '/shop/all-mouse-pads', '/shop/cool+stickers',
+  '/product', '/product/', '/feed', '/feed/', '/automobile-industries', '/automobile-industries/',
+  '/author/admin/feed', '/author/admin/feed/',
+]);
+const GONE_PREFIXES = ['/wp-includes/', '/wp-content/', '/wp-admin/', '/wp-json/', '/2021/'];
+
 export function middleware(request: NextRequest) {
   const { pathname, search } = request.nextUrl;
+
+  // CHANGE: 2026-09-16 — dead legacy-WordPress artifacts return 410 before any redirect/CORS logic.
+  if (
+    GONE_PATHS.has(pathname) ||
+    GONE_PREFIXES.some((p) => pathname.startsWith(p)) ||
+    (pathname === '/' && request.nextUrl.searchParams.has('et_core_page_resource'))
+  ) {
+    return new NextResponse(null, { status: 410 });
+  }
+
   if (request.nextUrl.hostname === WWW_HOST && !pathname.startsWith('/api/')) {
     return NextResponse.redirect(new URL(pathname + search, `https://${CANONICAL_HOST}`), 301);
   }

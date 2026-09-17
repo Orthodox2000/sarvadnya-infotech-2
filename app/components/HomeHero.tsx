@@ -241,10 +241,10 @@ export default function HomeHero({ hero = HERO_CONTENT, emailCopy = false, backg
             className="group relative bg-white  rounded-xl lg:rounded-2xl p-3 lg:p-5 border border-gray-100 shadow-lg lg:shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 lg:hover:-translate-y-2 hover:border-[#006569]/30"
           >
             <div className="flex items-center gap-3 lg:block">
-              <div className="w-9 h-9 lg:w-12 lg:h-12 rounded-lg lg:rounded-xl bg-white flex items-center justify-center shrink-0 overflow-hidden group-hover:scale-110 transition-transform duration-300 shadow-sm">
+              <div className="w-11 h-11 lg:w-12 lg:h-12 rounded-lg lg:rounded-xl bg-white flex items-center justify-center shrink-0 overflow-hidden group-hover:scale-110 transition-transform duration-300 shadow-sm">
                 <Image src={card.img} alt={card.title} width={48} height={48} className="object-contain w-full h-full" />
               </div>
-              <div className="min-w-0">
+              <div className="min-w-0 lg:mt-2">
                 <h3 className="text-[11px] lg:text-base font-bold text-[#2a2d34] group-hover:text-[#006569] transition-colors leading-tight truncate">
                   {card.title}
                 </h3>

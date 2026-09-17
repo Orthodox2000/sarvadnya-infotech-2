@@ -6,8 +6,7 @@ import Link from 'next/link';
 import Footer from '../../../components/Footer';
 import UnifiedContactModal, { FormType } from '../../../components/UnifiedContactModal';
 
-const BRAND_PRIMARY = '#006569';
-const BRAND_SECONDARY = '#045A57';
+// CHANGE: 2026-09-16 — consistent bg-slate-100 background and silver-page style/token cleanup.
 
 const fundingOptions = [
   {
@@ -15,7 +14,7 @@ const fundingOptions = [
     limit: 'Up to ₹75 Lakhs',
     desc: 'Fast, collateral-free funding for growing businesses that need working capital without risking assets.',
     icon: (
-      <svg className="w-6 h-6" viewBox="0 0 64 64" fill="none" stroke="currentColor" strokeWidth="2" strokeMiterlimit="10">
+      <svg className="size-6" viewBox="0 0 64 64" fill="none" stroke="currentColor" strokeWidth="2" strokeMiterlimit="10">
         <path d="M53.92,10.081c12.107,12.105,12.107,31.732,0,43.838c-12.106,12.108-31.734,12.108-43.84,0c-12.107-12.105-12.107-31.732,0-43.838C22.186-2.027,41.813-2.027,53.92,10.081z" />
         <path d="M36,50L21,36v-1h7c0,0,11,1,11-9c0-9-11-9-11-9h-8" />
         <line x1="20" y1="17" x2="44" y2="17" />
@@ -28,7 +27,7 @@ const fundingOptions = [
     limit: 'Up to ₹15 Crores',
     desc: 'Unlock the value of your property to fund business expansion or manage working capital needs.',
     icon: (
-      <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
+      <svg className="size-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
         <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3.75h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008z" />
       </svg>
     ),
@@ -38,7 +37,7 @@ const fundingOptions = [
     limit: 'Government-Backed',
     desc: 'Government-backed credit guarantee scheme designed for eligible MSMEs — no collateral required.',
     icon: (
-      <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
+      <svg className="size-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
         <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
       </svg>
     ),
@@ -48,7 +47,7 @@ const fundingOptions = [
     limit: 'Tailored Financing',
     desc: 'Specialised financing for practising Chartered Accountants to grow their practice.',
     icon: (
-      <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
+      <svg className="size-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
         <path strokeLinecap="round" strokeLinejoin="round" d="M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.658-.813A59.905 59.905 0 0112 3.493a59.902 59.902 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.697 50.697 0 0112 13.489a50.702 50.702 0 017.74-3.342M6.75 15a.75.75 0 100-1.5.75.75 0 000 1.5zm0 0v-3.675A55.378 55.378 0 0112 8.443m-7.007 11.55A5.981 5.981 0 006.75 15.75v-1.5" />
       </svg>
     ),
@@ -179,30 +178,30 @@ export default function TallyCapitalPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[linear-gradient(90deg,rgba(249,251,245,1)_0%,rgba(244,242,234,1)_53%,rgba(238,236,223,1)_100%)] text-slate-900 font-sans">
+    <div className="min-h-screen bg-slate-100 text-slate-900 font-sans">
       {/* Breadcrumb */}
-      <div className=" border-b border-slate-200">
-        <div className="max-w-7xl mx-auto px-6">
+      <nav aria-label="Breadcrumb" className="bg-white border-b border-slate-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="py-2.5">
-            <ul className="flex items-center gap-1.5 text-[11px] font-medium text-slate-500">
-              <li><Link href="/" className="hover:text-[#006569] transition-colors">Home</Link></li>
-              <li className="text-slate-300 mx-0.5">/</li>
-              <li><Link href="/products" className="hover:text-[#006569] transition-colors">Products</Link></li>
-              <li className="text-slate-300 mx-0.5">/</li>
-              <li className="text-slate-800 font-semibold">TallyCapital</li>
-            </ul>
+            <ol className="flex items-center gap-1.5 text-xs font-medium text-slate-500">
+              <li><Link href="/" className="hover:text-[#006569] transition-colors rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#006569]">Home</Link></li>
+              <li className="text-slate-300" aria-hidden="true">/</li>
+              <li><Link href="/products" className="hover:text-[#006569] transition-colors rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#006569]">Products</Link></li>
+              <li className="text-slate-300" aria-hidden="true">/</li>
+              <li className="text-slate-800 font-semibold" aria-current="page">TallyCapital</li>
+            </ol>
           </div>
         </div>
-      </div>
+      </nav>
 
       {/* ===== SECTION 1: HERO — The Loan Hook ===== */}
       <div className="bg-[url('/mobilebg.png')] md:bg-[url('/cardbg.png')] bg-cover bg-center bg-no-repeat">
-        <section className="relative z-10 pt-10 pb-10 md:pt-12 md:pb-12 px-6 max-w-7xl mx-auto">
+        <section className="relative z-10 pt-10 pb-10 md:pt-12 md:pb-12 px-4 sm:px-6 max-w-7xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
             {/* Left: Copy */}
             <div className=" lg:ml-10">
-              <div className="flex items-start gap-4mb-5">
-                <div className="w-24 h-24 shrink-0 rounded-xl border border-slate-200 bg-white flex items-center justify-center shadow-sm ">
+              <div className="flex items-start gap-4 mb-5">
+                <div className="w-24 h-24 shrink-0 rounded-xl border border-slate-200 bg-white flex items-center justify-center shadow-sm">
                   <Image src="/tallycapital.png" alt="TallyCapital" width={80} height={80} className="object-fit " />
                 </div>
                 <div>
@@ -227,8 +226,8 @@ export default function TallyCapitalPage() {
                   'Access unsecured loans with zero branch visits',
                 ].map((item) => (
                   <li key={item} className="flex items-start gap-2.5">
-                    <span className="mt-0.5 shrink-0 w-5 h-5 rounded-full flex items-center justify-center" style={{ backgroundColor: `${BRAND_PRIMARY}18` }}>
-                      <svg className="w-3 h-3" fill={BRAND_PRIMARY} viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" /></svg>
+                    <span className="mt-0.5 shrink-0 size-5 rounded-full bg-[#006569]/10 flex items-center justify-center" aria-hidden="true">
+                      <svg className="size-3 text-[#006569]" fill="currentColor" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" /></svg>
                     </span>
                     <span className="text-sm text-slate-700 font-medium leading-relaxed">{item}</span>
                   </li>
@@ -238,7 +237,7 @@ export default function TallyCapitalPage() {
               <div className="flex flex-wrap gap-3">
                 <button
                   onClick={() => openModal('quote', 'TallyCapital', 'I want to check my TallyCapital loan eligibility.')}
-                  className="px-7 py-3.5 bg-[#006569] hover:bg-[#045A57] text-white font-bold rounded-lg transition-all text-sm tracking-wide shadow-lg hover:shadow-xl hover:scale-[1.02]"
+                  className="px-7 py-3.5 bg-[#006569] hover:bg-[#045A57] text-white font-bold rounded-lg transition-all text-sm tracking-wide shadow-lg hover:shadow-xl active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#006569] focus-visible:ring-offset-2"
                 >
                   Check My Eligibility Now
                 </button>
@@ -246,7 +245,7 @@ export default function TallyCapitalPage() {
                   href="https://tallycapital.tallysolutions.com/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-7 py-3.5 bg-white hover:bg-gray-50 text-[#006569] border border-[#B8DEDE] font-bold rounded-lg transition-all text-sm tracking-wide text-center hover:shadow-md"
+                  className="px-7 py-3.5 border border-[#006569] text-[#006569] font-bold rounded-lg transition-all text-sm tracking-wide text-center hover:bg-[#006569]/5 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#006569] focus-visible:ring-offset-2"
                 >
                   Visit TallyCapital Website
                 </a>
@@ -255,13 +254,13 @@ export default function TallyCapitalPage() {
 
             {/* Right: The Credit Hook — Secondary Card */}
             <div className="bg-white rounded-2xl border border-slate-200 shadow-lg overflow-hidden">
-              <div className="px-6 py-4" style={{ backgroundColor: BRAND_SECONDARY }}>
-                <p className="text-white/70 text-[10px] font-black uppercase tracking-widest mb-1">Free Credit Check</p>
+              <div className="px-4 sm:px-6 py-4 bg-[#045A57]">
+                <p className="text-white/70 text-xs font-black uppercase tracking-widest mb-1">Free Credit Check</p>
                 <h2 className="text-xl font-black text-white leading-tight">
                   Know Exactly What Lenders See Before You Apply.
                 </h2>
               </div>
-              <div className="p-6">
+              <div className="p-4 sm:p-6">
                 <p className="text-sm text-slate-600 font-medium mb-5 leading-relaxed">
                   Your credit health is the key to business growth. Check it for free before applying for any loan.
                 </p>
@@ -273,8 +272,8 @@ export default function TallyCapitalPage() {
                     'Funds disbursed in as little as 72 hours*',
                   ].map((item) => (
                     <li key={item} className="flex items-start gap-2.5">
-                      <span className="mt-0.5 shrink-0 w-5 h-5 rounded-full flex items-center justify-center" style={{ backgroundColor: `${BRAND_PRIMARY}18` }}>
-                        <svg className="w-3 h-3" fill={BRAND_PRIMARY} viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" /></svg>
+                      <span className="mt-0.5 shrink-0 size-5 rounded-full bg-[#006569]/10 flex items-center justify-center" aria-hidden="true">
+                        <svg className="size-3 text-[#006569]" fill="currentColor" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" /></svg>
                       </span>
                       <span className="text-sm text-slate-700 font-medium">{item}</span>
                     </li>
@@ -289,16 +288,16 @@ export default function TallyCapitalPage() {
 
       {/* ===== LENDING PARTNERS ===== */}
       <section className="py-10 w-full">
-        <div className="text-center mb-6 px-6">
+        <div className="text-center mb-6 px-4 sm:px-6">
           <h2 className="text-xl md:text-4xl font-black text-slate-900">
             Trusted by India&apos;s Top Lenders
           </h2>
         </div>
         <div className="relative">
           {/* Left fade gradient */}
-          <div className="absolute left-0 top-0 bottom-0 w-20 z-10 pointer-events-none" style={{ background: 'linear-gradient(to right, #f5f7fa, transparent)' }} />
+          <div className="absolute left-0 top-0 bottom-0 w-20 z-10 pointer-events-none bg-gradient-to-r from-slate-100 to-transparent" />
           {/* Right fade gradient */}
-          <div className="absolute right-0 top-0 bottom-0 w-20 z-10 pointer-events-none" style={{ background: 'linear-gradient(to left, #f5f7fa, transparent)' }} />
+          <div className="absolute right-0 top-0 bottom-0 w-20 z-10 pointer-events-none bg-gradient-to-l from-slate-100 to-transparent" />
           <div className="overflow-hidden py-6">
             <div className="flex gap-8 animate-[scroll-left_30s_linear_infinite] w-max hover:paused">
               {[...lenderPartners, ...lenderPartners].map((partner, i) => (
@@ -338,9 +337,9 @@ export default function TallyCapitalPage() {
         <div className="max-w-7xl mx-auto relative z-10">
           <div className="text-center mb-12 max-w-5xl mx-auto">
             <div className="inline-flex items-center justify-center space-x-2 bg-white text-teal-700 px-4 py-1.5 rounded-full text-xs font-semibold tracking-wide uppercase mb-5 shadow-sm border border-teal-100/60 ring-1 ring-teal-50">
-              <span className="relative flex h-2.5 w-2.5">
+              <span className="relative flex size-2.5">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-teal-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-teal-500"></span>
+                <span className="relative inline-flex rounded-full size-2.5 bg-teal-500"></span>
               </span>
               <span>Why Choose TallyCapital?</span>
             </div>
@@ -366,7 +365,7 @@ export default function TallyCapitalPage() {
 
                   <div className="relative z-10">
                     <div className="w-10 h-10 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center mb-3 group-hover:scale-110 group-hover:bg-teal-100 transition-transform duration-300">
-                      <feature.icon className="w-5 h-5" strokeWidth={1.5} />
+                      <feature.icon className="size-5" strokeWidth={1.5} />
                     </div>
                     <h3 className="text-base font-bold text-slate-900 mb-1.5 group-hover:text-teal-700 transition-colors duration-300">{feature.title}</h3>
                     <p className="text-slate-600 text-sm leading-relaxed">{feature.description}</p>
@@ -377,7 +376,7 @@ export default function TallyCapitalPage() {
 
             {/* Right: How It Works (Sticky) */}
             <div className="lg:col-span-5 relative">
-              <div className="sticky top-10 bg-white/60 backdrop-blur-xl rounded-[2rem] p-6 sm:p-7 border border-white shadow-2xl shadow-slate-200/50">
+              <div className="sticky top-10 bg-white/60 backdrop-blur-xl rounded-[2rem] p-4 sm:p-6 border border-white shadow-2xl shadow-slate-200/50">
                 <div className="mb-6 text-center sm:text-left">
                   <h3 className="text-4xl font-extrabold text-slate-900 mb-2 tracking-tight">
                     How it <span className="text-teal-600 relative inline-block">
@@ -416,9 +415,9 @@ export default function TallyCapitalPage() {
       </section>
 
       {/* ===== SECTION 3: FUNDING OPTIONS ===== */}
-      <section className="py-8 px-6 max-w-7xl mx-auto">
+      <section className="py-8 px-4 sm:px-6 max-w-7xl mx-auto">
         <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#006569]/10 text-[#006569] text-[10px] font-black uppercase tracking-widest mb-4">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#006569]/10 text-[#006569] text-xs font-black uppercase tracking-widest mb-4">
             Funding Options
           </div>
           <h2 className="text-3xl md:text-4xl font-black text-slate-900 mb-3 leading-tight">
@@ -431,15 +430,15 @@ export default function TallyCapitalPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {fundingOptions.map((option) => (
-            <div key={option.title} className="bg-white rounded-2xl border border-slate-200 p-6 hover:shadow-lg transition-all duration-300 group">
+            <div key={option.title} className="bg-white rounded-2xl border border-slate-200 p-4 sm:p-6 hover:shadow-lg transition-all duration-300 group">
               <div className="flex items-start gap-4">
-                <div className="w-12 h-12 rounded-xl flex items-center justify-center text-white shrink-0 shadow-md group-hover:scale-110 transition-transform duration-300" style={{ backgroundColor: BRAND_PRIMARY }}>
+                <div className="size-12 rounded-xl bg-[#006569] flex items-center justify-center text-white shrink-0 shadow-md group-hover:scale-110 transition-transform duration-300">
                   {option.icon}
                 </div>
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-2 flex-wrap">
                     <h3 className="text-lg font-black text-slate-900">{option.title}</h3>
-                    <span className="inline-flex rounded-full px-2.5 py-0.5 text-[10px] font-bold tracking-wider" style={{ backgroundColor: `${BRAND_PRIMARY}12`, color: BRAND_PRIMARY }}>
+                    <span className="inline-flex rounded-full px-2.5 py-0.5 text-xs font-bold tracking-wider bg-[#006569]/10 text-[#006569]">
                       {option.limit}
                     </span>
                   </div>
@@ -452,7 +451,7 @@ export default function TallyCapitalPage() {
       </section>
 
       {/* ===== SECTION 4: YOUR TALLY IS NOW YOUR UNFAIR ADVANTAGE + VIDEO ===== */}
-      <section className="py-4 px-6 bg-[linear-gradient(90deg,rgba(249,251,245,1)_0%,rgba(244,242,234,1)_53%,rgba(238,236,223,1)_100%)]">
+      <section className="py-4 px-4 sm:px-6">
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
           <div>
             <h2 className="text-3xl md:text-4xl font-black text-slate-900 mb-5 leading-tight">
@@ -471,8 +470,8 @@ export default function TallyCapitalPage() {
                 '100% secure, transparent, and private data handling',
               ].map((item) => (
                 <li key={item} className="flex items-start gap-2.5">
-                  <span className="mt-0.5 shrink-0 w-5 h-5 rounded-full flex items-center justify-center" style={{ backgroundColor: `${BRAND_PRIMARY}18` }}>
-                    <svg className="w-3 h-3" fill={BRAND_PRIMARY} viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" /></svg>
+                  <span className="mt-0.5 shrink-0 size-5 rounded-full bg-[#006569]/10 flex items-center justify-center" aria-hidden="true">
+                    <svg className="size-3 text-[#006569]" fill="currentColor" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" /></svg>
                   </span>
                   <span className="text-sm text-slate-700 font-medium">{item}</span>
                 </li>
@@ -485,7 +484,7 @@ export default function TallyCapitalPage() {
               href="https://www.youtube.com/watch?v=4LJa6iKgrpE"
               target="_blank"
               rel="noopener noreferrer"
-              className="block relative aspect-video"
+              className="block relative aspect-video rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#006569]"
             >
               <Image
                 src="https://img.youtube.com/vi/4LJa6iKgrpE/maxresdefault.jpg"
@@ -494,7 +493,7 @@ export default function TallyCapitalPage() {
                 className="object-cover transition-transform duration-500 group-hover:scale-105"
               />
               <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors duration-300 flex items-center justify-center">
-                <div className="w-16 h-16 rounded-full bg-white/90 flex items-center justify-center shadow-xl group-hover:scale-110 transition-transform duration-300">
+                <div className="size-16 rounded-full bg-white/90 flex items-center justify-center shadow-xl group-hover:scale-110 transition-transform duration-300">
                   <svg className="w-7 h-7 text-[#006569] ml-1" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M8 5v14l11-7z" />
                   </svg>
@@ -506,7 +505,7 @@ export default function TallyCapitalPage() {
       </section>
 
       {/* ===== SECTION 5: CUSTOMER TESTIMONIALS ===== */}
-      <section className="py-16 px-6" style={{ backgroundColor: BRAND_SECONDARY }}>
+      <section className="py-16 px-4 sm:px-6 bg-[#045A57]">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-5xl font-black text-white mb-3 leading-tight">
@@ -535,12 +534,12 @@ export default function TallyCapitalPage() {
       </section>
 
       {/* ===== SECTION 6: SARVADNYA INFOTECH ABOUT ===== */}
-      <section className="py-16 px-6 max-w-7xl mx-auto">
+      <section className="py-16 px-4 sm:px-6 max-w-7xl mx-auto">
         <div className="rounded-2xl overflow-hidden">
           <div className="grid grid-cols-1 lg:grid-cols-2">
             <div className="p-8 md:p-10 bg-white">
               <div className="flex items-center gap-4 mb-6">
-                <div className="w-16 h-16 rounded-xl flex items-center justify-center p-2" style={{ backgroundColor: '#1a2332' }}>
+                <div className="size-16 rounded-xl flex items-center justify-center p-2 bg-[#1a2332]">
                   <Image src="/logo.png" alt="Sarvadnya Infotech" width={56} height={56} className="object-contain" />
                 </div>
                 <div>
@@ -560,13 +559,13 @@ export default function TallyCapitalPage() {
 
               <div className="space-y-3">
                 <div className="flex items-center gap-3">
-                  <svg className="w-4 h-4 text-[#006569] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                  <svg className="size-4 text-[#006569] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                   </svg>
                   <span className="text-sm text-slate-600 font-medium">+91 98213 09060</span>
                 </div>
                 <div className="flex items-start gap-3">
-                  <svg className="w-4 h-4 text-[#006569] shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                  <svg className="size-4 text-[#006569] shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                     <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                   </svg>
@@ -577,14 +576,13 @@ export default function TallyCapitalPage() {
 
               <button
                 onClick={() => openModal('callback', 'TallyCapital', 'I want guidance on getting started with TallyCapital.')}
-                className="mt-6 px-6 py-3 rounded-lg text-xs font-bold uppercase tracking-wider text-white shadow-lg transition-all hover:scale-[1.02]"
-                style={{ backgroundColor: BRAND_PRIMARY }}
+                className="mt-6 px-6 py-3 rounded-lg text-xs font-bold uppercase tracking-wider text-white shadow-lg transition-all bg-[#006569] hover:bg-[#045A57] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#006569] focus-visible:ring-offset-2"
               >
                 Get Help from Our Team
               </button>
             </div>
 
-            <div className="p-8 md:p-10 flex flex-col justify-center" style={{ backgroundColor: '#1a2332' }}>
+            <div className="p-8 md:p-10 flex flex-col justify-center bg-[#1a2332]">
               <h3 className="text-lg font-black text-white mb-6">Why Choose Sarvadnya Infotech LLP?</h3>
               <div className="space-y-6">
                 {[
@@ -595,7 +593,7 @@ export default function TallyCapitalPage() {
                   { icon: '✓', text: 'Seamless access to business financing from TallyPrime' },
                 ].map((item, i) => (
                   <div key={i} className="flex items-center gap-3">
-                    <span className="w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-bold" style={{ backgroundColor: BRAND_PRIMARY }}>
+                    <span className="size-6 rounded-full bg-[#006569] flex items-center justify-center text-white text-xs font-bold" aria-hidden="true">
                       {item.icon}
                     </span>
                     <span className="text-sm font-medium text-white/80">{item.text}</span>
@@ -608,10 +606,10 @@ export default function TallyCapitalPage() {
       </section>
 
       {/* ===== SECTION 7: TALLYCAPITAL WEBSITE LINKS ===== */}
-      <section className="py-16 px-6 max-w-7xl mx-auto">
+      <section className="py-16 px-4 sm:px-6 max-w-7xl mx-auto">
         <div className="bg-white rounded-2xl border border-slate-200 p-8 md:p-10 shadow-sm">
           <div className="flex flex-col md:flex-row md:items-center gap-6 mb-8">
-            <div className="w-16 h-16 shrink-0 rounded-xl border border-slate-200 bg-white flex items-center justify-center shadow-sm p-2">
+            <div className="size-16 shrink-0 rounded-xl border border-slate-200 bg-white flex items-center justify-center shadow-sm p-2">
               <Image src="/tallycapital.png" alt="TallyCapital" width={48} height={48} className="object-contain" />
             </div>
             <div>
@@ -632,11 +630,11 @@ export default function TallyCapitalPage() {
                 href={link.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="p-4 rounded-xl border border-slate-200 hover:border-[#006569]/30 hover:shadow-md transition-all group"
+                className="p-4 rounded-xl border border-slate-200 hover:border-[#006569]/30 hover:shadow-md transition-all group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#006569]"
               >
                 <p className="text-sm font-bold text-slate-900 group-hover:text-[#006569] transition-colors flex items-center gap-1.5">
                   {link.label}
-                  <svg className="w-3.5 h-3.5 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                  <svg className="size-3.5 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
                   </svg>
                 </p>
@@ -649,11 +647,10 @@ export default function TallyCapitalPage() {
             href="https://tallycapital.tallysolutions.com/"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl text-xs font-bold uppercase tracking-wider text-white shadow-lg transition-all hover:scale-[1.02] hover:shadow-xl"
-            style={{ backgroundColor: BRAND_PRIMARY }}
+            className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl text-xs font-bold uppercase tracking-wider text-white shadow-lg transition-all bg-[#006569] hover:bg-[#045A57] active:scale-[0.98] hover:shadow-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#006569] focus-visible:ring-offset-2"
           >
             Visit TallyCapital Website
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+            <svg className="size-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
               <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
             </svg>
           </a>
@@ -661,35 +658,36 @@ export default function TallyCapitalPage() {
       </section>
 
       {/* ===== FAQ SECTION ===== */}
-      <section className="py-16 px-6 max-w-7xl mx-auto">
+      <section className="py-16 px-4 sm:px-6 max-w-7xl mx-auto">
         <div className="text-center mb-10">
           <h2 className="text-2xl md:text-3xl font-black text-slate-900 mb-3">Frequently Asked Questions</h2>
           <p className="text-sm text-slate-500 font-medium">Quick answers about TallyCapital financing</p>
         </div>
 
-        <div className="max-w-3xl mx-auto space-y-0 divide-y divide-slate-100 bg-white rounded-2xl border border-slate-200 p-6">
+        <div className="max-w-3xl mx-auto space-y-0 divide-y divide-slate-100 bg-white rounded-2xl border border-slate-200 p-4 sm:p-6">
           {faqs.map((faq, idx) => (
             <div key={idx}>
               <button
                 type="button"
                 onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
-                className="flex items-center justify-between w-full py-4 text-left transition-colors"
+                aria-expanded={openFaq === idx}
+                aria-controls={`faq-panel-${idx}`}
+                className="flex items-center justify-between w-full py-4 text-left transition-colors rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#006569]"
               >
                 <h3 className="text-sm font-bold text-slate-900 pr-4">{faq.q}</h3>
                 <span
-                  className="shrink-0 w-5 h-5 rounded-full flex items-center justify-center transition-transform duration-200"
-                  style={{
-                    backgroundColor: openFaq === idx ? BRAND_PRIMARY : '#f1f5f9',
-                    transform: openFaq === idx ? 'rotate(45deg)' : 'rotate(0deg)',
-                  }}
+                  className={`shrink-0 size-5 rounded-full flex items-center justify-center transition-transform duration-200 ${
+                    openFaq === idx ? 'bg-[#006569] rotate-45 text-white' : 'bg-slate-100 text-slate-400'
+                  }`}
+                  aria-hidden="true"
                 >
-                  <svg className="w-3 h-3" viewBox="0 0 24 24" fill={openFaq === idx ? '#fff' : '#94a3b8'}>
+                  <svg className="size-3" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
                   </svg>
                 </span>
               </button>
               {openFaq === idx && (
-                <div className="pb-4 text-sm text-slate-600 leading-relaxed pr-8">
+                <div id={`faq-panel-${idx}`} className="pb-4 text-sm text-slate-600 leading-relaxed pr-8">
                   {faq.a}
                 </div>
               )}
@@ -698,7 +696,7 @@ export default function TallyCapitalPage() {
           <div className="pt-4 text-center">
             <button
               onClick={() => openModal('quote', 'TallyCapital', 'I have more questions about TallyCapital.')}
-              className="text-sm font-bold text-[#006569] hover:underline"
+              className="text-sm font-bold text-[#006569] hover:underline rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#006569]"
             >
               Have more questions? Contact Us →
             </button>

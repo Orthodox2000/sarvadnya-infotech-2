@@ -1,6 +1,6 @@
 // CHANGE: 2026-08-31 - Seed keyword-targeted blog posts into the shared `news` collection.
 // Converts the news section into an SEO blog. Targeting the winnable queries from Search Console:
-//   - Tally-product queries: tally partner mumbai, tally dealers mumbai, tally erp 9 add ons,
+//   - Tally-product queries: tally partner mumbai, tally erp 9 add ons,
 //     tally tss renewal, tally 3 star partner mumbai, cloud tally in {city}
 //   - Local SEO: it companies in belapur, software companies in navi mumbai, cbd belapur
 // Each post uses an explicit clean `slug` + the legacy admin fields (title/date/category/
@@ -11,11 +11,15 @@
 //
 // CHANGE: 2026-09-07 - added 6 local-keyword posts (tally-5-star-partner-mumbai, tally-partner-near-me,
 // tally-hrms-software, tally-tss-expiry-meaning, tally-cloud-access, cbd-belapur-it-companies-list)
-// and retitled 3 weak-ranking posts (tally-dealers-mumbai, tally-erp9-add-ons, tally-partner-mumbai)
+// and retitled 2 weak-ranking posts (tally-erp9-add-ons, tally-partner-mumbai)
 // for exact-match + CTR. All content kept ASCII-only.
 // CHANGE: 2026-09-07 (user correction) - Sarvadnya is a 3 star partner: tally-5-star-partner-mumbai
 // repositioned as an honest "3 star vs 5 star" tier guide (states our tier plainly, no 5-star claim),
 // and tally-3-star-partner-mumbai CTA now names the 3 star credential explicitly.
+// CHANGE: 2026-09-16 - removed tally-dealers-mumbai (per owner: keep news professional, no "dealer"
+// branding), scrubbed "dealer" tags across remaining posts, made the upsert comparison include `tags`
+// so tag-only edits propagate, and added REMOVE_SLUGS so slugs dropped from this file also get deleted
+// from the collection (keeps the blog professional and in sync with the seed).
 //
 // Run:  node scripts/seed_news.mjs   (MONGODB_URI from .env)
 
@@ -29,7 +33,7 @@ const posts = [
     date: 'August 31, 2026',
     category: 'Tally Partner',
     description: 'A practical checklist for choosing a Tally partner in Mumbai - star certification, TSS renewal, support SLA, cloud backup and add-on capability - plus how to verify a claim.',
-    tags: ['tally partner mumbai', 'tally dealer', 'tally support', 'tally certified partner'],
+    tags: ['tally partner mumbai', 'tally certified partner', 'tally support', 'tally tss renewal'],
     link: '/products',
     author: 'Sarvadnya Infotech LLP',
     content: `Finding the right Tally partner in Mumbai matters more than most businesses expect. A great partner keeps your Tally running through GST changes, TSS renewals and year-end closes. A poor one leaves you stuck for days when a voucher will not reconcile.
@@ -48,31 +52,6 @@ What local businesses should expect
 For companies in Mumbai, Navi Mumbai, Vashi, Belapur and CBD Belapur district, a local partner means same-city response. When your accounts team is mid-closing, a partner who can visit or connect fast is worth more than a cheaper quote from far away.
 
 At Sarvadnya Infotech LLP we have supported Tally for businesses since 2008 - Tally Prime, Tally ERP 9, cloud access, AMC and custom modules. If your current partner is not delivering on the checklist above, talk to us before your next TSS renewal cycle.`,
-  },
-  {
-    slug: 'tally-dealers-mumbai',
-    title: 'Tally Dealers in Mumbai: Resellers vs Certified Partners and the Services to Expect',
-    date: 'September 1, 2026',
-    category: 'Tally Dealers',
-    description: 'Tally dealers in Mumbai range from licence resellers to certified partners. Compare what each does after the sale - implementation, training, AMC, cloud hosting and TDL support.',
-    tags: ['tally dealers mumbai', 'tally partner', 'tally dealer', 'best tally dealers in mumbai'],
-    link: '/services/amc',
-    author: 'Sarvadnya Infotech LLP',
-    content: `Tally dealers in Mumbai range from licence resellers to full implementation partners, and the difference shows in how your business runs after the invoice is paid. When someone calls themselves a Tally dealer, ask what happens after day one.
-
-A reseller hands you a licence and moves on. A real dealer or certified partner stays involved: deployment, user training, data migration from your old system, GST and payroll setup, and a support agreement you can actually reach.
-
-- Licence procurement and registration with your company GSTIN
-- Fresh Tally Prime / ERP 9 installation and activation
-- Data migration and company setup for your chart of accounts
-- Hands-on training for your accounts and billing teams
-- Annual Maintenance Contract (AMC) with defined response times
-- Access to secure Tally on Cloud hosting and automated backups
-- Custom TDL modules - invoices, reports, import utilities and industry workflows
-
-Mumbai businesses also value dealers who understand city-specific compliance. E-invoicing thresholds, GSTN-registered firms, and the volume of sale and purchase vouchers typical of Mumbai trade all change how Tally should be configured. A dealer who has implemented the same setup across Vashi, Thane, Borivali and BKC will configure your company faster than one learning on the job.
-
-Sarvadnya Infotech is a Tally certified partner in Navi Mumbai serving 1,500+ businesses since 2008. We treat every licence as the start of a relationship - AMC, cloud backup and support included. If you are evaluating Tally dealers in Mumbai, list the services above and compare what each one actually commits to.`,
   },
   {
     slug: 'tally-erp9-add-ons',
@@ -276,7 +255,7 @@ Sarvadnya Infotech is a Tally certified partner based in Belapur, Navi Mumbai, s
     date: 'September 6, 2026',
     category: 'Tally Partner',
     description: 'Tally partner tiers explained - what 3 star and 5 star certification mean, how to verify a partner tier, and why an honest 3 star Tally partner in Mumbai can be the right fit.',
-    tags: ['tally 3 star partner in mumbai', 'tally 5 star partner in mumbai', 'tally partner tiers', 'best tally dealers in mumbai'],
+    tags: ['tally 3 star partner in mumbai', 'tally 5 star partner in mumbai', 'tally partner tiers', 'tally partner mumbai'],
     link: '/services',
     author: 'Sarvadnya Infotech LLP',
     content: `Tally runs a tiered partner ecosystem, and the star rating on a partner's certification is a useful starting signal for how deeply that firm engages with Tally. This post explains the tiers - especially the difference between a 3 star and a 5 star Tally partner - and where an honest 3 star partner fits.
@@ -473,6 +452,21 @@ async function seed() {
     let inserted = 0;
     let updated = 0;
     let skipped = 0;
+    let removed = 0;
+
+    // CHANGE: 2026-09-16 — slugs removed from this file must also leave the live
+    // collection, otherwise stale posts keep ranking and showing in /news, /sitemap.xml
+    // and the search API. REMOVE_SLUGS is additive-on-purpose: it never deletes
+    // admin-authored posts that were never seeded here.
+    const REMOVE_SLUGS = ['tally-dealers-mumbai'];
+
+    for (const slug of REMOVE_SLUGS) {
+      const res = await col.deleteOne({ slug });
+      if (res.deletedCount) {
+        removed++;
+        console.log(`Removed legacy news post: ${slug}`);
+      }
+    }
 
     for (const post of posts) {
       const existing = await col.findOne({ slug: post.slug });
@@ -481,7 +475,11 @@ async function seed() {
         // CHANGE: 2026-08-31 — skip only when content AND description match,
         // so future description tweaks also get seeded.
         // CHANGE: 2026-09-07 — also compare date, so purely date refreshes apply.
-        const same = existing.content === post.content && existing.description === post.description && existing.date === post.date;
+        // CHANGE: 2026-09-16 — also compare tags, so tag-only edits (dealer scrub) propagate.
+        const same = existing.content === post.content
+          && existing.description === post.description
+          && existing.date === post.date
+          && JSON.stringify(existing.tags ?? null) === JSON.stringify(post.tags ?? null);
         if (same) { skipped++; continue; }
         await col.updateOne({ slug: post.slug }, { $set: doc });
         updated++;
@@ -492,7 +490,7 @@ async function seed() {
     }
 
     const total = await col.countDocuments({});
-    console.log(`Seeded news posts -> inserted: ${inserted}, updated: ${updated}, skipped(unchanged): ${skipped}`);
+    console.log(`Seeded news posts -> inserted: ${inserted}, updated: ${updated}, skipped(unchanged): ${skipped}, removed: ${removed}`);
     console.log(`Total news documents now: ${total}`);
   } catch (error) {
     console.error('Error seeding news:', error);
