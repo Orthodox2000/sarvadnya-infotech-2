@@ -48,8 +48,16 @@ import { fetchWithCache } from "@/lib/client-api";
 //   * HomeHero QuickAccess cards: mobile icon w-9→w-11, controlled icon→title gap on
 //     the lg:block layout via lg:mt-2.
 //
-// CHANGE: 2026-09-17 rev-11 (CURRENT) — bigger mobile icons + animation stability per owner:
-//   * Mobile 2-1-2 cards enlarged AGAIN (brand w-[72px] h-[56px] / sm:w-24 sm:h-16, hub
+// CHANGE: 2026-09-17 rev-12 (CURRENT) — mobile equal-size + scale-up per owner:
+//   * ALL five mobile cards are now the SAME size — TallyPrime (hub) is no longer larger;
+//     every card is w-24 h-[72px] (96×72) base / sm:w-32 sm:h-24 (128×96). Brands grow from
+//     72×56, so the whole star reads bigger and uniform.
+//   * Star slots nudged outward to x 18/82 so the wider (now equal) cards clear the hub at
+//     360px (3.84px side gaps) and stage height raised h-36/h-44 → h-48/sm:h-64 to fit the
+//     taller cards (2.4px top/bottom margin at 360px). Desktop layout untouched.
+//
+// CHANGE: 2026-09-17 rev-11 — bigger mobile icons + animation stability per owner:
+//   * Mobile 2-1-2 cards enlarged (brand w-[72px] h-[56px] / sm:w-24 sm:h-16, hub
 //     w-24 h-[72px] / sm:w-32 sm:h-24; slots nudged to x 22/78, bottom row to y 80) — logos
 //     now fill ~60px+ of card width. Verified fit at 360px (3.4px side gap) + sm (54px).
 //   * The mobile layout is now fully STATIC (no :hover lift, no mouse handlers, no dim/ring,
@@ -83,13 +91,15 @@ const LOOP_DEPTH = 128;    // deep control-point for a prominent elliptical swee
                            // bottom — the SVG uses overflow-visible so the loop stays round)
 const LOOP_TUCK = 0.30;    // horizontal spread of the elliptical under-loop control points
 
-// Mobile 2-1-2 star slots (sm and below): TallyPrime central + larger, brands on the corners.
+// Mobile 2-1-2 star slots (sm and below): TallyPrime central, brands on the corners.
+// rev-12 — slots splayed outward (x 18/82) so five EQUAL-size cards (96×72 / sm 128×96)
+// fit around the hub with ~3.8px side gaps at 360px.
 const MOBILE_HUB = { x: 50, y: 50 };
 const MOBILE_SLOTS: Array<{ x: number; y: number }> = [
-  { x: 22, y: 20 },   // top-left — AWS
-  { x: 78, y: 20 },   // top-right — Biz Analyst
-  { x: 22, y: 80 },   // bottom-left — OTU
-  { x: 78, y: 80 },   // bottom-right — NoSky
+  { x: 18, y: 20 },   // top-left — AWS
+  { x: 82, y: 20 },   // top-right — Biz Analyst
+  { x: 18, y: 80 },   // bottom-left — OTU
+  { x: 82, y: 80 },   // bottom-right — NoSky
 ];
 
 function linePos(index: number, count: number, y: number): { x: number; y: number } {
@@ -180,9 +190,10 @@ const CertifiedPartners = ({ initialData }: { initialData?: Partner[] }) => {
 
             <div className="mx-auto max-w-7xl px-6">
                 {/* ---------------- MOBILE 2-1-2 STAR (sm 640px and below) ————————-
-                    TallyPrime central + larger, 2 brands top row, 2 brands bottom row.
-                    Cards are SQUARISH (rounded-md) so they read as clean chips. */}
-                <div className="relative md:hidden w-full h-36 sm:h-44">
+                    TallyPrime central, 2 brands top row, 2 brands bottom row.
+                    rev-12 — ALL FIVE cards are the same size (96×72 / sm 128×96), enlarged
+                    30%+ vs the old 72×56 brands; cards are SQUARISH (rounded-md) chips. */}
+                <div className="relative md:hidden w-full h-48 sm:h-64">
                     <svg viewBox="0 0 100 100" preserveAspectRatio="none"
                          className="absolute inset-0 w-full h-full pointer-events-none z-0">
                         {/* Mobile is touch-first — connectors are STATIC: no hovered-state
@@ -219,11 +230,11 @@ const CertifiedPartners = ({ initialData }: { initialData?: Partner[] }) => {
                                     This removes the sticky-hover / state race entirely. */}
                                 <div className={`transition-all duration-700
                                         ${isVisible ? 'opacity-100 scale-100' : 'opacity-0 translate-y-6 scale-95'}`}>
-                                    <div className={`${isHub ? 'w-24 h-[72px] sm:w-32 sm:h-24' : 'w-[72px] h-[56px] sm:w-24 sm:h-16'} bg-white rounded-md border border-[#E9F1FA] shadow-sm flex flex-col items-center justify-center p-1.5 sm:p-2`}>
+                                    <div className="w-24 h-[72px] sm:w-32 sm:h-24 bg-white rounded-md border border-[#E9F1FA] shadow-sm flex flex-col items-center justify-center p-1.5 sm:p-2">
                                         <div className="relative w-full flex-1 min-h-0">
                                             <Image src={partner.imageUrl} alt={partner.name} fill
                                                    className="object-contain"
-                                                   sizes="(max-width: 767px) 72px, 128px"
+                                                   sizes="(max-width: 639px) 96px, 128px"
                                                    priority={index < 5} />
                                         </div>
                                         <span className="mt-0.5 text-[8px] sm:text-[10px] font-bold text-slate-600 text-center leading-tight truncate max-w-full">
