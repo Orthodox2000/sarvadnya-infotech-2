@@ -30,11 +30,13 @@ function StarRating({ rating, size = "w-4 h-4" }: { rating: number, size?: strin
 
 // CHANGE: 2026-09-17 — variant-aware card. 'marquee' = fixed 320px compact card (desktop),
 // 'feature' = full-width large card (sm & below) with bigger type + serif quote + quote glyph.
+// CHANGE: 2026-09-17 (rev-2) — marquee cards get uniform dimensions: min-h-[240px], footer
+// pinned via justify-between + flex-1 middle, quote line-clamped so every card is the same size.
 const ReviewCard = memo(function ReviewCard({ review, variant = 'marquee' }: { review: Review; variant?: 'marquee' | 'feature' }) {
     const feature = variant === 'feature';
     return (
-        <div className={`shrink-0 bg-white rounded-2xl shadow-sm border border-slate-100 flex flex-col h-full ${feature ? 'w-full p-6 sm:p-8' : 'w-[320px] p-5'}`}>
-            <div>
+        <div className={`shrink-0 bg-white rounded-2xl shadow-sm border border-slate-100 flex flex-col h-full ${feature ? 'w-full p-6 sm:p-8' : 'w-[320px] p-5 justify-between min-h-[240px]'}`}>
+            <div className={feature ? '' : 'flex-1'}>
                 <div className={`flex justify-between items-start ${feature ? 'mb-4 sm:mb-5' : 'mb-4'}`}>
                     <div className="flex items-center gap-3">
                         <div className={`rounded-full bg-slate-100 flex items-center justify-center text-slate-600 font-bold ${feature ? 'w-11 h-11 sm:w-12 sm:h-12 text-base sm:text-lg' : 'w-8 h-8 text-xs'}`}>
@@ -57,7 +59,7 @@ const ReviewCard = memo(function ReviewCard({ review, variant = 'marquee' }: { r
                         </p>
                     </div>
                 ) : (
-                    <p className="text-slate-600 leading-relaxed text-sm italic">
+                    <p className="text-slate-600 leading-relaxed text-sm italic line-clamp-5">
                         &ldquo;{review.text}&rdquo;
                     </p>
                 )}
@@ -126,16 +128,24 @@ const CustomerReviews = ({ initialData }: { initialData?: Review[] }) => {
         };
     }, [loading, reviews.length]);
 
+    // CHANGE: 2026-09-17 (rev-2) — infinite mobile loop. The carousel renders reviews twice;
+    // when the raw card index reaches the duplicated copy (>= reviews.length), snap back to the
+    // real first card instantly (deferred one frame so the smooth swipe settles first).
     const handleCarouselScroll = () => {
         const el = carouselRef.current;
         if (!el || el.clientWidth === 0) return;
-        const idx = Math.min(
-            reviews.length - 1,
-            Math.max(0, Math.round(el.scrollLeft / el.clientWidth))
-        );
-        if (idx !== scrollIdx.current) {
-            scrollIdx.current = idx;
-            setActiveIdx(idx);
+        const raw = Math.round(el.scrollLeft / el.clientWidth);
+        if (raw >= reviews.length) {
+            requestAnimationFrame(() => {
+                el.scrollLeft = 0;
+            });
+            scrollIdx.current = 0;
+            setActiveIdx(0);
+            return;
+        }
+        if (raw !== scrollIdx.current) {
+            scrollIdx.current = raw;
+            setActiveIdx(raw);
         }
     };
 
@@ -148,12 +158,15 @@ const CustomerReviews = ({ initialData }: { initialData?: Review[] }) => {
     };
 
     // CHANGE: 2026-09-17 — autoplay only when the section is on-screen, on sm-only carousel.
+    // CHANGE: 2026-09-17 (rev-2) — advance FORWARD one card (0..reviews.length) so wrapping past
+    // the last review slides into the duplicated first card; the scroll handler snaps it back to
+    // the real first card, making the loop seamless (last → first, no long reverse jump).
     useEffect(() => {
         const el = carouselRef.current;
         if (!el || !isVisible || reviews.length <= 1 || reducedMotion.current) return;
         const run = () => {
             if (userPaused.current) return;
-            const next = (scrollIdx.current + 1) % reviews.length;
+            const next = Math.min(scrollIdx.current + 1, reviews.length);
             el.scrollTo({ left: next * el.clientWidth, behavior: 'smooth' });
         };
         const id = window.setInterval(run, 5000);
@@ -214,8 +227,8 @@ const CustomerReviews = ({ initialData }: { initialData?: Review[] }) => {
                     tabIndex={0}
                     className="md:hidden mt-2 flex overflow-x-auto snap-x snap-mandatory no-scrollbar focus:outline-none focus:ring-2 focus:ring-[#006569]/40 focus:rounded-2xl"
                 >
-                    {reviews.map((review) => (
-                        <div key={review._id} className="w-full shrink-0 snap-start">
+                    {[...reviews, ...reviews].map((review, i) => (
+                        <div key={`${review._id}-${i}`} className="w-full shrink-0 snap-start">
                             <ReviewCard review={review} variant="feature" />
                         </div>
                     ))}
