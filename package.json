@@ -15,6 +15,7 @@
     "test:sara-local": "node scripts/sara-topics-test.mjs",
     "test:all": "node scripts/api-test.mjs && node scripts/sara-test.mjs && node scripts/sara-topics-test.mjs",
     "test:email": "node scripts/email-test.mjs",
+    "seed:careers": "node scripts/seed_careers.mjs",
     "audit": "npm audit --audit-level=high",
     "audit:deps": "npm audit --json",
     "security:check": "node scripts/security-audit.mjs",

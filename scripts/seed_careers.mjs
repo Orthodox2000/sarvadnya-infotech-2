@@ -1,22 +1,16 @@
-export type Job = {
-  id: string;
-  title: string;
-  department: string;
-  location: string;
-  type: "Full-time" | "Part-time" | "Contract" | "Internship";
-  shortDescription: string;
-  fullDescription: string;
-  aboutRole?: string;
-  lookingFor?: string;
-  whyJoinUs?: string;
-  postedAt: string; // ISO format
-  requirements: string[];
-  benefits: string[];
-};
+// CHANGE: 2026-09-17 - Sync the `careers` collection with lib/jobs.ts.
+// The GET /api/careers route only seeds when the collection is EMPTY, so replacing openings
+// needs an explicit re-seed. Upserts by `id` and DELETES any career doc whose `id` is no
+// longer in the list below (so the old Tally Support / IT Sales / TDL Intern roles leave
+// the page). Keep the jobs array in sync with lib/jobs.ts (duplicated here because this is
+// a plain .mjs runner and lib/jobs.ts is TypeScript).
+//
+// Run:  node scripts/seed_careers.mjs   (MONGODB_URI from .env)
 
-// CHANGE: 2026-09-17 — Openings replaced with Business Development Executive, Junior Marketing
-// Executive and CRE per owner; postedAt refreshed to 2026-09-17, location/names unchanged.
-export const jobs: Job[] = [
+import { MongoClient } from 'mongodb';
+import 'dotenv/config';
+
+const jobs = [
   {
     id: "business-development-executive",
     title: "Business Development Executive",
@@ -105,3 +99,68 @@ export const jobs: Job[] = [
     ]
   }
 ];
+
+async function seed() {
+  const uri = process.env.MONGODB_URI;
+  if (!uri) {
+    console.error('MONGODB_URI not found in environment');
+    process.exit(1);
+  }
+
+  const client = new MongoClient(uri);
+
+  try {
+    await client.connect();
+    console.log('Connected to MongoDB');
+    const db = client.db();
+    const col = db.collection('careers');
+
+    let inserted = 0;
+    let updated = 0;
+    let skipped = 0;
+    let removed = 0;
+
+    const ids = new Set(jobs.map((j) => j.id));
+    const legacy = await col.find({}).toArray();
+    for (const old of legacy) {
+      if (!ids.has(old.id)) {
+        await col.deleteOne({ _id: old._id });
+        removed++;
+        console.log(`Removed legacy opening: ${old.title}`);
+      }
+    }
+
+    for (const job of jobs) {
+      const existing = await col.findOne({ id: job.id });
+      const doc = { ...job, updatedAt: new Date() };
+      if (existing) {
+        const same = existing.title === job.title
+          && existing.shortDescription === job.shortDescription
+          && existing.fullDescription === job.fullDescription
+          && (existing.aboutRole ?? null) === job.aboutRole
+          && (existing.lookingFor ?? null) === job.lookingFor
+          && (existing.whyJoinUs ?? null) === job.whyJoinUs
+          && existing.postedAt === job.postedAt
+          && JSON.stringify(existing.requirements ?? null) === JSON.stringify(job.requirements)
+          && JSON.stringify(existing.benefits ?? null) === JSON.stringify(job.benefits);
+        if (same) { skipped++; continue; }
+        await col.updateOne({ id: job.id }, { $set: doc });
+        updated++;
+      } else {
+        await col.insertOne({ ...doc, createdAt: new Date() });
+        inserted++;
+      }
+    }
+
+    const total = await col.countDocuments({});
+    console.log(`Seeded careers -> inserted: ${inserted}, updated: ${updated}, skipped(unchanged): ${skipped}, removed: ${removed}`);
+    console.log(`Total career documents now: ${total}`);
+  } catch (error) {
+    console.error('Error seeding careers:', error);
+    process.exitCode = 1;
+  } finally {
+    await client.close();
+  }
+}
+
+seed();

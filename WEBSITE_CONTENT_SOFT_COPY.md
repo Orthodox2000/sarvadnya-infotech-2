@@ -271,8 +271,9 @@ Business Intelligence
 - Life at Sarvadnya
 
 #### Sections (H3) 
-- Tally Developer Intern
-- IT Sales Manager
+- Business Development Executive
+- Junior Marketing Executive
+- CRE — Customer Relations Executive
 - TALLY PRODUCTS
 - CUSTOM MODULES
 - SUPPORT ON TALLY
@@ -281,10 +282,12 @@ Business Intelligence
 ##### Descriptions
 - We're on a journey to empower SMEs with cutting-edge Tally and Cloud solutions. If you're passionate about technology and problem-solving, we'd love to have you on board.
 - Explore our available positions and find the perfect fit for your skills. Don't see a role that fits? Send us your CV anyway!
-- Learn TDL (Tally Definition Language) and help build custom Tally modules.
-- Kickstart your career in ERP development. As an intern, you will assist our senior developers in creating specialized TDL customizations. You will learn how to extend Tally's functionality to meet unique business requirements.
-- Lead our sales efforts for Cloud solutions and Tally customization modules.
-- We are looking for a dynamic Sales Manager to drive the adoption of our AWS Cloud services and specialized Tally modules. You will identify new business opportunities, build relationships with SMEs, and close deals for our premium IT services.
+- Drive growth by building relationships with SMEs and championing Tally, Cloud and AMC solutions.
+- We are looking for a driven Business Development Executive to expand our footprint across SMEs. You will prospect, present and close partnerships for TallyPrime, AWS Cloud, managed support and business automation.
+- Own digital campaigns, content and lead generation for Tally, Cloud and automation services.
+- Join our marketing team to plan and execute campaigns that connect SMEs with Tally and Cloud solutions. You will run SEO, social, WhatsApp and Google lead-generation funnels.
+- Manage client relationships, renewals and retention for our Tally and Cloud customer base.
+- You will be the trusted point of contact for our customers — coordinating support, renewing AMC/TSS plans and growing client satisfaction across the portfolio.
 - We value our employees and offer a range of benefits to ensure a healthy and productive work environment.
 - Comprehensive health coverage for you and your family.
 - Maintain a great work-life balance with flexible scheduling.

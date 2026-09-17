@@ -57,15 +57,15 @@ export default function CareersPage() {
       {/* Job Listings Section */}
       <section className="py-16 md:py-24 px-6 bg-[#ecf5fa]">
         <div className="max-w-4xl mx-auto">
-          <div className="mb-12">
-            <h2 className="text-2xl md:text-3xl font-black text-slate-900 mb-4 tracking-tight">Current Openings</h2>
+          <div className="mb-8">
+            <h2 className="text-2xl md:text-3xl font-black text-slate-900 mb-3 tracking-tight">Current Openings</h2>
             <p className="text-slate-500 text-xs md:text-sm font-bold">
               Explore our available positions and find the perfect fit for your skills. 
               Don't see a role that fits? <a href="/contact" className="text-[#006569] font-black hover:underline decoration-2 underline-offset-4">Send us your CV anyway!</a>
             </p>
           </div>
 
-          <div className="space-y-6">
+          <div className="space-y-5">
             {jobs.length > 0 ? (
               jobs.map((job) => (
                 <JobAccordion 
@@ -123,11 +123,11 @@ export default function CareersPage() {
                 )
               },
             ].map((perk, i) => (
-              <div key={i} className="p-8 bg-white rounded-[2.5rem] border border-slate-100 shadow-sm hover:shadow-2xl hover:border-[#006569]/20 transition-all duration-500">
-                <div className="w-12 h-12 bg-slate-50 rounded-2xl flex items-center justify-center mb-6 border border-slate-100">
+              <div key={i} className="p-6 bg-white rounded-2xl border border-slate-100 shadow-sm hover:shadow-xl hover:border-[#006569]/20 transition-all duration-500">
+                <div className="w-10 h-10 bg-slate-50 rounded-xl flex items-center justify-center mb-4 border border-slate-100">
                   {perk.icon}
                 </div>
-                <h4 className="text-[17px] font-black text-slate-900 mb-3 tracking-tight">{perk.title}</h4>
+                <h4 className="text-[15px] font-black text-slate-900 mb-2 tracking-tight">{perk.title}</h4>
                 <p className="text-[11px] text-slate-500 leading-relaxed font-bold opacity-80">{perk.desc}</p>
               </div>
             ))}
