@@ -33,37 +33,37 @@ const ServiceDetailPopup = ({ isOpen, onClose, service, onEnquire }: ServicePopu
         </button>
         
         <div className="flex items-center gap-5 mb-8">
-          <div className={`w-16 h-16 rounded-2xl flex items-center justify-center ${service.iconBg} text-white shadow-xl`}>
+          <div className={`w-16 h-16 rounded-2xl flex items-center justify-center ${service.iconBg} text-white shadow-lg`}>
              {service.icon}
           </div>
           <div>
-            <span className="px-3 py-2 rounded-full bg-slate-50 text-[#006569] text-[9px] font-black uppercase tracking-widest border border-slate-100 mb-2 inline-block">
+            <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-400 block mb-1.5">
               {service.tag}
             </span>
-            <h3 className="text-2xl md:text-3xl font-black text-slate-900 leading-tight tracking-tight">{service.title}</h3>
+            <h3 className="text-2xl md:text-3xl font-semibold text-slate-900 leading-tight tracking-tight">{service.title}</h3>
           </div>
         </div>
 
-        <div className="bg-[#E5F4F4] p-6 rounded-3xl border border-[#006569]/10 mb-8">
-          <p className="text-slate-600 leading-relaxed text-sm md:text-base italic font-medium">
+        <div className="bg-white/70 p-6 rounded-2xl border border-[#006569]/10 mb-8">
+          <p className="text-slate-600 leading-relaxed text-sm md:text-base font-normal">
             "{service.detailedDesc}"
           </p>
         </div>
 
         <div className="space-y-6">
-          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[#006569] flex items-center gap-2">
-            <span className="h-px w-8 bg-[#006569]/20" />
+          <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#006569] flex items-center gap-2">
+            <span className="h-px w-6 bg-[#006569]/20" />
             Core Deliverables
           </p>
-          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {service.features.map((f: string, i: number) => (
-              <li key={i} className="text-[12px] font-bold text-slate-700 flex items-start gap-3 bg-white p-3 rounded-xl border border-slate-50 shadow-sm hover:border-[#006569]/20 transition-colors">
-                <div className="mt-0.5 flex-shrink-0 w-5 h-5 rounded-full bg-teal-50 text-teal-600 flex items-center justify-center border border-teal-100">
-                  <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <li key={i} className="text-[13px] font-normal text-slate-600 flex items-start gap-2.5 bg-white p-3 rounded-xl border border-slate-100">
+                <div className="mt-0.5 flex-shrink-0 w-4 h-4 rounded-full bg-teal-50 text-teal-600 flex items-center justify-center border border-teal-100">
+                  <svg className="w-2.5 h-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="4" d="M5 13l4 4L19 7" />
                   </svg>
                 </div>
-                <span className="leading-tight">{f}</span>
+                <span className="leading-snug">{f}</span>
               </li>
             ))}
           </ul>
@@ -81,12 +81,12 @@ const ServiceDetailPopup = ({ isOpen, onClose, service, onEnquire }: ServicePopu
               onEnquire(service.title);
               onClose();
             }}
-            className="flex-1 py-4 bg-black text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-white hover:text-black border border-transparent hover:border-black transition-all duration-500 shadow-xl"
+            className="flex-1 py-4 bg-[#006569] text-white rounded-xl font-semibold text-sm hover:bg-[#045A57] transition-all duration-300 shadow-lg shadow-[#006569]/10"
           >
             Request Priority Service
           </button>
           <button 
-            className="flex-1 py-4 border border-slate-200 text-slate-500 rounded-2xl font-bold text-xs uppercase tracking-widest hover:bg-slate-50 hover:text-slate-900 transition-all duration-500"
+            className="flex-1 py-4 border border-slate-200 text-slate-500 rounded-xl font-semibold text-sm hover:bg-slate-50 hover:text-slate-900 transition-all duration-300"
             onClick={onClose}
           >
             Close Details
@@ -210,8 +210,12 @@ export default function ServicesPage() {
     }
   ];
 
+  // CHANGE: 2026-09-17 — redesign: lighter professional look. Replaced font-black / 9px
+  // tracking-widest endless badges with Playfair display heading, normal-weight slate text,
+  // hairline borders, quieter labels, teal-primary actions, and a light CTA panel (the old
+  // dark slate-900 block read heavy; removed the green/teal glow deco).
   return (
-    <div className="min-h-screen bg-white text-slate-900">
+    <div className="min-h-screen bg-[#FCFBF9] text-slate-900">
       <ServiceDetailPopup 
         isOpen={!!selectedService}
         onClose={() => setSelectedService(null)}
@@ -219,86 +223,84 @@ export default function ServicesPage() {
         onEnquire={(title) => openModal('enquire', title)}
       />
 
-      {/* Clean Header Section */}
-      <section className="bg-[linear-gradient(90deg,rgba(249,251,245,1)_0%,rgba(244,242,234,1)_53%,rgba(238,236,223,1)_100%)] pt-8 pb-16 px-6 text-center relative overflow-hidden flex flex-col items-center">
+      {/* Header Section */}
+      <section className="bg-white border-b border-slate-100 pt-16 pb-16 md:pt-20 md:pb-20 px-6 text-center relative overflow-hidden flex flex-col items-center">
         <div className="max-w-4xl mx-auto relative z-10 w-full">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/40 border border-[#006569]/10 text-[#006569] text-[9px] font-black uppercase tracking-widest mb-8 backdrop-blur-sm">
-            <span className="flex h-1.5 w-1.5 rounded-full bg-[#006569] animate-pulse"></span>
-            Professional Support Directory
+          <div className="inline-flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#006569] mb-6">
+            <span className="h-px w-8 bg-[#006569]/30" />
+            Tally Services
+            <span className="h-px w-8 bg-[#006569]/30" />
           </div>
-          <h1 className="text-4xl md:text-7xl font-black text-slate-900 mb-6 leading-tight tracking-tight">
-            Expert Tally <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#006569] to-[#045A57]">Services</span>
+          <h1 className="font-playfair text-3xl sm:text-4xl md:text-5xl font-semibold text-slate-900 mb-6 leading-tight tracking-tight">
+            Expert Tally <span className="text-[#006569]">Services</span>
           </h1>
-          <p className="text-slate-600 text-sm md:text-lg max-w-2xl mx-auto leading-relaxed font-semibold mb-0">
+          <p className="text-slate-500 text-base md:text-xl max-w-2xl mx-auto leading-relaxed font-normal">
             Certified technical expertise to architect and support your TallyPrime environment for maximum business impact and seamless compliance.
+          </p>
+          <p className="mt-8 text-sm font-semibold text-slate-400">
+            Trusted by 1,500+ Indian businesses since 2008
           </p>
         </div>
       </section>
 
-      {/* Icon-Driven Service Grid */}
-      <section className="py-20 px-6 max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      {/* Service Grid */}
+      <section className="py-16 md:py-20 px-6 max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5 md:gap-6">
           {supportServices.map((s) => (
             <div 
               key={s.title} 
-              className="group relative bg-white rounded-xl p-6 border border-slate-100 shadow-sm hover:shadow-2xl hover:shadow-[#006569]/15 transition-all duration-500 flex flex-col h-full hover:-translate-y-2"
+              className="group relative bg-white rounded-2xl p-6 md:p-7 border border-slate-200/60 shadow-[0_1px_2px_rgba(15,23,42,0.04)] hover:shadow-lg hover:shadow-slate-900/5 transition-all duration-300 flex flex-col h-full hover:-translate-y-1"
             >
-              {/* Icon Container */}
-              <div className={`w-14 h-14 rounded-lg flex items-center justify-center ${s.iconBg} text-white mb-8 shadow-lg transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3`}>
+              <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${s.iconBg} text-white mb-7 shadow-md`}>
                 {s.icon}
               </div>
 
-              {/* Text Content */}
               <div className="flex-1">
-                <span className="text-[9px] font-black uppercase tracking-widest text-[#006569] block mb-3 opacity-60">
+                <span className="text-[10px] font-bold uppercase tracking-[0.16em] text-slate-400 block mb-2.5">
                   {s.tag}
                 </span>
-                <h3 className="text-xl font-black text-slate-900 tracking-tight mb-4 group-hover:text-[#006569] transition-colors leading-tight">
+                <h3 className="text-lg font-semibold text-slate-900 tracking-tight mb-3 leading-snug group-hover:text-[#006569] transition-colors">
                   {s.title}
                 </h3>
-                <p className="text-[13px] text-slate-500 font-bold leading-relaxed opacity-70 mb-8">
+                <p className="text-sm text-slate-500 font-normal leading-relaxed">
                   {s.simpleDesc}
                 </p>
               </div>
 
-              {/* Action Buttons */}
-              <div className="space-y-3">
-                 <button 
+              <div className="mt-8 pt-5 border-t border-slate-100 flex items-center justify-between gap-3">
+                <button 
                   onClick={() => setSelectedService(s)}
-                  className="w-full py-3.5 bg-slate-50 text-[#006569] rounded-lg font-black text-[10px] uppercase tracking-widest hover:bg-[#006569] hover:text-white transition-all duration-500 flex items-center justify-center gap-2"
+                  className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#006569] hover:text-[#045A57] transition-colors"
                 >
                   View Details
-                  <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
+                  <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
                 </button>
                 <button 
                   onClick={() => openModal('enquire', s.title)}
-                  className="w-full py-3.5 bg-black text-white rounded-lg font-black text-[10px] uppercase tracking-widest hover:bg-white hover:text-black border border-transparent hover:border-black transition-all duration-500 shadow-sm"
+                  className="px-5 py-2.5 bg-[#006569] text-white rounded-xl text-sm font-semibold hover:bg-[#045A57] transition-colors shadow-sm"
                 >
                   Enquire Now
                 </button>
               </div>
-
-              {/* Decorative Subtle Background Glow */}
-              <div className="absolute -bottom-12 -right-12 w-32 h-32 bg-[#E8F5E9] rounded-full blur-3xl opacity-0 group-hover:opacity-50 transition-opacity duration-500" />
             </div>
           ))}
         </div>
       </section>
 
       {/* Contact Section */}
-      <section className="py-24 px-6 bg-[#E5F4F4]">
-        <div className="max-w-6xl mx-auto rounded-[3.5rem] p-12 bg-slate-900 text-white text-center relative overflow-hidden shadow-2xl">
-          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#006569]/20 rounded-full blur-[100px] -mr-64 -mt-64" />
-          <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-[#045A57]/10 rounded-full blur-[100px] -ml-48 -mb-48" />
-          
-          <div className="relative z-10 max-w-4xl mx-auto">
-            <h2 className="text-3xl md:text-5xl font-black mb-8 tracking-tight">Need a <span className="text-[#045A57]">Custom Solution?</span></h2>
-            <p className="text-slate-400 font-bold mb-12 max-w-2xl mx-auto leading-relaxed">
+      <section className="py-16 md:py-20 px-6">
+        <div className="max-w-6xl mx-auto rounded-[2.5rem] border border-teal-100 bg-[#E5F4F4] p-10 md:p-16 text-center relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-72 h-72 bg-[#B8DEDE]/40 rounded-full blur-3xl -mr-32 -mt-32 pointer-events-none" />
+          <div className="relative z-10 max-w-3xl mx-auto">
+            <h2 className="font-playfair text-3xl md:text-4xl font-semibold text-[#033B38] mb-5 tracking-tight">
+              Need a Custom Solution?
+            </h2>
+            <p className="text-slate-600 font-normal mb-10 max-w-2xl mx-auto leading-relaxed">
               Our technical architects are ready to design a personalized TallyPrime environment tailored to your specific industry requirements.
             </p>
             <button 
                onClick={() => openModal('general')}
-               className="px-12 py-5 bg-white text-black rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-[#045A57] hover:text-white transition-all duration-500 shadow-xl"
+               className="px-10 py-4 bg-[#006569] text-white rounded-xl font-semibold text-sm hover:bg-[#045A57] transition-colors shadow-lg shadow-[#006569]/15"
             >
                Request Professional Consultation
             </button>

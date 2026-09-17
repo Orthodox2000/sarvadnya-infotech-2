@@ -20,6 +20,8 @@
 // branding), scrubbed "dealer" tags across remaining posts, made the upsert comparison include `tags`
 // so tag-only edits propagate, and added REMOVE_SLUGS so slugs dropped from this file also get deleted
 // from the collection (keeps the blog professional and in sync with the seed).
+// CHANGE: 2026-09-17 - TSS-renewal body copy no longer limits coverage to specific cities;
+// now says "anywhere in India" per owner (local stays in titles/keywords only).
 //
 // Run:  node scripts/seed_news.mjs   (MONGODB_URI from .env)
 
@@ -102,7 +104,7 @@ Renewal timing is the single biggest cost lever for most businesses. Tally chang
 
 If you are on Tally ERP 9, the renewal decision is straightforward: renew at the current rate or pay more later. The earlier you confirm, the more predictable your cost.
 
-Sarvadnya Infotech handles TSS renewals for businesses across Mumbai, Navi Mumbai, Pune and beyond. We check your licence, confirm the right plan and complete renewal for you - typically one short conversation. If your renewal date is within the next two months, get in touch so we can lock in your pricing and keep your compliance updates uninterrupted.`,
+Sarvadnya Infotech handles TSS renewals for businesses anywhere in India - metro, city or town. We check your licence, confirm the right plan and complete renewal for you - typically one short conversation. If your renewal date is within the next two months, get in touch so we can lock in your pricing and keep your compliance updates uninterrupted.`,
   },
   {
     slug: 'tally-3-star-partner-mumbai',
@@ -370,7 +372,7 @@ How to check your status:
 - Note which version you run, since renewal terms differ between Tally Prime and Tally ERP 9
 - If the renewal window is close, consolidate licences and confirm your GSTIN before renewing
 
-Renewal itself is quick with a verified partner. Sarvadnya Infotech handles Tally TSS renewal for businesses across Mumbai, Navi Mumbai and Pune - we check your licence, confirm the right plan and complete the renewal in one short conversation. If TSS expired on your setup, get in touch before a price change or a busy closing week.`,
+Renewal itself is quick with a verified partner. Sarvadnya Infotech handles Tally TSS renewal for businesses anywhere in India - we check your licence, confirm the right plan and complete the renewal in one short conversation, fully remotely. If TSS expired on your setup, get in touch before a price change or a busy closing week.`,
   },
   {
     slug: 'tally-cloud-access',
