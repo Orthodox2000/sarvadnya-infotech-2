@@ -25,7 +25,7 @@ export default function CapabilitiesPage() {
             </div>
             <h1 className="text-3xl md:text-5xl font-black text-slate-900 mb-4 leading-tight">
               Every feature you need.{' '}
-              <span className="text-[#006569]">Nothing you don&apos;t.</span>
+              <span className="text-[#006569]">Built for growth.</span>
             </h1>
             <p className="text-slate-500 text-sm md:text-base leading-relaxed max-w-lg">
               From invoicing to payroll, TallyPrime handles it all. Explore {totalFeatures} capabilities 
