@@ -30,13 +30,14 @@ function StarRating({ rating, size = "w-4 h-4" }: { rating: number, size?: strin
 
 // CHANGE: 2026-09-17 — variant-aware card. 'marquee' = fixed 320px compact card (desktop),
 // 'feature' = full-width large card (sm & below) with bigger type + serif quote + quote glyph.
-// CHANGE: 2026-09-17 (rev-3) — marquee cards get FIXED identical dimensions (320×272px):
-// `h-68` (not min-h) + overflow-hidden + line-clamp so long quotes can never grow a card;
-// footer pinned via justify-between + flex-1 body, so all desktop cards are exactly equal.
+// CHANGE: 2026-09-17 (rev-4) — marquee cards get EXACTLY one height declaration (`h-68`,
+// 272px): the earlier `h-full` competed with `h-68` (both set `height`, cascade order unpredictable,
+// so smaller comments rendered at a different height than longer ones). Fixed height + `flex-1`
+// body + `justify-between` footer + `line-clamp-5` makes every desktop card identical 320×272px.
 const ReviewCard = memo(function ReviewCard({ review, variant = 'marquee' }: { review: Review; variant?: 'marquee' | 'feature' }) {
     const feature = variant === 'feature';
     return (
-        <div className={`shrink-0 bg-white rounded-2xl shadow-sm border border-slate-100 flex flex-col h-full ${feature ? 'w-full p-6 sm:p-8' : 'w-[320px] p-5 justify-between h-68 overflow-hidden'}`}>
+        <div className={`shrink-0 bg-white rounded-2xl shadow-sm border border-slate-100 flex flex-col ${feature ? 'w-full h-full p-6 sm:p-8' : 'w-[320px] justify-between h-68 overflow-hidden p-5'}`}>
             <div className={feature ? '' : 'flex-1'}>
                 <div className={`flex justify-between items-start ${feature ? 'mb-4 sm:mb-5' : 'mb-4'}`}>
                     <div className="flex items-center gap-3">
