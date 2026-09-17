@@ -41,13 +41,21 @@ const WWW_HOST = 'www.sarvadnyainfotech.com';
 
 // CHANGE: 2026-09-16 — Deleted old-WordPress/WooCommerce URLs: 410 Gone so Google stops crawling them
 // (consumes crawl budget and inflates the GSC "Pages to index" count vs the real 54 pages).
+// CHANGE: 2026-09-17 — audit additions: WP default junk (hello-world/sample-blog), the
+// default /category/ archive prefix, and any /YYYY/…/ dated post URL (permalink structure was
+// /%year%/%monthnum%/%day%/%postname%/) → all 410.
 const GONE_PATHS = new Set([
   '/shop/bumper+stickers', '/shop/gallery-boards', '/shop/framed-prints',
   '/shop/all-mouse-pads', '/shop/cool+stickers',
   '/product', '/product/', '/feed', '/feed/', '/automobile-industries', '/automobile-industries/',
   '/author/admin/feed', '/author/admin/feed/',
+  '/hello-world', '/hello-world/', '/sample-blog', '/sample-blog/',
+  '/category/uncategorized', '/category/uncategorized/',
 ]);
-const GONE_PREFIXES = ['/wp-includes/', '/wp-content/', '/wp-admin/', '/wp-json/', '/2021/'];
+const GONE_PREFIXES = ['/wp-includes/', '/wp-content/', '/wp-admin/', '/wp-json/', '/2021/', '/category/'];
+
+// CHANGE: 2026-09-17 — any dated WordPress post URL starts with /YYYY/ (e.g. /2021/02/…).
+const DATED_POST_RE = /\/\d{4}\//;
 
 export function middleware(request: NextRequest) {
   const { pathname, search } = request.nextUrl;
@@ -56,6 +64,7 @@ export function middleware(request: NextRequest) {
   if (
     GONE_PATHS.has(pathname) ||
     GONE_PREFIXES.some((p) => pathname.startsWith(p)) ||
+    DATED_POST_RE.test(pathname) ||
     (pathname === '/' && request.nextUrl.searchParams.has('et_core_page_resource'))
   ) {
     return new NextResponse(null, { status: 410 });

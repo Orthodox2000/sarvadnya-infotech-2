@@ -39,6 +39,42 @@ const nextConfig = {
       { source: '/erp-consulting-services-3', destination: '/capabilities', permanent: true },
       { source: '/customized-ready-modules-for-specific-business-lines', destination: '/modules', permanent: true },
       { source: '/tally-software-implementation-service', destination: '/services', permanent: true },
+      // CHANGE: 2026-09-17 — old WP blog post "Small Add-ons in Tally ERP 9" → its modern
+      // news article (same topic, live seeded slug) so the GSC 404 row clears and equity passes.
+      { source: '/small-add-ons-in-tally-erp-9', destination: '/news/tally-erp9-add-ons', permanent: true },
+      // CHANGE: 2026-09-17 — full legacy-WP audit (scripts/audit-legacy-wp.mjs): 29 real user-facing
+      // old pages 301 to their closest live equivalent so link equity consolidates and no old
+      // URL can 404 again. `` covers the trailing-slash variant Googlebot crawls directly.
+      { source: '/home-tally-partner', destination: '/', permanent: true },
+      { source: '/about-us', destination: '/about', permanent: true },
+      { source: '/contact-us', destination: '/contact', permanent: true },
+      { source: '/privacy-policy', destination: '/privacy', permanent: true },
+      { source: '/terms-and-conditions', destination: '/terms', permanent: true },
+      { source: '/refund-and-cancellation-policy', destination: '/terms', permanent: true },
+      { source: '/blog', destination: '/news', permanent: true },
+      { source: '/tally-prime-services', destination: '/services', permanent: true },
+      { source: '/erp-consulting-services', destination: '/capabilities', permanent: true },
+      { source: '/tally-cloud-services', destination: '/cloud', permanent: true },
+      { source: '/tally-product-3', destination: '/products', permanent: true },
+      { source: '/tally-software-service-tss-2', destination: '/services/tss', permanent: true },
+      { source: '/tally-ass-annual-software-services-2', destination: '/services/tss', permanent: true },
+      { source: '/tally-server-9-2', destination: '/products/server', permanent: true },
+      { source: '/corporate-training-2', destination: '/services/corporate-training', permanent: true },
+      { source: '/offline-seminars-2', destination: '/services/corporate-training', permanent: true },
+      { source: '/online-webinars-2', destination: '/services/corporate-training', permanent: true },
+      { source: '/customization-services-2', destination: '/services/tdl', permanent: true },
+      { source: '/customized-modules', destination: '/modules', permanent: true },
+      { source: '/agent-broker-commission-rd-module', destination: '/modules', permanent: true },
+      { source: '/clearing-and-forwarding-agencies-cfa', destination: '/modules', permanent: true },
+      { source: '/footwear-distribution-retail-sales-manufacturing-industries', destination: '/modules', permanent: true },
+      { source: '/garment-wholesale-2', destination: '/modules', permanent: true },
+      { source: '/share-investment-business', destination: '/modules', permanent: true },
+      { source: '/attach-and-manage-documents-2', destination: '/addons', permanent: true },
+      { source: '/digitally-signed-tally-invoice-2', destination: '/addons', permanent: true },
+      { source: '/lock-gst-returns-in-tally', destination: '/addons', permanent: true },
+      { source: '/understanding-client-erp-requirements', destination: '/services', permanent: true },
+      { source: '/offering-right-solution-onlinehelping-in-implementation-of-offered-erp', destination: '/services', permanent: true },
+      { source: '/ensure-quality-training-and-service-thereafter-increase-client-satisfaction', destination: '/services', permanent: true },
     ];
   },
   images: {

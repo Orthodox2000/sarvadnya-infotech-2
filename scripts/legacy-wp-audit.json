@@ -1,0 +1,1375 @@
+{
+  "home": "https://sarvadnyainfotech.com",
+  "permalinkStructure": "/%year%/%monthnum%/%day%/%postname%/",
+  "generatedAt": "2026-09-17T08:55:56.549Z",
+  "unmapped": [
+    {
+      "url": "/hello-world/",
+      "type": "post",
+      "date": "2021-02-10 05:43:52",
+      "title": "Hello world!"
+    },
+    {
+      "url": "/privacy-policy/",
+      "type": "page",
+      "date": "2021-02-10 05:43:52",
+      "title": "Privacy Policy"
+    },
+    {
+      "url": "/home-tally-partner/",
+      "type": "page",
+      "date": "2021-02-10 06:57:08",
+      "title": "Home"
+    },
+    {
+      "url": "/divi/",
+      "type": "custom_css",
+      "date": "2021-02-10 08:07:09",
+      "title": "Divi"
+    },
+    {
+      "url": "/about-us/",
+      "type": "et_pb_layout",
+      "date": "2021-02-13 05:48:25",
+      "title": "About us"
+    },
+    {
+      "url": "/contact-form/",
+      "type": "et_pb_layout",
+      "date": "2021-02-13 05:49:17",
+      "title": "Contact form"
+    },
+    {
+      "url": "/faq/",
+      "type": "et_pb_layout",
+      "date": "2021-02-13 05:49:46",
+      "title": "FAQ"
+    },
+    {
+      "url": "/about-us-2nd/",
+      "type": "et_pb_layout",
+      "date": "2021-02-13 06:34:13",
+      "title": "about Us 2nd"
+    },
+    {
+      "url": "/64/",
+      "type": "nav_menu_item",
+      "date": "2024-07-31 08:23:43",
+      "title": ""
+    },
+    {
+      "url": "/about-us/",
+      "type": "page",
+      "date": "2021-02-16 06:23:19",
+      "title": "About Us"
+    },
+    {
+      "url": "/theme-builder-layout/",
+      "type": "et_footer_layout",
+      "date": "2021-02-16 07:00:56",
+      "title": "Theme Builder Layout"
+    },
+    {
+      "url": "/theme-builder/",
+      "type": "et_theme_builder",
+      "date": "2021-02-16 07:01:01",
+      "title": "Theme Builder"
+    },
+    {
+      "url": "/about-us-2/",
+      "type": "et_pb_layout",
+      "date": "2021-02-17 07:06:00",
+      "title": "About us"
+    },
+    {
+      "url": "/blog/",
+      "type": "page",
+      "date": "2021-02-17 07:23:38",
+      "title": "Blog"
+    },
+    {
+      "url": "/about-us-page/",
+      "type": "et_pb_layout",
+      "date": "2021-02-17 07:39:52",
+      "title": "About us page"
+    },
+    {
+      "url": "/theme-builder-layout/",
+      "type": "et_body_layout",
+      "date": "2021-02-17 07:52:27",
+      "title": "Theme Builder Layout"
+    },
+    {
+      "url": "/si-page/",
+      "type": "et_pb_layout",
+      "date": "2021-02-17 07:58:01",
+      "title": "SI page"
+    },
+    {
+      "url": "/si-page-2/",
+      "type": "et_pb_layout",
+      "date": "2021-02-17 07:59:20",
+      "title": "SI page"
+    },
+    {
+      "url": "/default-website-template-3/",
+      "type": "et_template",
+      "date": "2021-02-17 09:46:50",
+      "title": "Default Website Template"
+    },
+    {
+      "url": "/all-posts-2/",
+      "type": "et_template",
+      "date": "2021-02-17 09:46:50",
+      "title": "All Posts"
+    },
+    {
+      "url": "/contact-form-2/",
+      "type": "et_pb_layout",
+      "date": "2021-02-17 09:51:29",
+      "title": "contact form"
+    },
+    {
+      "url": "/sample-blog/",
+      "type": "post",
+      "date": "2021-02-18 05:58:57",
+      "title": "Sample Blog"
+    },
+    {
+      "url": "/about-us-section/",
+      "type": "et_pb_layout",
+      "date": "2021-02-18 08:04:19",
+      "title": "ABOUT US SECTION"
+    },
+    {
+      "url": "/contact-us/",
+      "type": "page",
+      "date": "2021-02-18 08:07:15",
+      "title": "Contact Us"
+    },
+    {
+      "url": "/contact-form-3/",
+      "type": "et_pb_layout",
+      "date": "2021-02-18 08:50:59",
+      "title": "contact form"
+    },
+    {
+      "url": "/tally-prime-services/",
+      "type": "page",
+      "date": "2021-02-27 14:08:32",
+      "title": "Tally Prime Services"
+    },
+    {
+      "url": "/erp-consulting-services/",
+      "type": "page",
+      "date": "2021-02-27 14:13:34",
+      "title": "ERP Consulting Services"
+    },
+    {
+      "url": "/tally-cloud-services/",
+      "type": "page",
+      "date": "2021-02-27 14:31:54",
+      "title": "Tally Cloud Services"
+    },
+    {
+      "url": "/see-what/",
+      "type": "et_pb_layout",
+      "date": "2021-02-27 15:01:02",
+      "title": "See what"
+    },
+    {
+      "url": "/334/",
+      "type": "nav_menu_item",
+      "date": "2024-07-31 08:23:43",
+      "title": ""
+    },
+    {
+      "url": "/335/",
+      "type": "nav_menu_item",
+      "date": "2024-07-31 08:23:43",
+      "title": ""
+    },
+    {
+      "url": "/336/",
+      "type": "nav_menu_item",
+      "date": "2024-07-31 08:23:43",
+      "title": ""
+    },
+    {
+      "url": "/337/",
+      "type": "nav_menu_item",
+      "date": "2024-07-31 08:23:43",
+      "title": ""
+    },
+    {
+      "url": "/terms-and-conditions/",
+      "type": "page",
+      "date": "2021-03-03 06:17:56",
+      "title": "TERMS AND CONDITIONS"
+    },
+    {
+      "url": "/refund-and-cancellation-policy/",
+      "type": "page",
+      "date": "2021-03-03 06:22:04",
+      "title": "Refund and Cancellation Policy"
+    },
+    {
+      "url": "/sarvadnya/",
+      "type": "et_pb_layout",
+      "date": "2021-03-03 09:52:10",
+      "title": "SARVADNYA"
+    },
+    {
+      "url": "/contact-form-4/",
+      "type": "et_pb_layout",
+      "date": "2021-03-23 07:21:57",
+      "title": "contact form"
+    },
+    {
+      "url": "/counter/",
+      "type": "et_pb_layout",
+      "date": "2021-03-23 07:22:14",
+      "title": "counter"
+    },
+    {
+      "url": "/home-head/",
+      "type": "et_pb_layout",
+      "date": "2021-03-23 13:14:13",
+      "title": "HOME HEAD"
+    },
+    {
+      "url": "/final-contact/",
+      "type": "et_pb_layout",
+      "date": "2021-03-23 13:14:57",
+      "title": "FINAL CONTACT"
+    },
+    {
+      "url": "/normal-section/",
+      "type": "et_pb_layout",
+      "date": "2021-03-23 13:25:45",
+      "title": "NORMAL SEcTION"
+    },
+    {
+      "url": "/normat-text/",
+      "type": "et_pb_layout",
+      "date": "2021-03-23 13:27:54",
+      "title": "NORMAT TEXT"
+    },
+    {
+      "url": "/service/",
+      "type": "nav_menu_item",
+      "date": "2024-07-31 08:23:43",
+      "title": "Service"
+    },
+    {
+      "url": "/tally-product-3/",
+      "type": "page",
+      "date": "2021-07-16 08:32:10",
+      "title": "Tally Product"
+    },
+    {
+      "url": "/tally-software-service-tss-2/",
+      "type": "page",
+      "date": "2021-07-16 08:38:40",
+      "title": "Tally Software Service (TSS)"
+    },
+    {
+      "url": "/tally-server-9-2/",
+      "type": "page",
+      "date": "2021-07-16 08:39:04",
+      "title": "Tally.Server 9"
+    },
+    {
+      "url": "/806/",
+      "type": "nav_menu_item",
+      "date": "2024-07-31 08:23:43",
+      "title": ""
+    },
+    {
+      "url": "/corporate-training-2/",
+      "type": "page",
+      "date": "2021-07-16 08:42:13",
+      "title": "Corporate Training"
+    },
+    {
+      "url": "/offline-seminars-2/",
+      "type": "page",
+      "date": "2021-07-16 08:42:38",
+      "title": "Offline Seminars"
+    },
+    {
+      "url": "/online-webinars-2/",
+      "type": "page",
+      "date": "2021-07-16 08:43:00",
+      "title": "Online Webinars"
+    },
+    {
+      "url": "/tally-ass-annual-software-services-2/",
+      "type": "page",
+      "date": "2021-07-16 08:43:22",
+      "title": "Tally ASS (Annual Software Services)"
+    },
+    {
+      "url": "/customization-services-2/",
+      "type": "page",
+      "date": "2021-07-16 08:43:49",
+      "title": "Customization Services"
+    },
+    {
+      "url": "/understanding-client-erp-requirements/",
+      "type": "page",
+      "date": "2021-07-16 08:47:45",
+      "title": "Understanding Client ERP Requirements"
+    },
+    {
+      "url": "/offering-right-solution-onlinehelping-in-implementation-of-offered-erp/",
+      "type": "page",
+      "date": "2021-07-16 08:48:06",
+      "title": "Offering Right Solution OnlineHelping in Implementation of Offered ERP"
+    },
+    {
+      "url": "/ensure-quality-training-and-service-thereafter-increase-client-satisfaction/",
+      "type": "page",
+      "date": "2021-07-16 08:48:22",
+      "title": "Ensure Quality Training and Service thereafter Increase Client Satisfaction"
+    },
+    {
+      "url": "/attach-and-manage-documents-2/",
+      "type": "page",
+      "date": "2021-07-16 08:50:27",
+      "title": "Attach and Manage Documents"
+    },
+    {
+      "url": "/digitally-signed-tally-invoice-2/",
+      "type": "page",
+      "date": "2021-07-16 08:50:48",
+      "title": "Digitally Signed Tally Invoice"
+    },
+    {
+      "url": "/lock-gst-returns-in-tally/",
+      "type": "page",
+      "date": "2021-07-16 08:51:16",
+      "title": "Lock GST Returns in Tally"
+    },
+    {
+      "url": "/agent-broker-commission-rd-module/",
+      "type": "page",
+      "date": "2021-07-16 08:51:45",
+      "title": "Agent / Broker Commission & RD module"
+    },
+    {
+      "url": "/customized-modules/",
+      "type": "page",
+      "date": "2021-07-16 08:55:24",
+      "title": "Customized Modules"
+    },
+    {
+      "url": "/clearing-and-forwarding-agencies-cfa/",
+      "type": "page",
+      "date": "2021-07-16 08:56:32",
+      "title": "Clearing and Forwarding Agencies (CFA)"
+    },
+    {
+      "url": "/footwear-distribution-retail-sales-manufacturing-industries/",
+      "type": "page",
+      "date": "2021-07-16 08:57:31",
+      "title": "Footwear Distribution / Retail sales / Manufacturing industries"
+    },
+    {
+      "url": "/garment-wholesale-2/",
+      "type": "page",
+      "date": "2021-07-16 08:57:50",
+      "title": "Garment Wholesale"
+    },
+    {
+      "url": "/share-investment-business/",
+      "type": "page",
+      "date": "2021-07-16 08:58:33",
+      "title": "Share / Investment Business"
+    },
+    {
+      "url": "/872/",
+      "type": "nav_menu_item",
+      "date": "2024-07-31 08:23:43",
+      "title": "Tally Prime Server"
+    },
+    {
+      "url": "/tally-software/",
+      "type": "nav_menu_item",
+      "date": "2024-07-31 08:23:43",
+      "title": "Tally Software"
+    },
+    {
+      "url": "/silver-to-gold-tally-license-upgrade/",
+      "type": "nav_menu_item",
+      "date": "2024-07-31 08:23:43",
+      "title": "Silver to Gold Tally License upgrade"
+    },
+    {
+      "url": "/tally-on-mobile-app/",
+      "type": "nav_menu_item",
+      "date": "2024-07-31 08:23:43",
+      "title": "\"Tally on Mobile\" App"
+    },
+    {
+      "url": "/aws-cloud/",
+      "type": "nav_menu_item",
+      "date": "2024-07-31 08:23:43",
+      "title": "AWS Cloud"
+    },
+    {
+      "url": "/other-cloud/",
+      "type": "nav_menu_item",
+      "date": "2024-07-31 08:23:43",
+      "title": "Other Cloud"
+    },
+    {
+      "url": "/tally-amc-service/",
+      "type": "nav_menu_item",
+      "date": "2024-07-31 08:23:43",
+      "title": "Tally AMC Service"
+    },
+    {
+      "url": "/tally-consultancy-service/",
+      "type": "nav_menu_item",
+      "date": "2024-07-31 08:23:43",
+      "title": "Tally Consultancy Service"
+    },
+    {
+      "url": "/tally-implementation-training/",
+      "type": "nav_menu_item",
+      "date": "2024-07-31 08:23:43",
+      "title": "Tally Implementation & Training"
+    },
+    {
+      "url": "/tally-support/",
+      "type": "nav_menu_item",
+      "date": "2024-07-31 08:23:43",
+      "title": "Tally Support"
+    },
+    {
+      "url": "/customized-add-ons/",
+      "type": "nav_menu_item",
+      "date": "2024-07-31 08:23:43",
+      "title": "Customized Add-ons"
+    },
+    {
+      "url": "/solutions/",
+      "type": "nav_menu_item",
+      "date": "2024-07-31 08:23:43",
+      "title": "Solutions"
+    },
+    {
+      "url": "/module-for-clearing-forwarding-agencies-cfa/",
+      "type": "nav_menu_item",
+      "date": "2024-07-31 08:23:43",
+      "title": "Module for Clearing & Forwarding Agencies (CFA)"
+    },
+    {
+      "url": "/module-for-footwear-ready-garment-industry/",
+      "type": "nav_menu_item",
+      "date": "2024-07-31 08:23:43",
+      "title": "Module for Footwear / Ready Garment Industry"
+    },
+    {
+      "url": "/module-for-transport-industry/",
+      "type": "nav_menu_item",
+      "date": "2024-07-31 08:23:43",
+      "title": "Module for Transport Industry"
+    },
+    {
+      "url": "/module-for-container-handling-business/",
+      "type": "nav_menu_item",
+      "date": "2024-07-31 08:23:43",
+      "title": "Module for Container Handling Business"
+    },
+    {
+      "url": "/module-for-gas-agencies/",
+      "type": "nav_menu_item",
+      "date": "2024-07-31 08:23:43",
+      "title": "Module for Gas Agencies"
+    },
+    {
+      "url": "/module-for-housing-corporate-societies/",
+      "type": "nav_menu_item",
+      "date": "2024-07-31 08:23:43",
+      "title": "Module for Housing / Corporate Societies"
+    },
+    {
+      "url": "/module-for-school-colleges/",
+      "type": "nav_menu_item",
+      "date": "2024-07-31 08:23:43",
+      "title": "Module for School / Colleges"
+    },
+    {
+      "url": "/module-for-2w-3w-4-wheeler-sales-service-business/",
+      "type": "nav_menu_item",
+      "date": "2024-07-31 08:23:43",
+      "title": "Module for 2W / 3W / 4 Wheeler Sales / Service Business"
+    },
+    {
+      "url": "/module-for-handling-agent-salesman-performance-and-payout/",
+      "type": "nav_menu_item",
+      "date": "2024-07-31 08:23:43",
+      "title": "Module for handling Agent / SalesMan performance and payout"
+    },
+    {
+      "url": "/other-utilities/",
+      "type": "nav_menu_item",
+      "date": "2024-07-31 08:23:43",
+      "title": "Other Utilities"
+    },
+    {
+      "url": "/hiring/",
+      "type": "nav_menu_item",
+      "date": "2024-07-31 08:23:43",
+      "title": "Hiring"
+    },
+    {
+      "url": "/category/uncategorized/",
+      "type": "term:category",
+      "date": "",
+      "title": "Uncategorized"
+    }
+  ],
+  "pages": [],
+  "products": [
+    "wpmh_posts"
+  ],
+  "terms": [
+    {
+      "url": "/category/uncategorized/",
+      "taxonomy": "category",
+      "slug": "uncategorized",
+      "name": "Uncategorized",
+      "verdict": "UNMAPPED"
+    }
+  ],
+  "totals": {
+    "posts": 101,
+    "byType": {
+      "post": 2,
+      "page": 41,
+      "custom_css": 1,
+      "et_pb_layout": 21,
+      "nav_menu_item": 30,
+      "et_footer_layout": 1,
+      "et_theme_builder": 1,
+      "et_body_layout": 1,
+      "et_template": 2,
+      "wp_global_styles": 1
+    },
+    "unmapped": 88,
+    "terms": 1
+  },
+  "postRows": [
+    {
+      "url": "/hello-world/",
+      "type": "post",
+      "status": "publish",
+      "date": "2021-02-10 05:43:52",
+      "title": "Hello world!",
+      "verdict": "UNMAPPED"
+    },
+    {
+      "url": "/privacy-policy/",
+      "type": "page",
+      "status": "publish",
+      "date": "2021-02-10 05:43:52",
+      "title": "Privacy Policy",
+      "verdict": "UNMAPPED"
+    },
+    {
+      "url": "/home-tally-partner/",
+      "type": "page",
+      "status": "publish",
+      "date": "2021-02-10 06:57:08",
+      "title": "Home",
+      "verdict": "UNMAPPED"
+    },
+    {
+      "url": "/divi/",
+      "type": "custom_css",
+      "status": "publish",
+      "date": "2021-02-10 08:07:09",
+      "title": "Divi",
+      "verdict": "UNMAPPED"
+    },
+    {
+      "url": "/about-us/",
+      "type": "et_pb_layout",
+      "status": "publish",
+      "date": "2021-02-13 05:48:25",
+      "title": "About us",
+      "verdict": "UNMAPPED"
+    },
+    {
+      "url": "/services/",
+      "type": "et_pb_layout",
+      "status": "publish",
+      "date": "2021-02-13 05:48:55",
+      "title": "Services",
+      "verdict": "LIVE"
+    },
+    {
+      "url": "/contact-form/",
+      "type": "et_pb_layout",
+      "status": "publish",
+      "date": "2021-02-13 05:49:17",
+      "title": "Contact form",
+      "verdict": "UNMAPPED"
+    },
+    {
+      "url": "/faq/",
+      "type": "et_pb_layout",
+      "status": "publish",
+      "date": "2021-02-13 05:49:46",
+      "title": "FAQ",
+      "verdict": "UNMAPPED"
+    },
+    {
+      "url": "/about-us-2nd/",
+      "type": "et_pb_layout",
+      "status": "publish",
+      "date": "2021-02-13 06:34:13",
+      "title": "about Us 2nd",
+      "verdict": "UNMAPPED"
+    },
+    {
+      "url": "/64/",
+      "type": "nav_menu_item",
+      "status": "publish",
+      "date": "2024-07-31 08:23:43",
+      "title": "",
+      "verdict": "UNMAPPED"
+    },
+    {
+      "url": "/about-us/",
+      "type": "page",
+      "status": "publish",
+      "date": "2021-02-16 06:23:19",
+      "title": "About Us",
+      "verdict": "UNMAPPED"
+    },
+    {
+      "url": "/theme-builder-layout/",
+      "type": "et_footer_layout",
+      "status": "publish",
+      "date": "2021-02-16 07:00:56",
+      "title": "Theme Builder Layout",
+      "verdict": "UNMAPPED"
+    },
+    {
+      "url": "/theme-builder/",
+      "type": "et_theme_builder",
+      "status": "publish",
+      "date": "2021-02-16 07:01:01",
+      "title": "Theme Builder",
+      "verdict": "UNMAPPED"
+    },
+    {
+      "url": "/about-us-2/",
+      "type": "et_pb_layout",
+      "status": "publish",
+      "date": "2021-02-17 07:06:00",
+      "title": "About us",
+      "verdict": "UNMAPPED"
+    },
+    {
+      "url": "/blog/",
+      "type": "page",
+      "status": "publish",
+      "date": "2021-02-17 07:23:38",
+      "title": "Blog",
+      "verdict": "UNMAPPED"
+    },
+    {
+      "url": "/about-us-page/",
+      "type": "et_pb_layout",
+      "status": "publish",
+      "date": "2021-02-17 07:39:52",
+      "title": "About us page",
+      "verdict": "UNMAPPED"
+    },
+    {
+      "url": "/theme-builder-layout/",
+      "type": "et_body_layout",
+      "status": "publish",
+      "date": "2021-02-17 07:52:27",
+      "title": "Theme Builder Layout",
+      "verdict": "UNMAPPED"
+    },
+    {
+      "url": "/si-page/",
+      "type": "et_pb_layout",
+      "status": "publish",
+      "date": "2021-02-17 07:58:01",
+      "title": "SI page",
+      "verdict": "UNMAPPED"
+    },
+    {
+      "url": "/si-page-2/",
+      "type": "et_pb_layout",
+      "status": "publish",
+      "date": "2021-02-17 07:59:20",
+      "title": "SI page",
+      "verdict": "UNMAPPED"
+    },
+    {
+      "url": "/default-website-template-3/",
+      "type": "et_template",
+      "status": "publish",
+      "date": "2021-02-17 09:46:50",
+      "title": "Default Website Template",
+      "verdict": "UNMAPPED"
+    },
+    {
+      "url": "/all-posts-2/",
+      "type": "et_template",
+      "status": "publish",
+      "date": "2021-02-17 09:46:50",
+      "title": "All Posts",
+      "verdict": "UNMAPPED"
+    },
+    {
+      "url": "/contact-form-2/",
+      "type": "et_pb_layout",
+      "status": "publish",
+      "date": "2021-02-17 09:51:29",
+      "title": "contact form",
+      "verdict": "UNMAPPED"
+    },
+    {
+      "url": "/sample-blog/",
+      "type": "post",
+      "status": "publish",
+      "date": "2021-02-18 05:58:57",
+      "title": "Sample Blog",
+      "verdict": "UNMAPPED"
+    },
+    {
+      "url": "/about-us-section/",
+      "type": "et_pb_layout",
+      "status": "publish",
+      "date": "2021-02-18 08:04:19",
+      "title": "ABOUT US SECTION",
+      "verdict": "UNMAPPED"
+    },
+    {
+      "url": "/contact-us/",
+      "type": "page",
+      "status": "publish",
+      "date": "2021-02-18 08:07:15",
+      "title": "Contact Us",
+      "verdict": "UNMAPPED"
+    },
+    {
+      "url": "/contact-form-3/",
+      "type": "et_pb_layout",
+      "status": "publish",
+      "date": "2021-02-18 08:50:59",
+      "title": "contact form",
+      "verdict": "UNMAPPED"
+    },
+    {
+      "url": "/tally-product-2/",
+      "type": "page",
+      "status": "publish",
+      "date": "2021-02-26 06:40:53",
+      "title": "Product",
+      "verdict": "REDIRECTED"
+    },
+    {
+      "url": "/product/",
+      "type": "et_pb_layout",
+      "status": "publish",
+      "date": "2021-02-26 07:11:50",
+      "title": "Product",
+      "verdict": "GONE"
+    },
+    {
+      "url": "/tally-prime-product/",
+      "type": "page",
+      "status": "publish",
+      "date": "2021-02-27 10:17:45",
+      "title": "Tally ERP 9 Product",
+      "verdict": "REDIRECTED"
+    },
+    {
+      "url": "/tally-prime-services/",
+      "type": "page",
+      "status": "publish",
+      "date": "2021-02-27 14:08:32",
+      "title": "Tally Prime Services",
+      "verdict": "UNMAPPED"
+    },
+    {
+      "url": "/erp-consulting-services/",
+      "type": "page",
+      "status": "publish",
+      "date": "2021-02-27 14:13:34",
+      "title": "ERP Consulting Services",
+      "verdict": "UNMAPPED"
+    },
+    {
+      "url": "/small-add-ons-in-tally-erp-9/",
+      "type": "page",
+      "status": "publish",
+      "date": "2021-02-27 14:17:44",
+      "title": "Small Add-Ons in Tally. ERP 9",
+      "verdict": "REDIRECTED"
+    },
+    {
+      "url": "/customized-ready-modules-for-specific-business-lines/",
+      "type": "page",
+      "status": "publish",
+      "date": "2021-02-27 14:23:18",
+      "title": "Customized Ready Modules for specific Business lines",
+      "verdict": "REDIRECTED"
+    },
+    {
+      "url": "/tally-cloud-services/",
+      "type": "page",
+      "status": "publish",
+      "date": "2021-02-27 14:31:54",
+      "title": "Tally Cloud Services",
+      "verdict": "UNMAPPED"
+    },
+    {
+      "url": "/see-what/",
+      "type": "et_pb_layout",
+      "status": "publish",
+      "date": "2021-02-27 15:01:02",
+      "title": "See what",
+      "verdict": "UNMAPPED"
+    },
+    {
+      "url": "/334/",
+      "type": "nav_menu_item",
+      "status": "publish",
+      "date": "2024-07-31 08:23:43",
+      "title": "",
+      "verdict": "UNMAPPED"
+    },
+    {
+      "url": "/335/",
+      "type": "nav_menu_item",
+      "status": "publish",
+      "date": "2024-07-31 08:23:43",
+      "title": "",
+      "verdict": "UNMAPPED"
+    },
+    {
+      "url": "/336/",
+      "type": "nav_menu_item",
+      "status": "publish",
+      "date": "2024-07-31 08:23:43",
+      "title": "",
+      "verdict": "UNMAPPED"
+    },
+    {
+      "url": "/337/",
+      "type": "nav_menu_item",
+      "status": "publish",
+      "date": "2024-07-31 08:23:43",
+      "title": "",
+      "verdict": "UNMAPPED"
+    },
+    {
+      "url": "/terms-and-conditions/",
+      "type": "page",
+      "status": "publish",
+      "date": "2021-03-03 06:17:56",
+      "title": "TERMS AND CONDITIONS",
+      "verdict": "UNMAPPED"
+    },
+    {
+      "url": "/refund-and-cancellation-policy/",
+      "type": "page",
+      "status": "publish",
+      "date": "2021-03-03 06:22:04",
+      "title": "Refund and Cancellation Policy",
+      "verdict": "UNMAPPED"
+    },
+    {
+      "url": "/sarvadnya/",
+      "type": "et_pb_layout",
+      "status": "publish",
+      "date": "2021-03-03 09:52:10",
+      "title": "SARVADNYA",
+      "verdict": "UNMAPPED"
+    },
+    {
+      "url": "/contact-form-4/",
+      "type": "et_pb_layout",
+      "status": "publish",
+      "date": "2021-03-23 07:21:57",
+      "title": "contact form",
+      "verdict": "UNMAPPED"
+    },
+    {
+      "url": "/counter/",
+      "type": "et_pb_layout",
+      "status": "publish",
+      "date": "2021-03-23 07:22:14",
+      "title": "counter",
+      "verdict": "UNMAPPED"
+    },
+    {
+      "url": "/home-head/",
+      "type": "et_pb_layout",
+      "status": "publish",
+      "date": "2021-03-23 13:14:13",
+      "title": "HOME HEAD",
+      "verdict": "UNMAPPED"
+    },
+    {
+      "url": "/final-contact/",
+      "type": "et_pb_layout",
+      "status": "publish",
+      "date": "2021-03-23 13:14:57",
+      "title": "FINAL CONTACT",
+      "verdict": "UNMAPPED"
+    },
+    {
+      "url": "/normal-section/",
+      "type": "et_pb_layout",
+      "status": "publish",
+      "date": "2021-03-23 13:25:45",
+      "title": "NORMAL SEcTION",
+      "verdict": "UNMAPPED"
+    },
+    {
+      "url": "/normat-text/",
+      "type": "et_pb_layout",
+      "status": "publish",
+      "date": "2021-03-23 13:27:54",
+      "title": "NORMAT TEXT",
+      "verdict": "UNMAPPED"
+    },
+    {
+      "url": "/service/",
+      "type": "nav_menu_item",
+      "status": "publish",
+      "date": "2024-07-31 08:23:43",
+      "title": "Service",
+      "verdict": "UNMAPPED"
+    },
+    {
+      "url": "/tally-product-3/",
+      "type": "page",
+      "status": "publish",
+      "date": "2021-07-16 08:32:10",
+      "title": "Tally Product",
+      "verdict": "UNMAPPED"
+    },
+    {
+      "url": "/tally-erp-9-single-multi-user-license/",
+      "type": "page",
+      "status": "publish",
+      "date": "2021-07-16 08:36:36",
+      "title": "Tally.ERP 9 Single / Multi-User License",
+      "verdict": "REDIRECTED"
+    },
+    {
+      "url": "/tally-software-service-tss-2/",
+      "type": "page",
+      "status": "publish",
+      "date": "2021-07-16 08:38:40",
+      "title": "Tally Software Service (TSS)",
+      "verdict": "UNMAPPED"
+    },
+    {
+      "url": "/tally-server-9-2/",
+      "type": "page",
+      "status": "publish",
+      "date": "2021-07-16 08:39:04",
+      "title": "Tally.Server 9",
+      "verdict": "UNMAPPED"
+    },
+    {
+      "url": "/upgrade-of-tally-erp-9-products/",
+      "type": "page",
+      "status": "publish",
+      "date": "2021-07-16 08:39:34",
+      "title": "Upgrade of Tally.ERP 9 products",
+      "verdict": "REDIRECTED"
+    },
+    {
+      "url": "/806/",
+      "type": "nav_menu_item",
+      "status": "publish",
+      "date": "2024-07-31 08:23:43",
+      "title": "",
+      "verdict": "UNMAPPED"
+    },
+    {
+      "url": "/tally-software-implementation-service/",
+      "type": "page",
+      "status": "publish",
+      "date": "2021-07-16 08:41:51",
+      "title": "Tally Software Implementation Service",
+      "verdict": "REDIRECTED"
+    },
+    {
+      "url": "/corporate-training-2/",
+      "type": "page",
+      "status": "publish",
+      "date": "2021-07-16 08:42:13",
+      "title": "Corporate Training",
+      "verdict": "UNMAPPED"
+    },
+    {
+      "url": "/offline-seminars-2/",
+      "type": "page",
+      "status": "publish",
+      "date": "2021-07-16 08:42:38",
+      "title": "Offline Seminars",
+      "verdict": "UNMAPPED"
+    },
+    {
+      "url": "/online-webinars-2/",
+      "type": "page",
+      "status": "publish",
+      "date": "2021-07-16 08:43:00",
+      "title": "Online Webinars",
+      "verdict": "UNMAPPED"
+    },
+    {
+      "url": "/tally-ass-annual-software-services-2/",
+      "type": "page",
+      "status": "publish",
+      "date": "2021-07-16 08:43:22",
+      "title": "Tally ASS (Annual Software Services)",
+      "verdict": "UNMAPPED"
+    },
+    {
+      "url": "/customization-services-2/",
+      "type": "page",
+      "status": "publish",
+      "date": "2021-07-16 08:43:49",
+      "title": "Customization Services",
+      "verdict": "UNMAPPED"
+    },
+    {
+      "url": "/erp-consulting-services-3/",
+      "type": "page",
+      "status": "publish",
+      "date": "2021-07-16 08:46:54",
+      "title": "ERP Consulting Services",
+      "verdict": "REDIRECTED"
+    },
+    {
+      "url": "/understanding-client-erp-requirements/",
+      "type": "page",
+      "status": "publish",
+      "date": "2021-07-16 08:47:45",
+      "title": "Understanding Client ERP Requirements",
+      "verdict": "UNMAPPED"
+    },
+    {
+      "url": "/offering-right-solution-onlinehelping-in-implementation-of-offered-erp/",
+      "type": "page",
+      "status": "publish",
+      "date": "2021-07-16 08:48:06",
+      "title": "Offering Right Solution OnlineHelping in Implementation of Offered ERP",
+      "verdict": "UNMAPPED"
+    },
+    {
+      "url": "/ensure-quality-training-and-service-thereafter-increase-client-satisfaction/",
+      "type": "page",
+      "status": "publish",
+      "date": "2021-07-16 08:48:22",
+      "title": "Ensure Quality Training and Service thereafter Increase Client Satisfaction",
+      "verdict": "UNMAPPED"
+    },
+    {
+      "url": "/attach-and-manage-documents-2/",
+      "type": "page",
+      "status": "publish",
+      "date": "2021-07-16 08:50:27",
+      "title": "Attach and Manage Documents",
+      "verdict": "UNMAPPED"
+    },
+    {
+      "url": "/digitally-signed-tally-invoice-2/",
+      "type": "page",
+      "status": "publish",
+      "date": "2021-07-16 08:50:48",
+      "title": "Digitally Signed Tally Invoice",
+      "verdict": "UNMAPPED"
+    },
+    {
+      "url": "/lock-gst-returns-in-tally/",
+      "type": "page",
+      "status": "publish",
+      "date": "2021-07-16 08:51:16",
+      "title": "Lock GST Returns in Tally",
+      "verdict": "UNMAPPED"
+    },
+    {
+      "url": "/agent-broker-commission-rd-module/",
+      "type": "page",
+      "status": "publish",
+      "date": "2021-07-16 08:51:45",
+      "title": "Agent / Broker Commission & RD module",
+      "verdict": "UNMAPPED"
+    },
+    {
+      "url": "/customized-modules/",
+      "type": "page",
+      "status": "publish",
+      "date": "2021-07-16 08:55:24",
+      "title": "Customized Modules",
+      "verdict": "UNMAPPED"
+    },
+    {
+      "url": "/clearing-and-forwarding-agencies-cfa/",
+      "type": "page",
+      "status": "publish",
+      "date": "2021-07-16 08:56:32",
+      "title": "Clearing and Forwarding Agencies (CFA)",
+      "verdict": "UNMAPPED"
+    },
+    {
+      "url": "/housing-societies-2/",
+      "type": "page",
+      "status": "publish",
+      "date": "2021-07-16 08:56:58",
+      "title": "Housing Societies",
+      "verdict": "REDIRECTED"
+    },
+    {
+      "url": "/footwear-distribution-retail-sales-manufacturing-industries/",
+      "type": "page",
+      "status": "publish",
+      "date": "2021-07-16 08:57:31",
+      "title": "Footwear Distribution / Retail sales / Manufacturing industries",
+      "verdict": "UNMAPPED"
+    },
+    {
+      "url": "/garment-wholesale-2/",
+      "type": "page",
+      "status": "publish",
+      "date": "2021-07-16 08:57:50",
+      "title": "Garment Wholesale",
+      "verdict": "UNMAPPED"
+    },
+    {
+      "url": "/automobile-industries/",
+      "type": "page",
+      "status": "publish",
+      "date": "2021-07-16 08:58:09",
+      "title": "Automobile Industries",
+      "verdict": "GONE"
+    },
+    {
+      "url": "/share-investment-business/",
+      "type": "page",
+      "status": "publish",
+      "date": "2021-07-16 08:58:33",
+      "title": "Share / Investment Business",
+      "verdict": "UNMAPPED"
+    },
+    {
+      "url": "/tally-prime/",
+      "type": "page",
+      "status": "publish",
+      "date": "2021-07-16 09:07:44",
+      "title": "Tally Prime",
+      "verdict": "REDIRECTED"
+    },
+    {
+      "url": "/872/",
+      "type": "nav_menu_item",
+      "status": "publish",
+      "date": "2024-07-31 08:23:43",
+      "title": "Tally Prime Server",
+      "verdict": "UNMAPPED"
+    },
+    {
+      "url": "/tally-software/",
+      "type": "nav_menu_item",
+      "status": "publish",
+      "date": "2024-07-31 08:23:43",
+      "title": "Tally Software",
+      "verdict": "UNMAPPED"
+    },
+    {
+      "url": "/silver-to-gold-tally-license-upgrade/",
+      "type": "nav_menu_item",
+      "status": "publish",
+      "date": "2024-07-31 08:23:43",
+      "title": "Silver to Gold Tally License upgrade",
+      "verdict": "UNMAPPED"
+    },
+    {
+      "url": "/tally-on-mobile-app/",
+      "type": "nav_menu_item",
+      "status": "publish",
+      "date": "2024-07-31 08:23:43",
+      "title": "\"Tally on Mobile\" App",
+      "verdict": "UNMAPPED"
+    },
+    {
+      "url": "/aws-cloud/",
+      "type": "nav_menu_item",
+      "status": "publish",
+      "date": "2024-07-31 08:23:43",
+      "title": "AWS Cloud",
+      "verdict": "UNMAPPED"
+    },
+    {
+      "url": "/other-cloud/",
+      "type": "nav_menu_item",
+      "status": "publish",
+      "date": "2024-07-31 08:23:43",
+      "title": "Other Cloud",
+      "verdict": "UNMAPPED"
+    },
+    {
+      "url": "/tally-amc-service/",
+      "type": "nav_menu_item",
+      "status": "publish",
+      "date": "2024-07-31 08:23:43",
+      "title": "Tally AMC Service",
+      "verdict": "UNMAPPED"
+    },
+    {
+      "url": "/tally-consultancy-service/",
+      "type": "nav_menu_item",
+      "status": "publish",
+      "date": "2024-07-31 08:23:43",
+      "title": "Tally Consultancy Service",
+      "verdict": "UNMAPPED"
+    },
+    {
+      "url": "/tally-implementation-training/",
+      "type": "nav_menu_item",
+      "status": "publish",
+      "date": "2024-07-31 08:23:43",
+      "title": "Tally Implementation & Training",
+      "verdict": "UNMAPPED"
+    },
+    {
+      "url": "/tally-support/",
+      "type": "nav_menu_item",
+      "status": "publish",
+      "date": "2024-07-31 08:23:43",
+      "title": "Tally Support",
+      "verdict": "UNMAPPED"
+    },
+    {
+      "url": "/customized-add-ons/",
+      "type": "nav_menu_item",
+      "status": "publish",
+      "date": "2024-07-31 08:23:43",
+      "title": "Customized Add-ons",
+      "verdict": "UNMAPPED"
+    },
+    {
+      "url": "/solutions/",
+      "type": "nav_menu_item",
+      "status": "publish",
+      "date": "2024-07-31 08:23:43",
+      "title": "Solutions",
+      "verdict": "UNMAPPED"
+    },
+    {
+      "url": "/module-for-clearing-forwarding-agencies-cfa/",
+      "type": "nav_menu_item",
+      "status": "publish",
+      "date": "2024-07-31 08:23:43",
+      "title": "Module for Clearing & Forwarding Agencies (CFA)",
+      "verdict": "UNMAPPED"
+    },
+    {
+      "url": "/module-for-footwear-ready-garment-industry/",
+      "type": "nav_menu_item",
+      "status": "publish",
+      "date": "2024-07-31 08:23:43",
+      "title": "Module for Footwear / Ready Garment Industry",
+      "verdict": "UNMAPPED"
+    },
+    {
+      "url": "/module-for-transport-industry/",
+      "type": "nav_menu_item",
+      "status": "publish",
+      "date": "2024-07-31 08:23:43",
+      "title": "Module for Transport Industry",
+      "verdict": "UNMAPPED"
+    },
+    {
+      "url": "/module-for-container-handling-business/",
+      "type": "nav_menu_item",
+      "status": "publish",
+      "date": "2024-07-31 08:23:43",
+      "title": "Module for Container Handling Business",
+      "verdict": "UNMAPPED"
+    },
+    {
+      "url": "/module-for-gas-agencies/",
+      "type": "nav_menu_item",
+      "status": "publish",
+      "date": "2024-07-31 08:23:43",
+      "title": "Module for Gas Agencies",
+      "verdict": "UNMAPPED"
+    },
+    {
+      "url": "/module-for-housing-corporate-societies/",
+      "type": "nav_menu_item",
+      "status": "publish",
+      "date": "2024-07-31 08:23:43",
+      "title": "Module for Housing / Corporate Societies",
+      "verdict": "UNMAPPED"
+    },
+    {
+      "url": "/module-for-school-colleges/",
+      "type": "nav_menu_item",
+      "status": "publish",
+      "date": "2024-07-31 08:23:43",
+      "title": "Module for School / Colleges",
+      "verdict": "UNMAPPED"
+    },
+    {
+      "url": "/module-for-2w-3w-4-wheeler-sales-service-business/",
+      "type": "nav_menu_item",
+      "status": "publish",
+      "date": "2024-07-31 08:23:43",
+      "title": "Module for 2W / 3W / 4 Wheeler Sales / Service Business",
+      "verdict": "UNMAPPED"
+    },
+    {
+      "url": "/module-for-handling-agent-salesman-performance-and-payout/",
+      "type": "nav_menu_item",
+      "status": "publish",
+      "date": "2024-07-31 08:23:43",
+      "title": "Module for handling Agent / SalesMan performance and payout",
+      "verdict": "UNMAPPED"
+    },
+    {
+      "url": "/other-utilities/",
+      "type": "nav_menu_item",
+      "status": "publish",
+      "date": "2024-07-31 08:23:43",
+      "title": "Other Utilities",
+      "verdict": "UNMAPPED"
+    },
+    {
+      "url": "/hiring/",
+      "type": "nav_menu_item",
+      "status": "publish",
+      "date": "2024-07-31 08:23:43",
+      "title": "Hiring",
+      "verdict": "UNMAPPED"
+    },
+    {
+      "url": "/wp-global-styles-divi/",
+      "type": "wp_global_styles",
+      "status": "publish",
+      "date": "2026-08-25 06:31:33",
+      "title": "Custom Styles",
+      "verdict": "GONE (wp prefix)"
+    }
+  ]
+}

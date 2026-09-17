@@ -287,7 +287,7 @@ export default function TallyCloudAccessPage() {
       <div
         ref={navRef}
         className={`bg-white border-b border-slate-200 transition-all duration-200 ${
-          stickyNav ? 'sticky top-0 z-[100] shadow-sm' : ''
+          stickyNav ? 'sticky top-0 z-100 shadow-sm' : ''
         }`}
       >
         <div className="max-w-7xl mx-auto px-6">
