@@ -30,12 +30,13 @@ function StarRating({ rating, size = "w-4 h-4" }: { rating: number, size?: strin
 
 // CHANGE: 2026-09-17 — variant-aware card. 'marquee' = fixed 320px compact card (desktop),
 // 'feature' = full-width large card (sm & below) with bigger type + serif quote + quote glyph.
-// CHANGE: 2026-09-17 (rev-2) — marquee cards get uniform dimensions: min-h-[240px], footer
-// pinned via justify-between + flex-1 middle, quote line-clamped so every card is the same size.
+// CHANGE: 2026-09-17 (rev-3) — marquee cards get FIXED identical dimensions (320×272px):
+// `h-68` (not min-h) + overflow-hidden + line-clamp so long quotes can never grow a card;
+// footer pinned via justify-between + flex-1 body, so all desktop cards are exactly equal.
 const ReviewCard = memo(function ReviewCard({ review, variant = 'marquee' }: { review: Review; variant?: 'marquee' | 'feature' }) {
     const feature = variant === 'feature';
     return (
-        <div className={`shrink-0 bg-white rounded-2xl shadow-sm border border-slate-100 flex flex-col h-full ${feature ? 'w-full p-6 sm:p-8' : 'w-[320px] p-5 justify-between min-h-[240px]'}`}>
+        <div className={`shrink-0 bg-white rounded-2xl shadow-sm border border-slate-100 flex flex-col h-full ${feature ? 'w-full p-6 sm:p-8' : 'w-[320px] p-5 justify-between h-68 overflow-hidden'}`}>
             <div className={feature ? '' : 'flex-1'}>
                 <div className={`flex justify-between items-start ${feature ? 'mb-4 sm:mb-5' : 'mb-4'}`}>
                     <div className="flex items-center gap-3">
@@ -128,20 +129,34 @@ const CustomerReviews = ({ initialData }: { initialData?: Review[] }) => {
         };
     }, [loading, reviews.length]);
 
-    // CHANGE: 2026-09-17 (rev-2) — infinite mobile loop. The carousel renders reviews twice;
-    // when the raw card index reaches the duplicated copy (>= reviews.length), snap back to the
-    // real first card instantly (deferred one frame so the smooth swipe settles first).
+    // CHANGE: 2026-09-17 (rev-3) — glitch-free infinite mobile loop. Scrolling into the duplicated
+    // copy is DEBOUNCED: the reset fires only after momentum/smooth scroll settles (120ms of no
+    // scroll events), then the position swaps to the identical real card via `% reviews.length`
+    // modulo mapping. Wrap to the 1st therefore looks like the very next card — no rapid jump,
+    // and multi-card momentum swipes still land on the right real card.
+    const loopTimer = useRef<number | null>(null);
+    const loopReset = () => {
+        const el = carouselRef.current;
+        if (!el || el.clientWidth === 0) return;
+        const raw = Math.round(el.scrollLeft / el.clientWidth);
+        if (raw < reviews.length) return;
+        const logical = raw % reviews.length;
+        el.scrollTo({ left: logical * el.clientWidth, behavior: 'auto' });
+        scrollIdx.current = logical;
+        setActiveIdx(logical);
+    };
     const handleCarouselScroll = () => {
         const el = carouselRef.current;
         if (!el || el.clientWidth === 0) return;
         const raw = Math.round(el.scrollLeft / el.clientWidth);
         if (raw >= reviews.length) {
-            requestAnimationFrame(() => {
-                el.scrollLeft = 0;
-            });
-            scrollIdx.current = 0;
-            setActiveIdx(0);
+            if (loopTimer.current) window.clearTimeout(loopTimer.current);
+            loopTimer.current = window.setTimeout(loopReset, 120);
             return;
+        }
+        if (loopTimer.current) {
+            window.clearTimeout(loopTimer.current);
+            loopTimer.current = null;
         }
         if (raw !== scrollIdx.current) {
             scrollIdx.current = raw;
@@ -158,9 +173,9 @@ const CustomerReviews = ({ initialData }: { initialData?: Review[] }) => {
     };
 
     // CHANGE: 2026-09-17 — autoplay only when the section is on-screen, on sm-only carousel.
-    // CHANGE: 2026-09-17 (rev-2) — advance FORWARD one card (0..reviews.length) so wrapping past
-    // the last review slides into the duplicated first card; the scroll handler snaps it back to
-    // the real first card, making the loop seamless (last → first, no long reverse jump).
+    // CHANGE: 2026-09-17 (rev-3) — advance FORWARD one card (0..reviews.length) so wrapping past
+    // the last review slides into the duplicated first card; the debounced handler then swaps it
+    // to the real first card, keeping the loop seamless (last → first reads as the very next).
     useEffect(() => {
         const el = carouselRef.current;
         if (!el || !isVisible || reviews.length <= 1 || reducedMotion.current) return;
@@ -176,6 +191,7 @@ const CustomerReviews = ({ initialData }: { initialData?: Review[] }) => {
     useEffect(() => {
         return () => {
             if (resumeTimer.current) window.clearTimeout(resumeTimer.current);
+            if (loopTimer.current) window.clearTimeout(loopTimer.current);
         };
     }, []);
 
