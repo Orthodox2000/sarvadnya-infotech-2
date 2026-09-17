@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, memo } from 'react';
 import Image from 'next/image';
 
 interface Review {
@@ -28,41 +28,63 @@ function StarRating({ rating, size = "w-4 h-4" }: { rating: number, size?: strin
     );
 }
 
-function ReviewCard({ review }: { review: Review }) {
+// CHANGE: 2026-09-17 — variant-aware card. 'marquee' = fixed 320px compact card (desktop),
+// 'feature' = full-width large card (sm & below) with bigger type + serif quote + quote glyph.
+const ReviewCard = memo(function ReviewCard({ review, variant = 'marquee' }: { review: Review; variant?: 'marquee' | 'feature' }) {
+    const feature = variant === 'feature';
     return (
-        <div className="w-[320px] shrink-0 bg-white p-5 rounded-2xl shadow-sm border border-slate-100 flex flex-col justify-between hover:shadow-md hover:-translate-y-1 transition-all duration-300">
+        <div className={`shrink-0 bg-white rounded-2xl shadow-sm border border-slate-100 flex flex-col h-full ${feature ? 'w-full p-6 sm:p-8' : 'w-[320px] p-5'}`}>
             <div>
-                <div className="flex justify-between items-start mb-4">
-                    <div className="flex items-center gap-2">
-                        <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 text-xs font-bold">
+                <div className={`flex justify-between items-start ${feature ? 'mb-4 sm:mb-5' : 'mb-4'}`}>
+                    <div className="flex items-center gap-3">
+                        <div className={`rounded-full bg-slate-100 flex items-center justify-center text-slate-600 font-bold ${feature ? 'w-11 h-11 sm:w-12 sm:h-12 text-base sm:text-lg' : 'w-8 h-8 text-xs'}`}>
                             {review.name.charAt(0)}
                         </div>
                         <div>
-                            <p className="text-slate-900 font-bold text-[0.8rem] leading-tight">{review.name}</p>
-                            <p className="text-slate-400 text-[0.65rem]">{review.date}</p>
+                            <p className={`text-slate-900 font-bold leading-tight ${feature ? 'text-base sm:text-lg' : 'text-[0.8rem]'}`}>{review.name}</p>
+                            <p className={`text-slate-400 ${feature ? 'text-xs sm:text-sm' : 'text-[0.65rem]'}`}>{review.date}</p>
                         </div>
                     </div>
-                    <StarRating rating={review.rating} size="w-3 h-3" />
+                    <StarRating rating={review.rating} size={feature ? 'w-4 h-4 sm:w-5 sm:h-5' : 'w-3 h-3'} />
                 </div>
-                <p className="text-slate-600 leading-relaxed text-sm italic">
-                    &ldquo;{review.text}&rdquo;
-                </p>
+                {feature ? (
+                    <div className="relative mt-1">
+                        <span aria-hidden className="pointer-events-none select-none absolute -top-1 left-0 font-playfair text-[5rem] sm:text-[6rem] leading-none text-[#006569]/10">
+                            &ldquo;
+                        </span>
+                        <p className="relative font-playfair text-[1.05rem] sm:text-xl leading-relaxed text-slate-600 pt-9 sm:pt-10">
+                            {review.text}
+                        </p>
+                    </div>
+                ) : (
+                    <p className="text-slate-600 leading-relaxed text-sm italic">
+                        &ldquo;{review.text}&rdquo;
+                    </p>
+                )}
             </div>
-            <div className="mt-6 pt-4 border-t border-slate-50 flex items-center gap-1.5">
-                <svg className="w-3.5 h-3.5 text-[#006569]" fill="currentColor" viewBox="0 0 20 20">
+            <div className={`mt-6 pt-4 border-t border-slate-50 flex items-center gap-1.5 ${feature ? 'sm:mt-8' : ''}`}>
+                <svg className={`text-[#006569] ${feature ? 'w-4 h-4 sm:w-5 sm:h-5' : 'w-3.5 h-3.5'}`} fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                 </svg>
-                <span className="text-[0.6rem] font-black text-slate-300 uppercase tracking-widest">Verified Review</span>
+                <span className={`font-black text-slate-300 uppercase tracking-widest ${feature ? 'text-[0.7rem] sm:text-xs' : 'text-[0.6rem]'}`}>Verified Review</span>
             </div>
         </div>
     );
-}
+});
 
 const CustomerReviews = ({ initialData }: { initialData?: Review[] }) => {
     const [reviews, setReviews] = useState<Review[]>(initialData || []);
     const [loading, setLoading] = useState(!initialData);
     const [isVisible, setIsVisible] = useState(false);
+    const [activeIdx, setActiveIdx] = useState(0);
     const sectionRef = useRef<HTMLElement>(null);
+    const carouselRef = useRef<HTMLDivElement>(null);
+    // CHANGE: 2026-09-17 — sm-carousel autoplay: track scroll position, pause on user touch,
+    // resume after 6s, skip entirely when the visitor prefers reduced motion.
+    const scrollIdx = useRef(0);
+    const userPaused = useRef(false);
+    const resumeTimer = useRef<number | null>(null);
+    const reducedMotion = useRef(false);
 
     useEffect(() => {
         if (initialData) return;
@@ -83,6 +105,13 @@ const CustomerReviews = ({ initialData }: { initialData?: Review[] }) => {
     }, [initialData]);
 
     useEffect(() => {
+        reducedMotion.current =
+            typeof window.matchMedia === 'function'
+                ? window.matchMedia('(prefers-reduced-motion: reduce)').matches
+                : false;
+    }, []);
+
+    useEffect(() => {
         if (loading || reviews.length === 0) return;
         const currentRef = sectionRef.current;
         const observer = new IntersectionObserver(
@@ -97,9 +126,56 @@ const CustomerReviews = ({ initialData }: { initialData?: Review[] }) => {
         };
     }, [loading, reviews.length]);
 
+    const handleCarouselScroll = () => {
+        const el = carouselRef.current;
+        if (!el || el.clientWidth === 0) return;
+        const idx = Math.min(
+            reviews.length - 1,
+            Math.max(0, Math.round(el.scrollLeft / el.clientWidth))
+        );
+        if (idx !== scrollIdx.current) {
+            scrollIdx.current = idx;
+            setActiveIdx(idx);
+        }
+    };
+
+    const pauseAutoplay = () => {
+        userPaused.current = true;
+        if (resumeTimer.current) window.clearTimeout(resumeTimer.current);
+        resumeTimer.current = window.setTimeout(() => {
+            userPaused.current = false;
+        }, 6000);
+    };
+
+    // CHANGE: 2026-09-17 — autoplay only when the section is on-screen, on sm-only carousel.
+    useEffect(() => {
+        const el = carouselRef.current;
+        if (!el || !isVisible || reviews.length <= 1 || reducedMotion.current) return;
+        const run = () => {
+            if (userPaused.current) return;
+            const next = (scrollIdx.current + 1) % reviews.length;
+            el.scrollTo({ left: next * el.clientWidth, behavior: 'smooth' });
+        };
+        const id = window.setInterval(run, 5000);
+        return () => window.clearInterval(id);
+    }, [isVisible, reviews.length]);
+
+    useEffect(() => {
+        return () => {
+            if (resumeTimer.current) window.clearTimeout(resumeTimer.current);
+        };
+    }, []);
+
     if (loading || reviews.length === 0) return null;
 
     const speed = Math.max(25, reviews.length * 6);
+
+    const goTo = (i: number) => {
+        const el = carouselRef.current;
+        if (!el) return;
+        scrollIdx.current = i;
+        el.scrollTo({ left: i * el.clientWidth, behavior: 'smooth' });
+    };
 
     return (
         <section ref={sectionRef} className={`w-full py-16 md:py-20 px-6 overflow-hidden bg-[linear-gradient(90deg,_rgba(249,251,245,1)_0%,_rgba(244,242,234,1)_53%,_rgba(238,236,223,1)_100%)] transition-all duration-1000 ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
@@ -110,7 +186,8 @@ const CustomerReviews = ({ initialData }: { initialData?: Review[] }) => {
                     </div>
                 </div>
 
-                <div className="mt-2 relative overflow-hidden" style={{ maskImage: 'linear-gradient(to right, transparent 0%, black 4%, black 96%, transparent 100%)', WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 4%, black 96%, transparent 100%)' }}>
+                {/* Desktop (md+): unchanged infinite marquee */}
+                <div className="mt-2 relative overflow-hidden hidden md:block" style={{ maskImage: 'linear-gradient(to right, transparent 0%, black 4%, black 96%, transparent 100%)', WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 4%, black 96%, transparent 100%)' }}>
                     <div
                         className="flex gap-6"
                         style={{
@@ -123,6 +200,39 @@ const CustomerReviews = ({ initialData }: { initialData?: Review[] }) => {
                         ))}
                     </div>
                 </div>
+
+                {/* Mobile (sm & below): one large card per viewport, swipe + dots */}
+                <div
+                    ref={carouselRef}
+                    onScroll={handleCarouselScroll}
+                    onPointerDown={pauseAutoplay}
+                    onTouchStart={pauseAutoplay}
+                    onWheel={pauseAutoplay}
+                    onKeyDown={pauseAutoplay}
+                    role="region"
+                    aria-label="Customer reviews, swipe to browse"
+                    tabIndex={0}
+                    className="md:hidden mt-2 flex overflow-x-auto snap-x snap-mandatory no-scrollbar focus:outline-none focus:ring-2 focus:ring-[#006569]/40 focus:rounded-2xl"
+                >
+                    {reviews.map((review) => (
+                        <div key={review._id} className="w-full shrink-0 snap-start">
+                            <ReviewCard review={review} variant="feature" />
+                        </div>
+                    ))}
+                </div>
+
+                <div className="md:hidden mt-6 flex items-center justify-center gap-2" role="group" aria-label="Review navigation">
+                    {reviews.map((review, i) => (
+                        <button
+                            key={review._id}
+                            type="button"
+                            onClick={() => goTo(i)}
+                            aria-label={`Go to review ${i + 1}`}
+                            aria-current={i === activeIdx}
+                            className={`h-2 rounded-full transition-all duration-300 ${i === activeIdx ? 'w-6 bg-[#006569]' : 'w-2 bg-slate-300 hover:bg-slate-400'}`}
+                        />
+                    ))}
+                </div>
             </div>
 
             <style>{`
@@ -130,6 +240,8 @@ const CustomerReviews = ({ initialData }: { initialData?: Review[] }) => {
                     0% { transform: translateX(0); }
                     100% { transform: translateX(-50%); }
                 }
+                .no-scrollbar::-webkit-scrollbar { display: none; }
+                .no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
             `}</style>
         </section>
     );
