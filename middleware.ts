@@ -74,6 +74,15 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL(pathname + search, `https://${CANONICAL_HOST}`), 301);
   }
 
+  // CHANGE: 2026-09-22 — retire the legacy /modules?id=* deep-link URL. All internal links now use
+  // /modules#fragment anchors and the page ignores the `id` param, so 301ing Googlebot's old ?id=
+  // crawl to the clean URL stops /modules?id=… from being re-recorded as an
+  // "Alternative page with proper canonical tag". Other params (utm_*, et_core_page_resource) are
+  // preserved so campaign attribution is untouched.
+  if (pathname === '/modules' && request.nextUrl.searchParams.has('id')) {
+    return NextResponse.redirect(new URL(pathname, request.nextUrl.origin), 301);
+  }
+
   const origin = request.headers.get('origin');
   const allowed = origin !== null && (ALLOWED_ORIGINS.has(origin) || isLocalhost(origin));
 

@@ -213,7 +213,6 @@ export default function AWSCloudPage() {
                   Official Cloud
                 </span>
               </div>
-              <div className="flex items-center flex-wrap gap-x-4 gap-y-1 mt-1.5"></div>
               <p className="text-[13px] text-slate-500 mt-1.5 leading-relaxed max-w-3xl">
                 Access TallyPrime from anywhere, on any laptop, without maintaining a server. Your data stays safe in the cloud with free setup and automatic backups.
               </p>

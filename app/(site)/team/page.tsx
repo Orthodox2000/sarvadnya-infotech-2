@@ -65,7 +65,7 @@ export default function TeamPage() {
               Our Family
             </div>
             <h1 className="text-3xl md:text-5xl lg:text-6xl font-black text-slate-900 leading-tight tracking-tight">
-              Meet the <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#006569] via-[#006569] to-[#006569] drop-shadow-[0_2px_15px_rgba(0,101,105,0.3)]">Experts</span><br/>
+              Meet the <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#006569] to-[#006569] drop-shadow-[0_2px_15px_rgba(0,101,105,0.3)]">Experts</span><br/>
               Behind Your Success
             </h1>
             <p className="text-lg md:text-xl text-slate-600/80 font-medium leading-relaxed italic border-l-4 border-[#006569] pl-6 max-w-2xl mx-auto lg:mx-0">

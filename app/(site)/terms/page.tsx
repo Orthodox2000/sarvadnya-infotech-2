@@ -9,7 +9,7 @@ export default function TermsPage() {
         <div className="absolute inset-0 z-0 opacity-10 pointer-events-none" style={{ backgroundImage: 'url(/bgggg.png)', backgroundSize: 'cover', backgroundPosition: 'center' }} />
         <div className="max-w-4xl mx-auto relative z-10 w-full flex flex-col items-center">
           <h1 className="text-3xl md:text-5xl font-black text-slate-900 mb-6 leading-tight tracking-tight">
-            Terms & <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#006569] via-[#006569] to-[#006569] drop-shadow-[0_2px_15px_rgba(0,101,105,0.3)]">Conditions</span>
+            Terms & <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#006569] to-[#006569] drop-shadow-[0_2px_15px_rgba(0,101,105,0.3)]">Conditions</span>
           </h1>
           <p className="text-slate-600/80 max-w-2xl mx-auto text-sm md:text-base leading-relaxed font-semibold">
             Please read these terms and conditions carefully before using our services.

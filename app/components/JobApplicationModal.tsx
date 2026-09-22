@@ -261,7 +261,7 @@ export default function JobApplicationModal({
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="group relative w-full h-12 sm:h-14 bg-[#006569] text-white rounded-2xl font-black text-xs uppercase tracking-[0.2em] shadow-xl shadow-[#006569]/20 hover:bg-[#006569] transition-all flex items-center justify-center gap-3 overflow-hidden active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed"
+                className="group relative w-full h-12 sm:h-14 bg-[#006569] text-white rounded-2xl font-black text-xs uppercase tracking-[0.2em] shadow-xl shadow-[#006569]/20 transition-all flex items-center justify-center gap-3 overflow-hidden active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed"
               >
                 {isSubmitting ? (
                   <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />

@@ -5,21 +5,8 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import SearchBar from "./SearchBar";
 
-export type SiteSettings = {
-  support_phone: string;
-  support_email: string;
-  office_address: string;
-  facebook_url: string;
-  instagram_url: string;
-  linkedin_url: string;
-  youtube_url: string;
-  facebook_handle: string;
-  instagram_handle: string;
-  linkedin_handle: string;
-  youtube_handle: string;
-  map_iframe_url: string;
-};
-
+// CHANGE: 2026-09-18 — removed unreferenced SiteSettings type (Navbar is fully
+// hardcoded; the type was dead — Footer defines the live SiteSettings type).
 // CHANGE: 2026-08-26 — Navbar is fully hardcoded (no /api/settings or DB dependency).
 // Removed the settings state/fetch: support_phone helpers were never rendered in the output.
 export default function Navbar() {

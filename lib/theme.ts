@@ -6,9 +6,6 @@ export const theme = {
   headingColor: "#0f172a",
   paragraphColor: "#334155",
   backgroundColor: "#ffffff",
-  white: "#ffffff",
-  accentColor: "#006569",
-  headingLightColor: "#006569",
 } as const;
 
 export type Theme = typeof theme;

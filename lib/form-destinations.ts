@@ -61,7 +61,7 @@ export const FORM_DESTINATIONS: FormDestination[] = [
   { key: 'report-problem', label: 'Report a Problem', paths: ['/report-problem'], category: 'others' },
 ];
 
-export const KNOWN_DESTINATION_KEYS = FORM_DESTINATIONS.map((d) => d.key);
+// CHANGE: 2026-09-18 — removed unused KNOWN_DESTINATION_KEYS export (zero importers).
 
 export function getDestinationFromPath(pathname: string | null | undefined): string | undefined {
   const path = (pathname || '').replace(/\/+$/, '') || '/';

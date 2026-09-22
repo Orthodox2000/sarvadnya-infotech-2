@@ -2,14 +2,10 @@
 
 import { useState, useEffect, useRef, memo } from 'react';
 import Image from 'next/image';
+import type { Review } from '@/lib/reviews';
 
-interface Review {
-    _id: string;
-    name: string;
-    rating: number;
-    date: string;
-    text: string;
-}
+// CHANGE: 2026-09-18 — Review type now imported from lib/reviews.ts (was a local
+// re-declaration that could drift; _id is optional there, so keys stay safe).
 
 function StarRating({ rating, size = "w-4 h-4" }: { rating: number, size?: string }) {
     return (

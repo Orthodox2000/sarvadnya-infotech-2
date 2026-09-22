@@ -92,7 +92,7 @@ export default function TSSPage() {
             </div>
             <h1 className="text-3xl md:text-5xl font-black text-slate-900 mb-6 leading-tight tracking-tight">
               Renew Your {' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#006569] via-[#006569] to-[#006569]">Tally Software Service (TSS)</span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#006569] to-[#006569]">Tally Software Service (TSS)</span>
             </h1>
             <p className="text-slate-600 text-base md:text-lg max-w-xl leading-relaxed mb-8 font-semibold">
               Don&apos;t let your E-invoicing and GST features expire. Renew your TSS today to keep generating 1-click E-way bills, auto-reconcile your bank statements, and stay perfectly compliant with the latest tax laws.
@@ -100,7 +100,7 @@ export default function TSSPage() {
             <div className="flex flex-wrap gap-4">
               <button 
                 onClick={() => openModal('quote')}
-                className="px-8 py-4 bg-[#006569] text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-[#006569] transition-all shadow-xl shadow-[#006569]/20"
+                className="px-8 py-4 bg-[#006569] text-white rounded-2xl font-black text-xs uppercase tracking-widest transition-all shadow-xl shadow-[#006569]/20"
               >
                 Get Renewal Pricing
               </button>

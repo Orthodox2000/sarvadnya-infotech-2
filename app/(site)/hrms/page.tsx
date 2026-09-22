@@ -207,7 +207,6 @@ export default function HRMSPage() {
                   HRMS
                 </span>
               </div>
-              <div className="flex items-center flex-wrap gap-x-4 gap-y-1 mt-1.5"></div>
               <p className="text-[13px] text-slate-500 mt-1.5 leading-relaxed max-w-3xl">
                 A complete Human Resource Management System integrated with TallyPrime to manage payroll, attendance, employee lifecycle,
                 statutory compliance, and more — on a single platform designed for growing businesses.

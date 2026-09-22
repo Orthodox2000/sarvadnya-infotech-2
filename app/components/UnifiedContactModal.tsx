@@ -257,7 +257,7 @@ export default function UnifiedContactModal({
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="group relative w-full h-11 sm:h-12 bg-[#006569] text-white rounded-xl font-black text-xs uppercase tracking-widest shadow-lg shadow-teal-100 hover:bg-[#006569] transition-all flex items-center justify-center gap-3 overflow-hidden active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed"
+                className="group relative w-full h-11 sm:h-12 bg-[#006569] text-white rounded-xl font-black text-xs uppercase tracking-widest shadow-lg shadow-teal-100 transition-all flex items-center justify-center gap-3 overflow-hidden active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed"
               >
                 {isSubmitting ? (
                   <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />

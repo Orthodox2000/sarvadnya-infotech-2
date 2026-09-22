@@ -218,7 +218,6 @@ export default function BackupForTallyPage() {
                   Bulletproof Data Protection
                 </span>
               </div>
-              <div className="flex items-center flex-wrap gap-x-4 gap-y-1 mt-1.5"></div>
               <p className="text-[13px] text-slate-500 mt-1.5 leading-relaxed max-w-3xl">
                 A secure, scalable cloud backup and disaster recovery solution for TallyPrime. Automated backups, centralized management, and instant 1-Click restore — protecting your business data against crashes, theft, and ransomware.
               </p>

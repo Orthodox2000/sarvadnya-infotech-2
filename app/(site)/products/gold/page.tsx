@@ -254,7 +254,6 @@ export default function TallyGoldPage() {
                   Multi-User Product
                 </span>
               </div>
-              <div className="flex items-center flex-wrap gap-x-4 gap-y-1 mt-1.5"></div>
               <p className="text-sm text-slate-600 mt-1.5 leading-relaxed max-w-3xl">
                 When your entire team use Tally at the same time, No more taking turns on one computer — everyone bills, tracks inventory, and works on the same live data.
               </p>

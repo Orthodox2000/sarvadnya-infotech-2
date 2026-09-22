@@ -43,7 +43,7 @@ export default function CareersPage() {
           </div>
           <h1 className="text-3xl md:text-5xl font-black text-slate-900 mb-6 leading-tight tracking-tight">
             Build the Future of <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#006569] via-[#006569] to-[#006569] drop-shadow-[0_2px_15px_rgba(0,101,105,0.3)]">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#006569] to-[#006569] drop-shadow-[0_2px_15px_rgba(0,101,105,0.3)]">
               Business Intelligence
             </span>
           </h1>

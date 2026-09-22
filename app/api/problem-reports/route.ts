@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { saveProblemReport } from '@/lib/mongodb-utils';
 import { sendEmailDirect } from '@/lib/email-queue';
+import { isValidEmail } from '@/lib/email';
 import { getRequestMeta, lookupGeo, isValidSessionId, markConversion } from '@/lib/visitors';
 import type { GeoInfo } from '@/lib/visitors';
 
@@ -21,10 +22,6 @@ function sanitize(str: string, maxLength = 2000) {
 function normalizeIssueType(value: string) {
   const safeValue = sanitize(value, 80);
   return allowedIssueTypes.has(safeValue) ? safeValue : 'other';
-}
-
-function isValidEmail(email: string) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
 export async function POST(request: Request) {

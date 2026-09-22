@@ -431,7 +431,7 @@ export default function LearnSaraPage() {
                       <button
                         key={ti}
                         onClick={() => handleFollowUp(topic)}
-                        className="px-3 py-1.5 bg-[#E5F4F4] hover:bg-[#006569] hover:text-white text-[#006569] rounded-full text-[11px] font-bold transition-all border border-[#006569]/15 hover:border-[#006569] hover:shadow-md active:scale-95"
+                        className="px-3 py-1.5 bg-[#E5F4F4] hover:text-white text-[#006569] rounded-full text-[11px] font-bold transition-all border border-[#006569]/15 hover:border-[#006569] hover:shadow-md active:scale-95"
                       >
                         {topic.label}
                       </button>
@@ -565,7 +565,7 @@ export default function LearnSaraPage() {
               <button
                 type="submit"
                 disabled={!inputValue.trim() || isTyping}
-                className="w-10 h-10 rounded-full bg-[#006569] text-white flex items-center justify-center shrink-0 hover:bg-[#006569] disabled:opacity-30 disabled:hover:bg-[#006569] transition-all active:scale-90 shadow-lg shadow-[#006569]/20"
+                className="w-10 h-10 rounded-full bg-[#006569] text-white flex items-center justify-center shrink-0 disabled:opacity-30 disabled:hover:bg-[#006569] transition-all active:scale-90 shadow-lg shadow-[#006569]/20"
               >
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />

@@ -61,7 +61,7 @@ export default function TssRenewalForm({ variant = 'default', source = 'website'
           <input type="email" placeholder="Email Address *" required value={email} onChange={e => setEmail(e.target.value)}
             className="w-full px-3 py-2 text-xs rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#006569]/30 focus:border-[#006569]" />
           <button type="submit" disabled={submitting}
-            className="w-full px-4 py-2.5 bg-[#006569] text-white rounded-lg text-xs font-bold uppercase tracking-wider hover:bg-[#006569] transition-all disabled:opacity-50">
+            className="w-full px-4 py-2.5 bg-[#006569] text-white rounded-lg text-xs font-bold uppercase tracking-wider transition-all disabled:opacity-50">
             {submitting ? 'Submitting...' : 'Renew Now'}
           </button>
         </form>
@@ -122,7 +122,7 @@ export default function TssRenewalForm({ variant = 'default', source = 'website'
             className="w-full px-4 py-3 text-sm rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#006569]/30 focus:border-[#006569] transition-all" />
         </div>
         <button type="submit" disabled={submitting}
-          className="w-full px-6 py-3.5 bg-[#006569] text-white rounded-xl font-black text-xs uppercase tracking-widest hover:bg-[#006569] transition-all shadow-lg shadow-[#006569]/20 disabled:opacity-50 disabled:cursor-not-allowed">
+          className="w-full px-6 py-3.5 bg-[#006569] text-white rounded-xl font-black text-xs uppercase tracking-widest transition-all shadow-lg shadow-[#006569]/20 disabled:opacity-50 disabled:cursor-not-allowed">
           {submitting ? 'Submitting...' : 'Renew Now'}
         </button>
       </form>

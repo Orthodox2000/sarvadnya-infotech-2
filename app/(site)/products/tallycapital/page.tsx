@@ -202,7 +202,7 @@ export default function TallyCapitalPage() {
             <div className=" lg:ml-10">
               <div className="flex items-start gap-4 mb-5">
                 <div className="w-24 h-24 shrink-0 rounded-xl border border-slate-200 bg-white flex items-center justify-center shadow-sm">
-                  <Image src="/tallycapital.png" alt="TallyCapital" width={80} height={80} className="object-fit " />
+                  <Image src="/tallycapital.png" alt="TallyCapital" width={80} height={80} className="object-fill" />
                 </div>
                 <div>
                   <h1 className="text-4xl md:text-[3.2rem] font-black text-[#181717] tracking-tight leading-[1.1] mb-2 ml-4">

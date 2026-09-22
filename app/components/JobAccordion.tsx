@@ -85,7 +85,7 @@ export default function JobAccordion({ job, onApply }: JobAccordionProps) {
 
         <div className="flex items-center gap-3 self-end md:self-center shrink-0">
           <button 
-            className="flex items-center gap-2 px-5 py-2.5 rounded-full text-[11px] font-black uppercase tracking-widest bg-[#006569] text-white hover:bg-[#006569] transition-all shadow-md shadow-[#006569]/20 hover:scale-105 active:scale-95"
+            className="flex items-center gap-2 px-5 py-2.5 rounded-full text-[11px] font-black uppercase tracking-widest bg-[#006569] text-white transition-all shadow-md shadow-[#006569]/20 hover:scale-105 active:scale-95"
             onClick={(e) => {
               e.stopPropagation();
               onApply(job);
@@ -168,7 +168,7 @@ export default function JobAccordion({ job, onApply }: JobAccordionProps) {
               Resume must be in PDF format
             </div>
             <button 
-              className="bg-[#006569] text-white px-7 py-3 rounded-xl font-black text-[11px] uppercase tracking-[0.2em] hover:bg-[#006569] transition-all hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-[#006569]/20"
+              className="bg-[#006569] text-white px-7 py-3 rounded-xl font-black text-[11px] uppercase tracking-[0.2em] transition-all hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-[#006569]/20"
               onClick={() => onApply(job)}
             >
               Start Your Application

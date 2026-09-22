@@ -75,7 +75,7 @@ export default function ModulesPage() {
           </div>
           <h1 className="text-3xl md:text-5xl font-black text-slate-900 mb-6 leading-tight tracking-tight">
             Ready-to-Run<br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#006569] via-[#006569] to-[#006569] drop-shadow-[0_2px_15px_rgba(0,101,105,0.2)]">Industry Modules</span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#006569] to-[#006569] drop-shadow-[0_2px_15px_rgba(0,101,105,0.2)]">Industry Modules</span>
           </h1>
           <p className="text-slate-600/80 text-sm md:text-xl max-w-5xl mx-auto leading-relaxed font-semibold">
             Why start from scratch? We&apos;ve already designed and tested the exact features your business needs. Simply plug in our pre-built modules to transform your Tally into a complete, easy-to-use system that handles your daily operations instantly.
@@ -131,7 +131,7 @@ export default function ModulesPage() {
           </p>
           <button 
             onClick={() => setContactModalConfig({ isOpen: true, type: 'callback', service: 'Bespoke TDL Customization' })}
-            className="group px-10 py-4 bg-[#006569] text-white rounded-full font-bold hover:bg-[#006569] transition-all shadow-xl shadow-teal-900/20 flex items-center gap-3 mx-auto"
+            className="group px-10 py-4 bg-[#006569] text-white rounded-full font-bold transition-all shadow-xl shadow-teal-900/20 flex items-center gap-3 mx-auto"
           >
             Consult Our Team
             <svg className="w-5 h-5 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>

@@ -214,7 +214,6 @@ export default function WindowsVMPage() {
                   Full Desktop
                 </span>
               </div>
-              <div className="flex items-center flex-wrap gap-x-4 gap-y-1 mt-1.5"></div>
               <p className="text-[13px] text-slate-500 mt-1.5 leading-relaxed max-w-3xl">
                 A full Windows desktop in the cloud for teams that want to print invoices, use Excel with Tally, and work from anywhere — just like sitting at the office.
               </p>

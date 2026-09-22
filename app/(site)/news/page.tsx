@@ -32,7 +32,7 @@ export default async function NewsPage() {
             Company Press & Insights
           </div>
           <h1 className="text-4xl md:text-6xl font-black text-slate-900 mb-4 leading-tight tracking-tight">
-            Latest News & <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#006569] via-[#006569] to-[#006569] drop-shadow-[0_2px_15px_rgba(0,101,105,0.3)]">Updates</span>
+            Latest News & <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#006569] to-[#006569] drop-shadow-[0_2px_15px_rgba(0,101,105,0.3)]">Updates</span>
           </h1>
           <p className="text-slate-600/80 text-[10px] md:text-sm max-w-xl mx-auto leading-relaxed font-semibold">
             Stay informed about the latest Tally updates, statutory changes, and Sarvadnya Infotech LLP announcements.

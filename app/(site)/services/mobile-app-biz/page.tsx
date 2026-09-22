@@ -96,7 +96,7 @@ export default function MobileAppBizPage() {
             </div>
             <h1 className="text-4xl md:text-5xl font-black text-slate-900 mb-6 leading-tight tracking-tight">
               Total Control Over Your Business{' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#006569] via-[#006569] to-[#006569]">& Cash Flow</span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#006569] to-[#006569]">& Cash Flow</span>
             </h1>
             <p className="text-slate-600 text-base md:text-lg max-w-xl leading-relaxed mb-8 font-semibold">
               Stop calling your accountant for reports. Access live Tally data, track your field sales team, and send WhatsApp payment reminders directly from your smartphone—anytime, anywhere.
@@ -104,7 +104,7 @@ export default function MobileAppBizPage() {
             <div className="flex flex-wrap gap-4">
               <button 
                 onClick={() => openModal('demo')}
-                className="px-4 py-4 bg-[#006569] text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-[#006569] transition-all shadow-xl shadow-[#006569]/20"
+                className="px-4 py-4 bg-[#006569] text-white rounded-2xl font-black text-xs uppercase tracking-widest transition-all shadow-xl shadow-[#006569]/20"
               >
                 Get Now
               </button>
@@ -116,7 +116,7 @@ export default function MobileAppBizPage() {
       {/* Feature Grid */}
       <section className="py-12 px-6 max-w-7xl mx-auto">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-5xl font-black text-slate-black mb-4">Why MSME Owners Love Biz Analyst</h2>
+          <h2 className="text-3xl md:text-5xl font-black text-slate-900 mb-4">Why MSME Owners Love Biz Analyst</h2>
           <p className="text-slate-500 font-medium max-w-2xl mx-auto">Everything you need to manage cash flow, field teams, and inventory while on the go.</p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -166,7 +166,7 @@ export default function MobileAppBizPage() {
             <div className="pt-6">
                <button 
                   onClick={() => openModal('quote')}
-                  className="px-10 py-4 bg-slate-900 text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-[#006569] transition-all shadow-lg"
+                  className="px-10 py-4 bg-slate-900 text-white rounded-2xl font-black text-xs uppercase tracking-widest transition-all shadow-lg"
                >
               Contact Us
                </button>

@@ -79,7 +79,7 @@ export default function AddonsPage() {
           </div>
           <h1 className="text-3xl md:text-5xl font-black text-slate-900 mb-5 leading-tight tracking-tight">
             TallyPrime<br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#006569] via-[#006569] to-[#006569] drop-shadow-[0_2px_15px_rgba(0,101,105,0.2)]">Add-ons</span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#006569] to-[#006569] drop-shadow-[0_2px_15px_rgba(0,101,105,0.2)]">Add-ons</span>
           </h1>
           <p className="text-slate-600/80 text-sm md:text-lg max-w-4xl mx-auto leading-relaxed font-semibold">
             Ready-made TDL add-ons that extend TallyPrime with extra controls, prints, reports and automation.

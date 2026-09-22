@@ -175,7 +175,7 @@ export default function ModuleModal({ isOpen, onClose, module, onEnquire }: Modu
         <div className="flex flex-col sm:flex-row gap-4">
           <button 
             onClick={() => onEnquire(module)}
-            className="flex-1 py-4 bg-[#006569] text-white rounded-2xl font-bold hover:bg-[#006569] transition-all shadow-lg shadow-teal-900/10 flex items-center justify-center gap-2"
+            className="flex-1 py-4 bg-[#006569] text-white rounded-2xl font-bold transition-all shadow-lg shadow-teal-900/10 flex items-center justify-center gap-2"
           >
             Enquire Now
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>

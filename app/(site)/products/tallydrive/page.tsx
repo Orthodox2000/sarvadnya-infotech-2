@@ -223,7 +223,6 @@ export default function TallyDrivePage() {
                   Cloud Backup
                 </span>
               </div>
-              <div className="flex items-center flex-wrap gap-x-4 gap-y-1 mt-1.5"></div>
               <p className="text-sm text-slate-600 mt-1.5 leading-relaxed max-w-3xl">
                 Never lose your accounting data again. TallyDrive automatically backs up your TallyPrime data to the cloud — as long as your device is powered on.
               </p>
