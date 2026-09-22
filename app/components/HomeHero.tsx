@@ -114,15 +114,18 @@ export default function HomeHero({ hero = HERO_CONTENT, emailCopy = false, backg
     <main suppressHydrationWarning className={`relative w-full ${(backgroundVideoMobile || backgroundVideoDesktop) ? 'bg-transparent' : "bg-[linear-gradient(90deg,_rgba(254,254,252,1)_0%,_rgba(251,250,246,1)_53%,_rgba(248,247,240,1)_100%)] bg-[url('/bg.png')] bg-cover bg-center bg-no-repeat"} min-h-[18rem] sm:min-h-[22rem] md:min-h-[360px] lg:min-h-[420px] flex flex-col pb-16 lg:pb-20`}>
       {/* Mobile video — visible below md breakpoint */}
       {/* CHANGE: 2026-09-11 — Video poster switched from /logo.png to /video-thumbnail.png
-          (1280x720) so browsers show a matching frame before/while the video loads. */}
+          (1280x720) so browsers show a matching frame before/while the video loads.
+          CHANGE: 2026-09-22 — poster switched to /video-thumbnail.jpg (opaque JPEG). The
+          old poster was an RGBA PNG (color type 6) which Google's video indexing flags as
+          "Thumbnail is transparent" even though the pixels were opaque. */}
       {backgroundVideoMobile && (
-        <video autoPlay loop muted playsInline poster="/video-thumbnail.png" className="md:hidden absolute inset-0 w-full h-full object-cover z-0 pointer-events-none" style={{ opacity: 0.75 }}>
+        <video autoPlay loop muted playsInline poster="/video-thumbnail.jpg" className="md:hidden absolute inset-0 w-full h-full object-cover z-0 pointer-events-none" style={{ opacity: 0.75 }}>
           <source src={backgroundVideoMobile} type="video/mp4" />
         </video>
       )}
       {/* Desktop video — visible at md breakpoint and above */}
       {backgroundVideoDesktop && (
-        <video autoPlay loop muted playsInline poster="/video-thumbnail.png" className="hidden md:block absolute inset-0 w-full h-full object-cover z-0 pointer-events-none" style={{ opacity: 0.75 }}>
+        <video autoPlay loop muted playsInline poster="/video-thumbnail.jpg" className="hidden md:block absolute inset-0 w-full h-full object-cover z-0 pointer-events-none" style={{ opacity: 0.75 }}>
           <source src={backgroundVideoDesktop} type="video/mp4" />
         </video>
       )}
