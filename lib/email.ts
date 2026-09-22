@@ -1,7 +1,19 @@
 import { Resend } from 'resend';
+// CHANGE: 2026-09-21 — Logo is embedded as an inline attachment (cid:) so it
+// renders in every client even when external images are blocked.
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
 import { getSettings } from '@/lib/mongodb-utils';
 import { parseDevice } from '@/lib/visitors';
 import type { GeoInfo } from '@/lib/visitors';
+// CHANGE: 2026-09-21 — Branded client auto-reply template lives in a pure ESM
+// module so it can be rendered by the preview script too (scripts/email-preview.mjs).
+import {
+  buildClientAutoreplyHtml,
+  CLIENT_AUTOREPLY_SUBJECT,
+  DEFAULT_COMPANY,
+} from '@/lib/email-autoreply.mjs';
+import type { AutoreplyCompany } from '@/lib/email-autoreply.mjs';
 
 export interface FormSubmissionPayload {
   name: string;
@@ -22,6 +34,14 @@ export interface SendResult {
   recipients: string[];
   messageId?: string;
   error?: string;
+}
+
+export interface AutoreplySendResult {
+  ok: boolean;
+  sentTo?: string;
+  messageId?: string;
+  error?: string;
+  skipped?: boolean;
 }
 
 export interface EmailConfig {
@@ -331,6 +351,146 @@ export async function sendInternalFormCopy(
   }
 
   return { ok: true, recipients, messageId: data?.id };
+}
+
+// ---------- Client auto-reply (thank you for contacting) ----------
+// CHANGE: 2026-09-21 — New branded auto-reply to the SUBMITTER's own email.
+// replyTo points at info@sarvadnyainfotech.com. Gated behind AUTO_REPLY_ENABLED
+// (default OFF) so deploying this code NEVER sends clients anything until the
+// kill-switch is flipped in env/settings — the live site stays quiet.
+
+function normalizeFlag(value: unknown): boolean {
+  return ['1', 'true', 'yes', 'on'].includes(String(value || '').trim().toLowerCase());
+}
+
+export async function isAutoreplyEnabled(): Promise<boolean> {
+  let settings: Record<string, any> = {};
+  try {
+    settings = await getSettings();
+  } catch {
+    settings = {};
+  }
+  const fromSettings = String(settings.AUTO_REPLY_ENABLED || '');
+  if (fromSettings) return normalizeFlag(fromSettings);
+  return normalizeFlag(process.env.AUTO_REPLY_ENABLED || '0');
+}
+
+// Site-contact block mirrors what the public Footer renders (Footer.tsx +
+// /api/settings): landline is hardcoded on the site, mobile/email/address come
+// from settings env with the same fallbacks. Address only shown when configured.
+export async function getCompanyContact(): Promise<AutoreplyCompany> {
+  let settings: Record<string, any> = {};
+  try {
+    settings = await getSettings();
+  } catch {
+    settings = {};
+  }
+
+  const email = String(settings.NEXT_PUBLIC_SUPPORT_EMAIL || process.env.NEXT_PUBLIC_SUPPORT_EMAIL || '') || DEFAULT_COMPANY.email;
+  const phoneRaw = String(settings.NEXT_PUBLIC_SUPPORT_PHONE || process.env.NEXT_PUBLIC_SUPPORT_PHONE || '') || '9821309060';
+  const formatPhone = (p: string): string => {
+    const t = p.trim();
+    if (t.startsWith('+')) return t;
+    if (t.startsWith('91') && t.length === 12) return `+${t}`;
+    if (t.length === 10) return `+91 ${t.slice(0, 5)} ${t.slice(5)}`;
+    return t;
+  };
+
+  return {
+    ...DEFAULT_COMPANY,
+    email,
+    phoneLines: [
+      '+022-4974 2200 / +022-4964 7959',
+      ...phoneRaw.split(',').map(formatPhone).filter(Boolean),
+    ],
+    address: String(settings.NEXT_PUBLIC_OFFICE_ADDRESS || process.env.NEXT_PUBLIC_OFFICE_ADDRESS || '') || DEFAULT_COMPANY.address,
+  };
+}
+
+// CHANGE: 2026-09-21 — Loads the live site's header logo for inline embedding.
+// Returns null (→ hosted-URL fallback in the template) if the file is missing.
+function loadInlineLogo(): { buffer: Buffer; base64: string } | null {
+  try {
+    const buffer = readFileSync(join(process.cwd(), 'public', 'TallyCertificate.png'));
+    return { buffer, base64: buffer.toString('base64') };
+  } catch {
+    return null;
+  }
+}
+
+export async function sendClientAutoreply(
+  submission: FormSubmissionPayload,
+  options?: { from?: string; baseUrl?: string; company?: Partial<AutoreplyCompany> }
+): Promise<AutoreplySendResult> {
+  if (!(await isAutoreplyEnabled())) {
+    return { ok: false, skipped: true, error: 'AUTO_REPLY_ENABLED is off' };
+  }
+  if (!isValidEmail(submission.email)) {
+    return { ok: false, skipped: true, error: 'No valid submitter email to send the auto-reply to' };
+  }
+
+  const { apiKey, from: configuredFrom } = await getEmailConfig();
+  if (!apiKey) {
+    return { ok: false, error: 'RESEND_API_KEY is not configured' };
+  }
+
+  let settings: Record<string, any> = {};
+  try {
+    settings = await getSettings();
+  } catch {
+    settings = {};
+  }
+  const from = String(settings.AUTO_REPLY_FROM || process.env.AUTO_REPLY_FROM || '') || options?.from || configuredFrom;
+  const replyTo = String(settings.AUTO_REPLY_REPLY_TO || process.env.AUTO_REPLY_REPLY_TO || '') || 'info@sarvadnyainfotech.com';
+  const siteUrl = options?.baseUrl || String(process.env.SITE_URL || '').replace(/\/+$/, '') || 'https://sarvadnyainfotech.com';
+
+  if (!isValidEmail(from)) {
+    return { ok: false, error: `Invalid auto-reply sender address: ${from}` };
+  }
+
+  const company = options?.company ? { ...DEFAULT_COMPANY, ...options.company } : (await getCompanyContact());
+
+  // CHANGE: 2026-09-21 — Logo is embedded inline (cid attachment) so it renders
+  // in every mail client regardless of external-image settings; hosted URL is
+  // only the fallback if the local file is ever missing.
+  const logoFile = loadInlineLogo();
+  const logo = logoFile
+    ? { cid: 'sarvadnya-logo' }
+    : { url: `${siteUrl}/TallyCertificate.png` };
+
+  const resend = new Resend(apiKey);
+  const { data, error } = await resend.emails.send({
+    from,
+    to: [submission.email],
+    subject: CLIENT_AUTOREPLY_SUBJECT,
+    html: buildClientAutoreplyHtml({
+      name: submission.name,
+      service: submission.service,
+      company,
+      logo,
+    }),
+    replyTo,
+    attachments: logoFile
+      ? [
+          {
+            filename: 'sarvadnya-logo.png',
+            content: logoFile.buffer,
+            contentType: 'image/png',
+            contentId: 'sarvadnya-logo',
+          },
+        ]
+      : undefined,
+    tags: [
+      { name: 'source', value: 'web-form-auto-reply' },
+      { name: 'form_type', value: submission.formType || 'general' },
+      { name: 'has_geo', value: submission.geo ? '1' : '0' },
+    ],
+  });
+
+  if (error) {
+    return { ok: false, sentTo: submission.email, error: error.message || 'Resend auto-reply send failed' };
+  }
+  return { ok: true, sentTo: submission.email, messageId: data?.id };
 }
 
 export async function getEmailDiagnostic(): Promise<EmailDiagnostic> {

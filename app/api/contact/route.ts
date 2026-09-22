@@ -171,6 +171,7 @@ export async function POST(request: Request) {
       ok: true,
       saved: true,
       sent: send.sent,
+      clientEmailSent: send.clientEmailSent,
       deduped: send.deduped,
       jobId: send.jobKey,
     });

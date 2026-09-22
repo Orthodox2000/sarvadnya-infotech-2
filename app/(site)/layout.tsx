@@ -3,9 +3,7 @@ import type { CSSProperties } from "react";
 import type { Metadata } from 'next';
 import Navbar from "../components/Navbar";
 import Productbar from "../components/Productbar";
-import { theme as defaultTheme } from "@/lib/theme";
 import { getSettings, getNews } from "@/lib/mongodb-utils";
-import { palettes } from "@/lib/palettes";
 import { CONTACT_SUFFIX } from "@/lib/seo";
 import { Analytics } from "@vercel/analytics/next"
 import { SpeedInsights } from "@vercel/speed-insights/next"
@@ -34,34 +32,10 @@ export const metadata: Metadata = {
     'Tally Certified Partner trusted by 1500+ businesses. TallyPrime, Tally on Cloud, AMC, Tally on WhatsApp, TallyDrive cloud backup, HRMS, TDL customization & corporate training.' + CONTACT_SUFFIX,
 };
 
-async function getTheme() {
-  try {
-    const settings = await getSettings();
-    const themeJson = settings['SITE_THEME_PALETTE'];
-    if (themeJson) {
-      const { paletteId, bgIndex } = JSON.parse(themeJson);
-      const palette = palettes.find(p => p.id === paletteId);
-      if (palette) {
-        const bg = palette.backgrounds[bgIndex] || palette.backgrounds[0];
-        return {
-          primaryColor: palette.primary,
-          secondaryColor: palette.secondary,
-          primaryButtonColor: palette.primary,
-          secondaryButtonColor: palette.secondary,
-          headingColor: palette.heading,
-          paragraphColor: palette.paragraph,
-          backgroundColor: bg.value,
-          accentColor: palette.accent,
-          headingLightColor: palette.heading,
-        };
-      }
-    }
-  } catch (err) {
-    console.error('Error loading theme:', err);
-  }
-  return defaultTheme;
-}
-
+// CHANGE: 2026-09-18 — removed getTheme(): its per-request Mongo call (a 3rd getSettings)
+// produced a `theme` value that was never referenced anywhere in the layout/JSX.
+// CHANGE: 2026-09-21 — restored the getSettingsData() declaration that was
+// accidentally dropped with getTheme() (its body + the call at line 51 survived).
 async function getSettingsData() {
   try {
     return await getSettings();
@@ -80,7 +54,6 @@ export default async function SiteLayout({
     getSettingsData(),
     getNews().catch(() => [])
   ]);
-  const theme = await getTheme();
 
   return (
     <>

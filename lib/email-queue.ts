@@ -1,14 +1,28 @@
 import { ObjectId } from 'mongodb';
 import { getDb } from '@/lib/mongodb-utils';
+import type { Filter } from 'mongodb';
 import {
   getEmailConfig,
   resolveRecipients,
   sendInternalFormCopy,
+  sendClientAutoreply,
   maskEmail,
 } from '@/lib/email';
 import type { FormSubmissionPayload } from '@/lib/email';
 
 export type EmailJobStatus = 'pending' | 'processing' | 'sent' | 'failed' | 'dead';
+
+// CHANGE: 2026-09-21 — Client auto-reply ledger. Each submission owns TWO sends
+// under the same jobKey: the internal company copy (job.status) plus the branded
+// thank-you to the submitter (job.autoReply). A duplicate POST can never re-fire
+// either because both are recorded on the single unique jobKey claim.
+export interface AutoReplyLedger {
+  status: 'skipped' | 'sent' | 'failed';
+  error?: string | null;
+  sentAt?: Date;
+  nextRetryAt?: Date;
+  attempts?: number;
+}
 
 export interface EmailJob {
   _id?: ObjectId;
@@ -26,6 +40,7 @@ export interface EmailJob {
   sentAt?: Date;
   lastError?: string | null;
   messageId?: string;
+  autoReply?: AutoReplyLedger;
   createdAt: Date;
   updatedAt: Date;
   expireAt?: Date;
@@ -37,6 +52,7 @@ export interface DirectSendResult {
   deduped: boolean;
   jobKey: string;
   messageId?: string;
+  clientEmailSent?: boolean;
   error?: string;
 }
 
@@ -162,8 +178,23 @@ export async function sendEmailDirect(input: {
     return { claimed: false, sent: false, deduped: true, jobKey };
   }
 
-  // Fresh claim → send the internal copy NOW (directly, inline in the request).
+  // Fresh claim → send the internal copy NOW (directly, inline in the request),
+  // then the branded client auto-reply. Both are recorded against this jobKey;
+  // the auto-reply is kill-switch gated (AUTO_REPLY_ENABLED) and skipped when
+  // the submitter gave no valid email — so a pending rollout sends nothing new.
   const res = await sendInternalFormCopy(submission, { recipients, from });
+  const autoReplyRes = await sendClientAutoreply(submission);
+
+  const autoReplyLedger: AutoReplyLedger = autoReplyRes.skipped
+    ? { status: 'skipped' }
+    : autoReplyRes.ok
+      ? { status: 'sent', sentAt: new Date(), attempts: 1 }
+      : {
+          status: 'failed',
+          error: autoReplyRes.error || 'auto-reply failed',
+          nextRetryAt: new Date(Date.now() + retryDelay(1)),
+          attempts: 1,
+        };
 
   if (res.ok) {
     await col.updateOne(
@@ -175,12 +206,20 @@ export async function sendEmailDirect(input: {
           messageId: res.messageId || undefined,
           lastError: null,
           attempts: 1,
+          autoReply: autoReplyLedger,
           expireAt: terminalExpiry(),
           updatedAt: new Date(),
         },
       }
     );
-    return { claimed: true, sent: true, deduped: false, jobKey, messageId: res.messageId };
+    return {
+      claimed: true,
+      sent: true,
+      deduped: false,
+      jobKey,
+      messageId: res.messageId,
+      clientEmailSent: autoReplyRes.ok,
+    };
   }
 
   await col.updateOne(
@@ -191,6 +230,7 @@ export async function sendEmailDirect(input: {
         attempts: 1,
         lastError: res.error || 'send failed',
         nextRetryAt: new Date(Date.now() + retryDelay(1)),
+        autoReply: autoReplyLedger,
         updatedAt: new Date(),
       },
     }
@@ -219,12 +259,18 @@ export async function processEmailQueue(
     )
   ).modifiedCount;
 
+  // CHANGE: 2026-09-21 — Also picks up jobs whose internal copy already went
+  // out ('sent') but whose client auto-reply failed, so the admin/external
+  // drain can retry just the missing thank-you without re-firing the internal
+  // email (exactly-once per recipient is preserved).
   const candidates = await col
     .find({
-      status: { $in: ['pending', 'failed'] },
       $or: [
-        { status: 'pending' },
-        { status: 'failed', nextRetryAt: { $lte: now } },
+        {
+          status: { $in: ['pending', 'failed'] },
+          $or: [{ status: 'pending' }, { status: 'failed', nextRetryAt: { $lte: now } }],
+        },
+        { status: 'sent', 'autoReply.status': 'failed', 'autoReply.nextRetryAt': { $lte: now } },
       ],
     })
     .sort({ createdAt: 1 })
@@ -238,8 +284,20 @@ export async function processEmailQueue(
   let skipped = 0;
 
   for (const candidate of candidates) {
+    // Soft retry = the internal copy already sent; only the client auto-reply
+    // needs another attempt (claim filter keeps the retry race-safe).
+    const softRetry = candidate.status === 'sent';
+    const claimFilter: Filter<EmailJob> = softRetry
+      ? {
+          _id: candidate._id,
+          status: 'sent' as const,
+          'autoReply.status': 'failed' as const,
+          'autoReply.nextRetryAt': { $lte: now },
+        }
+      : { _id: candidate._id, status: { $in: ['pending', 'failed'] as EmailJobStatus[] } };
+
     const claimed = await col.findOneAndUpdate(
-      { _id: candidate._id, status: { $in: ['pending', 'failed'] } },
+      claimFilter,
       { $set: { status: 'processing', claimedAt: now, updatedAt: now } },
       { returnDocument: 'after' }
     );
@@ -251,6 +309,30 @@ export async function processEmailQueue(
 
     const job = claimed;
     processed++;
+
+    const autoReplyAttempt = (job.autoReply?.attempts || 0) + 1;
+    const autoReplyRes = await sendClientAutoreply(job.submission);
+    const autoReplyLedger: AutoReplyLedger = autoReplyRes.skipped
+      ? { status: 'skipped' }
+      : autoReplyRes.ok
+        ? { status: 'sent', sentAt: new Date(), attempts: autoReplyAttempt }
+        : {
+            status: 'failed',
+            error: autoReplyRes.error || 'auto-reply failed',
+            nextRetryAt: new Date(Date.now() + retryDelay(autoReplyAttempt)),
+            attempts: autoReplyAttempt,
+          };
+
+    if (softRetry) {
+      // Re-sends the auto-reply only — never the internal copy.
+      await col.updateOne(
+        { _id: job._id },
+        { $set: { status: 'sent', autoReply: autoReplyLedger, updatedAt: new Date() } }
+      );
+      if (autoReplyLedger.status === 'sent') sent++;
+      else failed++;
+      continue;
+    }
 
     const res = await sendInternalFormCopy(job.submission, {
       recipients: job.recipients,
@@ -268,6 +350,7 @@ export async function processEmailQueue(
             messageId: res.messageId || undefined,
             lastError: null,
             attempts: job.attempts + 1,
+            autoReply: autoReplyLedger,
             expireAt: terminalExpiry(),
             updatedAt: new Date(),
           },
@@ -284,6 +367,7 @@ export async function processEmailQueue(
               status: 'dead',
               attempts: nextAttempts,
               lastError: res.error || 'send failed',
+              autoReply: autoReplyLedger,
               expireAt: terminalExpiry(),
               updatedAt: new Date(),
             },
@@ -299,6 +383,7 @@ export async function processEmailQueue(
               attempts: nextAttempts,
               lastError: res.error || 'send failed',
               nextRetryAt: new Date(Date.now() + retryDelay(nextAttempts)),
+              autoReply: autoReplyLedger,
               updatedAt: new Date(),
             },
           }
