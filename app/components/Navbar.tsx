@@ -59,12 +59,13 @@ export default function Navbar() {
               priority
             />
           </div>
-          {/* CHANGE: 2026-08-31 — Two-line wordmark spread to match the logo's height: "Sarvadnya Infotech"
-              on line 1 (dark graphite) + "LLP" on line 2 (teal brand accent), vertically centred to the logo.
-              Industrial-standard professional scheme: dark primary name with brand-colour accent. */}
-          <span className="ml-2 flex flex-col justify-center leading-[1.15]">
-            <span className="text-[13px] sm:text-[18px] lg:text-[21px] font-bold text-slate-900">Sarvadnya Infotech</span>
-            <span className="text-[12px] sm:text-[14.5px] lg:text-[17px] font-black tracking-[0.08em] text-[#006569]">LLP</span>
+          {/* CHANGE: 2026-09-25 — Single-line wordmark per owner request: "Sarvadnya Infotech LLP" all on ONE line,
+              ONE colour (dark slate-900). Replaces the two-line slate-900 + teal accent scheme from 2026-08-31.
+              Base size dropped 13px→11.5px so the full 20-char name clears the logo at 360px. */}
+          <span className="ml-2 flex items-center justify-center leading-none whitespace-nowrap">
+            <span className="text-[11.5px] sm:text-[18px] lg:text-[21px] font-bold text-slate-900">
+              Sarvadnya Infotech <span className="font-black">LLP</span>
+            </span>
           </span>
         </Link>
 
