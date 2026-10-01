@@ -4,7 +4,13 @@ import { headers } from 'next/headers';
 import { uploadToMega } from '@/lib/mega';
 import { saveApplication } from '@/lib/mongodb-utils';
 import { revalidatePath } from 'next/cache';
-import { getRequestMetaFromHeaders, lookupGeo } from '@/lib/visitors';
+import {
+  getRequestMetaFromHeaders,
+  lookupGeo,
+  isIgnoredIp,
+  visitorLog,
+  maskIp,
+} from '@/lib/visitors';
 import type { GeoInfo } from '@/lib/visitors';
 
 export async function submitApplication(formData: FormData) {
@@ -42,6 +48,17 @@ export async function submitApplication(formData: FormData) {
     } catch {
       // headers() unavailable outside a request scope — degrade gracefully.
     }
+
+    // CHANGE: 2026-09-30 — Ignore-list gate. Writes to the PRODUCTION
+    // `job_applications` collection. Dev tests otherwise created genuine job
+    // applications in prod. Returns success so the modal still behaves while
+    // developing, but nothing is persisted.
+    if (isIgnoredIp(meta.ip)) {
+      visitorLog('warn', 'ignored ip — application not saved', { ip: maskIp(meta.ip) });
+      revalidatePath('/admin/careers/responses');
+      return { success: true, ignored: true };
+    }
+
     let geo: GeoInfo | null = null;
     if (!meta.secGpc && meta.ip !== 'anonymous') {
       const lookup = await lookupGeo(meta.ip);

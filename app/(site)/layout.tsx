@@ -8,6 +8,7 @@ import { CONTACT_SUFFIX } from "@/lib/seo";
 import { Analytics } from "@vercel/analytics/next"
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import { VisitorProvider } from "../components/VisitorProvider";
+import ConsentBanner from "../components/ConsentBanner";
 
 const NewsFeed = dynamic(() => import("../components/NewsFeed"), {
   loading: () => (
@@ -68,6 +69,10 @@ export default async function SiteLayout({
         {children}
         <SupportButton initialSettings={settings} />
         <NotificationToast />
+        {/* CHANGE: 2026-09-30 — informational data-collection notice, replaces Zoho SalesIQ's
+            own consent banner (suppressed in globals.css). Consent is assumed by browsing,
+            so this never blocks anything — it only informs and deep-links to /privacy. */}
+        <ConsentBanner />
       </VisitorProvider>
       <Analytics />
       <SpeedInsights />

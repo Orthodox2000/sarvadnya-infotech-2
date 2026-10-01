@@ -28,6 +28,7 @@ const nextConfig = {
         destination: '/cloud/backup-for-tally',
         permanent: true,
       },
+      { source: '/video-thumbnail.png', destination: '/video-thumbnail.jpg', permanent: true },
       // CHANGE: 2026-09-16 — legacy-WordPress URLs that still get crawled: 301 to their live
       // equivalent so link equity consolidates and GSC "not indexed" rows clear.
       { source: '/tally-erp-9-single-multi-user-license', destination: '/products/silver', permanent: true },
@@ -108,7 +109,7 @@ const nextConfig = {
         ],
       },
       {
-        source: '/:path((?:.+)\\.(?:jpg|jpeg|png|gif|webp|avif|svg|ico|css|js|woff2?))$',
+        source: '/:path((?:.+)\\.(?:jpg|jpeg|png|gif|webp|avif|svg|ico|css|js|woff2?))',
         headers: [
           { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' },
         ],
@@ -116,7 +117,7 @@ const nextConfig = {
       // CHANGE: 2026-09-16 — X-Robots-Tag noindex on video files so Google drops the raw
       // .mp4 URLs from the index (hero background videos are decorative, not a "watch page").
       {
-        source: '/:path((?:.+)\\.(?:mp4|webm|mov|ogv|m4v))$',
+        source: '/:path((?:.+)\\.(?:mp4|webm|mov|ogv|m4v))',
         headers: [
           { key: 'X-Robots-Tag', value: 'noindex, nofollow' },
         ],

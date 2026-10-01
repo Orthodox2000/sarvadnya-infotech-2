@@ -1,7 +1,15 @@
 import { NextResponse } from 'next/server';
 import { saveTssRenewal } from '@/lib/mongodb-utils';
 import { sendEmailDirect } from '@/lib/email-queue';
-import { getRequestMeta, lookupGeo, isValidSessionId, markConversion } from '@/lib/visitors';
+import {
+  getRequestMeta,
+  lookupGeo,
+  isValidSessionId,
+  markConversion,
+  isIgnoredRequest,
+  visitorLog,
+  maskIp,
+} from '@/lib/visitors';
 import type { GeoInfo } from '@/lib/visitors';
 
 function sanitize(str: string) {
@@ -31,6 +39,15 @@ export async function POST(request: Request) {
 
     // Passive enrichment: IP, UA, geo (cache-first) + browsing session id.
     const meta = getRequestMeta(request);
+
+    // CHANGE: 2026-09-30 — Ignore-list gate. Writes to the PRODUCTION `tss_renewals`
+    // collection and sends a REAL email. Dev tests otherwise created genuine renewal
+    // records in prod.
+    if (isIgnoredRequest(request)) {
+      visitorLog('warn', 'ignored ip — renewal not saved, no email sent', { ip: maskIp(meta.ip) });
+      return NextResponse.json({ message: 'TSS renewal request received', saved: false, ignored: true });
+    }
+
     const sessionId = isValidSessionId(rawData.sessionId) ? String(rawData.sessionId) : '';
     let geo: GeoInfo | null = null;
     if (meta.secGpc !== true) {

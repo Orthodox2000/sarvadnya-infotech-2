@@ -9,6 +9,8 @@ import {
   isValidSessionId,
   markConversion,
   visitorLog,
+  isIgnoredRequest,
+  maskIp,
 } from '@/lib/visitors';
 import type { GeoInfo } from '@/lib/visitors';
 
@@ -125,6 +127,18 @@ export async function POST(request: Request) {
     // CHANGE: 2026-08-18 — Removed GPC gating. Full IP, geo always collected.
     // Passive lead enrichment: capture IP, UA, geo (cache-first) and session id.
     const meta = getRequestMeta(request);
+
+    // CHANGE: 2026-09-30 — Ignore-list gate. Writes to the PRODUCTION
+    // `form_submissions` collection and fires a REAL Resend email; a dev test
+    // otherwise left genuine lead records in prod and real mail in the team inbox.
+    if (isIgnoredRequest(request)) {
+      visitorLog('warn', 'ignored ip — submission not saved, no email sent', {
+        ip: maskIp(meta.ip),
+        destination,
+      });
+      return NextResponse.json({ message: 'Submission successful', saved: false, ignored: true });
+    }
+
     const sessionId = isValidSessionId(rawData.sessionId) ? String(rawData.sessionId) : '';
     const { geo } = await lookupGeo(meta.ip);
     const submissionData = {

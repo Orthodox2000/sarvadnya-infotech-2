@@ -2,7 +2,15 @@ import { NextResponse } from 'next/server';
 import { saveProblemReport } from '@/lib/mongodb-utils';
 import { sendEmailDirect } from '@/lib/email-queue';
 import { isValidEmail } from '@/lib/email';
-import { getRequestMeta, lookupGeo, isValidSessionId, markConversion } from '@/lib/visitors';
+import {
+  getRequestMeta,
+  lookupGeo,
+  isValidSessionId,
+  markConversion,
+  isIgnoredRequest,
+  visitorLog,
+  maskIp,
+} from '@/lib/visitors';
 import type { GeoInfo } from '@/lib/visitors';
 
 const allowedIssueTypes = new Set([
@@ -48,6 +56,15 @@ export async function POST(request: Request) {
 
     // Passive enrichment: IP, UA, geo (cache-first) + browsing session id.
     const meta = getRequestMeta(request);
+
+    // CHANGE: 2026-09-30 — Ignore-list gate. Writes to the PRODUCTION
+    // `problem_reports` collection and sends a REAL email. Dev tests otherwise created
+    // genuine support-ticket records in prod.
+    if (isIgnoredRequest(request)) {
+      visitorLog('warn', 'ignored ip — report not saved, no email sent', { ip: maskIp(meta.ip) });
+      return NextResponse.json({ message: 'Problem report submitted successfully', saved: false, ignored: true });
+    }
+
     const sessionId = isValidSessionId(rawData.sessionId) ? String(rawData.sessionId) : '';
     let geo: GeoInfo | null = null;
     if (meta.secGpc !== true) {

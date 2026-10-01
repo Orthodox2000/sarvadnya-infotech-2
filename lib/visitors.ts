@@ -217,6 +217,60 @@ export function isPublicIp(ip: string): boolean {
   return !PRIVATE_PREFIXES.some((p) => ip.startsWith(p));
 }
 
+// ---------------------------------------------------------------------------
+// Ignore list — traffic that must NEVER become a record
+// ---------------------------------------------------------------------------
+
+// CHANGE: 2026-09-30 — Added an ignore list. The dev server talks to the SAME MongoDB
+// Atlas cluster as production (`.env` MONGODB_URI points at the live DB; there is no
+// dev/test database and `MONGODB_DB` is read by zero lines of code). Before this
+// existed, every local page load, curl and Puppeteer run created a real document in
+// the production `visitors` collection, inflated `visitCount`/`pageViews`, and — for
+// the machine's PUBLIC address (see `allowedDevOrigins` in next.config.js) — burned a
+// real ipwho.is lookup and a reverse-DNS lookup, making the developer's own machine
+// indistinguishable from a genuine visitor.
+//
+// `isPublicIp` does NOT solve this: it only short-circuits geo/reverse-DNS enrichment
+// (lookupGeo:330, lookupReverseDns:488). The document was still written, with
+// `visitCount` and `pageViews` still incremented.
+//
+// Two ways an address gets ignored:
+//   1. Loopback. `127.0.0.0/8`, `::1`, `0.0.0.0`, `::ffff:127.*`. Always ignored, in
+//      every environment: production traffic arrives over the internet, so a loopback
+//      peer can only ever be a local process.
+//   2. An explicit entry in `VISITOR_IGNORE_IPS` (comma-separated). Needed for the
+//      addresses that are NOT loopback but are still the dev box: the LAN addresses
+//      used when testing from a phone, and the box's public address.
+//      `192.168.*` is deliberately NOT auto-ignored — it is already excluded from
+//      enrichment by PRIVATE_PREFIXES, and silently dropping the whole private range
+//      would change production behaviour for no benefit.
+const LOOPBACK_PREFIXES = ['127.', '::1', '::ffff:127.', '0.0.0.0'];
+
+// Parsed once at module load. Entries are trimmed, lower-cased and stripped of
+// brackets, so "[::1]" and "::1" both match.
+const CONFIGURED_IGNORE_IPS = new Set(
+  String(process.env.VISITOR_IGNORE_IPS || '')
+    .split(',')
+    .map((s) => s.trim().toLowerCase().replace(/^\[|\]$/g, ''))
+    .filter(Boolean)
+);
+
+export function getIgnoredIps(): string[] {
+  return [...CONFIGURED_IGNORE_IPS];
+}
+
+export function isIgnoredIp(ip: string): boolean {
+  if (!ip) return false;
+  const v = ip.toLowerCase();
+  if (LOOPBACK_PREFIXES.some((p) => v.startsWith(p))) return true;
+  return CONFIGURED_IGNORE_IPS.has(v);
+}
+
+// Convenience for route handlers: one call, reads the IP off the request.
+export function isIgnoredRequest(request: Request): boolean {
+  return isIgnoredIp(getClientIpFromHeaders(request.headers));
+}
+
 export function maskIp(ip: string): string {
   if (!ip || !isPublicIp(ip)) return 'private';
   if (ip.includes(':')) return `${ip.split(':')[0]}::…`;
@@ -327,6 +381,7 @@ export function normalizeGeo(raw: unknown): GeoInfo | null {
 export async function lookupGeo(
   ip: string
 ): Promise<{ geo: GeoInfo | null; cached: boolean }> {
+  if (isIgnoredIp(ip)) return { geo: null, cached: false };
   if (!isPublicIp(ip)) return { geo: null, cached: false };
 
   const col = await getDb().then((db) => db.collection<IpCacheRecord>('ip_cache'));
@@ -391,8 +446,20 @@ export async function recordVisitor(input: {
   payload: TrackPayload;
   meta: RequestMeta;
 }): Promise<{ created: boolean; needsGeo: boolean; existingGeoAt: Date | null }> {
-  await ensureVisitorIndexes();
   const { payload, meta } = input;
+
+  // CHANGE: 2026-09-30 — Refuse to record ignored IPs (see the ignore-list block
+  // above). This is the ONLY place `visitors` documents are written, so gating here
+  // keeps dev traffic out of the production collection entirely. The return contract
+  // is preserved — `created: false` and `needsGeo: false` stop the caller in
+  // app/api/identify/route.ts from running enrichment against a session that does
+  // not exist.
+  if (isIgnoredIp(meta.ip)) {
+    visitorLog('debug', 'ignored ip — not recorded', { ip: maskIp(meta.ip) });
+    return { created: false, needsGeo: false, existingGeoAt: null };
+  }
+
+  await ensureVisitorIndexes();
   const now = new Date();
   const col = await getDb().then((db) => db.collection<VisitorRecord>('visitors'));
 
@@ -485,6 +552,7 @@ const RDNS_TIMEOUT_MS = 3000;
 const RDNS_NEGATIVE_TTL_MS = 60 * 60 * 1000; // cache failures for 1 hour
 
 export async function lookupReverseDns(ip: string): Promise<string | null> {
+  if (isIgnoredIp(ip)) return null;
   if (!isPublicIp(ip)) return null;
   try {
     const timeoutPromise = new Promise<never>((_, reject) =>
