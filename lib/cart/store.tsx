@@ -206,23 +206,31 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       // updater COMPUTES the additions (a pure function of prev) and ASSIGNS the outer
       // variable — both invocations compute the identical list, so the second write
       // overwrites the first with the same value and the report stays correct.
+      // CHANGE: 2026-10-02 — the toast/fly must NOT fire on a no-op. `mainAdded` and
+      // `added` are tracked so a bundle request where EVERYTHING is already in the cart
+      // stays silent: the BuyBundleModal keeps its "already in your cart" screen while
+      // the store announces nothing (owner UX rule — an add never claims "Added to cart"
+      // when nothing landed; this is the same gate `add()` already had via `result.ok`).
+      let mainAdded = false;
       let added: string[] = [];
       setItems((prev) => {
         const present = new Set(prev.map((i) => i.slug));
         const addedHere: string[] = [];
+        let addedMainHere = false;
         let cursor = prev;
         for (const slug of wanted) {
           if (present.has(slug)) continue;
           const item = knownRef.current.get(slug);
           if (!item || item.priceStatus !== 'priced') continue;
           cursor = addItemPure(cursor, slug, 1, knownRef.current);
-          if (slug !== main) addedHere.push(slug);
+          if (slug === main) addedMainHere = true;
+          else addedHere.push(slug);
         }
         added = addedHere;
+        mainAdded = addedMainHere;
         return cursor;
       });
-      // Compute whether main was already present for the toast copy.
-      fireToast(main, added, from ?? null);
+      if (mainAdded || added.length > 0) fireToast(main, added, from ?? null);
       return { addedCompanions: added };
     },
     [fireToast],

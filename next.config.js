@@ -111,7 +111,14 @@ const nextConfig = {
           { key: 'Permissions-Policy', value: 'camera=(), geolocation=()' },
           { key: 'Content-Security-Policy', value: csp },
           { key: 'Strict-Transport-Security', value: 'max-age=63072000; includeSubDomains; preload' },
-          { key: 'Cross-Origin-Opener-Policy', value: 'same-origin' },
+          // CHANGE: 2026-10-02 — OWNER-INSTRUCTED: same-origin → same-origin-allow-popups.
+          // Razorpay's NetBanking flow opens a POPUP window that must communicate back to the
+          // checkout page; with COOP same-origin the child gets a nulled opener and the
+          // browser blocks it as "about:blank#blocked", so the payment window appears blank.
+          // Razorpay's published fix (and the owner's explicit instruction) is to allow
+          // popups. Next.js-native single source of truth: this headers() block, NOT
+          // vercel.json — a second COOP rule there would overlap this one.
+          { key: 'Cross-Origin-Opener-Policy', value: 'same-origin-allow-popups' },
           { key: 'Cross-Origin-Resource-Policy', value: 'same-origin' },
           { key: 'X-DNS-Prefetch-Control', value: 'on' },
         ],
