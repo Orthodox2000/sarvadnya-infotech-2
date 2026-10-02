@@ -260,6 +260,20 @@ A **real, site-wide cart** (not the `/demo` scaffold — those two must never me
 
 **`check:demo` still covers the cart:** the independence guard greps app/lib/components for the `/demo` string, so live cart code that references the scaffold (or vice versa) fails the gate. Run `npm run check:demo` after touching any cart file.
 
+### 13. Dual-Remote Deployment — `sarvadnya-infotech-2` (Migration Target, 2026-10-02)
+
+**2026-10-02:** the owner forked this repo to **`https://github.com/Orthodox2000/sarvadnya-infotech-2.git`** and will **migrate to it**, while **continuing to manage the old repo**. Both remotes are configured locally and both must receive every push until the migration is complete.
+
+| Remote | URL | Role |
+| :--- | :--- | :--- |
+| `origin` | `https://github.com/ankit-sarvadnya/sarvadnya-infotech.git` | **Current canonical — keep managing.** All pre-2026-10-02 history lives here. |
+| `new-origin` | `https://github.com/Orthodox2000/sarvadnya-infotech-2.git` | **Migration target.** Forked at `738ab5b` (SP-1 cart commit); first push fast-forwarded it to the current `main`. |
+
+- **Push discipline:** pushes go to **both** remotes: `git push origin main && git push new-origin main`. `origin/main` stays the source of truth until the owner declares the migration complete; `new-origin/main` is kept in lockstep so the new repo is never stale.
+- **State at setup:** local `main` = `d9f729c`; `origin/main` identical; `new-origin/main` fast-forwarded from `738ab5b` → same HEAD. Tracked in tracker row (25).
+- **Fork drift warning:** the fork was created mid-stream, so it is **not** a historical mirror — it only contains commits that existed at fork time plus fast-forwards from this repo. Never assume `new-origin` has history `origin` lacks.
+- **Nested repo unaffected:** `sarvadnya-advanced/` has its **own** origin (`ankit-sarvadnya/advanced-sarvadnya.git`) and is gitignored here (§10) — the fork/migration concerns the frontend repo only unless the owner says otherwise.
+
 ## Developer Guidelines
 - **Surgical Updates:** Always prefer targeted `replace` over complete file rewrites for existing files.
 - **Accessibility:** Maintain high contrast ratios and ensure interactive elements have clear focus states.
@@ -271,4 +285,4 @@ A **real, site-wide cart** (not the `/demo` scaffold — those two must never me
 - **Validate Before Completing:** Before marking any task as done, re-read the original user request, re-check every todo item, and verify each requirement is actually satisfied. Requirements get silently dropped during scope — always do a second pass against the original prompt to ensure nothing was missed.
 
 ---
-*Last Updated: 2026-10-02*
+*Last Updated: 2026-10-02 (dual-remote §13 — `new-origin` fork added, migrating to it while keeping `origin`)*
