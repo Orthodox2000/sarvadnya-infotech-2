@@ -50,7 +50,7 @@ export default function Navbar() {
           href="/"
           className="flex items-center h-full justify-center group transition-transform hover:scale-[1.01]"
         >
-          <div className="relative block h-full shrink-0 ml-2 lg:ml-3 opacity-90 group-hover:opacity-100 transition-opacity">
+          <div className="relative block h-full shrink-0 ml-2 lg:ml-3 max-w-[120px] sm:max-w-none lg:max-w-[200px] opacity-90 group-hover:opacity-100 transition-opacity">
             <Image
               src="/TallyCertificate.png"
               alt="e-consultation logo"
@@ -62,23 +62,28 @@ export default function Navbar() {
           </div>
           {/* CHANGE: 2026-09-25 — Single-line wordmark per owner request: "Sarvadnya Infotech LLP" all on ONE line,
               ONE colour (dark slate-900). Replaces the two-line slate-900 + teal accent scheme from 2026-08-31.
-              Base size dropped 13px→11.5px so the full 20-char name clears the logo at 360px. */}
+              Base size 11.5px→11px (2026-10-02): the mobile cart icon widened the toggle, crushing the title;
+              the smaller size keeps the full name on one line at 360px. */}
           <span className="ml-2 flex items-center justify-center leading-none whitespace-nowrap">
-            <span className="text-[11.5px] sm:text-[18px] lg:text-[21px] font-bold text-slate-900">
+            <span className="text-[11px] sm:text-[18px] lg:text-[21px] font-bold text-slate-900">
               Sarvadnya Infotech <span className="font-black">LLP</span>
             </span>
           </span>
         </Link>
 
         {/* Desktop Navigation */}
-        <div className="hidden lg:flex items-center gap-3 xl:gap-5">
+        {/* CHANGE: 2026-10-02 — horizontal-budget fix. The cart button added ~97px to this
+            row; at 1024–1280px the wordmark was crushed and its text overflowed under the
+            search bar. gap-3→gap-2 (lg) / xl:gap-5→xl:gap-4 and px-5→px-4 on the three
+            link buttons reclaim ~40px. Do not widen without re-probing at 1024–1280. */}
+        <div className="hidden lg:flex items-center gap-2 xl:gap-4">
           <div className="hidden lg:flex items-center">
              <SearchBar />
             </div>
 
           <Link
             href="/find-solution"
-            className="whitespace-nowrap inline-flex items-center justify-center rounded-lg border-[0.5px] px-5 py-2 text-[11px] font-bold uppercase tracking-wider transition-all duration-500 ease-in-out shadow-sm text-[#006569] border-[#006569] bg-white hover:bg-teal-50"
+            className="whitespace-nowrap inline-flex items-center justify-center rounded-lg border-[0.5px] px-4 py-2 text-[11px] font-bold uppercase tracking-wider transition-all duration-500 ease-in-out shadow-sm text-[#006569] border-[#006569] bg-white hover:bg-teal-50"
           >
             <svg className="w-4 h-4 mr-1.5 text-[#006569] shrink-0" fill="currentColor" viewBox="0 0 463.771 463.771">
               <path d="M173.073,349.604c-4.825,0-8.961-3.444-9.835-8.188c-10.587-57.508-20.312-92.657-41.352-113.697 S65.695,196.954,8.189,186.367C3.444,185.493,0,181.357,0,176.532s3.445-8.961,8.189-9.835c57.506-10.586,92.657-20.311,113.697-41.352 s30.765-56.191,41.352-113.697c0.874-4.745,5.01-8.189,9.835-8.189s8.961,3.445,9.835,8.189 c10.586,57.506,20.312,92.657,41.352,113.697c21.041,21.04,56.191,30.765,113.697,41.352 c4.746,0.874,8.189,5.01,8.189,9.835s-3.445,8.961-8.189,9.835c-57.506,10.586-92.656,20.312-113.697,41.352 c-21.04,21.04-30.765,56.191-41.352,113.697C182.034,346.16,177.897,349.604,173.073,349.604z M58.669,176.532 c35.099,8.738,59.633,19.319,77.359,37.044s28.307,42.26,37.044,77.359c8.738-35.099,19.319-59.633,37.044-77.359 s42.261-28.307,77.358-37.044c-35.098-8.738-59.632-19.319-77.358-37.044s-28.307-42.26-37.044-77.359 c-8.738,35.099-19.319,59.633-37.044,77.359S93.768,167.794,58.669,176.532z"/>
@@ -88,7 +93,7 @@ export default function Navbar() {
           </Link>
           <Link
             href="/careers"
-            className="inline-flex items-center justify-center rounded-lg border-[0.5px] px-5 py-2 text-[11px] font-bold uppercase tracking-wider transition-all duration-500 ease-in-out shadow-sm text-[#006569] border-[#006569] bg-white hover:bg-teal-50"
+            className="inline-flex items-center justify-center rounded-lg border-[0.5px] px-4 py-2 text-[11px] font-bold uppercase tracking-wider transition-all duration-500 ease-in-out shadow-sm text-[#006569] border-[#006569] bg-white hover:bg-teal-50"
           >
             Careers
           </Link>
@@ -99,19 +104,21 @@ export default function Navbar() {
 
           <Link
             href="/contact"
-            className="inline-flex items-center justify-center rounded-lg bg-[#006569] text-white px-5 py-2 text-[11px] font-bold uppercase tracking-wider shadow-lg shadow-[#4B6780]/20 transition-all duration-500 ease-in-out border border-transparent hover:bg-white hover:text-[#006569] hover:border-[#006569]"
+            className="inline-flex items-center justify-center rounded-lg bg-[#006569] text-white px-4 py-2 text-[11px] font-bold uppercase tracking-wider shadow-lg shadow-[#4B6780]/20 transition-all duration-500 ease-in-out border border-transparent hover:bg-white hover:text-[#006569] hover:border-[#006569]"
           >
             Contact
           </Link>
         </div>
 
         {/* Mobile Toggle */}
-        <div className="flex items-center gap-4 lg:hidden">
+        {/* CHANGE: 2026-10-02 — gap-4→gap-2 + p-2→p-1.5: the mobile cart icon (size-8) widened this
+            toggle; without the trim the wordmark was crushed and its text ran under the icons at 360px. */}
+        <div className="flex items-center gap-2 lg:hidden">
           {/* CHANGE: 2026-10-02 — cart trigger for phones; the drawer itself is mounted once
               by the desktop variant above. */}
           <NavCartButton variant="mobile" />
           <button
-            className="p-2 text-[#4A4A4A]/70 hover:text-[#4A4A4A] transition-colors"
+            className="p-1.5 text-[#4A4A4A]/70 hover:text-[#4A4A4A] transition-colors"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
             {isMenuOpen ? (

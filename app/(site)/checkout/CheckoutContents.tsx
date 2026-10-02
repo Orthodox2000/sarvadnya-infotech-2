@@ -6,6 +6,13 @@
 // validated TEST key. The client never chooses an amount; payment success is not trusted from
 // the client (the success page re-verifies the HMAC server-side); a closed modal surfaces a
 // "nothing was charged" notice instead of silently leaving the user staring at the cart.
+//
+// CHANGE: 2026-10-02 — order-summary lines gained a quantity stepper + Remove (owner request:
+// "checkout screen must also have option to change quantity of products and also remove if
+// needed"). Mirrors the drawer exactly: minus at qty 1 REMOVES the line (it is the delete),
+// plus is clamped by the pure math at MAX_QTY, each button carries the same aria-labels. The
+// Pay amount stays server-authoritative — the client only mutates the cart, /api/cart/order
+// still reprices {items} from the DB and never trusts a client figure.
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
@@ -51,16 +58,61 @@ function loadCheckoutScript(): Promise<void> {
   });
 }
 
-function SummaryLine({ line }: { line: CartLine }) {
+function SummaryLine({
+  line,
+  onPlus,
+  onMinus,
+  onRemove,
+}: {
+  line: CartLine;
+  onPlus: () => void;
+  onMinus: () => void;
+  onRemove: () => void;
+}) {
   return (
     <li className="flex items-center justify-between gap-3 py-2.5">
       <div className="min-w-0">
         <p className="truncate text-[13px] font-semibold text-slate-800">{line.item.name}</p>
         <p className="text-[11px] text-slate-500">
-          {line.qty} × {formatINR(line.unitPaise)}
+          {formatINR(line.unitPaise)} each
+          {line.item.discountPaise > 0 && (
+            <span className="ml-1.5 font-semibold text-[#006569]">Save {formatINR(line.item.discountPaise)}</span>
+          )}
         </p>
+        {/* Qty stepper — identical semantics to the drawer: minus at qty 1 REMOVES the line. */}
+        <div className="mt-1.5 inline-flex items-center rounded-lg border border-slate-200">
+          <button
+            type="button"
+            onClick={onMinus}
+            aria-label={line.qty === 1 ? `Remove ${line.item.name} from cart` : `Decrease quantity of ${line.item.name}`}
+            className="flex size-7 items-center justify-center rounded-l-lg text-slate-500 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#006569]"
+          >
+            −
+          </button>
+          <span className="w-8 text-center text-xs font-bold text-slate-900" aria-label={`${line.qty} in cart`}>
+            {line.qty}
+          </span>
+          <button
+            type="button"
+            onClick={onPlus}
+            aria-label={`Increase quantity of ${line.item.name}`}
+            className="flex size-7 items-center justify-center rounded-r-lg text-slate-500 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#006569]"
+          >
+            +
+          </button>
+        </div>
       </div>
-      <p className="shrink-0 text-[13px] font-black tabular-nums text-slate-900">{formatINR(line.totalPaise)}</p>
+      <div className="flex shrink-0 flex-col items-end gap-1.5">
+        <p className="text-[13px] font-black tabular-nums text-slate-900">{formatINR(line.totalPaise)}</p>
+        <button
+          type="button"
+          onClick={onRemove}
+          aria-label={`Remove ${line.item.name} from cart`}
+          className="rounded p-1 text-[11px] font-bold uppercase tracking-wide text-slate-400 hover:bg-red-50 hover:text-red-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400"
+        >
+          Remove
+        </button>
+      </div>
     </li>
   );
 }
@@ -169,7 +221,7 @@ function PayButton() {
 }
 
 export default function CheckoutContents() {
-  const { items, totals, hydrated } = useCart();
+  const { items, totals, hydrated, setQty, remove } = useCart();
 
   return (
     <div className="mx-auto w-full max-w-4xl px-4 py-8">
@@ -211,7 +263,15 @@ export default function CheckoutContents() {
           <section className="rounded-2xl border border-slate-200 bg-white p-5" aria-label="Order summary">
             <h2 className="text-xs font-black uppercase tracking-wide text-slate-900">Order summary</h2>
             <ul className="mt-2 divide-y divide-slate-100">
-              {totals.lines.map((line) => <SummaryLine key={line.slug} line={line} />)}
+              {totals.lines.map((line) => (
+                <SummaryLine
+                  key={line.slug}
+                  line={line}
+                  onPlus={() => setQty(line.slug, line.qty + 1)}
+                  onMinus={() => (line.qty === 1 ? remove(line.slug) : setQty(line.slug, line.qty - 1))}
+                  onRemove={() => remove(line.slug)}
+                />
+              ))}
             </ul>
           </section>
 

@@ -18,7 +18,7 @@ export default function SearchBar() {
 
   return (
     <form onSubmit={handleSearch} className="relative group">
-      <div className="relative w-full lg:w-40 xl:w-60 transition-all duration-300">
+      <div className="relative w-full lg:w-28 xl:w-48 transition-all duration-300">
         <input
           ref={inputRef}
           type="text"
