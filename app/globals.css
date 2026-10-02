@@ -51,6 +51,24 @@
   animation: float 4s ease-in-out infinite;
 }
 
+/* CHANGE: 2026-10-02 — popover entrance (SP-1 cart). One-shot slide+settle, not a loop,
+   so it is safe for motion-sensitive visitors; the global prefers-reduced-motion override
+   at the bottom of this file already kills it there. */
+@keyframes cart-pop-in {
+  0% {
+    opacity: 0;
+    transform: translateY(12px) scale(0.97);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-cart-pop-in {
+  animation: cart-pop-in 260ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
@@ -614,8 +632,8 @@ iframe[src*='salesiq'],
    removed. The cookie notice no longer draws its mark in; it uses a static cookie glyph.
    Nothing referenced the keyframes any more, so keeping them would be dead CSS. */
 
-/* CHANGE: 2026-10-02 — print styles for the /demo checkout receipt.
-   WHY: the receipt is produced with window.print(), which the owner turns into a PDF via the
+/* CHANGE: 2026-10-02 — print styles for checkout receipts.
+   WHY: receipts are produced with window.print(), which the owner turns into a PDF via the
    phone's print sheet. Without this the saved PDF carries the entire site chrome.
 
    THAT WAS A REAL DEFECT, FOUND BY RENDERING THE PDF. The first version of this block only
@@ -626,18 +644,21 @@ iframe[src*='salesiq'],
 
    SCOPED DELIBERATELY. A bare `@media print { body { … } }` would restyle every printable
    page on the site, including long-form content pages someone may legitimately print.
-   The `.demo-receipt-page` class is applied only to /demo/checkout/success.
-
-   The selector below keeps an element if it IS the receipt, is INSIDE it, or CONTAINS it —
+   Two page classes are honoured:
+     .demo-receipt-page  — applied only to /demo/checkout/success (the test scaffold receipt)
+     .cart-receipt-page  — applied only to /checkout/success (the REAL cart's receipt, SP-1)
+   The selector below keeps an element if it IS a receipt page, is INSIDE it, or CONTAINS it —
    and hides everything else. That one rule removes the whole chrome stack without this
    stylesheet having to know the site's component names, which is what made it break when
    the SupportButton or ConsentBanner changed. */
 @media print {
-  body *:not(.demo-receipt-page):not(.demo-receipt-page *):not(:has(.demo-receipt-page)) {
+  body *:not(.demo-receipt-page):not(.demo-receipt-page *):not(:has(.demo-receipt-page)):not(.cart-receipt-page):not(.cart-receipt-page *):not(:has(.cart-receipt-page)) {
     display: none !important;
   }
   .demo-receipt-page,
-  .demo-receipt-page * {
+  .demo-receipt-page *,
+  .cart-receipt-page,
+  .cart-receipt-page * {
     background: #ffffff !important;
   }
 
@@ -651,7 +672,8 @@ iframe[src*='salesiq'],
      in exactly those engines. It never fires where the modern rule works: old engines
      CAN parse `@supports selector(...)`, and `selector(:has(...))` tests false there,
      so `not` makes the block apply only where it is needed. ::before/::after spans in
-     the header stack are covered by the `.sticky` ancestor rule. */
+     the header stack are covered by the `.sticky` ancestor rule. Applies to BOTH
+     receipt pages (test scaffold + real cart) — the fallback is class-agnostic. */
   @supports not selector(:has(.demo-receipt-page)) {
     .sticky.top-0.z-\[2000\] { display: none !important; }
     .fixed.bottom-\[10\%\].z-\[3000\] { display: none !important; }

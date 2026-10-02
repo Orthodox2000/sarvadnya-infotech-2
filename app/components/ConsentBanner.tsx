@@ -1,6 +1,6 @@
 'use client';
 
-// CHANGE: 2026-10-02 — Cookie notice. REMADE five times, four of them the same day.
+// CHANGE: 2026-10-02 — Cookie notice. REMADE six times.
 //
 // v1  bottom-left, full card, "we keep a few records as you browse…", dismiss-only.
 // v2  bottom-right, single sentence + "Learn more" -> /privacy. (owner request)
@@ -11,12 +11,14 @@
 //     simply letting the card time out wrote NOTHING and it auto-opened again on the
 //     next page, on every page, forever. Fixed by remembering the card has been seen
 //     (see `markSeen`) so it auto-opens exactly once ever.
-// v5  THIS FILE — owner request: "cookies button gone and only banner seen". The
-//     resting `Cookies` pill and every hover/tap affordance around it are deleted.
-//     The banner is now the ONLY cookie UI: it auto-opens once on a first visit,
-//     auto-collapses after 5s, and never returns — there is nothing left to summon it
-//     with. Both stored end states render nothing, because without a pill there is no
-//     on-demand half to keep.
+// v5  owner request: "cookies button gone and only banner seen". The resting `Cookies`
+//     pill and every hover/tap affordance around it are deleted. The banner is now the
+//     ONLY cookie UI and auto-collapsed after 5s.
+// v6  THIS FILE — owner request: "keep it as long as user closes". The 5s auto-collapse
+//     timer is DELETED — every trace of the countdown (AUTO_COLLAPSE_MS, collapseLater,
+//     clearTimer, the setTimeout ref and its unmount cleanup) is gone. A first visit
+//     opens the card and it STAYS until the X is pressed. Nothing changes about when it
+//     opens (first visit only) or how it is remembered.
 //
 // The two-word storage model from v4 is UNCHANGED and still load-bearing:
 //   `seen`      — the card auto-opened once (written AT OPEN TIME, see markSeen)
@@ -24,13 +26,15 @@
 //   legacy `'1'`— v3 stored this to mean "removed"; it is READ AS `dismissed` so an
 //                 existing visitor is not shown the card one more time.
 //
-// COLLISION NOTE (v5): SupportButton is `fixed bottom-[10%] right-0` — a ~42px-wide,
-// ~180px-tall Ask Sara + WhatsApp stack on the same right edge. The banner is transient
-// (5s, once ever), so any overlap with that stack is brief by construction; z-[100001]
-// puts the card on top while it lasts, which is what the owner asked for. There is no
-// permanent element on this corner any more.
+// COLLISION NOTE (v5→v6): SupportButton is `fixed bottom-[10%] right-0` — a ~42px-wide,
+// ~180px-tall Ask Sara + WhatsApp stack on the same right edge. In v5 the overlap was
+// brief because the card auto-collapsed after 5s; in v6 the card lingers until dismissed,
+// so a user who neither taps X nor Learn more sees both on the same corner for as long as
+// they stay on the first page. That is the owner's explicit request ("keep it as long as
+// user closes"); z-[100001] keeps the card on top of the stack while they coexist. Once
+// dismissed (or once the visitor leaves the first page), the card never returns.
 
-import { memo, useCallback, useEffect, useRef, useState } from 'react';
+import { memo, useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
 
 // Dismissal flag. Named svd_* to match the existing `svd_vid` cookie convention.
@@ -63,39 +67,23 @@ function readStored(): Stored {
  */
 type Stage = 'unseen' | 'seen' | 'dismissed';
 
-// How long the expanded card stays up after the pointer leaves (ms).
-const AUTO_COLLAPSE_MS = 5000;
-
 function ConsentBanner() {
   const [stage, setStage] = useState<Stage>('unseen');
   const [open, setOpen] = useState(false);
-  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  const clearTimer = useCallback(() => {
-    if (timer.current) {
-      clearTimeout(timer.current);
-      timer.current = null;
-    }
-  }, []);
-
-  const collapseLater = useCallback(() => {
-    clearTimer();
-    timer.current = setTimeout(() => setOpen(false), AUTO_COLLAPSE_MS);
-  }, [clearTimer]);
 
   // Remember that the card has been shown, WITHOUT closing it.
   //
-  // WHY THIS RUNS AT OPEN TIME, NOT AFTER THE 5s: the owner's report was the card
-  // appearing on every page. If `seen` were only written once the card auto-collapsed,
-  // then navigating away during the countdown would lose the record and the next page
-  // would open it again — the exact bug, just rarer. Marking at open means "shown at
-  // least once" survives an early navigation, a refresh, or a closed tab.
+  // WHY THIS RUNS AT OPEN TIME, NOT AFTER A TIMEOUT: the owner's report was the card
+  // appearing on every page. If `seen` were only written once the card later closed,
+  // then navigating away would lose the record and the next page would open it again —
+  // the exact bug, just rarer. Marking at open means "shown at least once" survives an
+  // early navigation, a refresh, or a closed tab.
   //
   // Declared before every handler that calls it.
   const markSeen = useCallback(() => {
     try {
-      // Never downgrade `dismissed` -> `seen`: doing so would resurrect the pill of a
-      // visitor who deliberately removed it.
+      // Never downgrade `dismissed` -> `seen`: doing so would resurrect a card a
+      // visitor deliberately removed.
       if (readStored() === 'dismissed') return;
       window.localStorage.setItem(STORAGE_KEY, 'seen');
       setStage((s) => (s === 'dismissed' ? s : 'seen'));
@@ -105,7 +93,9 @@ function ConsentBanner() {
     }
   }, []);
 
-  // Mount: reveal on a first visit, and let it linger 5s so it is actually read.
+  // Mount: reveal on a first visit and leave it up — v6 removed the 5s auto-collapse,
+  // the card stays until the X is pressed (owner request: "keep it as long as user
+  // closes").
   //
   // localStorage is read in an effect, never during render, to avoid a hydration
   // mismatch — starting `unseen`+closed also means a returning visitor never sees a
@@ -113,9 +103,8 @@ function ConsentBanner() {
   useEffect(() => {
     const stored = readStored();
     if (stored === 'seen') {
-      // Owner decision (v5): once the card has been seen it is never shown again. The
-      // resting pill that used to remain was removed on request, so there is nothing
-      // left to render — this branch exists only to keep the end state distinct from
+      // Owner decision (v5): once the card has been seen it is never shown again on
+      // any page. This branch exists only to keep the end state distinct from
       // `dismissed` in storage.
       setStage('seen');
       return;
@@ -128,12 +117,9 @@ function ConsentBanner() {
     }
     markSeen();
     setOpen(true);
-    collapseLater();
-    return clearTimer;
-  }, [clearTimer, collapseLater, markSeen]);
+  }, [markSeen]);
 
   const dismiss = useCallback(() => {
-    clearTimer();
     try {
       window.localStorage.setItem(STORAGE_KEY, 'dismissed');
     } catch {
@@ -142,15 +128,15 @@ function ConsentBanner() {
     }
     setOpen(false);
     setStage('dismissed');
-  }, [clearTimer]);
+  }, []);
 
   // RENDERING IS DRIVEN BY `open` ALONE — the stage must not gate it. Until v5 this line
   // also returned null for `stage === 'seen'`, but markSeen() flips the stage to 'seen'
   // at the same time it opens the card — the two changes batch into ONE render, so a
   // first visitor would have been shown nothing at all. `stage` still records the end
   // state (for the never-downgrade guard below) but is no longer allowed to veto a
-  // freshly opened card. `open` is true only on a genuine first visit, and for the 5s
-  // countdown after it; every other path leaves it false and renders nothing.
+  // freshly opened card. `open` is true only on a genuine first visit and stays true
+  // until the X is pressed; every other path leaves it false and renders nothing.
   if (!open) return null;
 
   return (

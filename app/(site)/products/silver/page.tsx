@@ -1,52 +1,27 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import Footer from '../../../components/Footer';
 import UnifiedContactModal, { FormType } from '../../../components/UnifiedContactModal';
+import { useCart } from '@/lib/cart/store';
+import { priceRowView, type PriceRowView } from '@/lib/prices';
+import BuyNowButton from '../../../components/cart/BuyNowButton';
+import CartAddButton from '../../../components/cart/CartAddButton';
 
 // CHANGE: 2026-09-16 — replaced inline brand styles with Tailwind token classes, added stacked mobile pricing cards, focus-visible rings, and readability font-size bumps.
+// CHANGE: 2026-10-02 — pricing rows are now DB-driven (SP-1 cart build). WHY: rows were
+// hardcoded strings; they now derive, per slug, from the LIVE prices collection via the
+// store's `resolve` (with the lib/prices-catalog.mjs fallback for pre-seed/renamed slugs),
+// formatted by `priceRowView` — string-for-string identical to the legacy values, as pinned
+// by the page-parity assertions in scripts/cart-test.mjs.
 
-type PricingRow =
-  | { product: string; validity: string; base: string; gst: string; total: string }
-  | {
-      product: string;
-      validity: string;
-      base: string;
-      gst: string;
-      total: string;
-      strike: string;
-      discount: string;
-      save: string;
-    };
+type PricingRow = PriceRowView & { slug: string };
 
-const pricingRows: PricingRow[] = [
-  {
-    product: 'TallyPrime Single User',
-    validity: 'Lifetime',
-    base: '22,500',
-    gst: '4,050',
-    total: '26,550/-',
-  },
-  {
-    product: 'TSS Single User (1 Year)',
-    validity: '1 Year',
-    base: '4,500',
-    gst: '810',
-    total: '5,310/-',
-  },
-  {
-    product: 'TSS Single User (2 Years)',
-    validity: '2 Years',
-    base: '8,100',
-    gst: '1,458',
-    total: '8,496/-',
-    strike: '9,558',
-    discount: '10% OFF',
-    save: 'You save 1,062/-',
-  },
-];
+// The three sellable lines on this page, in display order. The TSS rows are per-row
+// Add-only; the TallyPrime Silver row is the "Buy Now!" bundle anchor.
+const ROW_SLUGS = ['tallyprime-silver', 'tss-single-1yr', 'tss-single-2yr'] as const;
 
 const features = [
   { title: 'Automated Tax Compliance', desc: 'Generate tax-ready invoices and automated return files tailored to your local tax laws (like VAT or GST) instantly, keeping you penalty-free.' },
@@ -99,6 +74,18 @@ export default function TallySilverPage() {
   const [openFaq, setOpenFaq] = useState<number | null>(0);
   const [stickyNav, setStickyNav] = useState(false);
   const [showPricing, setShowPricing] = useState(false);
+
+  // CHANGE: 2026-10-02 — live pricing rows. `resolve` is stable (useCallback in the store),
+  // so useMemo recomputes only when the price list arrives or changes.
+  const { resolve } = useCart();
+  const pricingRows: PricingRow[] = useMemo(
+    () =>
+      ROW_SLUGS.flatMap((slug) => {
+        const item = resolve(slug);
+        return item ? [{ slug, ...priceRowView(item) }] : [];
+      }),
+    [resolve],
+  );
 
   const [formName, setFormName] = useState('');
   const [formEmail, setFormEmail] = useState('');
@@ -251,12 +238,9 @@ export default function TallySilverPage() {
 
             {/* Action Buttons */}
             <div className="hidden md:flex flex-col gap-2 shrink-0">
-              <button
-                onClick={() => openModal('demo', 'TallyPrime Silver')}
-                className="px-6 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider text-white shadow-lg transition-all bg-[#006569] hover:bg-[#045A57] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#006569] focus-visible:ring-offset-2"
-              >
-                Get Now
-              </button>
+              {/* CHANGE: 2026-10-02 — "Get Now" became "Buy Now!" — the hero CTA now
+                  routes into the cart (bundle modal for the Silver row, then checkout). */}
+              <BuyNowButton slug="tallyprime-silver" />
               <button
                 onClick={() => scrollToSection('pricing')}
                 className="px-6 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider border border-[#006569] text-[#006569] transition-all hover:bg-[#006569]/5 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#006569] focus-visible:ring-offset-2"
@@ -269,12 +253,7 @@ export default function TallySilverPage() {
 
         {/* Mobile action buttons */}
         <div className="md:hidden flex gap-2 px-4 pb-4">
-          <button
-            onClick={() => openModal('demo', 'TallyPrime Silver')}
-            className="flex-1 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider text-white shadow-lg transition-all bg-[#006569] hover:bg-[#045A57] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#006569] focus-visible:ring-offset-2"
-          >
-            Get Now
-          </button>
+          <BuyNowButton slug="tallyprime-silver" className="flex-1" />
           <button
             onClick={() => scrollToSection('pricing')}
             className="flex-1 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider border border-[#006569] text-[#006569] transition-all hover:bg-[#006569]/5 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#006569] focus-visible:ring-offset-2"
@@ -599,11 +578,12 @@ export default function TallySilverPage() {
                           <th scope="col" className="px-4 py-3">Base Price (INR)</th>
                           <th scope="col" className="px-4 py-3">GST 18% (INR)</th>
                           <th scope="col" className="px-4 py-3">Total (INR)</th>
+                          <th scope="col" className="px-4 py-3">Action</th>
                         </tr>
                       </thead>
                       <tbody>
                         {pricingRows.map((row) => (
-                          <tr key={row.product} className="border-b border-slate-100 last:border-0">
+                          <tr key={row.slug} className="border-b border-slate-100 last:border-0">
                             <td className="px-4 py-3 font-bold text-slate-900">{row.product}</td>
                             <td className="px-4 py-3 text-slate-600">{row.validity}</td>
                             <td className="px-4 py-3 text-slate-600">{row.base}</td>
@@ -620,6 +600,10 @@ export default function TallySilverPage() {
                                 <span className="font-bold text-[#006569]">{row.total}</span>
                               )}
                             </td>
+                            {/* CHANGE: 2026-10-02 — per-row Add to Cart (SP-1 cart build). */}
+                            <td className="px-4 py-3">
+                              <CartAddButton slug={row.slug} />
+                            </td>
                           </tr>
                         ))}
                       </tbody>
@@ -629,7 +613,7 @@ export default function TallySilverPage() {
                   {/* Mobile stacked cards */}
                   <div className="sm:hidden space-y-3">
                     {pricingRows.map((row) => (
-                      <div key={row.product} className="rounded-lg border border-slate-200 p-4">
+                      <div key={row.slug} className="rounded-lg border border-slate-200 p-4">
                         <div className="flex items-center justify-between gap-3">
                           <p className="text-sm font-bold text-slate-900">{row.product}</p>
                           <span className="shrink-0 text-xs font-semibold uppercase tracking-wide text-slate-500">{row.validity}</span>
@@ -663,6 +647,10 @@ export default function TallySilverPage() {
                             <p className="text-xs text-teal-600 font-medium">{row.save}</p>
                           </div>
                         )}
+                        {/* CHANGE: 2026-10-02 — full-width Add for thumb reach (SP-1). */}
+                        <div className="mt-3">
+                          <CartAddButton slug={row.slug} className="w-full" />
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -685,6 +673,25 @@ export default function TallySilverPage() {
                 </div>
               )}
             </section>
+
+            {/* CHANGE: 2026-10-02 — bottom Buy Now CTA (SP-1 cart build). WHY: the
+                decision point directly after the price table; the bundle modal + cart take
+                over from here, so the page never dead-ends into a form for a product that
+                is now buyable online. */}
+            <div className="mt-8 rounded-2xl border border-[#D4EAEA] bg-gradient-to-br from-[#E5F4F4]/70 to-white p-6 text-center">
+              <h3 className="text-base font-black text-slate-900">Ready to move to TallyPrime Silver?</h3>
+              <p className="mt-1 text-sm text-slate-600">Add the licence (and any TSS cover) to your cart and check out in under a minute.</p>
+              <div className="mt-4 flex flex-wrap items-center justify-center gap-3">
+                <BuyNowButton slug="tallyprime-silver" />
+                <button
+                  type="button"
+                  onClick={() => scrollToSection('overview')}
+                  className="inline-flex items-center justify-center rounded-lg border border-[#006569] bg-white px-6 py-2.5 text-xs font-bold uppercase tracking-wider text-[#006569] transition-all hover:bg-teal-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#006569] focus-visible:ring-offset-2"
+                >
+                  Read Overview
+                </button>
+              </div>
+            </div>
 
           </div>
 

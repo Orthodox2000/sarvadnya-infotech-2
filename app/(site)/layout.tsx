@@ -9,6 +9,13 @@ import { Analytics } from "@vercel/analytics/next"
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import { VisitorProvider } from "../components/VisitorProvider";
 import ConsentBanner from "../components/ConsentBanner";
+import { CartProvider } from "@/lib/cart/store";
+import CartAddedPopover from "../components/cart/CartAddedPopover";
+// CHANGE: 2026-10-02 — ONE drawer mount for both navbar variants. Mounting it inside the
+// desktop variant's `hidden lg:flex` navbar container made it render at zero size on phones
+// (a display:none ancestor hides even fixed-position descendants). Here it is a sibling of
+// the sticky chrome, so it overlays correctly at every viewport.
+import CartDrawer from "../components/cart/CartDrawer";
 
 const NewsFeed = dynamic(() => import("../components/NewsFeed"), {
   loading: () => (
@@ -58,31 +65,40 @@ export default async function SiteLayout({
 
   return (
     <>
-      {/* CHANGE: 2026-10-02 — overflow-x-clip so the site chrome can NEVER widen the page.
-          WHY: the Productbar row (justify-around, 8.5px labels) measures 381px at a 360px
-          viewport — 21px wider than the screen. Without clipping, EVERY page scrolls
-          horizontally on phones, and the receipt page's print preview showed the header
-          pushed out on the left. `clip` (not `hidden`) is deliberate: it clips without
-          creating a scroll container, so the sticky header and the megamenu dropdowns
-          keep working, and fixed overlays (SupportButton) are unaffected.
-          Tailwind's overflow-x-clip compiles to overflow-x: clip — unsupported browsers
-          (Safari < 16.4) simply ignore it and keep the pre-existing behavior. */}
-      <div className="sticky top-0 z-[2000] w-full flex flex-col overflow-x-clip">
-        <NewsFeed initialData={newsData} />
-        {/* CHANGE: 2026-08-26 — Navbar & Productbar are fully hardcoded now; settings no longer passed. */}
-        <Navbar />
-        <Productbar />
-      </div>
+      {/* CHANGE: 2026-10-02 — CartProvider must wrap the ENTIRE chrome, not just children:
+          the Navbar cart button (inside the sticky header) consumes useCart. The store is a
+          client boundary that holds cart state + the live price list for every page. */}
+      <CartProvider>
+        {/* CHANGE: 2026-10-02 — overflow-x-clip so the site chrome can NEVER widen the page.
+            WHY: the Productbar row (justify-around, 8.5px labels) measures 381px at a 360px
+            viewport — 21px wider than the screen. Without clipping, EVERY page scrolls
+            horizontally on phones, and the receipt page's print preview showed the header
+            pushed out on the left. `clip` (not `hidden`) is deliberate: it clips without
+            creating a scroll container, so the sticky header and the megamenu dropdowns
+            keep working, and fixed overlays (SupportButton) are unaffected.
+            Tailwind's overflow-x-clip compiles to overflow-x: clip — unsupported browsers
+            (Safari < 16.4) simply ignore it and keep the pre-existing behavior. */}
+        <div className="sticky top-0 z-[2000] w-full flex flex-col overflow-x-clip">
+          <NewsFeed initialData={newsData} />
+          {/* CHANGE: 2026-08-26 — Navbar & Productbar are fully hardcoded now; settings no longer passed. */}
+          <Navbar />
+          <Productbar />
+        </div>
 
-      <VisitorProvider>
-        {children}
-        <SupportButton initialSettings={settings} />
-        <NotificationToast />
-        {/* CHANGE: 2026-09-30 — informational data-collection notice, replaces Zoho SalesIQ's
-            own consent banner (suppressed in globals.css). Consent is assumed by browsing,
-            so this never blocks anything — it only informs and deep-links to /privacy. */}
-        <ConsentBanner />
-      </VisitorProvider>
+        <VisitorProvider>
+          {children}
+          <SupportButton initialSettings={settings} />
+          <NotificationToast />
+          {/* CHANGE: 2026-09-30 — informational data-collection notice, replaces Zoho SalesIQ's
+              own consent banner (suppressed in globals.css). Consent is assumed by browsing,
+              so this never blocks anything — it only informs and deep-links to /privacy. */}
+          <ConsentBanner />
+          {/* CHANGE: 2026-10-02 — cart "added" popover renders site-wide from the store event. */}
+          <CartAddedPopover />
+          {/* CHANGE: 2026-10-02 — the cart drawer, mounted ONCE site-wide (see import note). */}
+          <CartDrawer />
+        </VisitorProvider>
+      </CartProvider>
       <Analytics />
       <SpeedInsights />
     </>

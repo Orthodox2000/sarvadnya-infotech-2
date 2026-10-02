@@ -72,4 +72,12 @@ certificates
 # CHANGE: 2026-10-02 — scripts/excel-log-append.mjs writes a pre-append backup next to the
 # CSV on every run. It is a runtime artifact of that one script, not project data, and was
 # previously untracked-but-not-ignored, so it would have been swept into a commit by `git add -A`.
+# CHANGE: 2026-10-02 — scripts/db-backup.mjs writes timestamped JSON dumps of the
+# shared Atlas database here. Runtime artifacts, never committed (restore from a
+# downloaded/copied copy; a push must not sweep production data into the repo).
+/backups/
+
+# CHANGE: 2026-10-02 — scripts/excel-log-append.mjs writes a pre-append backup next to the
+# CSV on every run. It is a runtime artifact of that one script, not project data, and was
+# previously untracked-but-not-ignored, so it would have been swept into a commit by `git add -A`.
 *.csv.bak

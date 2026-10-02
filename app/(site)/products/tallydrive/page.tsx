@@ -1,20 +1,26 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import Footer from '../../../components/Footer';
 import UnifiedContactModal, { FormType } from '../../../components/UnifiedContactModal';
 import TssRenewalForm from '../../../components/TssRenewalForm';
+import { useCart } from '@/lib/cart/store';
+import { formatRupeesPlain } from '@/lib/prices';
+import BuyNowButton from '../../../components/cart/BuyNowButton';
+import CartAddButton from '../../../components/cart/CartAddButton';
 
 // CHANGE: 2026-09-16 — consistent bg-slate-100 background and silver-page style/token cleanup.
+// CHANGE: 2026-10-02 — the "Extra Storage" row is now DB-driven (SP-1 cart build): its
+// price string derives from the live prices collection via the store, so an admin price
+// edit reflects here; the two "Included with TSS" rows are descriptive and stay static.
 
-type TallyDrivePlan = { plan: string; storage: string; validity: string; price: string };
+type TallyDrivePlan = { plan: string; storage: string; validity: string; price: string; slug?: string };
 
-const pricingRows: TallyDrivePlan[] = [
+const BASE_DRIVE_PLANS: TallyDrivePlan[] = [
   { plan: 'TallyDrive Basic (Free)', storage: '1 GB', validity: 'Active TSS required', price: 'Included with Single-User TSS' },
   { plan: 'Multi-User (Gold / Server)', storage: '3 GB', validity: 'Active TSS required', price: 'Included with Multi-User TSS' },
-  { plan: 'Extra Storage', storage: '10 GB', validity: 'Per year', price: '₹1,200/year' },
 ];
 
 const features = [
@@ -79,6 +85,24 @@ export default function TallyDrivePage() {
   const [openFaq, setOpenFaq] = useState<number | null>(0);
   const [stickyNav, setStickyNav] = useState(false);
   const [showPricing, setShowPricing] = useState(false);
+
+  // CHANGE: 2026-10-02 — the Extra Storage row is DB-driven: its ₹/year string comes from
+  // the live prices collection (`resolve` → fallback catalogue), formatted en-IN. The two
+  // "Included with TSS" rows are descriptive, not sellable, and stay static.
+  const { resolve } = useCart();
+  const pricingRows: TallyDrivePlan[] = useMemo(() => {
+    const extra = resolve('tallydrive-extra-storage-1yr');
+    return [
+      ...BASE_DRIVE_PLANS,
+      {
+        plan: 'Extra Storage',
+        storage: '10 GB',
+        validity: 'Per year',
+        price: extra ? `₹${formatRupeesPlain(extra.payablePaise)}/year` : '₹1,200/year',
+        slug: 'tallydrive-extra-storage-1yr',
+      },
+    ];
+  }, [resolve]);
   const [formName, setFormName] = useState('');
   const [formEmail, setFormEmail] = useState('');
   const [formPhone, setFormPhone] = useState('');
@@ -230,12 +254,9 @@ export default function TallyDrivePage() {
 
             {/* Action Buttons */}
             <div className="hidden md:flex flex-col gap-2 shrink-0">
-              <button
-                onClick={() => openModal('demo', 'TallyDrive Backup')}
-                className="px-6 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider text-white shadow-lg transition-all bg-[#006569] hover:bg-[#045A57] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#006569] focus-visible:ring-offset-2"
-              >
-                Get Now
-              </button>
+              {/* CHANGE: 2026-10-02 — "Get Now" became "Buy Now!" — buys the 10 GB Extra
+                  Storage pack (bundled with a TSS renewal suggestion). */}
+              <BuyNowButton slug="tallydrive-extra-storage-1yr" />
               <button
                 onClick={() => scrollToSection('pricing')}
                 className="px-6 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider border border-[#006569] text-[#006569] transition-all hover:bg-[#006569]/5 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#006569] focus-visible:ring-offset-2"
@@ -248,12 +269,7 @@ export default function TallyDrivePage() {
 
         {/* Mobile action buttons */}
         <div className="md:hidden flex gap-2 px-4 pb-4">
-          <button
-            onClick={() => openModal('demo', 'TallyDrive Backup')}
-            className="flex-1 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider text-white shadow-lg transition-all bg-[#006569] hover:bg-[#045A57] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#006569] focus-visible:ring-offset-2"
-          >
-            Get Now
-          </button>
+          <BuyNowButton slug="tallydrive-extra-storage-1yr" className="flex-1" />
           <button
             onClick={() => scrollToSection('pricing')}
             className="flex-1 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider border border-[#006569] text-[#006569] transition-all hover:bg-[#006569]/5 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#006569] focus-visible:ring-offset-2"
@@ -589,6 +605,7 @@ export default function TallyDrivePage() {
                           <th scope="col" className="px-4 py-3">Storage</th>
                           <th scope="col" className="px-4 py-3">Validity</th>
                           <th scope="col" className="px-4 py-3">Price</th>
+                          <th scope="col" className="px-4 py-3">Action</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -598,6 +615,16 @@ export default function TallyDrivePage() {
                             <td className="px-4 py-3 text-slate-600">{row.storage}</td>
                             <td className="px-4 py-3 text-slate-600">{row.validity}</td>
                             <td className="px-4 py-3 font-bold text-[#006569]">{row.price}</td>
+                            {/* CHANGE: 2026-10-02 — only the sellable Extra Storage pack gets
+                                an Add button; the free-included rows are informational. The
+                                add is `quiet`: no popover for a utility row. */}
+                            <td className="px-4 py-3 align-middle">
+                              {row.slug ? (
+                                <CartAddButton slug={row.slug} label="Add" quiet />
+                              ) : (
+                                <span className="inline-block rounded-full bg-slate-100 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-slate-400">Included</span>
+                              )}
+                            </td>
                           </tr>
                         ))}
                       </tbody>
@@ -626,6 +653,12 @@ export default function TallyDrivePage() {
                             <dd className="text-sm font-bold text-[#006569] mt-0.5">{row.price}</dd>
                           </div>
                         </dl>
+                        {/* CHANGE: 2026-10-02 — full-width Add for the sellable pack (SP-1). */}
+                        {row.slug && (
+                          <div className="mt-3">
+                            <CartAddButton slug={row.slug} label="Add" quiet className="w-full" />
+                          </div>
+                        )}
                       </div>
                     ))}
                   </div>
@@ -640,6 +673,23 @@ export default function TallyDrivePage() {
               )}
             </section>
 
+            {/* CHANGE: 2026-10-02 — bottom Buy Now CTA (SP-1 cart build). WHY: the decision
+                point directly after the plans table; the storage pack (with a TSS-bundle
+                suggestion) goes into the cart from here. */}
+            <div className="mt-8 rounded-2xl border border-[#D4EAEA] bg-gradient-to-br from-[#E5F4F4]/70 to-white p-6 text-center">
+              <h3 className="text-base font-black text-slate-900">Need more backup space?</h3>
+              <p className="mt-1 text-sm text-slate-600">Add 10 GB of extra TallyDrive storage to your cart — one year at a time.</p>
+              <div className="mt-4 flex flex-wrap items-center justify-center gap-3">
+                <BuyNowButton slug="tallydrive-extra-storage-1yr" />
+                <button
+                  type="button"
+                  onClick={() => scrollToSection('overview')}
+                  className="inline-flex items-center justify-center rounded-lg border border-[#006569] bg-white px-6 py-2.5 text-xs font-bold uppercase tracking-wider text-[#006569] transition-all hover:bg-teal-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#006569] focus-visible:ring-offset-2"
+                >
+                  Read Overview
+                </button>
+              </div>
+            </div>
 
           </div>
 

@@ -1,10 +1,27 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import Image from 'next/image';
 import Footer from '../../../components/Footer';
 import UnifiedContactModal, { FormType } from '../../../components/UnifiedContactModal';
 import TssRenewalForm from '../../../components/TssRenewalForm';
+import { useCart } from '@/lib/cart/store';
+import { priceRowView, type PriceRowView } from '@/lib/prices';
+import CartAddButton from '../../../components/cart/CartAddButton';
+
+// CHANGE: 2026-10-02 — DB-driven pricing (SP-1 cart build). WHY: the six TSS plans were
+// static strings in JSX; they now derive from the live prices collection (with the
+// lib/prices-catalog.mjs fallback) so an admin price edit reflects here too — the whole
+// point of "prices dynamic from DB with identical-number fallback". TSS rows are per-row
+// "Add" ONLY (no bundle) by design: renewals are bought one plan at a time.
+const TSS_ROW_SLUGS = [
+  'tss-single-1yr',
+  'tss-single-2yr',
+  'tss-multi-1yr',
+  'tss-multi-2yr',
+  'tss-auditor-1yr',
+  'tss-auditor-2yr',
+] as const;
 
 export default function TSSPage() {
   const [modalConfig, setModalConfig] = useState<{isOpen: boolean; type: FormType; service: string}>({
@@ -12,6 +29,18 @@ export default function TSSPage() {
     type: 'enquire',
     service: 'Tally Software Service (TSS) Renewal'
   });
+
+  // CHANGE: 2026-10-02 — live pricing rows (display strings string-for-string identical
+  // to the legacy static table, per priceRowView + the cart-test page-parity assertions).
+  const { resolve } = useCart();
+  const pricingRows = useMemo(
+    () =>
+      TSS_ROW_SLUGS.flatMap((slug) => {
+        const item = resolve(slug);
+        return item ? [{ slug, ...priceRowView(item) }] : [];
+      }),
+    [resolve],
+  );
 
   const openModal = (type: FormType, service: string = 'TSS Renewal') => {
     setModalConfig({ isOpen: true, type, service });
@@ -175,66 +204,34 @@ export default function TSSPage() {
                 <th className="px-6 py-4">Base Price (INR)</th>
                 <th className="px-6 py-4">GST 18% (INR)</th>
                 <th className="px-6 py-4">Total (INR)</th>
+                <th className="px-6 py-4">Action</th>
               </tr>
             </thead>
             <tbody>
-              <tr className="border-b border-slate-100">
-                <td className="px-6 py-4 font-bold text-slate-900">TSS Single User (1 Year)</td>
-                <td className="px-6 py-4 text-slate-600">1 Year</td>
-                <td className="px-6 py-4 text-slate-600">4,500</td>
-                <td className="px-6 py-4 text-slate-600">810</td>
-                <td className="px-6 py-4 font-bold text-[#006569]">5,310/-</td>
-              </tr>
-              <tr className="border-b border-slate-100">
-                <td className="px-6 py-4 font-bold text-slate-900">TSS Single User (2 Years)</td>
-                <td className="px-6 py-4 text-slate-600">2 Years</td>
-                <td className="px-6 py-4 text-slate-600">8,100</td>
-                <td className="px-6 py-4 text-slate-600">1,458</td>
-                <td className="px-6 py-4">
-                  <span className="text-slate-400 line-through mr-1.5">9,558</span>
-                  <span className="font-bold text-teal-600">8,496/-</span>
-                  <span className="inline-flex items-center rounded-full px-2 py-0.5 ml-2 text-[10px] font-bold bg-teal-50 text-teal-600 border border-teal-200">10% OFF</span>
-                  <p className="text-[10px] text-teal-600 mt-0.5 font-medium">You save 1,062/-</p>
-                </td>
-              </tr>
-              <tr className="border-b border-slate-100">
-                <td className="px-6 py-4 font-bold text-slate-900">TSS Multi User (1 Year)</td>
-                <td className="px-6 py-4 text-slate-600">1 Year</td>
-                <td className="px-6 py-4 text-slate-600">13,500</td>
-                <td className="px-6 py-4 text-slate-600">2,430</td>
-                <td className="px-6 py-4 font-bold text-[#006569]">15,930/-</td>
-              </tr>
-              <tr className="border-b border-slate-100">
-                <td className="px-6 py-4 font-bold text-slate-900">TSS Multi User (2 Years)</td>
-                <td className="px-6 py-4 text-slate-600">2 Years</td>
-                <td className="px-6 py-4 text-slate-600">24,300</td>
-                <td className="px-6 py-4 text-slate-600">4,374</td>
-                <td className="px-6 py-4">
-                  <span className="text-slate-400 line-through mr-1.5">28,674</span>
-                  <span className="font-bold text-teal-600">25,488/-</span>
-                  <span className="inline-flex items-center rounded-full px-2 py-0.5 ml-2 text-[10px] font-bold bg-teal-50 text-teal-600 border border-teal-200">10% OFF</span>
-                  <p className="text-[10px] text-teal-600 mt-0.5 font-medium">You save 3,186/-</p>
-                </td>
-              </tr>
-              <tr className="border-b border-slate-100">
-                <td className="px-6 py-4 font-bold text-slate-900">TSS Auditor (1 Year)</td>
-                <td className="px-6 py-4 text-slate-600">1 Year</td>
-                <td className="px-6 py-4 text-slate-600">6,750</td>
-                <td className="px-6 py-4 text-slate-600">1,215</td>
-                <td className="px-6 py-4 font-bold text-[#006569]">7,965/-</td>
-              </tr>
-              <tr>
-                <td className="px-6 py-4 font-bold text-slate-900">TSS Auditor (2 Years)</td>
-                <td className="px-6 py-4 text-slate-600">2 Years</td>
-                <td className="px-6 py-4 text-slate-600">12,150</td>
-                <td className="px-6 py-4 text-slate-600">2,187</td>
-                <td className="px-6 py-4">
-                  <span className="text-slate-400 line-through mr-1.5">14,337</span>
-                  <span className="font-bold text-teal-600">12,744/-</span>
-                  <span className="inline-flex items-center rounded-full px-2 py-0.5 ml-2 text-[10px] font-bold bg-teal-50 text-teal-600 border border-teal-200">10% OFF</span>
-                  <p className="text-[10px] text-teal-600 mt-0.5 font-medium">You save 1,593/-</p>
-                </td>
-              </tr>
+              {pricingRows.map((row) => (
+                <tr key={row.slug} className="border-b border-slate-100 last:border-0">
+                  <td className="px-6 py-4 font-bold text-slate-900">{row.product}</td>
+                  <td className="px-6 py-4 text-slate-600">{row.validity}</td>
+                  <td className="px-6 py-4 text-slate-600">{row.base}</td>
+                  <td className="px-6 py-4 text-slate-600">{row.gst}</td>
+                  <td className="px-6 py-4">
+                    {'strike' in row && (
+                      <span className="text-slate-400 line-through mr-1.5">{row.strike}</span>
+                    )}
+                    <span className="font-bold text-teal-600">{row.total}</span>
+                    {'strike' in row && (
+                      <>
+                        <span className="inline-flex items-center rounded-full px-2 py-0.5 ml-2 text-[10px] font-bold bg-teal-50 text-teal-600 border border-teal-200">{row.discount}</span>
+                        <p className="text-[10px] text-teal-600 mt-0.5 font-medium">{row.save}</p>
+                      </>
+                    )}
+                  </td>
+                  {/* CHANGE: 2026-10-02 — per-row Add to Cart (SP-1 cart build). */}
+                  <td className="px-6 py-4 align-middle">
+                    <CartAddButton slug={row.slug} />
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
           <div className="px-6 py-4 bg-slate-50 border-t border-slate-200">
@@ -244,18 +241,11 @@ export default function TSSPage() {
 
         {/* Mobile Card Layout */}
         <div className="md:hidden space-y-4">
-          {[
-            { plan: 'TSS Single User (1 Year)', validity: '1 Year', base: '4,500', gst: '810', total: '5,310/-' },
-            { plan: 'TSS Single User (2 Years)', validity: '2 Years', base: '8,100', gst: '1,458', total: '8,496/-', originalTotal: '9,558', discount: '10% OFF', save: '1,062/-' },
-            { plan: 'TSS Multi User (1 Year)', validity: '1 Year', base: '13,500', gst: '2,430', total: '15,930/-' },
-            { plan: 'TSS Multi User (2 Years)', validity: '2 Years', base: '24,300', gst: '4,374', total: '25,488/-', originalTotal: '28,674', discount: '10% OFF', save: '3,186/-' },
-            { plan: 'TSS Auditor (1 Year)', validity: '1 Year', base: '6,750', gst: '1,215', total: '7,965/-' },
-            { plan: 'TSS Auditor (2 Years)', validity: '2 Years', base: '12,150', gst: '2,187', total: '12,744/-', originalTotal: '14,337', discount: '10% OFF', save: '1,593/-' },
-          ].map((row, i) => (
-            <div key={i} className="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm">
+          {pricingRows.map((row) => (
+            <div key={row.slug} className="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm">
               <div className="flex items-center justify-between mb-3">
-                <h3 className="font-bold text-slate-900 text-sm">{row.plan}</h3>
-                {row.discount && (
+                <h3 className="font-bold text-slate-900 text-sm">{row.product}</h3>
+                {'strike' in row && (
                   <span className="shrink-0 inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-bold bg-teal-50 text-teal-600 border border-teal-200">{row.discount}</span>
                 )}
               </div>
@@ -266,11 +256,15 @@ export default function TSSPage() {
                 <div className="flex justify-between items-center border-t border-slate-100 pt-2 mt-2">
                   <span className="text-slate-400 font-medium">Total</span>
                   <div className="text-right">
-                    {row.originalTotal && <span className="text-slate-400 line-through mr-1.5">₹{row.originalTotal}</span>}
+                    {'strike' in row && <span className="text-slate-400 line-through mr-1.5">₹{row.strike}</span>}
                     <span className="font-bold text-[#006569] text-base">₹{row.total}</span>
                   </div>
                 </div>
-                {row.save && <p className="text-[10px] text-teal-600 font-medium text-right">You save ₹{row.save}</p>}
+                {'strike' in row && <p className="text-[10px] text-teal-600 font-medium text-right">{row.save}</p>}
+              </div>
+              {/* CHANGE: 2026-10-02 — full-width Add for thumb reach (SP-1). */}
+              <div className="mt-3">
+                <CartAddButton slug={row.slug} className="w-full" />
               </div>
             </div>
           ))}
