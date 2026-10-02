@@ -9,6 +9,12 @@
 // which sits in the navbar's `hidden lg:flex` container — at <1024px that ancestor is
 // display:none, so an open drawer rendered with ZERO size on phones (no descendant, fixed or
 // not, renders inside a display:none box). One layout-level mount, always visible.
+//
+// CHANGE: 2026-10-02 — desktop variant border `border-slate-200` -> `border-[#006569]`
+// (owner: "navbar cart doesnt have border while rest button have borders, make consistent").
+// The slate border read as borderless next to the teal-outlined Smart Suggest / Careers
+// buttons; the cart now uses their exact `border-[0.5px] border-[#006569]` treatment.
+// Mobile variant intentionally UNTOUCHED — it sits beside the borderless hamburger icon.
 
 import { useCart } from '@/lib/cart/store';
 
@@ -34,7 +40,7 @@ export default function NavCartButton({ variant = 'desktop' }: { variant?: 'desk
         aria-label={`Open cart${count > 0 ? `, ${count} item${count > 1 ? 's' : ''}` : ''}`}
         className={`relative inline-flex items-center justify-center rounded-lg font-bold uppercase tracking-wide transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#006569] ${
           variant === 'desktop'
-            ? 'gap-2 border-[0.5px] border-slate-200 bg-white px-3.5 py-2 text-[11px] text-[#006569] shadow-sm hover:border-[#006569] hover:bg-teal-50 hover:text-[#006569]'
+            ? 'gap-2 border-[0.5px] border-[#006569] bg-white px-3.5 py-2 text-[11px] text-[#006569] shadow-sm hover:border-[#006569] hover:bg-teal-50 hover:text-[#006569]'
             : 'size-8 rounded-full text-slate-700 hover:bg-slate-100 hover:text-[#006569]'
         }`}
       >
