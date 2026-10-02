@@ -5,9 +5,17 @@
 // in one cart action, instead of a lonely single-line add. The main item is always included;
 // companions already in the cart are shown as present (not re-added); the bundle total is
 // recomputed live from the checked rows; "You save" reflects the companions' discounts.
+// CHANGE: 2026-10-02 — NO auto-add (owner: "don't auto add all items, keep all checkboxes
+// unticked, let them add"). selected now starts EMPTY (was: every pairable companion not
+// already in the cart pre-checked). The shopper ticks exactly what they want; with nothing
+// ticked the primary button adds just the main item. A "Browse all add-ons" Link was added
+// under the frequently-paired list so shoppers can explore the full /addons catalogue before
+// deciding (owner: "keep options to see more add-ons or frequently paired add-ons").
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import Link from 'next/link';
 import { useCart } from '@/lib/cart/store';
+import type { FlyRect } from '@/lib/cart/store';
 import { formatINR } from '@/lib/cart/format';
 import type { PriceItem } from '@/lib/prices-catalog.mjs';
 
@@ -24,12 +32,9 @@ export default function BuyBundleModal({ slug, onClose }: { slug: string; onClos
     [main, resolve],
   );
 
-  // Default: every pairable companion NOT already in the cart is pre-checked.
-  const [selected, setSelected] = useState<Set<string>>(() => {
-    const start = new Set<string>();
-    for (const c of companions) if (!inCart.has(c.slug)) start.add(c.slug);
-    return start;
-  });
+  // Default: NOTHING is pre-checked (owner: "keep all checkboxes unticked, let them add").
+  // The shopper ticks exactly the companions they want; the main item is always included.
+  const [selected, setSelected] = useState<Set<string>>(() => new Set());
   const [added, setAdded] = useState<Set<string> | null>(null);
   const [justMain, setJustMain] = useState(false);
 
@@ -57,11 +62,20 @@ export default function BuyBundleModal({ slug, onClose }: { slug: string; onClos
   const bundleTotal = main.payablePaise + selectedCompanions.reduce((sum, c) => sum + c.payablePaise, 0);
   const bundleSavings = selectedCompanions.reduce((sum, c) => sum + c.discountPaise, 0);
 
-  const confirm = (companionSlugs: string[]) => {
-    addBundle(main.slug, companionSlugs);
-    const present = new Set(companionSlugs.filter((s) => inCart.has(s)));
-    setAdded(new Set(companionSlugs.filter((s) => !present.has(s))));
-    setJustMain(companionSlugs.length === 0);
+  const confirm = (companionSlugs: string[], from?: FlyRect) => {
+    const addedCompanions = addBundle(main.slug, companionSlugs, from).addedCompanions;
+    const mainAlreadyIn = inCart.has(main.slug);
+    const addedAny = companionSlugs.length > 0 ? addedCompanions.length > 0 : !mainAlreadyIn;
+    if (addedAny) {
+      // Something went into the cart → close the modal so the fly-to-cart + toast take
+      // over (owner: "close current modal and show animation of adding to cart").
+      // The fly anchor is the button that just fired addBundle.
+      onClose();
+    } else {
+      // Everything requested was already in the cart → keep the "already in your cart" screen.
+      setAdded(new Set());
+      setJustMain(false);
+    }
   };
 
   return (
@@ -160,6 +174,19 @@ export default function BuyBundleModal({ slug, onClose }: { slug: string; onClos
                   })}
                 </div>
               )}
+
+              {/* "See more" affordance (owner request): explore the full add-on catalogue before
+                  deciding. Navigates away — the modal unmounts with the page. */}
+              <Link
+                href="/addons"
+                onClick={onClose}
+                className="mt-2.5 inline-flex items-center gap-1 rounded-lg px-1 py-1 text-xs font-bold uppercase tracking-wide text-[#006569] hover:text-[#045A57] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#006569]"
+              >
+                Browse all add-ons
+                <svg className="size-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5} aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12l-7.5 7.5M21 12H3" />
+                </svg>
+              </Link>
             </div>
 
             <div className="border-t border-slate-100 px-5 py-4">
@@ -173,14 +200,23 @@ export default function BuyBundleModal({ slug, onClose }: { slug: string; onClos
               <div className="mt-3 flex flex-col gap-2 sm:flex-row">
                 <button
                   type="button"
-                  onClick={() => confirm(selectedCompanions.map((c) => c.slug))}
+                  onClick={(e) => {
+                    const r = e.currentTarget.getBoundingClientRect();
+                    confirm(
+                      selectedCompanions.map((c) => c.slug),
+                      { x: r.x, y: r.y, w: r.width, h: r.height },
+                    );
+                  }}
                   className="flex-1 rounded-lg bg-[#006569] px-4 py-2.5 text-xs font-bold uppercase tracking-wide text-white shadow-sm hover:bg-[#045A57] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#006569]"
                 >
                   Add {1 + selectedCompanions.length} item{selectedCompanions.length > 0 ? 's' : ''} to cart
                 </button>
                 <button
                   type="button"
-                  onClick={() => confirm([])}
+                  onClick={(e) => {
+                    const r = e.currentTarget.getBoundingClientRect();
+                    confirm([], { x: r.x, y: r.y, w: r.width, h: r.height });
+                  }}
                   className="flex-1 rounded-lg border border-[#006569] bg-white px-4 py-2.5 text-xs font-bold uppercase tracking-wide text-[#006569] hover:bg-teal-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#006569]"
                 >
                   Just {main.name.split(' ')[0]}

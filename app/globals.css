@@ -69,6 +69,25 @@
   animation: cart-pop-in 260ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
+/* CHANGE: 2026-10-02 — short badge "pulse" when a fly-to-cart glyph lands on the nav cart
+   button (UX rework). Compose a single small scale bounce; the global prefers-reduced-motion
+   override at the bottom of this file already kills it there. */
+@keyframes cart-pulse {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.25);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.animate-cart-pulse {
+  animation: cart-pulse 650ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }

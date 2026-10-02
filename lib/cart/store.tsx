@@ -39,10 +39,18 @@ import { PRICES_FALLBACK } from '../prices-catalog.mjs';
 import type { PriceItem } from '../prices-catalog.mjs';
 
 const STORAGE_KEY = 'svd_cart';
-/** How long the "added to cart" popover stays open before auto-hiding. */
+/** How long the "added to cart" toast stays open before auto-hiding. */
 export const POPOVER_TTL_MS = 8000;
 
 export type AddBlockReason = 'unknown' | 'unpriced' | 'inactive';
+
+/** Source button rect (viewport coords) captured at click time — feeds the fly-to-cart glyph. */
+export interface FlyRect {
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+}
 
 export interface AddResult {
   ok: boolean;
@@ -57,6 +65,8 @@ export interface CartAddEvent {
   main: string;
   /** Companions that were NOT already in the cart and got added now. */
   addedCompanions: string[];
+  /** The button rect the add came from, when the caller captured it ($fly-to-cart anchor). */
+  from: FlyRect | null;
 }
 
 export interface CartContextValue {
@@ -70,19 +80,19 @@ export interface CartContextValue {
   pricesReady: boolean;
   resolve: (slug: string) => PriceItem | null;
   priceOf: (slug: string) => PriceItem | undefined;
-  /** Add one line (qty 1 default). Blocks unpriced/inactive/unknown; fires the popover. */
-  add: (slug: string, qty?: number) => AddResult;
-  /** Same as add() but does NOT fire the popover — used by the popover's own companion chips. */
+  /** Add one line (qty 1 default). Blocks unpriced/inactive/unknown; fires the toast. */
+  add: (slug: string, qty?: number, from?: FlyRect) => AddResult;
+  /** Same as add() but does NOT fire the toast — used by drawer quiet companion chips. */
   addQuiet: (slug: string, qty?: number) => AddResult;
   /** Amazon-style bundle add: main + chosen companions (already-in-cart are skipped). */
-  addBundle: (main: string, companions: string[]) => { addedCompanions: string[] };
+  addBundle: (main: string, companions: string[], from?: FlyRect) => { addedCompanions: string[] };
   setQty: (slug: string, qty: number) => void;
   remove: (slug: string) => void;
   clear: () => void;
   /** Popover event — set by every successful add; clear with clearLastAdd(). */
   lastAdd: CartAddEvent | null;
   clearLastAdd: () => void;
-  /** Shared drawer open state (navbar button, drawer, popover's View Cart). */
+  /** Shared drawer open state (navbar button, drawer, toast's View Cart). */
   drawerOpen: boolean;
   openDrawer: () => void;
   closeDrawer: () => void;
@@ -154,9 +164,9 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     }
   }, [items, hydrated]);
 
-  const firePopover = useCallback((main: string, addedCompanions: string[]) => {
+  const fireToast = useCallback((main: string, addedCompanions: string[], from: FlyRect | null) => {
     eventId.current += 1;
-    setLastAdd({ id: eventId.current, at: Date.now(), main, addedCompanions });
+    setLastAdd({ id: eventId.current, at: Date.now(), main, addedCompanions, from });
   }, []);
 
   const resolve = useCallback(
@@ -179,16 +189,16 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   );
 
   const add = useCallback(
-    (slug: string, qty = 1): AddResult => {
+    (slug: string, qty = 1, from?: FlyRect): AddResult => {
       const result = addQuiet(slug, qty);
-      if (result.ok) firePopover(slug, []);
+      if (result.ok) fireToast(slug, [], from ?? null);
       return result;
     },
-    [addQuiet, firePopover],
+    [addQuiet, fireToast],
   );
 
   const addBundle = useCallback(
-    (main: string, companions: string[]): { addedCompanions: string[] } => {
+    (main: string, companions: string[], from?: FlyRect): { addedCompanions: string[] } => {
       const wanted = [main, ...companions];
       // React 19 Strict Mode (dev) double-invokes state updaters to surface impurity.
       // Pushing into an OUTER array inside the updater would therefore record every
@@ -211,11 +221,11 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         added = addedHere;
         return cursor;
       });
-      // Compute whether main was already present for the popover copy.
-      firePopover(main, added);
+      // Compute whether main was already present for the toast copy.
+      fireToast(main, added, from ?? null);
       return { addedCompanions: added };
     },
-    [firePopover],
+    [fireToast],
   );
 
   const setQty = useCallback((slug: string, qty: number) => setItems((prev) => setQtyPure(prev, slug, qty, knownRef.current)), []);

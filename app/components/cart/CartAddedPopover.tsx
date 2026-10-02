@@ -1,28 +1,86 @@
 'use client';
 
-// CHANGE: 2026-10-02 — "successfully added to cart" popover (SP-1 cart build).
-// WHY: every successful add fires a `lastAdd` event from the store; this component renders a
-// compact bottom-right toast that confirms the add AND drives the Amazon-style upsell: the
-// main item's "frequently paired" companions as one-tap quick chips, its related add-ons as
-// links to /addons, and its modules as chips that explain, on click, that modules are not for
-// sale yet. `addQuiet` on the chip keeps the toast on the original item — a chip add must not
-// re-fire the event and swap the toast's subject.
-//
-// Auto-hides after POPOVER_TTL_MS like the ConsentBanner auto-collapse pattern.
+// CHANGE: 2026-10-02 — compact "added to cart" toast + fly-to-cart animation (UX rework:
+// owner: "too much click to checkout… close current modal and show animation of adding to
+// cart"). The recommendations (companions / add-ons / modules) that used to live here are
+// GONE from this toast — they moved into the CartDrawer below the line items (owner: "have
+// recommendations and addons on but now opening modal"). This component now only:
+//   1. flies a small teal glyph from the clicked button rect (the store's `add`/`addBundle`
+//      capture the source rect into `lastAdd.from`) to the visible navbar cart button
+//      (`[data-cart-target]` — one of the two variants is display:none at any width, so the
+//      first element with a non-zero rect is the live one);
+//   2. pulses the target button with `.animate-cart-pulse` when the glyph lands;
+//   3. shows a compact confirmation toast (item name, price, View Cart / Checkout) that
+//      auto-hides after POPOVER_TTL_MS.
+// `prefers-reduced-motion` skips the fly/pulse (toast stays). `addQuiet` (drawer chips) does
+// not fire `lastAdd`, so quiet adds never re-toast — the drawer stays the single surface.
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import Link from 'next/link';
 import { POPOVER_TTL_MS, useCart } from '@/lib/cart/store';
+import type { FlyRect } from '@/lib/cart/store';
 import { formatINR } from '@/lib/cart/format';
-import { getAddonById } from '@/lib/addons';
+
+/** The visible navbar cart button — the desktop variant is hidden at <lg, the mobile one at
+ *  lg+, so exactly one candidate has a non-zero bounding rect at any viewport. */
+function findCartTarget(): HTMLElement | null {
+  const candidates = Array.from(document.querySelectorAll<HTMLElement>('[data-cart-target]'));
+  return candidates.find((el) => el.getBoundingClientRect().width > 0) ?? null;
+}
+
+function flyToCart(from: FlyRect): void {
+  const target = findCartTarget();
+  if (!target) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  const fromCx = from.x + from.w / 2;
+  const fromCy = from.y + from.h / 2;
+  const toRect = target.getBoundingClientRect();
+  const toCx = toRect.left + toRect.width / 2;
+  const toCy = toRect.top + toRect.height / 2;
+
+  // A small fixed teal glyph (mini cart) that travels from source to the badge.
+  const glyph = document.createElement('div');
+  glyph.setAttribute('aria-hidden', 'true');
+  glyph.style.cssText = `position:fixed;left:${fromCx - 10}px;top:${fromCy - 10}px;width:20px;height:20px;z-index:9999;pointer-events:none;`;
+  glyph.innerHTML = `<span style="display:flex;width:100%;height:100%;align-items:center;justify-content:center;border-radius:9999px;background:#006569;color:#fff;font-size:11px;font-weight:800;box-shadow:0 2px 6px rgba(0,101,105,.5)">+</span>`;
+  document.body.appendChild(glyph);
+
+  let removed = false;
+  const finish = () => {
+    if (removed) return;
+    removed = true;
+    glyph.remove();
+    // Land → pulse the badge.
+    target.classList.add('animate-cart-pulse');
+    window.setTimeout(() => target.classList.remove('animate-cart-pulse'), 650);
+  };
+
+  if (typeof glyph.animate === 'function') {
+    try {
+      const anim = glyph.animate(
+        [
+          { transform: 'translate(0,0) scale(1)', opacity: 1 },
+          { transform: `translate(${toCx - fromCx}px, ${toCy - fromCy}px) scale(0.35)`, opacity: 0.5 },
+        ],
+        { duration: 550, easing: 'cubic-bezier(0.22, 1, 0.36, 1)' },
+      );
+      anim.onfinish = finish;
+      return;
+    } catch {
+      // fall through to the instant-remove path
+    }
+  }
+  finish();
+}
 
 export default function CartAddedPopover() {
-  const { lastAdd, clearLastAdd, items, priceOf, addQuiet, openDrawer } = useCart();
-  const [note, setNote] = useState<string | null>(null);
+  const { lastAdd, clearLastAdd, priceOf, openDrawer } = useCart();
 
   // Auto-hide. A NEW add restarts the clock via the dependency on lastAdd.
   useEffect(() => {
     if (!lastAdd) return;
+    if (lastAdd.from) flyToCart(lastAdd.from);
     const t = window.setTimeout(() => clearLastAdd(), POPOVER_TTL_MS);
     return () => window.clearTimeout(t);
   }, [lastAdd, clearLastAdd]);
@@ -30,16 +88,6 @@ export default function CartAddedPopover() {
   if (!lastAdd) return null;
 
   const main = priceOf(lastAdd.main);
-  const inCart = new Set(items.map((i) => i.slug));
-  const companions = (main?.pairsWith ?? [])
-    .map((s) => priceOf(s))
-    .filter((p): p is NonNullable<typeof p> => Boolean(p) && !inCart.has(p.slug));
-  const addons = (main?.addonSlugs ?? [])
-    .map((id) => ({ id, addon: getAddonById(id) }))
-    .filter((x): x is { id: string; addon: NonNullable<ReturnType<typeof getAddonById>> } => Boolean(x.addon));
-  const modules = (main?.moduleSlugs ?? [])
-    .map((s) => priceOf(s))
-    .filter((p): p is NonNullable<typeof p> => Boolean(p));
   const companionNote =
     lastAdd.addedCompanions.length > 0
       ? ` + ${lastAdd.addedCompanions.length} paired item${lastAdd.addedCompanions.length > 1 ? 's' : ''}`
@@ -49,10 +97,10 @@ export default function CartAddedPopover() {
     <div
       role="status"
       aria-live="polite"
-      className="fixed right-2 bottom-[calc(10%+3.75rem)] z-[4000] w-[min(92vw,390px)] rounded-xl border border-[#E9F1FA] bg-white shadow-2xl shadow-slate-900/20 animate-cart-pop-in"
+      className="fixed right-2 bottom-[calc(10%+3.75rem)] z-[4000] w-[min(92vw,360px)] rounded-xl border border-[#E9F1FA] bg-white shadow-2xl shadow-slate-900/20 animate-cart-pop-in"
     >
-      <div className="flex items-start gap-2.5 border-b border-slate-100 px-4 pt-3.5 pb-2.5">
-        <span className="mt-0.5 inline-flex size-6 shrink-0 items-center justify-center rounded-full bg-[#006569]/10 text-[#006569]">
+      <div className="flex items-center gap-2.5 px-4 py-3">
+        <span className="inline-flex size-6 shrink-0 items-center justify-center rounded-full bg-[#006569]/10 text-[#006569]">
           <svg className="size-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3} aria-hidden="true">
             <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
           </svg>
@@ -75,88 +123,24 @@ export default function CartAddedPopover() {
           </svg>
         </button>
       </div>
-
-      <div className="px-4 py-3">
-        <div className="flex gap-2">
-          <button
-            type="button"
-            onClick={() => {
-              clearLastAdd();
-              openDrawer();
-            }}
-            className="flex-1 rounded-lg border border-[#006569] bg-white px-3 py-2 text-xs font-bold uppercase tracking-wide text-[#006569] hover:bg-teal-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#006569]"
-          >
-            View Cart
-          </button>
-          <Link
-            href="/checkout"
-            onClick={clearLastAdd}
-            className="flex-1 rounded-lg bg-[#006569] px-3 py-2 text-center text-xs font-bold uppercase tracking-wide text-white shadow-sm hover:bg-[#045A57] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#006569]"
-          >
-            Checkout
-          </Link>
-        </div>
-
-        {companions.length > 0 && (
-          <div className="mt-3">
-            <p className="text-[11px] font-bold uppercase tracking-wider text-slate-500">Often bought together</p>
-            <div className="mt-1.5 flex flex-wrap gap-1.5">
-              {companions.map((companion) => (
-                <button
-                  key={companion.slug}
-                  type="button"
-                  onClick={() => addQuiet(companion.slug)}
-                  className="inline-flex items-center gap-1 rounded-full border border-[#D4EAEA] bg-[#E5F4F4]/60 px-2.5 py-1 text-[11px] font-semibold text-[#045A57] hover:bg-[#D4EAEA] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#006569]"
-                >
-                  + Add {companion.name}
-                  <span className="text-[#006569]">{formatINR(companion.payablePaise)}</span>
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {addons.length > 0 && (
-          <div className="mt-3">
-            <p className="text-[11px] font-bold uppercase tracking-wider text-slate-500">Popular add-ons</p>
-            <div className="mt-1.5 flex flex-wrap gap-1.5">
-              {addons.map(({ id, addon }) => (
-                <Link
-                  key={id}
-                  href={`/addons#${id}`}
-                  onClick={clearLastAdd}
-                  className="inline-flex items-center rounded-full border border-slate-200 bg-white px-2.5 py-1 text-[11px] font-medium text-slate-600 hover:border-[#006569] hover:text-[#006569] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#006569]"
-                >
-                  {addon.title}
-                </Link>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {modules.length > 0 && (
-          <div className="mt-3">
-            <p className="text-[11px] font-bold uppercase tracking-wider text-slate-500">Related modules</p>
-            <div className="mt-1.5 flex flex-wrap gap-1.5">
-              {modules.map((mod) => (
-                <button
-                  key={mod.slug}
-                  type="button"
-                  onClick={() => setNote(`"${mod.name}" cannot be added now — modules are not for sale yet.`)}
-                  className="inline-flex items-center rounded-full border border-dashed border-slate-300 bg-slate-50 px-2.5 py-1 text-[11px] font-medium text-slate-500 hover:border-[#006569] hover:text-[#006569] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#006569]"
-                >
-                  {mod.name}
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {note && (
-          <p className="mt-3 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-[11px] font-medium text-amber-800" role="status">
-            {note}
-          </p>
-        )}
+      <div className="flex gap-2 border-t border-slate-100 px-4 py-2.5">
+        <button
+          type="button"
+          onClick={() => {
+            clearLastAdd();
+            openDrawer();
+          }}
+          className="flex-1 rounded-lg border border-[#006569] bg-white px-3 py-2 text-xs font-bold uppercase tracking-wide text-[#006569] hover:bg-teal-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#006569]"
+        >
+          View Cart
+        </button>
+        <Link
+          href="/checkout"
+          onClick={clearLastAdd}
+          className="flex-1 rounded-lg bg-[#006569] px-3 py-2 text-center text-xs font-bold uppercase tracking-wide text-white shadow-sm hover:bg-[#045A57] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#006569]"
+        >
+          Checkout
+        </Link>
       </div>
     </div>
   );

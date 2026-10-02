@@ -7,10 +7,12 @@
 // discounted rows show their saving, and the totals panel recomputes from the store's
 // server-parity math. Empty + pre-hydration states render instead of flashing a wrong cart.
 
-import { memo } from 'react';
+import { memo, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { useCart } from '@/lib/cart/store';
 import { formatINR, formatPlainSlash } from '@/lib/cart/format';
+import { getAddonById } from '@/lib/addons';
+import type { PriceItem } from '@/lib/prices-catalog.mjs';
 import type { CartLine } from '@/lib/cart/math';
 
 const CartLineRow = memo(function CartLineRow({
@@ -98,6 +100,113 @@ const CartLineRow = memo(function CartLineRow({
   );
 });
 
+/** CHANGE: 2026-10-02 — inline up-sell inside the drawer (UX rework: owner "have
+ *  recommendations and addons on but now opening modal" — they moved OUT of the added-toast
+ *  INTO the drawer, below the line items). Derived from ALL cart lines, deduped, excluding
+ *  what is already in the cart. Companion chips use `addQuiet` so they never re-fire the
+ *  toast; add-on chips deep-link to /addons#id; module chips explain (on click) that modules
+ *  are not for sale yet, same copy the popover used. */
+function DrawerSuggestions() {
+  const { items, resolve, addQuiet } = useCart();
+  const [note, setNote] = useState<string | null>(null);
+
+  const inCart = useMemo(() => new Set(items.map((i) => i.slug)), [items]);
+
+  const { companions, addons, modules } = useMemo(() => {
+    const compMap = new Map<string, PriceItem>();
+    const addonMap = new Map<string, { id: string; title: string }>();
+    const modMap = new Map<string, PriceItem>();
+    for (const line of items) {
+      const item = resolve(line.slug);
+      if (!item) continue;
+      for (const s of item.pairsWith ?? []) {
+        if (inCart.has(s) || compMap.has(s)) continue;
+        const p = resolve(s);
+        if (p && p.priceStatus === 'priced') compMap.set(s, p);
+      }
+      for (const id of item.addonSlugs ?? []) {
+        if (addonMap.has(id)) continue;
+        const addon = getAddonById(id);
+        if (addon) addonMap.set(id, { id, title: addon.title });
+      }
+      for (const s of item.moduleSlugs ?? []) {
+        if (modMap.has(s)) continue;
+        const p = resolve(s);
+        if (p) modMap.set(s, p);
+      }
+    }
+    return { companions: [...compMap.values()], addons: [...addonMap.values()], modules: [...modMap.values()] };
+  }, [items, inCart, resolve]);
+
+  if (companions.length === 0 && addons.length === 0 && modules.length === 0) return null;
+
+  return (
+    <div className="rounded-xl border border-[#D4EAEA] bg-[#E5F4F4]/40 p-3.5">
+      <p className="text-[11px] font-black uppercase tracking-wider text-slate-700">Frequently bought together</p>
+
+      {companions.length > 0 && (
+        <div className="mt-2">
+          <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Often bought together</p>
+          <div className="mt-1.5 flex flex-wrap gap-1.5">
+            {companions.map((companion) => (
+              <button
+                key={companion.slug}
+                type="button"
+                onClick={() => addQuiet(companion.slug)}
+                className="inline-flex items-center gap-1 rounded-full border border-[#D4EAEA] bg-white px-2.5 py-1 text-[11px] font-semibold text-[#045A57] hover:bg-[#D4EAEA] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#006569]"
+              >
+                + Add {companion.name}
+                <span className="text-[#006569]">{formatINR(companion.payablePaise)}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {addons.length > 0 && (
+        <div className="mt-2">
+          <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Popular add-ons</p>
+          <div className="mt-1.5 flex flex-wrap gap-1.5">
+            {addons.map(({ id, title }) => (
+              <Link
+                key={id}
+                href={`/addons#${id}`}
+                className="inline-flex items-center rounded-full border border-slate-200 bg-white px-2.5 py-1 text-[11px] font-medium text-slate-600 hover:border-[#006569] hover:text-[#006569] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#006569]"
+              >
+                {title}
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {modules.length > 0 && (
+        <div className="mt-2">
+          <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Related modules</p>
+          <div className="mt-1.5 flex flex-wrap gap-1.5">
+            {modules.map((mod) => (
+              <button
+                key={mod.slug}
+                type="button"
+                onClick={() => setNote(`"${mod.name}" cannot be added now — modules are not for sale yet.`)}
+                className="inline-flex items-center rounded-full border border-dashed border-slate-300 bg-white px-2.5 py-1 text-[11px] font-medium text-slate-500 hover:border-[#006569] hover:text-[#006569] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#006569]"
+              >
+                {mod.name}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {note && (
+        <p className="mt-2.5 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-[11px] font-medium text-amber-800" role="status">
+          {note}
+        </p>
+      )}
+    </div>
+  );
+}
+
 export default function CartDrawer() {
   const { drawerOpen, closeDrawer, items, totals, hydrated, setQty, remove } = useCart();
 
@@ -167,18 +276,24 @@ export default function CartDrawer() {
           </div>
         ) : (
           <>
-            <ul className="flex-1 divide-y divide-slate-100 overflow-y-auto px-5">
-              {totals.lines.map((line) => (
-                <CartLineRow
-                  key={line.slug}
-                  line={line}
-                  onPlus={() => setQty(line.slug, line.qty + 1)}
-                  onMinus={() => (line.qty === 1 ? remove(line.slug) : setQty(line.slug, line.qty - 1))}
-                  onRemove={() => remove(line.slug)}
-                  onOpen={() => undefined}
-                />
-              ))}
-            </ul>
+            {/* CHANGE: 2026-10-02 — body is now a single scroll container: line items +
+                DrawerSuggestions (owner: "have recommendations and addons on but now opening
+                modal" — the up-sell moved from the add-toast into the drawer below the items). */}
+            <div className="flex-1 overflow-y-auto px-5 pb-4">
+              <ul className="divide-y divide-slate-100">
+                {totals.lines.map((line) => (
+                  <CartLineRow
+                    key={line.slug}
+                    line={line}
+                    onPlus={() => setQty(line.slug, line.qty + 1)}
+                    onMinus={() => (line.qty === 1 ? remove(line.slug) : setQty(line.slug, line.qty - 1))}
+                    onRemove={() => remove(line.slug)}
+                    onOpen={() => undefined}
+                  />
+                ))}
+              </ul>
+              <DrawerSuggestions />
+            </div>
 
             {/* Totals + CTA */}
             <div className="border-t border-slate-100 bg-slate-50/70 px-5 py-4">

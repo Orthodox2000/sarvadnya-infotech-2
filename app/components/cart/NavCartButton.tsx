@@ -30,6 +30,7 @@ export default function NavCartButton({ variant = 'desktop' }: { variant?: 'desk
       <button
         type="button"
         onClick={openDrawer}
+        data-cart-target=""
         aria-label={`Open cart${count > 0 ? `, ${count} item${count > 1 ? 's' : ''}` : ''}`}
         className={`relative inline-flex items-center justify-center rounded-lg font-bold uppercase tracking-wide transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#006569] ${
           variant === 'desktop'

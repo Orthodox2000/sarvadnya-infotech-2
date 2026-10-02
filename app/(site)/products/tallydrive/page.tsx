@@ -258,10 +258,10 @@ export default function TallyDrivePage() {
                   Storage pack (bundled with a TSS renewal suggestion). */}
               <BuyNowButton slug="tallydrive-extra-storage-1yr" />
               <button
-                onClick={() => scrollToSection('pricing')}
+                onClick={() => openModal('quote', 'TallyDrive Backup')}
                 className="px-6 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider border border-[#006569] text-[#006569] transition-all hover:bg-[#006569]/5 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#006569] focus-visible:ring-offset-2"
               >
-                Get Pricing
+                Know More
               </button>
             </div>
           </div>
@@ -271,10 +271,10 @@ export default function TallyDrivePage() {
         <div className="md:hidden flex gap-2 px-4 pb-4">
           <BuyNowButton slug="tallydrive-extra-storage-1yr" className="flex-1" />
           <button
-            onClick={() => scrollToSection('pricing')}
+            onClick={() => openModal('quote', 'TallyDrive Backup')}
             className="flex-1 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider border border-[#006569] text-[#006569] transition-all hover:bg-[#006569]/5 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#006569] focus-visible:ring-offset-2"
           >
-            Get Pricing
+            Know More
           </button>
         </div>
       </div>
@@ -813,7 +813,7 @@ export default function TallyDrivePage() {
               <div className="space-y-2">
                 {[
                   { label: 'Tally Products', href: '/products' },
-                  { label: 'Get Now', type: 'demo' as FormType },
+                  { label: 'Know More', type: 'demo' as FormType },
                   { label: 'Technical Support', type: 'support' as FormType },
                   { label: 'AMC Services', href: '/services/amc' },
                   { label: 'Corporate Training', href: '/services/corporate-training' },

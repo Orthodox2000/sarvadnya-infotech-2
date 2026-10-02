@@ -7,6 +7,7 @@
 // "Add to Cart"; `quiet` suppresses the popover for the TallyDrive inline-storage row.
 
 import { useCart } from '@/lib/cart/store';
+import type { FlyRect } from '@/lib/cart/store';
 import { isSellable } from '@/lib/prices';
 
 export default function CartAddButton({
@@ -29,7 +30,12 @@ export default function CartAddButton({
       type="button"
       disabled={!sellable}
       title={sellable ? `Add ${item.name} to cart` : 'This item cannot be added yet'}
-      onClick={() => (quiet ? addQuiet(slug) : add(slug))}
+      onClick={(e) => {
+        const r = e.currentTarget.getBoundingClientRect();
+        const from: FlyRect = { x: r.x, y: r.y, w: r.width, h: r.height };
+        if (quiet) addQuiet(slug);
+        else add(slug, 1, from);
+      }}
       className={`inline-flex items-center justify-center gap-1.5 rounded-lg border border-[#006569] bg-white px-3 py-1.5 text-[11px] font-bold uppercase tracking-wide text-[#006569] transition-colors hover:bg-[#006569] hover:text-white disabled:cursor-not-allowed disabled:border-slate-200 disabled:bg-slate-50 disabled:text-slate-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#006569] ${className}`}
     >
       <svg className="size-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">

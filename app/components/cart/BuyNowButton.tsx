@@ -38,10 +38,11 @@ export default function BuyNowButton({
     <>
       <button
         type="button"
-        onClick={() => {
+        onClick={(e) => {
           if (hasPairs) setOpen(true);
           else {
-            const result = add(slug);
+            const r = e.currentTarget.getBoundingClientRect();
+            const result = add(slug, 1, { x: r.x, y: r.y, w: r.width, h: r.height });
             // Unpriced items are never reachable here (callers gate on the page's own rows),
             // but the guard keeps a mis-wired page from silently doing nothing.
             if (!result.ok && result.reason === 'unpriced') setOpen(false);
