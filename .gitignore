@@ -47,3 +47,29 @@ next-env.d.ts
 
 .vscode/
 certificates
+
+# superpowers plan workspaces (ledger, briefs, review packages — scratch only)
+.superpowers/
+
+# ── Nested admin deployment ────────────────────────────────────────────────
+# sarvadnya-advanced is the ADMIN deployment fork of this repo
+# (origin: ankit-sarvadnya/advanced-sarvadnya.git). It lives here as a
+# standalone git repository so admin work can be done in the same context,
+# but it is NOT part of this repository.
+#
+# It is IGNORED, not a submodule. A submodule would make this repo hold a
+# gitlink (mode 160000) pointing at an admin-fork commit; a stray `git add -A`
+# would otherwise publish that reference into the public frontend repo.
+#
+# Its own .gitignore handles .env*, node_modules and .next inside it, so those
+# never leak here either. See tsconfig.json "exclude" for the matching entry —
+# without it `tsc --noEmit` pulls all 167 of its files into this repo's
+# typecheck and resolves their "@/..." imports against THIS root.
+# CHANGE: 2026-10-02 — nested advanced-sarvadnya admin deployment, see
+# docs/NESTED-ADMIN-REPO.md and AGENTS.md §10.
+/sarvadnya-advanced/
+
+# CHANGE: 2026-10-02 — scripts/excel-log-append.mjs writes a pre-append backup next to the
+# CSV on every run. It is a runtime artifact of that one script, not project data, and was
+# previously untracked-but-not-ignored, so it would have been swept into a commit by `git add -A`.
+*.csv.bak

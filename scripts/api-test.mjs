@@ -136,12 +136,36 @@ async function run() {
   });
 
   // ─── Admin Routes (if API key set) ─────────────────────────
+  //
+  // CHANGE: 2026-10-02 — this used to assert `/api/admin/stats` returns 200 whenever
+  // ADMIN_ACCESS_KEY was set. That could NEVER pass in the public frontend repo: the admin
+  // half was physically removed and now lives in the nested `sarvadnya-advanced/` fork
+  // (AGENTS.md §10). The route 404s here by design, but the test still counted it as a
+  // failure, so `npm run test:all` was permanently red in this repo and its exit code had
+  // stopped meaning anything.
+  //
+  // The expectation is now derived from what is actually on disk, which is correct in BOTH
+  // repos and — importantly — is not a silent skip. If the admin routes exist they must
+  // return 200; if they are absent, their ABSENCE is asserted, because that isolation is
+  // the guarantee this repo is supposed to hold.
+  const adminRoutesDir = path.join(process.cwd(), 'app', 'api', 'admin');
+  const adminRoutesExist = fs.existsSync(adminRoutesDir);
+
   if (ADMIN_KEY) {
     console.log('\n🔐 Admin API');
-    await test('GET /api/admin/stats returns 200', async () => {
-      const res = await request('GET', '/api/admin/stats');
-      expect(res.status).toBe(200);
-    });
+    if (adminRoutesExist) {
+      await test('GET /api/admin/stats returns 200', async () => {
+        const res = await request('GET', '/api/admin/stats');
+        expect(res.status).toBe(200);
+      });
+    } else {
+      // Public frontend repo: the admin surface must NOT be reachable here.
+      await test('GET /api/admin/stats is absent in the public repo (404)', async () => {
+        const res = await request('GET', '/api/admin/stats');
+        expect(res.status).toBe(404);
+      });
+      console.log('   ↳ app/api/admin does not exist — asserting the admin surface stays out of the public repo');
+    }
   } else {
     console.log('\n🔐 Admin API (skipped — ADMIN_ACCESS_KEY not set)');
   }

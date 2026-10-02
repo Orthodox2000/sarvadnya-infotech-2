@@ -613,3 +613,49 @@ iframe[src*='salesiq'],
 /* CHANGE: 2026-09-30 — the `.consent-tally-slash` keyframes that used to live here were
    removed. The cookie notice no longer draws its mark in; it uses a static cookie glyph.
    Nothing referenced the keyframes any more, so keeping them would be dead CSS. */
+
+/* CHANGE: 2026-10-02 — print styles for the /demo checkout receipt.
+   WHY: the receipt is produced with window.print(), which the owner turns into a PDF via the
+   phone's print sheet. Without this the saved PDF carries the entire site chrome.
+
+   THAT WAS A REAL DEFECT, FOUND BY RENDERING THE PDF. The first version of this block only
+   set a white background, and pdftotext on the generated file showed the saved "receipt"
+   also contained the NewsFeed, the Navbar, the Productbar, the SupportButton stack and the
+   cookie card — twice. Chrome's print pipeline prints whatever is in the DOM, not whatever
+   looks like a document, so styling alone was never going to be enough.
+
+   SCOPED DELIBERATELY. A bare `@media print { body { … } }` would restyle every printable
+   page on the site, including long-form content pages someone may legitimately print.
+   The `.demo-receipt-page` class is applied only to /demo/checkout/success.
+
+   The selector below keeps an element if it IS the receipt, is INSIDE it, or CONTAINS it —
+   and hides everything else. That one rule removes the whole chrome stack without this
+   stylesheet having to know the site's component names, which is what made it break when
+   the SupportButton or ConsentBanner changed. */
+@media print {
+  body *:not(.demo-receipt-page):not(.demo-receipt-page *):not(:has(.demo-receipt-page)) {
+    display: none !important;
+  }
+  .demo-receipt-page,
+  .demo-receipt-page * {
+    background: #ffffff !important;
+  }
+
+  /* CHANGE: 2026-10-02 — legacy-browser fallback for the :has() print scope above.
+     WHY: :has() has no support in iOS Safari 15.0-15.3 and WebView/Chrome < 105 —
+     both common on the budget phones this site targets. Where :has() is missing the
+     selector above is invalid and the WHOLE rule is dropped, so the saved PDF would
+     carry the full site chrome — including the 381px Productbar row that widens the
+     print layout and shoves the receipt header off the left edge. This fallback
+     re-hides just the known chrome wrappers (header stack + the three fixed overlays)
+     in exactly those engines. It never fires where the modern rule works: old engines
+     CAN parse `@supports selector(...)`, and `selector(:has(...))` tests false there,
+     so `not` makes the block apply only where it is needed. ::before/::after spans in
+     the header stack are covered by the `.sticky` ancestor rule. */
+  @supports not selector(:has(.demo-receipt-page)) {
+    .sticky.top-0.z-\[2000\] { display: none !important; }
+    .fixed.bottom-\[10\%\].z-\[3000\] { display: none !important; }
+    .fixed.top-24.right-6.z-\[3000\] { display: none !important; }
+    .fixed.bottom-4.right-4.z-\[100001\] { display: none !important; }
+  }
+}

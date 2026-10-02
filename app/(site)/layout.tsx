@@ -58,7 +58,16 @@ export default async function SiteLayout({
 
   return (
     <>
-      <div className="sticky top-0 z-[2000] w-full flex flex-col">
+      {/* CHANGE: 2026-10-02 — overflow-x-clip so the site chrome can NEVER widen the page.
+          WHY: the Productbar row (justify-around, 8.5px labels) measures 381px at a 360px
+          viewport — 21px wider than the screen. Without clipping, EVERY page scrolls
+          horizontally on phones, and the receipt page's print preview showed the header
+          pushed out on the left. `clip` (not `hidden`) is deliberate: it clips without
+          creating a scroll container, so the sticky header and the megamenu dropdowns
+          keep working, and fixed overlays (SupportButton) are unaffected.
+          Tailwind's overflow-x-clip compiles to overflow-x: clip — unsupported browsers
+          (Safari < 16.4) simply ignore it and keep the pre-existing behavior. */}
+      <div className="sticky top-0 z-[2000] w-full flex flex-col overflow-x-clip">
         <NewsFeed initialData={newsData} />
         {/* CHANGE: 2026-08-26 — Navbar & Productbar are fully hardcoded now; settings no longer passed. */}
         <Navbar />

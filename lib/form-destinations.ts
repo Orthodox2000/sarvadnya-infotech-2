@@ -53,7 +53,12 @@ export const FORM_DESTINATIONS: FormDestination[] = [
 
   // Other pages
   { key: 'home', label: 'Home Page', paths: ['/'], category: 'others' },
-  { key: 'demo', label: 'Demo / Get Now', paths: ['/demo'], category: 'others' },
+  // CHANGE: 2026-10-02 — /demo is now the test-only cart scaffold (SP-1), not a booking page.
+  // The key is KEPT deliberately: removing it would orphan the stored
+  // EMAIL_DESTINATION_RECIPIENTS.demo recipient in MongoDB and silently stop
+  // email routing for that page. Only the label and the /demo checkout path below
+  // carry the real traffic; 'paths' is kept for that recipient mapping to resolve.
+  { key: 'demo', label: 'Demo Cart (TEST ONLY - not indexed)', paths: ['/demo'], category: 'others' },
   { key: 'hrms', label: 'HRMS', paths: ['/hrms'], category: 'others' },
   { key: 'do-more', label: 'Do More', paths: ['/do-more'], category: 'others' },
   { key: 'contact', label: 'Contact Page', paths: ['/contact'], category: 'others' },

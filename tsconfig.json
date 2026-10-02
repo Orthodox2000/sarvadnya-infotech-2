@@ -15,6 +15,7 @@
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
+    "allowImportingTsExtensions": true,
     "jsx": "preserve",
     "incremental": true,
     "plugins": [
@@ -38,6 +39,7 @@
   ],
   "exclude": [
     "node_modules",
-    "cpanel-landing"
+    "cpanel-landing",
+    "sarvadnya-advanced"
   ]
 }
