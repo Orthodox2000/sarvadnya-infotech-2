@@ -434,6 +434,37 @@ How to evaluate the shortlist:
 
 Sarvadnya Infotech is a Tally certified partner and IT company based in Belapur, Navi Mumbai - software licences, TSS renewal, AMC, Tally on Cloud, automated backup and custom TDL modules, serving 1,500+ businesses since 2008. If your search for IT companies in CBD Belapur is really a search for reliable Tally support, we are a short conversation away.`,
   },
+  // CHANGE: 2026-10-03 - SP-3 news post. International TallyPrime licensing, based on
+  // the owner's paragraph: the India edition is blocked outside India; permanent operations
+  // abroad need an International Edition or a designated international/regional license
+  // (UAE, Singapore, UK examples). No short-trip nuance claimed - stick to the owner's copy,
+  // no invented travel-policy details. ASCII-only (hyphens, never em-dashes - see AGENTS.md).
+  {
+    slug: 'tallyprime-international-licenses',
+    title: 'Using TallyPrime Outside India: International Licenses Explained',
+    date: 'October 2, 2026',
+    category: 'Tally Prime',
+    description: 'Why a domestic Indian TallyPrime license stops working abroad permanently, and the upgrade or international license options for UAE, Singapore, UK and other regions.',
+    tags: ['tallyprime international license', 'tally international edition', 'tally outside india', 'tally prime middle east', 'tally uae'],
+    link: '/products',
+    author: 'Sarvadnya Infotech LLP',
+    content: `If your business is moving staff or permanent systems outside India, one licensing fact matters before you pack the laptops: a domestic Indian TallyPrime license is not designed to keep working abroad. The India edition of TallyPrime is blocked from activation and reactivation outside India, so a license bought for use in India cannot simply travel with the business.
+
+What this means in practice:
+
+- A domestic Indian TallyPrime license will not work permanently on systems located outside India.
+- The India edition cannot be activated or reactivated from abroad, even while the license is still within its TSS subscription period.
+- Operating permanently in another country requires a license that is licensed for the country where TallyPrime is actually used.
+
+Your licensing options abroad:
+
+- Upgrade to the TallyPrime International Edition, which is licensed for use outside India.
+- Purchase a designated international or regional license for your country of operation - Tally issues regional licenses for markets such as the UAE, Singapore and the UK.
+
+Licensing rules vary by country and depend on your current license and TSS status, so check with your Tally partner before moving systems abroad. A partner can confirm whether an upgrade or a regional license fits your situation and prepare the transition before you relocate.
+
+See the TallyPrime license options on our products page, or contact Sarvadnya Infotech for a licensing check before you move.`,
+  },
 ];
 
 async function seed() {
