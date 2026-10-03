@@ -62,19 +62,20 @@ function formatStamp(d: Date): string {
 export default function Receipt({ data }: { data: ReceiptData }) {
   return (
     <section aria-label="Transaction receipt" className="rounded-2xl border border-[#D4EAEA] bg-white p-5 shadow-sm sm:p-6">
-      <header className="border-b border-[#D4EAEA] pb-4">
-        <div className="flex items-center gap-3">
-          {/* eslint-disable-next-line @next/next/no-img-element — static brand mark, not a page asset */}
-          <img src="/TallyCertificate.png" alt="" className="h-9 w-9 rounded-full object-contain" />
-          <div>
-            <h2 className="text-lg font-bold text-slate-900">Payment receipt</h2>
-            <p className="text-xs leading-relaxed text-slate-600">
-              Sarvadnya Infotech LLP · info@sarvadnyainfotech.com
-              <br />
-              Shop No. 73, Plot No. 1, Vindhya Commercial Premises, Sector 11, CBD Belapur
-            </p>
-          </div>
-        </div>
+      <header className="border-b border-[#D4EAEA] pb-4 text-center">
+        {/* CHANGE: 2026-10-03 — logo masthead (owner: "use logo.png banner and remove address
+            from it, use our landline numbers"). The old header showed the TallyCertificate
+            badge as a 36px circle; logo.png is now a proper banner mark. The CBD Belapur
+            street address is REMOVED — a receipt carries the phones a buyer can call.
+            Landlines match lib/email-autoreply.mjs DEFAULT_COMPANY. */}
+        {/* eslint-disable-next-line @next/next/no-img-element — static brand mark, not a page asset */}
+        <img src="/logo.png" alt="Sarvadnya Infotech LLP" className="mx-auto h-16 w-16 sm:h-20 sm:w-20 object-contain" />
+        <h2 className="mt-3 text-lg font-bold text-slate-900">Payment receipt</h2>
+        <p className="mt-1 text-xs leading-relaxed text-slate-600">
+          Sarvadnya Infotech LLP · info@sarvadnyainfotech.com
+          <br />
+          <span className="font-semibold text-slate-700">+022-4974 2200 / +022-4964 7959</span>
+        </p>
       </header>
 
       <dl className="mt-3">
