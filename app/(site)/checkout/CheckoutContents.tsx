@@ -14,12 +14,15 @@
 // Pay amount stays server-authoritative — the client only mutates the cart, /api/cart/order
 // still reprices {items} from the DB and never trusts a client figure.
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useCart } from '@/lib/cart/store';
 import { formatINR, formatPlainSlash } from '@/lib/cart/format';
 import type { CartLine } from '@/lib/cart/math';
+// CHANGE: 2026-10-03 — SP-3 buyer capture: shared pure validators gate Pay and feed
+// Razorpay prefill; TSS serials are captured one-per-TSS-line (owner 2026-10-03).
+import { validateCustomer, validateTssSerials, isTssSlug, type Customer } from '@/lib/order-status';
 
 const SCRIPT_SRC = 'https://checkout.razorpay.com/v1/checkout.js';
 
@@ -30,6 +33,7 @@ interface OrderResponse {
   amount?: number;
   currency?: string;
   keyId?: string;
+  customer?: Customer;
   error?: string;
 }
 
@@ -63,11 +67,19 @@ function SummaryLine({
   onPlus,
   onMinus,
   onRemove,
+  showSerialInput,
+  serial,
+  onSerialChange,
+  serialError,
 }: {
   line: CartLine;
   onPlus: () => void;
   onMinus: () => void;
   onRemove: () => void;
+  showSerialInput?: boolean;
+  serial?: string;
+  onSerialChange?: (value: string) => void;
+  serialError?: string;
 }) {
   return (
     <li className="flex items-center justify-between gap-3 py-2.5">
@@ -101,6 +113,36 @@ function SummaryLine({
             +
           </button>
         </div>
+        {/* CHANGE: 2026-10-03 — TSS serial capture (owner): one serial per TSS line,
+            shown only for tss-* items. The value lives in CheckoutContents state —
+            never in cart storage — and the Pay gate depends on every serial being valid. */}
+        {showSerialInput && onSerialChange && (
+          <div className="mt-2.5">
+            <label
+              htmlFor={`serial-${line.slug}`}
+              className="block text-[11px] font-bold uppercase tracking-wide text-slate-600"
+            >
+              TSS Serial Number <span aria-hidden="true" className="text-red-500">*</span>
+            </label>
+            <input
+              id={`serial-${line.slug}`}
+              type="text"
+              value={serial ?? ''}
+              onChange={(e) => onSerialChange(e.target.value)}
+              placeholder="e.g. your Tally serial"
+              autoComplete="off"
+              spellCheck={false}
+              aria-invalid={serialError ? true : undefined}
+              aria-describedby={serialError ? `serial-${line.slug}-error` : undefined}
+              className="mt-1 w-full max-w-[240px] rounded-lg border border-slate-300 bg-white px-2.5 py-1.5 text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#006569] aria-[invalid=true]:border-red-300"
+            />
+            {serialError && (
+              <p id={`serial-${line.slug}-error`} role="alert" className="mt-1 text-[11px] font-medium text-red-600">
+                {serialError}
+              </p>
+            )}
+          </div>
+        )}
       </div>
       <div className="flex shrink-0 flex-col items-end gap-1.5">
         <p className="text-[13px] font-black tabular-nums text-slate-900">{formatINR(line.totalPaise)}</p>
@@ -117,7 +159,67 @@ function SummaryLine({
   );
 }
 
-function PayButton() {
+/** CHANGE: 2026-10-03 — SP-3 buyer-card field: labelled input + live per-field error. */
+function Field({
+  id,
+  label,
+  value,
+  onChange,
+  required,
+  error,
+  type = 'text',
+  autoComplete,
+  inputMode,
+  placeholder,
+}: {
+  id: string;
+  label: string;
+  value: string;
+  onChange: (value: string) => void;
+  required?: boolean;
+  error?: string;
+  type?: string;
+  autoComplete?: string;
+  inputMode?: 'text' | 'tel' | 'email' | 'numeric';
+  placeholder?: string;
+}) {
+  return (
+    <div>
+      <label htmlFor={id} className="block text-[11px] font-bold uppercase tracking-wide text-slate-600">
+        {label} {required && <span aria-hidden="true" className="text-red-500">*</span>}
+      </label>
+      <input
+        id={id}
+        type={type}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        autoComplete={autoComplete}
+        inputMode={inputMode}
+        placeholder={placeholder}
+        aria-invalid={error ? true : undefined}
+        aria-describedby={error ? `${id}-error` : undefined}
+        className={`mt-1 w-full rounded-lg border px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#006569] ${
+          error ? 'border-red-300' : 'border-slate-300'
+        }`}
+      />
+      {error && (
+        <p id={`${id}-error`} role="alert" className="mt-1 text-[11px] font-medium text-red-600">
+          {error}
+        </p>
+      )}
+    </div>
+  );
+}
+
+function PayButton({
+  customer,
+  tssSerials,
+  detailsValid,
+}: {
+  customer: Customer;
+  tssSerials: Record<string, string>;
+  detailsValid: boolean;
+}) {
   const { items, totals, hydrated } = useCart();
   const router = useRouter();
   const [busy, setBusy] = useState(false);
@@ -127,17 +229,18 @@ function PayButton() {
   useEffect(() => () => { busyRef.current = false; }, []);
 
   const pay = useCallback(async () => {
-    if (busyRef.current) return;
+    if (busyRef.current || !detailsValid) return;
     busyRef.current = true;
     setBusy(true);
     setError(null);
 
     try {
-      // Only {items} is sent — slugs + quantities. No amount, no tax, no total.
+      // Only {items} is sent as the money input — slugs + quantities. Customer + TSS
+      // serials are contact/fulfilment data (SP-3), never a verification input.
       const res = await fetch('/api/cart/order', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ items }),
+        body: JSON.stringify({ items, customer, tssSerials }),
       });
       const data: OrderResponse = await res.json().catch(() => ({} as OrderResponse));
 
@@ -155,7 +258,13 @@ function PayButton() {
         name: 'Sarvadnya Infotech LLP',
         description: `Order ${data.orderId ?? ''} — test mode, no real payment`,
         order_id: data.razorpayOrderId,
-        prefill: {},
+        // CHANGE: 2026-10-03 — SP-3: prefill the modal from the validated buyer
+        // (the server echo is authoritative; fall back to local state).
+        prefill: {
+          name: data.customer?.name ?? customer.name,
+          email: data.customer?.email ?? customer.email,
+          contact: data.customer?.phone ?? customer.phone,
+        },
         notes: { testMode: 'true' },
         theme: { color: '#006569' },
         handler: (response: Record<string, string>) => {
@@ -192,14 +301,14 @@ function PayButton() {
       setBusy(false);
       setError(err instanceof Error ? err.message : 'Could not start the payment.');
     }
-  }, [items, router]);
+  }, [items, customer, tssSerials, detailsValid, router]);
 
   return (
     <div>
       <button
         type="button"
         onClick={pay}
-        disabled={busy || !hydrated || totals.itemCount === 0}
+        disabled={busy || !hydrated || totals.itemCount === 0 || !detailsValid}
         className="flex w-full items-center justify-center gap-2 rounded-lg bg-[#006569] px-4 py-3.5 text-sm font-bold uppercase tracking-wider text-white shadow-lg transition-all hover:bg-[#045A57] disabled:cursor-not-allowed disabled:bg-slate-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#006569] focus-visible:ring-offset-2"
       >
         {busy ? (
@@ -211,6 +320,12 @@ function PayButton() {
           <>Pay {formatINR(totals.totalPaise)}</>
         )}
       </button>
+      {/* CHANGE: 2026-10-03 — SP-3: guide the buyer to complete the gated fields. */}
+      {!detailsValid && (
+        <p role="status" className="mt-3 rounded-lg border border-teal-100 bg-teal-50/70 px-3 py-2 text-xs font-medium text-[#006569]">
+          Add your details above to continue.
+        </p>
+      )}
       {error && (
         <p role="status" className="mt-3 rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-xs font-medium text-red-700">
           {error}
@@ -222,6 +337,51 @@ function PayButton() {
 
 export default function CheckoutContents() {
   const { items, totals, hydrated, setQty, remove } = useCart();
+
+  // CHANGE: 2026-10-03 — SP-3 buyer capture. All of this is LOCAL checkout state —
+  // deliberately NOT cart storage (the cart is transportable across pages; the buyer
+  // details are a per-checkout concern). Errors surface per-field after touch.
+  const [customer, setCustomer] = useState({ name: '', email: '', phone: '', company: '' });
+  const [touched, setTouched] = useState<Record<string, boolean>>({});
+  const [serialBySlug, setSerialBySlug] = useState<Record<string, string>>({});
+  const [touchedSerials, setTouchedSerials] = useState<Record<string, boolean>>({});
+
+  const customerValidation = useMemo(() => validateCustomer(customer), [customer]);
+  // TSS slugs derive from the CURRENT cart totals — serials are only required for
+  // lines actually present (owner 2026-10-03: one serial per TSS line).
+  const tssSlugs = totals.lines.filter((l) => isTssSlug(l.slug)).map((l) => l.slug);
+  const serialsValidation = useMemo(() => validateTssSerials(serialBySlug, tssSlugs), [serialBySlug, tssSlugs]);
+  const detailsValid = customerValidation.ok && serialsValidation.ok;
+
+  const setField = useCallback((key: 'name' | 'email' | 'phone' | 'company', value: string) => {
+    setCustomer((prev) => ({ ...prev, [key]: value }));
+    setTouched((prev) => ({ ...prev, [key]: true }));
+  }, []);
+
+  // Discriminated-union access needs `=== false` under tsconfig strict:false (repro'd
+  // during Task 2) — `!ok` does not narrow. Errors render only once a field is touched.
+  const fieldError = useCallback(
+    (key: 'name' | 'email' | 'phone' | 'company'): string | undefined => {
+      if (!touched[key]) return undefined;
+      if (customerValidation.ok === false) return customerValidation.errors[key];
+      return undefined;
+    },
+    [touched, customerValidation],
+  );
+
+  const serialErrorFor = useCallback(
+    (slug: string): string | undefined => {
+      if (!touchedSerials[slug]) return undefined;
+      if (serialsValidation.ok === false) return serialsValidation.errors[slug];
+      return undefined;
+    },
+    [touchedSerials, serialsValidation],
+  );
+
+  const onSerialChange = useCallback((slug: string, value: string) => {
+    setSerialBySlug((prev) => ({ ...prev, [slug]: value }));
+    setTouchedSerials((prev) => ({ ...prev, [slug]: true }));
+  }, []);
 
   return (
     <div className="mx-auto w-full max-w-4xl px-4 py-8">
@@ -259,21 +419,77 @@ export default function CheckoutContents() {
         </div>
       ) : (
         <div className="mt-6 grid gap-6 lg:grid-cols-[1fr_360px]">
-          {/* Items */}
-          <section className="rounded-2xl border border-slate-200 bg-white p-5" aria-label="Order summary">
-            <h2 className="text-xs font-black uppercase tracking-wide text-slate-900">Order summary</h2>
-            <ul className="mt-2 divide-y divide-slate-100">
-              {totals.lines.map((line) => (
-                <SummaryLine
-                  key={line.slug}
-                  line={line}
-                  onPlus={() => setQty(line.slug, line.qty + 1)}
-                  onMinus={() => (line.qty === 1 ? remove(line.slug) : setQty(line.slug, line.qty - 1))}
-                  onRemove={() => remove(line.slug)}
+          <div className="space-y-6">
+            {/* CHANGE: 2026-10-03 — SP-3 buyer details card. First block of the left
+                column; on mobile it stacks naturally above the order summary. */}
+            <section aria-label="Your details" className="rounded-2xl border border-slate-200 bg-white p-5">
+              <h2 className="text-xs font-black uppercase tracking-wide text-slate-900">Your details</h2>
+              <div className="mt-3 space-y-3">
+                <div className="grid gap-3 sm:grid-cols-2">
+                  <Field
+                    id="cust-name"
+                    label="Name"
+                    value={customer.name}
+                    onChange={(v) => setField('name', v)}
+                    required
+                    error={fieldError('name')}
+                    autoComplete="name"
+                  />
+                  <Field
+                    id="cust-phone"
+                    label="Phone"
+                    type="tel"
+                    value={customer.phone}
+                    onChange={(v) => setField('phone', v)}
+                    required
+                    error={fieldError('phone')}
+                    autoComplete="tel"
+                    inputMode="tel"
+                    placeholder="10-digit mobile"
+                  />
+                </div>
+                <Field
+                  id="cust-email"
+                  label="Email"
+                  type="email"
+                  value={customer.email}
+                  onChange={(v) => setField('email', v)}
+                  required
+                  error={fieldError('email')}
+                  autoComplete="email"
+                  inputMode="email"
                 />
-              ))}
-            </ul>
-          </section>
+                <Field
+                  id="cust-company"
+                  label="Company"
+                  value={customer.company}
+                  onChange={(v) => setField('company', v)}
+                  error={fieldError('company')}
+                  autoComplete="organization"
+                />
+              </div>
+            </section>
+
+            {/* Items */}
+            <section className="rounded-2xl border border-slate-200 bg-white p-5" aria-label="Order summary">
+              <h2 className="text-xs font-black uppercase tracking-wide text-slate-900">Order summary</h2>
+              <ul className="mt-2 divide-y divide-slate-100">
+                {totals.lines.map((line) => (
+                  <SummaryLine
+                    key={line.slug}
+                    line={line}
+                    onPlus={() => setQty(line.slug, line.qty + 1)}
+                    onMinus={() => (line.qty === 1 ? remove(line.slug) : setQty(line.slug, line.qty - 1))}
+                    onRemove={() => remove(line.slug)}
+                    showSerialInput={isTssSlug(line.slug)}
+                    serial={serialBySlug[line.slug]}
+                    onSerialChange={(value) => onSerialChange(line.slug, value)}
+                    serialError={serialErrorFor(line.slug)}
+                  />
+                ))}
+              </ul>
+            </section>
+          </div>
 
           {/* Totals */}
           <section aria-label="Payment" className="h-fit rounded-2xl border border-slate-200 bg-white p-5 lg:sticky lg:top-40">
@@ -298,7 +514,16 @@ export default function CheckoutContents() {
               </div>
             </dl>
             <div className="mt-4">
-              <PayButton />
+              <PayButton
+                customer={{
+                  name: customer.name,
+                  email: customer.email,
+                  phone: customer.phone,
+                  company: customer.company || undefined,
+                }}
+                tssSerials={serialBySlug}
+                detailsValid={detailsValid}
+              />
             </div>
             <p className="mt-3 text-center text-[10px] font-semibold uppercase tracking-wider text-slate-400">
               {items.length} line{itemCountLabel(items)} · Proceed to Razorpay
