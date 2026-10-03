@@ -43,23 +43,34 @@ declare global {
   }
 }
 
+// CHANGE: 2026-10-03 — Razorpay warm load (owner: "razorpay is too slow to load").
+// The 190 KB checkout.js was fetched ONLY on Pay click, serially AFTER the order POST,
+// so the modal appeared only after order-RTT + DNS/TLS + download + eval. Now: a module-
+// level promise dedupes all callers — the checkout page warms the script on mount,
+// pay() overlaps the download with the order POST, and the click path awaits the same
+// promise (already-loaded → resolves instantly, never fetches twice).
+let checkoutScriptPromise: Promise<void> | null = null;
+
 function loadCheckoutScript(): Promise<void> {
   if (typeof window === 'undefined') return Promise.reject(new Error('no window'));
   if (window.Razorpay) return Promise.resolve();
-  return new Promise((resolve, reject) => {
-    const existing = document.querySelector<HTMLScriptElement>(`script[src="${SCRIPT_SRC}"]`);
-    if (existing) {
-      existing.addEventListener('load', () => resolve());
-      existing.addEventListener('error', () => reject(new Error('checkout.js failed to load')));
-      return;
-    }
-    const s = document.createElement('script');
-    s.src = SCRIPT_SRC;
-    s.async = true;
-    s.onload = () => resolve();
-    s.onerror = () => reject(new Error('checkout.js failed to load'));
-    document.body.appendChild(s);
-  });
+  if (!checkoutScriptPromise) {
+    checkoutScriptPromise = new Promise((resolve, reject) => {
+      const existing = document.querySelector<HTMLScriptElement>(`script[src="${SCRIPT_SRC}"]`);
+      if (existing) {
+        existing.addEventListener('load', () => resolve());
+        existing.addEventListener('error', () => reject(new Error('checkout.js failed to load')));
+        return;
+      }
+      const s = document.createElement('script');
+      s.src = SCRIPT_SRC;
+      s.async = true;
+      s.onload = () => resolve();
+      s.onerror = () => reject(new Error('checkout.js failed to load'));
+      document.body.appendChild(s);
+    });
+  }
+  return checkoutScriptPromise;
 }
 
 function SummaryLine({
@@ -228,6 +239,14 @@ function PayButton({
 
   useEffect(() => () => { busyRef.current = false; }, []);
 
+  // CHANGE: 2026-10-03 — Razorpay warm load: start downloading checkout.js the moment
+  // the checkout page mounts, so by the time the buyer taps Pay the 190 KB script is
+  // already parsed and window.Razorpay exists (failed/none wire → silent no-cache hit,
+  // the click path reports the real error). `pay()` still awaits this same promise.
+  useEffect(() => {
+    loadCheckoutScript().catch(() => { /* pay() surfaces the real failure */ });
+  }, []);
+
   const pay = useCallback(async () => {
     if (busyRef.current || !detailsValid) return;
     busyRef.current = true;
@@ -235,6 +254,12 @@ function PayButton({
     setError(null);
 
     try {
+      // CHANGE: 2026-10-03 — Razorpay warm load: start the checkout.js download NOW,
+      // in parallel with the order POST (neither depends on the other), instead of
+      // waiting for the order round-trip to finish first. On the warm path (mount
+      // start) this resolves instantly; on a cold cache the download overlaps the POST.
+      const scriptReady = loadCheckoutScript();
+
       // Only {items} is sent as the money input — slugs + quantities. Customer + TSS
       // serials are contact/fulfilment data (SP-3), never a verification input.
       const res = await fetch('/api/cart/order', {
@@ -248,7 +273,7 @@ function PayButton({
         throw new Error(data.error || `Could not start the payment (HTTP ${res.status}).`);
       }
 
-      await loadCheckoutScript();
+      await scriptReady;
       if (!window.Razorpay) throw new Error('Razorpay checkout failed to initialise.');
 
       const rz = new window.Razorpay({
@@ -385,6 +410,14 @@ export default function CheckoutContents() {
 
   return (
     <div className="mx-auto w-full max-w-4xl px-4 py-8">
+      {/* CHANGE: 2026-10-03 — Razorpay warm load: preconnect to the checkout + API +
+          CDN origins so the 190 KB checkout.js (fetched on mount, below) and the modal's
+          sub-resources skip DNS/TLS handshakes. CSP already allows https://*.razorpay.com
+          in script-src/connect-src/frame-src, so these hints cost nothing at runtime. */}
+      <link rel="preconnect" href="https://checkout.razorpay.com" crossOrigin="anonymous" />
+      <link rel="preconnect" href="https://api.razorpay.com" />
+      <link rel="preconnect" href="https://cdn.razorpay.com" crossOrigin="anonymous" />
+      <link rel="dns-prefetch" href="//checkout.razorpay.com" />
       <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-500">
         <Link href="/" className="hover:text-[#006569]">Home</Link>
         <span aria-hidden="true">/</span>
