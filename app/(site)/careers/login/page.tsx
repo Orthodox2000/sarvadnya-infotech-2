@@ -72,16 +72,35 @@ export default function CareersLoginPage() {
       </div>
 
       <main className="flex-1 flex items-center justify-center px-4 py-12 md:py-16 relative z-10">
-        <div className="w-full max-w-md">
-          {/* Animated card with entrance */}
+        <div className="w-full max-w-6xl mx-auto flex flex-col-reverse lg:flex-row items-center justify-between gap-8 lg:gap-16">
+          {/* Left hero section */}
           <div
-            className="bg-white/95 backdrop-blur-xl rounded-3xl border border-[#E5F4F4] shadow-2xl shadow-[#006569]/5 p-6 md:p-8"
+            className="w-full lg:w-1/2 text-center lg:text-left px-2 lg:px-0"
             style={{
               opacity: mounted ? 1 : 0,
-              transform: mounted ? 'translateY(0) scale(1)' : 'translateY(16px) scale(0.98)',
+              transform: mounted ? 'translateY(0)' : 'translateY(16px)',
               transition: 'all 700ms cubic-bezier(0.16, 1, 0.3, 1)',
+              transitionDelay: '50ms',
             }}
           >
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-slate-900 tracking-tight leading-tight mb-4">
+              Build the Future of Business Intelligence
+            </h1>
+            <p className="text-base sm:text-lg md:text-xl text-slate-600 font-semibold max-w-xl mx-auto lg:mx-0">
+              Join a team building data-driven solutions that power smarter decisions across industries.
+            </p>
+          </div>
+
+          {/* Right login card */}
+          <div className="w-full lg:w-1/2 flex justify-center lg:justify-end">
+            <div
+              className="bg-white/95 backdrop-blur-xl rounded-3xl border border-[#E5F4F4] shadow-2xl shadow-[#006569]/5 p-6 md:p-8 w-full max-w-md"
+              style={{
+                opacity: mounted ? 1 : 0,
+                transform: mounted ? 'translateY(0) scale(1)' : 'translateY(16px) scale(0.98)',
+                transition: 'all 700ms cubic-bezier(0.16, 1, 0.3, 1)',
+              }}
+            >
             {/* Header */}
             <div
               className="text-center mb-8"
@@ -265,6 +284,7 @@ export default function CareersLoginPage() {
                   ← Back to Careers
                 </Link>
               </p>
+              </div>
             </div>
           </div>
         </div>
