@@ -43,7 +43,8 @@ export default function GlobalError({
               Try Again
             </button>
             <p style={{ marginTop: '1.5rem', fontSize: '0.75rem', color: '#94a3b8' }}>
-              Sarvadnya Infotech LLP — Trusted by 1,500+ MSMEs
+              {/* CHANGE: 2026-10-03 — name stays on one line (owner: single-line brand) */}
+              <span style={{ whiteSpace: 'nowrap' }}>Sarvadnya Infotech LLP</span> — Trusted by 1,500+ MSMEs
             </p>
           </div>
         </div>

@@ -138,12 +138,19 @@ export default function Footer({ settings: initialSettings }: { settings?: SiteS
             <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#006569]/10 rounded-full blur-[120px] -mr-64 -mt-64 pointer-events-none" />
             <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-[#D4EAEA]/10 rounded-full blur-[100px] -ml-48 -mb-48 pointer-events-none" />
 
-            <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-12 mb-16 relative z-10">
+            {/* CHANGE: 2026-10-03 — lg:grid-cols-6 → lg:grid-cols-7 and the brand block to
+               lg:col-span-2 so "Sarvadnya Infotech LLP" fits on ONE line in the footer
+               (owner: "ensure wherever the name appears it is one single line — in footer
+               LLP breaks to a new line"). At 1024px a 1/6 column is ~122px but the 16px
+               brand name needs ~190px → it wrapped mid-name. 2/7 tracks give ~196px. */}
+            <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-7 gap-12 mb-16 relative z-10">
                 {/* CHANGE: 2026-08-28 — Footer logo now mirrors the header structure for brand-name
                    consistency: same /TallyCertificate.png logo + 'Sarvadnya Infotech LLP' + 'tally certified partner' tagline, restyled for the dark footer. */}
                 {/* CHANGE: 2026-08-29 — Logo block restacked VERTICALLY (image → name → tagline) so it
-                   fits the narrow 1/6 desktop column instead of overflowing/overlapping to the right. */}
-                <div className="lg:col-span-1 space-y-6">
+                   fits the narrow 1/6 desktop column instead of overflowing/overlapping to the right.
+                   2026-10-03 — lg:col-span-1 → lg:col-span-2 (grid is now 7 tracks): the brand column
+                   must be wide enough for the 16px wordmark on one line. */}
+                <div className="lg:col-span-2 space-y-6">
                     <Link href="/" className="flex flex-col items-start gap-2 group max-w-full">
                         <div className="relative h-16 w-auto max-w-full shrink-0">
                             <Image
@@ -159,9 +166,12 @@ export default function Footer({ settings: initialSettings }: { settings?: SiteS
                         </div>
                         {/* CHANGE: 2026-08-31 — Footer wordmark matches navbar: two-line (Sarvadnya Infotech / LLP),
                            LLP on its own line, spread to the logo height. Colour adapted for the dark footer —
-                           white primary name + teal (teal-300) brand accent; tagline removed (consistent with navbar). */}
+                           white primary name + teal (teal-300) brand accent; tagline removed (consistent with navbar).
+                           2026-10-03 — SINGLE LINE per owner ("ensure wherever the name appears it is one single
+                           line; in footer LLP breaks to a new line"): whitespace-nowrap + the wider brand column
+                           above keep "Sarvadnya Infotech LLP" together at every width. */}
                             <span className="flex flex-col justify-center leading-[1.15] min-w-0">
-                                <span className="text-base lg:text-[16px] font-bold text-white">Sarvadnya Infotech LLP</span>
+                                <span className="text-base lg:text-[16px] font-bold text-white whitespace-nowrap">Sarvadnya Infotech LLP</span>
                             </span>
                     </Link>
                     {/* CHANGE: 2026-09-11 — Body copy below titles demoted to normal weight + dimmer
@@ -298,7 +308,8 @@ export default function Footer({ settings: initialSettings }: { settings?: SiteS
 
             {/* Bottom Bar */}
             <div className="max-w-7xl mx-auto pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-white/60">
-                <p>© {year} Sarvadnya Infotech LLP. All Rights Reserved.</p>
+                {/* CHANGE: 2026-10-03 — name kept on one line in the copyright too (owner) — nowrap span. */}
+                <p>© {year} <span className="whitespace-nowrap">Sarvadnya Infotech LLP</span>. All Rights Reserved.</p>
                 {/* CHANGE: 2026-08-24 — Single legal-links row (added Report a Problem) — the left-column duplicates were removed. */}
                 <div className="flex flex-wrap justify-center gap-x-6 gap-y-2">
                     <Link href="/careers" className="hover:text-white transition-colors">Careers</Link>

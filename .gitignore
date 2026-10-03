@@ -81,3 +81,8 @@ certificates
 # CSV on every run. It is a runtime artifact of that one script, not project data, and was
 # previously untracked-but-not-ignored, so it would have been swept into a commit by `git add -A`.
 *.csv.bak
+
+# CHANGE: 2026-10-03 — non-served brand master assets (3500x3500 logo master etc.).
+# public/logo.png is the web-optimized serving copy; the full-res master lives here
+# (gitignored so the 5.4 MB art file never enters the repo) per owner: "keep new logo — optimize it".
+brand-assets/

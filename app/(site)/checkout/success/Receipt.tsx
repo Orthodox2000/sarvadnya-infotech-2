@@ -72,7 +72,8 @@ export default function Receipt({ data }: { data: ReceiptData }) {
         <img src="/logo.png" alt="Sarvadnya Infotech LLP" className="mx-auto h-16 w-16 sm:h-20 sm:w-20 object-contain" />
         <h2 className="mt-3 text-lg font-bold text-slate-900">Payment receipt</h2>
         <p className="mt-1 text-xs leading-relaxed text-slate-600">
-          Sarvadnya Infotech LLP · info@sarvadnyainfotech.com
+          {/* CHANGE: 2026-10-03 — brand name stays on one line in the receipt masthead too (owner) */}
+          <span className="whitespace-nowrap">Sarvadnya Infotech LLP</span> · info@sarvadnyainfotech.com
           <br />
           <span className="font-semibold text-slate-700">+022-4974 2200 / +022-4964 7959</span>
         </p>

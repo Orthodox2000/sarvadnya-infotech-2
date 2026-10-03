@@ -275,8 +275,9 @@ export default function UnifiedContactModal({
         </div>
         
         <div className="px-8 md:px-10 lg:px-6 pb-4 md:pb-5 lg:pb-3 bg-slate-50/50">
+          {/* CHANGE: 2026-10-03 — name stays on one line (owner: single-line brand) */}
           <p className="text-center text-[10px] text-slate-400 font-medium">
-            🔒 Your data is secure with Sarvadnya Infotech LLP.
+            🔒 Your data is secure with <span className="whitespace-nowrap">Sarvadnya Infotech LLP</span>.
           </p>
         </div>
       </div>

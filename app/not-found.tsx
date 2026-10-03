@@ -82,8 +82,9 @@ export default function NotFound() {
           </div>
         </div>
 
+        {/* CHANGE: 2026-10-03 — name stays on one line (owner: single-line brand) */}
         <p className="mt-6 text-xs text-slate-400 font-medium">
-          Sarvadnya Infotech LLP — Trusted by 1,500+ MSMEs since 2008
+          <span className="whitespace-nowrap">Sarvadnya Infotech LLP</span> — Trusted by 1,500+ MSMEs since 2008
         </p>
       </div>
     </div>

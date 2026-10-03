@@ -168,7 +168,7 @@ export function buildFormEmailHtml(submission: FormSubmissionPayload): string {
           <table role="presentation" width="100%" style="max-width:560px;background:#ffffff;border-radius:14px;overflow:hidden;box-shadow:0 8px 24px rgba(31,77,58,0.08);">
             <tr>
               <td style="background:#006569;padding:22px 24px;">
-                <p style="margin:0;color:#ffffff;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;">Sarvadnya Infotech LLP</p>
+                <p style="margin:0;color:#ffffff;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;white-space:nowrap;">Sarvadnya Infotech LLP</p>
                 <h1 style="margin:6px 0 0;color:#ffffff;font-size:20px;font-weight:800;">New ${escapeHtml(getFormTypeLabel(submission.formType))}</h1>
               </td>
             </tr>
