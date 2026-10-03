@@ -212,7 +212,7 @@
 - [x] **Step 4.1:** Add a **"Your details"** card (`section` + `aria-label="Your details"`) as the FIRST block inside the `lg:grid-cols-[1fr_360px]` left column (above the Order summary section, route line 261–276); on mobile it stacks naturally above the summary. Fields: Name*, Email*, Phone*, Company (optional). Every input: `aria-invalid`, `aria-describedby` pointing at a live error `<p id=... role="alert">` when invalid; teal focus ring (`focus-visible:ring-[#006569]`); 360px-safe layout (two-column name/phone on sm+, stacked below).
 - [x] **Step 4.2:** Local state `{ name, email, phone, company }` + a `useMemo` computing `validateCustomer(...)` on every keystroke; show per-field errors only after the field has been touched OR Pay was attempted (avoid error spam on first keypress — match the site's `localityNote` style).
 - [x] **Step 4.3:** Gate the Pay button: add `!customerValid` AND `!serialsValid` to the existing `disabled` condition (route line 202) and, when either is invalid, render a hint under the button: "Add your details above to continue." (reuse the `role="status"` error block styling).
-- [ ] **Step 4.3b (TSS serial capture, owner 2026-10-03):** For every order-summary line whose slug passes `isTssSlug`, render a **"TSS Serial Number \*"** text input inside that line's `SummaryLine` (below the qty stepper): placeholder like "e.g. your Tally serial", `aria-invalid` + `aria-describedby` → live per-line error `<p role="alert">`. State is `serialBySlug: Record<string,string>` held in `CheckoutContents` (NOT in cart storage), passed down as `serial={serialBySlug[line.slug]}` + `onSerialChange(slug, value)`; `serialsValid` = `validateTssSerials(serialBySlug, tssSlugs).ok` where `tssSlugs` derives from `totals.lines.filter(l => isTssSlug(l.slug))`. PayButton receives `serialsValid` + serial map as props.
+- [x] **Step 4.3b (TSS serial capture, owner 2026-10-03):** For every order-summary line whose slug passes `isTssSlug`, render a **"TSS Serial Number \*"** text input inside that line's `SummaryLine` (below the qty stepper): placeholder like "e.g. your Tally serial", `aria-invalid` + `aria-describedby` → live per-line error `<p role="alert">`. State is `serialBySlug: Record<string,string>` held in `CheckoutContents` (NOT in cart storage), passed down as `serial={serialBySlug[line.slug]}` + `onSerialChange(slug, value)`; `serialsValid` = `validateTssSerials(serialBySlug, tssSlugs).ok` where `tssSlugs` derives from `totals.lines.filter(l => isTssSlug(l.slug))`. PayButton receives `serialsValid` + serial map as props. *(Done as part of Task 4 — `0b33406`.)*
 - [x] **Step 4.4:** Change the POST body `{ items }` → `{ items, customer: { name, email, phone, company: company || undefined }, tssSerials: serialBySlug }`; set `prefill: { name: data.customer?.name ?? '', email: data.customer?.email ?? '', contact: data.customer?.phone ?? '' }` in the Razorpay options (route line 158).
 - [x] **Step 4.5:** Verify: `npm run typecheck` exit 0. Manual dev-server probe at 360px: card renders, Pay disabled initially, valid details enable it, invalid email shows inline error + Pay stays disabled, a TSS line without a serial keeps Pay disabled until its serial is filled.
 - [x] **Step 4.6:** Commit:
@@ -292,12 +292,12 @@
 
 - [x] **Step 7.1:** Write and run `/tmp/opencode/verify-payments.cjs` against `next dev` (dev server on this machine; Mongo down — price fallback path). All cases green.
 - [x] **Step 7.2:** Full gates: `npm run typecheck` 0 · `npm run check:demo` PASS · `npm run test:cart` 31/31 · `npm run test:order-status` PASS · re-run `verify-cart.cjs` + `verify-checkout-stepper.cjs` → unchanged.
-- [ ] **Step 7.3:** Update `daily logs/2026-10-02.md` (append this session's SP-3 section) and `daily logs/excel logs.csv` row 29. Commit docs:
+- [x] **Step 7.3 (done 2026-10-03 — execution session, not the design session):** the plan was written 2026-10-02 for execution "tomorrow", so the SP-3 **execution** log lives in the correct daily file `daily logs/2026-10-03.md`, and `daily logs/excel logs.csv` got row **30** (not 29 — 29 was the design session's). Commit docs:
   ```bash
   git add "daily logs/2026-10-02.md" "daily logs/excel logs.csv"
   git -c user.name="unknown" -c user.email="ankitmali2017@gmail.com" commit -m "docs: SP-3 payments design + implementation plan logged"
   ```
-- [ ] **Step 7.4:** Push BOTH remotes (§13):
+- [x] **Step 7.4:** Push BOTH remotes (§13) — done at the very end of this session alongside the Task-12 push (`776c13a` on `origin` and `new-origin`):
   ```bash
   git push origin main && git push new-origin main
   ```
@@ -325,11 +325,11 @@
   export type { StatusEvent, TimelineEntry };
   ```
 
-- [ ] **Step 8.1:** Update `statusChangeUpdate(to, opts)` signature in `status-history.ts` to accept `actor?: string` (event.actor = `opts?.actor ?? STATUS_ACTOR`). Existing TSS callers pass nothing → still `'admin'`.
-- [ ] **Step 8.2:** Create `sarvadnya-advanced/lib/order-status.ts` per the interfaces above (ASCII-safe, `// CHANGE: 2026-10-02 — SP-3` header).
-- [ ] **Step 8.3:** Add tests to `sarvadnya-advanced/scripts/status-history-test.mjs`: (a) `isValidOrderStatus` accept/refuse all 4 + junk, (b) `orderStatusChangeUpdate` sets status + push shape, actor `'admin'`, note sanitised, injectable `at`, (c) `buildTimeline` on order histories with derived `from`. Run `npm run test:status` (22 + new) — all green.
-- [ ] **Step 8.4:** `npm run typecheck` (nested) — exit 0. Then public `npm run typecheck` + `npx tsc --noEmit --listFiles | grep -c 'sarvadnya-advanced'` → **0** (exclude intact).
-- [ ] **Step 8.5:** Commit in the NESTED repo (explicit identity, no push):
+- [x] **Step 8.1:** Update `statusChangeUpdate(to, opts)` signature in `status-history.ts` to accept `actor?: string` (event.actor = `opts?.actor ?? STATUS_ACTOR`). Existing TSS callers pass nothing → still `'admin'`.
+- [x] **Step 8.2:** Create `sarvadnya-advanced/lib/order-status.ts` per the interfaces above (ASCII-safe, `// CHANGE: 2026-10-02 — SP-3` header).
+- [x] **Step 8.3:** Add tests to `sarvadnya-advanced/scripts/status-history-test.mjs`: (a) `isValidOrderStatus` accept/refuse all 4 + junk, (b) `orderStatusChangeUpdate` sets status + push shape, actor `'admin'`, note sanitised, injectable `at`, (c) `buildTimeline` on order histories with derived `from`. Run `npm run test:status` (22 + new) — all green.
+- [x] **Step 8.4:** `npm run typecheck` (nested) — exit 0. Then public `npm run typecheck` + `npx tsc --noEmit --listFiles | grep -c 'sarvadnya-advanced'` → **0** (exclude intact).
+- [x] **Step 8.5:** Commit in the NESTED repo (explicit identity, no push):
   ```bash
   git -C sarvadnya-advanced add lib/status-history.ts lib/order-status.ts scripts/status-history-test.mjs
   git -C sarvadnya-advanced -c user.name="ankit-sarvadnya" -c user.email="ankit@tallycertified.com" commit -m "feat(payments): order status vocabulary + actor-generalised audit builder (SP-3)"
@@ -354,10 +354,10 @@
   - `updateOrderStatus(id, status, note)` → `null` ⇒ 404 (missing order), else `timeline: buildOrderTimeline(order.statusHistory)`;
   - **no DELETE handler** (owner reframing); **no buyer-field editing** (status+note only).
 
-- [ ] **Step 9.1:** Add `updateOrderStatus` to nested `lib/mongodb-utils.ts` (same shape as `updateTssRenewalStatus`, actor flows from the order-status module's default `'admin'`).
-- [ ] **Step 9.2:** Create the GET/POST route per the interfaces; follow sibling conventions (dynamic export, no per-route auth — `proxy.ts` guards all `/api/admin/*`, body parsing + 400/404 shapes from `app/api/admin/prices/route.ts` and `tss-renewals/route.ts`).
-- [ ] **Step 9.3:** Verify nested `npm run typecheck` exit 0; public `npm run check:demo` PASS (no `/demo` string in new code). Local API smoke test impossible (Mongo) — code-review pass + Vercel on push.
-- [ ] **Step 9.4:** Commit (nested identity, no push):
+- [x] **Step 9.1:** Add `updateOrderStatus` to nested `lib/mongodb-utils.ts` (same shape as `updateTssRenewalStatus`, actor flows from the order-status module's default `'admin'`).
+- [x] **Step 9.2:** Create the GET/POST route per the interfaces; follow sibling conventions (dynamic export, no per-route auth — `proxy.ts` guards all `/api/admin/*`, body parsing + 400/404 shapes from `app/api/admin/prices/route.ts` and `tss-renewals/route.ts`).
+- [x] **Step 9.3:** Verify nested `npm run typecheck` exit 0; public `npm run check:demo` PASS (no `/demo` string in new code). Local API smoke test impossible (Mongo) — code-review pass + Vercel on push.
+- [x] **Step 9.4:** Commit (nested identity, no push):
   ```bash
   git -C sarvadnya-advanced add lib/mongodb-utils.ts app/api/admin/payments/route.ts
   git -C sarvadnya-advanced -c user.name="ankit-sarvadnya" -c user.email="ankit@tallycertified.com" commit -m "feat(payments): admin ledger API + status/note update, no delete (SP-3)"
@@ -377,10 +377,10 @@
 - **Detail modal:** full items list + totals, razorpay ids, timeline rendered via `buildTimeline` (same newest-first UI as `tss-renewals` modal, `from: null` → "created as"), and a **status-change form**: select `refunded`/`fulfilled` + note + Save (POST to Task 9; on 200 refresh list + show the fresh timeline). Buttons disabled while the request is in flight; unchanged-status re-click must NOT fire (SP-2's duplicate-event bug).
 - **XLSX export:** button → `fetch('/api/admin/payments?export=1&<current filters>&limit=...')` — actually reuse the submissions pattern: one GET that returns **all filtered rows** (export: set `limit` high or a dedicated `export=1` that ignores pagination), then `XLSX.utils.json_to_sheet(rows)` (paise → rupees, camelCase → readable headers), `book_append_sheet`, `writeFile('payments_<date>.xlsx')`.
 
-- [ ] **Step 10.1:** Create the ledger page per the interfaces (copy pagination/table/alert patterns from `submissions/page.tsx`, modal/timeline patterns from `tss-renewals/page.tsx`).
-- [ ] **Step 10.2:** Add the sidebar entry.
-- [ ] **Step 10.3:** Nested `npm run typecheck` exit 0. No local run (Mongo) — Vercel validates.
-- [ ] **Step 10.4:** Commit (nested identity, no push):
+- [x] **Step 10.1:** Create the ledger page per the interfaces (copy pagination/table/alert patterns from `submissions/page.tsx`, modal/timeline patterns from `tss-renewals/page.tsx`).
+- [x] **Step 10.2:** Add the sidebar entry.
+- [x] **Step 10.3:** Nested `npm run typecheck` exit 0. No local run (Mongo) — Vercel validates.
+- [x] **Step 10.4:** Commit (nested identity, no push):
   ```bash
   git -C sarvadnya-advanced add app/admin/payments/page.tsx app/admin/AdminSidebar.tsx
   git -C sarvadnya-advanced -c user.name="ankit-sarvadnya" -c user.email="ankit@tallycertified.com" commit -m "feat(payments): admin ledger page with status/note update + XLSX export (SP-3)"
@@ -398,9 +398,9 @@
 - Consumes: `GET /api/admin/payments` (Task 9) with the same filter bar.
 - **Summary:** filter bar (status/from/to/q — same state shape as the ledger), totals cards: orders count, sum `amountPaise`, sum `gstPaise`, sum `discountPaise`, average order (paise → the same local ₹ helper pinned in Task 10). Print/Save-as-PDF via `window.print()` scoped to the summary card area (reuse the receipt's scoped-print trick — hide sidebar + chrome, keep the totals card); XLSX export of the filtered rows (same helper as Task 10).
 
-- [ ] **Step 11.1:** Create the summary page + tab switcher + sidebar-tab wiring (no sidebar change needed — one entry covers both; summary links back).
-- [ ] **Step 11.2:** Nested `npm run typecheck` exit 0. Local run blocked (Mongo) — Vercel validates on push.
-- [ ] **Step 11.3:** Commit (nested identity, no push):
+- [x] **Step 11.1:** Create the summary page + tab switcher + sidebar-tab wiring (no sidebar change needed — one entry covers both; summary links back).
+- [x] **Step 11.2:** Nested `npm run typecheck` exit 0. Local run blocked (Mongo) — Vercel validates on push.
+- [x] **Step 11.3:** Commit (nested identity, no push):
   ```bash
   git -C sarvadnya-advanced add app/admin/payments/summary/page.tsx app/admin/payments/page.tsx
   git -C sarvadnya-advanced -c user.name="ankit-sarvadnya" -c user.email="ankit@tallycertified.com" commit -m "feat(payments): summary + export page with print/PDF and XLSX (SP-3)"
@@ -410,19 +410,19 @@
 
 ### Task 12: Final verification + dual-remote push (public) + nested commit verification
 
-- [ ] **Step 12.1:** Public gates (final): `npm run typecheck` 0 · `npm run check:demo` PASS · `npm run test:cart` · `npm run test:order-status` · `verify-payments.cjs` + `verify-cart.cjs` (58/58) + `verify-checkout-stepper.cjs` (26/26).
-- [ ] **Step 12.2:** Nested gates: `npm run typecheck` exit 0 · `npm run test:status` (22 + new order cases) green.
-- [ ] **Step 12.3:** Public push both remotes (§13):
+- [x] **Step 12.1:** Public gates (final): `npm run typecheck` 0 · `npm run check:demo` PASS · `npm run test:cart` · `npm run test:order-status` · `verify-payments.cjs` + `verify-cart.cjs` (58/58) + `verify-checkout-stepper.cjs` (26/26).
+- [x] **Step 12.2:** Nested gates: `npm run typecheck` exit 0 · `npm run test:status` (22 + new order cases) green.
+- [x] **Step 12.3:** Public push both remotes (§13):
   ```bash
   git push origin main && git push new-origin main
   ```
-- [ ] **Step 12.4:** Nested repo — confirm clean tree, confirm commits present, **no push**:
+- [x] **Step 12.4:** Nested repo — confirm clean tree, confirm commits present, **no push**:
   ```bash
   git -C sarvadnya-advanced status --porcelain        # empty
   git -C sarvadnya-advanced log --oneline -3
   ```
-- [ ] **Step 12.5:** Update AGENTS.md (public §12 cart table + news entry) and nested AGENTS.md (§10/§11) with the SP-3 additions + dates. Commit both repos (public pushed both remotes; nested committed only).
-- [ ] **Step 12.6:** Confirm the isolation rules still hold: `git check-ignore -v sarvadnya-advanced` resolves; `git status --porcelain | grep -c sarvadnya-advanced` → 0; `npx tsc --noEmit --listFiles | grep -c 'sarvadnya-advanced'` → 0.
-- [ ] **Step 12.7:** Tell the owner: `node scripts/seed_news.mjs` still deferred (VPN); seed at next Mongo-reachable moment. Remind: rotate Razorpay TEST keys before go-live.
+- [x] **Step 12.5:** Update AGENTS.md (public §12 cart table + news entry) and nested AGENTS.md (§10/§11) with the SP-3 additions + dates. Commit both repos (public pushed both remotes; nested committed only).
+- [x] **Step 12.6:** Confirm the isolation rules still hold: `git check-ignore -v sarvadnya-advanced` resolves; `git status --porcelain | grep -c sarvadnya-advanced` → 0; `npx tsc --noEmit --listFiles | grep -c 'sarvadnya-advanced'` → 0.
+- [x] **Step 12.7:** Tell the owner: `node scripts/seed_news.mjs` still deferred (VPN); seed at next Mongo-reachable moment. Remind: rotate Razorpay TEST keys before go-live.
 
 ---
