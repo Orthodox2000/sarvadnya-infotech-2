@@ -16,9 +16,11 @@
 
 **Status at end of 2026-10-02 (design session):** spec written, self-reviewed, committed (`f879606`, **already on both remotes**), owner approved the design in-chat ("do it") and asked for this TODO to be executed **tomorrow in a fresh session**. **No implementation code exists yet.**
 
+**2026-10-03 (owner update before execution):** *"when buying tss they need to add their TSS serial number"* — **bounded addition folded in:** one serial number per TSS cart line, captured at checkout in the order-summary row, validated (pure `validateTssSerials` in `lib/order-status.ts`), sent as `tssSerials: {[slug]: string}`, persisted on the order, echoed by verify, shown on receipt + admin ledger + XLSX. Owner chose **one serial per TSS line** (multi-licence carts). Decision noted: one serial per line regardless of qty. Execution starts NOW (this session, Tasks 1–12).
+
 | Item | State |
 | :-- | :-- |
-| Design approval | ✅ Owner said "do it" to the presented architecture (buyer capture + 2 admin pages + one news post) |
+| Design approval | ✅ Owner said "do it" to the presented architecture (buyer capture + 2 admin pages + one news post) + TSS-serial-per-line (2026-10-03) |
 | Spec | ✅ `docs/superpowers/specs/2026-10-02-payments-admin-design.md`, committed + pushed |
 | This plan | ✅ Read this first; then execute tasks 1–12 in order |
 | Execution method | **Native inline** (owner trend: short tasks, direct control). No subagents were requested. |
@@ -35,6 +37,7 @@
 
 - **Both remotes, every commit:** public repo pushes `git push origin main && git push new-origin main` (§13). Nested repo: `git -C sarvadnya-advanced ...` with explicit identity `-c user.name="ankit-sarvadnya" -c user.email="ankit@tallycertified.com"`, commit **only**, never push unless asked. Public commits use `-c user.name="unknown" -c user.email="ankitmali2017@gmail.com"`.
 - **Order statuses vocabulary (exact):** `['created','verified','refunded','fulfilled']` — case-sensitive, in exactly one module per repo. `created`/`verified` = actor `system` (flow); `refunded`/`fulfilled` = actor `admin`.
+- **TSS serial capture (owner, 2026-10-03):** any cart line whose slug starts with `tss-` (`tss-single-1yr`, `tss-single-2yr`, `tss-multi-1yr`, `tss-multi-2yr`, `tss-auditor-1yr`, `tss-auditor-2yr`) requires the buyer's TSS serial number at checkout — **one serial per line** (multi-licence carts). Stored as `tssSerials: { [slug]: string }` on the order doc; Pay gated until every TSS line has a valid serial. Server rejects 400 if any priced TSS item lacks a serial. Rule is per line regardless of qty (decision noted).
 - **Audit trail invariants (from SP-2, do not "simplify"):** status and history change in ONE atomic update (embedded array, not a separate collection — Atlas may be M0, no multi-doc transactions). Events store `to` only; `from` is derived newest-first by `buildTimeline` (no read-before-write → no race). **No backfill** — existing orders keep no synthetic history; oldest event renders `from: null` → "created as".
 - **Money posture unchanged (do not weaken):** `assertTestKeys()` first; amount always server-authoritative; verify trusts only the HMAC (`crypto.timingSafeEqual`); buyer details are contact data, never a verification input; `notes.cartItems` remains display-only.
 - **Production DB:** local runs must not write orders — everything already gated on `isIgnoredRequest()`; keep the gate exactly where it is. Mongo unreachable locally on VPN — code must keep working with the price-fallback path for local E2E.
@@ -94,6 +97,19 @@
     | { ok: false; errors: { name?: string; email?: string; phone?: string; company?: string } };
   // Pure, shared by client (CheckoutContents) AND server (order route). No React/Mongo/next imports.
   export function validateCustomer(raw: unknown): CustomerValidation;
+
+  // TSS serial capture (owner 2026-10-03). Serial map keyed by TSS slug.
+  // INPUT: { [slug]: string | undefined } for the TSS lines in the cart.
+  // OUTPUT: missing/blank serial for a listed slug → { ok:false, errors:{ [slug]: string } }.
+  export type TssSerialsValidation =
+    | { ok: true; value: Record<string, string> }   // trimmed, sanitised serials
+    | { ok: false; errors: Record<string, string> }; // slug → human message
+  // tssSlugs = slugs of the TSS lines actually in the cart (server derives from repriced items,
+  // client derives from cart lines with slug.startsWith('tss-')). Serial: required, trimmed,
+  // strips `<>`, ≤ 64 chars — mirrors /api/tss-renewal sanitize() (free text, no format regex).
+  export function validateTssSerials(raw: unknown, tssSlugs: string[]): TssSerialsValidation;
+
+  export function isTssSlug(slug: string): boolean; // slug.startsWith('tss-')
   ```
 
 **Exact validation rules (pin these in tests):**
@@ -105,7 +121,7 @@
 
 - [ ] **Step 1.1:** Write failing tests in `scripts/order-status-test.mjs` (plain `node`, `assert`, zero deps — mirror `sara-topics-test.mjs` style): run `node scripts/order-status-test.mjs` and see "Cannot find module" fail.
 - [ ] **Step 1.2:** Implement `lib/order-status.ts` with the exact signatures + rules above (copy the SP-2 `sanitizeNote` approach; `buildTimeline` mirrors `sarvadnya-advanced/lib/status-history.ts:84`; note `$push` typing casts the same way `lib/mongodb-utils.ts` does for SP-2).
-- [ ] **Step 1.3:** Run `node scripts/order-status-test.mjs` — all assertions pass (one per rule: 6 validation accept/reject cases, note sanitisation, actor default/override, timeline order + `from` derivation + empty history).
+- [ ] **Step 1.3:** Run `node scripts/order-status-test.mjs` — all assertions pass (one per rule: 6 validation accept/reject cases, note sanitisation, actor default/override, timeline order + `from` derivation + empty history, plus `validateTssSerials`: valid serial accepted+trimmed, blank serial rejected with slug-keyed error, unknown slug ignored, `<>` stripped, 65-char serial rejected).
 - [ ] **Step 1.4:** Add `test:order-status` script; run `npm run typecheck` — exit 0.
 - [ ] **Step 1.5:** Commit (public identity):
   ```bash
@@ -131,14 +147,24 @@
     return NextResponse.json({ ok: false, error: 'Please complete your details.', errors: customerResult.errors }, { status: 400 });
   }
   ```
-- [ ] **Step 2.2:** Pass `customer: customerResult.value` into the `insertOne` doc (line 127–147) and add to that same doc:
+- [ ] **Step 2.2:** After `repriceOrderItems` succeeds (and `totals.lines` is known), validate TSS serials server-side against the repriced TSS lines:
+  ```ts
+  const tssSlugs = totals.lines.filter((l) => isTssSlug(l.slug)).map((l) => l.slug);
+  // NEW: no priced TSS item may lack a serial — 400 with slug-keyed errors.
+  const serialsResult = validateTssSerials((body as { tssSerials?: unknown }).tssSerials, tssSlugs);
+  if (!serialsResult.ok) {
+    return NextResponse.json({ ok: false, error: 'Enter the TSS serial number(s) for your TSS item(s).', errors: serialsResult.errors }, { status: 400 });
+  }
+  ```
+  Carry `serialsResult.value` through (empty object `{}` when no TSS lines).
+- [ ] **Step 2.3:** Pass `customer: customerResult.value` and `tssSerials: serialsResult.value` into the `insertOne` doc (line 127–147) and add to that same doc:
   ```ts
   statusHistory: [{ to: 'created' as const, at: now, actor: 'system' as const }],
   ```
   (`now` is the same `new Date()` already used for `createdAt`/`updatedAt`.)
-- [ ] **Step 2.3:** Echo `customer: customerResult.value` in the success JSON response (after `persisted`).
-- [ ] **Step 2.4:** Verify: `npm run typecheck` exit 0; `node scripts/cart-test.mjs` still 31/31; manual probe `curl -s -X POST localhost:3000/api/cart/order -H 'content-type: application/json' -d '{"items":[],"customer":{"name":"A","email":"x"}}'` → 400 `Your cart is empty.` **before** hitting customer validation (ordering intact).
-- [ ] **Step 2.5:** Commit:
+- [ ] **Step 2.4:** Echo `customer: customerResult.value` and `tssSerials: serialsResult.value` in the success JSON response (after `persisted`).
+- [ ] **Step 2.5:** Verify: `npm run typecheck` exit 0; `node scripts/cart-test.mjs` still 31/31; manual probe `curl -s -X POST localhost:3000/api/cart/order -H 'content-type: application/json' -d '{"items":[],"customer":{"name":"A","email":"x"}}'` → 400 `Your cart is empty.` **before** hitting customer validation (ordering intact).
+- [ ] **Step 2.6:** Commit:
   ```bash
   git add app/api/cart/order/route.ts
   git -c user.name="unknown" -c user.email="ankitmali2017@gmail.com" commit -m "feat(cart): capture + validate checkout customer on order create (SP-3)"
@@ -164,7 +190,7 @@
   } as never);
   ```
   Keep the `isIgnoredRequest` gate and the catch-when-DB-down exactly as-is.
-- [ ] **Step 3.2:** Echo `customer` in the success response: `customer: (typeof stored?.customer === 'object' && stored.customer) ? normalizedCustomer(stored.customer) : null` — normalize defensively (name/email strings, phone string) so a pre-feature order (`customer` missing) returns `null`, never `undefined`.
+- [ ] **Step 3.2:** Echo `customer` in the success response: `customer: (typeof stored?.customer === 'object' && stored.customer) ? normalizedCustomer(stored.customer) : null` — normalize defensively (name/email strings, phone string) so a pre-feature order (`customer` missing) returns `null`, never `undefined`. Also echo `tssSerials` defensively: `tssSerials: (typeof stored?.tssSerials === 'object' && stored.tssSerials) ? stored.tssSerials : null` — a pre-feature order returns `null`.
 - [ ] **Step 3.3:** Verify: `npm run typecheck` exit 0; static guard `npm run check:demo` PASS (no `/demo` string introduced).
 - [ ] **Step 3.4:** Commit:
   ```bash
@@ -185,9 +211,10 @@
 
 - [ ] **Step 4.1:** Add a **"Your details"** card (`section` + `aria-label="Your details"`) as the FIRST block inside the `lg:grid-cols-[1fr_360px]` left column (above the Order summary section, route line 261–276); on mobile it stacks naturally above the summary. Fields: Name*, Email*, Phone*, Company (optional). Every input: `aria-invalid`, `aria-describedby` pointing at a live error `<p id=... role="alert">` when invalid; teal focus ring (`focus-visible:ring-[#006569]`); 360px-safe layout (two-column name/phone on sm+, stacked below).
 - [ ] **Step 4.2:** Local state `{ name, email, phone, company }` + a `useMemo` computing `validateCustomer(...)` on every keystroke; show per-field errors only after the field has been touched OR Pay was attempted (avoid error spam on first keypress — match the site's `localityNote` style).
-- [ ] **Step 4.3:** Gate the Pay button: add `!customerValid` to the existing `disabled` condition (route line 202) and, when the form is invalid, render a hint under the button: "Add your details above to continue." (reuse the `role="status"` error block styling).
-- [ ] **Step 4.4:** Change the POST body `{ items }` → `{ items, customer: { name, email, phone, company: company || undefined } }`; set `prefill: { name: data.customer?.name ?? '', email: data.customer?.email ?? '', contact: data.customer?.phone ?? '' }` in the Razorpay options (route line 158).
-- [ ] **Step 4.5:** Verify: `npm run typecheck` exit 0. Manual dev-server probe at 360px: card renders, Pay disabled initially, valid details enable it, invalid email shows inline error + Pay stays disabled.
+- [ ] **Step 4.3:** Gate the Pay button: add `!customerValid` AND `!serialsValid` to the existing `disabled` condition (route line 202) and, when either is invalid, render a hint under the button: "Add your details above to continue." (reuse the `role="status"` error block styling).
+- [ ] **Step 4.3b (TSS serial capture, owner 2026-10-03):** For every order-summary line whose slug passes `isTssSlug`, render a **"TSS Serial Number \*"** text input inside that line's `SummaryLine` (below the qty stepper): placeholder like "e.g. your Tally serial", `aria-invalid` + `aria-describedby` → live per-line error `<p role="alert">`. State is `serialBySlug: Record<string,string>` held in `CheckoutContents` (NOT in cart storage), passed down as `serial={serialBySlug[line.slug]}` + `onSerialChange(slug, value)`; `serialsValid` = `validateTssSerials(serialBySlug, tssSlugs).ok` where `tssSlugs` derives from `totals.lines.filter(l => isTssSlug(l.slug))`. PayButton receives `serialsValid` + serial map as props.
+- [ ] **Step 4.4:** Change the POST body `{ items }` → `{ items, customer: { name, email, phone, company: company || undefined }, tssSerials: serialBySlug }`; set `prefill: { name: data.customer?.name ?? '', email: data.customer?.email ?? '', contact: data.customer?.phone ?? '' }` in the Razorpay options (route line 158).
+- [ ] **Step 4.5:** Verify: `npm run typecheck` exit 0. Manual dev-server probe at 360px: card renders, Pay disabled initially, valid details enable it, invalid email shows inline error + Pay stays disabled, a TSS line without a serial keeps Pay disabled until its serial is filled.
 - [ ] **Step 4.6:** Commit:
   ```bash
   git add "app/(site)/checkout/CheckoutContents.tsx"
@@ -205,8 +232,8 @@
 **Interfaces:**
 - Consumes: `customer` from Task 3's verify response.
 
-- [ ] **Step 5.1:** In `VerifyResult.tsx`, thread the verified `customer` (name + email) into `<Receipt>` props: `customer?: { name?: string; email?: string } | null`.
-- [ ] **Step 5.2:** In `Receipt.tsx`, render a small "Bought by" block (name / email) only when `customer?.name || customer?.email` is present — a localhost/pre-feature receipt with `null` customer prints nothing extra. Mobile-safe text sizes; add to the print-scoped `.demo-receipt-page`-equivalent so nothing new leaks outside the receipt card.
+- [ ] **Step 5.1:** In `VerifyResult.tsx`, thread the verified `customer` (name + email) AND `tssSerials` into `<Receipt>` props: `customer?: { name?: string; email?: string } | null` and `tssSerials?: Record<string, string> | null`.
+- [ ] **Step 5.2:** In `Receipt.tsx`, render a small "Bought by" block (name / email) only when `customer?.name || customer?.email` is present — a localhost/pre-feature receipt with `null` customer prints nothing extra. When `tssSerials` is present, render each `slug: serial` as a small "TSS Serial" line (per item). Mobile-safe text sizes; add to the print-scoped `.demo-receipt-page`-equivalent so nothing new leaks outside the receipt card.
 - [ ] **Step 5.3:** Verify: `npm run typecheck` exit 0; `npm run check:demo` PASS.
 - [ ] **Step 5.4:** Commit:
   ```bash
@@ -258,7 +285,8 @@
 2. Valid customer → Pay enabled; **intercept** `/api/cart/order` and assert the POST body has `customer { name, email, phone, company }` exactly.
 3. Company left blank → body has no company key (or `undefined` is dropped by JSON.stringify).
 4. One real-route probe (NOT stubbed): POST `/api/cart/order` with invalid `customer` → HTTP 400 `{ ok:false, errors:{...} }` and no Razorpay order created (assert the route didn't 503/502 — i.e. it failed at validation, not at assertTestKeys/rate limit; run this FIRST in the suite while intercepting everything later).
-5. Stubbed Razorpay success → success page renders receipt with the buyer name + email ("Bought by" block).
+4b. **TSS serial (owner 2026-10-03):** cart with a `tss-single-1yr` line → serial input visible in the line; Pay disabled until filled; blank serial → per-line error + intercepted POST never fires; filled → POST body has `tssSerials: { 'tss-single-1yr': '<serial>' }`. Cart WITHOUT TSS → no serial inputs + `tssSerials` absent/`{}` in the POST body. Real-route probe: POST with a TSS item and missing serial → 400 `Enter the TSS serial number(s)...`.
+5. Stubbed Razorpay success → success page renders receipt with the buyer name + email ("Bought by" block) + TSS serial line(s).
 6. Orders with no customer (pre-feature) → verify response `customer: null` → receipt renders without the block, no crash.
 7. Hydration + lazy-load probes: zero hydration errors, zero horizontal overflow at 360px, drawer + checkout stepper still green (re-run `verify-cart.cjs` 58/58 + `verify-checkout-stepper.cjs` 26/26 after all UI edits).
 
@@ -345,7 +373,7 @@
 
 **Interfaces:**
 - Consumes: `GET /api/admin/payments` (Task 9), `buildOrderTimeline` (Task 8).
-- **Ledger page:** filter bar (status select from `ORDER_STATUSES` + "All", from/to date inputs, `q` text input, Apply + Reset), read-only table (created, orderId, customer name/email/phone/company, item count + first item, amount in ₹ — the nested repo has **no** public cart `formatINR`; use a small local helper like the prices page's `toRupees(paise).toLocaleString('en-IN')`), status badge, pagination (`PAGE_SIZES` + `getPageNumbers` patterns from `submissions/page.tsx`).
+- **Ledger page:** filter bar (status select from `ORDER_STATUSES` + "All", from/to date inputs, `q` text input, Apply + Reset), read-only table (created, orderId, customer name/email/phone/company, item count + first item, **TSS serial(s) — join `tssSerials` values for TSS items**, amount in ₹ — the nested repo has **no** public cart `formatINR`; use a small local helper like the prices page's `toRupees(paise).toLocaleString('en-IN')`), status badge, pagination (`PAGE_SIZES` + `getPageNumbers` patterns from `submissions/page.tsx`).
 - **Detail modal:** full items list + totals, razorpay ids, timeline rendered via `buildTimeline` (same newest-first UI as `tss-renewals` modal, `from: null` → "created as"), and a **status-change form**: select `refunded`/`fulfilled` + note + Save (POST to Task 9; on 200 refresh list + show the fresh timeline). Buttons disabled while the request is in flight; unchanged-status re-click must NOT fire (SP-2's duplicate-event bug).
 - **XLSX export:** button → `fetch('/api/admin/payments?export=1&<current filters>&limit=...')` — actually reuse the submissions pattern: one GET that returns **all filtered rows** (export: set `limit` high or a dedicated `export=1` that ignores pagination), then `XLSX.utils.json_to_sheet(rows)` (paise → rupees, camelCase → readable headers), `book_append_sheet`, `writeFile('payments_<date>.xlsx')`.
 

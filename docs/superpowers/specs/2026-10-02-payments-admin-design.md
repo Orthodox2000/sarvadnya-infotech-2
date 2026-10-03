@@ -119,6 +119,9 @@ Every order document gains/keeps:
     phone: string,            // 10-digit Indian mobile (digits only after +91 strip), required
     company: string          // optional, <= 100 chars
   },
+  tssSerials: {               // NEW — owner 2026-10-03: { [tssSlug]: serial }, one per TSS line
+    'tss-single-1yr': string, // trimmed, <> stripped, <= 64 chars; {} when no TSS lines
+  },
   status: 'created' | 'verified' | 'refunded' | 'fulfilled',
   statusHistory: [           // NEW — SP-2 audit events, same shape as StatusEvent
     { to: 'created', at: Date, actor: 'system', note?: undefined },
@@ -165,7 +168,7 @@ export function buildOrderTimeline(history: StatusEvent[]): TimelineEntry[];
 (default when omitted from admin callers). Keeps the SP-2 constant `STATUS_ACTOR='admin'` as the
 default for admin paths.
 
-### 4.3 Checkout capture (public repo)
+### 4.3 Checklist capture (public repo)
 
 **`CheckoutContents.tsx`:**
 
@@ -178,11 +181,23 @@ default for admin paths.
 - On Pay: POST `{ items, customer }` to `/api/cart/order`; use `data.customer` + `data.amount`
   when opening Razorpay → `prefill: { name, email, contact }`.
 
+**TSS serial number per TSS line (owner addition, 2026-10-03):** any order-summary line whose
+slug starts with `tss-` (`tss-single-1yr`, `tss-single-2yr`, `tss-multi-1yr`, `tss-multi-2yr`,
+`tss-auditor-1yr`, `tss-auditor-2yr`) gets its own "TSS Serial Number *" input inside the line
+row (below the qty stepper). State held in `CheckoutContents` as `serialBySlug: Record<slug,
+string>`, passed to `PayButton`; Pay stays disabled while any TSS line lacks a valid serial.
+Serial rule (pure `validateTssSerials(serials, tssSlugs)`, mirrors the existing
+`/api/tss-renewal` free-text handling — no invented format regex): required, trimmed, strips
+`<>`, ≤ 64 chars. One serial per line regardless of qty (owner pick; per-qty serials would be a
+follow-up). The client sends `tssSerials: {[slug]: string}` in the POST body.
+
 **`app/api/cart/order/route.ts`:**
 
 - Parse + validate `customer` server-side (same rules, rejects with 400 + per-field errors —
   never silently mangles).
-- Include `customer` in the persisted doc; append `created` event:
+- **Parse + validate `tssSerials`** against the repriced TSS lines (a priced `tss-*` item with a
+  missing/blank serial → 400 + slug-keyed errors; no TSS lines → `{}`).
+- Include `customer` + `tssSerials` in the persisted doc; append `created` event:
   ```
   { $set: { ..., status:'created', createdAt, updatedAt },
     $push: { statusHistory: { to:'created', at, actor:'system' } } }
@@ -195,7 +210,7 @@ default for admin paths.
 - On success, the existing `updateOne` also appends:
   `{ to:'verified', at, actor:'system', note:'Payment <razorpayPaymentId> verified' }`
   in the SAME `$set+$push` (per §4.2 builder).
-- Return `customer` in the verified payload (harmless; receipt may show it).
+- Return `customer` + `tssSerials` in the verified payload (harmless; receipt may show them).
 
 **Receipt (`VerifyResult.tsx`)**: show buyer name + email on the verified receipt (payment-record
 completeness). Default ON and implemented in this build; if it complicates the receipt layout it
@@ -220,7 +235,7 @@ is dropped with a note — but the intent is to include it.
 
 | Page | Route | Contents |
 | :-- | :-- | :-- |
-| **Payments — Ledger** | `/admin/payments` | Filter bar (status select, from/to date, search input, Apply/Reset); read-only table: created, orderId, customer name/email/phone/company, item count + first item, amount (INR), status badge, actions → **detail modal** (items list, totals, razorpay ids, statusHistory timeline via `buildOrderTimeline`, status-change form: select refunded/fulfilled + note + Save). XLSX export button (`xlsx` — same helper as submissions page) exporting the **currently-filtered** rows from the API. |
+| **Payments — Ledger** | `/admin/payments` | Filter bar (status select, from/to date, search input, Apply/Reset); read-only table: created, orderId, customer name/email/phone/company, item count + first item, TSS serial(s) (join `tssSerials` values), amount (INR), status badge, actions → **detail modal** (items list, totals, razorpay ids, TSS serials, statusHistory timeline via `buildOrderTimeline`, status-change form: select refunded/fulfilled + note + Save). XLSX export button (`xlsx` — same helper as submissions page) exporting the **currently-filtered** rows from the API, with a **TSS Serial(s)** column. |
 | **Payments Summary** | `/admin/payments/summary` | Same filter bar; totals cards (orders count, sum `amountPaise`, sum `gstPaise`, sum `discountPaise`, average order); **Print / Save-as-PDF** button (`window.print()` with the scoped-print pattern from the receipt); XLSX export of filtered rows. A `Link` back to the ledger. |
 | Sidebar | `AdminSidebar.tsx` | One "Payments" entry → `/admin/payments` (+ summary reachable via a tab/link on the page). |
 
