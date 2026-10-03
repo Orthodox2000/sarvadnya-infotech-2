@@ -9,12 +9,14 @@ interface JobApplicationModalProps {
   isOpen: boolean;
   onClose: () => void;
   job: Job | null;
+  user?: any;
 }
 
 export default function JobApplicationModal({ 
   isOpen, 
   onClose, 
-  job
+  job,
+  user
 }: JobApplicationModalProps) {
   const [formData, setFormData] = useState({
     name: '',
@@ -41,6 +43,18 @@ export default function JobApplicationModal({
       document.body.style.overflow = 'unset';
     };
   }, [isOpen]);
+
+  useEffect(() => {
+    if (user) {
+      setFormData(prev => ({
+        ...prev,
+        name: user.fullName || prev.name,
+        email: user.email || prev.email,
+        phone: user.phone || prev.phone,
+      }));
+    }
+  }, [user]);
+
 
   if (!isOpen || !job) return null;
 

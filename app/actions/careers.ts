@@ -12,6 +12,8 @@ import {
   maskIp,
 } from '@/lib/visitors';
 import type { GeoInfo } from '@/lib/visitors';
+import { storeResume } from '@/lib/careers-storage';
+const MEGA_ENABLED = process.env.MEGA_ENABLED === 'true' || process.env.MEGA_ENABLED === '1';
 
 export async function submitApplication(formData: FormData) {
   try {
@@ -29,15 +31,24 @@ export async function submitApplication(formData: FormData) {
       return { error: 'Resume is required.' };
     }
 
-    // 1. Upload Resume to Mega.nz
+    // 1. Upload Resume
     let resumeUrl = '';
     try {
       const resumeRes = await fetch(resumeUrlField);
       if (!resumeRes.ok) throw new Error('Failed to download uploaded resume.');
       const resumeBuffer = Buffer.from(await resumeRes.arrayBuffer());
-      resumeUrl = await uploadToMega(resumeBuffer, resumeName);
+      if (MEGA_ENABLED) {
+        try {
+          resumeUrl = await uploadToMega(resumeBuffer, resumeName);
+        } catch (uploadError) {
+          console.warn('Mega.nz upload error, falling back to Blob:', uploadError);
+          resumeUrl = await storeResume(resumeBuffer, resumeName);
+        }
+      } else {
+        resumeUrl = await storeResume(resumeBuffer, resumeName);
+      }
     } catch (uploadError) {
-      console.error('Mega.nz upload error:', uploadError);
+      console.error('Resume upload error:', uploadError);
       throw new Error('Failed to upload resume to storage.');
     }
 
