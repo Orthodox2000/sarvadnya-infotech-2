@@ -5,6 +5,11 @@ import { getPrices } from '@/lib/prices-server';
 import { createRateLimiter } from '@/lib/cart/rate-limit';
 import { getDb } from '@/lib/mongodb-utils';
 import { isIgnoredRequest } from '@/lib/visitors';
+// CHANGE: 2026-10-03 — SP-3: the `verified` hop is appended through the shared
+// order-status builder (status + history in ONE atomic op, actor system) and the
+// buyer details/TSS serials are echoed for the receipt. StatusChangeUpdate typing
+// mirrors mongodb-utils' SP-2 boundary cast — cast lives here at the driver call.
+import { orderStatusChangeUpdate, type Customer } from '@/lib/order-status';
 
 // CHANGE: 2026-10-02 — verify a Razorpay TEST payment for the real cart (SP-1 cart build).
 // WHY: the /checkout/success page NEVER trusts its own URL. Anyone can hand-craft
@@ -101,19 +106,21 @@ export async function POST(request: Request) {
     );
   }
 
-  // 3. Record the payment id for idempotency, so a replayed callback cannot double-apply.
-  //    Gated on isIgnoredRequest() for the shared-production-DB reason (AGENTS.md).
+  // 3. Record the payment id + the `verified` audit hop in ONE atomic update, so status
+  //    and history can never disagree (orderStatusChangeUpdate, actor system). Gated on
+  //    isIgnoredRequest() for the shared-production-DB reason (AGENTS.md).
   if (stored && !isIgnoredRequest(request)) {
     try {
       const db = await getDb();
+      const chg = orderStatusChangeUpdate('verified', {
+        note: `Payment ${razorpayPaymentId} verified`,
+        actor: 'system',
+      });
       await db.collection('orders').updateOne(
         { razorpayOrderId },
         {
-          $set: {
-            razorpayPaymentId,
-            status: 'verified',
-            updatedAt: new Date(),
-          },
+          $set: { ...chg.$set, razorpayPaymentId },
+          $push: chg.$push,
         } as never,
       );
     } catch {
@@ -170,6 +177,11 @@ export async function POST(request: Request) {
     razorpayOrderId,
     razorpayPaymentId,
     persisted: Boolean(stored),
+    // CHANGE: 2026-10-03 — SP-3: echo buyer + TSS serials for the receipt. Defensive:
+    // pre-feature orders have neither field -> null, never undefined (JSON would drop it).
+    customer: stored ? normalizedCustomer(stored.customer) : null,
+    tssSerials:
+      typeof stored?.tssSerials === 'object' && stored.tssSerials ? (stored.tssSerials as Record<string, string>) : null,
     testMode: true,
     items: lines,
     totals:
@@ -183,6 +195,24 @@ export async function POST(request: Request) {
           }
         : null,
   });
+}
+
+/**
+ * Normalises a stored order's customer defensively for the receipt: strings only,
+ * all fields optional — a pre-feature order (or a hand-edited doc) can never crash
+ * the success page. Company omitted when blank, matching lib/order-status.ts.
+ */
+function normalizedCustomer(raw: unknown): Customer | null {
+  if (!raw || typeof raw !== 'object') return null;
+  const o = raw as Record<string, unknown>;
+  const customer: Customer = {
+    name: typeof o.name === 'string' ? o.name : '',
+    email: typeof o.email === 'string' ? o.email : '',
+    phone: typeof o.phone === 'string' ? o.phone : '',
+  };
+  const company = typeof o.company === 'string' ? o.company : '';
+  if (company) customer.company = company;
+  return customer;
 }
 
 /** Parse the compact [["slug",qty],…] note. Defensive: shape, sizes and types all checked. */
