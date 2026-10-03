@@ -8,6 +8,12 @@
 //
 // On success the paid cart is CLEARED here (agreed behaviour — a paid cart must not linger).
 // The itemised receipt is built ONLY from the verify response fields.
+//
+// CHANGE: 2026-10-03 — PRODUCTION copy (owner: "its now in production"): the success page no
+// longer mentions the payment provider, signatures, "test mode" or keys anywhere a shopper
+// can read. Success reads "Thank you for your purchase!" (+ Amount paid), checking reads
+// "Confirming your payment…", failures point at retry/contact instead of signature jargon,
+// and the primary CTA is "Continue" (was "Continue shopping").
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
@@ -53,7 +59,7 @@ export default function VerifyResult({
 
       if (!body.razorpayOrderId || !body.razorpayPaymentId || !body.razorpaySignature) {
         setStatus('failed');
-        setMessage('No payment details were supplied, so nothing could be verified.');
+        setMessage("We couldn't confirm this payment. Please try again or contact us for help.");
         return;
       }
 
@@ -106,12 +112,12 @@ export default function VerifyResult({
           });
         } else {
           setStatus('failed');
-          setMessage(data.error || 'The payment signature did not verify.');
+          setMessage(data.error || "We couldn't confirm this payment. Please try again or contact us for help.");
         }
       } catch {
         if (!cancelled) {
           setStatus('failed');
-          setMessage('Could not reach the verification endpoint.');
+          setMessage("We couldn't confirm your payment right now. Please try again shortly.");
         }
       }
     })();
@@ -127,24 +133,24 @@ export default function VerifyResult({
     <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm print:rounded-none print:border-0 print:p-0 print:shadow-none">
       {status === 'checking' || status === 'idle' ? (
         <>
-          <h1 className="text-xl font-bold text-slate-900">Verifying payment…</h1>
+          <h1 className="text-xl font-bold text-slate-900">Confirming your payment&hellip;</h1>
           <p className="mt-2 text-sm text-slate-600">
-            The signature is checked on the server. Nothing is trusted from this page&apos;s URL.
+            Just a moment &mdash; we&apos;re checking everything is in order.
           </p>
         </>
       ) : status === 'ok' ? (
         <>
           <div className="print:hidden">
             <span className="inline-flex rounded-full bg-teal-100 px-3 py-1 text-xs font-bold uppercase tracking-wide text-teal-800">
-              Signature verified
+              Payment confirmed
             </span>
-            <h1 className="mt-3 text-xl font-bold text-slate-900">Payment succeeded (test mode)</h1>
+            <h1 className="mt-3 text-xl font-bold text-slate-900">Thank you for your purchase!</h1>
             <p className="mt-2 text-sm leading-relaxed text-slate-600">
-              Razorpay returned a signature the server verified against the order.
+              Your payment went through and a receipt is below.
               {amount !== null && (
                 <>
                   {' '}
-                  Amount: <strong className="tabular-nums">{formatINR(amount)}</strong>.
+                  Amount paid: <strong className="tabular-nums">{formatINR(amount)}</strong>.
                 </>
               )}
             </p>
@@ -174,9 +180,9 @@ export default function VerifyResult({
       ) : (
         <>
           <span className="inline-flex rounded-full bg-red-100 px-3 py-1 text-xs font-bold uppercase tracking-wide text-red-800">
-            Not verified
+            Not confirmed
           </span>
-          <h1 className="mt-3 text-xl font-bold text-slate-900">Payment not verified</h1>
+          <h1 className="mt-3 text-xl font-bold text-slate-900">We couldn&apos;t confirm your payment</h1>
           <p className="mt-2 text-sm leading-relaxed text-slate-600">{message}</p>
         </>
       )}
@@ -186,7 +192,7 @@ export default function VerifyResult({
           href="/products"
           className="inline-flex min-h-11 items-center justify-center rounded-lg bg-[#006569] px-5 text-sm font-semibold text-white transition-colors hover:bg-[#045A57] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#006569] focus-visible:ring-offset-2"
         >
-          Continue shopping
+          Continue
         </Link>
         <Link
           href="/contact"

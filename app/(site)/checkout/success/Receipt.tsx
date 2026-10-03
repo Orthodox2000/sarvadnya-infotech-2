@@ -80,7 +80,7 @@ export default function Receipt({ data }: { data: ReceiptData }) {
       <dl className="mt-3">
         <Field label="Transaction no." value={data.razorpayPaymentId} mono />
         <Field label="Order no." value={data.razorpayOrderId} mono />
-        <Field label="Reference" value={data.orderId ?? 'Not recorded (local test run)'} mono />
+        <Field label="Reference" value={data.orderId ?? 'Not recorded'} mono />
         <Field label="Amount paid" value={data.amountPaise === null ? 'Not recorded' : formatINR(data.amountPaise)} />
         <Field label="Currency" value="INR" />
         <Field label="Status" value="Payment verified" />
@@ -127,7 +127,7 @@ export default function Receipt({ data }: { data: ReceiptData }) {
           </ul>
         ) : (
           <p className="px-4 py-3 text-xs text-slate-500">
-            Item list not available on this run (order document not persisted on localhost).
+            Item details are unavailable at the moment.
           </p>
         )}
       </div>
@@ -157,11 +157,12 @@ export default function Receipt({ data }: { data: ReceiptData }) {
         </dl>
       )}
 
-      {/* BORDERED box, not a filled badge — print engines strip background colours by default,
-          and this warning must survive a colour-less printout (the same lesson that produced
-          the bordered TEST MODE box on the test-scaffold receipt). */}
-      <p className="mt-4 rounded-lg border-2 border-amber-500 px-3 py-2 text-xs font-bold uppercase leading-relaxed tracking-wide text-amber-900">
-        Test mode receipt — no real money was charged and no order will be fulfilled.
+      {/* CHANGE: 2026-10-03 — PRODUCTION (owner: "its now in production"): the bordered TEST
+          MODE warning is REMOVED — a live receipt must never claim no money moved or mention
+          test keys. Replaced with a quiet thank-you; bordered, not filled, so it still
+          survives a colour-less printout (the same lesson that produced the box it replaces). */}
+      <p className="mt-4 rounded-lg border border-[#D4EAEA] px-3 py-2 text-center text-xs font-semibold leading-relaxed text-[#006569]">
+        Thank you for your purchase &mdash; we&apos;re always happy to help.
       </p>
     </section>
   );
