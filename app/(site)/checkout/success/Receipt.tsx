@@ -36,6 +36,10 @@ export interface ReceiptData {
   /** Itemised lines from the stored order; null on a localhost run. */
   items: ReceiptItem[] | null;
   totals: { subtotalPaise?: number; gstPaise?: number; discountPaise?: number; totalPaise?: number } | null;
+  /** CHANGE: 2026-10-03 — SP-3 buyer record. Null on pre-feature orders (renders nothing). */
+  customer?: { name?: string; email?: string; phone?: string; company?: string } | null;
+  /** TSS serial numbers by slug (owner 2026-10-03 — one serial per TSS line). */
+  tssSerials?: Record<string, string> | null;
 }
 
 function Field({ label, value, mono }: { label: string; value: string; mono?: boolean }) {
@@ -83,6 +87,17 @@ export default function Receipt({ data }: { data: ReceiptData }) {
         <Field label="Verified on" value={formatStamp(data.verifiedAt)} />
       </dl>
 
+      {/* CHANGE: 2026-10-03 — SP-3 "Bought by": the buyer record rides the order doc
+          from checkout; for a pre-feature/localhost run customer is null and this block
+          prints nothing (no extra ink, no crash). */}
+      {data.customer && (data.customer.name || data.customer.email) && (
+        <div className="mt-3 rounded-xl border border-slate-200 px-4 py-3">
+          <p className="text-[10px] font-black uppercase tracking-wider text-slate-500">Bought by</p>
+          {data.customer.name && <p className="mt-1 text-sm font-semibold text-slate-900">{data.customer.name}</p>}
+          {data.customer.email && <p className="text-xs text-slate-600">{data.customer.email}</p>}
+        </div>
+      )}
+
       {/* ITEMISED breakdown — the whole point of this receipt. */}
       <div className="mt-4 rounded-xl border border-slate-200">
         <div className="grid grid-cols-[1fr_auto_auto] gap-x-3 border-b border-slate-200 bg-slate-50 px-3 py-2 text-[10px] font-black uppercase tracking-wider text-slate-500 sm:px-4">
@@ -97,6 +112,13 @@ export default function Receipt({ data }: { data: ReceiptData }) {
                 <span className="min-w-0">
                   <span className="block truncate text-[13px] font-semibold text-slate-800">{it.name}</span>
                   <span className="block text-[11px] text-slate-500">{formatINR(it.unitPaise)} each</span>
+                  {/* CHANGE: 2026-10-03 — SP-3: the buyer's TSS serial rides the item line
+                      (one serial per TSS line, owner 2026-10-03). Absent on non-TSS items. */}
+                  {data.tssSerials?.[it.slug] && (
+                    <span className="mt-0.5 block text-[11px] font-semibold text-[#006569]">
+                      TSS Serial: {data.tssSerials[it.slug]}
+                    </span>
+                  )}
                 </span>
                 <span className="text-right text-[13px] font-semibold tabular-nums text-slate-600">{it.qty}</span>
                 <span className="text-right text-[13px] font-black tabular-nums text-slate-900">{formatINR(it.totalPaise)}</span>

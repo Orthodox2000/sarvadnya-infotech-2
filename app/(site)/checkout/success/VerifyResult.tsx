@@ -73,6 +73,10 @@ export default function VerifyResult({
           razorpayPaymentId?: string;
           items?: { slug: string; name: string; qty: number; unitPaise: number; totalPaise: number }[] | null;
           totals?: { subtotalPaise?: number; gstPaise?: number; discountPaise?: number; totalPaise?: number } | null;
+          // CHANGE: 2026-10-03 — SP-3: the verified response echoes the buyer + TSS
+          // serials (Task 3); thread them to the receipt for the payment record.
+          customer?: { name?: string; email?: string; phone?: string; company?: string } | null;
+          tssSerials?: Record<string, string> | null;
           error?: string;
         };
         if (cancelled) return;
@@ -94,6 +98,11 @@ export default function VerifyResult({
             verifiedAt: new Date(),
             items: Array.isArray(data.items) && data.items.length > 0 ? data.items : null,
             totals: data.totals ?? null,
+            // CHANGE: 2026-10-03 — SP-3 buyer record: null-safe pass-through (a
+            // pre-feature order has neither field; the receipt renders nothing extra).
+            customer:
+              data.customer && (data.customer.name || data.customer.email) ? data.customer : null,
+            tssSerials: data.tssSerials && Object.keys(data.tssSerials).length > 0 ? data.tssSerials : null,
           });
         } else {
           setStatus('failed');
