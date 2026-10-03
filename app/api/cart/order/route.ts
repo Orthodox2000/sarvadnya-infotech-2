@@ -6,6 +6,10 @@ import { MAX_CART_LINES } from '@/lib/cart/math';
 import { createRateLimiter } from '@/lib/cart/rate-limit';
 import { getDb } from '@/lib/mongodb-utils';
 import { isIgnoredRequest } from '@/lib/visitors';
+// CHANGE: 2026-10-03 — SP-3 buyer capture: customer is validated server-side and
+// persisted with the order; TSS serials (owner 2026-10-03) are required per TSS
+// line; the `created` status hop opens the audit trail (lib/order-status.ts).
+import { validateCustomer, validateTssSerials, isTssSlug } from '@/lib/order-status';
 
 // CHANGE: 2026-10-02 — create a Razorpay TEST order for the real cart (SP-1 cart build).
 // WHY: this route is the server-authoritative pricing boundary. The browser posts slugs and
@@ -73,6 +77,19 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: false, error: 'Too many distinct items.' }, { status: 400 });
   }
 
+  // 3.5 Validate the buyer details (SP-3). Runs before reprice so a bad payload
+  //      never reaches Razorpay; runs AFTER the items-shape checks so an empty
+  //      cart reports "Your cart is empty." first.
+  const customerResult = validateCustomer((body as { customer?: unknown }).customer);
+  // CHANGE: 2026-10-03 — `if (!x.ok)` does NOT narrow under tsconfig "strict":
+  // false (repro'd); explicit `=== false` does. Guards the discriminated union.
+  if (customerResult.ok === false) {
+    return NextResponse.json(
+      { ok: false, error: 'Please complete your details.', errors: customerResult.errors },
+      { status: 400 },
+    );
+  }
+
   // 4. REPRICE SERVER-SIDE against the live catalogue. Rejected lines get a named 400 so the
   //    checkout page can tell the buyer exactly which item cannot be bought yet.
   const { totals, rejected } = await repriceOrderItems(rawItems);
@@ -96,6 +113,23 @@ export async function POST(request: Request) {
     );
   }
   const amountPaise = totals.totalPaise;
+
+  // 4.5 TSS serial capture (owner 2026-10-03): every priced TSS line (slug starts
+  //      with `tss-`) must carry the buyer's serial number — one per line, paid
+  //      BEFORE the money can move. Slugs are derived from the REPRICED lines so a
+  //      client can neither skip a serial nor inject serials for non-TSS items.
+  const tssSlugs = totals.lines.filter((l) => isTssSlug(l.slug)).map((l) => l.slug);
+  const serialsResult = validateTssSerials((body as { tssSerials?: unknown }).tssSerials, tssSlugs);
+  if (serialsResult.ok === false) {
+    return NextResponse.json(
+      {
+        ok: false,
+        error: 'Enter the TSS serial number(s) for your TSS item(s).',
+        errors: serialsResult.errors,
+      },
+      { status: 400 },
+    );
+  }
 
   // 5. Create the Razorpay order (always — a local run must be genuinely end-to-end).
   //    notes.cartItems is a compact [slug,qty] summary so the verify route can itemise the
@@ -124,6 +158,7 @@ export async function POST(request: Request) {
   if (persist) {
     try {
       const db = await getDb();
+      const now = new Date(); // one clock for createdAt/updatedAt and the `created` hop
       await db.collection('orders').insertOne({
         orderId,
         razorpayOrderId: razorpayOrder.id,
@@ -139,11 +174,16 @@ export async function POST(request: Request) {
         subtotalPaise: totals.subtotalPaise,
         gstPaise: totals.gstPaise,
         discountPaise: totals.discountPaise,
+        // CHANGE: 2026-10-03 — SP-3: buyer details + TSS serials ride the order doc;
+        // statusHistory opens the audit trail with the `created` hop (actor system).
+        customer: customerResult.value,
+        tssSerials: serialsResult.value,
         status: 'created',
+        statusHistory: [{ to: 'created', at: now, actor: 'system' }],
         testMode: true,
         ip,
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        createdAt: now,
+        updatedAt: now,
       } as never);
     } catch {
       // non-fatal — see above
@@ -151,7 +191,8 @@ export async function POST(request: Request) {
   }
 
   // 7. Respond. `amount` is the server's figure — the browser must pass it to Razorpay
-  //    UNCHANGED. The itemised lines are echoed for the checkout summary.
+  //    UNCHANGED. The itemised lines are echoed for the checkout summary. `customer` and
+  //    `tssSerials` echo what was validated so the client can prefill Razorpay with them.
   return NextResponse.json({
     ok: true,
     orderId,
@@ -161,6 +202,8 @@ export async function POST(request: Request) {
     keyId: getPublishableKeyId(),
     testMode: true,
     persisted: persist,
+    customer: customerResult.value,
+    tssSerials: serialsResult.value,
     items: totals.lines.map((l) => ({ slug: l.slug, name: l.item.name, qty: l.qty, unitPaise: l.unitPaise, totalPaise: l.totalPaise })),
     totals: {
       subtotalPaise: totals.subtotalPaise,
