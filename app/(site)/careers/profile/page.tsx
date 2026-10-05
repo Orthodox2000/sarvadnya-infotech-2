@@ -26,11 +26,13 @@ export default function CareersProfilePage() {
         const data = await res.json();
         setUser(data.user);
       } else {
-        router.push('/careers/login');
+        // CHANGE: 2026-10-05 — was '/careers/login', which now itself redirects to /careers.
+        // Pointing straight at /careers avoids a pointless double hop.
+        router.replace('/careers');
       }
     } catch (err) {
       setError('Failed to load profile');
-      router.push('/careers/login');
+      router.replace('/careers');
     } finally {
       setLoading(false);
     }
@@ -110,8 +112,10 @@ export default function CareersProfilePage() {
           {/* Profile Content */}
           {user && !loading && (
             <div className="space-y-6">
-              {/* ID Card with entrance animation */}
+              {/* ID Card with entrance animation. `mb-6` moved here from IdCard's own wrapper so
+                  the same component also works inside the /careers auth column with no stray gap. */}
               <div
+                className="mb-6"
                 style={{
                   opacity: mounted ? 1 : 0,
                   transform: mounted ? 'translateY(0) scale(1)' : 'translateY(16px) scale(0.98)',

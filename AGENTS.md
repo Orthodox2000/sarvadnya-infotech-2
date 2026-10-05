@@ -275,6 +275,26 @@ A **real, site-wide cart** (not the `/demo` scaffold — those two must never me
 - **Fork drift warning:** the fork was created mid-stream, so it is **not** a historical mirror — it only contains commits that existed at fork time plus fast-forwards from this repo. Never assume `new-origin` has history `origin` lacks.
 - **Nested repo unaffected:** `sarvadnya-advanced/` has its **own** origin (`ankit-sarvadnya/advanced-sarvadnya.git`) and is gitignored here (§10) — the fork/migration concerns the frontend repo only unless the owner says otherwise.
 
+### 14. `/careers` — split layout: openings left, sign-in right
+
+Redesigned 2026-10-05 across five rounds. **There is no hero band** — the page is a compact eyebrow + `h1`, then the two-column grid. The layout owner is `app/(site)/careers/careers-client.tsx`.
+
+| Fact | Detail |
+| :--- | :--- |
+| **Split** | `sm:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]` = **openings 60% left, sign-in 40% right**, from **`sm` (640px)** up. Below 640px it is single-column, **sign-in first**. `minmax(0,…)` on both tracks so a long unbroken string cannot push a track past its share (the class of bug that made the desktop navbar paint under the search bar). |
+| **The 640px floor is a usability limit, not a preference** | At 360px a 40% track is 118px → a **78px** email input (you cannot type an email). At 640px: sign-in 224px, email 182px, password room 122px. Do not lower the breakpoint without re-measuring the input width. |
+| **Three explicit grid areas, NO CSS `order`** | Heading `sm:col-start-1 sm:row-start-1`; auth `sm:col-start-2 sm:row-start-1 sm:row-span-2`; openings `sm:col-start-1 sm:row-start-2`. DOM order (heading, auth, openings) == visual order at every breakpoint. `order` would look identical while decoupling visual order from tab/reading order — a WCAG 1.3.2 / 2.4.3 mismatch, worst on the stacked layout where sign-in is the primary control. |
+| **No `items-start` on the grid** | Area 2 must **stretch** to its grid area (rows 1-2) so the inner `sm:sticky sm:top-28` wrapper has a tall containing block. Shrinking it left the sticky nothing to travel inside (measured top 168 → −119, i.e. not pinned at all). |
+| **Kicker stays full-width above the grid** | Moving it inside area 1 pushed the `h1` down while area 2 stayed on row 1 → measured `topDelta = −47` (card 47px *above* the title). Structural alignment (`topDelta = 0` at all 13 widths) beats a magic `mt-[39px]`. Cosmetic `md:py-14` / `md:mb-6` stayed on `md` deliberately. |
+| **"Apply Now" is auth-gated** | Signed out the CTA reads **"Login to apply"** and focuses `#careers-email` (`preventScroll: true`) instead of opening a modal. `loginFocusSignal` is a **counter**, not a boolean, so clicking it twice re-focuses. Signed in it becomes "Apply Now" and opens `JobApplicationModal`. |
+| **Components** | `CareersAuthProvider.tsx` supplies `{ user, isAuthReady, setUser, signOut }` and always renders children. `AuthForms.tsx` — login by default, sign-up as an **in-place expander** (no second route). `OpeningRow.tsx` — slim row + `grid-template-rows: 0fr→1fr` expander, hover touch-gated. `IdCard.tsx` signed-in profile, `ResumeManager.tsx`. **Deleted:** `CareersAuthGate.tsx`, `OpeningCard.tsx`. |
+| **Loading** | While `/api/auth/careers/me` resolves, the auth column renders a **pulse skeleton** with `aria-busy="true"` — not a blocking "Loading…". The openings beside it are already live. |
+| **Routes** | `/careers/login` and `/careers/signup` are **313 B redirect stubs** to `/careers` (kept so old links resolve). `/careers/profile` signed-out redirects to `/careers`. |
+| **Known a11y floor** | The "Create account" mode toggle is `inline-flex min-h-9` → **36×95px**, clearing WCAG 2.2 SC 2.5.8 (24×24). It measured **17px** before that fix. |
+| **Verification** | `/tmp/opencode/verify-careers.cjs` **31/31** (run twice — a check that flips between runs on unchanged code is flaky, find the race, don't re-roll). Probe scripts are throwaway and got wiped once already; the harness lessons are re-encoded in that file's header comment (`headless: 'shell'`, case-insensitive text matching, expected count read from the API, **browser-only** auth stubbing, API readiness polling, `body.style.overflow` as the modal signal). |
+| **Dead code** | `app/components/JobAccordion.tsx` is unreferenced. Left in place. |
+| **Don't break** | Endpoints referencing `/careers` must keep the URL: `Navbar.tsx`, `Footer.tsx`, `product-nav.ts`, `sitemap.ts`, `search/page.tsx`, `api/search/route.ts`, `lib/sara-topics.ts`. |
+
 ## Developer Guidelines
 - **Surgical Updates:** Always prefer targeted `replace` over complete file rewrites for existing files.
 - **Accessibility:** Maintain high contrast ratios and ensure interactive elements have clear focus states.
@@ -286,4 +306,4 @@ A **real, site-wide cart** (not the `/demo` scaffold — those two must never me
 - **Validate Before Completing:** Before marking any task as done, re-read the original user request, re-check every todo item, and verify each requirement is actually satisfied. Requirements get silently dropped during scope — always do a second pass against the original prompt to ensure nothing was missed.
 
 ---
-*Last Updated: 2026-10-03 (SP-3 payments — §12 checkout buyer capture + TSS serials + order status audit trail `created/verified/system`, `refunded/fulfilled/admin`; admin ledger/summary in the nested repo §12)*
+*Last Updated: 2026-10-05 (§14 `/careers` — openings 60% left / sign-in 40% right from `sm` 640px, three grid areas with no CSS `order`, "Login to apply" auth gate; rounds 1-3 superseded by rounds 4-5 for layout)*

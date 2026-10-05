@@ -31,6 +31,13 @@ export default function JobApplicationModal({
   const [error, setError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  // CHANGE: 2026-10-05 — holds the newest `onClose` for the Escape listener at the bottom of
+  // this block. Reading it through a ref is what keeps `onClose` out of that effect's deps.
+  const onCloseRef = useRef(onClose);
+  useEffect(() => {
+    onCloseRef.current = onClose;
+  }, [onClose]);
+
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
@@ -42,6 +49,28 @@ export default function JobApplicationModal({
     return () => {
       document.body.style.overflow = 'unset';
     };
+  }, [isOpen]);
+
+  // CHANGE: 2026-10-05 — added the Escape-to-close listener. WHY: this dialog had a
+  // click-outside backdrop and an X, but no keyboard route out. "Apply Now" is now the primary
+  // action on the redesigned /careers page, and a full-screen `fixed inset-0` overlay that cannot
+  // be dismissed from the keyboard is a WCAG 2.1.2 (No Keyboard Trap) failure for keyboard users.
+  //
+  // This is deliberately a SEPARATE effect from the scroll-lock one above, keyed only on
+  // `isOpen`. Folding it into that effect would put `onClose` in the dependency list — and since
+  // `onClose` is a fresh arrow function on every parent render, the effect would re-run each time
+  // and wipe the form's error/success state mid-entry.
+  useEffect(() => {
+    if (!isOpen) return undefined;
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        e.stopPropagation();
+        onCloseRef.current();
+      }
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
   }, [isOpen]);
 
   useEffect(() => {

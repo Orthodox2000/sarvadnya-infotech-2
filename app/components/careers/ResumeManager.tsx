@@ -8,6 +8,9 @@ interface ResumeManagerProps {
   onUpdate?: (user: any) => void;
 }
 
+// CHANGE: 2026-10-05 — the resume success banner was `emerald-*`, a colour family retired from the
+// brand (AGENTS.md §7, "do not reintroduce" green/emerald/hex greens). Switched to teal so no green
+// survives on the redesigned /careers page, where this component now also appears inline.
 export function ResumeManager({ user, onUpdate }: ResumeManagerProps) {
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -229,7 +232,7 @@ export function ResumeManager({ user, onUpdate }: ResumeManagerProps) {
 
       {/* Success state */}
       {success && (
-        <div className="mb-3 flex items-center gap-2 px-3 py-2 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-semibold animate-in fade-in slide-in-from-top-1 duration-300">
+        <div className="mb-3 flex items-center gap-2 px-3 py-2 rounded-xl bg-[#E5F4F4] border border-[#B8DEDE] text-[#006569] text-xs font-semibold animate-in fade-in slide-in-from-top-1 duration-300">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="14"

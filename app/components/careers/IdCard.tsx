@@ -8,6 +8,9 @@ interface IdCardProps {
   onLogout: () => Promise<void>;
 }
 
+// CHANGE: 2026-10-05 — the outer wrapper's `mb-6` was removed. It assumed IdCard was always the top
+// of a full-width section; inside the new /careers auth column that trailing margin pushed the
+// layout around. The gap is now owned by the call site (careers-client.tsx, profile/page.tsx).
 export function IdCard({ user, onLogout }: IdCardProps) {
   const [loggingOut, setLoggingOut] = useState(false);
   const [mounted, setMounted] = useState(false);
@@ -33,7 +36,7 @@ export function IdCard({ user, onLogout }: IdCardProps) {
 
   return (
     <div
-      className="bg-white/95 backdrop-blur-xl rounded-2xl border border-[#E5F4F4] p-4 md:p-5 shadow-sm mb-6 hover:shadow-lg hover:border-[#006569]/20 transition-all duration-500 relative overflow-hidden group"
+      className="bg-white/95 backdrop-blur-xl rounded-2xl border border-[#E5F4F4] p-4 md:p-5 shadow-sm hover:shadow-lg hover:border-[#006569]/20 transition-all duration-500 relative overflow-hidden group"
       style={{
         opacity: mounted ? 1 : 0,
         transform: mounted ? 'translateY(0) scale(1)' : 'translateY(12px) scale(0.995)',
