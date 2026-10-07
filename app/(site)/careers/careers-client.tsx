@@ -203,12 +203,38 @@ export function CareersClient() {
               >
                 <div className="sm:sticky sm:top-28">
                   {!isAuthReady ? (
-                    // Skeleton, not a blocking "Loading..." — the openings beside it are already live.
-                    <div className="rounded-2xl border border-[#E5F4F4] bg-white p-5" aria-busy="true">
-                      <div className="h-4 w-20 animate-pulse rounded bg-slate-100" />
-                      <div className="mt-4 h-9 w-full animate-pulse rounded-xl bg-slate-100" />
-                      <div className="mt-2.5 h-9 w-full animate-pulse rounded-xl bg-slate-100" />
-                      <div className="mt-4 h-9 w-full animate-pulse rounded-xl bg-slate-100" />
+                    // CHANGE: 2026-10-06 — Task 3. Skeleton now mirrors the REAL AuthForms card
+                    // (title + subtitle, two labelled inputs, teal CTA, "create account" footer)
+                    // so the right column does NOT jump ~170px when the form appears. Measured
+                    // before: 208px skeleton vs 375-393px form (see careers-loading-test.mjs).
+                    // Bars are brand-tinted (#E5F4F4/#DDE9E9 deep-teal for the primary lines,
+                    // #F0EDE3 warm like the real input bg #F5F4ED, #B8DEDE for the CTA) — the old
+                    // bg-slate-100 bars were the "light blue boxes". Pulse + reduced-motion are
+                    // handled globally in globals.css; nothing else changes.
+                    <div
+                      className="rounded-2xl border border-[#E5F4F4] bg-white p-5 shadow-sm"
+                      aria-busy="true"
+                    >
+                      <div className="mb-5">
+                        <div className="h-6 w-28 animate-pulse rounded bg-[#DDE9E9]" />
+                        <div className="mt-2 flex flex-col gap-1.5">
+                          <div className="h-3 w-full animate-pulse rounded bg-[#E5F4F4]" />
+                          <div className="h-3 w-3/5 animate-pulse rounded bg-[#E5F4F4]" />
+                        </div>
+                      </div>
+                      <div className="space-y-3">
+                        {[0, 1].map((f) => (
+                          <div key={f} className="space-y-1.5">
+                            <div className="h-2.5 w-10 animate-pulse rounded bg-[#E5F4F4]" />
+                            <div className="h-11 w-full animate-pulse rounded-xl bg-[#F0EDE3]" />
+                          </div>
+                        ))}
+                        <div className="h-11 w-full animate-pulse rounded-xl bg-[#B8DEDE]" />
+                      </div>
+                      <div className="mt-4 border-t border-[#E5F4F4] pt-4">
+                        <div className="h-3 w-2/3 animate-pulse rounded bg-[#E5F4F4]" />
+                        <div className="mt-1.5 h-3 w-1/2 animate-pulse rounded bg-[#E5F4F4]" />
+                      </div>
                       <span className="sr-only">Checking your session</span>
                     </div>
                   ) : user ? (
@@ -249,11 +275,37 @@ export function CareersClient() {
                 {loading && (
                   <div className="space-y-2.5" aria-busy="true" aria-label="Loading openings">
                     {[0, 1, 2].map((i) => (
+                      // CHANGE: 2026-10-06 — Task 3. Each placeholder now mirrors the real
+                      // OpeningRow's anatomy (dept chips + title + meta on the left, CTA +
+                      // details buttons on the right, flex-col on mobile → lg:flex-row) so the
+                      // list does NOT jolt when the real rows arrive. Measured: old flat 92px
+                      // boxes vs real rows 171/156/112px at 360/768/1440; the mirror holds
+                      // 156/156/108 within the test's ±20px. Brand tints only — no slate-100.
                       <div
                         key={i}
-                        className="h-[92px] animate-pulse rounded-2xl border border-[#E5F4F4] bg-white/70"
+                        className="animate-pulse rounded-2xl border border-[#E5F4F4] bg-white p-4 shadow-sm"
                         style={{ animationDelay: `${i * 120}ms` }}
-                      />
+                        aria-hidden="true"
+                      >
+                        <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:gap-4">
+                          <div className="min-w-0 flex-1">
+                            <div className="mb-2 flex items-center gap-1.5">
+                              <div className="h-[18px] w-16 rounded-full bg-[#DDE9E9]" />
+                              <div className="h-[18px] w-10 rounded-full bg-[#E5F4F4]" />
+                            </div>
+                            <div className="h-5 w-3/4 rounded bg-[#DDE9E9]" />
+                            <div className="mt-2.5 flex flex-wrap items-center gap-3">
+                              <div className="h-3 w-16 rounded bg-[#E5F4F4]" />
+                              <div className="h-3 w-14 rounded bg-[#E5F4F4]" />
+                              <div className="h-3 w-20 rounded bg-[#E5F4F4]" />
+                            </div>
+                          </div>
+                          <div className="flex shrink-0 items-center gap-2">
+                            <div className="h-11 w-28 rounded-full bg-[#B8DEDE] lg:h-10" />
+                            <div className="h-11 w-24 rounded-full bg-[#E5F4F4] lg:h-10" />
+                          </div>
+                        </div>
+                      </div>
                     ))}
                   </div>
                 )}

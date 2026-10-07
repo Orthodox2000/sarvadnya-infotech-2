@@ -15,10 +15,10 @@
     "test:sara-local": "node scripts/sara-topics-test.mjs",
     "check:demo": "node scripts/check-demo-independence.mjs",
     "test:security-surface": "node scripts/frontend-admin-surface-test.mjs",
+    "test:careers-loading": "node scripts/careers-loading-test.mjs",
     "test:demo": "node scripts/demo-cart-test.mjs",
     "test:demo-gateway": "node scripts/demo-razorpay-test.mjs",
     "log:excel-append": "node scripts/excel-log-append.mjs",
-    "test:demo-guard": "node scripts/check-demo-independence-test.mjs",
     "test:demo-guard": "node scripts/check-demo-independence-test.mjs",
     "test:all": "node scripts/check-demo-independence.mjs && node scripts/demo-cart-test.mjs && node scripts/demo-razorpay-test.mjs && node scripts/api-test.mjs && node scripts/sara-test.mjs && node scripts/sara-topics-test.mjs && node scripts/cart-test.mjs && node scripts/order-status-test.mjs",
     "test:email": "node scripts/email-test.mjs",
@@ -60,7 +60,7 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "dotenv": "^17.4.2",
-    "puppeteer": "^25.1.0",
+    "puppeteer": "^25.2.1",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

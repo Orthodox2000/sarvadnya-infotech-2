@@ -74,12 +74,12 @@
 
 **Files:** `app/(site)/careers/careers-client.tsx` (skeleton blocks ~L206-254 + `mounted` opacity gating), `app/components/careers/AuthForms.tsx` + `OpeningRow.tsx` (shapes to mirror), `scripts/careers-loading-test.mjs` (new, committed).
 
-- [ ] Read `systematic-debugging` skill. Reproduce first: Puppeteer with request interception **holding** `/api/auth/careers/me` and `/api/careers/visible` until released; capture frames + screenshots at 360/768/1440; identify exactly what "flashes light blue boxes" is (`bg-slate-100` #f1f5f9 auth bars? unstyled pre-hydration paint? opacity-gate fade?). Record root cause in ledger with evidence before fixing.
-- [ ] **RED:** `scripts/careers-loading-test.mjs` asserts while calls are held: (a) skeleton elements present with `aria-busy`; (b) openings placeholders are **row-shaped** (≥3 child placeholders per row, heights within ~20px of final `OpeningRow` measured after release); (c) auth card placeholders shaped like the form (title + 2 field-height boxes + button-height box); (d) after release, final content row heights ≈ skeleton heights (no big layout jump). Run → **fails** on current code.
-- [ ] Fix: rebuild both skeletons to mirror final layout dims using brand-neutral tint (teal-family light `#E5F4F4`/`#F1F5F9` decision after repro screenshots — owner dislikes "light blue boxes"), remove/reduce the `mounted` opacity flash if repro shows it as the cause, keep visibility-aware pause + reduced-motion behavior intact.
-- [ ] **GREEN:** loading test passes at 360/768/1440; screenshots saved for owner review; normal (unthrottled) load shows no flash (manual Puppeteer frame sweep).
-- [ ] Gates: `npm run typecheck`, `npm run check:demo`, 360px no horizontal overflow, hydration errors = 0.
-- [ ] **Commit:** `fix: careers page content-shaped loading skeletons (no light-blue flash)`
+- [x] Read `systematic-debugging` skill. Reproduce first: Puppeteer with request interception **holding** `/api/auth/careers/me` and `/api/careers/visible` until released; capture frames + screenshots at 360/768/1440; identify exactly what "flashes light blue boxes" is (`bg-slate-100` #f1f5f9 auth bars? unstyled pre-hydration paint? opacity-gate fade?). Record root cause in ledger with evidence before fixing.
+- [x] **RED:** `scripts/careers-loading-test.mjs` asserts while calls are held: (a) skeleton elements present with `aria-busy`; (b) openings placeholders are **row-shaped** (≥3 child placeholders per row, heights within ~20px of final `OpeningRow` measured after release); (c) auth card placeholders shaped like the form (title + 2 field-height boxes + button-height box); (d) after release, final content row heights ≈ skeleton heights (no big layout jump). Run → **fails** on current code.
+- [x] Fix: rebuild both skeletons to mirror final layout dims using brand-neutral tint (teal-family light `#E5F4F4`/`#F1F5F9` decision after repro screenshots — owner dislikes "light blue boxes"), remove/reduce the `mounted` opacity flash if repro shows it as the cause, keep visibility-aware pause + reduced-motion behavior intact.
+- [x] **GREEN:** loading test passes at 360/768/1440; screenshots saved for owner review; normal (unthrottled) load shows no flash (manual Puppeteer frame sweep).
+- [x] Gates: `npm run typecheck`, `npm run check:demo`, 360px no horizontal overflow, hydration errors = 0.
+- [x] **Commit:** `fix: careers page content-shaped loading skeletons (no light-blue flash)`
 
 **Expected:** deterministic test holds the API calls and shows proper shaped skeletons; released swap has no layout jump; zero hydration errors.
 
