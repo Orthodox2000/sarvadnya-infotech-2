@@ -9,6 +9,7 @@ import { useCart } from '@/lib/cart/store';
 import { priceRowView, type PriceRowView } from '@/lib/prices';
 import BuyNowButton from '../../../components/cart/BuyNowButton';
 import CartAddButton from '../../../components/cart/CartAddButton';
+import SeoCrossLinks from '../../../components/SeoCrossLinks';
 
 // CHANGE: 2026-09-16 — consistent bg-slate-100 background and silver-page style/token cleanup.
 // CHANGE: 2026-10-02 — pricing rows are now DB-driven (SP-1 cart build). WHY: rows were
@@ -685,6 +686,20 @@ export default function TallyGoldPage() {
                 </button>
               </div>
             </div>
+
+            {/* CHANGE: 2026-10-07 — Task 5 (SEO): internal cross-links to /news
+                articles + sibling commercial pages, so the priced page reinforces
+                the news hub and the other product/service hubs. */}
+            <SeoCrossLinks
+              newsLinks={[
+                { href: '/news/tally-hrms-software', label: 'Tally HRMS: payroll, attendance and leave for SMBs' },
+                { href: '/news/tally-erp9-add-ons', label: '8 Tally ERP 9 add-ons that save hours for Indian businesses' },
+              ]}
+              exploreLinks={[
+                { href: '/products/silver', label: 'TallyPrime Silver (trade & accounting)' },
+                { href: '/services/tss', label: 'TSS renewal services' },
+              ]}
+            />
 
           </div>
 

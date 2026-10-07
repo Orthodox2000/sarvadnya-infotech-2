@@ -10,6 +10,7 @@ import { useCart } from '@/lib/cart/store';
 import { formatRupeesPlain } from '@/lib/prices';
 import BuyNowButton from '../../../components/cart/BuyNowButton';
 import CartAddButton from '../../../components/cart/CartAddButton';
+import SeoCrossLinks from '../../../components/SeoCrossLinks';
 
 // CHANGE: 2026-09-16 — consistent bg-slate-100 background and silver-page style/token cleanup.
 // CHANGE: 2026-10-02 — the "Extra Storage" row is now DB-driven (SP-1 cart build): its
@@ -690,6 +691,20 @@ export default function TallyDrivePage() {
                 </button>
               </div>
             </div>
+
+            {/* CHANGE: 2026-10-07 — Task 5 (SEO): internal cross-links to /news
+                articles + sibling commercial pages, so the priced page reinforces
+                the news hub and the other product/service hubs. */}
+            <SeoCrossLinks
+              newsLinks={[
+                { href: '/news/tallydrive-cloud-backup', label: 'TallyDrive cloud backup: why your business needs it' },
+                { href: '/news/tally-cloud-access', label: 'Tally Cloud Access: work on your Tally from anywhere, securely' },
+              ]}
+              exploreLinks={[
+                { href: '/products/silver', label: 'TallyPrime Silver (trade & accounting)' },
+                { href: '/services/tss', label: 'TSS renewal services' },
+              ]}
+            />
 
           </div>
 

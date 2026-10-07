@@ -20,7 +20,7 @@
     "test:demo-gateway": "node scripts/demo-razorpay-test.mjs",
     "log:excel-append": "node scripts/excel-log-append.mjs",
     "test:demo-guard": "node scripts/check-demo-independence-test.mjs",
-    "test:all": "node scripts/check-demo-independence.mjs && node scripts/demo-cart-test.mjs && node scripts/demo-razorpay-test.mjs && node scripts/api-test.mjs && node scripts/sara-test.mjs && node scripts/sara-topics-test.mjs && node scripts/cart-test.mjs && node scripts/order-status-test.mjs",
+    "test:all": "node scripts/check-demo-independence.mjs && node scripts/demo-cart-test.mjs && node scripts/demo-razorpay-test.mjs && node scripts/api-test.mjs && node scripts/sara-test.mjs && node scripts/sara-topics-test.mjs && node scripts/cart-test.mjs && node scripts/order-status-test.mjs && node scripts/seo-links-test.mjs",
     "test:email": "node scripts/email-test.mjs",
     "test:cart": "node scripts/cart-test.mjs",
     "test:order-status": "node scripts/order-status-test.mjs",
@@ -31,7 +31,8 @@
     "audit": "npm audit --audit-level=high",
     "audit:deps": "npm audit --json",
     "security:check": "node scripts/security-audit.mjs",
-    "security:audit": "node scripts/security-audit.mjs && npm audit --audit-level=high"
+    "security:audit": "node scripts/security-audit.mjs && npm audit --audit-level=high",
+    "test:seo": "node scripts/seo-links-test.mjs"
   },
   "dependencies": {
     "@vercel/analytics": "^2.0.1",

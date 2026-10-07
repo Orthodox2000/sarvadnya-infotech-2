@@ -88,6 +88,32 @@ export default async function NewsPage() {
             <p className="text-slate-400 font-bold uppercase tracking-widest text-xs">No news items found.</p>
           </div>
         )}
+
+        {/* CHANGE: 2026-10-07 — Task 5 (SEO): the news hub links BACK to the
+            commercial hubs it serves, closing the internal-link loop (articles
+            reference Silver/Gold/TallyDrive/TSS topics). */}
+        <div className="mt-12 rounded-2xl border border-[#D4EAEA] bg-[#E5F4F4]/40 p-6 flex flex-col sm:flex-row sm:items-center gap-4 justify-between">
+          <div>
+            <h3 className="text-xs font-black uppercase tracking-widest text-[#006569] mb-1">
+              Explore our Tally software & services
+            </h3>
+            <p className="text-sm text-slate-600">Guides and articles cover these products — learn more about each one.</p>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            <Link href="/products/silver" className="px-4 py-2 rounded-xl bg-white border border-[#D4EAEA] text-xs font-black uppercase tracking-widest text-[#006569] hover:bg-teal-50 transition-all">
+              TallyPrime Silver
+            </Link>
+            <Link href="/products/gold" className="px-4 py-2 rounded-xl bg-white border border-[#D4EAEA] text-xs font-black uppercase tracking-widest text-[#006569] hover:bg-teal-50 transition-all">
+              TallyPrime Gold
+            </Link>
+            <Link href="/products/tallydrive" className="px-4 py-2 rounded-xl bg-white border border-[#D4EAEA] text-xs font-black uppercase tracking-widest text-[#006569] hover:bg-teal-50 transition-all">
+              TallyDrive
+            </Link>
+            <Link href="/services/tss" className="px-4 py-2 rounded-xl bg-white border border-[#D4EAEA] text-xs font-black uppercase tracking-widest text-[#006569] hover:bg-teal-50 transition-all">
+              TSS Renewal
+            </Link>
+          </div>
+        </div>
       </div>
     </div>
   );

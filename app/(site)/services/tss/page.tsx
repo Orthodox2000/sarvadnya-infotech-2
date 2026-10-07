@@ -8,6 +8,7 @@ import TssRenewalForm from '../../../components/TssRenewalForm';
 import { useCart } from '@/lib/cart/store';
 import { priceRowView, type PriceRowView } from '@/lib/prices';
 import CartAddButton from '../../../components/cart/CartAddButton';
+import SeoCrossLinks from '../../../components/SeoCrossLinks';
 
 // CHANGE: 2026-10-02 — DB-driven pricing (SP-1 cart build). WHY: the six TSS plans were
 // static strings in JSX; they now derive from the live prices collection (with the
@@ -284,6 +285,22 @@ export default function TSSPage() {
           <TssRenewalForm variant="inline" source="tss-page" />
         </div>
       </section>
+
+      {/* CHANGE: 2026-10-07 — Task 5 (SEO): internal cross-links to /news
+          articles + sibling commercial pages, so the TSS page reinforces the
+          news hub and the other product/service hubs. */}
+      <div className="max-w-7xl mx-auto px-6">
+        <SeoCrossLinks
+          newsLinks={[
+            { href: '/news/tally-tss-renewal-2026', label: 'TSS renewal 2026: pricing changes and how to prepare' },
+            { href: '/news/tally-tss-expiry-meaning', label: "TSS expiry: what 'TSS Expired' means on your licence" },
+          ]}
+          exploreLinks={[
+            { href: '/products/tallydrive', label: 'TallyDrive cloud backup' },
+            { href: '/products/gold', label: 'TallyPrime Gold (advanced, multi-user)' },
+          ]}
+        />
+      </div>
 
       {/* Contact CTA */}
       <section className="bg-[#045A57] py-10 px-6">
