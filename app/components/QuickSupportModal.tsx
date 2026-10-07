@@ -3,8 +3,35 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import SaraText from './SaraText';
+import { useVisitor } from './VisitorProvider';
 import { findMatchingTutorials, type Tutorial } from '@/lib/tutorial-matcher';
 import { matchTopic, getFallbackResponse, SARA_WELCOME, type Topic } from '@/lib/sara-topics';
+
+// CHANGE: 2026-10-07 — In-chat lead capture (owner-approved design: "conversational
+// questions + user-confirm card, NOT autonomous LLM submit"). The consultant asks
+// name → email → phone IN the chat (canned questions typed like the AI), then a
+// confirm card shows exactly what will be shared; only the user's "share" press
+// POSTs to /api/email/submit with destination 'ask-sara' + a fresh requestId per
+// modal open (server jobKey dedupe = exactly-once email). SAFETY: 'ask-sara' has
+// NO recipient configured yet (admin opt-in per destination), so chat leads SAVE
+// to the DB but email NOBODY until the owner adds one in the admin panel — and
+// the submit route ignore-gates localhost/LAN and rate-limits per IP.
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+// Lead-intent trigger for the "want a personalised quote?" offer card.
+const LEAD_INTENT_RE = /quote|pric|cost|buy|purchas|order|book|demo|trial|enquir|reach|consult|talk to|speak to|share (my |your )?detail|best (fit|option)/i;
+
+type CaptureStage = 'idle' | 'ask-name' | 'ask-email' | 'ask-phone' | 'confirm' | 'done';
+
+interface CaptureState {
+  stage: CaptureStage;
+  name: string;
+  email: string;
+  phone: string;
+  service: string;
+  submitting: boolean;
+}
+
+const CAPTURE_IDLE: CaptureState = { stage: 'idle', name: '', email: '', phone: '', service: '', submitting: false };
 
 interface Message {
   id: string;
@@ -13,6 +40,7 @@ interface Message {
   sender: 'ai' | 'user';
   timestamp: Date;
   showContact?: boolean;
+  showLeadOffer?: boolean;
   showAudioPrompt?: boolean;
   followUp?: Topic[];
   suggestedTutorials?: Tutorial[];
@@ -50,6 +78,13 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
   const stopRequestedRef = useRef(false);
   const abortControllerRef = useRef<AbortController | null>(null);
   const recognitionRef = useRef<any>(null);
+
+  // CHANGE: 2026-10-07 — lead-capture state; sessionId ties the lead to its
+  // visitor record (VisitorProvider wraps the whole (site) layout).
+  const { sessionId } = useVisitor();
+  const [capture, setCapture] = useState<CaptureState>(CAPTURE_IDLE);
+  const leadRequestIdRef = useRef<string>('');
+  const lastTopicRef = useRef<string>('');
 
   /**
    * VOICE INPUT ENGINE
@@ -198,7 +233,20 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
   useEffect(() => {
     if (isOpen) {
       setTimeout(() => inputRef.current?.focus(), 100);
+      // CHANGE: 2026-10-07 — fresh idempotency key per open (mirrors
+      // UnifiedContactModal): a retried POST re-uses it server-side (jobKey
+      // claim), so the same modal session can never fire a second lead email.
+      leadRequestIdRef.current =
+        typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function'
+          ? crypto.randomUUID()
+          : `req-${Date.now()}-${Math.random().toString(36).slice(2)}`;
     }
+  }, [isOpen]);
+
+  // CHANGE: 2026-10-07 — reset the capture state machine when the chat closes;
+  // a new open starts clean (server dedupe still holds via the new requestId).
+  useEffect(() => {
+    if (!isOpen) setCapture(CAPTURE_IDLE);
   }, [isOpen]);
 
   const typeMessage = async (fullText: string, userQuery?: string) => {
@@ -248,6 +296,10 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
     if (window.matchMedia('(hover: hover)').matches) {
       inputRef.current?.focus();
     }
+
+    // CHANGE: 2026-10-07 — return the message id so callers can attach the
+    // lead-offer card to the message that just finished typing.
+    return id;
   };
 
   const handleStop = () => {
@@ -309,18 +361,23 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
         ? data.message.replace(/<think>[\s\S]*?<\/think>/g, '').replace(/<\/?think[^>]*>/g, '').trim()
         : '';
       if (clean && clean.length > 5) {
-        await typeMessage(clean, text);
+        const aiId = await typeMessage(clean, text);
+        attachLeadOfferIfRelevant(aiId, text);
       } else {
         const result = matchTopic(text);
-        await typeMessage(result ? result.topic.answer : getFallbackResponse(text), text);
+        if (result) lastTopicRef.current = result.topic.label;
+        const aiId = await typeMessage(result ? result.topic.answer : getFallbackResponse(text), text);
         if (result) setMessages(prev => prev.map(m => m.text === result.topic.answer ? { ...m, followUp: result.topic.followUp } : m));
+        attachLeadOfferIfRelevant(aiId, text);
       }
     } catch (err: any) {
       setIsTyping(false);
       if (err.name === 'AbortError') return;
       const result = matchTopic(text);
-      await typeMessage(result ? result.topic.answer : getFallbackResponse(text), text);
+      if (result) lastTopicRef.current = result.topic.label;
+      const aiId = await typeMessage(result ? result.topic.answer : getFallbackResponse(text), text);
       if (result) setMessages(prev => prev.map(m => m.text === result.topic.answer ? { ...m, followUp: result.topic.followUp } : m));
+      attachLeadOfferIfRelevant(aiId, text);
     } finally {
       abortControllerRef.current = null;
     }
@@ -351,6 +408,112 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
     setMessages(prev => prev.map(m => m.text === topic.answer ? { ...m, followUp: topic.followUp } : m));
   };
 
+  // ---------- Lead capture (conversational) ----------
+  // CHANGE: 2026-10-07 — see the header comment. Canned questions are typed like
+  // the AI, answers come through the SAME input; nothing is sent until the user
+  // presses "Looks good — share" on the confirm card.
+
+  // Attaches the "want a personalised quote?" offer card to a finished AI reply
+  // when the user showed lead intent and no capture is active/submitted.
+  const attachLeadOfferIfRelevant = (aiMessageId?: string, userQuery?: string) => {
+    if (!aiMessageId || !userQuery) return;
+    if (capture.stage !== 'idle' || capture.submitting) return;
+    if (!LEAD_INTENT_RE.test(userQuery)) return;
+    setMessages(prev => prev.map(m => m.id === aiMessageId && m.sender === 'ai' ? { ...m, showLeadOffer: true } : m));
+  };
+
+  const startLeadCapture = () => {
+    if (capture.submitting || isTyping || isAiResponding) return;
+    setCapture(c => ({ ...c, stage: 'ask-name' }));
+    void typeMessage('Happy to help with that! May I know your name?');
+  };
+
+  const handleCaptureAnswer = async (raw: string) => {
+    const text = raw.trim();
+    if (capture.stage === 'ask-name') {
+      if (text.length < 2) {
+        await typeMessage("Sorry — I didn't catch that. Could I get your name? (A couple of letters is fine!)");
+        return;
+      }
+      setCapture(c => ({ ...c, name: text, stage: 'ask-email' }));
+      await typeMessage(`Lovely, ${text.split(' ')[0]}! And your best email address — that's where the quote or reply lands.`);
+      return;
+    }
+    if (capture.stage === 'ask-email') {
+      if (!EMAIL_RE.test(text)) {
+        await typeMessage("That email doesn't look quite right — mind sharing it again?");
+        return;
+      }
+      setCapture(c => ({ ...c, email: text.toLowerCase(), stage: 'ask-phone' }));
+      await typeMessage('Perfect. One last thing — your mobile or WhatsApp number (with country code if outside India) so our consultant can reach you:');
+      return;
+    }
+    if (capture.stage === 'ask-phone') {
+      const digits = text.replace(/\D/g, '');
+      if (digits.length < 7 || digits.length > 15) {
+        await typeMessage('Hmm, that number looks a bit off. Mind sharing the digits again, e.g. 98213 09060?');
+        return;
+      }
+      setCapture(c => ({ ...c, phone: text, stage: 'confirm', service: c.service || lastTopicRef.current || 'General enquiry' }));
+      return;
+    }
+  };
+
+  // Back to the first question so every field can be corrected conversationally.
+  const editLead = () => {
+    if (capture.submitting) return;
+    setCapture(c => ({ ...c, name: '', email: '', phone: '', stage: 'ask-name' }));
+    void typeMessage("Sure — let's get it right. What's your name?");
+  };
+
+  // The ONLY thing that ever sends the lead — a deliberate user confirmation.
+  const submitLead = async () => {
+    if (capture.submitting) return;
+    setCapture(c => ({ ...c, submitting: true }));
+    try {
+      let utmParams: Record<string, string> | undefined;
+      if (typeof window !== 'undefined') {
+        const urlParams = new URLSearchParams(window.location.search);
+        const utm: Record<string, string> = {};
+        if (urlParams.get('utm_source')) utm.source = String(urlParams.get('utm_source'));
+        if (urlParams.get('utm_medium')) utm.medium = String(urlParams.get('utm_medium'));
+        if (urlParams.get('utm_campaign')) utm.campaign = String(urlParams.get('utm_campaign'));
+        if (urlParams.get('utm_term')) utm.term = String(urlParams.get('utm_term'));
+        if (urlParams.get('utm_content')) utm.content = String(urlParams.get('utm_content'));
+        if (Object.keys(utm).length > 0) utmParams = utm;
+      }
+      const res = await fetch('/api/email/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: capture.name,
+          email: capture.email,
+          contact: capture.phone,
+          service: capture.service || 'General enquiry',
+          description: `Details shared through the Ask Sara chat assistant${lastTopicRef.current ? ` — context: "${lastTopicRef.current}"` : ''}.`,
+          formType: 'general',
+          destination: 'ask-sara',
+          requestId: leadRequestIdRef.current,
+          ...(sessionId ? { sessionId } : {}),
+          ...(utmParams ? { utmParams } : {}),
+        }),
+      });
+      const data = await res.json().catch(() => ({}));
+      // 2xx = accepted. Note the server ignore-gates localhost/LAN and the
+      // 'ask-sara' recipient is opt-in, so "ok" may legitimately be saved-less
+      // on a local test run — that is the designed safety, not a failure.
+      if (!res.ok && !data.deduped) {
+        throw new Error(data.error || `HTTP ${res.status}`);
+      }
+      setCapture(c => ({ ...c, stage: 'done', submitting: false }));
+      const first = (capture.name || '').trim().split(' ')[0];
+      await typeMessage(`Thanks ${first || 'there'}! Our team has your details and will reach out shortly. Keep asking me anything in the meantime — I'm here 24/7.`);
+    } catch {
+      setCapture(c => ({ ...c, submitting: false }));
+      await typeMessage('Sorry — that did not go through. No stress: press "Looks good — share" again and we will retry.');
+    }
+  };
+
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!inputText.trim() || isTyping || isAiResponding) return;
@@ -371,6 +534,14 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
     }
 
     setInputText('');
+    // CHANGE: 2026-10-07 — during the lead-capture Q&A the SAME input answers
+    // the consultant's questions conversationally (no AI API call, and nothing
+    // is sent until the confirm card).
+    if (capture.stage === 'ask-name' || capture.stage === 'ask-email' || capture.stage === 'ask-phone') {
+      setMessages(prev => [...prev, { id: Date.now().toString(), text: userText, sender: 'user', timestamp: new Date() }]);
+      await handleCaptureAnswer(userText);
+      return;
+    }
     await processChatMessage(userText);
   };
 
@@ -571,6 +742,23 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
                   </div>
                 </div>
               )}
+
+              {/* Lead offer card — appears after a lead-intent reply, only when
+                  no capture flow is already active or completed this session. */}
+              {msg.sender === 'ai' && msg.showLeadOffer && capture.stage === 'idle' && !capture.submitting && (
+                <div className="mt-2 ml-2 max-w-[85%] rounded-2xl border border-[#006569]/15 bg-teal-50/60 p-3 animate-in fade-in duration-300">
+                  <p className="text-[10px] font-bold text-[#006569]">Want a personalised quote?</p>
+                  <p className="mt-0.5 text-[9px] text-slate-500 font-medium leading-snug">
+                    Share a few details and our team will reach out with the best fit for your business.
+                  </p>
+                  <button
+                    onClick={startLeadCapture}
+                    className="mt-2 w-full h-8 rounded-lg bg-[#006569] text-white text-[9px] font-black uppercase tracking-wide hover:bg-[#045A57] transition-all active:scale-95"
+                  >
+                    Share your details
+                  </button>
+                </div>
+              )}
             </div>
           ))}
           {(isTyping || isAiResponding) && (
@@ -582,6 +770,51 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
               </div>
             </div>
           )}
+
+          {/* Lead confirm card — rendered in-stream, ONLY after the user has been
+              asked for and given name/email/phone. Nothing is sent until here. */}
+          {capture.stage === 'confirm' && (
+            <div className="animate-in fade-in slide-in-from-bottom-2 duration-300 bg-white border border-teal-100 rounded-2xl p-4 shadow-sm">
+              <p className="text-[10px] font-black text-[#006569] uppercase tracking-widest mb-2">Share with our team?</p>
+              <dl className="space-y-1 text-[11px]">
+                <div className="flex justify-between gap-3">
+                  <dt className="text-slate-400 font-semibold shrink-0">Name</dt>
+                  <dd className="font-bold text-slate-800 truncate">{capture.name}</dd>
+                </div>
+                <div className="flex justify-between gap-3">
+                  <dt className="text-slate-400 font-semibold shrink-0">Email</dt>
+                  <dd className="font-bold text-slate-800 truncate">{capture.email}</dd>
+                </div>
+                <div className="flex justify-between gap-3">
+                  <dt className="text-slate-400 font-semibold shrink-0">Phone</dt>
+                  <dd className="font-bold text-slate-800">{capture.phone}</dd>
+                </div>
+                <div className="flex justify-between gap-3">
+                  <dt className="text-slate-400 font-semibold shrink-0">Regarding</dt>
+                  <dd className="font-bold text-slate-800 truncate">{capture.service}</dd>
+                </div>
+              </dl>
+              <p className="mt-2 text-[9px] text-slate-400 font-medium leading-snug">
+                Only our team sees these details — we will reach out on the number or email above.
+              </p>
+              <div className="mt-3 flex gap-2">
+                <button
+                  onClick={submitLead}
+                  disabled={capture.submitting}
+                  className="flex-1 h-9 rounded-xl bg-[#006569] text-white text-[10px] font-black uppercase tracking-wide hover:bg-[#045A57] disabled:opacity-50 transition-all active:scale-95"
+                >
+                  {capture.submitting ? 'Sending…' : 'Looks good — share'}
+                </button>
+                <button
+                  onClick={editLead}
+                  disabled={capture.submitting}
+                  className="px-3 h-9 rounded-xl border border-slate-200 text-slate-500 text-[10px] font-bold uppercase tracking-wide hover:bg-slate-50 disabled:opacity-50 transition-all"
+                >
+                  Edit
+                </button>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Input Area */}
@@ -590,7 +823,7 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
             <input 
               ref={inputRef}
               type="text"
-              placeholder={isAiResponding ? "Sara is responding... (click ■ to stop)" : "Type your message..."}
+              placeholder={isAiResponding ? "Sara is responding... (click ■ to stop)" : capture.stage === 'ask-name' ? "Your name..." : capture.stage === 'ask-email' ? "Your email address..." : capture.stage === 'ask-phone' ? "Your mobile / WhatsApp number..." : "Type your message..."}
               className="flex-1 bg-slate-50 border border-slate-100 rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-[#006569]/10 focus:border-[#006569] transition-all"
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
@@ -640,7 +873,7 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
             )}
           </form>
           <p className="mt-3 text-center text-[9px] text-slate-400 font-bold uppercase tracking-widest">
-            Sara • Sales Consultant
+            Sara • AI Consultant
           </p>
         </div>
 
