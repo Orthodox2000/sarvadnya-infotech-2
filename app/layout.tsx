@@ -40,7 +40,7 @@ export const metadata: Metadata = {
   description: SITE_DESCRIPTION,
   keywords: [
     'Sarvadnya Infotech', 'Tally partner', 'TallyPrime', 'Tally on Cloud', 'Tally AMC',
-    'Tally on WhatsApp', 'TallyDrive', 'Tally backup', 'Tally TDL', 'Tally training Pune',
+    'Tally on WhatsApp', 'TallyDrive', 'Tally backup', 'Tally TDL', // CHANGE: 2026-10-07 — "Tally training Pune" removed per owner (address is Mumbai, not Pune).
   ],
   icons: { icon: '/logo.png' },
   alternates: { canonical: SITE_URL },
