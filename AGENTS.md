@@ -159,6 +159,13 @@ The site loads the client's Zoho SalesIQ widget script **for visitor tracking/an
 
 **⚠️ `proxy.ts` is a dormant admin guard in THIS repo — read before any Next.js 16 upgrade.** This repo's `proxy.ts` is **byte-identical** to the nested repo's (`md5 11cfb425…`): a full admin guard with `x-admin-key` / `admin_key` / `__admin_token` checks and `pathname.startsWith('/admin') || pathname.startsWith('/api/admin')`. It is inert **only** because installed Next is **15.5.19**, which defines `MIDDLEWARE_FILENAME` and has no `PROXY_FILENAME` constant at all (re-verified 2026-10-02: 166 vs **0** references), so Next 15 never reads the file. What actually runs is `middleware.ts` (legacy WordPress-redirect + CORS, **no** admin logic). But **`proxy.ts` is the Next.js 16 name for `middleware.ts`** — upgrading to Next 16 would activate an admin guard in the **public frontend** deployment, in a repo whose admin panel was deliberately removed. Delete or re-scope this repo's `proxy.ts` before any Next 16 upgrade.
 
+**2026-10-06 (SP-4 security hardening):**
+- **Two stray unauthenticated admin routes were DELETED from this repo** — commit `1112177` added `app/api/admin/careers/users` (candidate PII list) and `app/api/admin/careers/[id]/visibility` (job-visibility write) here, where they shipped live with **zero auth** (probed 200 bare; `proxy.ts` dormant). They now exist only in `sarvadnya-advanced` behind its middleware guard (SP-4 Task 2/4).
+- **`middleware.ts` now carries a segment-exact admin 404 block** (`isAdminPath()` → 404 for `/admin` + `/api/admin`, exact segment so `/administrator`-style paths pass) as defense-in-depth: any future stray admin route on this deployment must 404, not ship open. 404 (not 401) so the surface looks absent.
+- **`/api/careers/list` no longer leaks hidden jobs** — both `find()` calls filter `visible: { $ne: false }` (parity with `/api/careers/visible`).
+- **`scripts/security-audit.mjs` no longer trusts `proxy.ts`** — its "Middleware & Auth" section reads the live `middleware.ts` (the old checks passed on a dormant file, which is how the leak shipped); dormant-proxy rate-limit/Content-Type content is reported as ⚠️ warnings, never ✅.
+- Guard test: `npm run test:security-surface` (`scripts/frontend-admin-surface-test.mjs`) — fails if any of the above regresses.
+
 **Why `tsconfig.json` excludes it — the `@/` alias trap.** `include` is recursive from this root (`"**/*.ts"`, `"**/*.tsx"`, `"**/*.mts"` …), so a nested `.tsx` is pulled into `npm run typecheck`. Measured before/after the `exclude` entry:
 
 | Metric | Without `exclude` | With `exclude` |

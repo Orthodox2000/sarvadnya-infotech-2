@@ -70,13 +70,36 @@ if (existsSync(configPath)) {
 
 // ─── 4. Middleware Check ───────────────────────────────────────
 results.push('\n🛡️  Middleware & Auth');
+// CHANGE: 2026-10-06 (SP-4) — these checks used to read proxy.ts and PASSED while that
+// file was dormant (Next 15.5 reads middleware.ts only, AGENTS §10). That false "green"
+// is how two unauthenticated admin routes shipped. Assert what actually runs instead.
+const mwPath = resolve(root, 'middleware.ts');
+if (existsSync(mwPath)) {
+  const mwLive = readFileSync(mwPath, 'utf-8');
+  check(
+    'middleware.ts blocks /admin + /api/admin (segment-exact)',
+    /pathname === '\/admin'/.test(mwLive) &&
+      /pathname\.startsWith\('\/admin\/'\)/.test(mwLive) &&
+      /pathname === '\/api\/admin'/.test(mwLive) &&
+      /pathname\.startsWith\('\/api\/admin\/'\)/.test(mwLive)
+  );
+  check(
+    'admin block answers 404 (surface looks absent, not protected)',
+    /isAdminPath\(pathname\)[\s\S]{0,300}404/.test(mwLive)
+  );
+} else {
+  check('middleware.ts exists (the live guard on Next 15)', false);
+}
 const proxyPath = resolve(root, 'proxy.ts');
-check('proxy.ts exists', existsSync(proxyPath));
 if (existsSync(proxyPath)) {
+  warn('proxy.ts exists but is DORMANT on Next 15.5 — middleware.ts is the live guard; never count proxy.ts as protection');
   const proxy = readFileSync(proxyPath, 'utf-8');
-  check('Rate limiting in proxy.ts', /rateLimitMap/.test(proxy));
-  check('Admin route protection in proxy.ts', /admin/.test(proxy));
-  check('Content-Type validation in proxy.ts', /content-type/i.test(proxy));
+  warn(/rateLimitMap/.test(proxy)
+    ? 'Rate limiting lives only in dormant proxy.ts — public write routes carry their own per-IP limits; do not assume a global limiter'
+    : 'No rate limiting found in proxy.ts either');
+  warn(/content-type/i.test(proxy)
+    ? 'Content-Type validation lives only in dormant proxy.ts — write routes must validate payloads themselves'
+    : 'No Content-Type validation found in proxy.ts either');
 }
 
 // ─── 5. API Security Library Check ─────────────────────────────

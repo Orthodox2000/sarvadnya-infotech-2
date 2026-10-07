@@ -57,8 +57,33 @@ const GONE_PREFIXES = ['/wp-includes/', '/wp-content/', '/wp-admin/', '/wp-json/
 // CHANGE: 2026-09-17 — any dated WordPress post URL starts with /YYYY/ (e.g. /2021/02/…).
 const DATED_POST_RE = /\/\d{4}\//;
 
+// CHANGE: 2026-10-06 — SP-4 security hardening: this deployment is the public frontend
+// and has NO admin surface (app/admin + app/api/admin were removed; two stray admin
+// routes added in error by 1112177 were deleted the same day). Segment-exact check so
+// any future stray /admin or /api/admin route 404s instead of shipping unauthenticated —
+// proxy.ts's full guard is dormant (Next 15 reads this file, AGENTS §10) and the admin
+// panel lives in sarvadnya-advanced behind ITS own guard. Segment-exact (not prefix):
+// '/administrator' and '/api/administrator' are legit public paths and must pass.
+function isAdminPath(pathname: string): boolean {
+  return (
+    pathname === '/admin' ||
+    pathname.startsWith('/admin/') ||
+    pathname === '/api/admin' ||
+    pathname.startsWith('/api/admin/')
+  );
+}
+
 export function middleware(request: NextRequest) {
   const { pathname, search } = request.nextUrl;
+
+  // CHANGE: 2026-10-06 — SP-4 admin block runs first: 404, not 401/403 — the surface
+  // must look absent rather than "protected".
+  if (isAdminPath(pathname)) {
+    if (pathname.startsWith('/api/')) {
+      return NextResponse.json({ error: 'Not found' }, { status: 404 });
+    }
+    return new NextResponse(null, { status: 404 });
+  }
 
   // CHANGE: 2026-09-16 — dead legacy-WordPress artifacts return 410 before any redirect/CORS logic.
   if (
