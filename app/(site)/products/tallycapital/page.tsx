@@ -158,7 +158,7 @@ export default function TallyCapitalPage() {
   const [openFaq, setOpenFaq] = useState<number | null>(0);
 
   // CHANGE: 2026-08-29 — Office address pulled from site settings DB (/api/settings) instead of
-  // the hardcoded placeholder, so the About Us section always shows the current Vindya Complex address.
+  // the hardcoded placeholder, so the About Us section always shows the current canonical office address.
   const [officeAddress, setOfficeAddress] = useState<string>('');
   useEffect(() => {
     let cancelled = false;
@@ -569,8 +569,8 @@ export default function TallyCapitalPage() {
                     <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                     <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                   </svg>
-                  {/* CHANGE: 2026-08-29 — Address rendered from site settings DB (Vindya Complex); neutral fallback. */}
-                  <span className="text-sm text-slate-600 font-medium">{officeAddress || 'Vindya Complex, Belapur, Navi Mumbai'}</span>
+                  {/* CHANGE: 2026-08-29 — Address rendered from site settings DB; canonical fallback. */}
+                  <span className="text-sm text-slate-600 font-medium">{officeAddress || '73, Vindhya Commercial Premises, Sector - 11, Plot No - 1, CBD Belapur, Mumbai, Maharashtra'}</span>
                 </div>
               </div>
 

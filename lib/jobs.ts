@@ -16,6 +16,8 @@ export type Job = {
 
 // CHANGE: 2026-09-17 — Openings replaced with Business Development Executive, Junior Marketing
 // Executive and CRE per owner; postedAt refreshed to 2026-09-17, location/names unchanged.
+// CHANGE: 2026-10-07 — + Digital Marketing Executive + Social Media Executive per owner
+// ("add few position of digital marketing, social media executive"); postedAt 2026-10-07.
 export const jobs: Job[] = [
   {
     id: "business-development-executive",
@@ -102,6 +104,64 @@ export const jobs: Job[] = [
       "Training on TallyPrime, TSS and Cloud products",
       "Direct exposure to real client decision-makers",
       "Growth into senior customer-success roles"
+    ]
+  },
+  {
+    id: "digital-marketing-executive",
+    title: "Digital Marketing Executive",
+    department: "Marketing",
+    location: "Belapur, Navi Mumbai",
+    type: "Full-time",
+    shortDescription: "Plan and run digital campaigns — SEO, ads, email and WhatsApp funnels — that turn awareness into qualified leads for Tally, Cloud and automation services.",
+    fullDescription: "Drive the digital growth engine at Sarvadnya. You will own search and paid campaigns, landing pages, email/WhatsApp nurturing and performance reporting, connecting SMEs with TallyPrime, AWS Cloud, managed support and business automation.",
+    aboutRole:
+      "You are the hands-on owner of our digital funnel: keyword research and SEO execution, Google/Meta ad campaigns, lead-capture pages, email and WhatsApp sequences, and weekly performance dashboards. Your work feeds the sales team a steady stream of qualified enquiries.",
+    lookingFor:
+      "Where you win with us:\n- 0-2 years in digital marketing (internship counts) — B2B/tech marketing is a plus\n- Hands-on with Google Ads, Meta Ads, Google Search Console and analytics\n- Comfort with SEO tools (keyword research, on-page fixes, content briefs)\n- Spreadsheet-savvy: you report on conversions, not just impressions\n- Understanding of lead funnels for services businesses is a bonus",
+    whyJoinUs:
+      "Why this role stands out:\n- Own real campaigns and measurable leads from day one\n- Learn B2B SEO, paid media and marketing automation end-to-end\n- Clear growth path into senior marketing roles\n- Modern, performance-driven culture",
+    postedAt: "2026-10-07T09:00:00Z",
+    requirements: [
+      "0-2 years of digital marketing experience (internships included)",
+      "Hands-on with Google/Meta Ads and analytics tools",
+      "Basic SEO knowledge: keywords, on-page, search console",
+      "Strong written communication and campaign reporting",
+      "Data-driven mindset with spreadsheet fluency"
+    ],
+    benefits: [
+      "Hands-on training across SEO, paid media and automation",
+      "Ownership of live campaign budgets and funnels",
+      "Flexible work arrangements",
+      "Clear path to senior marketing roles"
+    ]
+  },
+  {
+    id: "social-media-executive",
+    title: "Social Media Executive",
+    department: "Marketing",
+    location: "Belapur, Navi Mumbai",
+    type: "Full-time",
+    shortDescription: "Own Sarvadnya's social presence — reels, posts, community and follower-to-lead conversion across Instagram, LinkedIn, Facebook and YouTube.",
+    fullDescription: "Build and manage our social media presence across Instagram, LinkedIn, Facebook, YouTube and WhatsApp. You will create short-form videos and design posts, plan and schedule content calendars, engage our community and convert followers into enquiries for Tally, Cloud and support services.",
+    aboutRole:
+      "You are the voice of Sarvadnya on social. Day to day: shoot and edit reels and shorts, design static posts, run the content calendar, reply to comments/DMs, coordinate with the digital marketing team on paid boosts, and report growth and enquiry metrics weekly. A strong portfolio with your own content is a big plus.",
+    lookingFor:
+      "What makes a strong candidate:\n- 0-2 years managing social media for brands (internship counts)\n- Confident with reels/shorts, Canva and basic editing tools (CapCut etc.)\n- A creative eye for hooks, thumbnails and clean post design\n- Understands engagement metrics and how social drives enquiries\n- English fluency for B2B-friendly copy; Hindi/Marathi is a bonus",
+    whyJoinUs:
+      "Why this role stands out:\n- Your content reaches real SME decision-makers every day\n- Freedom to experiment with formats and trends\n- Build a standout reel/portfolio with full creative ownership\n- Flexible work culture with clear growth into social media lead roles",
+    postedAt: "2026-10-07T09:00:00Z",
+    requirements: [
+      "0-2 years of social media management (internships included)",
+      "Hands-on with reels/shorts, Canva and basic video editing",
+      "Strong visual sense and English copywriting",
+      "Comfortable tracking and reporting engagement metrics",
+      "A personal or college content portfolio is a big plus"
+    ],
+    benefits: [
+      "Full creative ownership of brand channels",
+      "Training on paid boosts and B2B social strategy",
+      "Flexible work arrangements",
+      "Clear path to social media lead roles"
     ]
   }
 ];

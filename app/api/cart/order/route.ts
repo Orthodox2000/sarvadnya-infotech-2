@@ -5,11 +5,21 @@ import { repriceOrderItems } from '@/lib/cart/pricing';
 import { MAX_CART_LINES } from '@/lib/cart/math';
 import { createRateLimiter } from '@/lib/cart/rate-limit';
 import { getDb } from '@/lib/mongodb-utils';
-import { isIgnoredRequest } from '@/lib/visitors';
+import { isIgnoredRequest, lookupGeo } from '@/lib/visitors';
 // CHANGE: 2026-10-03 — SP-3 buyer capture: customer is validated server-side and
 // persisted with the order; TSS serials (owner 2026-10-03) are required per TSS
 // line; the `created` status hop opens the audit trail (lib/order-status.ts).
 import { validateCustomer, validateTssSerials, isTssSlug } from '@/lib/order-status';
+
+// CHANGE: 2026-10-07 — owner follow-up: orders now store richer request context.
+// `requestMeta` (user-agent / referer / language / platform, taken from the
+// request headers directly) is persisted WITH the order, and `requestMeta.geo`
+// is filled in the BACKGROUND after the response via Next's `after()` +
+// lookupGeo(ip) — never blocking the payment. The geo update is a second,
+// lossless $set on the order doc; failures are swallowed (the headers already
+// persisted with the order). The nested payments admin renders these in the
+// order detail modal (its GET no longer projects ip out — owner decision).
+import { after } from 'next/server';
 
 // CHANGE: 2026-10-02 — create a Razorpay TEST order for the real cart (SP-1 cart build).
 // WHY: this route is the server-authoritative pricing boundary. The browser posts slugs and
@@ -24,8 +34,9 @@ import { validateCustomer, validateTssSerials, isTssSlug } from '@/lib/order-sta
 //  - The Razorpay order is created EITHER WAY so a local run is genuinely end-to-end; the
 //    `orders` document is written ONLY for non-ignored (i.e. real visitor) requests, per the
 //    AGENTS.md shared-production-DB rule.
-//  - No email, no geo lookup, no conversion tracking. This route touches only Razorpay and
-//    the orders collection.
+//  - No email, no conversion tracking. Request context (ip + requestMeta headers) is stored
+//    with the order, and geo is looked up IN THE BACKGROUND (Next `after()`) — never inline,
+//    so the checkout is not slowed; see the requestMeta block in step 6 (2026-10-07).
 
 export const runtime = 'nodejs';
 export const maxDuration = 60;
@@ -155,11 +166,28 @@ export async function POST(request: Request) {
   // 6. Persist, unless this is an ignored (local/loopback) request. A persistence failure
   //    must NOT block a test payment — verify degrades to signature-only verification.
   const persist = !isIgnoredRequest(request);
+
+  // CHANGE: 2026-10-07 — request context rides the order doc. These come straight
+  // from the request headers (never the client-typed fields) and are stored with
+  // the transaction; `lookupGeo` fills `geo` in the background (see below) so the
+  // payment is never slowed by an external lookup.
+  const requestMeta = {
+    ip,
+    userAgent: request.headers.get('user-agent')?.slice(0, 300) || null,
+    referer: request.headers.get('referer')?.slice(0, 500) || null,
+    language: request.headers.get('accept-language')?.slice(0, 100) || null,
+    platform: request.headers.get('sec-ch-ua-platform')?.slice(0, 50) || null,
+    // Captured before the Razorpay call so an order-creation failure still tells
+    // us where the buyer was; the background geo lookup enriches it afterwards.
+    geo: null as null | Record<string, unknown>,
+    geoAt: null as null | Date,
+  };
+
   if (persist) {
     try {
       const db = await getDb();
       const now = new Date(); // one clock for createdAt/updatedAt and the `created` hop
-      await db.collection('orders').insertOne({
+      const insertResult = await db.collection('orders').insertOne({
         orderId,
         razorpayOrderId: razorpayOrder.id,
         amountPaise,
@@ -182,9 +210,30 @@ export async function POST(request: Request) {
         statusHistory: [{ to: 'created', at: now, actor: 'system' }],
         testMode: true,
         ip,
+        requestMeta,
         createdAt: now,
         updatedAt: now,
       } as never);
+
+      // CHANGE: 2026-10-07 — background geo enrichment. `after()` runs after the
+      // response has been sent (stable export in the installed Next 15.5.19), so
+      // the buyer's checkout is never delayed by lookupGeo — which is already
+      // timeout-guarded + ip_cache-cached (like visitors). The $set is lossless:
+      // if it fails the headers already persisted with the order.
+      after(async () => {
+        try {
+          const { geo } = await lookupGeo(ip);
+          if (!geo) return;
+          await db
+            .collection('orders')
+            .updateOne(
+              { _id: insertResult.insertedId },
+              { $set: { 'requestMeta.geo': geo, 'requestMeta.geoAt': new Date() } },
+            );
+        } catch {
+          // best-effort — an order must never lose its persisted bare headers
+        }
+      });
     } catch {
       // non-fatal — see above
     }

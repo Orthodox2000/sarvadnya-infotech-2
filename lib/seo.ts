@@ -10,11 +10,14 @@ export const SITE_TITLE = `${SITE_NAME} — Tally Certified Partner Since 2008`;
 export const SITE_CONTACT = {
   email: 'info@sarvadnyainfotech.com',
   phone: '+919821309060',
-  address: 'Pune, Maharashtra, India',
+  // CHANGE: 2026-10-07 — canonical office address (owner: "final and only address everywhere").
+  address: '73, Vindhya Commercial Premises, Sector - 11, Plot No - 1, CBD Belapur, Mumbai, Maharashtra',
 };
 
 // CHANGE: 2026-09-03 — contact suffix auto-appended to every meta description for SEO.
-export const CONTACT_SUFFIX = ' | Call: +91 9821 309060 | Pune';
+// CHANGE: 2026-10-07 — canonical office address (owner: "final and only address
+// everywhere"); JSON-LD locality corrected Pune -> Mumbai, suffix updated to match.
+export const CONTACT_SUFFIX = ' | Call: +91 9821 309060 | Mumbai';
 
 export const SITE_DESCRIPTION =
   'Tally Certified Partner trusted by 1500+ MSMEs. TallyPrime (Silver, Gold, Server), Tally on Cloud, AMC, Tally on WhatsApp, TallyDrive cloud backup, HRMS, TDL customization & corporate training.' + CONTACT_SUFFIX;
@@ -83,7 +86,7 @@ export function orgJsonLd(): JsonLd {
     logo: `${SITE_URL}/logo.png`,
     email: SITE_CONTACT.email,
     telephone: SITE_CONTACT.phone,
-    address: { '@type': 'PostalAddress', addressLocality: 'Pune', addressRegion: 'MH', addressCountry: 'IN' },
+    address: { '@type': 'PostalAddress', streetAddress: '73, Vindhya Commercial Premises, Sector - 11, Plot No - 1, CBD Belapur', addressLocality: 'Mumbai', addressRegion: 'MH', addressCountry: 'IN' },
     sameAs: [
       'https://facebook.com/sarvadnyainfotech',
       'https://www.instagram.com/sarvadnya.infotech/',
@@ -104,7 +107,7 @@ export function localBusinessJsonLd(): JsonLd {
     telephone: SITE_CONTACT.phone,
     email: SITE_CONTACT.email,
     priceRange: '₹₹',
-    address: { '@type': 'PostalAddress', addressLocality: 'Pune', addressState: 'Maharashtra', addressCountry: 'IN' },
+    address: { '@type': 'PostalAddress', streetAddress: '73, Vindhya Commercial Premises, Sector - 11, Plot No - 1, CBD Belapur', addressLocality: 'Mumbai', addressState: 'Maharashtra', addressCountry: 'IN' },
     areaServed: 'IN',
   };
 }

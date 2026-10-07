@@ -72,9 +72,10 @@ export default function Receipt({ data }: { data: ReceiptData }) {
       <header className="border-b border-teal-100 pb-4">
         <h2 className="text-lg font-bold text-teal-900">Payment receipt</h2>
         <p className="mt-1 text-xs leading-relaxed text-teal-900/65">
+          {/* CHANGE: 2026-10-07 — canonical office address (owner: "final and only address everywhere"). */}
           Sarvadnya Infotech LLP &middot; info@sarvadnyainfotech.com
           <br />
-          Shop No. 73, Plot No. 1, Vindhya Commercial Premises, Sector 11, CBD Belapur
+          73, Vindhya Commercial Premises, Sector - 11, Plot No - 1, CBD Belapur, Mumbai, Maharashtra
         </p>
       </header>
 

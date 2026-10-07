@@ -127,7 +127,10 @@ export default function ContactPage() {
     return trimmed;
   };
 
-  const mapSrc = getMapSrc(settings?.map_iframe_url || process.env.NEXT_PUBLIC_MAP_IFRAME_URL || "") || "https://maps.google.com/maps?q=Kuberje%20Complex%2C%20Belapur%2C%20Navi%20Mumbai%2C%20MH&t=&z=15&ie=UTF8&iwloc=&output=embed";
+  // CHANGE: 2026-10-07 — canonical office address (owner: "final and only address
+  // everywhere"); fallback + map pin moved from Kuberje/Pune placeholders to the
+  // Vindhya Commercial Premises location.
+  const mapSrc = getMapSrc(settings?.map_iframe_url || process.env.NEXT_PUBLIC_MAP_IFRAME_URL || "") || "https://maps.google.com/maps?q=73%2C%20Vindhya%20Commercial%20Premises%2C%20Sector%2011%2C%20CBD%20Belapur%2C%20Mumbai%2C%20MH&t=&z=15&ie=UTF8&iwloc=&output=embed";
 
   const socialMedia = [
     { name: 'WhatsApp', handle: whatsappPhone, url: `https://wa.me/${whatsappPhone.replace(/\D/g, '')}`, iconColor: 'text-[#25D366]', bgColor: 'bg-[#25D366]/10' },
@@ -369,7 +372,7 @@ export default function ContactPage() {
               </div>
               <h3 className="font-playfair text-2xl font-semibold mb-3">Visit Our Office</h3>
               <p className="text-sm text-white/70 font-medium leading-relaxed">
-                {settings?.office_address || "Sarvadnya Infotech LLP, Business Hub, Pune, Maharashtra, India"}
+                {settings?.office_address || "73, Vindhya Commercial Premises, Sector - 11, Plot No - 1, CBD Belapur, Mumbai, Maharashtra"}
               </p>
               <div className="mt-6 flex items-center gap-2">
                 <span className="text-2xl font-bold">4.9</span>
