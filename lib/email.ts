@@ -322,9 +322,13 @@ export async function sendInternalFormCopy(
   }
 
   const resend = new Resend(apiKey);
+  // CHANGE: 2026-10-07 — Global CC (one address, all emails) rides the same
+  // payload as the recipients; null when disabled/invalid → no cc key at all.
+  const globalCc = await getGlobalCc();
   const sendPayload: {
     from: string;
     to: string[];
+    cc?: string[];
     subject: string;
     html: string;
     replyTo?: string;
@@ -332,6 +336,7 @@ export async function sendInternalFormCopy(
   } = {
     from,
     to: recipients,
+    ...(globalCc ? { cc: globalCc } : {}),
     subject: getSubject(submission.formType),
     html: buildFormEmailHtml(submission),
     tags: [
@@ -373,6 +378,27 @@ export async function isAutoreplyEnabled(): Promise<boolean> {
   const fromSettings = String(settings.AUTO_REPLY_ENABLED || '');
   if (fromSettings) return normalizeFlag(fromSettings);
   return normalizeFlag(process.env.AUTO_REPLY_ENABLED || '0');
+}
+
+// CHANGE: 2026-10-07 — One GLOBAL CC, applied to every send: the internal form
+// copy AND the client auto-reply (owner: "One global CC, all emails"). The
+// toggle + address are admin-editable (settings EMAIL_CC_ENABLED / EMAIL_CC,
+// falling back to env vars so a fresh deploy is silent). Disabled by default
+// and an invalid address yields NO cc — enabling can never break a send, and
+// each send guards independently so a missing config never triggers email.
+export async function getGlobalCc(): Promise<string[] | null> {
+  let settings: Record<string, any> = {};
+  try {
+    settings = await getSettings();
+  } catch {
+    settings = {};
+  }
+  const fromSettings = String(settings.EMAIL_CC_ENABLED || '');
+  const enabled = fromSettings ? normalizeFlag(fromSettings) : normalizeFlag(process.env.EMAIL_CC_ENABLED || '0');
+  if (!enabled) return null;
+  const address = String(settings.EMAIL_CC || process.env.EMAIL_CC || '').trim().toLowerCase();
+  if (!isValidEmail(address)) return null;
+  return [address];
 }
 
 // Site-contact block mirrors what the public Footer renders (Footer.tsx +
@@ -459,9 +485,13 @@ export async function sendClientAutoreply(
     : { url: `${siteUrl}/TallyCertificate.png` };
 
   const resend = new Resend(apiKey);
+  // CHANGE: 2026-10-07 — Global CC applies to the customer auto-reply too
+  // (owner: "one global CC, all emails"); null when disabled → no cc key.
+  const globalCc = await getGlobalCc();
   const { data, error } = await resend.emails.send({
     from,
     to: [submission.email],
+    ...(globalCc ? { cc: globalCc } : {}),
     subject: CLIENT_AUTOREPLY_SUBJECT,
     html: buildClientAutoreplyHtml({
       name: submission.name,

@@ -64,6 +64,13 @@ export const FORM_DESTINATIONS: FormDestination[] = [
   { key: 'contact', label: 'Contact Page', paths: ['/contact'], category: 'others' },
   { key: 'find-solution', label: 'Find Solution', paths: ['/find-solution'], category: 'others' },
   { key: 'report-problem', label: 'Report a Problem', paths: ['/report-problem'], category: 'others' },
+  // CHANGE: 2026-10-07 — Ask Sara chat leads. The chat modal's detail-capture
+  // submits with destination 'ask-sara' (a chat has no page path, so paths=[]
+  // — the destination prop drives routing, not getDestinationFromPath). OPT-IN:
+  // no 'ask-sara' recipient is configured until the owner adds one in the admin
+  // panel, so chat leads SAVE to the DB but email NOBODY until then (the safety
+  // contract: a misconfiguration can never fire an unwanted email on live).
+  { key: 'ask-sara', label: 'Ask Sara Chat Leads', paths: [], category: 'others' },
 ];
 
 // CHANGE: 2026-09-18 — removed unused KNOWN_DESTINATION_KEYS export (zero importers).
