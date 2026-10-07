@@ -302,6 +302,14 @@ Redesigned 2026-10-05 across five rounds. **There is no hero band** — the page
 | **Dead code** | `app/components/JobAccordion.tsx` is unreferenced. Left in place. |
 | **Don't break** | Endpoints referencing `/careers` must keep the URL: `Navbar.tsx`, `Footer.tsx`, `product-nav.ts`, `sitemap.ts`, `search/page.tsx`, `api/search/route.ts`, `lib/sara-topics.ts`. |
 
+### 15. 2026-10-07 — Tally Solutions partner verification + redirect/404 health + performance plan
+
+| Fact | Detail |
+| :--- | :--- |
+| **Partner verification link** | Owner: *"…https://tallysolutions.com/partners/sarvadnya-infotech-llp/ … mention it in contact and somewhere as well."* Added (a) a **"Verified Tally Solutions Partner — Verify →"** trust strip on `/contact` between the Connect-with-Us grid and the form (teal `BadgeCheck` icon, `#E5F4F4` tint, external `noopener noreferrer` — no `nofollow` on purpose, it is Tally's own verification page), and (b) a **"Verified Tally Solutions Partner"** shield link in the Footer brand column under the intro paragraph (site-wide, dark-footer `#B8DEDE` teal). Both link to the live Tally Solutions partner profile. |
+| **Redirect/404 health (GSC lists, probe-verified live 2026-10-07)** | Every "page with redirect error" URL resolves to a 200 final target today (single-hop for no-slash legacy paths; the `/foo/` forms are exactly **2 hops** — Next emits its own trailing-slash 308 **before both middleware AND `redirects()`** (proven in dev + live: `/category/uncategorized/` sits in `GONE_PATHS` with the slash and still 308s to the no-slash form before middleware 410s it) — inside Google's limit, no fix exists on this stack; documented as a NOTE in `next.config.js`). All 7 "404 not found" URLs (old WP `?et_core_page_resource=`, `/category/uncategorized/`, `/shop/*`) already return **410 Gone** via `GONE_PATHS` — correct; rows drop after recrawl. `/capabilities` returns 200 directly (never redirected). **Owner steps to clear the GSC rows: Validate fix / Request Indexing, and confirm the sitemap lists apex-https URLs only.** Do NOT add trailing-slash sources to `next.config.js` — they never match. |
+| **Performance plan** | Owner added `public/sarvadnyainfotech.com-Performance-on-Search-2026-10-07.xlsx` (GSC export, last 28 days) → parsed (no `xlsx`/`openpyxl` on the box — encoded OOXML via `unzip` + regex, `/tmp/opencode/gsc-full.txt`), **full plan written to `docs/PERFORMANCE-INCREMENT-PLAN-2026-10-07.md`**, and the xlsx **removed from `public/`** per instruction. Baseline: 115 clicks / 3,684 impressions / 3.1% CTR / pos ~7.4, India 97%, Desktop 68%. Biggest clusters: **TSS questions** (~1,300 impr at pos 1–6, ~0% CTR — retitle `/news/tally-tss-expiry-meaning` + add a how-to post), **cloud-access login intent** (`tallycloudaccess` 357 impr), **local Belapur/Navi-Mumbai** ("it companies in belapur" etc.), and **zero rich results** (Product/FAQPage/Review JSON-LD recommended as P1). 32% of clicks land on non-canonical `http://`/`www`/legacy-slash URLs — correct redirects, consolidates on recrawl. |
+
 ## Developer Guidelines
 - **Surgical Updates:** Always prefer targeted `replace` over complete file rewrites for existing files.
 - **Accessibility:** Maintain high contrast ratios and ensure interactive elements have clear focus states.
@@ -313,4 +321,4 @@ Redesigned 2026-10-05 across five rounds. **There is no hero band** — the page
 - **Validate Before Completing:** Before marking any task as done, re-read the original user request, re-check every todo item, and verify each requirement is actually satisfied. Requirements get silently dropped during scope — always do a second pass against the original prompt to ensure nothing was missed.
 
 ---
-*Last Updated: 2026-10-06 (§14 `careers` — content-shaped brand-tinted loading skeletons replacing the flat slate-100 "light blue boxes"; layout rows unchanged. See Task 3 in `docs/superpowers/plans/2026-10-06-security-careers-seo.md`)*
+*Last Updated: 2026-10-07 (§15 — Tally Solutions partner verification on /contact + footer; redirect/404 GSC health verdict; performance-increment plan from the owner's GSC export)*

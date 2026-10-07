@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from "react";
-import { Phone, Mail, Clock, MapPin, ArrowRight, ChevronDown } from "lucide-react";
+import { Phone, Mail, Clock, MapPin, ArrowRight, ChevronDown, BadgeCheck } from "lucide-react";
 import Footer from "../../components/Footer";
 
 export type SiteSettings = {
@@ -223,6 +223,34 @@ export default function ContactPage() {
             </a>
           ))}
         </div>
+      </section>
+
+      {/* CHANGE: 2026-10-07 — Tally Solutions partner verification (owner request: "mention it in
+          contact"). Public proof of the Certified Partnership, linking to the live profile on
+          tallysolutions.com — an external, noopener link (no follow flag on purpose: it is Tally's
+          own verification page, and the site's link equity is a positive signal). */}
+      <section className="px-6 sm:px-12 lg:px-24 max-w-7xl mx-auto">
+        <a
+          href="https://tallysolutions.com/partners/sarvadnya-infotech-llp/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="group flex items-center justify-between gap-4 w-full rounded-2xl border border-[#006569]/20 bg-[#E5F4F4]/60 px-6 py-4 hover:border-[#006569]/40 hover:bg-[#E5F4F4] transition-all"
+        >
+          <span className="flex items-center gap-3 min-w-0">
+            <span className="w-10 h-10 rounded-full bg-[#006569] text-white flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+              <BadgeCheck className="w-5 h-5" />
+            </span>
+            <span className="min-w-0">
+              <span className="block font-bold text-sm text-[#033B38]">Verified Tally Solutions Partner</span>
+              <span className="block text-xs text-[#5A5F5A] font-medium truncate">
+                View our official partner profile on tallysolutions.com
+              </span>
+            </span>
+          </span>
+          <span className="flex items-center gap-1 text-[#006569] font-bold text-xs uppercase tracking-wide shrink-0">
+            Verify <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+          </span>
+        </a>
       </section>
 
       {/* Form + Location */}

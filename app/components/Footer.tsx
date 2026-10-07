@@ -183,6 +183,22 @@ export default function Footer({ settings: initialSettings }: { settings?: SiteS
                         accounting and compliance workflows.
                     </p>
 
+                    {/* CHANGE: 2026-10-07 — Tally Solutions partner verification (owner request:
+                        "mention it … somewhere as well"). Site-wide proof beside the brand block;
+                        external noopener link to Tally's own verification page. */}
+                    <a
+                        href="https://tallysolutions.com/partners/sarvadnya-infotech-llp/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 text-xs font-bold text-[#B8DEDE] hover:text-white transition-colors"
+                    >
+                        <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M12 2l8 3v6c0 5-3.5 8.5-8 11-4.5-2.5-8-6-8-11V5l8-3z" />
+                            <path d="M9 12l2 2 4-4" />
+                        </svg>
+                        Verified Tally Solutions Partner
+                    </a>
+
                     <div className="flex gap-3">
                         {/* CHANGE: 2026-08-24 — Square-ish buttons instead of circles per user request. */}
                         {socialLinks.map((social) => (

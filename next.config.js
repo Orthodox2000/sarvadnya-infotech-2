@@ -84,6 +84,13 @@ const nextConfig = {
       { source: '/understanding-client-erp-requirements', destination: '/services', permanent: true },
       { source: '/offering-right-solution-onlinehelping-in-implementation-of-offered-erp', destination: '/services', permanent: true },
       { source: '/ensure-quality-training-and-service-thereafter-increase-client-satisfaction', destination: '/services', permanent: true },
+      // NOTE 2026-10-07 — trailing-slash variants (/tally-prime/, /blog/, /about-us/, …) are NOT
+      // listed here and CANNOT be collapsed to a single hop on this stack: Next's own trailing-slash
+      // 308 fires before BOTH middleware AND this table (verified in dev + live: /foo/ → /foo → target
+      // is always 2 hops, e.g. /tally-prime/ → /tally-prime → /products). The maps below 301/308 the
+      // no-slash form, which is what middleware and this table actually see. The 2-hop chain is within
+      // Google's redirect-following limit and the GSC "redirect error" rows clear on recrawl (targets
+      // all return 200 today — verified 2026-10-07). Do not add slash sources here; they never match.
     ];
   },
   images: {
