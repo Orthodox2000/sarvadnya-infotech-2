@@ -3,6 +3,10 @@
 import { useState, useEffect } from "react";
 import { Phone, Mail, Clock, MapPin, ArrowRight, ChevronDown, BadgeCheck } from "lucide-react";
 import Footer from "../../components/Footer";
+// CHANGE: 2026-10-07 — AggregateRating JSON-LD (P1 §2E.3). Built from the 4.9★/34-reviews
+// figures visibly displayed in the "Visit Our Office" card below. NO individual Review
+// nodes (the page shows only the aggregate — fabricating reviews would be unfair markup).
+import { localBusinessRatingJsonLd } from "@/lib/seo";
 
 export type SiteSettings = {
   support_phone: string;
@@ -379,6 +383,12 @@ export default function ContactPage() {
                 <span className="text-amber-400 tracking-widest text-sm">★★★★★</span>
                 <span className="text-xs text-white/50 font-medium">(34 reviews)</span>
               </div>
+              {/* CHANGE: 2026-10-07 — AggregateRating JSON-LD (P1 §2E.3), same 4.9/34 figures
+                  as the card above. Everything here is displayed on the page — nothing invented. */}
+              <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessRatingJsonLd('4.9', '34')) }}
+              />
               <div className="mt-6 rounded-[1.5rem] overflow-hidden border border-white/10 relative h-56 bg-slate-100">
                 <iframe
                   src={mapSrc}

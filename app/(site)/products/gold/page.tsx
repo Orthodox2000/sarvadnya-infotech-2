@@ -10,6 +10,9 @@ import { priceRowView, type PriceRowView } from '@/lib/prices';
 import BuyNowButton from '../../../components/cart/BuyNowButton';
 import CartAddButton from '../../../components/cart/CartAddButton';
 import SeoCrossLinks from '../../../components/SeoCrossLinks';
+// CHANGE: 2026-10-07 — Product/Offer JSON-LD (P1 rich results). SITE_URL makes the image
+// an absolute URL; productJsonLd builds the schema.org node from the DISPLAYED price.
+import { productJsonLd, SITE_URL } from '@/lib/seo';
 
 // CHANGE: 2026-09-16 — consistent bg-slate-100 background and silver-page style/token cleanup.
 // CHANGE: 2026-10-02 — pricing rows are now DB-driven (SP-1 cart build). WHY: rows were
@@ -88,6 +91,22 @@ export default function TallyGoldPage() {
       }),
     [resolve],
   );
+
+  // CHANGE: 2026-10-07 — Product JSON-LD (P1 rich results). The Gold page's "Most Popular
+  // Software" block visibly lists TallyPrime Gold at 4.8★/120 reviews, so the aggregateRating
+  // is honest — it comes from data displayed ON THIS PAGE.
+  const goldLd = useMemo(() => {
+    const item = resolve('tallyprime-gold');
+    return productJsonLd({
+      name: 'TallyPrime Gold (Multi-User)',
+      description: 'TallyPrime Gold is the multi-user edition of TallyPrime for teams working on the same live data over a LAN, with controlled user access and real-time sync.',
+      url: '/products/gold',
+      image: `${SITE_URL}/PartnerBrands/Tally-Software.png`,
+      sku: 'tallyprime-gold',
+      offers: item ? [{ priceRupees: item.payablePaise / 100 }] : [],
+      aggregateRating: { ratingValue: '4.8', reviewCount: '120' },
+    });
+  }, [resolve]);
   const [formName, setFormName] = useState('');
   const [formEmail, setFormEmail] = useState('');
   const [formPhone, setFormPhone] = useState('');
@@ -201,6 +220,13 @@ export default function TallyGoldPage() {
 
   return (
     <div className="min-h-screen bg-slate-100 text-slate-900 font-sans">
+      {/* CHANGE: 2026-10-07 — Product/Offer JSON-LD (P1 rich results). Prices come from the
+          same resolve() the pricing table renders, so markup matches the visible total.
+          aggregateRating mirrors the on-page "Most Popular Software" Gold row (4.8/120). */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(goldLd) }}
+      />
       {/* Breadcrumb */}
       <nav aria-label="Breadcrumb" className="bg-white border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">

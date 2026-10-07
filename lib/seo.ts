@@ -184,3 +184,99 @@ export function articleJsonLd({
     inLanguage: 'en-IN',
   };
 }
+
+// CHANGE: 2026-10-07 — P1 rich results (docs/PERFORMANCE-INCREMENT-PLAN-2026-10-07.md §2E).
+// Product/Offer JSON-LD for the priced product pages (/products/silver|gold|tallydrive,
+// /services/tss) and the no-price Contact-Sales server page (offer omitted there — never
+// invent a price). Prices come from the same resolve()/payable figures the page displays
+// (DB-driven with identical-number fallback), so the markup always matches what a visitor
+// sees. `aggregateRating` is emitted ONLY when the page visibly shows that product's own
+// rating (gold 4.8/120, server 4.7/85) — never fabricated.
+export function productJsonLd({
+  name,
+  description,
+  url,
+  image,
+  sku,
+  brand,
+  offers,
+  aggregateRating,
+}: {
+  name: string;
+  description: string;
+  url: string;
+  image?: string;
+  sku?: string;
+  brand?: string;
+  offers?: {
+    /** Total payable in rupees INCLUDING GST as displayed on the page (e.g. 26550 for Silver). */
+    priceRupees: number;
+    priceCurrency?: string;
+    availability?: string;
+    itemOffered?: string;
+  }[];
+  aggregateRating?: { ratingValue: string; reviewCount: string };
+}): JsonLd {
+  const offerNodes = offers?.length
+    ? offers.map((o) => ({
+        '@type': 'Offer',
+        ...(o.itemOffered ? { name: o.itemOffered } : {}),
+        price: String(o.priceRupees),
+        priceCurrency: o.priceCurrency || 'INR',
+        availability: o.availability || 'https://schema.org/InStock',
+        url: parallelPath(url),
+        seller: { '@type': 'Organization', name: SITE_NAME },
+      }))
+    : undefined;
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name,
+    description,
+    url: parallelPath(url),
+    ...(image ? { image } : {}),
+    ...(sku ? { sku } : {}),
+    brand: { '@type': 'Brand', name: brand || 'Tally Solutions' },
+    ...(offerNodes ? { offers: offerNodes.length === 1 ? offerNodes[0] : offerNodes } : {}),
+    ...(aggregateRating
+      ? {
+          aggregateRating: {
+            '@type': 'AggregateRating',
+            ratingValue: aggregateRating.ratingValue,
+            reviewCount: aggregateRating.reviewCount,
+            bestRating: '5',
+          },
+        }
+      : {}),
+  };
+}
+
+// CHANGE: 2026-10-07 — multi-question FAQPage builder (P1 §2E.2). The single-Q faqJsonLd()
+// above is kept for legacy callers. Google requires the questions to be VISIBLE on the page;
+// callers render the same array as the on-page FAQ section.
+export function faqPageJsonLd(faqs: { q: string; a: string }[]): JsonLd {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  };
+}
+
+// CHANGE: 2026-10-07 — LocalBusiness variant carrying the aggregate rating displayed on
+// /contact (4.9★ / 34 reviews). Review items are deliberately NOT emitted — the page shows
+// only the aggregate, so individual Review nodes would be fabricated.
+export function localBusinessRatingJsonLd(ratingValue: string, reviewCount: string): JsonLd {
+  return {
+    ...localBusinessJsonLd(),
+    aggregateRating: {
+      '@type': 'AggregateRating',
+      ratingValue,
+      reviewCount,
+      bestRating: '5',
+    },
+  };
+}

@@ -5,6 +5,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 import Footer from '../../../components/Footer';
 import UnifiedContactModal, { FormType } from '../../../components/UnifiedContactModal';
+// CHANGE: 2026-10-07 — Product JSON-LD (P1 rich results). Server page has NO priced rows
+// (Contact Sales) so the Offer is deliberately omitted — never invent a price.
+import { productJsonLd, SITE_URL } from '@/lib/seo';
 
 // CHANGE: 2026-09-16 — consistent bg-slate-100 background and silver-page style/token cleanup.
 
@@ -183,8 +186,26 @@ export default function TallyServerPage() {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
   };
 
+  // CHANGE: 2026-10-07 — Product JSON-LD (P1 rich results). NO Offer on purpose: this page
+  // has no priced rows (Contact Sales), so inventing an Offer would be unfair markup. The
+  // aggregateRating (4.7/85) mirrors the on-page "Most Popular Software" TallyPrime Server row.
+  const serverLd = productJsonLd({
+    name: 'TallyPrime Server (Client-Server)',
+    description: 'TallyPrime Server provides true server-based, multi-user access to TallyPrime with concurrent processing, zero downtime, advanced monitoring and data security by design.',
+    url: '/products/server',
+    image: `${SITE_URL}/PartnerBrands/Tally-Software.png`,
+    sku: 'tallyprime-server',
+    aggregateRating: { ratingValue: '4.7', reviewCount: '85' },
+  });
+
   return (
     <div className="min-h-screen bg-slate-100 text-slate-900 font-sans">
+      {/* CHANGE: 2026-10-07 — Product JSON-LD (P1 rich results). No Offer (Contact Sales —
+          the page displays no price, so markup never invents one). */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(serverLd) }}
+      />
       {/* Breadcrumb */}
       <nav aria-label="Breadcrumb" className="bg-white border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">

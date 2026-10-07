@@ -11,6 +11,10 @@ export type NewsItem = {
   description: string;
   content: string;         // Article body — paragraphs separated by blank lines
   link?: string;           // Optional related-page link (used as an in-article CTA; NOT the card target anymore)
+  // CHANGE: 2026-10-07 — optional FAQ block (P1 §2B/§2E). When present, the article page
+  // renders the questions/answers as a visible FAQ section AND emits FAQPage JSON-LD from
+  // the SAME array (Google requires markup to match visible content).
+  faqs?: { q: string; a: string }[];
 
   // Blog/SEO fields (optional — auto-derived from the above when absent)
   slug?: string;           // URL slug; explicit > auto-derived (title-slug + id tail)

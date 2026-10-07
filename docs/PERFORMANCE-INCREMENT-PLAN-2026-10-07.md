@@ -59,12 +59,16 @@ landing copy don't answer them:
      What It Means, Why It Expires, and How to Renew"* — and rewrite its meta description
      to state the answer ("TSS = Tally Software Services…"). Both live in the `news`
      collection (admin edit; visible immediately on the article page, next deploy on `/news`).
+     — **DONE 2026-10-07** via the seed (retitle + description + 3 tags + 4 faqs; live).
   2. Add a short "How to check the TSS expiry date in TallyPrime" post — query has 15
      impressions at pos 8.2; an exact-match post is a page-1 (pos 1–3) target.
+     — **DONE 2026-10-07** — `how-to-check-tss-expiry-date-tallyprime` seeded live.
   3. Add FAQPage JSON-LD to the TSS post + `/services/tss` (recommended in the Task 5
      report, not implemented — needs a small dev sprint, P1 below).
+     — **DONE 2026-10-07** (article FAQ block + FAQPage; `/services/tss` accordion + FAQPage).
   4. A one-paragraph Hindi summary in the same post would take the pos-1 `.hindi` query
-     (currently zero competition).
+     (currently zero competition). — **DEFERRED**: breaks the ASCII-only seed rule; not
+     implementable without a house-rule change — revisit with owner.
 
 ### C. Cloud-access / TallyCloud login intent (portal confusion)
 `tallycloudaccess` 357 impr (pos 10, 0 clicks on this form) + 316 (2 clicks),
@@ -93,10 +97,16 @@ Only "AMP non-rich result" appears in Search appearance (1 click). The site has
 review data (4.9★, 34 reviews on `/contact`), priced products, and FAQ content — unused.
 - **P1 code path (recommended dev work, needs owner sign-off):**
   1. `Product` + `Offer` JSON-LD on `/products/{silver,gold,server,tallydrive}` and
-     `/services/tss` (prices are DB-driven already).
+     `/services/tss` (prices are DB-driven already). — **IMPLEMENTED 2026-10-07** (server = Product
+     without Offer, Contact Sales; TSS = 6 resolved plan offers; silver/tallydrive = single offer).
   2. `FAQPage` JSON-LD on `/services/tss`, `/cloud`, `/news/tally-tss-expiry-meaning`
-     (from the page's own FAQ content).
+     (from the page's own FAQ content). — **IMPLEMENTED 2026-10-07** for `/services/tss`
+     (new visible "TSS Renewal FAQs" accordion `#faqs` + FAQPage) and the TSS news post
+     (retitled + 4 faqs + companion how-to post). `/cloud` FAQPage **SKIPPED by owner ruling**
+     (cloud item dropped from scope).
   3. `AggregateRating`/`Review` JSON-LD beside the 4.9★ / 34-reviews block on `/contact`.
+     — **IMPLEMENTED 2026-10-07** as `aggregateRating` only (LocalBusiness + 4.9/34; no
+     fabricated Review nodes).
 
 ### F. URL hygiene — 37 of 115 clicks (32%) land on non-canonical variants
 From the Pages sheet (all 301/308 to the apex HTTPS canonical — probe-verified 2026-10-07):

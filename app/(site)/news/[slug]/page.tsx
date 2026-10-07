@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getNews, getNewsBySlug } from '@/lib/mongodb-utils';
-import { SITE_NAME, SITE_URL, articleJsonLd, breadcrumbJsonLd, seoMetadata } from '@/lib/seo';
+import { SITE_NAME, SITE_URL, articleJsonLd, breadcrumbJsonLd, faqPageJsonLd, seoMetadata } from '@/lib/seo';
 import { NewsItem } from '@/lib/news';
 import { excerptFrom } from '@/lib/news-utils';
 
@@ -81,9 +81,13 @@ export default async function NewsArticlePage({ params }: { params: Promise<{ sl
     image: item.coverImage,
   });
 
+  // CHANGE: 2026-10-07 — optional FAQPage JSON-LD (P1 §2B/§2E). Built from the SAME array
+  // rendered as the visible FAQ section below (headline == displayed q/a).
+  const faqLd = item.faqs?.length ? faqPageJsonLd(item.faqs) : null;
+
   return (
     <div className="min-h-screen bg-white text-slate-900">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([articleLd, breadcrumbJsonLd([{ name: 'News & Updates', path: '/news' }, { name: item.title, path: `/news/${item.slug}` }])]) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([articleLd, breadcrumbJsonLd([{ name: 'News & Updates', path: '/news' }, { name: item.title, path: `/news/${item.slug}` }]), ...(faqLd ? [faqLd] : [])]) }} />
 
       {/* Article header */}
       <section className="bg-[linear-gradient(90deg,_rgba(254,254,252,1)_0%,_rgba(251,250,246,1)_53%,_rgba(248,247,240,1)_100%)] border-b border-[#006569]/10 pt-10 pb-12 px-6">
@@ -115,6 +119,24 @@ export default async function NewsArticlePage({ params }: { params: Promise<{ sl
             {item.tags.map((tag) => (
               <span key={tag} className="px-3 py-1 rounded-full bg-slate-100 text-slate-500 text-[10px] font-bold uppercase tracking-widest">#{tag}</span>
             ))}
+          </div>
+        )}
+
+        {/* CHANGE: 2026-10-07 — visible FAQ block (P1 §2B/§2E). Rendered from the SAME
+            item.faqs array that feeds faqPageJsonLd above, so the markup always matches
+            on-page content. Static (server component) — no accordion JS needed. */}
+        {item.faqs && item.faqs.length > 0 && (
+          <div className="mt-10 rounded-2xl border border-slate-200 bg-white p-6 sm:p-8">
+            <h2 className="text-lg md:text-xl font-black text-slate-900 mb-1">Frequently Asked Questions</h2>
+            <p className="text-xs text-slate-400 font-semibold mb-6">Quick answers to common questions about this topic.</p>
+            <div className="space-y-5">
+              {item.faqs.map((faq, idx) => (
+                <div key={idx} className="bg-slate-50 rounded-xl p-4">
+                  <h3 className="text-sm font-bold text-slate-900 mb-2">{faq.q}</h3>
+                  <p className="text-sm text-slate-600 leading-relaxed">{faq.a}</p>
+                </div>
+              ))}
+            </div>
           </div>
         )}
 

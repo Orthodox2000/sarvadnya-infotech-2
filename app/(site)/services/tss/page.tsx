@@ -9,6 +9,9 @@ import { useCart } from '@/lib/cart/store';
 import { priceRowView, type PriceRowView } from '@/lib/prices';
 import CartAddButton from '../../../components/cart/CartAddButton';
 import SeoCrossLinks from '../../../components/SeoCrossLinks';
+// CHANGE: 2026-10-07 — Product/Offer + FAQPage JSON-LD (P1 rich results, §2E + §2B). SITE_URL
+// makes images absolute; builders take the SAME numbers the pricing table displays.
+import { productJsonLd, faqPageJsonLd, SITE_URL } from '@/lib/seo';
 
 // CHANGE: 2026-10-02 — DB-driven pricing (SP-1 cart build). WHY: the six TSS plans were
 // static strings in JSX; they now derive from the live prices collection (with the
@@ -24,14 +27,47 @@ const TSS_ROW_SLUGS = [
   'tss-auditor-2yr',
 ] as const;
 
+// CHANGE: 2026-10-07 — TSS FAQ content (P1 §2B). These answers target the live search
+// cluster ("tss expired in tally means", "tss full form in tally", "tss renewal means",
+// "how to check tss expiry date") and are rendered BOTH as the visible accordion below and
+// as FAQPage JSON-LD, so the markup always matches on-page content.
+const TSS_FAQS: { q: string; a: string }[] = [
+  {
+    q: "What does 'TSS expired' mean in Tally?",
+    a: "TSS stands for Tally Software Services, the annual subscription that keeps Tally Prime and Tally ERP 9 current with updates, statutory compliance changes and technical support. When the licence screen shows 'TSS has expired', it means that coverage has lapsed. Your software keeps working and your data stays safe, but you stop receiving updates, compliance releases and support.",
+  },
+  {
+    q: 'What is the full form of TSS in Tally?',
+    a: 'TSS stands for Tally Software Services. It is the annual subscription plan for Tally Prime and Tally ERP 9 that covers product updates, GST and statutory compliance changes, and technical support from Tally.',
+  },
+  {
+    q: 'What does TSS renewal mean?',
+    a: 'TSS renewal means paying for the next year of your Tally Software Services subscription so that updates, statutory compliance releases and technical support stay active. After renewal, your Tally licence shows the new coverage end date and you immediately receive the latest version and compliance updates.',
+  },
+  {
+    q: 'How do I check my TSS expiry date in TallyPrime?',
+    a: 'Open TallyPrime and go to the licence screen (Help > About or the Licence activation window). Your TSS coverage and its expiry date are shown there. If the date has passed, the licence screen also shows the "TSS has expired" notice, and renewal can be done quickly through a Tally partner.',
+  },
+  {
+    q: 'Will Tally stop working when my TSS expires?',
+    a: 'No. Your Tally Prime software keeps working and your data and vouchers are safe and usable even after TSS expires. What you lose is protection: no more product updates, no statutory compliance changes, and no technical support from Tally until you renew.',
+  },
+  {
+    q: 'How do I renew an expired TSS?',
+    a: 'Share your Tally serial number and unlock code with a Tally certified partner, and they will process the renewal. Once your TSS is renewed, updates and compliance releases resume immediately and your coverage end date moves forward by the renewed period.',
+  },
+];
+
 export default function TSSPage() {
   const [modalConfig, setModalConfig] = useState<{isOpen: boolean; type: FormType; service: string}>({
     isOpen: false,
     type: 'enquire',
     service: 'Tally Software Service (TSS) Renewal'
   });
+  // CHANGE: 2026-10-07 — accordion state for the new TSS FAQ section (house pattern).
+  const [openFaq, setOpenFaq] = useState<number | null>(0);
 
-  // CHANGE: 2026-10-02 — live pricing rows (display strings string-for-string identical
+  // CHANGE: 2026-10-07 — live pricing rows (display strings string-for-string identical
   // to the legacy static table, per priceRowView + the cart-test page-parity assertions).
   const { resolve } = useCart();
   const pricingRows = useMemo(
@@ -42,6 +78,21 @@ export default function TSSPage() {
       }),
     [resolve],
   );
+
+  // CHANGE: 2026-10-07 — Product JSON-LD (P1 rich results). Offers = the SIX resolved plan
+  // totals (incl. 18% GST) exactly as the pricing table displays them; low/high come from
+  // the same source. No aggregateRating: this page shows no ratings.
+  const tssLd = useMemo(() => {
+    const prices = TSS_ROW_SLUGS.map((slug) => resolve(slug)).filter(Boolean);
+    return productJsonLd({
+      name: 'Tally Software Services (TSS) Renewal',
+      description: 'TSS (Tally Software Services) is the annual subscription that keeps Tally Prime and Tally ERP 9 current with updates, statutory compliance changes and technical support.',
+      url: '/services/tss',
+      image: `${SITE_URL}/tss-icon.png`,
+      sku: 'tss',
+      offers: prices.map((item) => ({ priceRupees: (item as { payablePaise: number }).payablePaise / 100 })),
+    });
+  }, [resolve]);
 
   const openModal = (type: FormType, service: string = 'TSS Renewal') => {
     setModalConfig({ isOpen: true, type, service });
@@ -96,6 +147,13 @@ export default function TSSPage() {
 
   return (
     <div className="min-h-screen bg-[linear-gradient(90deg,rgba(249,251,245,1)_0%,rgba(244,242,234,1)_53%,rgba(238,236,223,1)_100%)] text-slate-900">
+      {/* CHANGE: 2026-10-07 — Product/Offer + FAQPage JSON-LD (P1 rich results). Prices come
+          from the same resolve() the pricing table renders; FAQ nodes mirror the visible
+          accordion below (§2B + §2E). */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify([tssLd, faqPageJsonLd(TSS_FAQS)]) }}
+      />
       {/* CHANGE: 2026-09-11 — Hero bg replaced with solid #F1EDE5 (was the cream gradient). Image stays right-anchored
           at full height; plain #F1EDE5 fills the left so dark text stays readable. */}
       <section className="bg-[#F1EDE5] relative overflow-hidden flex items-center min-h-[200px] md:min-h-[320px] border-b border-[#006569]/10">
@@ -270,6 +328,47 @@ export default function TSSPage() {
             </div>
           ))}
           <p className="text-[11px] text-slate-500 text-center pt-2">Prices are inclusive of 18% GST.</p>
+        </div>
+      </section>
+
+      {/* CHANGE: 2026-10-07 — NEW visible TSS FAQ section (P1 §2B). Answers the live search
+          cluster ("tss expired means", "tss full form", "tss renewal means", "how to check
+          tss expiry date"). Rendered on page AND as FAQPage JSON-LD above — same content. */}
+      <section id="faqs" className="py-12 px-6 max-w-5xl mx-auto">
+        <h2 className="text-3xl md:text-4xl font-black text-slate-900 mb-3">TSS Renewal FAQs</h2>
+        <p className="text-sm md:text-base text-slate-500 mb-8">Everything about TSS expiry, renewal and how to check your coverage.</p>
+        <div className="space-y-0 divide-y divide-slate-100 bg-white rounded-2xl border border-slate-200 px-4 sm:px-6">
+          {TSS_FAQS.map((faq, idx) => {
+            const open = openFaq === idx;
+            return (
+              <div key={idx}>
+                <button
+                  type="button"
+                  onClick={() => setOpenFaq(open ? null : idx)}
+                  aria-expanded={open}
+                  aria-controls={`tss-faq-panel-${idx}`}
+                  className="flex items-center justify-between w-full py-4 text-left transition-colors rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#006569]"
+                >
+                  <h3 className="text-sm md:text-base font-bold text-slate-900 pr-4">{faq.q}</h3>
+                  <span
+                    className={`shrink-0 size-5 rounded-full flex items-center justify-center transition-transform duration-200 ${
+                      open ? 'bg-[#006569] rotate-45 text-white' : 'bg-slate-100 text-slate-400'
+                    }`}
+                    aria-hidden="true"
+                  >
+                    <svg className="size-3" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
+                    </svg>
+                  </span>
+                </button>
+                {open && (
+                  <div id={`tss-faq-panel-${idx}`} className="pb-4 text-sm text-slate-600 leading-relaxed pr-8">
+                    {faq.a}
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </div>
       </section>
 

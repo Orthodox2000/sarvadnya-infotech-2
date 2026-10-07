@@ -11,6 +11,9 @@ import { formatRupeesPlain } from '@/lib/prices';
 import BuyNowButton from '../../../components/cart/BuyNowButton';
 import CartAddButton from '../../../components/cart/CartAddButton';
 import SeoCrossLinks from '../../../components/SeoCrossLinks';
+// CHANGE: 2026-10-07 — Product/Offer JSON-LD (P1 rich results). SITE_URL makes the image
+// an absolute URL; productJsonLd builds the schema.org node from the DISPLAYED price.
+import { productJsonLd, SITE_URL } from '@/lib/seo';
 
 // CHANGE: 2026-09-16 — consistent bg-slate-100 background and silver-page style/token cleanup.
 // CHANGE: 2026-10-02 — the "Extra Storage" row is now DB-driven (SP-1 cart build): its
@@ -103,6 +106,21 @@ export default function TallyDrivePage() {
         slug: 'tallydrive-extra-storage-1yr',
       },
     ];
+  }, [resolve]);
+
+  // CHANGE: 2026-10-07 — Product JSON-LD (P1 rich results). Offer = the sellable Extra
+  // Storage pack (₹1,200/yr, displayed on this page). No aggregateRating: this page's
+  // "Most Popular Software" block lists Silver/Gold/Server/Cloud — never TallyDrive.
+  const tallydriveLd = useMemo(() => {
+    const extra = resolve('tallydrive-extra-storage-1yr');
+    return productJsonLd({
+      name: 'TallyDrive Cloud Backup',
+      description: 'TallyDrive keeps your TallyPrime data automatically backed up and synced to the cloud, with easy restores plus extra storage packs for growing businesses.',
+      url: '/products/tallydrive',
+      image: `${SITE_URL}/tallydrive%20logo.png`,
+      sku: 'tallydrive',
+      offers: extra ? [{ priceRupees: extra.payablePaise / 100, itemOffered: 'TallyDrive Extra Storage (1 Year)' }] : [],
+    });
   }, [resolve]);
   const [formName, setFormName] = useState('');
   const [formEmail, setFormEmail] = useState('');
@@ -217,6 +235,12 @@ export default function TallyDrivePage() {
 
   return (
     <div className="min-h-screen bg-slate-100 text-slate-900 font-sans">
+      {/* CHANGE: 2026-10-07 — Product/Offer JSON-LD (P1 rich results). Price comes from the
+          same resolve() the pricing table renders (Extra Storage ₹1,200/yr). */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(tallydriveLd) }}
+      />
       {/* Breadcrumb */}
       <nav aria-label="Breadcrumb" className="bg-white border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">

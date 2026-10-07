@@ -348,13 +348,36 @@ Sarvadnya Infotech offers an HRMS solution that covers payroll, attendance and e
   },
   {
     slug: 'tally-tss-expiry-meaning',
-    title: "TSS Expiry Meaning in Tally: What 'TSS Expired' Means on Your Licence",
+    // CHANGE: 2026-10-07 — P1 retitle (plan §2B action 1): answer-form for the cluster
+    // ("tss expired in tally", "tss full form", "tss renewal means") instead of the old
+    // passive phrasing. Description now states the answer up front ("TSS = Tally Software
+    // Services..."). `faqs` added — rendered as the visible article FAQ block AND as
+    // FAQPage JSON-LD (P1 §2E.2). ASCII-only per house rule.
+    title: 'TSS in Tally: What It Means, Why It Expires, and How to Renew',
     date: 'September 5, 2026',
     category: 'TSS & Renewals',
-    description: "TSS expiry meaning in Tally explained - what happens when your TSS expires, what 'TSS has expired' means on the licence screen, and how renewal restores updates and support.",
-    tags: ['tss expiry meaning in tally', 'tss expired in tally means', 'tally tss renewal', 'tally tss expired'],
+    description: "TSS = Tally Software Services, the annual subscription that keeps Tally Prime current with updates, compliance changes and support. Here is what 'TSS has expired' means on your licence screen and how renewal restores coverage.",
+    tags: ['tss expiry meaning in tally', 'tss expired in tally means', 'tally tss renewal', 'tally tss expired', 'tss full form in tally', 'tss in tally', 'tss renewal means'],
     link: '/services/tss',
     author: 'Sarvadnya Infotech LLP',
+    faqs: [
+      {
+        q: 'What is the full form of TSS in Tally?',
+        a: 'TSS stands for Tally Software Services. It is the annual subscription plan for Tally Prime and Tally ERP 9 that covers product updates, statutory compliance changes and technical support from Tally.',
+      },
+      {
+        q: 'What does "TSS expired" mean in Tally?',
+        a: 'TSS expired means your Tally Software Services coverage has lapsed. Your software keeps working and your data stays safe, but you stop receiving product updates, compliance releases and technical support until you renew.',
+      },
+      {
+        q: 'What does TSS renewal mean?',
+        a: 'TSS renewal means paying for the next period of your Tally Software Services subscription so updates, statutory compliance changes and technical support stay active. Once renewed, your licence shows the new coverage end date and updates resume immediately.',
+      },
+      {
+        q: 'Will Tally stop working if TSS expires?',
+        a: 'No. Tally Prime and Tally ERP 9 keep working and your vouchers and data remain usable. What you lose after expiry is protection: no more updates, no statutory compliance changes, and no technical support until renewal.',
+      },
+    ],
     content: `TSS expiry meaning in Tally, in plain terms: TSS (Tally Software Services) is the annual subscription that keeps Tally Prime and Tally ERP 9 current with updates, statutory compliance changes and technical support. When the licence screen shows "TSS has expired", it means that coverage has lapsed.
 
 What happens when TSS is expired:
@@ -373,6 +396,55 @@ How to check your status:
 - If the renewal window is close, consolidate licences and confirm your GSTIN before renewing
 
 Renewal itself is quick with a verified partner. Sarvadnya Infotech handles Tally TSS renewal for businesses anywhere in India - we check your licence, confirm the right plan and complete the renewal in one short conversation, fully remotely. If TSS expired on your setup, get in touch before a price change or a busy closing week.`,
+  },
+  {
+    // CHANGE: 2026-10-07 — P1 companion post (plan §2B action 2). Exact-match target for
+    // "how to check tss expiry date in tally prime" (15 impr, pos 8.2 -> page-1 goal).
+    // ASCII-only per house rule. Its `faqs` feed the article FAQ block + FAQPage JSON-LD.
+    slug: 'how-to-check-tss-expiry-date-tallyprime',
+    title: 'How to Check the TSS Expiry Date in TallyPrime',
+    date: 'October 7, 2026',
+    category: 'TSS & Renewals',
+    description: 'Step by step: how to check the TSS expiry date in TallyPrime on the licence screen, what the coverage end date means, and how to renew before it lapses.',
+    tags: ['how to check tss expiry date in tally prime', 'tss expiry date', 'tss expired in tally means', 'tally tss renewal'],
+    link: '/services/tss',
+    author: 'Sarvadnya Infotech LLP',
+    faqs: [
+      {
+        q: 'Where does TallyPrime show the TSS expiry date?',
+        a: 'TallyPrime shows your TSS coverage and expiry date on the licence screen, opened from the Help or About option. The same screen flags "TSS has expired" once the coverage end date passes.',
+      },
+      {
+        q: 'What does the TSS expiry date on my licence mean?',
+        a: 'It is the last day your Tally Software Services subscription covers updates, statutory compliance changes and technical support. After that date, Tally keeps working but you stop receiving updates until you renew.',
+      },
+      {
+        q: 'Can I renew TSS after the expiry date has passed?',
+        a: 'Yes. Renewal is processed from your licence details even after expiry. Contact a Tally certified partner with your serial number and unlock code, and coverage resumes as soon as the renewal is applied.',
+      },
+    ],
+    content: `Checking the TSS expiry date in TallyPrime takes under a minute, and knowing it early protects your business from a quietly lapsed subscription at a compliance deadline. Here is how to find it.
+
+Where the TSS expiry date appears:
+
+- Open TallyPrime on the workstation where the licence is activated
+- Go to the Help menu or the About screen to open the licence window
+- Look for the TSS section - it shows the coverage end date for your licence
+- If the date has already passed, the same screen shows the "TSS has expired" notice
+
+What the date means:
+
+- Before the expiry date: updates, compliance releases and support are covered
+- After the expiry date: Tally keeps working and your data stays safe, but updates stop until you renew
+- The renewal service period starts from the renewal date, so renewing late does not extend the old gap
+
+A quick habit that prevents surprises:
+
+- Check the licence screen once a month, or every time a GST or statutory change lands
+- Keep your serial number and unlock code handy - renewal needs both
+- Renew through a Tally certified partner so coverage is applied correctly against the right licence type (TallyPrime or Tally ERP 9)
+
+Sarvadnya Infotech renews TSS for businesses anywhere in India. Share your licence details and we check the expiry date, confirm the right plan and complete the renewal remotely in one short conversation.`,
   },
   {
     slug: 'tally-cloud-access',
@@ -509,10 +581,14 @@ async function seed() {
         // so future description tweaks also get seeded.
         // CHANGE: 2026-09-07 — also compare date, so purely date refreshes apply.
         // CHANGE: 2026-09-16 — also compare tags, so tag-only edits (dealer scrub) propagate.
+        // CHANGE: 2026-10-07 — also compare title and faqs, so the P1 retitle and the new
+        // FAQ block (FAQPage JSON-LD source) propagate to the live doc.
         const same = existing.content === post.content
           && existing.description === post.description
           && existing.date === post.date
-          && JSON.stringify(existing.tags ?? null) === JSON.stringify(post.tags ?? null);
+          && existing.title === post.title
+          && JSON.stringify(existing.tags ?? null) === JSON.stringify(post.tags ?? null)
+          && JSON.stringify(existing.faqs ?? null) === JSON.stringify(post.faqs ?? null);
         if (same) { skipped++; continue; }
         await col.updateOne({ slug: post.slug }, { $set: doc });
         updated++;

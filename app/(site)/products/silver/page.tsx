@@ -10,6 +10,9 @@ import { priceRowView, type PriceRowView } from '@/lib/prices';
 import BuyNowButton from '../../../components/cart/BuyNowButton';
 import CartAddButton from '../../../components/cart/CartAddButton';
 import SeoCrossLinks from '../../../components/SeoCrossLinks';
+// CHANGE: 2026-10-07 — Product/Offer JSON-LD (P1 rich results). SITE_URL makes the image
+// an absolute URL; productJsonLd builds the schema.org node from the DISPLAYED price.
+import { productJsonLd, SITE_URL } from '@/lib/seo';
 
 // CHANGE: 2026-09-16 — replaced inline brand styles with Tailwind token classes, added stacked mobile pricing cards, focus-visible rings, and readability font-size bumps.
 // CHANGE: 2026-10-02 — pricing rows are now DB-driven (SP-1 cart build). WHY: rows were
@@ -87,6 +90,20 @@ export default function TallySilverPage() {
       }),
     [resolve],
   );
+
+  // CHANGE: 2026-10-07 — Product JSON-LD (P1 rich results). No aggregateRating on this
+  // page: the "Most Popular Software" block lists OTHER products' ratings, never Silver's.
+  const silverLd = useMemo(() => {
+    const item = resolve('tallyprime-silver');
+    return productJsonLd({
+      name: 'TallyPrime Silver (Single User)',
+      description: 'TallyPrime Silver is the single-user edition of TallyPrime for small businesses, freelancers and shop owners. Handles GST, e-invoicing and local data privacy on one workstation.',
+      url: '/products/silver',
+      image: `${SITE_URL}/PartnerBrands/Tally-Software.png`,
+      sku: 'tallyprime-silver',
+      offers: item ? [{ priceRupees: item.payablePaise / 100 }] : [],
+    });
+  }, [resolve]);
 
   const [formName, setFormName] = useState('');
   const [formEmail, setFormEmail] = useState('');
@@ -201,6 +218,12 @@ export default function TallySilverPage() {
 
   return (
     <div className="min-h-screen bg-slate-100 text-slate-900 font-sans">
+      {/* CHANGE: 2026-10-07 — Product/Offer JSON-LD (P1 rich results). Prices come from the
+          same resolve() the pricing table renders, so markup matches the visible total. */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(silverLd) }}
+      />
       {/* Breadcrumb */}
       <nav aria-label="Breadcrumb" className="bg-white border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
