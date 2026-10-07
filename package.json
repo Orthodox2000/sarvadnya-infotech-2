@@ -32,7 +32,8 @@
     "audit:deps": "npm audit --json",
     "security:check": "node scripts/security-audit.mjs",
     "security:audit": "node scripts/security-audit.mjs && npm audit --audit-level=high",
-    "test:seo": "node scripts/seo-links-test.mjs"
+    "test:seo": "node scripts/seo-links-test.mjs",
+    "test:news-verify": "node scripts/news-seed-verify.mjs"
   },
   "dependencies": {
     "@vercel/analytics": "^2.0.1",
