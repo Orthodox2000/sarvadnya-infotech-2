@@ -102,12 +102,32 @@ if (existsSync(proxyPath)) {
     : 'No Content-Type validation found in proxy.ts either');
 }
 
-// ─── 5. API Security Library Check ─────────────────────────────
+// ─── 5. Security Utilities Check ─────────────────────────────
 results.push('\n📚 Security Utilities');
-const securityLib = resolve(root, 'lib', 'api-security.ts');
-check('lib/api-security.ts exists', existsSync(securityLib));
-const rateLimitLib = resolve(root, 'lib', 'rate-limit.ts');
-check('lib/rate-limit.ts exists', existsSync(rateLimitLib));
+// CHANGE: 2026-10-08 — this section used to assert lib/api-security.ts and lib/rate-limit.ts
+// exist, but both were deleted as dead code in 2e98e1e (2026-07-29), so the audit has been
+// red ever since on a stale expectation (the helpers now live inline in lib/email.ts and the
+// routes). Assert the security surface that actually exists instead: the shared write-route
+// limiter, and every public write route actually calling it (the 2026-10-08 gap where
+// tss-renewal / problem-reports / upload/chunk had no limiter at all).
+check('lib/rate-limit.ts exists (shared write-route limiter)', existsSync(resolve(root, 'lib', 'rate-limit.ts')));
+const writeRoutes = [
+  'app/api/email/submit/route.ts',
+  'app/api/contact/route.ts',
+  'app/api/tss-renewal/route.ts',
+  'app/api/problem-reports/route.ts',
+  'app/api/upload/chunk/route.ts',
+  'app/api/cart/order/route.ts',
+  'app/api/cart/verify/route.ts',
+];
+const unguarded = writeRoutes.filter((p) => {
+  const file = resolve(root, p);
+  return !existsSync(file) || !/ateLimit/.test(readFileSync(file, 'utf-8'));
+});
+check(
+  `public write routes are rate-limited${unguarded.length ? ` (missing: ${unguarded.join(', ')})` : ''}`,
+  unguarded.length === 0
+);
 
 // ─── 6. MongoDB Config Check ──────────────────────────────────
 results.push('\n🗄️  Database Configuration');

@@ -2,6 +2,10 @@ import { NextResponse } from 'next/server';
 import { saveProblemReport } from '@/lib/mongodb-utils';
 import { sendEmailDirect } from '@/lib/email-queue';
 import { isValidEmail } from '@/lib/email';
+// CHANGE: 2026-10-08 — per-IP rate limit. This route writes to the production
+// `problem_reports` collection AND sends a real internal email, but unlike
+// /api/email/submit and /api/contact it had no limiter at all.
+import { createRateLimiter } from '@/lib/rate-limit';
 import {
   getRequestMeta,
   lookupGeo,
@@ -10,8 +14,11 @@ import {
   isIgnoredRequest,
   visitorLog,
   maskIp,
+  getClientIp,
 } from '@/lib/visitors';
 import type { GeoInfo } from '@/lib/visitors';
+
+const rateLimiter = createRateLimiter(Number(process.env.PROBLEM_REPORT_RATE_LIMIT || 20), 60_000);
 
 const allowedIssueTypes = new Set([
   'broken-link',
@@ -33,6 +40,13 @@ function normalizeIssueType(value: string) {
 }
 
 export async function POST(request: Request) {
+  const limit = rateLimiter.check(getClientIp(request));
+  if (limit.limited) {
+    return NextResponse.json(
+      { error: 'Too many requests, please slow down.' },
+      { status: 429, headers: { 'Retry-After': String(limit.retryAfter) } }
+    );
+  }
   try {
     const rawData = await request.json();
 
