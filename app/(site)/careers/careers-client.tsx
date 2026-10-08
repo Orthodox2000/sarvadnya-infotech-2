@@ -7,6 +7,7 @@ import { AuthForms } from '@/app/components/careers/AuthForms';
 import { IdCard } from '@/app/components/careers/IdCard';
 import { CareersAuthProvider } from '@/app/components/careers/CareersAuthProvider';
 import JobApplicationModal from '@/app/components/JobApplicationModal';
+import QuickApplyModal from '@/app/components/careers/QuickApplyModal';
 
 /**
  * CHANGE: 2026-10-05 — full layout redesign.
@@ -347,12 +348,21 @@ export function CareersClient() {
             </div>
           </div>
 
-          <JobApplicationModal
-            isOpen={isModalOpen}
-            onClose={() => setIsModalOpen(false)}
-            job={selectedJob}
-            user={user}
-          />
+          {isAuthenticated ? (
+            <QuickApplyModal
+              isOpen={isModalOpen}
+              onClose={() => setIsModalOpen(false)}
+              job={selectedJob}
+              user={user}
+            />
+          ) : (
+            <JobApplicationModal
+              isOpen={isModalOpen}
+              onClose={() => setIsModalOpen(false)}
+              job={selectedJob}
+              user={user}
+            />
+          )}
         </section>
         );
       }}

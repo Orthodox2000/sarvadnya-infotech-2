@@ -282,6 +282,15 @@ export function AuthForms({ onSuccess, focusSignal = 0 }: AuthFormsProps) {
           >
             {isSignup ? 'Sign in' : 'Create account'}
           </button>
+          {!isSignup && (
+            <button
+              type="button"
+              onClick={() => (window.location.href = '/careers/forgot-password')}
+              className="ml-2 inline-flex min-h-9 items-center justify-center rounded px-2 font-bold text-[#006569] underline-offset-4 transition-colors hover:text-[#005559] hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-[#006569]/30 focus-visible:ring-offset-2"
+            >
+              Forgot password?
+            </button>
+          )}
         </p>
       </div>
     </div>

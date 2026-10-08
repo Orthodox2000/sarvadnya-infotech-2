@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getCareersUsersCollection, verifyPassword, createCareersSession, setCareersSessionCookie } from '@/lib/careers-auth';
+import { getCareersUsersCollection, verifyPassword, createCareersSession, setCareersSessionCookie, hashPassword } from '@/lib/careers-auth';
 import { isIgnoredRequest } from '@/lib/visitors';
 
 export async function POST(req: NextRequest) {
@@ -21,9 +21,13 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
     }
     
+    const updates: any = { lastLoginAt: new Date(), updatedAt: new Date() };
+    if (typeof user.passwordHash === 'string' && !user.passwordHash.startsWith('$')) {
+      updates.passwordHash = hashPassword(password);
+    }
     await users.updateOne(
       { _id: user._id },
-      { $set: { lastLoginAt: new Date(), updatedAt: new Date() } }
+      { $set: updates }
     );
     
     const userAgent = req.headers.get('user-agent') || undefined;

@@ -28,13 +28,36 @@ export interface CareersSession {
   ip?: string;
 }
 
+const crypto = require('crypto');
+const bcrypt = require('bcryptjs');
+
 export function hashPassword(password: string): string {
-  const crypto = require('crypto');
+  // Store as bcrypt (modern). Cost 10 is reasonable.
+  const salt = bcrypt.genSaltSync(10);
+  return bcrypt.hashSync(password, salt);
+}
+
+export function hashPasswordLegacy(password: string): string {
   return crypto.pbkdf2Sync(password, 'careers-salt', 100000, 64, 'sha512').toString('hex');
 }
 
 export function verifyPassword(password: string, hash: string): boolean {
-  return hashPassword(password) === hash;
+  if (!hash) return false;
+  // Detect bcrypt/argon2 style hashes ($...)
+  if (typeof hash === 'string' && hash.startsWith('$')) {
+    try {
+      return bcrypt.compareSync(password, hash);
+    } catch (e) {
+      return false;
+    }
+  }
+  // Legacy pbkdf2 hex
+  try {
+    const legacy = hashPasswordLegacy(password);
+    return crypto.timingSafeEqual(Buffer.from(legacy, 'hex'), Buffer.from(hash, 'hex'));
+  } catch (e) {
+    return false;
+  }
 }
 
 export function generateToken(): string {

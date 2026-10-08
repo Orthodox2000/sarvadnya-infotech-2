@@ -187,12 +187,20 @@ export default function CareersProfilePage() {
                 >
                   ← Back to Careers
                 </Link>
-                <button
-                  onClick={handleLogout}
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-black uppercase tracking-widest bg-slate-900 text-white hover:bg-slate-800 transition-all duration-300 hover:scale-[1.02] active:scale-[0.995] shadow-lg shadow-slate-900/10"
-                >
-                  Logout
-                </button>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => (window.location.href = '/careers/forgot-password')}
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-black uppercase tracking-widest border border-[#E5F4F4] bg-white text-slate-700 hover:bg-[#F5F4ED]/60 transition-all duration-300"
+                  >
+                    Reset Password
+                  </button>
+                  <button
+                    onClick={handleLogout}
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-black uppercase tracking-widest bg-slate-900 text-white hover:bg-slate-800 transition-all duration-300 hover:scale-[1.02] active:scale-[0.995] shadow-lg shadow-slate-900/10"
+                  >
+                    Logout
+                  </button>
+                </div>
               </div>
             </div>
           )}
