@@ -1,6 +1,12 @@
 #!/usr/bin/env node
+// CHANGE: 2026-10-09 — first-party capture (chats/drafts) index + 30-day TTL setup.
+// Idempotent. The app now also self-heals these indexes on first write via
+// lib/capture-indexes.ts (ensureCaptureIndexes), so this script is an explicit
+// ops/verification path rather than a required manual step. Run: npm run db:indexes:chats
+import { config as loadEnv } from 'dotenv'
 import { MongoClient } from 'mongodb'
 
+loadEnv()
 const uri = process.env.MONGODB_URI
 if (!uri) { console.error('MONGODB_URI missing'); process.exit(1) }
 const client = new MongoClient(uri)

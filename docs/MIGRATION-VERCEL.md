@@ -150,7 +150,9 @@ hasn't run yet; admin Email Config UI can also set recipients.)
 
 - Razorpay: `https://*.razorpay.com` in `script-src`, `connect-src`, `frame-src` (the
   wildcard is required for `cdn.razorpay.com/…/razorpay-risk-detection/bundle.js`).
-- Zoho SalesIQ tracking: `*.zohopublic.in` / `*.zohocdn.com` (+ `wss:` for analytics).
+- ~~Zoho SalesIQ tracking: `*.zohopublic.in` / `*.zohocdn.com` (+ `wss:` for analytics).~~
+  **Removed 2026-10-09** — Zoho SalesIQ (chat + tracking) is gone from every deployment;
+  no Zoho domain is needed in any CSP any more. Visitor/chat capture is first-party.
 - Vercel Blob + site domains in `img-src`/`connect-src`.
 
 If a fresh project gets its own Vercel URL (e.g. `project-a.vercel.app`), add it to

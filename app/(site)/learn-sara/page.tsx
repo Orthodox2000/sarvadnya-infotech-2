@@ -170,7 +170,15 @@ export default function LearnSaraPage() {
     const onHide = () => { try { draftTrackerRef.current?.onVisibilityHidden(); draftTrackerRef.current?.onPageHide(); } catch {} }
     document.addEventListener('visibilitychange', onHide);
     window.addEventListener('pagehide', onHide);
-    return () => { document.removeEventListener('visibilitychange', onHide); window.removeEventListener('pagehide', onHide); };
+    return () => {
+      document.removeEventListener('visibilitychange', onHide);
+      window.removeEventListener('pagehide', onHide);
+      // CHANGE: 2026-10-09 — close the transcript when the page unmounts (parity with
+      // Ask Sara, which ends its chat on close). keepalive lets the request survive unload.
+      if (chatIdRef.current && sessionId) {
+        fetch('/api/chats/end',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({chatId:chatIdRef.current,sessionId,endedReason:'unmounted'}),keepalive:true}).catch(()=>{});
+      }
+    };
   }, [sessionId]);
 
   // Refocus the input once typing finishes so the user can immediately send the next message
@@ -186,6 +194,15 @@ export default function LearnSaraPage() {
     return findMatchingTutorials(tutorials, query, 2, 8, true);
   }, [tutorials]);
 
+  // CHANGE: 2026-10-09 — persist this page's chat transcript (parity with Ask Sara's
+  // QuickSupportModal, which already appended turns). Before this, /learn-sara called
+  // only /api/chats/start, so the saved chat_logs document had ZERO messages and was
+  // never ended. Fire-and-forget; skipped until /api/chats/start resolves the chatId.
+  const appendTurn = useCallback((role: 'user' | 'assistant', text: string, topic?: string) => {
+    if (!chatIdRef.current || !sessionId) return;
+    fetch('/api/chats/append',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({chatId:chatIdRef.current,sessionId,turn:{role,text,topic}})}).catch(()=>{});
+  }, [sessionId]);
+
   const addAssistantMessage = useCallback((text: string, topics?: Topic[], queryText?: string) => {
     const matched = queryText ? matchTutorials(queryText) : [];
     const id = uid();
@@ -199,12 +216,13 @@ export default function LearnSaraPage() {
       timestamp: new Date()
     }]);
     setShowAudioPromptId(id);
+    appendTurn('assistant', text, topics && topics[0] ? topics[0].label : undefined);
     if (autoPlayMode === 'summary') {
       playVoiceResponse(text, false);
     } else if (autoPlayMode === 'full') {
       playVoiceResponse(text, true);
     }
-  }, [matchTutorials, autoPlayMode, playVoiceResponse]);
+  }, [matchTutorials, autoPlayMode, playVoiceResponse, appendTurn]);
 
   const respondWithDelay = useCallback((text: string, topics?: Topic[], queryText?: string) => {
     setIsTyping(true);
@@ -242,6 +260,7 @@ export default function LearnSaraPage() {
       text: topic.label,
       timestamp: new Date()
     }]);
+    appendTurn('user', topic.label);
     respondWithDelay(topic.answer, topic.followUp, topic.label);
   };
 
@@ -252,6 +271,7 @@ export default function LearnSaraPage() {
       text: topic.label,
       timestamp: new Date()
     }]);
+    appendTurn('user', topic.label);
     respondWithDelay(topic.answer, topic.followUp, topic.label);
   };
 
@@ -268,6 +288,7 @@ export default function LearnSaraPage() {
       text: query,
       timestamp: new Date()
     }]);
+    appendTurn('user', query);
 
     const result = matchTopic(query);
     if (result) {

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getDb } from '@/lib/db'
 import { createRateLimiter } from '@/lib/rate-limit'
 import { isIgnoredIp, isIgnoredRequest } from '@/lib/visitors'
+import { ensureCaptureIndexes } from '@/lib/capture-indexes'
 import { ObjectId } from 'mongodb'
 
 const limiter = createRateLimiter(40, 60_000)
@@ -26,6 +27,7 @@ export async function POST(req:NextRequest){
     }
     const now=new Date()
     const expiresAt=new Date(now.getTime()+30*24*60*60*1000)
+    await ensureCaptureIndexes().catch(()=>{})
     const db=await getDb()
     const col=db.collection('drafts')
     await col.updateOne(

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getDb } from '@/lib/db'
 import { createRateLimiter } from '@/lib/rate-limit'
 import { isIgnoredIp, isIgnoredRequest } from '@/lib/visitors'
+import { ensureCaptureIndexes } from '@/lib/capture-indexes'
 
 const limiter = createRateLimiter(60, 60_000)
 const MAX_TXT=4000
@@ -21,6 +22,7 @@ export async function POST(req:NextRequest){
     if (toPush.length===0) return NextResponse.json({ok:true})
     const now=new Date()
     const expiresAt=new Date(now.getTime()+30*24*60*60*1000)
+    await ensureCaptureIndexes().catch(()=>{})
     const db=await getDb()
     await db.collection('chat_logs').updateOne(
       {chatId, sessionId},

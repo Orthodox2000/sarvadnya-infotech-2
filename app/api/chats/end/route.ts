@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getDb } from '@/lib/db'
 import { createRateLimiter } from '@/lib/rate-limit'
 import { isIgnoredIp, isIgnoredRequest } from '@/lib/visitors'
+import { ensureCaptureIndexes } from '@/lib/capture-indexes'
 
 const limiter = createRateLimiter(30, 60_000)
 
@@ -16,6 +17,7 @@ export async function POST(req:NextRequest){
     if (!chatId||!sessionId) return NextResponse.json({error:'bad_request'},{status:400})
     const now=new Date()
     const expiresAt=new Date(now.getTime()+30*24*60*60*1000)
+    await ensureCaptureIndexes().catch(()=>{})
     const db=await getDb()
     await db.collection('chat_logs').updateOne(
       {chatId, sessionId},

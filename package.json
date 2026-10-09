@@ -26,6 +26,7 @@
     "test:order-status": "node scripts/order-status-test.mjs",
     "test:dates": "node scripts/date-coerce-test.mjs",
     "migrate:dates": "node scripts/migrate-string-dates.mjs",
+    "db:indexes:chats": "node scripts/drafts-chat-indexes.mjs",
     "seed:prices": "node scripts/seed_prices.mjs",
     "backup:db": "node scripts/db-backup.mjs",
     "preview:email": "node scripts/email-preview.mjs",

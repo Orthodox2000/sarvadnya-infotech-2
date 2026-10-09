@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getDb } from '@/lib/db'
 import { createRateLimiter } from '@/lib/rate-limit'
 import { isIgnoredIp, isIgnoredRequest } from '@/lib/visitors'
+import { ensureCaptureIndexes } from '@/lib/capture-indexes'
 import { ObjectId } from 'mongodb'
 
 const limiter = createRateLimiter(40, 60_000)
@@ -18,6 +19,7 @@ export async function POST(req:NextRequest){
     const chatId = `c_${Date.now().toString(36)}_${Math.random().toString(36).slice(2)}`
     const now=new Date()
     const expiresAt=new Date(now.getTime()+30*24*60*60*1000)
+    await ensureCaptureIndexes().catch(()=>{})
     const db=await getDb()
     await db.collection('chat_logs').insertOne({
       _id:new ObjectId(), chatId, sessionId, ip, path, entryPoint, startedAt:now, lastActiveAt:now, messages:[], context:{}, meta, expiresAt, endedReason:undefined
