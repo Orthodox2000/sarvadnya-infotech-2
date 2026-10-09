@@ -3,6 +3,8 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import Link from 'next/link';
 import SaraText from '@/app/components/SaraText';
+import { useVisitor } from '@/app/components/VisitorProvider';
+import { createDraftTracker } from '@/lib/draft-tracker';
 import { findMatchingTutorials, type Tutorial } from '@/lib/tutorial-matcher';
 import { matchTopic, getTeachingFallbackResponse, type Topic } from '@/lib/sara-topics';
 
@@ -40,6 +42,9 @@ export default function LearnSaraPage() {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const chatIdRef = useRef<string|null>(null);
+  const draftTrackerRef = useRef<ReturnType<typeof createDraftTracker>|null>(null);
+  const { sessionId } = useVisitor();
 
   // Lock body scroll while the chat sheet is open
   useEffect(() => {
@@ -154,6 +159,19 @@ export default function LearnSaraPage() {
 
   // Focus input
   useEffect(() => { inputRef.current?.focus(); }, []);
+
+  useEffect(() => {
+    if (sessionId && !chatIdRef.current) {
+      draftTrackerRef.current = createDraftTracker();
+      draftTrackerRef.current.setSessionId(sessionId);
+      draftTrackerRef.current.start({entryPoint:'learn-sara',path:'/learn-sara',source:'learn-sara-page',meta:{referrer:document.referrer,userAgent:navigator.userAgent}});
+      fetch('/api/chats/start',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({sessionId,path:'/learn-sara',entryPoint:'learn-sara-page',meta:{referrer:document.referrer,userAgent:navigator.userAgent}})}).then(r=>r.json()).then(d=>{if(d.chatId) chatIdRef.current=d.chatId}).catch(()=>{});
+    }
+    const onHide = () => { try { draftTrackerRef.current?.onVisibilityHidden(); draftTrackerRef.current?.onPageHide(); } catch {} }
+    document.addEventListener('visibilitychange', onHide);
+    window.addEventListener('pagehide', onHide);
+    return () => { document.removeEventListener('visibilitychange', onHide); window.removeEventListener('pagehide', onHide); };
+  }, [sessionId]);
 
   // Refocus the input once typing finishes so the user can immediately send the next message
   useEffect(() => {

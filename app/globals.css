@@ -616,37 +616,7 @@ main > div:first-of-type {
     animation: none;
   }
 }
-/* CHANGE: 2026-08-31 — Zoho SalesIQ tracking-only: hide the chat/consent UI.
-   Targets all known SalesIQ mounts (chat button, floaters, livechat, welcome/prechat, consent forms).
-   CHANGE: 2026-09-30 — switched from `opacity: 0` to `display: none` + `pointer-events: none`.
-   The previous comment claimed opacity was needed to keep the widget "mounted" for tracking.
-   That reasoning was incorrect: SalesIQ analytics are driven by its own JavaScript, not by
-   whether our stylesheet renders its DOM. display:none costs zero tracking events.
-   What opacity:0 actually left behind was worse than a visible banner — the node still
-   occupied space, still swallowed pointer clicks across that area, and was still exposed
-   to screen readers. Do not revert to opacity; the script tag in app/layout.tsx is what
-   keeps tracking alive, and it is untouched by any of this. */
-#zs_fl_chat,
-span.siqico-chat.zsiq-chat-icn,
-#zsiqwidget,
-#zsiq_float,
-#zsiqlivechat,
-iframe[src*='salesiq'],
-#zsp_txtbox2,
-.zsiq_theme1,
-#zsiq_float a,
-.zsiq_flt_rel,
-#zs_enq_form,
-#zs_consent_bar,
-#zs_consent,
-.zs_consent_banner,
-#zsiq_prechat,
-#zsiq_welcomediv,
-#zsiq_maintitle,
-#zsiq_float_main {
-  display: none !important;
-  pointer-events: none !important;
-}
+
 /* CHANGE: 2026-09-30 — the `.consent-tally-slash` keyframes that used to live here were
    removed. The cookie notice no longer draws its mark in; it uses a static cookie glyph.
    Nothing referenced the keyframes any more, so keeping them would be dead CSS. */

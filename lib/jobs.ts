@@ -88,7 +88,7 @@ export const jobs: Job[] = [
     aboutRole:
       "As a Customer Relations Executive, you keep customers happy and loyal. You own the relationship layer: onboarding, periodic check-ins, renewal cycles, cross-sell of relevant Tally/Cloud/AMC plans and escalating technical needs to our support team with complete follow-through.",
     lookingFor:
-      "What makes a strong CRE here:\n- 0-3 years in customer success, account management or client support\n- Warm, professional communication — you build trust fast\n- Good grasp of Tally basics or ability to learn them quickly\n- Organised follow-through: every query logged, tracked and closed\n- CRM fluency (Zoho/any) is a plus",
+      "What makes a strong CRE here:\n- 0-3 years in customer success, account management or client support\n- Warm, professional communication — you build trust fast\n- Good grasp of Tally basics or ability to learn them quickly\n- Organised follow-through: every query logged, tracked and closed\n- CRM fluency (any CRM) is a plus",
     whyJoinUs:
       "Why people love this role:\n- Own a real portfolio of SME relationships\n- Combine account management with Tally/Cloud product depth\n- Performance-linked rewards on retention and renewals\n- Clear path to senior customer-success roles",
     postedAt: "2026-09-17T09:00:00Z",

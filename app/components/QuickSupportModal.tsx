@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import SaraText from './SaraText';
 import { useVisitor } from './VisitorProvider';
+import { createDraftTracker } from '@/lib/draft-tracker';
 import { findMatchingTutorials, type Tutorial } from '@/lib/tutorial-matcher';
 import { matchTopic, getFallbackResponse, SARA_WELCOME, type Topic } from '@/lib/sara-topics';
 
@@ -78,6 +79,7 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
   const stopRequestedRef = useRef(false);
   const abortControllerRef = useRef<AbortController | null>(null);
   const recognitionRef = useRef<any>(null);
+  const chatIdRef = useRef<string|null>(null);
 
   // CHANGE: 2026-10-07 — lead-capture state; sessionId ties the lead to its
   // visitor record (VisitorProvider wraps the whole (site) layout).
@@ -85,6 +87,8 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
   const [capture, setCapture] = useState<CaptureState>(CAPTURE_IDLE);
   const leadRequestIdRef = useRef<string>('');
   const lastTopicRef = useRef<string>('');
+  const chatIdRefModal = useRef<string|null>(null);
+  const draftTrackerRef = useRef<ReturnType<typeof createDraftTracker>|null>(null);
 
   /**
    * VOICE INPUT ENGINE
@@ -240,13 +244,31 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
         typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function'
           ? crypto.randomUUID()
           : `req-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+      if (sessionId) {
+        draftTrackerRef.current = createDraftTracker();
+        draftTrackerRef.current.setSessionId(sessionId);
+        draftTrackerRef.current.start({
+          entryPoint:'ask-sara',
+          path: typeof window!=='undefined'?window.location.pathname:'/',
+          source:'ask-sara-modal',
+          meta:{referrer:typeof document!=='undefined'?document.referrer:'', userAgent:typeof navigator!=='undefined'?navigator.userAgent:'', viewport:typeof window!=='undefined'?`${window.innerWidth}x${window.innerHeight}`:''}
+        });
+        fetch('/api/chats/start',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({sessionId,path:typeof window!=='undefined'?window.location.pathname:'/',entryPoint:'ask-sara-modal',meta:{referrer:document.referrer,userAgent:navigator.userAgent}})}).then(r=>r.json()).then(d=>{if(d.chatId) chatIdRefModal.current=d.chatId}).catch(()=>{});
+      }
     }
   }, [isOpen]);
 
   // CHANGE: 2026-10-07 — reset the capture state machine when the chat closes;
   // a new open starts clean (server dedupe still holds via the new requestId).
   useEffect(() => {
-    if (!isOpen) setCapture(CAPTURE_IDLE);
+    if (!isOpen) {
+      setCapture(CAPTURE_IDLE);
+      try { draftTrackerRef.current?.onPageHide(); draftTrackerRef.current?.destroy(); } catch {}
+      if (chatIdRefModal.current && sessionId) {
+        fetch('/api/chats/end',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({chatId:chatIdRefModal.current,sessionId,endedReason:'closed'})}).catch(()=>{});
+      }
+      chatIdRefModal.current=null; draftTrackerRef.current=null;
+    }
   }, [isOpen]);
 
   const typeMessage = async (fullText: string, userQuery?: string) => {
@@ -331,6 +353,9 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
 
     setMessages(prev => [...prev, userMessage]);
     setIsTyping(true);
+    if (chatIdRefModal.current && sessionId) {
+      fetch('/api/chats/append',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({chatId:chatIdRefModal.current,sessionId,turn:{role:'user',text}})}).catch(()=>{});
+    }
 
     const apiMessages = messages.map(m => ({
       role: m.sender === 'ai' ? 'assistant' : 'user',
@@ -362,11 +387,18 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
         : '';
       if (clean && clean.length > 5) {
         const aiId = await typeMessage(clean, text);
+        if (chatIdRefModal.current && sessionId) {
+          fetch('/api/chats/append',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({chatId:chatIdRefModal.current,sessionId,turn:{role:'assistant',text:clean,topic:lastTopicRef.current||undefined}})}).catch(()=>{});
+        }
         attachLeadOfferIfRelevant(aiId, text);
       } else {
         const result = matchTopic(text);
         if (result) lastTopicRef.current = result.topic.label;
-        const aiId = await typeMessage(result ? result.topic.answer : getFallbackResponse(text), text);
+        const ans = result ? result.topic.answer : getFallbackResponse(text);
+        const aiId = await typeMessage(ans, text);
+        if (chatIdRefModal.current && sessionId) {
+          fetch('/api/chats/append',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({chatId:chatIdRefModal.current,sessionId,turn:{role:'assistant',text:ans,topic:result?result.topic.label:undefined}})}).catch(()=>{});
+        }
         if (result) setMessages(prev => prev.map(m => m.text === result.topic.answer ? { ...m, followUp: result.topic.followUp } : m));
         attachLeadOfferIfRelevant(aiId, text);
       }
@@ -519,6 +551,7 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
     if (!inputText.trim() || isTyping || isAiResponding) return;
 
     const userText = inputText.trim();
+    draftTrackerRef.current?.onBlur();
 
     const injectionPatterns = [
       /ignore\s+(all\s+)?previous/i, /ignore\s+(all\s+)?instructions/i,

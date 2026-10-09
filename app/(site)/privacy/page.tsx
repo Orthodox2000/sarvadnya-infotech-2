@@ -35,6 +35,13 @@ export default function PrivacyPolicyPage() {
 
           <h3 className="font-black text-slate-900 mb-2 mt-6 text-sm uppercase tracking-wider">B. Data Collected Automatically</h3>
           <p>To operate, secure, and improve the site, and to help us respond to you faster, we passively collect and store the following technical information on every visit:</p>
+
+          <h3 className="font-black text-slate-900 mb-2 mt-6 text-sm uppercase tracking-wider">C. Chat Saving & Draft Input Saving</h3>
+          <p>When you use "Ask Sara" (AI consultant) or "Learn Sara", we may save the conversation (your messages and our replies) along with basic session details (IP address, browser, page, referrer). We only save final replies, not keystroke-by-keystroke streams.</p>
+          <p>If you type details such as name, email, phone number, query or message into any form, Ask Sara, or Learn Sara but do not submit, we may temporarily save those draft inputs in a separate store to help us understand interest if you return. These drafts are not treated as confirmed enquiries and do not trigger emails or calls automatically.</p>
+          <p>This is done on a first-party basis, in a batched/gradual manner to keep the site smooth. Drafts and chat logs are kept for up to 30 days and are then automatically removed. We do not share these non-submitted drafts or chat logs with third parties for advertising.</p>
+          <p>You can request deletion of your chat or draft records by contacting us.</p>
+
           <ul className="list-disc pl-6 space-y-1.5 mt-2">
             <li><strong className="text-slate-900">IP address</strong> — your full IP address is stored and used to determine approximate location, detect proxy/VPN usage, and perform reverse DNS lookups.</li>
             <li><strong className="text-slate-900">Approximate geolocation</strong> — country, region/state, city, ISP, ASN, and time zone derived from your IP address.</li>

@@ -1,5 +1,5 @@
 /** @type {import('next').NextConfig} */
-// CHANGE: 2026-08-21 — Zoho SalesIQ runs tracking-only (chat button hidden via JS); CSP allows its script/analytics domains
+// CHANGE: 2026-08-21 — Zoho SalesIQ removed (third-party live chat discontinued). CSP cleaned.
 // CHANGE: 2026-10-02 — allow Razorpay for the /demo cart test checkout (SP-1).
 // WHY: checkout.razorpay.com is not enough on its own. At popup time checkout.js pulls
 // cdn.razorpay.com/static/cx/razorpay-risk-detection/bundle.js, so allowing only the
@@ -10,12 +10,12 @@
 // global directive — scoping would only ever add, never narrow.
 const csp = [
   `default-src 'self'`,
-  `script-src 'self' 'unsafe-eval' 'unsafe-inline' https://vercel.live https://*.razorpay.com https://*.vercel-insights.com https://va.vercel-scripts.com https://*.zohopublic.in https://*.zohocdn.com https://sc.lfeeder.com`,
-  `style-src 'self' 'unsafe-inline' https://*.zohocdn.com`,
-  `img-src 'self' data: blob: https://*.public.blob.vercel-storage.com https://img.youtube.com https://sarvadnya-infotech.vercel.app https://sarvadnyainfotech.com https://www.sarvadnyainfotech.com https://*.vercel-scripts.com https://*.zohopublic.in https://*.zohocdn.com`,
-  `font-src 'self' data: https://*.zohocdn.com`,
-  `connect-src 'self' https://api.groq.com https://*.razorpay.com https://*.public.blob.vercel-storage.com https://sarvadnya-infotech.vercel.app https://sarvadnyainfotech.com https://www.sarvadnyainfotech.com https://*.vercel-insights.com https://*.zohopublic.in wss://*.zohopublic.in https://*.zohocdn.com https://sc.lfeeder.com`,
-  `frame-src 'self' https://www.google.com https://*.razorpay.com https://salesiq.zohopublic.in`,
+  `script-src 'self' 'unsafe-eval' 'unsafe-inline' https://vercel.live https://*.razorpay.com https://*.vercel-insights.com https://va.vercel-scripts.com https://sc.lfeeder.com`,
+  `style-src 'self' 'unsafe-inline'`,
+  `img-src 'self' data: blob: https://*.public.blob.vercel-storage.com https://img.youtube.com https://sarvadnya-infotech.vercel.app https://sarvadnyainfotech.com https://www.sarvadnyainfotech.com https://*.vercel-scripts.com`,
+  `font-src 'self' data:`,
+  `connect-src 'self' https://api.groq.com https://*.razorpay.com https://*.public.blob.vercel-storage.com https://sarvadnya-infotech.vercel.app https://sarvadnyainfotech.com https://www.sarvadnyainfotech.com https://*.vercel-insights.com https://sc.lfeeder.com`,
+  `frame-src 'self' https://www.google.com https://*.razorpay.com`,
   `object-src 'none'`,
   `base-uri 'self'`,
   `form-action 'self'`,

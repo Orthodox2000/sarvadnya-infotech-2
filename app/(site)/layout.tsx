@@ -89,9 +89,7 @@ export default async function SiteLayout({
           {children}
           <SupportButton initialSettings={settings} />
           <NotificationToast />
-          {/* CHANGE: 2026-09-30 — informational data-collection notice, replaces Zoho SalesIQ's
-              own consent banner (suppressed in globals.css). Consent is assumed by browsing,
-              so this never blocks anything — it only informs and deep-links to /privacy. */}
+          {/* CHANGE: 2026-09-30 — informational data-collection notice */}
           <ConsentBanner />
           {/* CHANGE: 2026-10-02 — cart "added" popover renders site-wide from the store event. */}
           <CartAddedPopover />
