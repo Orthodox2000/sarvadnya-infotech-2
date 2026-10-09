@@ -569,7 +569,8 @@ main > div:first-of-type {
 }
 
 /* CHANGE: 2026-08-31 — animation properties moved to inline style in NewsFeed.tsx
-   so the duration can be set per-render (measured track width / 35 px/s).
+   so the duration can be set per-render (measured track width).
+   CHANGE: 2026-10-09 — ticker speed lowered to ~15 px/s (owner: "too fast").
    Only layout + GPU hints remain here. */
 .animate-marquee-infinite {
   display: flex !important;

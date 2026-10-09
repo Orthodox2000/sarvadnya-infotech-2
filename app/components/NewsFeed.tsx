@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { NewsItem } from '@/lib/news';
 
-const TICKER_SPEED_PX_PER_SEC = 30;
+const TICKER_SPEED_PX_PER_SEC = 15;
 
 export default function NewsFeed({ initialData }: { initialData?: NewsItem[] }) {
   const [newsItems, setNewsItems] = useState<NewsItem[]>(initialData || []);

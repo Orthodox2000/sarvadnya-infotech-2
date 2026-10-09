@@ -2,6 +2,8 @@
 // GPC opt-out gating removed — full IP and geo always collected (see AGENTS.md: never assume).
 import { ObjectId } from 'mongodb';
 import { getDb } from '@/lib/mongodb-utils';
+// CHANGE: 2026-10-09 — defensive Date coercion (JSON-dump imports stored Dates as ISO strings).
+import { toDateMs } from '@/lib/date-coerce';
 import dns from 'dns';
 import { promisify } from 'util';
 
@@ -386,7 +388,10 @@ export async function lookupGeo(
 
   const col = await getDb().then((db) => db.collection<IpCacheRecord>('ip_cache'));
   const hit = await col.findOne({ ip });
-  if (hit && hit.expireAt && hit.expireAt.getTime() > Date.now()) {
+  // CHANGE: 2026-10-09 — `expireAt` may be an ISO string (JSON-dump import), which
+  // previously threw `expireAt.getTime is not a function` on /api/identify. toDateMs
+  // coerces any stored type; NaN (unparseable) simply falls through to a fresh lookup.
+  if (hit && toDateMs(hit.expireAt) > Date.now()) {
     return { geo: hit.data ?? null, cached: true };
   }
 
@@ -512,10 +517,14 @@ export async function recordVisitor(input: {
 
   const created = Boolean(result?.lastErrorObject?.upserted) || result?.value == null;
   const existingGeoAt: Date | null = result?.value?.geoAt ?? null;
+  // CHANGE: 2026-10-09 — geoAt may be an ISO string (JSON-dump import); toDateMs
+  // coerces it, and a non-finite result forces a fresh lookup instead of throwing.
+  const existingGeoMs = toDateMs(existingGeoAt);
   const needsGeo =
     created ||
     !existingGeoAt ||
-    now.getTime() - existingGeoAt.getTime() > GEO_REFRESH_MS;
+    !Number.isFinite(existingGeoMs) ||
+    now.getTime() - existingGeoMs > GEO_REFRESH_MS;
 
   visitorLog('debug', created ? 'session created' : 'session updated', {
     session: maskSessionId(payload.sessionId),

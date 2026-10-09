@@ -9,6 +9,7 @@
 // by the client (CheckoutContents), the public flow routes and the nested admin
 // repo (hand-ported). Do NOT add Mongo types here — the single UpdateFilter cast
 // lives at the driver boundary in the route / mongodb-utils layer.
+import { toDateMs } from './date-coerce.ts';
 
 /** The complete, validated order status vocabulary. Case-sensitive. */
 export const ORDER_STATUSES = ['created', 'verified', 'refunded', 'fulfilled'] as const;
@@ -86,7 +87,9 @@ export function orderStatusChangeUpdate(
  * orders are deliberately not backfilled. Pure and testable.
  */
 export function buildOrderTimeline(history: StatusEvent[]): TimelineEntry[] {
-  const ordered = [...history].sort((a, b) => b.at.getTime() - a.at.getTime());
+  // CHANGE: 2026-10-09 — legacy `at` values may be ISO strings (JSON-dump import);
+  // toDateMs avoids the `.getTime is not a function` crash in the payments timeline.
+  const ordered = [...history].sort((a, b) => toDateMs(b.at) - toDateMs(a.at));
   return ordered.map((ev, i) => ({ ...ev, from: ordered[i + 1]?.to ?? null }));
 }
 
