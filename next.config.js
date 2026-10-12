@@ -84,6 +84,19 @@ const nextConfig = {
       { source: '/understanding-client-erp-requirements', destination: '/services', permanent: true },
       { source: '/offering-right-solution-onlinehelping-in-implementation-of-offered-erp', destination: '/services', permanent: true },
       { source: '/ensure-quality-training-and-service-thereafter-increase-client-satisfaction', destination: '/services', permanent: true },
+      // 2026-10-12 — clear GSC 404s reported by user
+      { source: '/news/tally-dealers-mumbai', destination: '/news', permanent: true },
+      { source: '/category/uncategorized', destination: '/news', permanent: true },
+      { source: '/category/uncategorized/', destination: '/news', permanent: true },
+      { source: '/shop/bumper+stickers', destination: '/products', permanent: true },
+      { source: '/shop/bumper stickers', destination: '/products', permanent: true },
+      { source: '/shop/gallery-boards', destination: '/products', permanent: true },
+      { source: '/shop/framed-prints', destination: '/products', permanent: true },
+      { source: '/shop/all-mouse-pads', destination: '/products', permanent: true },
+      { source: '/shop/cool+stickers', destination: '/products', permanent: true },
+      { source: '/shop/cool stickers', destination: '/products', permanent: true },
+      { source: '/?et_core_page_resource', destination: '/', permanent: true },
+      { source: '/?et_core_page_resource=', destination: '/', permanent: true },
       // NOTE 2026-10-07 — trailing-slash variants (/tally-prime/, /blog/, /about-us/, …) are NOT
       // listed here and CANNOT be collapsed to a single hop on this stack: Next's own trailing-slash
       // 308 fires before BOTH middleware AND this table (verified in dev + live: /foo/ → /foo → target
