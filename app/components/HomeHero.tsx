@@ -154,7 +154,11 @@ export default function HomeHero({ hero = HERO_CONTENT, emailCopy = false, backg
               </div>
 
               <div className={`relative min-h-[70px] md:min-h-[60px] ${getAnimationClasses('delay-200')}`}>
-                <h1 className={`font-playfair text-4xl font-bold leading-tight tracking-tight ${isDark ? 'text-white' : 'text-slate-900'} sm:text-5xl lg:text-[3.4rem] invisible`}>{hero.titleText}</h1>
+                {/* CHANGE: 2026-10-12 — exactly ONE <h1> per page. This first node is only a
+                    layout-measurement copy of the headline (it reserves the box height so the
+                    typing effect does not reflow). It matches the visible headline's typography
+                    but is NOT a heading — a second <h1> here gave the homepage two H1s. */}
+                <div aria-hidden="true" className={`font-playfair text-4xl font-bold leading-tight tracking-tight ${isDark ? 'text-white' : 'text-slate-900'} sm:text-5xl lg:text-[3.4rem] invisible`}>{hero.titleText}</div>
                 <h1 className={`absolute top-0 left-0 font-playfair text-4xl font-bold leading-tight tracking-tight ${isDark ? 'text-white' : 'text-slate-900'} sm:text-5xl lg:text-[3.4rem] w-full flex flex-wrap items-baseline`}>
                   {displayText.split(' ').map((word, i) => {
                     const cleanWord = word.replace(/[.,%]/g, '').toLowerCase();

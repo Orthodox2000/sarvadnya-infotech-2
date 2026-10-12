@@ -369,6 +369,10 @@ export default function LearnSaraPage() {
   return (
     <div ref={containerRef} className="fixed inset-0 flex flex-col bg-[#F5F4ED] overflow-hidden z-[3200]">
 
+      {/* CHANGE: 2026-10-12 — SEO/a11y: the page had no <h1> at all. A visually-hidden H1
+          gives the page a single top-level heading without changing the chat UI. */}
+      <h1 className="sr-only">Learn Sara — TallyPrime Learning Assistant</h1>
+
       {/* Chat Area */}
       <div ref={scrollContainerRef} className="flex-1 overflow-y-auto no-scrollbar">
         <div className="max-w-3xl mx-auto px-4 py-4 space-y-1">
