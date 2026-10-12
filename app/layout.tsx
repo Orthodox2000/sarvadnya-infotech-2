@@ -1,7 +1,5 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Playfair_Display } from "next/font/google";
-import { Analytics } from "@vercel/analytics/next";
-import { SpeedInsights } from "@vercel/speed-insights/next";
 import { cn } from "@/lib/utils";
 import { SITE_DESCRIPTION, SITE_NAME, SITE_TITLE, SITE_URL, orgJsonLd, webSiteJsonLd } from "@/lib/seo";
 import "./globals.css";
@@ -58,9 +56,9 @@ export default function RootLayout({
         {/* CHANGE: 2026-08-27 — Organization + WebSite JSON-LD for search/AI indexing. */}
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([orgJsonLd(), webSiteJsonLd()]) }} />
         {children}
-        <Analytics />
-        <SpeedInsights />
-
+        {/* CHANGE: 2026-10-12 — <Analytics/> + <SpeedInsights/> live ONLY in app/(site)/layout.tsx.
+            Every route directory sits under (site)/, so the pair added here on 73cb6c7 was a SECOND
+            mount on every page; removed to restore the single mount carried since 32e84d1. */}
       </body>
     </html>
   );
