@@ -116,7 +116,7 @@ function asString(v: unknown): string {
  * 10-digit number that happens to start with 91 is never destroyed, while
  * `+91 98213 09060`, `919821309060` and `9821309060` all collapse to 10 digits).
  */
-function normalizePhone(phone: unknown): string {
+export function normalizePhone(phone: unknown): string {
   const digits = asString(phone).replace(/\D/g, '');
   if (digits.length > 10 && digits.startsWith('91')) return digits.slice(2);
   return digits;

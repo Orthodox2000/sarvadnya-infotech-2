@@ -3,7 +3,9 @@ import crypto from 'node:crypto';
 import { assertTestKeys, createOrder, getPublishableKeyId } from '@/lib/cart/payment';
 import { repriceOrderItems } from '@/lib/cart/pricing';
 import { MAX_CART_LINES } from '@/lib/cart/math';
-import { createRateLimiter } from '@/lib/cart/rate-limit';
+// CHANGE: 2026-10-12 — per-transaction rate limiting (ip + cart + buyer identity). See the
+// module header for why a per-IP window alone is the wrong shape for a checkout.
+import { createTransactionLimiter, cartFingerprint, identityFingerprint } from '@/lib/cart/transaction-limit';
 import { getDb } from '@/lib/mongodb-utils';
 import { isIgnoredRequest, lookupGeo } from '@/lib/visitors';
 // CHANGE: 2026-10-03 — SP-3 buyer capture: customer is validated server-side and
@@ -41,7 +43,14 @@ import { after } from 'next/server';
 export const runtime = 'nodejs';
 export const maxDuration = 60;
 
-const rateLimiter = createRateLimiter(Number(process.env.CART_ORDER_RATE_LIMIT || 20), 60_000);
+const orderLimiter = createTransactionLimiter({
+  // Burst brake per IP. Env-overridable (CART_ORDER_RATE_LIMIT).
+  ip: { limit: Number(process.env.CART_ORDER_RATE_LIMIT || 20), windowMs: 60_000 },
+  // Re-submitting the SAME cart (same IP) — the classic "spam the order button" shape.
+  cart: { limit: Number(process.env.CART_ORDER_CART_LIMIT || 6), windowMs: 60_000 },
+  // Same buyer details (email + phone) repeatedly opening orders, across any IP.
+  identity: { limit: Number(process.env.CART_ORDER_IDENTITY_LIMIT || 8), windowMs: 300_000 },
+});
 
 function getClientIp(request: Request): string {
   return (
@@ -63,13 +72,13 @@ export async function POST(request: Request) {
     );
   }
 
-  // 2. Rate limit.
+  // 2. Rate limit — the per-IP burst brake runs before any parsing or Razorpay call.
   const ip = getClientIp(request);
-  const { limited, retryAfter } = rateLimiter.check(ip);
-  if (limited) {
+  const ipDecision = orderLimiter.check({ ip });
+  if (ipDecision.limited) {
     return NextResponse.json(
-      { ok: false, error: 'Too many orders. Wait a moment and try again.' },
-      { status: 429, headers: { 'Retry-After': String(retryAfter) } },
+      { ok: false, error: 'Too many orders. Wait a moment and try again.', scope: ipDecision.scope },
+      { status: 429, headers: ipDecision.headers },
     );
   }
 
@@ -98,6 +107,27 @@ export async function POST(request: Request) {
     return NextResponse.json(
       { ok: false, error: 'Please complete your details.', errors: customerResult.errors },
       { status: 400 },
+    );
+  }
+
+  // 3.6 Per-TRANSACTION limits (2026-10-12): the same cart re-submitted from this IP, or the
+  //     same buyer identity hammering orders. Runs BEFORE the Razorpay call so a spam loop
+  //     never creates real gateway orders. The hashes are in-process keys only — never stored.
+  const txnDecision = orderLimiter.check({
+    cart: `${ip}:${cartFingerprint(rawItems as Array<{ slug?: unknown; qty?: unknown }>)}`,
+    identity: identityFingerprint(customerResult.value.email, customerResult.value.phone),
+  });
+  if (txnDecision.limited) {
+    return NextResponse.json(
+      {
+        ok: false,
+        error:
+          txnDecision.scope === 'cart'
+            ? 'This order was just submitted. Wait a moment before trying again.'
+            : 'Too many order attempts for these details. Please try again shortly.',
+        scope: txnDecision.scope,
+      },
+      { status: 429, headers: txnDecision.headers },
     );
   }
 

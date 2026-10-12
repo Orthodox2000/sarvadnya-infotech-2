@@ -2,7 +2,8 @@ import { NextResponse } from 'next/server';
 import { fetchOrderAmountPaise, verifySignature } from '@/lib/cart/payment';
 import { computeTotals, toPriceMap, type CartItem } from '@/lib/cart/math';
 import { getPrices } from '@/lib/prices-server';
-import { createRateLimiter } from '@/lib/cart/rate-limit';
+// CHANGE: 2026-10-12 — per-transaction rate limiting (ip + razorpayOrderId).
+import { createTransactionLimiter } from '@/lib/cart/transaction-limit';
 import { getDb } from '@/lib/mongodb-utils';
 import { isIgnoredRequest } from '@/lib/visitors';
 // CHANGE: 2026-10-03 — SP-3: the `verified` hop is appended through the shared
@@ -30,7 +31,12 @@ import { orderStatusChangeUpdate, type Customer } from '@/lib/order-status';
 export const runtime = 'nodejs';
 export const maxDuration = 60;
 
-const rateLimiter = createRateLimiter(60, 60_000);
+const verifyLimiter = createTransactionLimiter({
+  // Burst brake per IP. Env-overridable (CART_VERIFY_RATE_LIMIT).
+  ip: { limit: Number(process.env.CART_VERIFY_RATE_LIMIT || 60), windowMs: 60_000 },
+  // Brute-forcing the signature of ONE order from one IP.
+  order: { limit: Number(process.env.CART_VERIFY_ORDER_LIMIT || 12), windowMs: 60_000 },
+});
 
 function getClientIp(request: Request): string {
   return (
@@ -52,11 +58,13 @@ interface VerifyLine {
 }
 
 export async function POST(request: Request) {
-  const { limited, retryAfter } = rateLimiter.check(getClientIp(request));
-  if (limited) {
+  // 0. Per-IP burst brake, before the body is even parsed.
+  const ip = getClientIp(request);
+  const ipDecision = verifyLimiter.check({ ip });
+  if (ipDecision.limited) {
     return NextResponse.json(
-      { ok: false, verified: false, error: 'Too many verification attempts.' },
-      { status: 429, headers: { 'Retry-After': String(retryAfter) } },
+      { ok: false, verified: false, error: 'Too many attempts. Wait a moment and try again.', scope: ipDecision.scope },
+      { status: 429, headers: ipDecision.headers },
     );
   }
 
@@ -79,6 +87,15 @@ export async function POST(request: Request) {
     return NextResponse.json(
       { ok: false, verified: false, error: 'Missing or malformed payment details.' },
       { status: 400 },
+    );
+  }
+
+  // Per-ORDER limit (2026-10-12): hammering the signature check for a single order id.
+  const orderDecision = verifyLimiter.check({ order: `${razorpayOrderId}:${ip}` });
+  if (orderDecision.limited) {
+    return NextResponse.json(
+      { ok: false, verified: false, error: 'Too many attempts for this order. Please try again shortly.', scope: orderDecision.scope },
+      { status: 429, headers: orderDecision.headers },
     );
   }
 
