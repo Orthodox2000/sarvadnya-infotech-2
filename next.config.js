@@ -88,15 +88,11 @@ const nextConfig = {
       { source: '/news/tally-dealers-mumbai', destination: '/news', permanent: true },
       { source: '/category/uncategorized', destination: '/news', permanent: true },
       { source: '/category/uncategorized/', destination: '/news', permanent: true },
-      { source: '/shop/bumper+stickers', destination: '/products', permanent: true },
       { source: '/shop/bumper stickers', destination: '/products', permanent: true },
       { source: '/shop/gallery-boards', destination: '/products', permanent: true },
       { source: '/shop/framed-prints', destination: '/products', permanent: true },
       { source: '/shop/all-mouse-pads', destination: '/products', permanent: true },
-      { source: '/shop/cool+stickers', destination: '/products', permanent: true },
       { source: '/shop/cool stickers', destination: '/products', permanent: true },
-      { source: '/?et_core_page_resource', destination: '/', permanent: true },
-      { source: '/?et_core_page_resource=', destination: '/', permanent: true },
       // NOTE 2026-10-07 — trailing-slash variants (/tally-prime/, /blog/, /about-us/, …) are NOT
       // listed here and CANNOT be collapsed to a single hop on this stack: Next's own trailing-slash
       // 308 fires before BOTH middleware AND this table (verified in dev + live: /foo/ → /foo → target
