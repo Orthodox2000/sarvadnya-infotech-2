@@ -10,7 +10,9 @@ export const metadata = seoMetadata({
   title: "Tally News & Software Company Updates in Navi Mumbai",
   description: "Latest Tally, TSS renewal, cloud and software insights from Sarvadnya Infotech LLP — a certified Tally partner in Belapur, Navi Mumbai. Tips for tally partners & software companies in Mumbai.",
   path: "/news",
-  keywords: ["tally news", "tally partner mumbai", "tally dealers mumbai", "tally erp 9 add ons", "software companies in belapur", "software companies in navi mumbai", "tally updates", "tally announcements"],
+  // CHANGE: 2026-10-13 — "tally dealers mumbai" removed: the owner scrubbed all reseller/"dealer"
+  // branding from the blog (news stays partner-framed). Replaced with the local partner term.
+  keywords: ["tally news", "tally partner mumbai", "tally partner navi mumbai", "tally erp 9 add ons", "software companies in belapur", "software companies in navi mumbai", "tally updates", "tally announcements"],
 });
 
 export default async function NewsPage() {

@@ -149,7 +149,25 @@ async function run() {
   // return 200; if they are absent, their ABSENCE is asserted, because that isolation is
   // the guarantee this repo is supposed to hold.
   const adminRoutesDir = path.join(process.cwd(), 'app', 'api', 'admin');
-  const adminRoutesExist = fs.existsSync(adminRoutesDir);
+  // CHANGE: 2026-10-13 — a bare fs.existsSync() was fooled by EMPTY leftover directories.
+  // Git does not track directories, so after the capture routes moved to app/api/chats and
+  // app/api/drafts, `app/api/admin/chats` + `app/api/admin/drafts` survived as empty folders.
+  // existsSync() then returned true, this branch flipped to "admin routes exist", and the
+  // suite failed (`Expected 200, got 404`) against a deployment where the admin surface is
+  // correctly absent — a red suite with no real regression behind it. Only REAL route files
+  // count now, so the check is honest in both repos and does not depend on a tidy worktree.
+  const collectAdminRouteFiles = (dir) => {
+    let found = [];
+    if (!fs.existsSync(dir)) return found;
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      const full = path.join(dir, entry.name);
+      if (entry.isDirectory()) found = found.concat(collectAdminRouteFiles(full));
+      else if (entry.isFile() && /^route\.(ts|tsx|js|jsx)$/.test(entry.name)) found.push(full);
+    }
+    return found;
+  };
+  const adminRouteFiles = collectAdminRouteFiles(adminRoutesDir);
+  const adminRoutesExist = adminRouteFiles.length > 0;
 
   if (ADMIN_KEY) {
     console.log('\n🔐 Admin API');
@@ -164,7 +182,7 @@ async function run() {
         const res = await request('GET', '/api/admin/stats');
         expect(res.status).toBe(404);
       });
-      console.log('   ↳ app/api/admin does not exist — asserting the admin surface stays out of the public repo');
+      console.log('   ↳ app/api/admin has no route files — asserting the admin surface stays out of the public repo');
     }
   } else {
     console.log('\n🔐 Admin API (skipped — ADMIN_ACCESS_KEY not set)');

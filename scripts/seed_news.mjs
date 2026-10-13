@@ -357,13 +357,22 @@ Sarvadnya Infotech offers an HRMS solution that covers payroll, attendance and e
     date: 'September 5, 2026',
     category: 'TSS & Renewals',
     description: "TSS = Tally Software Services, the annual subscription that keeps Tally Prime current with updates, compliance changes and support. Here is what 'TSS has expired' means on your licence screen and how renewal restores coverage.",
-    tags: ['tss expiry meaning in tally', 'tss expired in tally means', 'tally tss renewal', 'tally tss expired', 'tss full form in tally', 'tss in tally', 'tss renewal means'],
+    // CHANGE: 2026-10-13 — tags extended with the Search Console question variants
+    // ("what is tally tss", "what is tss in tally", "what does tss mean") that were
+    // already being served by this post but not declared.
+    tags: ['tss expiry meaning in tally', 'tss expired in tally means', 'tally tss renewal', 'tally tss expired', 'tss full form in tally', 'tss in tally', 'tss renewal means', 'what is tally tss', 'what is tss in tally', 'what is tss in tally prime', 'what does tss mean'],
     link: '/services/tss',
     author: 'Sarvadnya Infotech LLP',
     faqs: [
       {
         q: 'What is the full form of TSS in Tally?',
         a: 'TSS stands for Tally Software Services. It is the annual subscription plan for Tally Prime and Tally ERP 9 that covers product updates, statutory compliance changes and technical support from Tally.',
+      },
+      {
+        // CHANGE: 2026-10-13 — distinguishes the two things owners conflate, and quietly
+        // bridges to the licence-expiry post. Target: "what is tally tss".
+        q: 'Is TSS the same as a Tally licence?',
+        a: 'No. A Tally licence is the one-time purchase that lets you run TallyPrime, and it stays valid for life. TSS is the annual subscription attached to that licence that keeps the software updated, compliant and supported. That is why a licence can be perfectly valid while TSS has expired.',
       },
       {
         q: 'What does "TSS expired" mean in Tally?',
@@ -406,7 +415,9 @@ Renewal itself is quick with a verified partner. Sarvadnya Infotech handles Tall
     date: 'October 7, 2026',
     category: 'TSS & Renewals',
     description: 'Step by step: how to check the TSS expiry date in TallyPrime on the licence screen, what the coverage end date means, and how to renew before it lapses.',
-    tags: ['how to check tss expiry date in tally prime', 'tss expiry date', 'tss expired in tally means', 'tally tss renewal'],
+    // CHANGE: 2026-10-13 — tags extended for the Search Console variants
+    // ("how to check tally expiry date", "how to check tally prime license expiry date").
+    tags: ['how to check tss expiry date in tally prime', 'tss expiry date', 'tss expired in tally means', 'tally tss renewal', 'how to check tally expiry date', 'how to check tally prime license expiry date', 'tally license expiry date'],
     link: '/services/tss',
     author: 'Sarvadnya Infotech LLP',
     faqs: [
@@ -421,6 +432,12 @@ Renewal itself is quick with a verified partner. Sarvadnya Infotech handles Tall
       {
         q: 'Can I renew TSS after the expiry date has passed?',
         a: 'Yes. Renewal is processed from your licence details even after expiry. Contact a Tally certified partner with your serial number and unlock code, and coverage resumes as soon as the renewal is applied.',
+      },
+      {
+        // CHANGE: 2026-10-13 — covers the "how to check tally expiry date" variant (owners
+        // searching for the licence date, not the TSS date) and bridges to the licence post.
+        q: 'Does this show the Tally licence expiry date as well?',
+        a: 'The licence screen shows both: your licence details (serial number, edition, and whether it is a perpetual or rental licence) and the TSS coverage end date. A perpetual licence does not expire - only TSS does. A rental licence, however, does have an end date of its own, and TSS is renewed along with the rental period.',
       },
     ],
     content: `Checking the TSS expiry date in TallyPrime takes under a minute, and knowing it early protects your business from a quietly lapsed subscription at a compliance deadline. Here is how to find it.
@@ -536,6 +553,226 @@ Your licensing options abroad:
 Licensing rules vary by country and depend on your current license and TSS status, so check with your Tally partner before moving systems abroad. A partner can confirm whether an upgrade or a regional license fits your situation and prepare the transition before you relocate.
 
 See the TallyPrime license options on our products page, or contact Sarvadnya Infotech for a licensing check before you move.`,
+  },
+  // CHANGE: 2026-10-13 - SEO batch from the owner's Search Console export. New posts target
+  // "how to lock data in tally prime" / "how to lock tally prime", "how to add gst number in
+  // tally erp 9" / "how to add gst in tally erp 9", "what is tally capital" and
+  // "document management software companies". Facts grounded on TallyHelp / tallysolutions.com
+  // and the owner's DMS feature list; ASCII-only (hyphens, never em-dashes, no rupee glyph).
+  {
+    slug: 'how-to-lock-data-in-tallyprime',
+    title: 'How to Lock Data in TallyPrime (Company, Users and Back-Dated Entries)',
+    date: 'October 13, 2026',
+    category: 'Tally Prime',
+    description: 'How to lock data in TallyPrime: enable Security Control and the administrator password, create user roles, and stop back-dated entries with a cut-off date.',
+    tags: ['how to lock data in tally prime', 'how to lock tally prime', 'security control in tally prime', 'user roles in tally prime', 'lock back dated vouchers tally', 'tallyvault'],
+    link: '/services/amc',
+    author: 'Sarvadnya Infotech LLP',
+    faqs: [
+      {
+        q: 'How do I lock my company data in TallyPrime?',
+        a: 'Open Alt+K (Company) - Create / Alter, set "Control User Access to Company Data" to Yes, and enter an administrator username and password. From then on TallyPrime asks for those credentials before the company opens. Press Ctrl+A to save.',
+      },
+      {
+        q: 'How do I stop users from entering or changing old vouchers?',
+        a: 'Use the cut-off date for back-dated vouchers along with "Days allowed for back dated vouchers". TallyPrime then refuses to record or alter a transaction before the date you set, which is what most businesses want after an audit or a filed GST return.',
+      },
+      {
+        q: 'I forgot the Security Control administrator password. What now?',
+        a: 'If both the administrator and user level passwords are lost, the documented way back is to restore a backup taken before the password was set. This is why you take a backup first and store the administrator password safely.',
+      },
+      {
+        q: 'Does locking data stop my accountant from working?',
+        a: 'No. Security levels are per user, so you can give your accountant full access while a data entry operator can only record vouchers. Nothing is lost - access is granted by role instead of by shared logins.',
+      },
+    ],
+    content: `Locking data in TallyPrime is really three separate locks, and businesses usually need all three: a lock on opening the company, a lock on who can do what inside it, and a lock on how far back anyone can post. Here is how each one is set.
+
+Lock 1 - restrict access to the company:
+
+- Go to Alt+K (Company) and open Create / Alter
+- Set the option "Control User Access to Company Data" to Yes
+- Enter the administrator username and password - this user is the owner level account
+- Press Ctrl+A to save
+
+From that point TallyPrime asks for credentials before the company opens, which is the single most effective step if the machine sits in a shared office. Keep the administrator password somewhere safe: if both the administrator and user level passwords are lost, the documented recovery path is restoring a backup that was taken before the password was set.
+
+Lock 2 - restrict what each person can do:
+
+- Go to Alt+K (Company) - Users and Passwords - Types of Security
+- Create a security level and base it on a default such as Data Entry
+- Set the rights for that level: which voucher types can be created, altered or viewed, which reports and masters are reachable, and whether company administration, backup, restore or security settings are allowed
+- Then use Alt+K (Company) - Users and Passwords - Users for Company to create users and assign each one a security level
+
+Two habits matter more than the settings. Give every person their own username instead of a shared login, and keep data entry, approval and reporting in different hands. TallyPrime's edit log records who changed a transaction and when, and that traceability is only useful if the name in the log belongs to one individual.
+
+Lock 3 - restrict how far back entries can go:
+
+- Set the cut-off date for back-dated vouchers to the date you want protected
+- Set "Days allowed for back dated vouchers" to the window you actually want to permit
+- TallyPrime then refuses to record or alter a transaction before that date - useful once an audit or a GST return is closed
+
+The same area carries the password policy (strength, expiry, history, forced change on first login), and TallyVault, which encrypts the company data so that the company name and financial year are not even visible on the Select Company screen until the vault password is entered. If your business falls under the audit trail requirement of the Companies (Accounts) Rules, 2014, confirm with your chartered accountant what your configuration has to demonstrate.
+
+Before you lock anything down, take a backup, write the administrator password down in a safe place, and test the setup with a data entry user - not with your own owner login. Then review it when staff change.
+
+Sarvadnya Infotech is a Tally certified partner based in CBD Belapur, Navi Mumbai. We configure Security Control, user roles, cut-off dates and the edit log for businesses in Mumbai, Navi Mumbai and across India, and we keep the administrator credentials documented so a staff change never locks you out of your own books.`,
+  },
+  {
+    slug: 'how-to-add-gst-number-in-tally-erp-9',
+    title: 'How to Add a GST Number in Tally ERP 9 (and Change It Later)',
+    date: 'October 13, 2026',
+    category: 'GST & Compliance',
+    description: 'How to add a GST number (GSTIN) in Tally ERP 9 - at company creation or later - plus party ledger GST details, common state-code errors and why TSS status matters.',
+    tags: ['how to add gst number in tally erp 9', 'how to add gst in tally erp 9', 'gstin in tally erp 9', 'tally erp 9 gst registration', 'change gst number in tally'],
+    link: '/services/tss',
+    author: 'Sarvadnya Infotech LLP',
+    faqs: [
+      {
+        q: 'Where do I enable GST in Tally ERP 9?',
+        a: 'From the Gateway of Tally open F11: Features, then F3: Statutory & Taxation, and set "Enable Goods and Services Tax (GST)" to Yes. Only after GST is enabled does Tally ERP 9 ask for registration details and show the GST reports.',
+      },
+      {
+        q: 'How do I add the GST number to an existing company?',
+        a: 'Open the Gateway of Tally, go to F3: Cmp Info and alter the company. In the company alteration screen, set the GST details to Yes and enter your GSTIN, registration type and state, then save. The change applies to new vouchers from that point.',
+      },
+      {
+        q: 'Why is Tally not accepting my GSTIN?',
+        a: 'The usual causes are a wrong state code in the first two digits of the GSTIN, a registration type that does not match the number, or a mismatch between the company state and the GSTIN state. Correct the GSTIN against your certificate rather than retyping it from memory.',
+      },
+      {
+        q: 'Do I need GST details on party ledgers as well?',
+        a: 'Yes, for correct tax treatment. Open the party ledger and fill in the GST and other statutory details - the party GSTIN and registration type (Regular, Composition, Unregistered or Consumer). Inter-state supply, reverse charge and unregistered-dealer purchases all depend on those fields being right.',
+      },
+    ],
+    content: `Adding a GST number in Tally ERP 9 is a two part job: the company needs GST enabled and a GSTIN on record, and then every relevant party ledger needs its own GST details. Miss the second part and the tax on your invoices quietly goes wrong.
+
+Step 1 - enable GST for the company:
+
+- Open the Gateway of Tally
+- Press F11: Features, then F3: Statutory & Taxation
+- Set "Enable Goods and Services Tax (GST)" to Yes
+
+Step 2 - add the GSTIN:
+
+- For a new company, Tally ERP 9 asks for the GST registration details during company creation. Enter the GSTIN, the registration type (Regular, Composition, Unregistered or Consumer) and the state
+- For an existing company, open F3: Cmp Info from the Gateway of Tally and alter the company. Set the GST details to Yes, enter the GSTIN, registration type and state, and save
+
+Step 3 - check the state code. The first two digits of a GSTIN are the state code, and the place of supply on your invoices follows it. A wrong state code is the most common reason Tally ERP 9 rejects or misreports a GSTIN, and it is easiest to fix immediately after entry rather than at return time.
+
+Step 4 - fill in party ledger GST details. Open each party ledger and complete the GST and other statutory details: the party GSTIN and registration type. Inter-state supply, reverse charge on unregistered purchases and input credit all read from these fields.
+
+Changing a GST number later is the same path in reverse: alter the company, replace the GSTIN, save, and reprint or re-check an invoice to confirm the new number is being picked up. If your GSTIN changed because of a business restructuring, review the party ledgers and stock items afterwards as well.
+
+One thing to plan for while you are on Tally ERP 9: Tally has discontinued TSS renewal for Tally ERP 9, so updates and compliance releases for that release have an end point. If your GST filing depends on being current, check your TSS status and confirm your upgrade path to TallyPrime before a filing deadline forces the decision.
+
+Sarvadnya Infotech is a Tally certified partner in CBD Belapur, Navi Mumbai. We set up and correct GST configuration in Tally ERP 9 and TallyPrime, handle TSS renewal and status checks, and support businesses across Mumbai, Navi Mumbai and India remotely.`,
+  },
+  {
+    slug: 'what-is-tally-capital',
+    title: 'What Is TallyCapital? Business Loans for TallyPrime Users Explained',
+    date: 'October 13, 2026',
+    category: 'Business Finance',
+    description: 'What TallyCapital is: the Tally group financing service that offers pre-qualified business loans to existing Tally customers from inside TallyPrime, and what approval depends on.',
+    tags: ['what is tally capital', 'tallycapital', 'tally business loan', 'business loan for tally users', 'unsecured business loan msme', 'tally capital financing'],
+    link: '/products/tallycapital',
+    author: 'Sarvadnya Infotech LLP',
+    faqs: [
+      {
+        q: 'What is TallyCapital in simple terms?',
+        a: 'TallyCapital is the financing service from the Tally group that offers business loans to existing Tally customers. Instead of a separate application portal, you check pre-qualified offers from inside TallyPrime and the lender reads the business data you already keep in Tally.',
+      },
+      {
+        q: 'Who can apply for a business loan through TallyCapital?',
+        a: 'Existing Tally customers - businesses already running their books on TallyPrime. The loan itself is sanctioned by TallyCapital partner banks and NBFCs, not by Tally, so the final decision, amount and rate rest with the lender.',
+      },
+      {
+        q: 'Do I need collateral for a TallyCapital loan?',
+        a: 'Not for the unsecured business loan, which is offered without pledging any asset. Secured options exist too, such as a loan against property, and there are government-backed CGTMSE products for eligible MSMEs.',
+      },
+      {
+        q: 'Does checking my eligibility affect my credit score?',
+        a: 'No. Checking whether you pre-qualify is designed to be a soft check and does not reduce your credit score. A formal application is a separate step that you choose to take.',
+      },
+    ],
+    content: `TallyCapital is the financing arm of the Tally group, built for one specific audience: businesses that already keep their books on Tally. If you are a TallyPrime user wondering what it is and whether it applies to you, the short answer is that it turns the accounting data you already maintain into the basis of a business loan application.
+
+What it actually does:
+
+- Offers business loans to existing Tally customers, applied for from inside TallyPrime rather than from a separate portal
+- Shows pre-qualified offers so you can see what you may be eligible for before you commit to anything
+- Passes the decision to partner banks and NBFCs - TallyCapital is the channel, the lender makes the call
+- Supports both unsecured and secured routes, and government-backed MSME credit
+
+The options we help businesses with through TallyCapital:
+
+- Unsecured business loans, which do not require you to pledge any asset
+- CGTMSE-backed credit, the government credit guarantee route for eligible MSMEs
+- Loans against property, for larger requirements where a property can be offered as security
+- Professional loans for practising chartered accountants
+
+Why it is different from a normal loan application: the paperwork already exists. Because your transactions, ledgers and financial reports live in Tally, the application is pre-filled from data you have been maintaining all along, instead of you assembling statements from scratch.
+
+What it is not: it is not a Tally licence, not a Tally subscription, and not a guarantee. Approval depends on your financials and the lender's assessment. Treat it as a channel to funding, not as an entitlement - and before borrowing, be clear about what the money is for and how the instalments will be serviced.
+
+Sarvadnya Infotech is a Tally certified partner in CBD Belapur, Navi Mumbai. If you are a Tally user evaluating a business loan, see the options on our TallyCapital page or talk to us - we will tell you plainly whether the route fits your situation.`,
+  },
+  {
+    slug: 'document-management-system-for-tally',
+    title: 'Document Management Software for Tally: Attach Bills and Challans to Vouchers',
+    date: 'October 13, 2026',
+    category: 'Tally Add-ons',
+    description: 'What a document management system for Tally does: attach bills, invoices, challans and certificates to vouchers and ledgers, with organized storage and audit-ready retrieval.',
+    tags: ['document management software companies', 'document management system for tally', 'document management software for tally', 'attach documents in tallyprime', 'tally document management add on', 'tdl dms for tally'],
+    link: '/addons',
+    author: 'Sarvadnya Infotech LLP',
+    faqs: [
+      {
+        q: 'What is a document management system for Tally?',
+        a: 'It is an add-on module (a TDL or TCP extension) that lets you attach, organize and view digital copies of supporting documents directly inside TallyPrime or Tally ERP 9, linked either to a voucher or to a master such as a ledger.',
+      },
+      {
+        q: 'Which file types can I attach to a Tally voucher?',
+        a: 'The common working formats: PDF, Word (.doc and .docx), Excel (.xls and .xlsx), and images such as .jpg and .png. That covers scanned bills, purchase invoices, delivery challans, GST challans and certificates.',
+      },
+      {
+        q: 'Where are the attached files stored?',
+        a: 'In structured folders rather than loose files. A typical setup files them automatically by voucher type and financial year, either on local or network storage or in a cloud folder such as Google Drive or OneDrive, so a document is findable by period.',
+      },
+      {
+        q: 'How does a document add-on help during an audit?',
+        a: 'The source document sits on the transaction it belongs to. Instead of hunting through folders for a scanned bill, an auditor or your team pulls it up from the Day Book, a ledger view or the relevant report in seconds, straight from Tally.',
+      },
+      {
+        q: 'Can I control who is allowed to see or upload attachments?',
+        a: 'Yes. Attachment viewing and upload rights are set by user role, so an administrator can allow full access while staff can only attach or open what their role permits. Combined with audit logs, that keeps the document trail accountable.',
+      },
+    ],
+    content: `A document management system for Tally is an add-on module - a TDL or TCP extension - that lets you attach, organize and view digital copies of supporting documents directly inside TallyPrime or Tally ERP 9. It does not replace Tally and it does not need your data re-keyed: the documents live against the vouchers and masters you already have.
+
+Why it matters: most of the time spent on a GST notice, a statutory audit or a simple vendor query is not accounting time, it is document hunting. When the purchase invoice is attached to the purchase voucher, that search collapses into a click.
+
+What such a module does:
+
+- Direct voucher and master linking - attach bills, purchase invoices, delivery challans, GST challans, and employee, creditor or debtor certificates straight to a transaction or a ledger master
+- Supported formats - link PDF, Word (.doc, .docx), Excel (.xls, .xlsx) and images (.jpg, .png)
+- Centralized storage - files are organized automatically into structured local or cloud folders, for example Google Drive, OneDrive or a network path, grouped by voucher type and financial year
+- Audit readiness - pull up the original scanned document, payment challan or approval receipt within seconds from Tally reports, the Day Book or a ledger view
+- User permissions - restrict or grant attachment viewing and upload rights by user role, so an administrator and a staff member see different things
+
+Most document management software companies sell a standalone system that you then have to feed from your accounting. A Tally integrated module works the other way around: the document is attached where the entry already is, so the trail from report to source document is unbroken.
+
+What to check before you choose a module:
+
+- Which voucher types and masters can hold attachments, and whether that covers your busy ones
+- Whether storage is local, on your network, or cloud - and whether the cloud option fits your data policy
+- How retention works, and whether the folder structure survives your financial year rollover
+- What backs the attachments up, because an unbacked-up document store is a new risk, not a solved one
+- Whether the vendor supports your exact Tally edition and release
+
+If your team spends a working day every quarter hunting for scanned bills, an accounting linked document store pays for itself quietly. If you already have a neat physical filing system and no audit pressure, the case is weaker.
+
+Sarvadnya Infotech is a Tally certified partner in CBD Belapur, Navi Mumbai. We implement TDL add-ons and document attachment modules for TallyPrime and Tally ERP 9, configure storage and permissions with you, and support businesses in Mumbai, Navi Mumbai and across India - see our add-ons page or ask us what fits your voucher flow.`,
   },
 ];
 

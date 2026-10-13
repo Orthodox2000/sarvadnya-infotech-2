@@ -17,7 +17,24 @@ export const SITE_CONTACT = {
 // CHANGE: 2026-09-03 — contact suffix auto-appended to every meta description for SEO.
 // CHANGE: 2026-10-07 — canonical office address (owner: "final and only address
 // everywhere"); JSON-LD locality corrected Pune -> Mumbai, suffix updated to match.
-export const CONTACT_SUFFIX = ' | Call: +91 9821 309060 | Mumbai';
+// CHANGE: 2026-10-13 — location upgraded Mumbai -> Navi Mumbai (the actual city; our office
+// is CBD Belapur, Navi Mumbai). Owner ask: every page must carry company name + location +
+// SEO keywords WITHOUT changing any visible on-page item. This one line reaches the
+// description of every page that calls seoMetadata(). Cost: +5 chars on descriptions that
+// were already over the 160 display limit (pre-existing `check:seo` warnings, see log).
+export const CONTACT_SUFFIX = ' | Call: +91 9821 309060 | Navi Mumbai';
+
+// CHANGE: 2026-10-13 — site-wide brand + location keywords. Merged into EVERY
+// seoMetadata() call (page-specific keywords first, these appended), so a page that
+// declares its own keywords — which otherwise REPLACES the parent's metadata keywords in
+// Next.js — still carries the company name and both city names. Metadata only, invisible.
+export const SITE_KEYWORDS = [
+  'Sarvadnya Infotech LLP',
+  'Tally certified partner',
+  'Tally partner Mumbai',
+  'Tally partner Navi Mumbai',
+  'Tally partner CBD Belapur',
+];
 
 export const SITE_DESCRIPTION =
   'Tally Certified Partner trusted by 1500+ MSMEs. TallyPrime (Silver, Gold, Server), Tally on Cloud, AMC, Tally on WhatsApp, TallyDrive cloud backup, HRMS, TDL customization & corporate training.' + CONTACT_SUFFIX;
@@ -48,10 +65,16 @@ export function seoMetadata({
   const finalTitle = alreadyBranded ? title : `${title} | ${SITE_NAME}`;
   // CHANGE: 2026-09-03 — append contact details to every meta description for SEO visibility.
   const finalDescription = `${description}${CONTACT_SUFFIX}`;
+  // CHANGE: 2026-10-13 — merge the site-wide brand + location keywords (SITE_KEYWORDS) into
+  // whatever this page declared, deduped, page-specific first. Guarantees every page carries
+  // the company name, Mumbai / Navi Mumbai / CBD Belapur and the partner terms. Invisible.
+  const finalKeywords = [
+    ...new Set([...(keywords ?? []), ...SITE_KEYWORDS].map((k) => k.trim()).filter(Boolean)),
+  ];
   return {
     title: { absolute: finalTitle },
     description: finalDescription,
-    keywords,
+    keywords: finalKeywords,
     alternates: { canonical },
     openGraph: {
       title: finalTitle,
@@ -86,7 +109,7 @@ export function orgJsonLd(): JsonLd {
     logo: `${SITE_URL}/logo.png`,
     email: SITE_CONTACT.email,
     telephone: SITE_CONTACT.phone,
-    address: { '@type': 'PostalAddress', streetAddress: '73, Vindhya Commercial Premises, Sector - 11, Plot No - 1, CBD Belapur', addressLocality: 'Mumbai', addressRegion: 'MH', addressCountry: 'IN' },
+    address: { '@type': 'PostalAddress', streetAddress: '73, Vindhya Commercial Premises, Sector - 11, Plot No - 1, CBD Belapur', addressLocality: 'Navi Mumbai', addressRegion: 'MH', addressCountry: 'IN' },
     sameAs: [
       'https://facebook.com/sarvadnyainfotech',
       'https://www.instagram.com/sarvadnya.infotech/',
@@ -107,8 +130,10 @@ export function localBusinessJsonLd(): JsonLd {
     telephone: SITE_CONTACT.phone,
     email: SITE_CONTACT.email,
     priceRange: '₹₹',
-    address: { '@type': 'PostalAddress', streetAddress: '73, Vindhya Commercial Premises, Sector - 11, Plot No - 1, CBD Belapur', addressLocality: 'Mumbai', addressState: 'Maharashtra', addressCountry: 'IN' },
-    areaServed: 'IN',
+    address: { '@type': 'PostalAddress', streetAddress: '73, Vindhya Commercial Premises, Sector - 11, Plot No - 1, CBD Belapur', addressLocality: 'Navi Mumbai', addressState: 'Maharashtra', addressCountry: 'IN' },
+    // CHANGE: 2026-10-13 — areaServed widened from the bare 'IN' country code to the actual
+    // service area (Mumbai / Navi Mumbai / CBD Belapur + India). Local-SEO signal, invisible.
+    areaServed: ['CBD Belapur', 'Navi Mumbai', 'Mumbai', 'IN'],
   };
 }
 

@@ -18,7 +18,7 @@ const ROOT = process.cwd()
 const APP = join(ROOT, 'app')
 
 // Keep in sync with lib/seo.ts.
-const CONTACT_SUFFIX = ' | Call: +91 9821 309060 | Mumbai'
+const CONTACT_SUFFIX = ' | Call: +91 9821 309060 | Navi Mumbai'
 const BRAND_SUFFIX = ' | Sarvadnya Infotech LLP'
 const DESC_MAX = 160
 const TITLE_MAX = 60

@@ -25,6 +25,9 @@ export const metadata: Metadata = {
   keywords: [
     'Sarvadnya Infotech', 'Tally partner', 'TallyPrime', 'Tally on Cloud', 'Tally AMC',
     'Tally on WhatsApp', 'TallyDrive', 'Tally backup', 'Tally TDL', // CHANGE: 2026-10-07 — "Tally training Pune" removed per owner (address is Mumbai, not Pune).
+    // CHANGE: 2026-10-13 — brand + location terms per owner ("all pages contain company name,
+    // location and other SEO triggering keywords"), metadata only.
+    'CBD Belapur', 'Navi Mumbai', 'Tally partner Navi Mumbai', 'Tally certified partner',
   ],
   icons: { icon: '/logo.png' },
   alternates: { canonical: SITE_URL },
