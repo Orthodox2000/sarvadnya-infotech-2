@@ -88,6 +88,27 @@
   animation: cart-pulse 650ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+/* CHANGE: 2026-10-13 — Ask Sara homepage message bubble: NO movement — it just FADES in and
+   out (a smooth opacity curve, not a hard on/off toggle) and then disappears. SupportButton
+   unmounts it after 5 s; nothing is persisted, so it replays on every page load / refresh.
+   `--sara-bubble-blink-duration` controls the fade speed. */
+@keyframes sara-bubble-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.animate-sara-bubble-blink {
+  animation: sara-bubble-blink var(--sara-bubble-blink-duration, 1.2s) ease-in-out infinite;
+}
+
+/* Under reduced motion the blink is switched OFF entirely — the bubble then simply stays
+   visible for its 5 s and disappears (no flashing), which is the accessible behaviour. */
+@media (prefers-reduced-motion: reduce) {
+  .animate-sara-bubble-blink {
+    animation: none;
+  }
+}
+
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }

@@ -4,28 +4,18 @@ import { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import QuickSupportModal from './QuickSupportModal';
 
-// CHANGE: 2026-10-12 — owner: the homepage Ask Sara tab gets too few clicks; add a SUBTLE
-// desktop-only "peek + short speech bubble" promo. Homepage only, hover-capable desktop only,
-// reduced-motion respected, max 3 cycles, dismissible per session (sessionStorage, no cookie).
-const PROMO_INITIAL_DELAY_MS = 2500;
+// CHANGE: 2026-10-13 — owner: no hover behaviour at all (no ✕, no hover reveal). The homepage
+// Ask Sara tab carries a message bubble reading "Get AI assistance" (13 px, centred, wraps to
+// 2 lines). It FADES in/out (a smooth opacity curve, NO movement) and disappears after
+// PROMO_VISIBLE_MS. Nothing is persisted, so it replays on every page load / refresh.
+const PROMO_LABEL_TEXT = 'Get AI assistance';
 const PROMO_VISIBLE_MS = 5000;
-const PROMO_GAP_MS = 18000;
-const PROMO_MAX_CYCLES = 3;
-const PROMO_DISMISS_KEY = 'sara_promo_dismissed';
-const PROMO_BUBBLE_TEXT = 'Need help? Get instant AI suggestions';
 
 export default function SupportButton({ initialSettings }: { initialSettings?: any }) {
   const pathname = usePathname();
   const isHomePage = pathname === '/';
   const [isOpen, setIsOpen] = useState(false);
   const [whatsappPhone, setWhatsappPhone] = useState(initialSettings?.whatsapp_phone || initialSettings?.support_phone || "9821309060");
-
-  // CHANGE: 2026-10-12 — Ask Sara homepage promo state (see constants above).
-  const [promoActive, setPromoActive] = useState(false);   // eligible: homepage + hover desktop + motion ok
-  const [promoVisible, setPromoVisible] = useState(false); // currently peeking with the bubble shown
-  const [engaged, setEngaged] = useState(false);           // pointer is over the tab
-  const [pageHidden, setPageHidden] = useState(false);     // tab hidden -> pause the loop
-  const [promoDismissed, setPromoDismissed] = useState(false);
 
   useEffect(() => {
     if (initialSettings) return;
@@ -45,62 +35,18 @@ export default function SupportButton({ initialSettings }: { initialSettings?: a
     fetchSettings();
   }, [initialSettings]);
 
-  // CHANGE: 2026-10-12 — eligibility for the promo (homepage + hover-capable desktop + motion
-  // allowed + not already dismissed this session). Read on the client only, in an effect, so the
-  // server-rendered markup never contains the bubble (no hydration mismatch).
+  // CHANGE: 2026-10-13 — the bubble shows on the homepage only, and hides while Sara is open.
+  // It blinks (no movement) and disappears after PROMO_VISIBLE_MS. This state lives in memory
+  // only, so every page load / refresh replays it (nothing is persisted).
+  const [bubbleHidden, setBubbleHidden] = useState(false);
+  const showPromoLabel = isHomePage && !isOpen && !bubbleHidden;
+
+  // Disappear PROMO_VISIBLE_MS after landing on the homepage.
   useEffect(() => {
-    if (!isHomePage) { setPromoActive(false); return; }
-    let ok = false;
-    let isDismissed = false;
-    try {
-      ok = window.matchMedia('(hover: hover) and (pointer: fine)').matches &&
-        !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      isDismissed = sessionStorage.getItem(PROMO_DISMISS_KEY) === '1';
-    } catch {}
-    setPromoDismissed(isDismissed);
-    setPromoActive(ok && !isDismissed);
+    if (!isHomePage) return;
+    const timer = setTimeout(() => setBubbleHidden(true), PROMO_VISIBLE_MS);
+    return () => clearTimeout(timer);
   }, [isHomePage]);
-
-  // CHANGE: 2026-10-12 — pause the promo while the tab is in the background (Page Visibility).
-  useEffect(() => {
-    const onVis = () => setPageHidden(document.hidden);
-    onVis();
-    document.addEventListener('visibilitychange', onVis);
-    return () => document.removeEventListener('visibilitychange', onVis);
-  }, []);
-
-  // CHANGE: 2026-10-12 — the promo loop: peek + bubble for ~5 s, retract, repeat every ~18 s,
-  // max 3 cycles then stop permanently. Hovering the tab reveals it immediately (never ducks
-  // away from an intending user); a hidden tab pauses it.
-  useEffect(() => {
-    if (!promoActive || promoDismissed || isOpen) { setPromoVisible(false); return; }
-    if (engaged) { setPromoVisible(true); return; }
-    if (pageHidden) { setPromoVisible(false); return; }
-
-    let cancelled = false;
-    let cycle = 0;
-    const timers: ReturnType<typeof setTimeout>[] = [];
-    const later = (fn: () => void, ms: number) => { timers.push(setTimeout(fn, ms)); };
-    const showOnce = () => {
-      if (cancelled || cycle >= PROMO_MAX_CYCLES) return;
-      cycle += 1;
-      setPromoVisible(true);
-      later(() => {
-        if (cancelled) return;
-        setPromoVisible(false);
-        later(showOnce, PROMO_GAP_MS);
-      }, PROMO_VISIBLE_MS);
-    };
-    later(showOnce, PROMO_INITIAL_DELAY_MS);
-    return () => { cancelled = true; timers.forEach(clearTimeout); };
-  }, [promoActive, promoDismissed, isOpen, engaged, pageHidden]);
-
-  // CHANGE: 2026-10-12 — stop promoting for the session (the ✕, the bubble, or once Sara opens).
-  const stopPromo = () => {
-    try { sessionStorage.setItem(PROMO_DISMISS_KEY, '1'); } catch {}
-    setPromoDismissed(true);
-    setPromoVisible(false);
-  };
 
   const whatsappNumber = whatsappPhone.replace(/\D/g, '').length === 10 
     ? '91' + whatsappPhone.replace(/\D/g, '') 
@@ -133,47 +79,31 @@ export default function SupportButton({ initialSettings }: { initialSettings?: a
     <>
       <div className={`fixed bottom-[10%] z-[3000] flex flex-col items-end gap-[8px]`}
         style={{ right: '0', left: 'auto' }}>
-        {/* Ask Sara (+ 2026-10-12 homepage promo: peek + short bubble) */}
-        <div
-          className={`relative flex items-center transition-transform duration-700 ease-out ${promoVisible ? '-translate-x-[14px]' : 'translate-x-0'}`}
-          onMouseEnter={() => setEngaged(true)}
-          onMouseLeave={() => { setEngaged(false); setPromoVisible(false); }}
-        >
-          {/* Bubble — hidden from layout until the promo shows. Text and ✕ are SIBLING buttons
-              (no nesting), and the whole thing is skipped by tab order while hidden. */}
-          <div
-            className={`absolute right-full mr-3 top-1/2 -translate-y-1/2 transition-opacity duration-500 ${promoVisible ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
-            aria-hidden={!promoVisible}
-          >
-            <div className="relative flex items-center gap-1.5 bg-white text-[#006569] border border-[#006569]/15 shadow-lg rounded-xl pl-3 pr-1.5 py-2 max-w-[240px]">
+        {/* Ask Sara (+ 2026-10-13 static homepage message bubble) */}
+        <div className="relative flex items-center">
+          {/* Message bubble — FADES in/out (no movement), no ✕, no hover reveal. Larger label
+              allowed to wrap onto 2 lines. Clicking it opens Sara; it disappears after 5 s. */}
+          {showPromoLabel && (
+            <div className="animate-sara-bubble-blink absolute right-full mr-3 top-0 bg-white text-[#006569] border border-[#006569]/15 shadow-md rounded-lg px-2.5 py-1.5">
               <button
                 type="button"
-                tabIndex={promoVisible ? 0 : -1}
-                onClick={() => { stopPromo(); setIsOpen(true); }}
-                className="text-left text-[11px] font-semibold leading-tight"
+                onClick={() => setIsOpen(true)}
+                className="block w-[88px] text-[13px] font-semibold leading-tight text-center"
               >
-                {PROMO_BUBBLE_TEXT}
+                {PROMO_LABEL_TEXT}
               </button>
-              <button
-                type="button"
-                tabIndex={promoVisible ? 0 : -1}
-                onClick={stopPromo}
-                aria-label="Dismiss Ask Sara suggestion"
-                className="shrink-0 grid place-items-center w-5 h-5 rounded-full text-[#006569]/60 hover:text-[#006569] hover:bg-[#E5F4F4]"
-              >
-                <svg className="w-2.5 h-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-              {/* tail pointing right at the tab */}
-              <span aria-hidden className="absolute -right-[5px] top-1/2 -translate-y-1/2 w-2.5 h-2.5 bg-white border-t border-r border-[#006569]/15 rotate-45" />
+              {/* one-sided tail — points RIGHT at the Ask Sara tab */}
+              <span
+                aria-hidden
+                className="absolute -right-[5px] top-1/2 -translate-y-1/2 w-2.5 h-2.5 bg-white border-t border-r border-[#006569]/15 rotate-45"
+              />
             </div>
-          </div>
+          )}
 
           <button
-            onClick={() => { stopPromo(); setIsOpen(true); }}
+            onClick={() => setIsOpen(true)}
             aria-label="Ask AI"
-            className="flex flex-col items-center gap-1.5 bg-[#006569] text-white hover:bg-white hover:text-[#25D366] hover:border-[#25D366]/30 border border-white/20 w-[42px] py-2.5 group shadow-md rounded-l-[8px] transition-colors duration-300"
+            className="flex flex-col items-center gap-1.5 bg-[#006569] text-white border border-white/20 w-[42px] py-2.5 shadow-md rounded-l-[8px]"
           >
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
