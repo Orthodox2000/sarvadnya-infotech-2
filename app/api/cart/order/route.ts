@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import crypto from 'node:crypto';
-import { assertTestKeys, createOrder, getPublishableKeyId } from '@/lib/cart/payment';
+import { assertKeys, createOrder, getMode, getPublishableKeyId, isLiveMode } from '@/lib/cart/payment';
 import { repriceOrderItems } from '@/lib/cart/pricing';
 import { MAX_CART_LINES } from '@/lib/cart/math';
 // CHANGE: 2026-10-12 — per-transaction rate limiting (ip + cart + buyer identity). See the
@@ -29,8 +29,9 @@ import { after } from 'next/server';
 // repriceOrderItems(). The body's amount fields are NEVER read.
 //
 // SECURITY INVARIANTS (same posture as the /demo gateway this was modelled on):
-//  - assertTestKeys() runs before anything else — this route cannot create a LIVE order even
-//    under a misconfigured environment (and the leaked test keys are rotated before go-live).
+//  - assertKeys() runs before anything else and requires the key id to MATCH RAZORPAY_MODE
+//    (test key in test mode, live key in live mode). A misconfigured environment REFUSES with
+//    503 rather than silently charging the wrong way (go-live 2026-10-17).
 //  - Unpriced / inactive / unknown slugs are REJECTED with 400, never silently charged or
 //    silently dropped — the UI blocks module adds, this route is the backstop.
 //  - The Razorpay order is created EITHER WAY so a local run is genuinely end-to-end; the
@@ -61,11 +62,11 @@ function getClientIp(request: Request): string {
 }
 
 export async function POST(request: Request) {
-  // 1. Test-mode guard first. Nothing else runs unless the cart is on Razorpay TEST keys.
+  // 1. Mode/keys guard first. Nothing else runs unless the configured keys match RAZORPAY_MODE.
   try {
-    assertTestKeys();
+    assertKeys();
   } catch (err) {
-    // The message is safe: assertTestKeys() never echoes a key or a secret.
+    // The message is safe: assertKeys() never echoes a key or a secret.
     return NextResponse.json(
       { ok: false, error: err instanceof Error ? err.message : 'Razorpay is not configured.' },
       { status: 503 },
@@ -183,7 +184,7 @@ export async function POST(request: Request) {
     razorpayOrder = await createOrder({
       amountPaise,
       receipt: orderId,
-      notes: { source: 'cart', testMode: 'true', cartItems: cartItemsNote },
+      notes: { source: 'cart', mode: getMode(), cartItems: cartItemsNote },
     });
   } catch (err) {
     // Surface the reason, but never key material — createOrder() never puts any in its errors.
@@ -238,7 +239,7 @@ export async function POST(request: Request) {
         tssSerials: serialsResult.value,
         status: 'created',
         statusHistory: [{ to: 'created', at: now, actor: 'system' }],
-        testMode: true,
+        testMode: !isLiveMode(),
         ip,
         requestMeta,
         createdAt: now,
@@ -279,7 +280,7 @@ export async function POST(request: Request) {
     amount: razorpayOrder.amount,
     currency: razorpayOrder.currency,
     keyId: getPublishableKeyId(),
-    testMode: true,
+    testMode: !isLiveMode(),
     persisted: persist,
     customer: customerResult.value,
     tssSerials: serialsResult.value,

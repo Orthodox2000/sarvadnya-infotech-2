@@ -119,6 +119,9 @@ const writeRoutes = [
   'app/api/upload/chunk/route.ts',
   'app/api/cart/order/route.ts',
   'app/api/cart/verify/route.ts',
+  // CHANGE: 2026-10-17 — Razorpay server-to-server webhook (go-live). Signature-verified AND
+  // per-IP rate-limited, so removing either protection fails this audit.
+  'app/api/cart/webhook/route.ts',
   // CHANGE: 2026-10-17 — careers sign-up is a public write route (it creates users) and
   // gained its own per-IP limiter with the referral system. Cover it here so removing that
   // limiter fails the audit, like every other write route.

@@ -1,31 +1,53 @@
 // CHANGE: 2026-10-02 — the ONE Razorpay gateway seam for the real site cart (SP-1 cart build).
-// WHY: every Razorpay interaction lives in this module so "test mode only" is enforced in one
-// place rather than by convention. Going live later means changing THIS file and rotating the
-// env keys, not hunting through routes. Mirrors lib/demo/razorpay.ts — read that header first
-// for the full rationale; the guarantees here are identical:
+// CHANGE: 2026-10-17 — GO-LIVE: the cart is now mode-aware and FAIL-CLOSED. Whether the site
+// takes REAL money is an explicit environment decision (`RAZORPAY_MODE`), never an accident of
+// which key happens to be pasted into the environment.
 //
-//   1. assertTestKeys() THROWS unless the key id starts with `rzp_test_`. A live key cannot
-//      be used by accident even if someone misconfigures the environment.
-//   2. The secret is never returned, never logged, never NEXT_PUBLIC_.
-//   3. The SDK is a LAZY SINGLETON — never constructed at module scope, so importing this
+// WHY one module: every Razorpay interaction lives here so the test/live boundary is enforced in
+// one place rather than by convention. Mirrors lib/demo/razorpay.ts — but note the DEMO variant
+// stays test-only UNCONDITIONALLY (its own assertTestKeys()); only THIS seam is mode-aware.
+//
+//   1. getMode() reads RAZORPAY_MODE. Anything other than an explicit `live` (trimmed, case
+//      insensitive) is `test` — so a missing/blank/typo'd variable can never go live.
+//   2. assertKeys() THROWS unless the configured key id MATCHES the mode: `rzp_live_` in live,
+//      `rzp_test_` in test. A live key in a test-mode environment is refused, and a test key in
+//      live mode is refused — so neither an accidental real charge nor a silent sandbox happens.
+//   3. The secret is never returned, never logged, never NEXT_PUBLIC_.
+//   4. The SDK is a LAZY SINGLETON — never constructed at module scope, so importing this
 //      file during `next build` (no .env at build time) cannot throw and break the build.
 //
 // SIGNATURE VERIFICATION uses crypto.timingSafeEqual, NOT the SDK's `===`: the SDK ends in a
 // plain string compare (timing channel on a public endpoint) and reads the wrong field name
 // for the checkout callback payload. The HMAC over `${orderId}|${paymentId}` is the ONLY
-// verification step; `orders.fetch` below exists purely to fill a receipt figure on localhost
-// (a display value, never a second factor — read its doc block).
-//
-// IMPORTANT: no "/demo" literal — the demo-independence guard scans lib/.
+// checkout verification step; `fetchOrderAmountPaise` below exists purely to fill a receipt
+// figure on localhost (a display value, never a second factor — read its doc block). The
+// server-to-server webhook events are covered by verifyWebhookSignature().
 
 import crypto from 'node:crypto';
 import Razorpay from 'razorpay';
 
 const TEST_KEY_PREFIX = 'rzp_test_';
+const LIVE_KEY_PREFIX = 'rzp_live_';
 /** Razorpay caps `receipt` at 40 characters. */
 const MAX_RECEIPT = 40;
 /** Guard against pathological notes; an item summary lives in order.notes for receipts. */
 const MAX_NOTE_LENGTH = 300;
+
+/** Which Razorpay environment this deployment talks to. */
+export type RazorpayMode = 'test' | 'live';
+
+/**
+ * Resolve the configured mode. FAIL-CLOSED: only an explicit `live` (any casing, trimmed)
+ * selects live; a missing, blank or misspelled value is `test`.
+ */
+export function getMode(): RazorpayMode {
+  return (process.env.RAZORPAY_MODE || '').trim().toLowerCase() === 'live' ? 'live' : 'test';
+}
+
+/** True only when the deployment is explicitly configured to take real money. */
+export function isLiveMode(): boolean {
+  return getMode() === 'live';
+}
 
 export interface CreateOrderInput {
   amountPaise: number;
@@ -49,20 +71,23 @@ function readSecret(): string {
 }
 
 /**
- * THROW unless the configured keys are Razorpay TEST keys. The mechanism that makes
- * "test mode only" a property of the code, not a promise in a README. Neither key nor secret
- * is included in the error message — a thrown error can end up in a log or an error tracker.
+ * THROW unless the configured keys are present AND the key id matches the configured mode.
+ * This is the mechanism that makes "test vs live" a property of the configuration, not a
+ * promise in a README. Neither key nor secret is included in the error message — a thrown
+ * error can end up in a log or an error tracker.
  */
-export function assertTestKeys(): void {
+export function assertKeys(): void {
+  const mode = getMode();
+  const expectedPrefix = mode === 'live' ? LIVE_KEY_PREFIX : TEST_KEY_PREFIX;
   const keyId = readKeyId();
   if (!keyId) {
     throw new Error('Razorpay is not configured: RAZORPAY_KEY_ID is missing.');
   }
-  if (!keyId.startsWith(TEST_KEY_PREFIX)) {
-    // Deliberately does NOT echo the value, only whether it has the wrong prefix.
+  if (!keyId.startsWith(expectedPrefix)) {
+    // Deliberately does NOT echo the value, only the expected prefix.
     throw new Error(
-      'Refusing to run: RAZORPAY_KEY_ID is not a Razorpay TEST key. ' +
-        `Test keys must start with "${TEST_KEY_PREFIX}". The cart is test-only by design.`,
+      `Refusing to run: RAZORPAY_MODE=${mode} requires a Razorpay key id starting with ` +
+        `"${expectedPrefix}". Set RAZORPAY_MODE (test|live) to match the keys in this environment.`,
     );
   }
   if (!readSecret()) {
@@ -70,10 +95,13 @@ export function assertTestKeys(): void {
   }
 }
 
-/** True when keys are present AND test-mode. Safe to call without throwing. */
-export function isTestModeConfigured(): boolean {
+/**
+ * True when keys are present AND valid for the configured mode. Safe to call without throwing.
+ * (`test` mode requires a test key pair, `live` mode requires a live key pair.)
+ */
+export function isGatewayConfigured(): boolean {
   try {
-    assertTestKeys();
+    assertKeys();
     return true;
   } catch {
     return false;
@@ -82,15 +110,15 @@ export function isTestModeConfigured(): boolean {
 
 /** The publishable key id, for sending to the browser. The SECRET is never exposed. */
 export function getPublishableKeyId(): string {
-  assertTestKeys();
+  assertKeys();
   return readKeyId();
 }
 
 let client: Razorpay | null = null;
 
-/** Lazy singleton — built on first use, never at module scope (guarantee 3). */
+/** Lazy singleton — built on first use, never at module scope (guarantee 4). */
 function getClient(): Razorpay {
-  assertTestKeys();
+  assertKeys();
   if (!client) {
     client = new Razorpay({ key_id: readKeyId(), key_secret: readSecret() });
   }
@@ -117,8 +145,10 @@ export async function createOrder({ amountPaise, receipt, notes }: CreateOrderIn
     amount: amountPaise,
     currency: 'INR',
     receipt: receipt.slice(0, MAX_RECEIPT),
-    // `payment_capture` deliberately OMITTED: the Orders API defaults to capture-on-payment,
-    // and for a test cart we want capture to be an explicit go-live decision, not ours.
+    // `payment_capture` deliberately OMITTED: the Orders API defaults to AUTOMATIC capture,
+    // which is what we want now that the cart can be live (RAZORPAY_MODE=live) — a payment
+    // that succeeds should be captured, not left authorized. Leaving it unset also keeps the
+    // same order shape in test and live, so nothing about capture is a per-mode surprise.
     ...(Object.keys(safeNotes).length ? { notes: safeNotes } : {}),
   });
 
@@ -166,6 +196,30 @@ export function verifySignature({
   return crypto.timingSafeEqual(a, b);
 }
 
+/**
+ * Verify a Razorpay WEBHOOK signature (server-to-server events).
+ *
+ * Razorpay signs the RAW request body with the webhook secret configured in the dashboard
+ * (Settings → Webhooks → your endpoint → Secret) and sends the hex digest in the
+ * `X-Razorpay-Signature` header. The body MUST be the exact bytes received — re-serialising
+ * parsed JSON changes key order/spacing and breaks the HMAC — so callers pass `await request.text()`.
+ *
+ * Compared with crypto.timingSafeEqual, like verifySignature(). Returns false (never throws) for
+ * any malformed input, and false when RAZORPAY_WEBHOOK_SECRET is unset, so an unconfigured
+ * webhook can never accept a forged event. The secret is never echoed or logged.
+ */
+export function verifyWebhookSignature(rawBody: string, signature: string): boolean {
+  const secret = process.env.RAZORPAY_WEBHOOK_SECRET || '';
+  if (!secret || typeof rawBody !== 'string' || !rawBody || !signature) return false;
+  if (!/^[0-9a-f]{64}$/i.test(signature)) return false;
+
+  const expected = crypto.createHmac('sha256', secret).update(rawBody, 'utf8').digest('hex');
+  const a = Buffer.from(expected, 'utf8');
+  const b = Buffer.from(signature.toLowerCase(), 'utf8');
+  if (a.length !== b.length) return false;
+  return crypto.timingSafeEqual(a, b);
+}
+
 /** Reset the singleton. Test-only helper so a suite can change keys between cases. */
 export function __resetClientForTests(): void {
   client = null;
@@ -182,8 +236,8 @@ export function __resetClientForTests(): void {
  * of the order is the honest substitute: it is the figure the customer was actually charged.
  *
  * The security boundary remains `verifySignature()` alone. Nothing returned by this function
- * can turn a failed verification into a pass, and `getClient()` calls `assertTestKeys()`, so
- * a live-key environment still cannot reach Razorpay.
+ * can turn a failed verification into a pass, and `getClient()` calls `assertKeys()`, so an
+ * environment whose mode does not match its keys still cannot reach Razorpay.
  * ===================================================================================
  *
  * Returns `null` on ANY failure - a missing order, a network error, an unparseable amount.

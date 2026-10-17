@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { fetchOrderAmountPaise, verifySignature } from '@/lib/cart/payment';
+import { fetchOrderAmountPaise, isLiveMode, verifySignature } from '@/lib/cart/payment';
 import { computeTotals, toPriceMap, type CartItem } from '@/lib/cart/math';
 import { getPrices } from '@/lib/prices-server';
 // CHANGE: 2026-10-12 — per-transaction rate limiting (ip + razorpayOrderId).
@@ -199,7 +199,7 @@ export async function POST(request: Request) {
     customer: stored ? normalizedCustomer(stored.customer) : null,
     tssSerials:
       typeof stored?.tssSerials === 'object' && stored.tssSerials ? (stored.tssSerials as Record<string, string>) : null,
-    testMode: true,
+    testMode: !isLiveMode(),
     items: lines,
     totals:
       typeof stored?.subtotalPaise === 'number'

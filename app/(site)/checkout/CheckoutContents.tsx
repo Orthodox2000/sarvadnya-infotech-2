@@ -33,6 +33,7 @@ interface OrderResponse {
   amount?: number;
   currency?: string;
   keyId?: string;
+  testMode?: boolean;
   customer?: Customer;
   error?: string;
 }
@@ -226,10 +227,12 @@ function PayButton({
   customer,
   tssSerials,
   detailsValid,
+  testMode,
 }: {
   customer: Customer;
   tssSerials: Record<string, string>;
   detailsValid: boolean;
+  testMode: boolean;
 }) {
   const { items, totals, hydrated } = useCart();
   const router = useRouter();
@@ -281,7 +284,9 @@ function PayButton({
         amount: data.amount,
         currency: data.currency ?? 'INR',
         name: 'Sarvadnya Infotech LLP',
-        description: `Order ${data.orderId ?? ''} — test mode, no real payment`,
+        description: testMode
+          ? `Order ${data.orderId ?? ''} — test mode, no real payment`
+          : `Order ${data.orderId ?? ''}`,
         order_id: data.razorpayOrderId,
         // CHANGE: 2026-10-03 — SP-3: prefill the modal from the validated buyer
         // (the server echo is authoritative; fall back to local state).
@@ -290,7 +295,7 @@ function PayButton({
           email: data.customer?.email ?? customer.email,
           contact: data.customer?.phone ?? customer.phone,
         },
-        notes: { testMode: 'true' },
+        notes: { mode: testMode ? 'test' : 'live' },
         theme: { color: '#006569' },
         handler: (response: Record<string, string>) => {
           // The client asserts NOTHING about success. The ids are forwarded to the success
@@ -326,7 +331,7 @@ function PayButton({
       setBusy(false);
       setError(err instanceof Error ? err.message : 'Could not start the payment.');
     }
-  }, [items, customer, tssSerials, detailsValid, router]);
+  }, [items, customer, tssSerials, detailsValid, testMode, router]);
 
   return (
     <div>
@@ -360,7 +365,7 @@ function PayButton({
   );
 }
 
-export default function CheckoutContents() {
+export default function CheckoutContents({ testMode }: { testMode: boolean }) {
   const { items, totals, hydrated, setQty, remove } = useCart();
 
   // CHANGE: 2026-10-03 — SP-3 buyer capture. All of this is LOCAL checkout state —
@@ -425,14 +430,18 @@ export default function CheckoutContents() {
       </div>
       <h1 className="mt-2 text-2xl font-black text-slate-900">Checkout</h1>
 
-      {/* Test-mode banner: explicit, above the fold, before any money figure. */}
-      <div className="mt-4 rounded-xl border border-amber-300 bg-amber-50 px-4 py-3">
-        <p className="text-xs font-bold uppercase tracking-wider text-amber-800">Test mode</p>
-        <p className="mt-0.5 text-xs leading-relaxed text-amber-800/90">
-          This checkout runs on Razorpay <strong>test keys</strong> — the mock bank on the next
-          screen lets you succeed or fail the payment. No real money moves and no order is fulfilled.
-        </p>
-      </div>
+      {/* CHANGE: 2026-10-17 (go-live) — the test-mode banner renders ONLY in test mode. When the
+          site is live (RAZORPAY_MODE=live) no banner shows, so we never falsely reassure a buyer
+          that "no real money" moves. The mode arrives as a server prop from page.tsx. */}
+      {testMode && (
+        <div className="mt-4 rounded-xl border border-amber-300 bg-amber-50 px-4 py-3">
+          <p className="text-xs font-bold uppercase tracking-wider text-amber-800">Test mode</p>
+          <p className="mt-0.5 text-xs leading-relaxed text-amber-800/90">
+            This checkout runs on Razorpay <strong>test keys</strong> — the mock bank on the next
+            screen lets you succeed or fail the payment. No real money moves and no order is fulfilled.
+          </p>
+        </div>
+      )}
 
       {!hydrated ? (
         <div className="mt-8 flex items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white p-10 text-slate-400">
@@ -556,8 +565,19 @@ export default function CheckoutContents() {
                 }}
                 tssSerials={serialBySlug}
                 detailsValid={detailsValid}
+                testMode={testMode}
               />
             </div>
+            {/* CHANGE: 2026-10-17 (owner) — warn shoppers not to close the tab mid-payment so the
+                browser-return confirmation is not lost; the Razorpay webhook is the server-side
+                backstop, but keeping the tab open keeps the receipt flow smooth. */}
+            <p
+              role="note"
+              className="mt-3 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-[11px] leading-relaxed text-amber-800"
+            >
+              Please keep this tab open until your payment is confirmed. Closing the browser while a
+              payment is in progress can interrupt the confirmation.
+            </p>
             <p className="mt-3 text-center text-[10px] font-semibold uppercase tracking-wider text-slate-400">
               {items.length} line{itemCountLabel(items)} · Proceed to Razorpay
             </p>
