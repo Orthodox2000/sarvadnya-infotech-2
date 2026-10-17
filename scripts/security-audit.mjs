@@ -119,10 +119,17 @@ const writeRoutes = [
   'app/api/upload/chunk/route.ts',
   'app/api/cart/order/route.ts',
   'app/api/cart/verify/route.ts',
+  // CHANGE: 2026-10-17 — careers sign-up is a public write route (it creates users) and
+  // gained its own per-IP limiter with the referral system. Cover it here so removing that
+  // limiter fails the audit, like every other write route.
+  'app/api/auth/careers/signup/route.ts',
 ];
 const unguarded = writeRoutes.filter((p) => {
   const file = resolve(root, p);
-  return !existsSync(file) || !/ateLimit/.test(readFileSync(file, 'utf-8'));
+  // CHANGE: 2026-10-17 — the cart routes moved to lib/cart/transaction-limit.ts (createTransactionLimiter,
+  // which composes createRateLimiter) on 2026-10-12, so the old /ateLimit/ probe stopped matching them
+  // and this check went red on a false negative. Accept either limiter symbol.
+  return !existsSync(file) || !/(?:ateLimit|TransactionLimiter)/.test(readFileSync(file, 'utf-8'));
 });
 check(
   `public write routes are rate-limited${unguarded.length ? ` (missing: ${unguarded.join(', ')})` : ''}`,
