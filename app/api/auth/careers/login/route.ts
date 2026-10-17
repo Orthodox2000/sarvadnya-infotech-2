@@ -55,6 +55,15 @@ export async function POST(req: NextRequest) {
       email: safeUser.email,
       fullName: safeUser.fullName || '',
       phone: safeUser.phone || '',
+      // CHANGE: 2026-10-17 — candidate profile details (see lib/careers-auth.ts). Included here
+      // so the post-login Personal Details section renders immediately after a fresh login.
+      gender: safeUser.gender,
+      age: safeUser.age,
+      qualification: safeUser.qualification,
+      skills: safeUser.skills,
+      experience: safeUser.experience,
+      experienceDetails: safeUser.experienceDetails,
+      city: safeUser.city,
       resumeUrl: safeUser.resumeUrl,
       resumeName: safeUser.resumeName,
       referralCode: referralCode || undefined,

@@ -17,6 +17,11 @@ export default function QuickApplyModal({ isOpen, onClose, job, user }: QuickApp
     name: '',
     email: '',
     phone: '',
+    // CHANGE: 2026-10-17 — candidate profile fields (gender/age/city added; the rest already
+    // existed and were never populated because the account had no source for them).
+    gender: '',
+    age: '',
+    city: '',
     qualification: '',
     skills: '',
     experience: '',
@@ -67,6 +72,12 @@ export default function QuickApplyModal({ isOpen, onClose, job, user }: QuickApp
         name: user.fullName || prev.name,
         email: user.email || prev.email,
         phone: user.phone || prev.phone,
+        // CHANGE: 2026-10-17 — autofill from the candidate's saved profile details (see
+        // PersonalDetailsCard). `age` is a number on the account, a string in the form; only
+        // fall back to the previous value when the profile has nothing set.
+        gender: user.gender || prev.gender || '',
+        age: user.age === undefined || user.age === null ? prev.age : String(user.age),
+        city: user.city || prev.city || '',
         qualification: user.qualification || prev.qualification || '',
         skills: user.skills || prev.skills || '',
         experience: user.experience || prev.experience || '',
@@ -126,6 +137,9 @@ export default function QuickApplyModal({ isOpen, onClose, job, user }: QuickApp
       data.append('name', formData.name);
       data.append('email', formData.email);
       data.append('phone', formData.phone);
+      data.append('gender', formData.gender);
+      data.append('age', formData.age);
+      data.append('city', formData.city);
       data.append('qualification', formData.qualification);
       data.append('skills', formData.skills);
       data.append('experience', formData.experience);
@@ -193,6 +207,28 @@ export default function QuickApplyModal({ isOpen, onClose, job, user }: QuickApp
                 <div>
                   <label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Qualification</label>
                   <input value={formData.qualification} onChange={e => setFormData({...formData, qualification: e.target.value})} className="w-full rounded-xl border border-[#E5F4F4] px-4 py-2 text-sm" placeholder="e.g. BCA, BSc, MBA" />
+                </div>
+              </div>
+              {/* CHANGE: 2026-10-17 — gender / age / city, autofilled from the saved profile
+                  (PersonalDetailsCard) and stored with the application. Optional fields. */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                  <label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Gender</label>
+                  <select value={formData.gender} onChange={e => setFormData({...formData, gender: e.target.value})} className="w-full rounded-xl border border-[#E5F4F4] bg-white px-4 py-2 text-sm">
+                    <option value="">Select</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                    <option value="Prefer not to say">Prefer not to say</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Age</label>
+                  <input type="number" min={14} max={100} inputMode="numeric" value={formData.age} onChange={e => setFormData({...formData, age: e.target.value})} className="w-full rounded-xl border border-[#E5F4F4] px-4 py-2 text-sm" placeholder="e.g. 24" />
+                </div>
+                <div>
+                  <label className="text-[10px] font-black uppercase tracking-widest text-slate-400">City / Location</label>
+                  <input value={formData.city} onChange={e => setFormData({...formData, city: e.target.value})} className="w-full rounded-xl border border-[#E5F4F4] px-4 py-2 text-sm" placeholder="e.g. Navi Mumbai" />
                 </div>
               </div>
               <div>

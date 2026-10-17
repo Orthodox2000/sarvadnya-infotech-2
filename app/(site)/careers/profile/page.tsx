@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Footer from '@/app/components/Footer';
-import { ResumeManager } from '@/app/components/careers/ResumeManager';
 import { IdCard } from '@/app/components/careers/IdCard';
 
 export default function CareersProfilePage() {
@@ -123,10 +122,14 @@ export default function CareersProfilePage() {
                   transitionDelay: '100ms',
                 }}
               >
-                <IdCard user={user} onLogout={handleLogout} />
+                <IdCard user={user} onLogout={handleLogout} onUpdate={handleUpdateUser} />
               </div>
 
-              {/* Extended Profile Section */}
+              {/* Account meta. CHANGE: 2026-10-17 — the old "Profile Details" grid (Name/Email/Phone)
+                  and the second ResumeManager were REMOVED: IdCard now renders the full Personal
+                  Details section (all profile fields, locked by default) and the resume manager, so
+                  showing them here too was a literal duplicate on this page. Only account-age info
+                  is kept. */}
               <div
                 className="bg-white/95 backdrop-blur-xl rounded-2xl border border-[#E5F4F4] shadow-sm p-5 md:p-6"
                 style={{
@@ -136,38 +139,24 @@ export default function CareersProfilePage() {
                   transitionDelay: '200ms',
                 }}
               >
-                <h3 className="text-base font-black text-slate-900 mb-4">Profile Details</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                <h3 className="text-base font-black text-slate-900 mb-4">Account</h3>
+                <div className="grid grid-cols-1 gap-4 text-sm md:grid-cols-2">
                   <div>
-                    <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">
-                      Full Name
-                    </p>
-                    <p className="text-slate-900 font-semibold">{user.fullName || 'Not specified'}</p>
-                  </div>
-                  <div>
-                    <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">
-                      Email
-                    </p>
-                    <p className="text-slate-900 font-semibold break-all">{user.email}</p>
-                  </div>
-                  <div>
-                    <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">
-                      Phone
-                    </p>
-                    <p className="text-slate-900 font-semibold">{user.phone || 'Not specified'}</p>
-                  </div>
-                  <div>
-                    <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">
+                    <p className="mb-1 text-[10px] font-black uppercase tracking-widest text-slate-400">
                       Member Since
                     </p>
-                    <p className="text-slate-900 font-semibold">
+                    <p className="font-semibold text-slate-900">
                       {user.createdAt ? new Date(user.createdAt).toLocaleDateString('en-IN') : '—'}
                     </p>
                   </div>
-                </div>
-
-                <div className="mt-6 pt-6 border-t border-[#E5F4F4]">
-                  <ResumeManager user={user} onUpdate={handleUpdateUser} />
+                  <div>
+                    <p className="mb-1 text-[10px] font-black uppercase tracking-widest text-slate-400">
+                      Last Login
+                    </p>
+                    <p className="font-semibold text-slate-900">
+                      {user.lastLoginAt ? new Date(user.lastLoginAt).toLocaleDateString('en-IN') : '—'}
+                    </p>
+                  </div>
                 </div>
               </div>
 

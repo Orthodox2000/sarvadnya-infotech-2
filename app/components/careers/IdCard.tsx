@@ -6,16 +6,21 @@ import ChangePasswordModal from './ChangePasswordModal';
 // CHANGE: 2026-10-16 — careers referral system: member's own code + share controls, shown in
 // the post-login settings (this card is used on /careers and /careers/profile).
 import { ReferralCard } from './ReferralCard';
+// CHANGE: 2026-10-17 — candidate's own details, locked by default (unlock to edit).
+import { PersonalDetailsCard } from './PersonalDetailsCard';
 
 interface IdCardProps {
   user: any;
   onLogout: () => Promise<void>;
+  // CHANGE: 2026-10-17 — lets the account cards push a freshly-updated user back to the page so
+  // the header (name/email) and application autofill reflect a saved edit without a reload.
+  onUpdate?: (user: any) => void;
 }
 
 // CHANGE: 2026-10-05 — the outer wrapper's `mb-6` was removed. It assumed IdCard was always the top
 // of a full-width section; inside the new /careers auth column that trailing margin pushed the
 // layout around. The gap is now owned by the call site (careers-client.tsx, profile/page.tsx).
-export function IdCard({ user, onLogout }: IdCardProps) {
+export function IdCard({ user, onLogout, onUpdate }: IdCardProps) {
   const [loggingOut, setLoggingOut] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [showChangePwd, setShowChangePwd] = useState(false);
@@ -79,10 +84,13 @@ export function IdCard({ user, onLogout }: IdCardProps) {
           </div>
         </div>
 
-        <div className="flex flex-col gap-1 items-end">
+        {/* CHANGE: 2026-10-17 — owner: "proper gap between Change Password and Logout". Gap was
+            gap-1 (4px); now gap-2, and Change Password's padding matches Logout's py-1.5 so the
+            two pills read as an evenly-spaced pair instead of a cramped stack. */}
+        <div className="flex flex-col gap-2 items-end">
           <button
             onClick={() => setShowChangePwd(true)}
-            className="px-3 py-1 rounded-full text-[9px] md:text-[10px] font-bold uppercase tracking-widest bg-teal-50 text-[#006569] hover:bg-teal-100"
+            className="px-3 py-1.5 rounded-full text-[9px] md:text-[10px] font-bold uppercase tracking-widest bg-teal-50 text-[#006569] hover:bg-teal-100 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#006569]/30"
           >
             Change Password
           </button>
@@ -110,9 +118,13 @@ export function IdCard({ user, onLogout }: IdCardProps) {
           (Change Password / Resume) because it is a per-account, display-only detail. */}
       <ReferralCard user={user} />
 
+      {/* CHANGE: 2026-10-17 — candidate details (locked by default; unlock to edit). Sits with
+          the other account sections; the same values autofill the job application form. */}
+      <PersonalDetailsCard user={user} onUpdate={onUpdate} />
+
       {/* Mobile drawer-like slide-up effect on expand if needed - subtle */}
       <div className="mt-4 relative z-10 transition-all duration-500">
-        <ResumeManager user={user} />
+        <ResumeManager user={user} onUpdate={onUpdate} />
       </div>
       <ChangePasswordModal isOpen={showChangePwd} onClose={() => setShowChangePwd(false)} />
     </div>

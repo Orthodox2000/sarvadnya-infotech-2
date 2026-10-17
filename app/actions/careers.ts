@@ -24,6 +24,16 @@ export async function submitApplication(formData: FormData) {
     const phone = formData.get('phone') as string;
     const experience = formData.get('experience') as string;
     const message = formData.get('message') as string;
+    // CHANGE: 2026-10-17 — candidate profile fields (autofilled from the account in QuickApplyModal;
+    // previously qualification/skills/experienceDetails were sent by the form but silently DROPPED
+    // here, and gender/age/city did not exist).
+    const gender = (formData.get('gender') as string) || '';
+    const city = (formData.get('city') as string) || '';
+    const qualification = (formData.get('qualification') as string) || '';
+    const skills = (formData.get('skills') as string) || '';
+    const experienceDetails = (formData.get('experienceDetails') as string) || '';
+    const ageRaw = ((formData.get('age') as string) || '').trim();
+    const age = ageRaw && Number.isInteger(Number(ageRaw)) ? Number(ageRaw) : undefined;
     const resumeUrlField = formData.get('resumeUrl') as string;
     const resumeName = (formData.get('resumeName') as string) || 'resume.pdf';
 
@@ -83,7 +93,14 @@ export async function submitApplication(formData: FormData) {
       full_name: fullName,
       email,
       phone,
+      // CHANGE: 2026-10-17 — application now carries the candidate's profile details too.
+      gender: gender || undefined,
+      age,
+      city: city || undefined,
+      qualification: qualification || undefined,
+      skills: skills || undefined,
       experience,
+      experienceDetails: experienceDetails || undefined,
       message,
       resume_url: resumeUrl,
       ip: meta.secGpc ? undefined : meta.ip,

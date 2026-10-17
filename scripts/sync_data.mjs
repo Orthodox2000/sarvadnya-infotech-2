@@ -51,7 +51,9 @@ async function run() {
       hero_title: 'SARVADNYA INFOTECH LLP',
       hero_subtitle: 'Your Solution Partner',
       hero_description: 'Sarvadnya Infotech LLP is a Tally Certified Partner having more than 1,500+ satisfied clients for Tally Software and related Services since 2008. Clients count us for our quality services and transparent consultancy on investment in Softwares Services as we believe in making Business happy and satisfied by providing right Solutions. With the help of our expert and an excellent team who understands the need and pain areas of Client’s Business in a short span of time and fulfill their needs at maximum saturation level too very quickly! We are known for providing the Solutions with ultimate satisfaction.',
-      hero_image: 'https://t6sd8rtn777vye6j.public.blob.vercel-storage.com/about-hero-image-1779440951513.jfif',
+      // CHANGE: 2026-10-17 — repointed to the NEW Blob store (files were migrated from the old
+      // store; the previous t6sd8rtn777vye6j host no longer has credentials on this project).
+      hero_image: 'https://yxixkma9asjiodgv.public.blob.vercel-storage.com/about-hero-image-1779440951513.jfif',
       partner1_name: 'Suman Sawant',
       partner1_quote: 'She is the Co-founder of Sarvadnya Infotech LLP. An MBA in HR and Finance, She has a rich experience of working in diversified industries and work profiles. With great interest in Accounts & Finance and a zeal towards excellent delivery of each project she handles, she observed and found the Businesses strugging with the knowledge gap with right technology adaption for the proper finance management for the business. She enjoys assisting Businesses in adapting skills which help them manage their Business process and finance in an effective way and replace Manual work with System automation in Accounts & Finance. Out of great passion towards Training people, she also provides occasional lectures in ICAI on the subject of Tally technology for Audit.',
       partner1_image: '',

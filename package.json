@@ -43,6 +43,7 @@
     "test:seo": "node scripts/seo-links-test.mjs",
     "test:referral": "node scripts/referral-code-test.mjs",
     "backfill:referral-codes": "node scripts/backfill-referral-codes.mjs",
+    "migrate:blob": "node scripts/migrate-blob-store.mjs",
     "test:news-verify": "node scripts/news-seed-verify.mjs"
   },
   "dependencies": {

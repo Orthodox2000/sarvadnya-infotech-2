@@ -243,7 +243,7 @@ export function CareersClient() {
                       <h2 className="mb-3 text-sm font-black uppercase tracking-widest text-slate-900">
                         Your account
                       </h2>
-                      <IdCard user={user} onLogout={signOut} />
+                      <IdCard user={user} onLogout={signOut} onUpdate={setUser} />
                     </div>
                   ) : (
                     <AuthForms onSuccess={setUser} focusSignal={loginFocusSignal} />
