@@ -3,6 +3,9 @@
 import { useState, useEffect } from 'react';
 import { ResumeManager } from './ResumeManager';
 import ChangePasswordModal from './ChangePasswordModal';
+// CHANGE: 2026-10-16 — careers referral system: member's own code + share controls, shown in
+// the post-login settings (this card is used on /careers and /careers/profile).
+import { ReferralCard } from './ReferralCard';
 
 interface IdCardProps {
   user: any;
@@ -102,6 +105,10 @@ export function IdCard({ user, onLogout }: IdCardProps) {
           </button>
         </div>
       </div>
+
+      {/* CHANGE: 2026-10-16 — referral code card sits with the other account settings
+          (Change Password / Resume) because it is a per-account, display-only detail. */}
+      <ReferralCard user={user} />
 
       {/* Mobile drawer-like slide-up effect on expand if needed - subtle */}
       <div className="mt-4 relative z-10 transition-all duration-500">

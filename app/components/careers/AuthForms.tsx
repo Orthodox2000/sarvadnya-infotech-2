@@ -1,6 +1,10 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+// CHANGE: 2026-10-16 — careers referral system. The module is isomorphic (web crypto only),
+// so the same alphabet/format rules the server enforces drive the client-side input filter
+// and the `?ref=` link auto-fill — one source of truth, no client/server drift.
+import { REFERRAL_ALPHABET, REFERRAL_CODE_LENGTH, normalizeReferralCode, isValidReferralCodeFormat } from '@/lib/careers-referral.mjs';
 
 interface AuthFormsProps {
   onSuccess: (user: any) => void;
@@ -10,6 +14,11 @@ interface AuthFormsProps {
 }
 
 type Mode = 'login' | 'signup';
+
+// CHANGE: 2026-10-16 — strips every char the referral alphabet cannot contain, as the user
+// types (mirrors the phone field's inline sanitiser). The code can then only ever be
+// well-formed; the server still verifies that it belongs to a real account.
+const REFERRAL_INPUT_FILTER = new RegExp(`[^${REFERRAL_ALPHABET}]`, 'g');
 
 /**
  * CHANGE: 2026-10-05 — redesigned for the new /careers right-hand column.
@@ -32,11 +41,39 @@ export function AuthForms({ onSuccess, focusSignal = 0 }: AuthFormsProps) {
     phone: '',
   });
 
+  // CHANGE: 2026-10-16 — referral input is HIDDEN by default ("I have a referral code?" toggle).
+  // A `?ref=CODE` link auto-reveals + prefills it. `referralAttempts` counts consecutive
+  // server rejections so after 3 we can recommend continuing without a code.
+  const [showReferral, setShowReferral] = useState(false);
+  const [referralCode, setReferralCode] = useState('');
+  const [referralAttempts, setReferralAttempts] = useState(0);
+  const [referralRejected, setReferralRejected] = useState(false);
+
   // CHANGE: 2026-10-05 — entrance is `mounted`-gated (set in an effect, never during render) so
   // SSR markup and the first client render agree and hydration cannot mismatch.
   const [mounted, setMounted] = useState(false);
   useEffect(() => {
     setMounted(true);
+  }, []);
+
+  // CHANGE: 2026-10-16 — /careers?ref=CODE auto-fill. Runs in an effect (never during render)
+  // so URL access cannot desync SSR and client markup. A well-formed code reveals the referral
+  // field prefilled AND lands the visitor on the sign-up view, since a referred person by
+  // definition does not have an account yet. A malformed `ref` is silently ignored — the page
+  // must stay stable whether or not the visitor is signed in.
+  useEffect(() => {
+    try {
+      const raw = new URLSearchParams(window.location.search).get('ref');
+      if (!raw) return;
+      const code = normalizeReferralCode(raw);
+      if (isValidReferralCodeFormat(code)) {
+        setReferralCode(code);
+        setShowReferral(true);
+        setMode('signup');
+      }
+    } catch {
+      /* URL parsing must never break the form */
+    }
   }, []);
 
   // CHANGE: 2026-10-05 — focus follows a mode SWITCH, via an effect rather than
@@ -65,24 +102,61 @@ export function AuthForms({ onSuccess, focusSignal = 0 }: AuthFormsProps) {
     setMode(next);
     setError(null);
     setShowPassword(false);
+    // CHANGE: 2026-10-16 — clear the transient referral rejection so switching modes does not
+    // carry a stale "code doesn't work" notice (the typed code is kept, it may just be a typo).
+    setReferralRejected(false);
+    setReferralAttempts(0);
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.SyntheticEvent, opts?: { skipReferral?: boolean }) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
 
     try {
-      const endpoint = mode === 'login' ? '/api/auth/careers/login' : '/api/auth/careers/signup';
+      const isSignupSubmit = mode === 'signup';
+      const endpoint = isSignupSubmit ? '/api/auth/careers/signup' : '/api/auth/careers/login';
+      const useReferral = isSignupSubmit && !opts?.skipReferral && showReferral && referralCode.length > 0;
+      if (useReferral && !isValidReferralCodeFormat(referralCode)) {
+        setReferralRejected(true);
+        setReferralAttempts((a) => (a + 1));
+        setLoading(false);
+        setError('Enter a valid referral code (8 letters & numbers only) to use it.');
+        return;
+      }
+      const payload: Record<string, unknown> = { ...formData };
+      if (useReferral) payload.referralCode = referralCode;
+
       const response = await fetch(endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(payload),
       });
 
       const result = await response.json();
       if (!response.ok) {
+        // CHANGE: 2026-10-16 — after 3 consecutive rejected codes, surface the "continue
+        // without referral" recommendation instead of letting the visitor loop forever.
+        if (isSignupSubmit && useReferral && result?.code === 'INVALID_REFERRAL') {
+          const next = referralAttempts + 1;
+          setReferralAttempts(next);
+          if (next >= 3) setReferralRejected(true);
+        }
         throw new Error(result.error || 'Authentication failed');
+      }
+
+      // CHANGE: 2026-10-16 — drop `?ref=` from the URL once the referred account exists, so a
+      // refresh cannot re-prefill a code for the now-signed-in user.
+      if (isSignupSubmit && typeof window !== 'undefined') {
+        try {
+          const url = new URL(window.location.href);
+          if (url.searchParams.has('ref')) {
+            url.searchParams.delete('ref');
+            window.history.replaceState(null, '', url.pathname + (url.search ? url.search : ''));
+          }
+        } catch {
+          /* history is best-effort */
+        }
       }
 
       onSuccess(result.user);
@@ -229,6 +303,89 @@ export function AuthForms({ onSuccess, focusSignal = 0 }: AuthFormsProps) {
               className="w-full rounded-xl border border-[#E5F4F4] bg-[#F5F4ED]/50 px-4 py-2.5 text-sm text-slate-900 transition-colors duration-300 placeholder:text-slate-400 hover:border-[#006569]/40 hover:bg-[#F5F4ED]/70 focus:border-[#006569] focus:outline-none focus:ring-2 focus:ring-[#006569]/20"
               placeholder="+91 XXXXX XXXXX"
             />
+          </div>
+        )}
+
+        {isSignup && (
+          <div className="space-y-2">
+            <button
+              type="button"
+              role="switch"
+              aria-checked={showReferral}
+              aria-controls="careers-referral-field"
+              onClick={() => {
+                const next = !showReferral;
+                setShowReferral(next);
+                if (!next) {
+                  setReferralCode('');
+                  setReferralAttempts(0);
+                  setReferralRejected(false);
+                }
+              }}
+              className="-mx-1 inline-flex min-h-9 items-center gap-2 rounded px-1 text-[10px] font-black uppercase tracking-widest text-[#006569] transition-colors hover:text-[#005559] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#006569]/30 focus-visible:ring-offset-2"
+            >
+              <span
+                aria-hidden="true"
+                className={`grid h-4 w-4 place-items-center rounded-full border text-[11px] leading-none transition-colors ${
+                  showReferral ? 'border-[#006569] bg-[#006569] text-white' : 'border-[#B8DEDE] text-[#006569]'
+                }`}
+              >
+                {showReferral ? '\u2212' : '+'}
+              </span>
+              I have a referral code
+            </button>
+
+            {showReferral && (
+              <div id="careers-referral-field" className="space-y-1.5">
+                <label htmlFor="careers-referral" className="block text-[10px] font-black uppercase tracking-widest text-slate-400">
+                  Referral Code
+                </label>
+                <input
+                  id="careers-referral"
+                  name="referralCode"
+                  type="text"
+                  inputMode="text"
+                  autoComplete="off"
+                  autoCapitalize="characters"
+                  spellCheck={false}
+                  maxLength={REFERRAL_CODE_LENGTH}
+                  value={referralCode}
+                  onChange={(e) => {
+                    const v = e.target.value.toUpperCase().replace(REFERRAL_INPUT_FILTER, '').slice(0, REFERRAL_CODE_LENGTH);
+                    setReferralCode(v);
+                    setReferralRejected(false);
+                  }}
+                  aria-describedby="careers-referral-hint"
+                  className="w-full rounded-xl border border-[#E5F4F4] bg-[#F5F4ED]/50 px-4 py-2.5 font-mono text-sm uppercase tracking-[0.2em] text-slate-900 transition-colors duration-300 placeholder:font-sans placeholder:tracking-normal placeholder:text-slate-400 hover:border-[#006569]/40 hover:bg-[#F5F4ED]/70 focus:border-[#006569] focus:outline-none focus:ring-2 focus:ring-[#006569]/20"
+                  placeholder="e.g. XK7M2Q9B"
+                />
+                <p id="careers-referral-hint" className="text-[10px] font-semibold text-slate-400">
+                  {REFERRAL_CODE_LENGTH} characters, letters &amp; numbers only.
+                </p>
+
+                {referralRejected && (
+                  <div className="rounded-xl border border-amber-200 bg-amber-50/80 px-3 py-2">
+                    <p className="text-[11px] font-semibold text-amber-700">
+                      That referral code doesn&apos;t seem to work. You can still create your account without it.
+                    </p>
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        setShowReferral(false);
+                        setReferralCode('');
+                        setReferralAttempts(0);
+                        setReferralRejected(false);
+                        setError(null);
+                        void handleSubmit(e, { skipReferral: true });
+                      }}
+                      className="mt-1.5 inline-flex min-h-8 items-center rounded-lg bg-amber-600 px-3 text-[10px] font-black uppercase tracking-widest text-white transition-colors hover:bg-amber-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/40"
+                    >
+                      Continue without referral
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         )}
 
