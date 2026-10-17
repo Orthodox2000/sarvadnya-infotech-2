@@ -72,8 +72,25 @@ still in progress.
    team's control.
 5. **Zero shareable collateral** — with no finished catalogue/brochure/video, sales has nothing new
    for WhatsApp or print.
-6. **No lead attribution** — 0 leads credited to content and no UTM-tagged links; the dashboard
-   auto-summary (7 items) also lags the 8 item rows, so it needs a recalculation.
+6. **No lead attribution** — 0 leads credited to content and no UTM-tagged links, so content impact
+   cannot be measured (see **Tracker Data Quality** below).
+
+---
+
+## Tracker Data Quality — Missing Rows
+
+**Simple:** The dashboard does not match the sheet — it shows 7 digital items but 8 rows are logged, and
+"Ready" is one too high. The two leftover sample rows (WEB-001, DC-001) are still being counted. Fix the
+sheet before the next report so the numbers can be trusted.
+
+**Detailed:**
+
+| # | What the dashboard shows | What the sheet actually has | Fix |
+|---|---|---|---|
+| 1 | Digital total = 7 | 8 rows logged (DC-001 to DC-008) | The Total formula counts only non-Cancelled rows, so DC-003 (Cancelled) is silently dropped — label the column "Active" or count every row. |
+| 2 | Digital "Ready" = 3 | 2 rows (DC-005, DC-007) | The "Creative" row has a hard-typed 1 instead of the Ready formula every other row uses — replace it. |
+| 3 | Digital "In Progress / Planned" = 3 | 4 rows (DC-002, DC-004, DC-006, DC-008) | Same row — set it to =Total − Posted − Ready (the formula the other rows use). |
+| 4 | Sample rows counted in the totals | WEB-001 and DC-001 are marked "Example row" | Delete both sample rows, then recalculate the sheet. |
 
 ---
 
@@ -105,7 +122,7 @@ and what to do next.)*
 | High | Unblock Razorpay (WEB-002) — follow up on API / 2FA enablement. |
 | High | Finish and publish one catalogue / brochure per product; start the video library. |
 | Medium | Add UTM-tagged links + a lead-source field so content ROI is measurable. |
-| Medium | Refresh the tracker dashboard so its totals match the item rows. |
+| Medium | Fix the tracker dashboard (missing rows) so its totals match the item rows. |
 
 ---
 
