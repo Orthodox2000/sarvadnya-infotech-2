@@ -32,6 +32,8 @@ export interface PriceItem {
 }
 
 export function computePayablePaise(basePaise: number, gstPct: number, discountPaise: number): number;
+/** CHANGE: 2026-10-17 — slug of the TEMPORARY ₹1 live payment trial (see prices-catalog.mjs). */
+export const PAYMENT_TRIAL_SLUG: string;
 export const PRICES_FALLBACK: PriceItem[];
 export function getFallbackPriceItem(slug: string): PriceItem | null;
 export function isKnownSlug(slug: string): boolean;

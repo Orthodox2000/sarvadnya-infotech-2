@@ -21,6 +21,9 @@ import {
 
 export type { PriceItem, PriceStatus } from './prices-catalog.mjs';
 export { computePayablePaise, getFallbackPriceItem } from './prices-catalog.mjs';
+// CHANGE: 2026-10-17 — re-export the TEMPORARY ₹1 payment-trial slug so the trial page imports
+// it from this typed facade (see prices-catalog.mjs / AGENTS.md §25).
+export { PAYMENT_TRIAL_SLUG } from './prices-catalog.mjs';
 
 /** Slugs that are safe to sell right now (priced + active). Inactive items are excluded
  *  by the caller; `priced` is the only sellable status. */

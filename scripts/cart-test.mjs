@@ -10,7 +10,7 @@
 // Run: npm run test:cart
 
 import assert from 'node:assert/strict';
-import { PRICES_FALLBACK, getFallbackPriceItem, isKnownSlug, computePayablePaise } from '../lib/prices-catalog.mjs';
+import { PRICES_FALLBACK, getFallbackPriceItem, isKnownSlug, computePayablePaise, PAYMENT_TRIAL_SLUG } from '../lib/prices-catalog.mjs';
 import {
   MAX_QTY,
   MAX_CART_LINES,
@@ -89,6 +89,16 @@ check('catalogue: modules are unpriced structure (₹0, not sellable)', () => {
 check('catalogue: every priced slug is unique', () => {
   const slugs = new Set(PRICES_FALLBACK.map((p) => p.slug));
   assert.equal(slugs.size, PRICES_FALLBACK.length);
+});
+
+// CHANGE: 2026-10-17 — the TEMPORARY ₹1 live payment trial must be exactly ₹1 and sellable.
+// ⚠️ Remove this check together with the catalogue entry (see AGENTS.md §25).
+check('catalogue: ₹1 payment trial is exactly 100 paise and sellable', () => {
+  const item = getFallbackPriceItem(PAYMENT_TRIAL_SLUG);
+  assert.ok(item, 'payment trial item is missing from the catalogue');
+  assert.equal(item.payablePaise, 100);
+  assert.equal(item.gstPct, 0);
+  assert.equal(item.priceStatus, 'priced');
 });
 
 // ---------------------------------------------------------------- pure math
