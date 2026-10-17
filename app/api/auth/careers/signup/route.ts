@@ -14,7 +14,8 @@ import {
 } from '@/lib/careers-referral.mjs';
 
 // CHANGE: 2026-10-16 — per-IP fixed window (20 signups/min is far above any human rate).
-const signupLimiter = createRateLimiter(20, 60_000);
+// CHANGE: 2026-10-17 — env-overridable like every other public-write limiter (see .env.example).
+const signupLimiter = createRateLimiter(Number(process.env.CAREERS_SIGNUP_RATE_LIMIT || 20), 60_000);
 
 // CHANGE: 2026-10-16 — ensure the referral indexes once per warm instance. The UNIQUE index
 // on `referralCode` is PARTIAL (only docs that HAVE a code) so the pre-referral backfill
