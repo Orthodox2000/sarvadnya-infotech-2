@@ -826,11 +826,18 @@ main > div:first-of-type {
     border-top: 1px solid #f1f5f9;
     padding: 0.625rem 0.875rem;
     font-size: 12px;
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 0.75rem;
-    text-align: right;
+    color: #334155;
+    text-align: left;
+    /* CHANGE: 2026-10-22 - the cell is a plain BLOCK again, and long tokens break.
+       WHY: the markdown renderer emits SEVERAL inline elements per cell (one <span> per
+       text run, plus <strong>/<code>/<a>). The old rule made the cell a FLEX container, so
+       every one of those inline elements became its own flex item (min-width: auto):
+       the sentence was torn into pieces spread apart by space-between (not aligned), it
+       could not shrink (measured 37px overflow, clipped by the card = text lost), and it
+       never wrapped as a paragraph. As a block the inline content flows and wraps
+       normally, and `overflow-wrap: anywhere` breaks long paths/codes/URLs instead of
+       pushing the card wide. */
+    overflow-wrap: anywhere;
   }
   .insights-table td:first-child {
     border-top: none;
@@ -843,18 +850,23 @@ main > div:first-of-type {
   .insights-table td:first-child::before {
     display: none;
   }
+  /* CHANGE: 2026-10-22 - the column header is a small CAPTION ABOVE the value instead of
+     a flex item beside it.
+     WHY: as a flex item the label had a fixed 40% basis and squeezed the value into a
+     narrow column (a 120-character sentence became 8 cramped lines). Stacked, the value
+     gets the FULL card width on a 360px phone and every label still starts at the same
+     left edge, so the label/value pairs stay aligned. */
   .insights-table td:not(:first-child)::before {
     content: attr(data-label);
+    display: block;
+    margin-bottom: 0.25rem;
     font-weight: 800;
+    font-size: 11px;
     color: #475569;
-    text-align: left;
-    flex: 0 0 40%;
   }
-  .insights-table td:not(:first-child) {
-    color: #334155;
-  }
-  .insights-table .overflow-x-auto {
-    overflow: visible;
+  .insights-table td code,
+  .insights-table td a {
+    overflow-wrap: anywhere;
   }
 }
 
