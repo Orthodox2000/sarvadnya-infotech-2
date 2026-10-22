@@ -1,0 +1,35 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="g5" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#006569"/>
+      <stop offset="100%" stop-color="#0f766e"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="#f8fafc"/>
+  <rect width="1200" height="160" fill="url(#g5)"/>
+  <text x="60" y="95" font-size="48" fill="#fff" font-weight="800" font-family="system-ui">Masters, Ledgers &amp; Groups in Tally Prime</text>
+  <text x="60" y="135" font-size="20" fill="#ccfbf1" font-family="system-ui">Chart of Accounts, Vouchers, Cost Centres</text>
+  <g transform="translate(60,200)">
+    <rect width="340" height="200" rx="14" fill="#fff" stroke="#e2e8f0"/>
+    <text x="30" y="50" font-size="24" font-weight="800" fill="#006569" font-family="system-ui">Groups</text>
+    <text x="30" y="90" font-size="16" fill="#334155" font-family="system-ui">Classify ledgers for</text>
+    <text x="30" y="120" font-size="16" fill="#334155" font-family="system-ui">Balance Sheet &amp; P&amp;L</text>
+  </g>
+  <g transform="translate(430,200)">
+    <rect width="340" height="200" rx="14" fill="#fff" stroke="#e2e8f0"/>
+    <text x="30" y="50" font-size="24" font-weight="800" fill="#0f766e" font-family="system-ui">Ledgers</text>
+    <text x="30" y="90" font-size="16" fill="#334155" font-family="system-ui">Accounts for Parties,</text>
+    <text x="30" y="120" font-size="16" fill="#334155" font-family="system-ui">Expenses, Income, Assets</text>
+  </g>
+  <g transform="translate(800,200)">
+    <rect width="340" height="200" rx="14" fill="#fff" stroke="#e2e8f0"/>
+    <text x="30" y="50" font-size="24" font-weight="800" fill="#14b8a6" font-family="system-ui">Vouchers</text>
+    <text x="30" y="90" font-size="16" fill="#334155" font-family="system-ui">Record transactions</text>
+    <text x="30" y="120" font-size="16" fill="#334155" font-family="system-ui">Payment/Receipt/Contra</text>
+  </g>
+  <g transform="translate(60,420)">
+    <rect width="1080" height="140" rx="14" fill="#fff" stroke="#e2e8f0"/>
+    <text x="40" y="50" font-size="20" font-weight="700" fill="#0f172a" font-family="system-ui">Cost Centres &amp; Projects</text>
+    <text x="40" y="85" font-size="16" fill="#334155" font-family="system-ui">Track departmental expenses &amp; project-wise profitability for better control</text>
+  </g>
+</svg>

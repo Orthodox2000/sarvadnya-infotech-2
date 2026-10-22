@@ -159,7 +159,7 @@ export function faqJsonLd(question: string, answer: string): JsonLd {
   };
 }
 
-export function breadcrumbJsonLd(items: { name: string; path: string }[]): JsonLd {
+export function breadcrumbJsonLd(items: { name: string; item?: string; path?: string }[]): JsonLd {
   return {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
@@ -167,7 +167,7 @@ export function breadcrumbJsonLd(items: { name: string; path: string }[]): JsonL
       '@type': 'ListItem',
       position: i + 1,
       name: item.name,
-      item: parallelPath(item.path),
+      item: parallelPath(item.item ?? item.path ?? ''),
     })),
   };
 }

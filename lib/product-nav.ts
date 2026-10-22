@@ -133,6 +133,12 @@ export const productItems: ProductItem[] = [
     href: "/tutorials",
     subItems: [
       {
+        id: "l-insights",
+        label: "Tally Insights",
+        href: "/tally-insights",
+        description: "Section-wise guides focused on solving business challenges.",
+      },
+      {
         id: "l-sara",
         label: "Learn from Sara",
         href: "/learn-sara",

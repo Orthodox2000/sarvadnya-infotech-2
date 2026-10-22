@@ -1,0 +1,31 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="g4" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#006569"/>
+      <stop offset="100%" stop-color="#0f766e"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="#f1f5f9"/>
+  <rect width="1200" height="160" fill="url(#g4)"/>
+  <text x="60" y="95" font-size="48" fill="#fff" font-weight="800" font-family="system-ui">How to Create Company in Tally Prime</text>
+  <text x="60" y="135" font-size="20" fill="#e0f2f2" font-family="system-ui">Step-by-Step Company Setup &amp; Masters</text>
+  <g transform="translate(60,200)">
+    <rect width="1080" height="360" rx="16" fill="#fff" stroke="#e2e8f0"/>
+    <circle cx="80" cy="80" r="24" fill="#006569"/>
+    <text x="80" y="88" font-size="20" fill="#fff" text-anchor="middle" font-weight="800">1</text>
+    <text x="130" y="90" font-size="20" font-weight="700" fill="#0f172a">Create Company</text>
+    <text x="130" y="120" font-size="16" fill="#334155">Gateway of Tally &gt; Create Company</text>
+    <circle cx="80" cy="160" r="24" fill="#0f766e"/>
+    <text x="80" y="168" font-size="20" fill="#fff" text-anchor="middle" font-weight="800">2</text>
+    <text x="130" y="170" font-size="20" font-weight="700" fill="#0f172a">Enter Company Details</text>
+    <text x="130" y="200" font-size="16" fill="#334155">Name, Address, Mailing Name, Contact Details</text>
+    <circle cx="80" cy="240" r="24" fill="#14b8a6"/>
+    <text x="80" y="248" font-size="20" fill="#fff" text-anchor="middle" font-weight="800">3</text>
+    <text x="130" y="250" font-size="20" font-weight="700" fill="#0f172a">Set Financial Year</text>
+    <text x="130" y="280" font-size="16" fill="#334155">Financial Year &amp; Books Beginning From</text>
+    <circle cx="80" cy="320" r="24" fill="#0ea5a5"/>
+    <text x="80" y="328" font-size="20" fill="#fff" text-anchor="middle" font-weight="800">4</text>
+    <text x="130" y="330" font-size="20" font-weight="700" fill="#0f172a">Configure &amp; Save</text>
+    <text x="130" y="360" font-size="16" fill="#334155">Currency, Statutory (GST), Accept (Ctrl+A)</text>
+  </g>
+</svg>

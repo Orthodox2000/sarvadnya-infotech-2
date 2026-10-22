@@ -554,6 +554,42 @@ Licensing rules vary by country and depend on your current license and TSS statu
 
 See the TallyPrime license options on our products page, or contact Sarvadnya Infotech for a licensing check before you move.`,
   },
+  {
+    slug: 'how-to-renew-tally-tss-offline',
+    title: 'How to Renew Tally TSS Offline: Steps, Requirements & When to Contact Us',
+    date: 'October 22, 2026',
+    category: 'Tally Prime',
+    description: 'Guide to renewing Tally Software Services (TSS) offline when online renewal isn’t possible. Learn the process, serial number requirement, and how Sarvadnya Infotech can help.',
+    tags: ['tss renewal', 'tss offline renewal', 'renew tally tss', 'tally prime tss renewal', 'tally software services'],
+    link: '/services/tss',
+    author: 'Sarvadnya Infotech LLP',
+    content: `Tally Software Services (TSS) keeps your TallyPrime updated with the latest statutory changes like GST, e-Invoice, e-Way Bill and other compliance updates. In some cases, the online renewal option may not work due to network issues, license conditions or when the renewal prompt is missing.
+
+When do you need offline TSS renewal?
+- Alt+R (Manage TSS Renewal) or F1 > Settings > License > Manage License > F9 (Renew TSS) is missing
+- Online payment/portal doesn't load
+- TSS expired and online renewal is not triggering
+- Working on a system with restricted internet access
+
+What you need before starting:
+- TallyPrime Serial Number (Gateway of Tally > F1 (Help) > About)
+- Company details
+- Valid contact details (email/phone)
+
+Steps to renew TSS offline:
+1. Get your serial number from TallyPrime (Gateway of Tally > F1 (Help) > About).
+2. Share your serial number and company details with your Tally Certified Partner - Sarvadnya Infotech LLP.
+3. We will check your license status and share the renewal details/invoice.
+4. After confirmation, we process the offline renewal and guide you on applying it to your TallyPrime license.
+5. Once updated, your TSS validity will reflect in TallyPrime (Help > About).
+
+Important notes:
+- TSS works on all TallyPrime licenses (Silver, Gold and Server). It is not limited to Gold.
+- Renew before expiry to get extra validity benefits wherever applicable.
+- If TSS is expired, some features like e-Invoice/e-Way Bill generation, GSTR-2A/2B download, direct GST filing and certain banking utilities may be restricted.
+
+Need help with TSS renewal? Contact Sarvadnya Infotech LLP at https://sarvadnyainfotech.com/contact or visit https://sarvadnyainfotech.com/services/tss for assistance.`,
+  },
   // CHANGE: 2026-10-13 - SEO batch from the owner's Search Console export. New posts target
   // "how to lock data in tally prime" / "how to lock tally prime", "how to add gst number in
   // tally erp 9" / "how to add gst in tally erp 9", "what is tally capital" and

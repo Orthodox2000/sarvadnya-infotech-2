@@ -8,6 +8,7 @@ import {
 } from "@/lib/learn-tally-curriculum";
 import { articleJsonLd, breadcrumbJsonLd, faqPageJsonLd } from "@/lib/seo";
 import Script from "next/script";
+import MarkdownBody from "@/app/components/TallyInsights/MarkdownBody";
 
 export async function generateStaticParams() {
   const { LESSONS } = await import("@/lib/learn-tally-curriculum");
@@ -274,6 +275,16 @@ export default async function LessonPage({
               />
             </div>
           )}
+          {lesson.slug === 'tally-gst' && (
+            <div className="mt-6 overflow-hidden rounded-2xl border border-slate-100 shadow-sm">
+              <img
+                src="/images/insights/tally-gst.svg"
+                alt="GST setup, invoicing and reports in Tally Prime"
+                className="w-full h-auto"
+                loading="lazy"
+              />
+            </div>
+          )}
           {lesson.slug === 'tally-payroll-hrms' && (
             <div className="mt-6 overflow-hidden rounded-2xl border border-slate-100 shadow-sm">
               <img
@@ -326,8 +337,43 @@ export default async function LessonPage({
           )}
         </header>
 
-        <article className="prose prose-slate max-w-none prose-headings:font-black prose-headings:tracking-tight prose-p:font-medium prose-li:font-medium prose-a:text-[#006569] prose-table:w-full prose-table:overflow-x-auto prose-pre:rounded-xl">
-          <div className="whitespace-pre-wrap leading-relaxed">{lesson.bodyMd}</div>
+        {/* CHANGE: 2026-10-22 — the body is rendered by the shared MarkdownBody component.
+            WHY: the old inline renderer printed markdown table rows as raw `| ... |` text and
+            then appended the parsed tables at the BOTTOM of the article (wrong order), while
+            the client hub printed the whole body as one raw blob. MarkdownBody is used by
+            BOTH surfaces so a markdown table is a real <table> exactly where it was written. */}
+        <article>
+          <MarkdownBody md={lesson.bodyMd} />
+
+          {/* CHANGE: 2026-10-22 — offer the official TallyPrime 7.2 user guide (PDF shipped in
+              /public) on the "latest version" lesson.
+              WHY: the lesson states 7.2 is the latest release and routes upgrades to a consultation,
+              but readers still want the vendor's own setup instructions. A plain <a download> is
+              used instead of next/link so the browser downloads the asset rather than attempting a
+              client-side route transition on a non-Next file. */}
+          {lesson.slug === "latest-version-of-tally-prime" && (
+            <a
+              href="/pdf-tally-72-user-guide-and-setup-instructions_compress.pdf"
+              download
+              className="mt-6 inline-flex items-center gap-2 rounded-full border border-[#006569]/25 bg-[#E5F4F4] px-5 py-2.5 text-[10px] font-black uppercase tracking-[0.12em] text-[#006569] hover:bg-[#D4EAEA] hover:-translate-y-0.5 transition-all duration-200"
+            >
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                aria-hidden="true"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M12 4v12m0 0l-4.5-4.5M12 16l4.5-4.5M4 19h16"
+                />
+              </svg>
+              Download the TallyPrime 7.2 user guide (PDF)
+            </a>
+          )}
 
           {lesson.definitions && lesson.definitions.length > 0 && (
             <div className="not-prose mt-10">

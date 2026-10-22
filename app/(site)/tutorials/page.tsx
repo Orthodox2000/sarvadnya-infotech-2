@@ -3,6 +3,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import Footer from "../../components/Footer";
 import Image from 'next/image';
+import Link from 'next/link';
 
 export default function TutorialsPage() {
     const [tutorials, setTutorials] = useState<any[]>([]);
@@ -76,6 +77,20 @@ export default function TutorialsPage() {
                     <p className="text-sm md:text-base text-slate-600 max-w-2xl mx-auto font-medium leading-relaxed">
                         Professional guides, webinars, and technical documentation to master TallyPrime and scale your business.
                     </p>
+                    <div className="flex flex-col sm:flex-row justify-center gap-3 mt-6">
+                        <Link
+                            href="/tally-insights"
+                            className="inline-flex items-center justify-center px-6 py-3 rounded-full border border-[#006569]/30 text-[#006569] font-black text-[10px] uppercase tracking-[0.15em] hover:bg-[#006569] hover:text-white transition-all"
+                        >
+                            Prefer a structured path? Go to Tally Insights
+                        </Link>
+                        <Link
+                            href="/learn-sara"
+                            className="inline-flex items-center justify-center px-6 py-3 rounded-full border border-slate-200 text-slate-700 font-black text-[10px] uppercase tracking-[0.15em] hover:border-[#006569] hover:text-[#006569] transition-all"
+                        >
+                            Ask or Learn with Sara
+                        </Link>
+                    </div>
                 </div>
 
                 {/* Search and Tabs */}

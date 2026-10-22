@@ -1,0 +1,32 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Tally ERP 9 vs Tally Prime comparison">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#006569"/>
+      <stop offset="100%" stop-color="#004b4e"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="#f8fafc"/>
+  <rect width="1200" height="160" fill="url(#g)"/>
+  <text x="60" y="95" font-size="48" fill="#fff" font-weight="800" font-family="system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto">Tally ERP 9 vs Tally Prime</text>
+  <text x="60" y="135" font-size="20" fill="#d1fae5" font-family="system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto">Interface, Navigation, Usability &amp; Upgrade</text>
+  <g transform="translate(60,200)">
+    <rect width="520" height="340" rx="16" fill="#fff" stroke="#e2e8f0"/>
+    <text x="30" y="50" font-size="28" font-weight="800" fill="#0f172a" font-family="system-ui">Tally ERP 9</text>
+    <text x="30" y="95" font-size="18" fill="#334155" font-family="system-ui">Classic menu-driven interface</text>
+    <text x="30" y="135" font-size="18" fill="#334155" font-family="system-ui">Multi-menu navigation</text>
+    <text x="30" y="175" font-size="18" fill="#334155" font-family="system-ui">F-key driven workflows</text>
+    <text x="30" y="215" font-size="18" fill="#334155" font-family="system-ui">Learning curve for new users</text>
+    <text x="30" y="255" font-size="18" fill="#334155" font-family="system-ui">Standard reporting layout</text>
+  </g>
+  <g transform="translate(620,200)">
+    <rect width="520" height="340" rx="16" fill="#fff" stroke="#e2e8f0"/>
+    <text x="30" y="50" font-size="28" font-weight="800" fill="#006569" font-family="system-ui">Tally Prime</text>
+    <text x="30" y="95" font-size="18" fill="#334155" font-family="system-ui">Modern, clean ribbon-style layout</text>
+    <text x="30" y="135" font-size="18" fill="#334155" font-family="system-ui">GoTo search for faster access</text>
+    <text x="30" y="175" font-size="18" fill="#334155" font-family="system-ui">Intuitive, simplified workflows</text>
+    <text x="30" y="215" font-size="18" fill="#334155" font-family="system-ui">Easier onboarding for teams</text>
+    <text x="30" y="255" font-size="18" fill="#334155" font-family="system-ui">Enhanced, flexible reports</text>
+    <text x="30" y="295" font-size="18" fill="#334155" font-family="system-ui">Better multi-user experience</text>
+  </g>
+  <text x="600" y="370" font-size="42" fill="#94a3b8" text-anchor="middle" font-weight="800" font-family="system-ui">VS</text>
+</svg>

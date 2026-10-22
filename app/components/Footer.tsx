@@ -270,6 +270,16 @@ export default function Footer({ settings: initialSettings }: { settings?: SiteS
                                 </Link>
                             </li>
                         ))}
+                        <li>
+                            <Link href="/tally-insights" className="hover:text-[#B8DEDE] transition-colors hover-underline-animation py-1">
+                                Tally Insights
+                            </Link>
+                        </li>
+                        <li>
+                            <Link href="/tutorials" className="hover:text-[#B8DEDE] transition-colors hover-underline-animation py-1">
+                                Tutorials
+                            </Link>
+                        </li>
                     </ul>
                 </div>
 
