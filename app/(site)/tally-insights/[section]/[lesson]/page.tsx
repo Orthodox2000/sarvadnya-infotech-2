@@ -140,12 +140,12 @@ export default async function LessonPage({
   );
   jsonLd.push(
     breadcrumbJsonLd([
-      { name: "Home", item: "/" },
-      { name: "Tally Insights", item: "/tally-insights" },
+      { name: "Home", path: "/" },
+      { name: "Tally Insights", path: "/tally-insights" },
       section
-        ? { name: section.title, item: `/tally-insights#${section.id}` }
-        : { name: lesson.sectionTitle, item: "/tally-insights" },
-      { name: lesson.title, item: `/tally-insights/${lesson.sectionId}/${lesson.slug}` }
+        ? { name: section.title, path: `/tally-insights#${section.id}` }
+        : { name: lesson.sectionTitle, path: "/tally-insights" },
+      { name: lesson.title, path: `/tally-insights/${lesson.sectionId}/${lesson.slug}` }
     ])
   );
   if (lesson.faqs && lesson.faqs.length > 0) {
