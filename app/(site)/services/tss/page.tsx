@@ -391,7 +391,7 @@ export default function TSSPage() {
       <div className="max-w-7xl mx-auto px-6">
         <SeoCrossLinks
           newsLinks={[
-            { href: '/news/tally-tss-renewal-2026', label: 'TSS renewal 2026: pricing changes and how to prepare' },
+            { href: '/news/how-to-renew-tally-tss-offline', label: 'How to renew Tally TSS offline: steps & when to contact us' },
             { href: '/news/tally-tss-expiry-meaning', label: "TSS expiry: what 'TSS Expired' means on your licence" },
           ]}
           exploreLinks={[
