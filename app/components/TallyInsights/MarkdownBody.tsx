@@ -87,12 +87,33 @@ function renderInline(text: string, keyPrefix: string): ReactNode[] {
   return nodes;
 }
 
+/**
+ * Strip the inline markdown markers from a header so it can be used as a plain-text label
+ * (the mobile card layout renders it through `content: attr(data-label)`, and a raw
+ * `**Tally ERP 9**` would show the asterisks to the reader).
+ */
+function plainLabel(text: string): string {
+  return String(text || "")
+    .replace(/\[([^\]]+)\]\([^)\s]+\)/g, "$1")
+    .replace(/[*`]/g, "")
+    .trim();
+}
+
 function TableBlock({ block, index }: { block: Extract<MdBlock, { type: "table" }>; index: number }) {
   if (!block.headers.length && !block.rows.length) return null;
 
   return (
     <div className="my-6 overflow-x-auto rounded-xl border border-slate-200 shadow-sm">
-      <table className="w-full text-sm border-collapse">
+      {/* CHANGE: 2026-10-22 — the table carries the `insights-table` class and every cell
+          carries its column header in `data-label`.
+          WHY: the owner asked for the tables to become cards on a phone. Below the md
+          breakpoint the stylesheet in app/globals.css turns every ROW into its own card:
+          the first cell becomes the card title (the feature / row key) and each remaining
+          cell becomes a "label: value" line, so a comparison table shows BOTH values - and
+          therefore the difference between them - with no horizontal scrolling.
+          ONE DOM serves both layouts; the desktop table and the mobile cards are the same
+          elements, restyled by CSS. */}
+      <table className="insights-table w-full text-sm border-collapse">
         {block.headers.length > 0 && (
           <thead>
             <tr className="bg-gradient-to-r from-slate-50 to-[#F5F4ED]/40">
@@ -117,6 +138,7 @@ function TableBlock({ block, index }: { block: Extract<MdBlock, { type: "table" 
               {row.map((cell, ci) => (
                 <td
                   key={ci}
+                  data-label={plainLabel(block.headers[ci] || "")}
                   className="py-3 px-4 align-top text-slate-600 font-medium leading-relaxed"
                 >
                   {renderInline(cell, `t${index}-r${ri}-c${ci}`)}

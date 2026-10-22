@@ -9,6 +9,7 @@ import {
 import { articleJsonLd, breadcrumbJsonLd, faqPageJsonLd } from "@/lib/seo";
 import Script from "next/script";
 import MarkdownBody from "@/app/components/TallyInsights/MarkdownBody";
+import LessonFigure from "@/app/components/TallyInsights/LessonFigure";
 
 export async function generateStaticParams() {
   const { LESSONS } = await import("@/lib/learn-tally-curriculum");
@@ -345,34 +346,22 @@ export default async function LessonPage({
         <article>
           <MarkdownBody md={lesson.bodyMd} />
 
-          {/* CHANGE: 2026-10-22 — offer the official TallyPrime 7.2 user guide (PDF shipped in
-              /public) on the "latest version" lesson.
-              WHY: the lesson states 7.2 is the latest release and routes upgrades to a consultation,
-              but readers still want the vendor's own setup instructions. A plain <a download> is
-              used instead of next/link so the browser downloads the asset rather than attempting a
-              client-side route transition on a non-Next file. */}
+          {/* CHANGE: 2026-10-22 — show the official TallyPrime 7.2 artwork on the lesson that
+              states 7.2 is the latest release.
+              WHY: the owner supplied the 7.2 artwork and asked for it to be incorporated where
+              we mention 7.2, with a proper fit and correct alignment on every screen. The
+              LessonFigure component (shared with the hub) caps the portrait asset at
+              320/360/400 px per breakpoint, centres it, and links the full-size image.
+              The old "Download the TallyPrime 7.2 user guide (PDF)" button was REMOVED with
+              the PDF itself (the owner: "also remove pdf from public when work done"). */}
           {lesson.slug === "latest-version-of-tally-prime" && (
-            <a
-              href="/pdf-tally-72-user-guide-and-setup-instructions_compress.pdf"
-              download
-              className="mt-6 inline-flex items-center gap-2 rounded-full border border-[#006569]/25 bg-[#E5F4F4] px-5 py-2.5 text-[10px] font-black uppercase tracking-[0.12em] text-[#006569] hover:bg-[#D4EAEA] hover:-translate-y-0.5 transition-all duration-200"
-            >
-              <svg
-                className="w-4 h-4"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth="2.5"
-                aria-hidden="true"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M12 4v12m0 0l-4.5-4.5M12 16l4.5-4.5M4 19h16"
-                />
-              </svg>
-              Download the TallyPrime 7.2 user guide (PDF)
-            </a>
+            <LessonFigure
+              src="/images/insights/tallyprime-7.2.webp"
+              alt="TallyPrime 7.2 - the latest release of Tally Prime"
+              caption="TallyPrime 7.2 - the latest release of Tally Prime. Click the image to open it full size."
+              width={1024}
+              height={1371}
+            />
           )}
 
           {lesson.definitions && lesson.definitions.length > 0 && (

@@ -732,3 +732,137 @@ main > div:first-of-type {
     transition: none !important;
   }
 }
+
+/* CHANGE: 2026-10-22 — Tally Insights: collapsible sidebar + table-to-cards on mobile.
+   WHY: on phones the sidebar was always expanded (taking vertical space) and markdown
+   comparison tables had to scroll horizontally to see both columns, so the "difference"
+   between ERP 9 and Tally Prime was impossible to compare at a glance. The owner asked
+   for a collapsible sidebar and for tables to convert to cards that show the values and
+   differences.
+
+   APPROACH (no JS re-architecture): the sidebar gets a single toggle button above it
+   that shows/hides the whole panel (CSS grid-rows transition). The markdown tables already
+   get `data-label` attributes in MarkdownBody.tsx, so below the md breakpoint every row
+   becomes its own card — the first cell becomes the card heading (the feature key) and
+   each subsequent cell renders as `Label: Value`, preserving BOTH values so differences
+   are visible. On md+ the regular table layout is restored. */
+
+/* Sidebar toggle (mobile only) */
+.insights-sidebar-toggle {
+  display: none;
+}
+@media (max-width: 1023px) {
+  .insights-sidebar-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.375rem 0.75rem;
+    border-radius: 9999px;
+    border: 1px solid #e2e8f0;
+    background: white;
+    font-size: 9px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: #006569;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.02);
+    transition: background 150ms ease, box-shadow 150ms ease;
+  }
+  .insights-sidebar-toggle:hover {
+    background: #f5f4ed;
+  }
+  .insights-sidebar-panel {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 280ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .insights-sidebar-panel.is-open {
+    grid-template-rows: 1fr;
+  }
+  .insights-sidebar-panel-inner {
+    overflow: hidden;
+  }
+  .insights-sidebar-panel-body {
+    opacity: 0;
+    transition: opacity 200ms ease-out;
+  }
+  .insights-sidebar-panel.is-open .insights-sidebar-panel-body {
+    opacity: 1;
+  }
+  .insights-sidebar-wrapper {
+    position: static;
+  }
+}
+
+/* Table -> cards below md */
+@media (max-width: 767px) {
+  .insights-table thead {
+    display: none;
+  }
+  .insights-table,
+  .insights-table tbody,
+  .insights-table tr,
+  .insights-table td {
+    display: block;
+    width: 100%;
+  }
+  .insights-table tr {
+    border: 1px solid #e2e8f0;
+    border-radius: 0.875rem;
+    overflow: hidden;
+    margin-bottom: 0.875rem;
+    background: white;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.01);
+  }
+  .insights-table tr:last-child {
+    margin-bottom: 0;
+  }
+  .insights-table tbody {
+    padding: 0.875rem;
+    display: grid;
+    gap: 0.875rem;
+  }
+  .insights-table td {
+    border-top: 1px solid #f1f5f9;
+    padding: 0.625rem 0.875rem;
+    font-size: 12px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.75rem;
+    text-align: right;
+  }
+  .insights-table td:first-child {
+    border-top: none;
+    font-weight: 800;
+    font-size: 13px;
+    color: #0f172a;
+    text-align: left;
+    background: linear-gradient(180deg, rgba(245, 244, 237, 0.55) 0%, rgba(255, 255, 255, 0) 100%);
+  }
+  .insights-table td:first-child::before {
+    display: none;
+  }
+  .insights-table td:not(:first-child)::before {
+    content: attr(data-label);
+    font-weight: 800;
+    color: #475569;
+    text-align: left;
+    flex: 0 0 40%;
+  }
+  .insights-table td:not(:first-child) {
+    color: #334155;
+  }
+  .insights-table .overflow-x-auto {
+    overflow: visible;
+  }
+}
+
+/* The new mobile sidebar panel is also a grid-template-rows transition, so it needs the
+   same reduced-motion opt-out as the desktop section accordion. */
+@media (prefers-reduced-motion: reduce) {
+  .insights-sidebar-panel,
+  .insights-sidebar-panel-body {
+    transition: none !important;
+  }
+}

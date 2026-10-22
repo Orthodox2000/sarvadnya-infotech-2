@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import Footer from "../../components/Footer";
 import MarkdownBody from "@/app/components/TallyInsights/MarkdownBody";
+import LessonFigure from "@/app/components/TallyInsights/LessonFigure";
 import { SECTIONS, LESSONS, getLessonsBySection, type Lesson } from "@/lib/learn-tally-curriculum";
 
 // CHANGE: 2026-10-22 — length of the fade-out before the next lesson is swapped in.
@@ -19,6 +20,24 @@ export default function TallyInsightsPage() {
   // sub-list could only ever open (never close) and the collapse was an instant cut.
   const [openSection, setOpenSection] = useState<string | null>(SECTIONS[0]?.id || null);
   const [activeLessonSlug, setActiveLessonSlug] = useState<string | null>(null);
+
+  // CHANGE: 2026-10-22 — the sidebar is collapsible on a phone (the owner: "for mobile make
+  // collapsable sidebar for tally insights"). `sidebarOpen` drives the grid-template-rows
+  // transition; `isDesktop` tells us whether the panel is CSS-collapsible at all (below lg
+  // it is, at lg and above it is permanently open), so `inert` is only applied when the
+  // panel is genuinely hidden and its lesson buttons must leave the tab order.
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 1024px)");
+    const update = () => setIsDesktop(mq.matches);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, []);
+
+  const sidebarHidden = !isDesktop && !sidebarOpen;
 
   const filtered = useMemo(() => {
     const q = query.toLowerCase().trim();
@@ -106,6 +125,8 @@ export default function TallyInsightsPage() {
                     onChange={(e) => {
                       setQuery(e.target.value);
                       setActiveLessonSlug(null);
+                      // Typing in the search box must reveal the result list on a phone.
+                      setSidebarOpen(true);
                     }}
                     placeholder="Search guides..."
                     className="w-full pl-7 pr-2 py-1.5 rounded-md border border-slate-300 text-[11px] focus:outline-none focus:border-[#006569] focus:ring-1 focus:ring-[#006569]/20 transition-all duration-200"
@@ -122,7 +143,43 @@ export default function TallyInsightsPage() {
                   </svg>
                 </div>
               </div>
-              <div className="px-3 py-2 border-b border-slate-100 bg-white flex items-center justify-between gap-2">
+              {/* CHANGE: 2026-10-22 — the sidebar is COLLAPSIBLE on a phone.
+                  WHY: on a 360px screen the full section list pushed the actual guide far
+                  below the fold. The list is now behind a toggle (the row below), the
+                  search box stays visible at all times, and the panel animates open/closed
+                  with the same grid-template-rows technique used by the section accordion.
+                  On lg and above the panel is permanently open and the toggle is hidden. */}
+              <div className="px-3 py-2 lg:hidden">
+              <button
+                type="button"
+                onClick={() => setSidebarOpen((open) => !open)}
+                aria-expanded={sidebarOpen}
+                aria-controls="tally-insights-sidebar-list"
+                className="insights-sidebar-toggle w-full justify-between"
+              >
+                <span>
+                  {query.trim() ? "Search results" : "All sections"}
+                </span>
+                <span className="flex items-center gap-2">
+                  <span className="tabular-nums">
+                    {resultCount} guide{resultCount === 1 ? "" : "s"}
+                  </span>
+                  <svg
+                    className={`w-3 h-3 transition-transform duration-300 ease-out ${
+                      sidebarOpen ? "rotate-180" : ""
+                    }`}
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth="3"
+                    aria-hidden="true"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" d="m6 9 6 6 6-6" />
+                  </svg>
+                </span>
+              </button>
+              </div>
+              <div className="hidden lg:flex px-3 py-2 border-b border-slate-100 bg-white items-center justify-between gap-2">
                 <span className="text-[9px] font-black uppercase tracking-widest text-slate-400">
                   {query.trim() ? "Search results" : "All sections"}
                 </span>
@@ -130,7 +187,15 @@ export default function TallyInsightsPage() {
                   {resultCount} guide{resultCount === 1 ? "" : "s"}
                 </span>
               </div>
-              <div className="text-[11px] leading-tight">
+              <div
+                id="tally-insights-sidebar-list"
+                className={`insights-sidebar-panel ${sidebarOpen ? "is-open" : ""}`}
+              >
+                <div className="insights-sidebar-panel-inner">
+                <div
+                  className="text-[11px] leading-tight insights-sidebar-panel-body"
+                  inert={sidebarHidden ? true : undefined}
+                >
                 {query.trim() ? (
                   <div className="py-1">
                     {lessonsForActive.length === 0 ? (
@@ -144,6 +209,8 @@ export default function TallyInsightsPage() {
                           onClick={() => {
                             setActiveLessonSlug(lesson.slug);
                             setActiveSection(lesson.sectionId);
+                            // Collapse the mobile panel so the guide is visible right away.
+                            setSidebarOpen(false);
                           }}
                           className={`w-full text-left px-3 py-2 rounded-md transition-all duration-200 ease-out ${
                             activeLesson?.slug === lesson.slug
@@ -172,6 +239,8 @@ export default function TallyInsightsPage() {
                             if (!wasOpen) {
                               setActiveSection(section.id);
                               setActiveLessonSlug(sectionLessons[0]?.slug || null);
+                              // On a phone the panel closes again so the guide is in view.
+                              setSidebarOpen(false);
                             }
                           }}
                           aria-expanded={isOpen}
@@ -218,7 +287,10 @@ export default function TallyInsightsPage() {
                               {sectionLessons.map((lesson) => (
                                 <button
                                   key={lesson.slug}
-                                  onClick={() => setActiveLessonSlug(lesson.slug)}
+                                  onClick={() => {
+                                    setActiveLessonSlug(lesson.slug);
+                                    setSidebarOpen(false);
+                                  }}
                                   className={`w-full text-left pl-6 pr-3 py-1.5 rounded-md transition-all duration-200 ease-out ${
                                     activeLesson?.slug === lesson.slug
                                       ? "bg-[#e7f3f3] text-[#006569] font-medium"
@@ -235,6 +307,8 @@ export default function TallyInsightsPage() {
                     );
                   })
                 )}
+                </div>
+                </div>
               </div>
             </div>
           </aside>
@@ -265,6 +339,22 @@ export default function TallyInsightsPage() {
                       component (same one the server lesson page uses), so markdown tables in
                       a guide show as real tables here too instead of raw `| ... |` pipes. */}
                   <MarkdownBody md={displayLesson.bodyMd} />
+
+                  {/* CHANGE: 2026-10-22 — the official TallyPrime 7.2 artwork, shown on the
+                      lesson that states 7.2 is the latest release.
+                      WHY: the owner supplied the 7.2 artwork and asked for it wherever we
+                      mention 7.2, correctly fitted and aligned on every screen. The same
+                      LessonFigure component is used by the standalone lesson page, so the
+                      figure is identical in both surfaces. */}
+                  {displayLesson.slug === "latest-version-of-tally-prime" && (
+                    <LessonFigure
+                      src="/images/insights/tallyprime-7.2.webp"
+                      alt="TallyPrime 7.2 - the latest release of Tally Prime"
+                      caption="TallyPrime 7.2 - the latest release of Tally Prime. Click the image to open it full size."
+                      width={1024}
+                      height={1371}
+                    />
+                  )}
 
                   {displayLesson.faqs && displayLesson.faqs.length > 0 && (
                     <div className="mt-12">
