@@ -1,27 +1,16 @@
 # Biweekly Report (October 5 – October 17, 2026)
 
-**Period:** Oct 5 – Oct 17, 2026 (2 weeks) · **Scope:** Website updates & maintenance (brand promotion) + digital content creation (lead generation)
-**Source:** Official *Website & Digital Content Tracker* + internal build log · **Previous report:** Monthly Report (August 5 – September 5, 2026)
+**Period:** Oct 5 – Oct 17, 2026 (2 weeks) · 
+**Scope:** Website updates & maintenance (brand promotion) + digital content creation (lead generation)
 
 ---
-
-## Summary
-
-First fortnight under the new tracker. **Website is on track** — 6 of 7 logged updates shipped
-(careers single-click apply, referral feature, circular logo, two SEO clean-ups); only Razorpay is
-open. **Digital content is ramping up** — of 8 items logged, 1 published, 2 ready, 4 in design or
-awaiting approval, 1 cancelled. Next fortnight's two gaps: **nothing published since the first post**,
-and **no product has a finished catalogue, brochure or video**; the audio/visual track has not started.
 
 ## At a Glance
 
 | Area | Logged | Done | In Progress / Needs Attention |
 |---|---|---|---|
 | Website updates | 7 | 6 completed | 1 in progress (Razorpay) |
-| Digital content | 8 | 1 posted · 2 ready | 4 pending approval / in design · 1 cancelled |
-| Catalogues · brochures · videos | 6 products | 0 ready | all 6 pending |
-| Weekly content target | 1 week tracked | 0 met | 1 missed (1 of 2 creatives); audio/visual 0 of 1 |
-| Leads from content | 1 post published | 0 leads | attribution not set up |
+| Digital content | 8 | 1 posted · 3 ready | 4 pending approval / in design ·  |
 
 ---
 
@@ -62,26 +51,18 @@ still in progress.
 
 ## Challenges Faced
 
-1. **Content target missed** in the only completed week (1 creative vs 2 + 1 audio/visual), and the
-   **audio/visual track has not started**.
-2. **Approval bottleneck** — two finished assets (TallyPrime 7.2 flyer, Tally on Mobile post) sit at
-   "Pending Approval" and cannot be published, pushing the schedule back.
-3. **Collateral in rework** — card/letterhead designs still iterating (one cancelled, one awaiting a
-   template), spending design time with no published output.
-4. **External dependency** — Razorpay is blocked on the gateway's API/2FA enablement, outside the web
-   team's control.
-5. **Zero shareable collateral** — with no finished catalogue/brochure/video, sales has nothing new
-   for WhatsApp or print.
-6. **No lead attribution** — 0 leads credited to content and no UTM-tagged links, so content impact
-   cannot be measured (see **Tracker Data Quality** below).
+1. **login Pending for social media.** — two finished assets (TallyPrime 7.2 flyer, Tally on Mobile post) sit at
+   "Pending Approval".
+2. **Collateral in rework** — card/letterhead designs still iterating (one cancelled, one awaiting a
+   template).
+3. **External dependency** — Razorpay API is pending 2-factor auth which i delegated to pradnya maam to get done.
+6. **system audio issue** — Current System has no audio output thus audio visual content is absent.
 
 ---
 
-## Tracker Data Quality — Missing Rows
+## Tracker Data Issue — Missing Rows
 
-**Simple:** The dashboard does not match the sheet — it shows 7 digital items but 8 rows are logged, and
-"Ready" is one too high. The two leftover sample rows (WEB-001, DC-001) are still being counted. Fix the
-sheet before the next report so the numbers can be trusted.
+**Simple:** The dashboard does not match the sheet — it shows 7 digital items but 8 rows are logged.
 
 **Detailed:**
 
@@ -103,14 +84,8 @@ and what to do next.)*
    solve? What do I gain?* Most current copy leads with features; lead with the outcome instead.
 2. **Sell the benefit, not the jargon** — swap "TDL / AES-256 / multi-threaded" for plain results:
    "file GST without errors", "close your books faster", "your data stays locked".
-3. **One short video or GIF per product** — 30–60-second screen recordings are the fastest way to make
-   a feature obvious (and they fill the empty audio/visual target).
-4. **A shareable one-pager per product** — finish the catalogue/brochure for all 6 products so sales
-   can send it instantly on WhatsApp (DC-007 / DC-008 are the template).
-5. **Real customer stories + FAQs in the customer's words** — short local (Navi Mumbai) examples with a
-   measurable result ("month-end closing cut from 5 days to 2"), plus FAQs mirroring real searches.
-6. **One clear CTA everywhere, with a UTM link** — "Book a free demo" / "WhatsApp us" on every post,
-   tagged so leads trace back to the content; add Hindi/Marathi snippets for the MSME audience.
+3. **One clear CTA everywhere, with a UTM link** — "Book a free demo" / "WhatsApp us" on every post,
+   tagged so leads trace back to the content.
 
 ---
 
@@ -119,11 +94,10 @@ and what to do next.)*
 | Priority | Item |
 |---|---|
 | High | Clear the two pending approvals (DC-002, DC-006), publish, and start the audio/visual track. |
-| High | Unblock Razorpay (WEB-002) — follow up on API / 2FA enablement. |
+| High | Unlock Razorpay (WEB-002) — follow up on API / 2FA enablement. |
 | High | Finish and publish one catalogue / brochure per product; start the video library. |
 | Medium | Add UTM-tagged links + a lead-source field so content ROI is measurable. |
 | Medium | Fix the tracker dashboard (missing rows) so its totals match the item rows. |
 
 ---
 
-*Prepared from `Website_and_Digital_Content_Tracker.xlsx` (last updated Oct 16, 2026) + the internal build log.*
