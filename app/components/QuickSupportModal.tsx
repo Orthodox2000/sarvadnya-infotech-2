@@ -50,9 +50,11 @@ interface Message {
 interface QuickSupportModalProps {
   isOpen: boolean;
   onClose: () => void;
+  /** CHANGE: 2026-10-23 — a question pre-typed by the page (e.g. a /shop card). Prefill only. */
+  initialQuestion?: string;
 }
 
-export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModalProps) {
+export default function QuickSupportModal({ isOpen, onClose, initialQuestion }: QuickSupportModalProps) {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
@@ -89,6 +91,15 @@ export default function QuickSupportModal({ isOpen, onClose }: QuickSupportModal
   const lastTopicRef = useRef<string>('');
   const chatIdRefModal = useRef<string|null>(null);
   const draftTrackerRef = useRef<ReturnType<typeof createDraftTracker>|null>(null);
+
+  // CHANGE: 2026-10-23 — a page (e.g. /shop) can hand over a written question; it is placed in
+  // the input so the visitor can read and edit it before sending. Never auto-sends.
+  useEffect(() => {
+    if (!isOpen || !initialQuestion) return;
+    setInputText(initialQuestion);
+    const t = setTimeout(() => inputRef.current?.focus(), 140);
+    return () => clearTimeout(t);
+  }, [isOpen, initialQuestion]);
 
   /**
    * VOICE INPUT ENGINE

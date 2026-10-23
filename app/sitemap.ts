@@ -19,6 +19,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     '',
     '/about',
     '/addons',
+    // CHANGE: 2026-10-23 — the full solution catalogue is now a real page and must be indexable.
+    '/shop',
     '/capabilities',
     '/careers',
     '/cloud',

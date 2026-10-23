@@ -3,6 +3,9 @@
 import { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import QuickSupportModal from './QuickSupportModal';
+// CHANGE: 2026-10-23 — /shop (and anything else) can open Ask Sara with a pre-typed question
+// through this event, without owning the modal state.
+import { SARA_ASK_EVENT, type SaraAskDetail } from '@/lib/ask-sara';
 
 // CHANGE: 2026-10-13 — owner: no hover behaviour at all (no ✕, no hover reveal). The homepage
 // Ask Sara tab carries a message bubble reading "Get AI assistance" (13 px, centred, wraps to
@@ -15,7 +18,23 @@ export default function SupportButton({ initialSettings }: { initialSettings?: a
   const pathname = usePathname();
   const isHomePage = pathname === '/';
   const [isOpen, setIsOpen] = useState(false);
+  // CHANGE: 2026-10-23 — a question handed to Sara from elsewhere on the page (e.g. a /shop
+  // card). It only PREFILLS the input; the visitor still presses send. Cleared on close so
+  // reopening the chat manually never resurfaces an old question.
+  const [initialQuestion, setInitialQuestion] = useState('');
   const [whatsappPhone, setWhatsappPhone] = useState(initialSettings?.whatsapp_phone || initialSettings?.support_phone || "9821309060");
+
+  // CHANGE: 2026-10-23 — listen for the `sara:ask` event (lib/ask-sara.ts).
+  useEffect(() => {
+    const onAsk = (e: Event) => {
+      const detail = (e as CustomEvent<SaraAskDetail>).detail;
+      if (!detail?.question) return;
+      setInitialQuestion(detail.question);
+      setIsOpen(true);
+    };
+    window.addEventListener(SARA_ASK_EVENT, onAsk);
+    return () => window.removeEventListener(SARA_ASK_EVENT, onAsk);
+  }, []);
 
   useEffect(() => {
     if (initialSettings) return;
@@ -126,7 +145,11 @@ export default function SupportButton({ initialSettings }: { initialSettings?: a
         </a>
       </div>
 
-      <QuickSupportModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
+      <QuickSupportModal
+        isOpen={isOpen}
+        onClose={() => { setIsOpen(false); setInitialQuestion(''); }}
+        initialQuestion={initialQuestion}
+      />
     </>
   );
 }

@@ -29,6 +29,7 @@ export interface CatalogLesson extends CatalogItem {
 export interface CatalogSuggestions {
   products: CatalogItem[];
   addons: CatalogAddon[];
+  shop: CatalogItem[];
   guides: CatalogLesson[];
   modules: CatalogItem[];
   learning: CatalogItem[];
@@ -36,6 +37,8 @@ export interface CatalogSuggestions {
 
 export const PRODUCTS: CatalogItem[];
 export const ADDONS_CATALOGUE: CatalogItem;
+/** CHANGE: 2026-10-23 — the /shop entry point (107 items, generated from lib/tdl-catalog.mjs). */
+export const SHOP_CATALOGUE: CatalogItem;
 export const INSIGHTS_HUB: CatalogItem;
 export const LEARNING_SECTIONS: { id: string; title: string }[];
 export const LEARNING_LESSONS: CatalogLesson[];

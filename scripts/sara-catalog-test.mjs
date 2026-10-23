@@ -19,6 +19,9 @@ import {
   guideSuggestionReply,
 } from '../lib/sara-catalog.mjs';
 import { addons } from '../lib/addons.mjs';
+// CHANGE: 2026-10-23 — the /shop catalogue is generated from this module, so the suite asserts
+// Sara knows every one of the 107 items and links each to its own anchor.
+import { TDL_ITEMS } from '../lib/tdl-catalog.mjs';
 
 let passed = 0;
 let failed = 0;
@@ -129,6 +132,14 @@ test('the sales block links every add-on to its /addons anchor', () => {
   const block = buildCatalogPromptBlock();
   for (const a of addons) assert(block.includes(`/addons#${a.id}`), `block is missing anchor for: ${a.id}`);
 });
+// CHANGE: 2026-10-23 — the shop has 107 items; a missing one means Sara cannot recommend it.
+test('the sales block contains every shop item and its /shop anchor', () => {
+  const block = buildCatalogPromptBlock();
+  for (const item of TDL_ITEMS) {
+    assert(block.includes(`/shop#${item.slug}`), `block is missing the shop link for: ${item.slug}`);
+  }
+  assert(block.includes('Tally Shop'), 'block is missing the shop catalogue entry point');
+});
 test('the guides block contains every lesson title and url', () => {
   const block = buildGuidesPromptBlock();
   for (const l of LEARNING_LESSONS) {
@@ -201,8 +212,28 @@ test('"gst setup and invoicing" -> the GST guide', () => {
 });
 test('gibberish suggests nothing', () => {
   const r = suggestCatalog('zzzz qqqq wwwww');
-  const total = r.products.length + r.addons.length + r.guides.length + r.modules.length + r.learning.length;
+  const total = r.products.length + r.addons.length + r.guides.length + r.modules.length + r.learning.length + r.shop.length;
   assert(total === 0, `gibberish matched ${total} items`);
+});
+
+// ─── The /shop catalogue (the 107 items) ────────────────────────────────────
+// CHANGE: 2026-10-23 — Sara must reach the shop catalogue, not just the 20 add-ons.
+console.log('🛒 Shop catalogue suggestions');
+test('a shop-only need suggests a shop item', () => {
+  const { shop } = suggestCatalog('batch expiry report');
+  assert(shop.length > 0, 'no shop item suggested');
+  assert(shop[0].url.startsWith('/shop#'), `bad shop url: ${shop[0].url}`);
+});
+test('catalogSuggestionReply can answer from the shop catalogue', () => {
+  const reply = catalogSuggestionReply('batch expiry report');
+  assert(reply, 'no reply produced');
+  assert(reply.includes('/shop#'), `reply has no shop link: ${reply}`);
+  assert(reply.includes('?'), 'reply asks no question');
+});
+test('an existing /addons item still resolves to its add-on, not the shop copy', () => {
+  const { addons: hits } = suggestCatalog('stop billing customers who have not paid');
+  assert(hits.length > 0, 'no add-on suggested');
+  assert(hits[0].url.startsWith('/addons#'), `add-on should keep its /addons link: ${hits[0].url}`);
 });
 
 // ─── The offline reply shape ────────────────────────────────────────────────

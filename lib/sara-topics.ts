@@ -91,6 +91,19 @@ export const saraTopics: Topic[] = [
     ]
   },
   {
+    // CHANGE: 2026-10-23 — NEW topic for the /shop catalogue. 107 ready-made TDLs, Excel
+    // importers, boosters and industry modules already exist, so the most common question
+    // ("is there something for X?") should resolve here instantly and zero-token - and Sara
+    // must still ask ONE question before recommending, per the consultant rule.
+    label: "Tally Shop & Ready-Made Add-ons",
+    keywords: ["addon", "addons", "add-on", "add-ons", "add on", "add ons", "ready made", "ready-made", "shop", "catalogue", "catalog", "tdl list", "list of tdl", "addon list", "add-on list", "which addon", "what do you have", "what do you sell", "your products list"],
+    answer: "Most requests are already built. Our shop has 107 ready-made solutions: TDL add-ons for a single job (invoice print formats, approvals, billing controls), Excel to Tally importers, business boosters and full industry modules - each one configured for your company, with no price on the page.\n\nTo point you at the right one, tell me: what has to happen, and where does it happen now (billing screen, purchase entry, a report, or outside Tally)?\n\n[[Browse the Shop|/shop]]\n[[Custom TDL|/services/tdl]]",
+    followUp: [
+      { label: "How does buying work?", answer: "Nothing is charged on the shop page. Every TDL is installed and licensed for your company, so **Buy** opens a short enquiry with that item already named. Our team confirms it fits your TallyPrime version, sends the quote and the setup plan, and installs it with you.\n\nIf the item turns out not to fit, we tell you before anything is billed. [[Browse the Shop|/shop]]" },
+      { label: "Nothing in the shop fits", answer: "Then it is a custom build, and that is a normal request. Three things let our technical team scope it properly:\n\n1. Where it should live - your daily screen or a separate report?\n2. What it must show or do, and whether it prints, sends or updates anything.\n3. How many people use it, and how often.\n\nOften a built-in configuration (F12 on any report, cost centre, export to Excel) covers it with no TDL at all. [[TDL Customization|/services/tdl]]" },
+    ]
+  },
+  {
     // CHANGE: 2026-10-22 — NEW topic. Sara is a business consultant, NOT a
     // programmer: a TDL / custom-build request must NEVER be answered with
     // code. This topic is deterministic (it wins the local matcher, so it
@@ -209,6 +222,9 @@ export function getFallbackResponse(userInput: string): string {
     [/society|housing|apartment|maintenance|building/, "Our **Housing Society Module** automates maintenance billing, interest calculation, and registers inside **TallyPrime** — built exactly for societies with 70+ members. [[Explore Modules|/modules]]"],
     [/cf\b|c\s*&|clearing|forwarding|job|import|reimbursable/, "Our **CFA Module** manages Jobs with documentation, multi-currency invoicing, and job-wise profitability inside TallyPrime — built for Clearing & Forwarding agencies. [[Explore Modules|/modules]]"],
     [/broker|agent|commission|rd|rate difference|salesman/, "Our **SalesMan / Agent Module** automates broker commissions and Rate Difference (RD) tracking inside TallyPrime for any industry using agents or brokers. [[Explore Modules|/modules]]"],
+    // CHANGE: 2026-10-23 — the /shop catalogue is a first-class answer: 107 ready-made TDLs,
+    // Excel importers, boosters and industry modules. Still asks before recommending.
+    [/\badd-?ons?\b|\bshop\b|catalogue|catalog|ready[- ]made|\btdls?\b/, "We have 107 ready-made solutions in the shop - TDL add-ons, Excel to Tally importers, business boosters and industry modules - each installed and licensed for your company. [[Browse the Shop|/shop]]\n\nWhat should it do, and where does that work happen today (billing, purchase, a report, or outside Tally)?"],
     [/whatsapp|message|chat|remind/, "**Tally on WhatsApp** sends invoices, payment reminders, and ledger queries automatically — your customers get answers instantly. [[Learn More|/services/tally-on-whatsapp]]\n\nWant to set it up?"],
     [/cloud|online|remote|access|anywhere|from home|work from home/, "You can run TallyPrime from anywhere on **AWS Cloud** or **Windows Cloud Desktop**. [[Cloud Options|/cloud]]\n\nWhich would suit your team best?"],
     [/demo|trial|free|try|test/, "I'd love that! Book a free demo and our team will walk you through the right setup for your business. [[Book a Demo|/contact]]"],
@@ -249,6 +265,9 @@ export function getTeachingFallbackResponse(userInput: string): string {
     [/thank|thanks|bye|goodbye|ok|okay|theek|alright/, "You're welcome! Keep practicing and you'll master TallyPrime in no time. Feel free to come back anytime with more questions."],
     [/\btss\b|subscription|renew(?!.*amc)|serial\s*number/, "Yes, you can renew your TSS (Tally Software Service) directly from inside TallyPrime:\n\n1. From the Gateway of Tally, press **Alt+R** (Manage TSS Renewal) — this shortcut appears when a renewal is due, about 15 days before expiry.\n2. Or go to **F1 (Help) > Settings > License > Manage License**, then press **F9 (Renew TSS)**.\n3. Tally opens the Tally Solutions renewal portal in your browser with your serial number and billing details pre-filled.\n4. Pick 1 Year, or 2 Years for a 10% discount, complete the payment, and the updated validity syncs back into Tally.\n\nRenew before expiry to get one extra month of validity. When TSS is red/expired, e-invoicing, e-way bills, GST auto-filing, bank payments, and mobile/WhatsApp reports stop — but offline data entry keeps working. If the option is not visible on your screen, share your serial number and our team will renew it for you. [[Renew TSS|/services/tss]]"],
     [/\btdl\b|custom\s+(?:report|voucher|field|screen|invoice)|write\s+(?:a\s+|the\s+)?(?:code|script|program)|write\s+(?:a\s+|the\s+)?tdl|draft\s+(?:a\s+)?tdl|develop(?:ment)?\s+report/, "I don't write code, so I won't hand you a script - custom development is done by our technical team. [[TDL Customization|/services/tdl]]\n\nTell me what you're trying to achieve on screen and I'll show you the closest way to do it in TallyPrime itself - most needs are solved by a report configuration (F12), a cost centre or an export."],
+    // CHANGE: 2026-10-23 — add-ons are a learning topic too: what they are, how they load, and
+    // where the ready-made list lives. Kept short and pointed at the shop, never a sales dump.
+    [/\badd-?ons?\b|ready[- ]made|\bshop\b|catalogue|catalog/, "An add-on (TDL) is extra functionality loaded on top of TallyPrime - a print format, an extra field, a control on a voucher, or a whole report. It does not change your data; you load it and it appears in the screens you already use.\n\nWe have 107 ready-made ones, and the shop page describes what each does in plain language. [[Browse the Shop|/shop]]\n\nWhich screen are you trying to change, and what should it show?"],
     // CHANGE: 2026-10-22 — "cost" is a pricing word, but "cost centre" is a Tally feature.
     // Without the negative lookahead the price answer hijacked every "cost centre" question
     // and hid the Cost Centre guide in the knowledge hub.

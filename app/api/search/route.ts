@@ -1,6 +1,10 @@
 import { NextResponse } from 'next/server';
 import { getModules, getTutorials, getNews, getPartners, getSettings } from '@/lib/mongodb-utils';
 import { findSemanticResults } from '@/lib/search-indexer';
+// CHANGE: 2026-10-23 — the /shop catalogue (107 TDLs, importers, boosters, modules) is searchable.
+// WHY: it is the largest body of content on the site and it is pure data, so matching it costs no
+// database read. Without this, a search for "duplicate purchase" found nothing at all.
+import { TDL_ITEMS } from '@/lib/tdl-catalog';
 
 const AI_TIMEOUT = 10_000;
 const SUMMARY_CACHE_TTL = 300_000;
@@ -146,6 +150,8 @@ const STATIC_PAGES = [
 
 const SITE_MAP = [
   ...STATIC_PAGES,
+  // CHANGE: 2026-10-23 — the shop is now a destination the AI fallback can recommend.
+  { title: 'Shop: all TDLs, importers, boosters and modules', url: '/shop', description: 'Search 107 ready-made TallyPrime solutions by the problem they solve.' },
   { title: 'TallyDrive', url: '/products#tallydrive', description: 'Encrypted cloud backup for TallyPrime.' },
   { title: 'AMC Services', url: '/services/amc', description: 'Professional Tally AMC services for peace of mind.' },
   { title: 'Corporate Training', url: '/services/corporate-training', description: 'Professional Tally training for your staff.' },
@@ -168,6 +174,28 @@ function matchStaticPages(query: string) {
     ...p,
     icon: p.icon || 'M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z'
   }));
+}
+
+// CHANGE: 2026-10-23 — match the /shop catalogue (pure in-memory, no DB).
+// Searches the title, the one-line summary and the visible tags, so a visitor's own wording
+// ("duplicate supplier bill") finds the item even when it is not in the title.
+function matchShopItems(query: string) {
+  const q = query.toLowerCase().trim();
+  if (q.length < 2) return [];
+  const hits = TDL_ITEMS.filter((item) => {
+    const haystack = `${item.title} ${item.summary} ${item.tags.join(' ')}`.toLowerCase();
+    return haystack.includes(q) || item.keywords.some((k) => q.includes(k.toLowerCase()));
+  });
+  return hits
+    .sort((a, b) => Number(b.featured) - Number(a.featured))
+    .slice(0, 6)
+    .map((item) => ({
+      title: item.title,
+      description: item.summary,
+      url: `/shop#${item.slug}`,
+      type: 'Add-on',
+      icon: 'M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4',
+    }));
 }
 
 function deduplicate(items: any[]) {
@@ -193,6 +221,9 @@ export async function GET(request: Request) {
 
     // 2. Static page matching (instant, no DB)
     const staticMatches = matchStaticPages(query);
+
+    // 2b. Shop catalogue matching (instant, no DB) — CHANGE: 2026-10-23
+    const shopMatches = matchShopItems(query);
 
     // 3. DB results (parallel fetch)
     const [modules, tutorials, news] = await Promise.all([
@@ -235,7 +266,7 @@ export async function GET(request: Request) {
     });
 
     // 4. Merge all results
-    let combined = deduplicate([...semanticResults, ...staticMatches, ...dbResults]);
+    let combined = deduplicate([...semanticResults, ...staticMatches, ...shopMatches, ...dbResults]);
 
     // 5. AI fallback only when very few results
     if (combined.length < 2) {

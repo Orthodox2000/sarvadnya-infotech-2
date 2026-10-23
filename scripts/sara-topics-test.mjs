@@ -100,6 +100,21 @@ test('the TDL topic answer asks the requirement questions', () => {
   if (!t.answer.includes('[[TDL Customization|/services/tdl]]')) throw new Error('TDL topic answer has no button');
 });
 
+// CHANGE: 2026-10-23 — the /shop catalogue is a first-class topic: 107 ready-made items must be
+// discoverable by name, and the answer must still ASK before recommending (consultant rule).
+test('"what add-ons do you have" maps to the Tally Shop topic', () => {
+  const r = matchTopic('what add-ons do you have');
+  if (!r) throw new Error('no topic matched');
+  if (r.topic.label !== 'Tally Shop & Ready-Made Add-ons') throw new Error(`got ${r.topic.label}`);
+});
+test('the Tally Shop topic links /shop, asks a question and never quotes code', () => {
+  const t = saraTopics.find(x => x.label === 'Tally Shop & Ready-Made Add-ons');
+  if (!t) throw new Error('shop topic missing');
+  if (!t.answer.includes('[[Browse the Shop|/shop]]')) throw new Error('shop topic has no shop button');
+  if (!t.answer.includes('?')) throw new Error('shop topic answer asks no question');
+  if (/\[#Menu:|\[System:|\[Function:|OnAction\s*:|\$\$/.test(t.answer)) throw new Error('code in the shop topic');
+});
+
 // ─── Catalogue suggestions (the OFFLINE Sara must suggest what we sell) ─────
 // CHANGE: 2026-10-22 — the owner asked Sara to know our add-ons, products and modules "with
 // details" and to suggest them. The live path uses the generated catalogue prompt; this
@@ -132,9 +147,9 @@ test('teaching fallback points at the exact free guide', () => {
 
 // ─── Data sanity: no duplicate topics ──────────────────────────────────────
 console.log('🧩 Data sanity');
-// CHANGE: 2026-10-22 — expected count 8 → 9 after adding the TDL & Customisation topic.
-test('saraTopics has 9 unique topics', () => {
-  if (saraTopics.length !== 9) throw new Error(`expected 9 topics, got ${saraTopics.length}`);
+// CHANGE: 2026-10-23 — expected count 9 → 10 after adding the Tally Shop topic.
+test('saraTopics has 10 unique topics', () => {
+  if (saraTopics.length !== 10) throw new Error(`expected 10 topics, got ${saraTopics.length}`);
 });
 test('Keyboard Shortcuts topic appears exactly once', () => {
   const n = saraTopics.filter(t => t.label === 'Keyboard Shortcuts').length;
