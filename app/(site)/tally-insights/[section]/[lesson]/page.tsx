@@ -1,21 +1,26 @@
+// CHANGE: 2026-10-23 - Hardened lesson route: dynamicParams=false, section match guard,
+// unified metadata via seoMetadata, added internal sidebar, correct section breadcrumb.
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import Footer from "../../../../components/Footer";
 import {
+  getInsightsNavModel,
   getLessonBySlug,
   getLessonsBySection,
   getSectionById
 } from "@/lib/learn-tally-curriculum";
-import { articleJsonLd, breadcrumbJsonLd, faqPageJsonLd } from "@/lib/seo";
-import Script from "next/script";
+import { articleJsonLd, breadcrumbJsonLd, faqPageJsonLd, seoMetadata } from "@/lib/seo";
 import MarkdownBody from "@/app/components/TallyInsights/MarkdownBody";
 import LessonFigure from "@/app/components/TallyInsights/LessonFigure";
+import TallyInsightsNav from "@/app/components/TallyInsights/TallyInsightsNav";
+
+export const dynamicParams = false;
 
 export async function generateStaticParams() {
-  const { LESSONS } = await import("@/lib/learn-tally-curriculum");
-  return LESSONS.map((l) => ({
-    section: l.sectionId,
-    lesson: l.slug
+  const { getAllLessonSlugs } = await import("@/lib/learn-tally-curriculum");
+  return getAllLessonSlugs().map(({ section, slug }) => ({
+    section,
+    lesson: slug
   }));
 }
 
@@ -25,24 +30,29 @@ export async function generateMetadata({
   params: Promise<{ section: string; lesson: string }>;
 }) {
   const { section, lesson } = await params;
-  const { getLessonBySlug } = await import("@/lib/learn-tally-curriculum");
   const l = getLessonBySlug(lesson);
-  if (!l) return {};
-  const title = l.seoTitle || `${l.title} | Tally Insights`;
+  // CHANGE: 2026-10-23 - reject a mismatched section here too, so a hand-crafted URL such as
+  // /tally-insights/gst-compliance/how-to-lock-data-in-tallyprime never serves the lesson's
+  // metadata (duplicate-content signal) even before the page body calls notFound().
+  if (!l || l.sectionId !== section) return {};
+  // CHANGE: 2026-10-23 - strip the legacy "| Tally Insights" suffix before seoMetadata
+  // appends the brand. WHY: the helper appends " | Sarvadnya Infotech LLP", so keeping the
+  // old suffix produced a double-branded <title> (e.g. "... | Tally Insights | Sarvadnya
+  // Infotech LLP"). The suffix is not part of the lesson's identity - the brand comes from
+  // the one central helper - so dropping it keeps each title as short as possible.
+  const title = (l.seoTitle || l.title).replace(/\s*\|\s*Tally Insights\s*$/i, "");
   const description = l.seoDescription || l.intro;
   const keywords = l.keywords || [
     "tally insights",
     "tally prime guide",
     "learn tally prime"
   ];
-  return {
+  return seoMetadata({
     title,
     description,
-    keywords,
-    alternates: {
-      canonical: `https://sarvadnyainfotech.com/tally-insights/${l.sectionId}/${l.slug}`
-    }
-  };
+    path: `/tally-insights/${l.sectionId}/${l.slug}`,
+    keywords
+  });
 }
 
 function LeadMagnetForm({ leadMagnet }: { leadMagnet: any }) {
@@ -116,9 +126,11 @@ export default async function LessonPage({
 }: {
   params: Promise<{ section: string; lesson: string }>;
 }) {
-  const { lesson: lessonSlug } = await params;
+  const { section: routeSection, lesson: lessonSlug } = await params;
   const lesson = getLessonBySlug(lessonSlug);
   if (!lesson) return notFound();
+  // CHANGE: 2026-10-23 - reject mismatched section to prevent duplicate URLs.
+  if (routeSection !== lesson.sectionId) return notFound();
 
   const section = getSectionById(lesson.sectionId);
   const lessonsInSection = getLessonsBySection(lesson.sectionId);
@@ -129,10 +141,13 @@ export default async function LessonPage({
       ? lessonsInSection[currentIndex + 1]
       : null;
 
+  const nav = getInsightsNavModel();
+  // Keep the structured-data headline in step with the <title> (no legacy suffix).
+  const headline = (lesson.seoTitle || lesson.title).replace(/\s*\|\s*Tally Insights\s*$/i, "");
   const jsonLd: any[] = [];
   jsonLd.push(
     articleJsonLd({
-      headline: lesson.seoTitle || lesson.title,
+      headline,
       description: lesson.seoDescription || lesson.intro,
       slug: `/tally-insights/${lesson.sectionId}/${lesson.slug}`,
       datePublished: "2026-10-19",
@@ -145,7 +160,7 @@ export default async function LessonPage({
       { name: "Home", path: "/" },
       { name: "Tally Insights", path: "/tally-insights" },
       section
-        ? { name: section.title, path: `/tally-insights#${section.id}` }
+        ? { name: section.title, path: `/tally-insights/${section.id}` }
         : { name: lesson.sectionTitle, path: "/tally-insights" },
       { name: lesson.title, path: `/tally-insights/${lesson.sectionId}/${lesson.slug}` }
     ])
@@ -156,23 +171,28 @@ export default async function LessonPage({
 
   return (
     <div className="min-h-screen bg-white">
-      <Script
-        id="tally-insights-jsonld"
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
-      <main className="max-w-5xl mx-auto px-6 py-12">
-        <nav className="mb-8 text-xs text-slate-500 font-medium">
-          <Link href="/" className="hover:text-[#006569]">
-            Home
-          </Link>{" "}
-          /{" "}
-          <Link href="/tally-insights" className="hover:text-[#006569]">
-            Tally Insights
-          </Link>{" "}
-          / {lesson.sectionTitle} /{" "}
-          <span className="text-slate-700">{lesson.title}</span>
-        </nav>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <main className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
+          <aside className="lg:w-[240px] xl:w-[260px] 2xl:w-[280px] flex-shrink-0">
+            <TallyInsightsNav nav={nav} activeSectionId={lesson.sectionId} activeLessonSlug={lesson.slug} />
+          </aside>
+          <div className="flex-1 min-w-0 max-w-5xl">
+            <nav className="mb-8 text-xs text-slate-500 font-medium">
+              <Link href="/" className="hover:text-[#006569]">
+                Home
+              </Link>{" "}
+              /{" "}
+              <Link href="/tally-insights" className="hover:text-[#006569]">
+                Tally Insights
+              </Link>{" "}
+              /{" "}
+              <Link href={`/tally-insights/${lesson.sectionId}`} className="hover:text-[#006569]">
+                {lesson.sectionTitle}
+              </Link>{" "}
+              /{" "}
+              <span className="text-slate-700">{lesson.title}</span>
+            </nav>
 
         <header className="mb-10">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#F5F4ED] border border-[#E5F4F4] mb-4">
@@ -529,6 +549,8 @@ export default async function LessonPage({
           >
             Back to Tally Insights
           </Link>
+        </div>
+          </div>
         </div>
       </main>
       <Footer />

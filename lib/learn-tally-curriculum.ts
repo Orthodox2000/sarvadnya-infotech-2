@@ -87,11 +87,19 @@ export type Lesson = {
   modulePromo?: ModulePromo;
 };
 
+// CHANGE: 2026-10-23 - Section gained optional SEO fields.
+// WHY: every section is now its own indexable page at /tally-insights/<section>. A section
+// page needs a title/description tuned to the query cluster it targets (shortcuts, GST,
+// payroll, ...) instead of reusing the short on-page description, otherwise all 13 pages
+// would compete with near-identical metadata.
 export type Section = {
   id: string;
   title: string;
   order: number;
   description: string;
+  seoTitle?: string;
+  seoDescription?: string;
+  keywords?: string[];
 };
 
 export const SECTIONS: Section[] = [
@@ -100,91 +108,208 @@ export const SECTIONS: Section[] = [
     title: 'Tally Fundamentals & Version Transitions',
     order: 1,
     description:
-      'Understand Tally ERP 9 vs Tally Prime, latest version, and key considerations before upgrading.'
+      'Understand Tally ERP 9 vs Tally Prime, latest version, and key considerations before upgrading.',
+    seoTitle: 'Tally ERP 9 vs Tally Prime',
+    seoDescription:
+      'Compare Tally ERP 9 and Tally Prime, check the latest TallyPrime release and plan a safe upgrade for your business.',
+    keywords: [
+      'tally erp 9 vs tally prime',
+      'latest version of tally prime',
+      'tally upgrade',
+      'tallyprime 7.2'
+    ]
   },
   {
     id: 'shortcuts-cheat-sheet',
     title: 'Tally Prime Shortcuts',
     order: 2,
     description:
-      'High-impact keyboard shortcuts to save time. Download the printable cheat sheet.'
+      'High-impact keyboard shortcuts to save time. Download the printable cheat sheet.',
+    seoTitle: 'Tally Prime Shortcut Keys',
+    seoDescription:
+      'Every key TallyPrime shortcut in one searchable list: navigation, vouchers, reports, GST and printing.',
+    keywords: [
+      'tally prime shortcuts',
+      'tally shortcut keys',
+      'tally keyboard shortcuts',
+      'tally prime shortcut list'
+    ]
   },
   {
     id: 'company-masters',
     title: 'Company Setup, Masters & Chart of Accounts',
     order: 3,
     description:
-      'Step-by-step guidance to create companies, ledgers, groups and maintain clean masters.'
+      'Step-by-step guidance to create companies, ledgers, groups and maintain clean masters.',
+    seoTitle: 'Tally Company Setup & Masters',
+    seoDescription:
+      'Create a company in TallyPrime, build clean ledgers and groups and set up a chart of accounts that stays audit-ready.',
+    keywords: [
+      'how to create company in tally',
+      'tally ledgers and groups',
+      'tally chart of accounts',
+      'tallyprime company setup'
+    ]
   },
   {
     id: 'vouchers-contra',
     title: 'Vouchers, Contra & Day-to-Day Entries',
     order: 4,
     description:
-      'Record transactions accurately with correct voucher types and best practices.'
+      'Record transactions accurately with correct voucher types and best practices.',
+    seoTitle: 'Tally Voucher Types & Contra',
+    seoDescription:
+      'Use the right TallyPrime voucher type every time, including contra, payment, receipt and journal entries.',
+    keywords: [
+      'types of vouchers in tally',
+      'contra voucher in tally',
+      'tally payment entry',
+      'tally journal entry'
+    ]
   },
   {
     id: 'gst-compliance',
     title: 'GST in Tally Prime',
     order: 5,
     description:
-      'Enable GST, configure ledgers, record Intra/Inter-State transactions and generate GST reports.'
+      'Enable GST, configure ledgers, record Intra/Inter-State transactions and generate GST reports.',
+    seoTitle: 'GST in Tally Prime',
+    seoDescription:
+      'Enable GST in TallyPrime, configure ledgers and rates, record intra-state and inter-state sales and generate GST reports.',
+    keywords: [
+      'gst in tally prime',
+      'tally gst setup',
+      'gstr-1 in tally',
+      'tally gst reports'
+    ]
   },
   {
     id: 'bank-reconciliation',
     title: 'Bank Reconciliation & Cash Management',
     order: 6,
     description:
-      'Perform accurate BRS, match bank statements, and clear unreconciled entries.'
+      'Perform accurate BRS, match bank statements, and clear unreconciled entries.',
+    seoTitle: 'Bank Reconciliation in Tally',
+    seoDescription:
+      'Reconcile bank statements in TallyPrime step by step, clear unreconciled entries and keep cash and bank books accurate.',
+    keywords: [
+      'bank reconciliation in tally',
+      'brs in tally prime',
+      'tally bank statement',
+      'tally cash management'
+    ]
   },
   {
     id: 'cost-centres',
     title: 'Cost Centres, Projects & Departmental Accounting',
     order: 7,
     description:
-      'Track expenses by department/project for better control and profitability analysis.'
+      'Track expenses by department/project for better control and profitability analysis.',
+    seoTitle: 'Cost Centres in Tally Prime',
+    seoDescription:
+      'Set up cost centres in TallyPrime, track expenses by department or project and analyse profitability reports.',
+    keywords: [
+      'cost centre in tally',
+      'tally prime cost centres',
+      'departmental accounting tally',
+      'project accounting tally'
+    ]
   },
   {
     id: 'inventory',
     title: 'Inventory, BOM & Godowns',
     order: 8,
     description:
-      'Manage stock items, units, godowns, batches and Bill of Materials in Tally Prime.'
+      'Manage stock items, units, godowns, batches and Bill of Materials in Tally Prime.',
+    seoTitle: 'Tally Inventory & Godowns',
+    seoDescription:
+      'Manage stock items, units, godowns, batches and bills of materials in TallyPrime with practical examples.',
+    keywords: [
+      'tally inventory',
+      'tally prime stock',
+      'godown in tally',
+      'bom in tally prime'
+    ]
   },
   {
     id: 'payroll-hrms',
     title: 'Payroll, HR & Attendance',
     order: 9,
     description:
-      'Configure payroll, pay structures, attendance, payslips and compliance requirements.'
+      'Configure payroll, pay structures, attendance, payslips and compliance requirements.',
+    seoTitle: 'Tally Prime Payroll & HRMS',
+    seoDescription:
+      'Understand native payroll in TallyPrime, what an HRMS add-on covers, pay heads, attendance, payslips and compliance.',
+    keywords: [
+      'tally payroll',
+      'tally hrms',
+      'payslip in tally',
+      'tally attendance'
+    ]
   },
   {
     id: 'reports-analysis',
     title: 'Reports, Analysis & Audit Readiness',
     order: 10,
     description:
-      'Use Tally Prime reports for financial analysis, control and year-end audit readiness.'
+      'Use Tally Prime reports for financial analysis, control and year-end audit readiness.',
+    seoTitle: 'Tally Prime Reports & Audit',
+    seoDescription:
+      'Read and use TallyPrime reports for analysis, internal controls and year-end audit readiness with a checklist.',
+    keywords: [
+      'tally prime reports',
+      'balance sheet in tally',
+      'profit and loss in tally',
+      'tally audit'
+    ]
   },
   {
     id: 'integration',
     title: 'Integration (Excel Power Query, XML API, ODBC)',
     order: 11,
     description:
-      'Connect Tally Prime with Excel, Power Query, XML API and ODBC for automated data exchange.'
+      'Connect Tally Prime with Excel, Power Query, XML API and ODBC for automated data exchange.',
+    seoTitle: 'Tally Integration: Excel & API',
+    seoDescription:
+      'Pull TallyPrime data into Excel with Power Query or export via XML/ODBC for dashboards and automated reports.',
+    keywords: [
+      'tally odbc',
+      'tally xml',
+      'tally excel integration',
+      'tally power query'
+    ]
   },
   {
     id: 'career-prep',
     title: 'Career Preparation (Interview, MCQ & Advanced)',
     order: 12,
     description:
-      'Prepare for Tally interviews with structured Q&A, MCQs and practical scenarios.'
+      'Prepare for Tally interviews with structured Q&A, MCQs and practical scenarios.',
+    seoTitle: 'Tally Interview Questions & MCQ',
+    seoDescription:
+      'Practical TallyPrime interview questions with answers, MCQs and scenarios for accountant and implementation roles.',
+    keywords: [
+      'tally interview questions',
+      'tally prime mcq',
+      'tally job interview',
+      'tally accounting interview'
+    ]
   },
   {
     id: 'tss-licensing-cloud',
     title: 'TSS, Licensing, Upgrades & Tally Cloud Access',
     order: 13,
     description:
-      'Understand TSS, licensing, ERP 9 to Prime upgrades, Tally Cloud Access and support.'
+      'Understand TSS, licensing, ERP 9 to Prime upgrades, Tally Cloud Access and support.',
+    seoTitle: 'TSS, Licensing & Tally Cloud',
+    seoDescription:
+      'Understand Tally Software Services (TSS), licence types, ERP 9 to TallyPrime upgrades, offline renewal and Cloud Access.',
+    keywords: [
+      'tss in tally',
+      'tally software services',
+      'tally licence renewal',
+      'tally cloud access'
+    ]
   }
 ];
 
@@ -202,7 +327,7 @@ export const LESSONS: Lesson[] = [
       'Tally Prime is the modern interface built on the same trusted accounting engine. **TallyPrime 7.2** is the latest version.\n\n| Feature | **Tally ERP 9** | **Tally Prime (7.2)** |\n| :-- | :-- | :-- |\n| **User Interface (UI/UX)** | Traditional, function-key driven, menu-centric | Modern, clean, graphical and more intuitive |\n| **Navigation** | Mostly Gateway of Tally menus + F-keys | **Go To (Alt+G)** and **Switch To** for instant search and faster navigation |\n| **Keyboard Shortcuts** | Heavily reliant on F-keys and Alt/Ctrl combinations | More consistent and streamlined (e.g., Alt+G for Go To). Easier for new users |\n| **Reporting** | Reports via menus, more steps for customisation | Enhanced reporting via Go To with contextual options to view, filter, print/export |\n| **Printing & Exporting** | Multi-step print/export configuration | Simplified with better preview and flexible formats (PDF, Excel, JPEG) |\n| **Multi-Tasking** | Limited - usually need to close current screen | **Switch To** lets you move between tasks (e.g., voucher entry while checking a report) |\n| **Installation & Upgrade** | Standard installation, upgrades often manual | Smoother, more guided upgrade with better detection of older Tally data |\n| **Data Migration** | N/A | Seamless migration from Tally ERP 9 to Tally Prime supported in most cases |\n| **Licensing** | Legacy licensing model | Existing ERP 9 licenses can be upgraded to Tally Prime if **TSS** is active (no extra license cost in most upgrade cases) |\n\n**Similarities:** Core accounting, inventory, payroll, taxation (GST/TDS/TCS), data integrity, security and largely compatible data structure.\n\n**Recommendation:** **Tally Prime is highly recommended for all businesses.** Support and updates for Tally ERP 9 will be phased out over time, so moving to TallyPrime 7.2 is the smarter, future-ready choice.',
     seoTitle: 'Difference Between Tally ERP 9 and Tally Prime | Tally Insights',
     seoDescription:
-      'Difference between Tally ERP 9 and Tally Prime explained with features, interface, usability, and upgrade guidance for businesses.',
+      'Compare Tally ERP 9 and Tally Prime: features, interface, usability and upgrade guidance for businesses.',
     keywords: [
       'difference between tally erp 9 and tally prime',
       'tally prime vs tally erp 9',
@@ -308,7 +433,7 @@ export const LESSONS: Lesson[] = [
       "Shortcut keys in TallyPrime are primarily used to simplify the recording of transactions, navigation, and reporting. They help you work faster without relying heavily on the mouse.\n\n## Hidden/Essential Keys\n| Action | Shortcut Key |\n| :-- | :-- |\n| Go back to previous screen / close current screen | Esc |\n| Remove input provided/selected for a field | Backspace |\n| Open Company Features screen | F11 |\n| Move between fields/menus/lines/columns | Arrow Keys, Tab / Shift+Tab, Up/Down, Left/Right |\n| Move to beginning/end of text or list | Home / End / PgUp / PgDn |\n| Move to first/last field or line | Ctrl+Home / Ctrl+End |\n| Accept or save a screen | Ctrl+A |\n| Expand or collapse group in a table | Alt+Enter |\n| Rewrite data | Ctrl+Alt+R |\n| Quit the application | Alt+F4 |\n| View build information / TDL/Add-on details | Ctrl+Alt+B / Ctrl+Alt+T |\n| Open or hide calculator panel | Ctrl+N |\n| Exit a screen or application | Ctrl+Q |\n\n## Navigation in TallyPrime\n| Action | Shortcut Key |\n| :-- | :-- |\n| Go To (search & jump to masters/reports/vouchers) | Alt+G |\n| Switch To (move between tasks without losing context) | Ctrl+G |\n| Open Company menu | Alt+K |\n| Switch to another company / Open another company / Shut company | F3 / Alt+F3 / Ctrl+F3 |\n| Change date/period for voucher entry or reports | F2 / Alt+F2 |\n| Configuration (applicable for current report/view) | F12 |\n| Help / Contextual TallyHelp | F1 / Ctrl+F1 |\n| Change display language / data entry language | Ctrl+K / Ctrl+W |\n| Import / Export / Print / Email menus | Alt+O / Alt+E / Alt+P / Alt+M |\n\n## Voucher Shortcuts\n| Voucher Type | Shortcut Key |\n| :-- | :-- |\n| Contra Voucher | F4 |\n| Payment Voucher | F5 |\n| Receipt Voucher | F6 |\n| Journal Voucher | F7 |\n| Sales Voucher | F8 |\n| Purchase Voucher | F9 |\n| Credit Note | Alt+F6 |\n| Debit Note | Alt+F5 |\n| Stock Journal | Alt+F7 |\n| Physical Stock | Ctrl+F7 |\n| Delivery Note | Alt+F8 |\n| Receipt Note | Alt+F9 |\n| Sales Order / Purchase Order | Ctrl+F8 / Ctrl+F9 |\n| Rejection In / Rejection Out | Ctrl+F6 / Ctrl+F5 |\n| Payroll Voucher | Ctrl+F4 |\n| List of all vouchers | F10 |\n\n## Voucher Operations\n| Action | Shortcut Key |\n| :-- | :-- |\n| Create master on-the-fly | Alt+C |\n| Open calculator panel (from amount field) | Alt+C |\n| Retrieve narration from previous ledger / previous voucher | Alt+R / Ctrl+R |\n| Delete voucher/transaction | Alt+D |\n| Cancel voucher | Alt+X |\n| Remove item/ledger line | Ctrl+D |\n| Mark as Optional / Post-Dated | Ctrl+L / Ctrl+T |\n| Autofill details | Ctrl+F |\n| Change voucher mode | Ctrl+H |\n| Open Stock Query for selected stock item | Alt+S |\n| Copy/Paste from input field | Ctrl+C / Ctrl+V (or Ctrl+Alt+C / Ctrl+Alt+V) |\n\n## Report Shortcuts\n| Action | Shortcut Key |\n| :-- | :-- |\n| Detailed/Condensed view | Alt+F1 / Alt+F5 |\n| Drill down from a line | Enter |\n| Insert/Add voucher in report / Create entry by duplicating | Alt+I / Alt+A / Alt+2 |\n| Delete/Cancel voucher from report / Remove entry | Alt+D / Alt+X / Ctrl+R |\n| Hide/Show details / Unhide lines | Alt+T / Alt+U / Ctrl+U |\n| Expand/Collapse information | Shift+Enter / Alt+Enter |\n| Alter master during voucher entry or from drill-down | Ctrl+Enter |\n| Select/Deselect lines / Range selection / Select all / Invert selection | Spacebar / Shift+Spacebar / Shift+Up/Down / Ctrl+Spacebar / Ctrl+Shift+Home/End / Ctrl+Alt+I |\n| Add/Alter/Delete/Auto-repeat columns | Alt+C / Alt+A / Alt+D / Alt+N |\n| Filter / Conditional filter / Exception reports | Alt+F12 / Ctrl+F12 / Ctrl+J |\n| Change view / Navigate to Voucher View | Ctrl+H / Ctrl+B |\n\n## Import/Export/Print/Email\n| Action | Shortcut Key |\n| :-- | :-- |\n| Print / Export / Email current voucher or report | Ctrl+P / Ctrl+E / Ctrl+M |\n\nTip: In TallyPrime 7.2, use Alt+G (Go To) as your fastest way to discover and jump to any action, report or master from anywhere. Use the searchable table on this page to quickly find the shortcut you need.",
     seoTitle: 'Tally Prime Shortcut Keys List | Tally Insights',
     seoDescription:
-      'Complete list of Tally Prime shortcut keys including Alt+G, voucher shortcuts, navigation keys and more for faster accounting.',
+      'Tally Prime shortcut keys including Alt+G, voucher shortcuts and navigation keys for faster accounting.',
     keywords: [
       'tally prime shortcut keys pdf',
       'shortcut key to delete company in tally',
@@ -514,7 +639,7 @@ export const LESSONS: Lesson[] = [
     intro: 'Learn how to record bank reconciliation in Tally Prime (BRS) to match your bank statement with books accurately.',
     bodyMd: 'Bank Reconciliation in Tally Prime helps match transactions between bank ledger and bank statement, identify differences, and maintain audit-ready records. Follow version-specific steps, match by date/amount/reference, and clear unreconciled items before month-end.',
     seoTitle: 'How to Record Bank Reconciliation in Tally Prime | Tally Insights',
-    seoDescription: 'Step-by-step guide on how to record bank reconciliation in Tally Prime (BRS) with matching, reconciliation and month-end checklist.',
+    seoDescription: 'Record bank reconciliation in Tally Prime step by step: matching, reconciliation and a month-end checklist.',
     keywords: ['how to record bank reconciliation in tally', 'bank reconciliation in tally prime', 'tally brs'],
     examples: [
       { title: 'Record Bank Reconciliation', steps: ['Go to Bank Ledger > Reconciliation (Alt+R)', 'Enter bank statement date range/details as applicable', 'Match transactions by Date/Amount/Reference', 'Mark Reconciled (space/accept)', 'Accept and review unreconciled list'], notes: ['Reconcile regularly (monthly) to avoid backlogs', 'Verify opening balance before starting BRS'] }
@@ -580,7 +705,7 @@ export const LESSONS: Lesson[] = [
       "GST is built into TallyPrime 7.2 - there is no separate GST add-on to buy. Once GST is switched on in Company Features, TallyPrime adds GST fields to your masters and vouchers, prints GST-compliant invoices, and produces the statutory reports you need for filing.\n\n## 1. Enable GST in Company Features\nPress F11 (Company Features) and switch on the GST options you need. Every option is independent, so most businesses enable plain GST first and add e-Invoicing or e-Way Bills later.\n\n| Option | What it turns on | When you need it |\n| :-- | :-- | :-- |\n| Maintain GST | GST fields on ledgers and vouchers, plus the GST report set | Every GST-registered business |\n| Maintain GST with TDS | TDS deducted on GST payments, with reporting for it | Businesses that deduct TDS while paying GST |\n| Maintain GST with TCS | Tax collected at source on GST | Businesses receiving large GST payments from registered buyers |\n| Enable e-Invoicing | IRP invoice numbering and IRN capture on invoices | Turnover above the notified e-Invoice threshold (Rs 5 crore) |\n| Enable e-Way Bills | e-Way Bill details on sales and purchase documents | Goods movement above the notified e-Way Bill threshold (Rs 50,000) |\n\nAccept the screen with Ctrl+A. The change applies to the company immediately.\n\n## 2. Create the ledgers that GST needs\n| Ledger type | Where it goes | Key settings |\n| :-- | :-- | :-- |\n| Party ledger (customer / supplier) | Any of the normal groups | Enable GST = Yes, Applicable for = Goods or Services, HSN code or SAC, GSTIN and State for registered parties |\n| GST output ledgers (CGST, SGST, IGST at each rate) | Duties and Taxes | One ledger per rate, for example GST 5, 12, 18 and 28 |\n| Input tax credit ledgers (Input CGST, Input SGST, Input IGST) | Duties and Taxes | Without these, the tax you pay on purchases is treated as an expense instead of a credit |\n| Non-GST ledgers | Normal groups | Leave Enable GST = No so that no tax is calculated against them |\n\nSet the HSN code to the number of digits the law asks for (2, 4, 6 or 8) and make sure the state on the party ledger matches the state in its GSTIN - a mismatch is the most common reason for a wrong tax split.\n\n## 3. Raise a GST invoice\n1. Press F8 for a Sales voucher and pick the customer ledger.\n2. Enter the item name, quantity and rate. The GST rate and HSN/SAC flow in from the ledger setup.\n3. Check the tax split - CGST plus SGST for an intra-state sale, IGST for an inter-state sale.\n4. Press Alt+P to print. Choose Original for Recipient, Duplicate for Transporter or Counterfoil.\n5. Set invoice numbering under F11 > Accounts Info > Invoice Numbering so every invoice number is generated and reused consistently across the GST reports.\n\nA GST invoice must carry the supplier GSTIN, the buyer GSTIN and state, a sequential invoice number and date, the HSN/SAC, the taxable value, the tax split and the total. The printed invoice from TallyPrime already carries all of these.\n\n## 4. Work with the GST reports\nGateway of Tally > Display > Statutory Reports > GST Reports gives you GSTR-1, GSTR-3B, GST Summary, GST Invoice details and the input tax credit reconciliation. Press Alt+E on any report to export it to Excel, XML or JSON, which is how most accountants hand data to their filing software.\n\nDownloading GSTR-2A and GSTR-2B from the portal, e-Invoice and e-Way Bill utilities all need an active TSS. When TSS expires, TallyPrime keeps your accounting working but those statutory utilities are restricted until it is renewed.",
     seoTitle: 'GST in Tally Prime: Setup, Invoicing and GST Reports | Tally Insights',
     seoDescription:
-      'How to enable GST in TallyPrime 7.2, configure ledgers with HSN and GSTIN, raise GST invoices and generate GSTR-1, GSTR-3B and GST reports.',
+      'Enable GST in TallyPrime, configure ledgers with HSN and GSTIN, raise invoices and generate GSTR-1, GSTR-3B and reports.',
     keywords: [
       'gst in tally prime',
       'how to enable gst in tally prime',
@@ -647,7 +772,7 @@ export const LESSONS: Lesson[] = [
       "Payroll is the area where teams are most often disappointed. TallyPrime is a strong accounting and compliance engine, but it does not ship with a payroll engine of its own - there is no salary-structure screen, no attendance capture and no payslip designer in the core product. Being clear about that up front saves a week of searching for a button that does not exist.\n\n## What TallyPrime 7.2 handles natively\n| Task | How the core product handles it |\n| :-- | :-- |\n| Salary and wages expense | Book a Journal or Payment voucher against your Salary and Wages ledger |\n| Employee advances and recoveries | Receipt and Journal vouchers against an Advances ledger, then settle them monthly |\n| TDS on salary | Enable TDS in Company Features; the deduction is computed on the salary payment voucher and appears in the TDS reports |\n| Provident Fund, ESI and Professional Tax | Book through ledgers under Duties and Taxes with the right group so they land in the correct statutory report |\n| Splitting salary cost across branches or projects | Turn on cost centres (F11 > Accounting Features) and tag each salary voucher with the department |\n| Attendance, leave and shift planning | Not part of core TallyPrime - this is what an HRMS add-on provides |\n\n## What an HRMS add-on adds\n| Capability | What it gives the business |\n| :-- | :-- |\n| Employee master | One record per employee with documents, contact details, joining date, salary structure and bank details |\n| One-click payroll | Monthly payroll run that calculates earnings, overtime, deductions and net pay |\n| Attendance | Biometric or mobile check-in data feeding the payroll run |\n| Payslips | Employee-wise payslips the staff can download themselves |\n| Statutory compliance | Computes and reports PF, ESI, TDS and Professional Tax for the applicable state |\n| Post to Tally | Pushes the payroll result into TallyPrime as a Payment voucher plus the statutory entries, so nothing is re-typed by your accountant |\n\n## The recommended flow\n1. Enable the payroll/HRMS add-on from F11 > Add-Ons and accept.\n2. Create employee masters and salary structures in the HRMS screen, not in Tally.\n3. Import or capture attendance for the month.\n4. Run the payroll and review the preview before posting.\n5. Post to TallyPrime - the salary payment and statutory deductions land as vouchers.\n6. Review the TDS on salary and statutory reports in TallyPrime before you file.\n\nKeep a single rule: TallyPrime is the book of record for the amounts, the HRMS owns the people data. When both are kept in step, payroll stops being a manual exercise at month end.",
     seoTitle: 'Payroll in Tally Prime: Native Features vs HRMS Add-on | Tally Insights',
     seoDescription:
-      'What TallyPrime 7.2 handles for payroll natively, what an HRMS add-on adds, and the recommended payroll-to-Tally posting flow.',
+      'TallyPrime payroll natively, what an HRMS add-on adds, and the recommended payroll-to-Tally posting flow.',
     keywords: [
       'payroll in tally prime',
       'tally prime hrms',
@@ -693,7 +818,7 @@ export const LESSONS: Lesson[] = [
       "TallyPrime has more reports than most people ever open, and most of them are one Alt+G away. Knowing which report answers which question is the difference between a five-minute review and an afternoon of exporting Excel.\n\n## The report map\n| Report | Where to find it | The question it answers |\n| :-- | :-- | :-- |\n| Balance Sheet | Display > Financial Reports > Balance Sheet | What do we own and owe on this date? |\n| Profit and Loss | Display > Financial Reports > Profit and Loss | Did we make money this period, and from where? |\n| Cash Flow | Display > Cash Flow | Where did the cash come from and where did it go? |\n| Trial Balance | Display > Financial Reports > Trial Balance | Do the ledger balances agree with the group totals? |\n| Day Book | Display > Day Book | What exactly happened on one day, voucher by voucher? |\n| Books of Accounts (Ledger, Journal, Voucher) | Display > Books of Accounts | Full detail for one ledger, the journal, or a voucher type |\n| Receivables and Payables (aged) | Display > Financial Reports > Receivables / Payables | Who owes us, who do we owe, and for how long? |\n| Stock / Godown / Item reports | Display > Inventory Reports | What stock do we hold, where, and at what value? |\n| GST and TDS reports | Display > Statutory Reports | What has to be filed, and what is the position on each party? |\n| Audit and analysis | Gateway of Tally > Display > Audit and Analysis | Turnover, profitability and trend views for a given period |\n\n## Faster navigation\n- Alt+G (Go To) opens a search box - type Balance Sheet, Cash Flow or Receivables and jump straight there.\n- F12 (Configure) changes the report on screen: period, columns, ledger grouping, cost centre split.\n- Alt+P prints, Alt+E exports to Excel, XML, JSON or JPEG.\n- Ctrl+G (Switch To) moves to another task without losing the report you had open - useful while a voucher is on screen.\n\n## A month-end review routine that actually closes the books\n1. Run Bank Reconciliation for every bank account and clear the unreconciled list. An unreconciled book is the most common audit query.\n2. Review the Cash Flow statement, not just the P&L - profit that has not turned into cash is the first thing an auditor asks about.\n3. Compare the Balance Sheet with the previous period and investigate every movement that is not explained by a known transaction.\n4. Reconcile the TDS payable ledger with the TDS reports before you pay, so the challan and the books agree.\n5. Match the stock report with the physical count for at least the high-value items, and record the difference through a Stock Journal rather than a Journal.\n6. Export the Trial Balance and the Balance Sheet and keep them with the voucher print for the period.\n\n## Audit-ready habits that cost nothing\n- Give every user a separate login and set security levels so only the right people can alter masters.\n- Make sure the Books Beginning From date is right, because every report is calculated from it.\n- Use narration on Journal and Payment vouchers - it is the first thing an auditor reads.\n- Keep vouchers dated in the period they belong to; back-dated entries are the second most common query.\n- Take a backup before any rewriting of data, and never rewrite data to fix a report.",
     seoTitle: 'TallyPrime Reports Guide: Balance Sheet, P&L, Cash Flow and Audit | Tally Insights',
     seoDescription:
-      'A practical map of TallyPrime 7.2 reports - balance sheet, profit and loss, cash flow, receivables, GST and TDS - plus a month-end audit readiness routine.',
+      'TallyPrime reports - balance sheet, profit and loss, cash flow, GST and TDS - plus a month-end audit routine.',
     keywords: [
       'tally prime reports',
       'how to check balance sheet in tally',
@@ -740,7 +865,7 @@ export const LESSONS: Lesson[] = [
       "TallyPrime is a closed accounting book, but it is not a closed data silo. It exports, it imports, and it serves data over an API - which is how a finance team stops re-keying numbers between Tally and Excel.\n\n## Choose the right route\n| What you want to do | Tool to use | How it works |\n| :-- | :-- | :-- |\n| Bring ledgers, items and opening balances in from Excel | Excel import | Gateway of Tally > Import of Data > Masters, point at an Excel sheet and map the columns |\n| Take a report out for analysis | Export (Alt+E) | Export any report to Excel, XML, JSON or JPEG |\n| Push and pull data automatically | XML API | TallyPrime serves XML over HTTP on your own machine, so any script or service can read and write |\n| Build dashboards in Excel or Power BI | ODBC or Power Query | Connect to the Tally data source and treat the ledgers as tables |\n| Send data to a website or portal | XML API | Post vouchers, masters and reports from your own server to the Tally API |\n\n## Excel import, step by step\n1. Prepare one row per master, with a header row that names each field exactly as Tally expects.\n2. Gateway of Tally > Import of Data > Masters (or Vouchers for voucher data).\n3. Choose the file, then map each spreadsheet column to the Tally field in the mapping screen.\n4. Create or alter masters as part of the import - tick the option if you want the import to create masters that do not exist yet.\n5. Import, then review the log. Every rejected row is listed with the reason.\n6. Verify with a display list before you close the screen - an import that half worked is worse than no import.\n\n## The XML API\nTallyPrime can run as a server on your workstation or server and answer requests over HTTP, typically on port 9000. You send a request that names the company and the data you want, and TallyPrime returns XML (JSON is supported as well).\n\n- Point the request at the local host and the company, so the data never leaves the office network unless you build it that way.\n- The usual pattern is a scheduled script that reads the day's vouchers and writes them into your own reporting store.\n- Keep the request templates in version control and log every request - an integration that nobody can debug is worse than a manual export.\n- Always open and close the company session inside a single request. A half-open session is the most common cause of empty responses.\n\n## ODBC and Power Query\nInstall the Tally ODBC driver, enable the ODBC connection from Company Features, then connect any ODBC-compliant tool (Excel Power Query, Power BI, Tableau) to the Tally data source and treat masters, ledgers and vouchers as tables.\n\nWith Power Query the same job is done through the API: choose Get Data > Web, point it at the Tally request URL and let Power Query parse the XML response. Refresh on a schedule and your dashboard updates without anybody exporting anything.\n\n## Practical advice\n- Import masters once and maintain them in Tally. Re-importing the same masters every month is how duplicates appear.\n- Export to CSV rather than Excel for anything that will be loaded into another system - it avoids date and number formatting surprises.\n- Keep a sandbox company for integration testing so a bad request never touches live books.\n- Log every automated write. Automation without a log is an audit finding waiting to happen.",
     seoTitle: 'TallyPrime Integration: Excel, XML API, ODBC and Power Query | Tally Insights',
     seoDescription:
-      'How to import masters from Excel, export reports, use the TallyPrime XML API and connect with ODBC or Power Query in TallyPrime 7.2.',
+      'Import masters from Excel, export reports, use the Tally XML API and connect with ODBC or Power Query.',
     keywords: [
       'tally prime integration',
       'tally xml api',
@@ -787,7 +912,7 @@ export const LESSONS: Lesson[] = [
       "Most Tally interviews are not about theory. The interviewer wants to know whether you can take a company from a blank screen to a working set of books, and whether you will notice when something is wrong with the data. These are the questions that come up most often, with the answer they are looking for.\n\n## Interview questions and how to answer them\n| Question | What the interviewer is really testing | How to answer it well |\n| :-- | :-- | :-- |\n| Difference between ERP 9 and Tally Prime | Whether you know the current product | Cover the interface, Go To navigation, multi-tasking and the data migration path - then say which one you would recommend and why |\n| How do you create a ledger with GST? | Whether you can set up statutory masters | Company Features first, then the ledger with Enable GST, Applicable for, HSN or SAC, GSTIN and state |\n| A customer says their books do not match the bank statement | Whether you can debug, not just operate | Bank reconciliation first, then unreconciled items, then the audit trail - never edit the books to make them agree |\n| How would you plan a new company implementation? | Whether you can run a project | Chart of accounts, masters, opening balances, voucher checks, GST setup, user roles, go-live plan |\n| What is contra and when do you use it? | Core accounting fundamentals | Movement between cash and bank only, and never for a receipt from a customer or a payment to a supplier |\n| How do you fix a wrong GST invoice after it is issued? | Whether you know the correction flow | Credit or debit note as per the situation, never an edit of the issued invoice |\n| Where do you check the TSS expiry? | Whether you understand licensing | F1 > About for the licence and TSS validity, and Alt+R > Manage TSS Renewal for the renewal screen |\n| How do you export data for the auditor? | Whether you can hand over cleanly | Export the required reports to Excel or PDF, keep the voucher print and the trial balance for the period |\n\n## Practice MCQs\n| Question | Options | Answer |\n| :-- | :-- | :-- |\n| Which shortcut opens the Go To search in TallyPrime? | A) F11 B) Alt+G C) Alt+F2 D) Ctrl+G | B) Alt+G |\n| Which voucher type records a cash deposit into the bank? | A) Payment B) Receipt C) Contra D) Journal | C) Contra |\n| Where is the HSN code maintained for a ledger? | A) Invoice print settings B) Ledger GST details C) Company Features only D) Bank reconciliation | B) Ledger GST details |\n| What is BRS? | A) Bank Receipt Summary B) Bank Reconciliation Statement c) Balance Sheet Report D) Batch Release Summary | B) Bank Reconciliation Statement |\n| TDS on salary is deducted when? | A) On customer receipts B) On salary payment C) On purchase orders D) On stock transfer | B) On salary payment |\n| Which report shows what you own and owe? | A) Profit and Loss B) Trial Balance C) Balance Sheet D) Cash Flow | C) Balance Sheet |\n\n## How to build a portfolio that gets you hired\n1. Build one complete company end to end - masters, vouchers, GST, bank reconciliation, a year-end close with all the reports exported.\n2. Write it up in two pages: what the business does, the chart of accounts you chose and why, and the checks you ran before go-live.\n3. Learn one add-on or TDL module. Knowing how to extend TallyPrime is what separates an operator from an implementer.\n4. Practise on the free TallyPrime education licence, then demo on a real client company structure.\n5. Keep your shortcuts muscle memory - interview demos are timed and navigation speed is visible.\n\n## Common mistakes to avoid in the interview\n- Claiming to know an add-on you have never opened. Say what you have used and what you would learn.\n- Describing ERP 9 menus as if they were TallyPrime menus - the interviewer will notice immediately.\n- Talking about features instead of outcomes. Say what the business gets, not what the screen does.\n- Forgetting the basics - contra, debit and credit, and why a trial balance must agree. These still get asked.",
     seoTitle: 'Tally Interview Questions and MCQs | Tally Insights',
     seoDescription:
-      'TallyPrime interview preparation - the questions interviewers ask, MCQs with answers, portfolio tips and common mistakes to avoid.',
+      'TallyPrime interview questions, MCQs with answers, portfolio tips and common mistakes to avoid.',
     keywords: [
       'tally interview questions',
       'tally prime mcq questions',
@@ -829,7 +954,7 @@ export const LESSONS: Lesson[] = [
       "TSS - Tally Software Services - is the annual subscription behind TallyPrime. It is what keeps the product compliant, keeps the screens current and unlocks the statutory utilities. Most upgrade questions are really TSS questions, so they are answered together here.\n\n## What TSS gives you\n| With active TSS | Without TSS |\n| :-- | :-- |\n| Statutory updates for GST, e-Invoice, e-Way Bill and payroll compliance | Your accounting keeps working, but statutory utilities and downloads are restricted |\n| GSTR-2A and GSTR-2B download inside TallyPrime | These downloads are blocked |\n| e-Invoice and e-Way Bill generation through the IRP and the e-Way Bill portal | Generation is restricted until it is renewed |\n| Online support and the latest release fixes | You run on whatever version you installed |\n| Tally Cloud Access for remote working | No remote access through Tally Cloud |\n\n## Which licence fits\n| Licence | Who it is for | What it gives |\n| :-- | :-- | :-- |\n| Silver | Single user, single company | Full accounting and compliance for one person |\n| Gold | Multiple users and multiple companies | Multi-user work and more than one company book |\n| Server | A whole office or branch | Unlimited users on the local network, one shared data set |\n| Education | Learners and trainees | A free learning licence with limited company books |\n\nTSS is purchased against the licence type, so a Gold user buys a multi-user TSS and a Silver user buys a single-user TSS. Check the current licence before you buy - press F1 > About for the licence details, and Alt+R > Manage TSS Renewal for the TSS screen.\n\n## Moving from ERP 9 to Tally Prime\n1. Check that TSS is active on the ERP 9 licence. An ERP 9 licence with active TSS can generally be upgraded to Tally Prime without buying a fresh licence.\n2. Take a complete backup of the ERP 9 data folder and keep it.\n3. Install Tally Prime and choose the upgrade option when it points at the existing ERP 9 data.\n4. Let the upgrade finish, then check the data: ledger balances, opening stock, outstanding bills and the number of vouchers.\n5. Re-check company features - a few of them are not carried over automatically, GST and payroll settings in particular.\n6. Validate any TDL modules and add-ons you use against TallyPrime 7.2 before go-live.\n\n## Tally Cloud Access\nTally Cloud Access lets authorised users open company books remotely over the internet, with role-based control and your data still sitting in your office. It is the usual answer for a founder or an accountant who needs the books away from the office, and it removes the temptation to copy the data onto a laptop.",
     seoTitle: 'TSS, Licensing, ERP 9 to Prime Upgrades and Tally Cloud | Tally Insights',
     seoDescription:
-      'What TSS is and what it unlocks, which TallyPrime licence you need, how to move from ERP 9 to Tally Prime and what Tally Cloud Access does.',
+      'What TSS unlocks, which TallyPrime licence you need, ERP 9 to Tally Prime upgrades and Tally Cloud Access.',
     keywords: [
       'tally prime tss',
       'tally software services',
@@ -880,7 +1005,7 @@ export const LESSONS: Lesson[] = [
       "If the online TSS renewal option does not show up, the portal will not load, or the machine has no internet access, the renewal can still be done offline through your Tally Certified Partner. This guide covers both the do-it-yourself checks and the offline path.\n\n## First, check whether you actually need the offline route\n| Symptom | What it usually means | Do this |\n| :-- | :-- | :-- |\n| No Manage TSS Renewal option in the menus | TSS is already active, or the licence type does not include TSS | Check F1 > About for the TSS validity date first |\n| The renewal screen does not load | A network or browser problem on that machine | Try a different network, or use the offline route below |\n| TSS has expired | The statutory utilities are restricted | Renew as soon as possible - do not wait for month end |\n| The office has no internet access | The machine cannot reach the licence server | Use the offline route below |\n\n## What you need before you start\n- The TallyPrime serial number - press F1 > About and note it down.\n- Company name and the licence type (Silver, Gold or Server).\n- The registered mobile number and email on the licence.\n- Your existing TSS validity date, so we can check the right renewal period.\n\n## The offline renewal steps\n1. Note the serial number from F1 > About and the current TSS validity from the same screen.\n2. Share the serial number and company details with your Tally Certified Partner - for us, that is Sarvadnya Infotech LLP.\n3. We verify the licence and TSS status against the serial number and confirm the renewal period and the amount.\n4. You receive the renewal details and the invoice against your company details.\n5. We process the offline TSS renewal for your serial number.\n6. Apply the renewal in TallyPrime and confirm the new validity date under F1 > About.\n\n## Which features come back after the renewal\n| Feature | Effect while TSS is expired | After renewal |\n| :-- | :-- | :-- |\n| GSTR-2A and GSTR-2B download | Not available | Available again from the portal |\n| e-Invoice generation with IRN | Blocked | Works with the IRP settings you already configured |\n| e-Way Bill generation | Blocked | Works again |\n| Direct statutory filing utilities | Restricted | Available |\n| Core accounting, inventory and reports | Unaffected | Unaffected |\n\n## Practical advice\n- Renew before expiry rather than after - it avoids a gap where your team is working on a restricted licence.\n- TSS is available on Silver, Gold and Server licences; it is not a Gold-only feature.\n- Keep the renewal invoice and the serial number on file - they are what you need if the licence is ever re-issued on a new machine.\n- Renewing early does not change what you are entitled to; the validity simply starts when the renewal is applied.\n\nFor the full offline renewal walkthrough, see our article on [how to renew Tally TSS offline](/news/how-to-renew-tally-tss-offline), or the [TSS service page](/services/tss).",
     seoTitle: 'How to Renew Tally TSS Offline: Steps and Requirements | Tally Insights',
     seoDescription:
-      'Renew Tally Software Services offline when the online option will not load - what you need, the exact steps, and which features come back after renewal.',
+      'Renew Tally Software Services offline: what you need, the exact steps and which features come back after renewal.',
     keywords: [
       'tally tss offline renewal',
       'how to renew tally tss',
@@ -930,4 +1055,23 @@ export function getLessonBySlug(slug: string) {
 
 export function getAllLessonSlugs() {
   return LESSONS.map((l) => ({ section: l.sectionId, slug: l.slug }));
+}
+
+// CHANGE: 2026-10-23 - Compact nav model for the client sidebar island.
+// WHY: the hub/section/lesson pages all use the same internal nav. Instead of shipping the
+// entire LESSONS array (with bodyMd) to the browser, we pass only title+slug per lesson.
+export type InsightsNavModel = Array<{
+  id: string;
+  title: string;
+  lessons: Array<{ slug: string; title: string }>;
+}>;
+
+export function getInsightsNavModel(): InsightsNavModel {
+  return SECTIONS.slice()
+    .sort((a, b) => a.order - b.order)
+    .map((s) => ({
+      id: s.id,
+      title: s.title,
+      lessons: getLessonsBySection(s.id).map((l) => ({ slug: l.slug, title: l.title })),
+    }));
 }
