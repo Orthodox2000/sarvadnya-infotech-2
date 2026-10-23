@@ -50,6 +50,12 @@ try {
   const exists = await news.findOne({ slug: 'tallyprime-international-licenses' }, { projection: { slug: 1, title: 1 } });
   const tss = await news.findOne({ slug: 'tally-tss-expiry-meaning' }, { projection: { slug: 1, title: 1, tags: 1, faqs: 1 } });
   const howTo = await news.findOne({ slug: 'how-to-check-tss-expiry-date-tallyprime' }, { projection: { slug: 1, title: 1 } });
+  // CHANGE: 2026-10-23 — the DMS post was rewritten from the owner's brochure copy, so pin
+  // the new answer-form title, the 7-FAQ block and the attach/open/email capability tags.
+  const dms = await news.findOne(
+    { slug: 'document-management-system-for-tally' },
+    { projection: { slug: 1, title: 1, tags: 1, faqs: 1, content: 1 } }
+  );
   const newDocs = await news
     .find({ slug: { $in: NEW_SLUGS_2026_10_13 } }, { projection: { slug: 1, title: 1, tags: 1, faqs: 1 } })
     .toArray();
@@ -84,6 +90,31 @@ try {
       doc ? doc.title : 'missing'
     );
   }
+
+  // CHANGE: 2026-10-23 — DMS post rewritten from the owner's brochure copy.
+  check(
+    'DMS post carries the answer-form title',
+    !!dms && dms.title === 'Document Management System in TallyPrime: Find Documents in Seconds',
+    dms ? dms.title : 'missing'
+  );
+  check('DMS post has 7 faqs', !!dms && Array.isArray(dms.faqs) && dms.faqs.length === 7, dms && dms.faqs ? `${dms.faqs.length} faqs` : 'missing');
+  check(
+    'DMS post declares "find documents in seconds" + attach/email tags',
+    !!dms &&
+      Array.isArray(dms.tags) &&
+      dms.tags.includes('find documents in seconds') &&
+      dms.tags.includes('attach and email documents in tallyprime'),
+    dms && dms.tags ? `${dms.tags.length} tags` : 'missing'
+  );
+  check(
+    'DMS post body carries attach / open / email + audit-readiness copy',
+    !!dms &&
+      typeof dms.content === 'string' &&
+      dms.content.includes('attach once, then open or email it in a click') &&
+      dms.content.includes('No more audit panic') &&
+      dms.content.includes('Dedicated report'),
+    dms && typeof dms.content === 'string' ? `${dms.content.length} chars` : 'missing'
+  );
 
   console.log(`\n${failed === 0 ? 'ALL NEWS-SEED VERIFICATIONS PASSED' : `${failed} VERIFICATIONS FAILED`} (${passed} passed / ${failed} failed)`);
   process.exitCode = failed === 0 ? 0 : 1;

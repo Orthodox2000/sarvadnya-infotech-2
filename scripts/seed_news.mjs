@@ -755,11 +755,11 @@ Sarvadnya Infotech is a Tally certified partner in CBD Belapur, Navi Mumbai. If 
   },
   {
     slug: 'document-management-system-for-tally',
-    title: 'Document Management Software for Tally: Attach Bills and Challans to Vouchers',
-    date: 'October 13, 2026',
+    title: 'Document Management System in TallyPrime: Find Documents in Seconds',
+    date: 'October 23, 2026',
     category: 'Tally Add-ons',
-    description: 'What a document management system for Tally does: attach bills, invoices, challans and certificates to vouchers and ledgers, with organized storage and audit-ready retrieval.',
-    tags: ['document management software companies', 'document management system for tally', 'document management software for tally', 'attach documents in tallyprime', 'tally document management add on', 'tdl dms for tally'],
+    description: 'Attach, open and email any document inside TallyPrime. Bills, challans and certificates stay linked to their voucher or master, audit-ready in one click.',
+    tags: ['document management software companies', 'document management system for tally', 'document management system in tallyprime', 'document management software for tally', 'attach documents in tallyprime', 'attach and email documents in tallyprime', 'tally document management add on', 'tdl dms for tally', 'find documents in seconds', 'paperless documentation tally'],
     link: '/addons',
     author: 'Sarvadnya Infotech LLP',
     faqs: [
@@ -769,7 +769,7 @@ Sarvadnya Infotech is a Tally certified partner in CBD Belapur, Navi Mumbai. If 
       },
       {
         q: 'Which file types can I attach to a Tally voucher?',
-        a: 'The common working formats: PDF, Word (.doc and .docx), Excel (.xls and .xlsx), and images such as .jpg and .png. That covers scanned bills, purchase invoices, delivery challans, GST challans and certificates.',
+        a: 'The common working formats: PDF (GST certificates, scanned bills), Excel (rate charts), images such as JPG (product images) and Word documents such as agreement copies. That covers most of the paperwork a business actually has to file.',
       },
       {
         q: 'Where are the attached files stored?',
@@ -777,24 +777,65 @@ Sarvadnya Infotech is a Tally certified partner in CBD Belapur, Navi Mumbai. If 
       },
       {
         q: 'How does a document add-on help during an audit?',
-        a: 'The source document sits on the transaction it belongs to. Instead of hunting through folders for a scanned bill, an auditor or your team pulls it up from the Day Book, a ledger view or the relevant report in seconds, straight from Tally.',
+        a: 'The source document sits on the transaction it belongs to, so proof documents are ready throughout the year. Instead of hunting through folders for a scanned bill, an auditor or your team opens it from the Day Book, a ledger view or the relevant report in seconds, then views, prints or emails it from the same screen.',
       },
       {
         q: 'Can I control who is allowed to see or upload attachments?',
         a: 'Yes. Attachment viewing and upload rights are set by user role, so an administrator can allow full access while staff can only attach or open what their role permits. Combined with audit logs, that keeps the document trail accountable.',
       },
+      {
+        q: 'Can I email an attached document from Tally itself?',
+        a: 'Yes. The module can email the documents already attached to a voucher, and you can add external files to the same email, so a bill or challan can be re-shared with a client or a CA without leaving TallyPrime.',
+      },
+      {
+        q: 'Which businesses get the most out of it?',
+        a: 'Any business with heavy documentation, and especially chartered accountants, trusts and NGOs, C and F agents, schools and colleges, CHAs and transporters, where paperwork has to be found again months later.',
+      },
     ],
-    content: `A document management system for Tally is an add-on module - a TDL or TCP extension - that lets you attach, organize and view digital copies of supporting documents directly inside TallyPrime or Tally ERP 9. It does not replace Tally and it does not need your data re-keyed: the documents live against the vouchers and masters you already have.
+    content: `A document management system for Tally is an add-on module - a TDL or TCP extension - that lets you attach, organize and open digital copies of supporting documents directly inside TallyPrime, linked either to a transaction or to a master. It does not replace Tally and nothing is re-keyed: the document sits where the entry already is.
 
-Why it matters: most of the time spent on a GST notice, a statutory audit or a simple vendor query is not accounting time, it is document hunting. When the purchase invoice is attached to the purchase voucher, that search collapses into a click.
+The short version: attach once, then open or email it in a click. Every document stays linked to every transaction and master it belongs to, right inside TallyPrime.
 
-What such a module does:
+Why it matters: most of the time lost to a GST notice, a statutory audit or a simple vendor query is not accounting time, it is document hunting. When the purchase invoice is attached to the purchase voucher, that search collapses into a click.
 
-- Direct voucher and master linking - attach bills, purchase invoices, delivery challans, GST challans, and employee, creditor or debtor certificates straight to a transaction or a ledger master
-- Supported formats - link PDF, Word (.doc, .docx), Excel (.xls, .xlsx) and images (.jpg, .png)
-- Centralized storage - files are organized automatically into structured local or cloud folders, for example Google Drive, OneDrive or a network path, grouped by voucher type and financial year
-- Audit readiness - pull up the original scanned document, payment challan or approval receipt within seconds from Tally reports, the Day Book or a ledger view
-- User permissions - restrict or grant attachment viewing and upload rights by user role, so an administrator and a staff member see different things
+Three things happen in one place:
+
+- Attach - one file or many, on any transaction or master
+- Open and view - open any attachment from any screen, including the Day Book, a ledger view or the report
+- Email - share or re-share without leaving TallyPrime, and add external files to the same email
+
+Formats that cover real paperwork: PDF (GST certificates, scanned bills), Excel (rate charts), images such as JPG (product images) and Word documents such as agreement copies.
+
+What you can attach, as a few examples:
+
+- Company - company PAN, GST certificate
+- Stock item - product image, rate chart
+- Party master - GST certificate, PAN copy, agreement copy
+- Transaction - invoices, purchase orders, any supporting document
+
+Everything you need, one click away:
+
+- Attach any number of documents, from any transaction or master level
+- Open the attachment in a click, so there is no more document hunting
+- Centrally stored - all documents in one place, linked to their record, without overlap
+- Email with external files - email attached documents, or add outside documents too, directly from TallyPrime
+- Dedicated report - view all attachments in a single report, separately for master level and transaction level
+
+Find anything, any time. Nothing gets lost, because every document stays linked to its master or transaction and opens from the same screen - no searching, no digging through emails or WhatsApp chats.
+
+No more audit panic: proof documents are ready throughout the year, remote or on premise. You are not sitting with your CA only to present papers, and for an online audit it is a single click - refer any digital document, view it, print it or email it, and re-share it with your clients or CA, with every document centrally located instead of scattered.
+
+Made for businesses that run on paperwork:
+
+- Chartered accountants - client records always at hand
+- Trusts and NGOs - receipts and records in order
+- C and F agents - consignment papers sorted
+- Schools and colleges - admission and fee papers organised
+- CHAs - clearance documents ready
+- Transporters - trip papers linked to billing
+- Any business with heavy documentation - paperless, centrally stored, no overlap
+
+Storage and permissions are set up the way your office actually works. Files can live in structured local folders, on your network, or in a cloud folder, filed by voucher type and financial year so a document is findable by period. Viewing and upload rights are controlled by user role, so an administrator and a staff member see different things, and audit logs keep the trail accountable.
 
 Most document management software companies sell a standalone system that you then have to feed from your accounting. A Tally integrated module works the other way around: the document is attached where the entry already is, so the trail from report to source document is unbroken.
 
@@ -806,9 +847,9 @@ What to check before you choose a module:
 - What backs the attachments up, because an unbacked-up document store is a new risk, not a solved one
 - Whether the vendor supports your exact Tally edition and release
 
-If your team spends a working day every quarter hunting for scanned bills, an accounting linked document store pays for itself quietly. If you already have a neat physical filing system and no audit pressure, the case is weaker.
+If your team spends a working day every quarter hunting for scanned bills, an accounting linked document store pays for itself quietly. If you already have a neat physical filing system and no audit pressure, the case is weaker. The quickest way to judge it is a free demo - bring one messy voucher and your messiest folder.
 
-Sarvadnya Infotech is a Tally certified partner in CBD Belapur, Navi Mumbai. We implement TDL add-ons and document attachment modules for TallyPrime and Tally ERP 9, configure storage and permissions with you, and support businesses in Mumbai, Navi Mumbai and across India - see our add-ons page or ask us what fits your voucher flow.`,
+Sarvadnya Infotech is a Tally certified partner in CBD Belapur, Navi Mumbai. We implement TallyPrime add-on modules and document attachment for TallyPrime and Tally ERP 9, configure storage and permissions with you, and support businesses in Mumbai, Navi Mumbai and across India. Call 022 49647959 or 022 49742200, WhatsApp +91 98709 42557, or email info@sarvadnyainfotech.com - see our add-ons page or ask us what fits your voucher flow.`,
   },
 ];
 
