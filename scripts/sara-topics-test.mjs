@@ -1,7 +1,7 @@
 // CHANGE: 2026-09-05 — deterministic regression suite for the Learn Sara topic matcher.
 // Covers the "stock -> TSS renewal" bug (fix in lib/sara-topics.ts keyword synonyms).
 // Runs standalone with Node 24 native TS type-stripping — no server, no AI, no tokens spent.
-import { matchTopic, saraTopics } from '../lib/sara-topics.ts';
+import { matchTopic, saraTopics, getFallbackResponse, getTeachingFallbackResponse } from '../lib/sara-topics.ts';
 
 let passed = 0;
 let failed = 0;
@@ -73,11 +73,68 @@ test('"shortcut keys" maps to Keyboard Shortcuts', () => expectMatch('shortcut k
 console.log('⚙️ Over-match guard');
 test('random gibberish returns null', () => expectNull('zzzz qqqqq qwerty'));
 
+// ─── TDL / custom build must land on the consultant topic, never on code ────
+// CHANGE: 2026-10-22 — Sara is a business consultant, NOT a programmer. A TDL
+// request must resolve to the "TDL & Customisation" topic (which asks the
+// requirement questions and routes to the technical team) and the topic answer
+// must never contain code.
+console.log('🧱 TDL / custom build isolation');
+test('"tdl" maps to TDL & Customisation', () => expectMatch('tdl', 'TDL & Customisation'));
+test('"can you draft tdl" maps to TDL & Customisation', () => expectMatch('can you draft tdl', 'TDL & Customisation'));
+test('"tdl customization" maps to TDL & Customisation', () => expectMatch('tdl customization', 'TDL & Customisation'));
+test('"custom report for gst" maps to TDL & Customisation', () => expectMatch('custom report for gst', 'TDL & Customisation'));
+test('"custom invoice format" maps to TDL & Customisation', () => expectMatch('custom invoice format', 'TDL & Customisation'));
+test('"report" still maps to Reports & Analysis', () => expectMatch('report', 'Reports & Analysis'));
+test('"balance sheet" still maps to Reports & Analysis', () => expectMatch('balance sheet', 'Reports & Analysis'));
+test('the TDL topic answer contains no code', () => {
+  const t = saraTopics.find(x => x.label === 'TDL & Customisation');
+  if (!t) throw new Error('TDL topic missing');
+  if (/\[#Menu:|\[System:|\[Function:|OnAction\s*:|\$\$/.test(t.answer)) {
+    throw new Error('TDL topic answer contains code');
+  }
+});
+test('the TDL topic answer asks the requirement questions', () => {
+  const t = saraTopics.find(x => x.label === 'TDL & Customisation');
+  if (!t) throw new Error('TDL topic missing');
+  if (!t.answer.includes('?')) throw new Error('TDL topic answer asks no question');
+  if (!t.answer.includes('[[TDL Customization|/services/tdl]]')) throw new Error('TDL topic answer has no button');
+});
+
+// ─── Catalogue suggestions (the OFFLINE Sara must suggest what we sell) ─────
+// CHANGE: 2026-10-22 — the owner asked Sara to know our add-ons, products and modules "with
+// details" and to suggest them. The live path uses the generated catalogue prompt; this
+// covers the OFFLINE path (API down), where lib/sara-catalog.mjs does the matching.
+console.log('🛍 Catalogue suggestions');
+test('offline fallback suggests the right add-on for a business problem', () => {
+  const r = getFallbackResponse('stop billing customers who have not paid');
+  if (!r.includes('Block Billing beyond Due Date')) throw new Error(`got: ${r.slice(0, 120)}`);
+  if (!r.includes('[[Block Billing beyond Due Date|/addons#block-billing-beyond-due-date]]')) {
+    throw new Error('the add-on reply has no button');
+  }
+});
+test('offline fallback suggests an industry module when one matches', () => {
+  const r = getFallbackResponse('we are a transport business and need lorry receipt billing');
+  if (!r.includes('Transport Module')) throw new Error(`got: ${r.slice(0, 120)}`);
+});
+test('offline fallback still answers a price question with the sales route', () => {
+  const r = getFallbackResponse('what is the price of tallyprime gold');
+  if (!/price|pricing|quote/i.test(r)) throw new Error(`price question was hijacked: ${r.slice(0, 120)}`);
+  if (r.includes('Block Billing')) throw new Error('catalogue hijacked a price question');
+});
+test('offline fallback still refuses a custom build with the requirement questions', () => {
+  const r = getFallbackResponse('can you draft a TDL for pending invoices');
+  if (!r.includes('/services/tdl')) throw new Error(`got: ${r.slice(0, 120)}`);
+});
+test('teaching fallback points at the exact free guide', () => {
+  const r = getTeachingFallbackResponse('cost centre department wise accounting');
+  if (!r.includes('/tally-insights/cost-centres/cost-centre-in-tally')) throw new Error(`got: ${r.slice(0, 160)}`);
+});
+
 // ─── Data sanity: no duplicate topics ──────────────────────────────────────
 console.log('🧩 Data sanity');
-// CHANGE: 2026-09-11 — expected count 7 → 8 after adding the ERP 9 License Upgrade topic.
-test('saraTopics has 8 unique topics', () => {
-  if (saraTopics.length !== 8) throw new Error(`expected 8 topics, got ${saraTopics.length}`);
+// CHANGE: 2026-10-22 — expected count 8 → 9 after adding the TDL & Customisation topic.
+test('saraTopics has 9 unique topics', () => {
+  if (saraTopics.length !== 9) throw new Error(`expected 9 topics, got ${saraTopics.length}`);
 });
 test('Keyboard Shortcuts topic appears exactly once', () => {
   const n = saraTopics.filter(t => t.label === 'Keyboard Shortcuts').length;

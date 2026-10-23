@@ -1,6 +1,21 @@
 // CHANGE: 2026-09-05 — added optional `keywords` so synonyms like "stock" resolve
 // deterministically to their topic; prevents over-matching falling through to the
 // LLM (avoiding off-syllabus TSS replies and saving LLM token spend).
+//
+// CHANGE: 2026-10-22 — Sara is a business consultant, NOT a programmer. The
+// shared guard (lib/sara-guard.mjs) is imported here so the OFFLINE fallback
+// (used when the AI API is down) behaves exactly like the live reply: never
+// code, always the requirement questions first.
+// CHANGE: 2026-10-22 — RELATIVE import on purpose (house rule for lib/): the
+// plain-node regression suites import this file directly (Node 24 native TS
+// type-stripping) and cannot resolve the "@/" alias.
+import { buildNoCodeReply, isCustomBuildRequest } from './sara-guard.mjs';
+// CHANGE: 2026-10-22 — the offline fallback must be able to SUGGEST what we sell, exactly
+// like the live reply does. The catalogue (products, cloud, services, modules, the 20 add-ons
+// and the Tally Insights guides) lives in lib/sara-catalog.mjs so there is ONE source of
+// truth shared with the chat route and the prompt.
+import { catalogSuggestionReply, guideSuggestionReply } from './sara-catalog.mjs';
+
 export type Topic = {
   label: string;
   answer: string;
@@ -74,12 +89,45 @@ export const saraTopics: Topic[] = [
       { label: "What stops when TSS expires?", answer: "When TSS is red or expired, these stop working:\n\n- E-invoicing & e-way bill generation/cancellation\n- GST auto-download of GSTR-2A/2B and direct return filing\n- Banking utilities — direct payments and auto bank reconciliation\n- Remote Access & WhatsApp — mobile/browser reports and WhatsApp invoice sharing\n\nOffline data entry keeps working. Renew before expiry to get one extra month of validity. [[Renew TSS|/services/tss]]" },
       { label: "No TSS option visible?", answer: "The Alt+R (Manage TSS Renewal) shortcut on the Gateway of Tally screen only appears when a renewal is due — roughly 15 days before your subscription ends. You can also reach it via F1 (Help) > Settings > License > Manage License, then press F9 (Renew TSS). If you still don't see it, share your serial number with our team and we will renew it for you. [[Renew TSS|/services/tss]]" },
     ]
-  }
+  },
+  {
+    // CHANGE: 2026-10-22 — NEW topic. Sara is a business consultant, NOT a
+    // programmer: a TDL / custom-build request must NEVER be answered with
+    // code. This topic is deterministic (it wins the local matcher, so it
+    // costs zero LLM tokens) and its answer asks the requirement questions
+    // FIRST, then routes the build to our technical team.
+    // Placed LAST on purpose: build requests are routed here deterministically
+    // by the isCustomBuildRequest() check in matchTopic(), so the array order
+    // does not decide the outcome. Keeping it last stops the generic word
+    // overlap ("tallyprime", "how") from stealing unrelated queries such as
+    // "how do I upgrade my licence to tallyprime".
+    label: "TDL & Customisation",
+    keywords: ["tdl", "customisation", "customization", "customise", "customize", "custom report", "custom reports", "custom field", "custom voucher", "custom screen", "custom invoice", "write tdl", "draft tdl", "tdl customization", "tdl customisation"],
+    answer: "A TDL is Tally's own extension language - the way to add custom screens, fields and reports inside TallyPrime. Writing one is done by our technical team, and I don't write code myself. Three quick things so I brief them properly:\n\n1. Should it sit on the screen you use every day, or as a separate report?\n2. What exactly should it show or do (and should it print, send or update anything)?\n3. How many people will use it, and how often?\n\n[[TDL Customization|/services/tdl]]",
+    followUp: [
+      { label: "Options without a TDL", answer: "A lot, and it is usually enough:\n\n- Reports: press F12 (Configure) on any report to change columns, rows, sorting and grouping - that becomes your saved view.\n- Columnar reports: compare several periods side by side.\n- Cost Centre reports: department-wise tracking without any customisation.\n- Export to Excel: any report can be exported and shaped there.\n\nIf none of these cover what you need, our technical team can build a TDL on top of them." },
+      { label: "Turnaround for a custom build", answer: "It depends on the scope, so the three questions above matter. A focused tweak usually takes days; anything with data migration or a new screen takes longer.\n\nSend us the brief and our technical team will confirm what is possible in TallyPrime itself first - a built-in configuration is often faster and cheaper than a TDL." },
+    ]
+  },
 ];
+
+// CHANGE: 2026-10-22 — the label of the custom-build topic. Exported so the
+// matcher can route build requests to it deterministically.
+export const TDL_TOPIC_LABEL = 'TDL & Customisation';
 
 export function matchTopic(query: string): { topic: Topic; score: number } | null {
   const queryLower = query.toLowerCase();
   const queryWords = queryLower.split(/\s+/).filter(w => w.length > 2);
+
+  // CHANGE: 2026-10-22 — a custom-build request ALWAYS resolves to the TDL &
+  // Customisation topic, whatever the generic scoring says. Without this,
+  // "custom report for GST" scored higher on "Reports & Analysis" (whose
+  // answer mentions "custom reports") and a build request was answered with a
+  // generic reports list instead of the requirement questions.
+  if (isCustomBuildRequest(query)) {
+    const build = saraTopics.find(t => t.label === TDL_TOPIC_LABEL);
+    if (build) return { topic: build, score: 100 };
+  }
 
   const scoredTopics = saraTopics.map(t => {
     const labelLower = t.label.toLowerCase();
@@ -126,8 +174,19 @@ export function matchTopic(query: string): { topic: Topic; score: number } | nul
 export function getFallbackResponse(userInput: string): string {
   const input = userInput.toLowerCase().trim();
 
+  // CHANGE: 2026-10-22 — a custom-build request is never answered here. It
+  // gets the requirement questions + the technical team, exactly like the
+  // live reply (lib/sara-guard.mjs is the single source of truth for that).
+  // Checked BEFORE the contextual patterns so "custom report for GST" is not
+  // hijacked by the generic reports answer below.
+  if (isCustomBuildRequest(userInput)) {
+    return buildNoCodeReply(userInput);
+  }
+
   const contextualResponses: [RegExp, string][] = [
-    [/price|cost|rate|charge|fees|kitna|how much|expensive|cheap|budget/, "Good call checking prices! Rather than dumping numbers here, our pricing pages break it all down clearly. Tap the button that fits your size — or tell me your team size and I'll point you to the perfect setup.\n\n[[Silver Pricing|/products/silver#pricing]]\n[[Gold Pricing|/products/gold#pricing]]\n[[Server Pricing|/products/server#pricing]]\n[[Get a Quote|/contact]]"],
+    // CHANGE: 2026-10-22 — "cost" is a pricing word, but "cost centre" is a Tally feature.
+    // The negative lookahead keeps a "cost centre" question out of the pricing answer.
+    [/price|cost(?!\s*cent)|rate|charge|fees|kitna|how much|expensive|cheap|budget/, "Good call checking prices! Rather than dumping numbers here, our pricing pages break it all down clearly. Tap the button that fits your size — or tell me your team size and I'll point you to the perfect setup.\n\n[[Silver Pricing|/products/silver#pricing]]\n[[Gold Pricing|/products/gold#pricing]]\n[[Server Pricing|/products/server#pricing]]\n[[Get a Quote|/contact]]"],
     [/who are you|about you|what can you do|how can you help|help me|i need help/, "I'm Sara, your business advisor from Sarvadnya Infotech LLP. We make Tally work for you. Three things businesses love us for:\n\n**TallyPrime** setup & support [[Explore|/products]]\n**AMC** with 15-min response SLA [[Learn More|/services/amc]]\n**Cloud backup** so data is never lost [[TallyDrive|/products/tallydrive]]\n\nWhat's the one thing eating the most time in your business?"],
     [/\bhello\b|\bhi\b|\bhey\b|namaste|good\s*(morning|afternoon|evening)|hii+|hlo|hola/, "Hello! Welcome to Sarvadnya — we've been automating businesses since 2008. Quick one: how many people work with your accounts? I'll suggest the perfect TallyPrime setup."],
     [/\bthanks?\b|\bty\b|thank you|\bbye\b|goodbye|\bok(ay)?\b|theek|alright|\bnice\b|\bgreat\b|\bcool\b/, "You're welcome! Whenever you're ready, I'd love to show you how **TallyDrive** keeps your data safe on autopilot. [[Explore TallyDrive|/products/tallydrive]]"],
@@ -164,6 +223,13 @@ export function getFallbackResponse(userInput: string): string {
     if (pattern.test(input)) return response;
   }
 
+  // CHANGE: 2026-10-22 — the catalogue check comes AFTER the contextual patterns (those are
+  // more specific) and BEFORE the generic replies (which are the last resort). It turns a
+  // business problem into the exact product / module / add-on that solves it, so the OFFLINE
+  // Sara suggests the same things the online one does.
+  const catalogReply = catalogSuggestionReply(userInput);
+  if (catalogReply) return catalogReply;
+
   const genericResponses = [
     "Sounds like you run a business! **TallyPrime** can handle billing, inventory, GST, and payments all in one place. What do you deal in — products, services, or both?",
     "Got it! Every business needs clean accounting and GST compliance. **TallyPrime** automates all of it. What's the task taking most of your time right now?",
@@ -182,7 +248,11 @@ export function getTeachingFallbackResponse(userInput: string): string {
     [/hello|hi|hey|namaste|good\s*(morning|afternoon|evening)/, "Hello! Welcome to Learn Sara. I am here to help you master TallyPrime step by step. What would you like to learn about — GST, inventory, banking, payroll, or something else?"],
     [/thank|thanks|bye|goodbye|ok|okay|theek|alright/, "You're welcome! Keep practicing and you'll master TallyPrime in no time. Feel free to come back anytime with more questions."],
     [/\btss\b|subscription|renew(?!.*amc)|serial\s*number/, "Yes, you can renew your TSS (Tally Software Service) directly from inside TallyPrime:\n\n1. From the Gateway of Tally, press **Alt+R** (Manage TSS Renewal) — this shortcut appears when a renewal is due, about 15 days before expiry.\n2. Or go to **F1 (Help) > Settings > License > Manage License**, then press **F9 (Renew TSS)**.\n3. Tally opens the Tally Solutions renewal portal in your browser with your serial number and billing details pre-filled.\n4. Pick 1 Year, or 2 Years for a 10% discount, complete the payment, and the updated validity syncs back into Tally.\n\nRenew before expiry to get one extra month of validity. When TSS is red/expired, e-invoicing, e-way bills, GST auto-filing, bank payments, and mobile/WhatsApp reports stop — but offline data entry keeps working. If the option is not visible on your screen, share your serial number and our team will renew it for you. [[Renew TSS|/services/tss]]"],
-    [/price|cost|rate|charge|fees|buy|purchase|license/, "For pricing and license details, please contact our sales team directly. Here, let us focus on learning how to use TallyPrime effectively. What feature would you like to understand?"],
+    [/\btdl\b|custom\s+(?:report|voucher|field|screen|invoice)|write\s+(?:a\s+|the\s+)?(?:code|script|program)|write\s+(?:a\s+|the\s+)?tdl|draft\s+(?:a\s+)?tdl|develop(?:ment)?\s+report/, "I don't write code, so I won't hand you a script - custom development is done by our technical team. [[TDL Customization|/services/tdl]]\n\nTell me what you're trying to achieve on screen and I'll show you the closest way to do it in TallyPrime itself - most needs are solved by a report configuration (F12), a cost centre or an export."],
+    // CHANGE: 2026-10-22 — "cost" is a pricing word, but "cost centre" is a Tally feature.
+    // Without the negative lookahead the price answer hijacked every "cost centre" question
+    // and hid the Cost Centre guide in the knowledge hub.
+    [/price|cost(?!\s*cent)|rate|charge|fees|buy|purchase|license/, "For pricing and license details, please contact our sales team directly. Here, let us focus on learning how to use TallyPrime effectively. What feature would you like to understand?"],
     [/software|install|setup|download|update|version/, "To install TallyPrime: download from tallysolutions.com, run the installer, and follow the setup wizard. During first launch, create your company with GST details. Want me to walk you through the initial configuration step by step?"],
     [/gst|tax|return|filing|compliance|gstr/, "TallyPrime handles GST end to end. To get started: go to Company Features (F11) and Enable GST. Then set your GST rate and HSN/SAC codes. Would you like to learn how to create a GST invoice, or how to file GSTR-1?"],
     [/inventory|stock|godown|warehouse|item|product/, "TallyPrime inventory management is powerful. Start by creating Stock Items under Inventory Info. You can track quantities, values, godowns, batches, and reorder levels. What type of business inventory are you managing?"],
@@ -201,6 +271,11 @@ export function getTeachingFallbackResponse(userInput: string): string {
   for (const [pattern, response] of teachingResponses) {
     if (pattern.test(input)) return response;
   }
+
+  // CHANGE: 2026-10-22 — point the learner at the EXACT free guide from the Tally Insights
+  // knowledge hub instead of writing a long answer, when one matches their question.
+  const guideReply = guideSuggestionReply(userInput);
+  if (guideReply) return guideReply;
 
   const genericTeachingResponses = [
     "That is an interesting question! Let me help you understand this better in the context of TallyPrime. Could you tell me more about what you are trying to accomplish? For example, are you working with invoicing, inventory, or reports?",
