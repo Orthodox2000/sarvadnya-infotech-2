@@ -28,5 +28,5 @@
     <text x="30" y="255" font-size="18" fill="#334155" font-family="system-ui">Enhanced, flexible reports</text>
     <text x="30" y="295" font-size="18" fill="#334155" font-family="system-ui">Better multi-user experience</text>
   </g>
-  <text x="600" y="370" font-size="42" fill="#94a3b8" text-anchor="middle" font-weight="800" font-family="system-ui">VS</text>
+  <text x="600" y="378" font-size="32" fill="#94a3b8" text-anchor="middle" font-weight="800" font-family="system-ui">VS</text>
 </svg>

@@ -10,7 +10,7 @@
   <text x="60" y="95" font-size="48" fill="#fff" font-weight="800" font-family="system-ui">Latest Version of Tally Prime</text>
   <text x="60" y="135" font-size="20" fill="#ccfbf1" font-family="system-ui">Release-wise Updates, Compliance &amp; Compatibility</text>
   <g transform="translate(60,200)">
-    <rect width="1080" height="360" rx="16" fill="#fff" stroke="#e2e8f0"/>
+    <rect width="1080" height="390" rx="16" fill="#fff" stroke="#e2e8f0"/>
     <circle cx="80" cy="90" r="24" fill="#006569"/>
     <text x="80" y="98" font-size="20" fill="#fff" text-anchor="middle" font-weight="800">1</text>
     <text x="130" y="100" font-size="20" font-weight="700" fill="#0f172a">Stay Updated</text>
@@ -21,7 +21,7 @@
     <text x="130" y="220" font-size="16" fill="#334155">Validate custom TDL modules &amp; add-ons before upgrading</text>
     <circle cx="80" cy="270" r="24" fill="#14b8a6"/>
     <text x="80" y="278" font-size="20" fill="#fff" text-anchor="middle" font-weight="800">3</text>
-    <text x="130" y="280" font-size="20" font-weight="700" fill="#0f172a">Plan Safe Upgrade</text>
+    <text x="130" y="263" font-size="20" font-weight="700" fill="#0f172a">Plan Safe Upgrade</text>
     <text x="130" y="310" font-size="16" fill="#334155">Test on backup, verify statutory compliance, review TSS status</text>
   </g>
 </svg>

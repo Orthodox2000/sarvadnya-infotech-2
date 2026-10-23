@@ -4,14 +4,14 @@
   <rect width="1200" height="160" fill="url(#g9)"/>
   <text x="60" y="95" font-size="48" fill="#fff" font-weight="800" font-family="system-ui">Tally Prime Inventory</text>
   <text x="60" y="135" font-size="20" fill="#ccfbf1" font-family="system-ui">Stock Items, Godowns, BOM, Batches</text>
-  <g transform="translate(60,200)"><rect width="1080" height="360" rx="16" fill="#fff" stroke="#e2e8f0"/>
-    <circle cx="80" cy="80" r="24" fill="#006569"/><text x="80" y="88" font-size="20" fill="#fff" text-anchor="middle" font-weight="800">1</text>
-    <text x="130" y="90" font-size="20" font-weight="700" fill="#0f172a">Enable Inventory</text><text x="130" y="120" font-size="16" fill="#334155">F11 > Inventory > Maintain Yes</text>
-    <circle cx="80" cy="160" r="24" fill="#0f766e"/><text x="80" y="168" font-size="20" fill="#fff" text-anchor="middle" font-weight="800">2</text>
-    <text x="130" y="170" font-size="20" font-weight="700" fill="#0f172a">Units, Groups, Items</text><text x="130" y="200" font-size="16" fill="#334155">Create Stock Items with units/rates</text>
-    <circle cx="80" cy="240" r="24" fill="#14b8a6"/><text x="80" y="248" font-size="20" fill="#fff" text-anchor="middle" font-weight="800">3</text>
-    <text x="130" y="250" font-size="20" font-weight="700" fill="#0f172a">Godowns & Batches</text><text x="130" y="280" font-size="16" fill="#334155">Multi-location, batch tracking</text>
-    <circle cx="80" cy="320" r="24" fill="#0ea5a5"/><text x="80" y="328" font-size="20" fill="#fff" text-anchor="middle" font-weight="800">4</text>
-    <text x="130" y="330" font-size="20" font-weight="700" fill="#0f172a">BOM & Reports</text><text x="130" y="360" font-size="16" fill="#334155">Bill of Materials, Stock Reports</text>
+  <g transform="translate(60,200)"><rect width="1080" height="390" rx="16" fill="#fff" stroke="#e2e8f0"/>
+    <circle cx="80" cy="71" r="24" fill="#006569"/><text x="80" y="79" font-size="20" fill="#fff" text-anchor="middle" font-weight="800">1</text>
+    <text x="130" y="81" font-size="20" font-weight="700" fill="#0f172a">Enable Inventory</text><text x="130" y="111" font-size="16" fill="#334155">F11 > Inventory > Maintain Yes</text>
+    <circle cx="80" cy="147" r="24" fill="#0f766e"/><text x="80" y="155" font-size="20" fill="#fff" text-anchor="middle" font-weight="800">2</text>
+    <text x="130" y="157" font-size="20" font-weight="700" fill="#0f172a">Units, Groups, Items</text><text x="130" y="187" font-size="16" fill="#334155">Create Stock Items with units/rates</text>
+    <circle cx="80" cy="223" r="24" fill="#14b8a6"/><text x="80" y="231" font-size="20" fill="#fff" text-anchor="middle" font-weight="800">3</text>
+    <text x="130" y="233" font-size="20" font-weight="700" fill="#0f172a">Godowns &amp; Batches</text><text x="130" y="263" font-size="16" fill="#334155">Multi-location, batch tracking</text>
+    <circle cx="80" cy="299" r="24" fill="#0ea5a5"/><text x="80" y="307" font-size="20" fill="#fff" text-anchor="middle" font-weight="800">4</text>
+    <text x="130" y="309" font-size="20" font-weight="700" fill="#0f172a">BOM &amp; Reports</text><text x="130" y="339" font-size="16" fill="#334155">Bill of Materials, Stock Reports</text>
   </g>
 </svg>

@@ -4,13 +4,13 @@
   <rect width="1200" height="160" fill="url(#g15)"/>
   <text x="60" y="95" font-size="48" fill="#fff" font-weight="800" font-family="system-ui">Vouchers &amp; Contra in Tally Prime</text>
   <text x="60" y="135" font-size="20" fill="#ccfbf1" font-family="system-ui">Payment, Receipt, Contra, Sales, Purchase</text>
-  <g transform="translate(60,200)"><rect width="1080" height="360" rx="16" fill="#fff" stroke="#e2e8f0"/>
-    <circle cx="80" cy="80" r="24" fill="#006569"/><text x="80" y="88" font-size="20" fill="#fff" text-anchor="middle" font-weight="800">1</text>
-    <text x="130" y="90" font-size="20" font-weight="700" fill="#0f172a">Contra Entry</text><text x="130" y="120" font-size="16" fill="#334155">Cash-Bank transfers</text>
-    <circle cx="80" cy="160" r="24" fill="#0f766e"/><text x="80" y="168" font-size="20" fill="#fff" text-anchor="middle" font-weight="800">2</text>
-    <text x="130" y="170" font-size="20" font-weight="700" fill="#0f172a">Payment &amp; Receipt</text><text x="130" y="200" font-size="16" fill="#334155">Outflow/Inflows with ledgers</text>
-    <circle cx="80" cy="240" r="24" fill="#14b8a6"/><text x="80" y="248" font-size="20" fill="#fff" text-anchor="middle" font-weight="800">3</text>
-    <text x="130" y="250" font-size="20" font-weight="700" fill="#0f172a">Sales &amp; Purchase</text><text x="130" y="280" font-size="16" fill="#334155">GST enabled transactions</text>
-    <circle cx="80" cy="320" r="24" fill="#0ea5a5"/><text x="130" y="330" font-size="20" font-weight="700" fill="#0f172a">Journal &amp; Adjustments</text><text x="130" y="360" font-size="16" fill="#334155">Non-cash entries correctly classified</text>
+  <g transform="translate(60,200)"><rect width="1080" height="390" rx="16" fill="#fff" stroke="#e2e8f0"/>
+    <circle cx="80" cy="71" r="24" fill="#006569"/><text x="80" y="79" font-size="20" fill="#fff" text-anchor="middle" font-weight="800">1</text>
+    <text x="130" y="81" font-size="20" font-weight="700" fill="#0f172a">Contra Entry</text><text x="130" y="111" font-size="16" fill="#334155">Cash-Bank transfers</text>
+    <circle cx="80" cy="147" r="24" fill="#0f766e"/><text x="80" y="155" font-size="20" fill="#fff" text-anchor="middle" font-weight="800">2</text>
+    <text x="130" y="157" font-size="20" font-weight="700" fill="#0f172a">Payment &amp; Receipt</text><text x="130" y="187" font-size="16" fill="#334155">Outflow/Inflows with ledgers</text>
+    <circle cx="80" cy="223" r="24" fill="#14b8a6"/><text x="80" y="231" font-size="20" fill="#fff" text-anchor="middle" font-weight="800">3</text>
+    <text x="130" y="233" font-size="20" font-weight="700" fill="#0f172a">Sales &amp; Purchase</text><text x="130" y="263" font-size="16" fill="#334155">GST enabled transactions</text>
+    <circle cx="80" cy="299" r="24" fill="#0ea5a5"/><text x="130" y="309" font-size="20" font-weight="700" fill="#0f172a">Journal &amp; Adjustments</text><text x="130" y="339" font-size="16" fill="#334155">Non-cash entries correctly classified</text>
   </g>
 </svg>
