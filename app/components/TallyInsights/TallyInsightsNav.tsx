@@ -74,8 +74,8 @@ export default function TallyInsightsNav({
   const resultCount = query.trim() ? filtered.length : searchItems.length;
 
   return (
-    <div className="lg:sticky lg:top-20 border border-slate-200 rounded-lg overflow-hidden bg-white shadow-sm hover:shadow-md transition-shadow duration-300">
-      <div className="p-3 border-b border-slate-200 bg-gradient-to-r from-slate-50 to-[#F5F4ED]/30">
+    <div className="lg:sticky lg:top-20 lg:flex lg:flex-col lg:max-h-[calc(100vh-6rem)] border border-slate-200 rounded-lg overflow-hidden bg-white shadow-sm hover:shadow-md transition-shadow duration-300">
+      <div className="p-3 border-b border-slate-200 bg-gradient-to-r from-slate-50 to-[#F5F4ED]/30 lg:shrink-0">
         <div className="relative">
           <input
             value={query}
@@ -109,11 +109,16 @@ export default function TallyInsightsNav({
           </span>
         </button>
       </div>
-      <div className="hidden lg:flex px-3 py-2 border-b border-slate-100 bg-white items-center justify-between gap-2">
+      <div className="hidden lg:flex px-3 py-2 border-b border-slate-100 bg-white items-center justify-between gap-2 lg:shrink-0">
         <span className="text-[9px] font-black uppercase tracking-widest text-slate-400">{query.trim() ? "Search results" : "All sections"}</span>
         <span className="text-[9px] font-bold text-slate-400 tabular-nums">{resultCount} guide{resultCount === 1 ? "" : "s"}</span>
       </div>
-      <div id="tally-insights-sidebar-list" className={`insights-sidebar-panel ${sidebarOpen ? "is-open" : ""}`}>
+      {/* CHANGE: 2026-10-23 - on lg+ the list is its own scroll container, so it scrolls
+          under the wheel while the page stays put. WHY: previously the sidebar was only
+          `sticky`, so you had to scroll the whole article to its bottom before the sidebar
+          list could be read/scrolled. flex-auto (not flex-1) keeps the panel at its natural
+          height when the list is short — flex-basis:0 would collapse an auto-height column. */}
+      <div id="tally-insights-sidebar-list" className={`insights-sidebar-panel insights-sidebar-scroll ${sidebarOpen ? "is-open" : ""}`}>
         <div className="insights-sidebar-panel-inner">
           <div className="text-[11px] leading-tight insights-sidebar-panel-body" inert={sidebarHidden ? true : undefined}>
             {query.trim() ? (

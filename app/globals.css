@@ -794,6 +794,35 @@ main > div:first-of-type {
   }
 }
 
+/* CHANGE: 2026-10-23 — the Tally Insights sidebar scrolls on its own (desktop only).
+   WHY: the sidebar was only `sticky`, so a long guide list could not be scrolled until the
+   whole article had been scrolled to the bottom (owner: "sidebar scroll when hovered
+   irrespective of main page scroll size, currently i have to scroll to bottom of content
+   for sidebar scroll"). On lg+ the list is now its own scroll container inside a
+   viewport-capped card, so the wheel/trackpad scrolls the list under the cursor while the
+   page stays put. The scrollbar is hidden on purpose (owner: "i dont wall large scrollbar
+   on sidbar, make hidden") — the list still scrolls by wheel, trackpad, keyboard and touch,
+   and `overscroll-behavior: contain` stops the page from taking over at either end.
+   `flex: 1 1 auto` (NOT flex-1, which is flex-basis:0 and would collapse an auto-height
+   column) keeps the panel at its natural height while the list is short.
+   Mobile is deliberately untouched: below lg the panel is the collapsible
+   grid-template-rows accordion (see the block above), never a scroll box. */
+@media (min-width: 1024px) {
+  .insights-sidebar-scroll {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .insights-sidebar-scroll::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
+  }
+}
+
 /* Table -> cards below md */
 @media (max-width: 767px) {
   .insights-table thead {
