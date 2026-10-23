@@ -1,10 +1,19 @@
+// CHANGE: 2026-10-23 — `role` (e.g. "CA") and optional `rating` added for the curated
+// homepage review wall (owner: "mention if someone is a CA"). Imported Google reviews may not
+// carry a star count, so `rating` is optional and the UI renders stars only when present —
+// inventing a rating would be fake social proof. `source` records where a review came from so
+// an imported review can be labelled honestly in the admin panel.
 export type Review = {
     id?: string;
     _id?: string;
     name: string;
-    rating: number;
+    rating?: number;
+    /** Short credential/role shown as a pill next to the name, e.g. "CA". */
+    role?: string;
     text: string;
     date: string;
+    /** Provenance, e.g. "Google". Optional — pre-existing rows have none. */
+    source?: string;
 };
 
 export const staticReviews: Review[] = [

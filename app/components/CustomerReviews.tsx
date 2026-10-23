@@ -1,21 +1,38 @@
 'use client';
 
-import { useState, useEffect, useRef, memo } from 'react';
+import { useState, useEffect, useRef, memo, useMemo } from 'react';
 import Image from 'next/image';
 import type { Review } from '@/lib/reviews';
 
 // CHANGE: 2026-09-18 — Review type now imported from lib/reviews.ts (was a local
 // re-declaration that could drift; _id is optional there, so keys stay safe).
+//
+// CHANGE: 2026-10-23 — Owner: "sort best 10 and add them", "mention if someone is a CA",
+// "multi-direction carousel, smaller cards, all with different messages", "ensure proper fit
+// for all widths". The old design (one 320×272 marquee row on desktop + a single huge
+// feature card on phones) is replaced:
+//   • md+  = TWO compact rows scrolling in OPPOSITE directions (row 1 left, row 2 right).
+//   • <md  = a snap-swipe row of the SAME compact cards (264px) + teal pill dots + gentle
+//            autoplay that pauses on any interaction (the old one-card-per-viewport card was
+//            too large to read comfortably and forced a full-width scroll per review).
+//   • the card itself is now 280×200 (was 320×272) and renders a `role` pill (e.g. CA) and
+//     stars only when a rating was supplied — imported Google reviews may carry no star count,
+//     and inventing one would be fake social proof.
+// Cards have no fixed pixel width inside `ReviewCard`; the row wrappers own the width so the
+// mobile swipe row and the desktop marquee stay visually identical.
 
-function StarRating({ rating, size = "w-4 h-4" }: { rating: number, size?: string }) {
+const CARD_GAP = 20; // px — must match `gap-5` on every track/carousel below
+
+function StarRating({ rating, size = 'w-4 h-4' }: { rating: number; size?: string }) {
     return (
-        <div className="flex gap-0.5">
+        <div className="flex shrink-0 gap-0.5" aria-label={`${rating} out of 5 stars`}>
             {[...Array(5)].map((_, i) => (
                 <svg
                     key={i}
-                    className={`${size} ${i < rating ? 'text-yellow-400 fill-yellow-400' : 'text-slate-700 fill-slate-700'}`}
+                    className={`${size} ${i < rating ? 'text-yellow-400 fill-yellow-400' : 'text-slate-200 fill-slate-200'}`}
                     viewBox="0 0 20 20"
                     xmlns="http://www.w3.org/2000/svg"
+                    aria-hidden="true"
                 >
                     <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                 </svg>
@@ -24,67 +41,63 @@ function StarRating({ rating, size = "w-4 h-4" }: { rating: number, size?: strin
     );
 }
 
-// CHANGE: 2026-09-17 — variant-aware card. 'marquee' = fixed 320px compact card (desktop),
-// 'feature' = full-width large card (sm & below) with bigger type + serif quote + quote glyph.
-// CHANGE: 2026-09-17 (rev-4) — marquee cards get EXACTLY one height declaration (`h-68`,
-// 272px): the earlier `h-full` competed with `h-68` (both set `height`, cascade order unpredictable,
-// so smaller comments rendered at a different height than longer ones). Fixed height + `flex-1`
-// body + `justify-between` footer + `line-clamp-5` makes every desktop card identical 320×272px.
-const ReviewCard = memo(function ReviewCard({ review, variant = 'marquee' }: { review: Review; variant?: 'marquee' | 'feature' }) {
-    const feature = variant === 'feature';
+const ReviewCard = memo(function ReviewCard({ review }: { review: Review }) {
     return (
-        <div className={`shrink-0 bg-white rounded-2xl shadow-sm border border-slate-100 flex flex-col ${feature ? 'w-full h-full p-6 sm:p-8' : 'w-[320px] justify-between h-68 overflow-hidden p-5'}`}>
-            <div className={feature ? '' : 'flex-1'}>
-                <div className={`flex justify-between items-start ${feature ? 'mb-4 sm:mb-5' : 'mb-4'}`}>
-                    <div className="flex items-center gap-3">
-                        <div className={`rounded-full bg-slate-100 flex items-center justify-center text-slate-600 font-bold ${feature ? 'w-11 h-11 sm:w-12 sm:h-12 text-base sm:text-lg' : 'w-8 h-8 text-xs'}`}>
+        <article className="flex h-[200px] w-full flex-col justify-between overflow-hidden rounded-2xl border border-slate-100 bg-white p-4 shadow-sm">
+            <div>
+                <div className="mb-3 flex items-start justify-between gap-2">
+                    <div className="flex min-w-0 items-center gap-2.5">
+                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#E5F4F4] text-xs font-bold text-[#045A57]">
                             {review.name.charAt(0)}
                         </div>
-                        <div>
-                            <p className={`text-slate-900 font-bold leading-tight ${feature ? 'text-base sm:text-lg' : 'text-[0.8rem]'}`}>{review.name}</p>
-                            <p className={`text-slate-400 ${feature ? 'text-xs sm:text-sm' : 'text-[0.65rem]'}`}>{review.date}</p>
+                        <div className="min-w-0">
+                            <div className="flex items-center gap-1.5">
+                                <p className="truncate text-[0.8rem] font-bold leading-tight text-slate-900">{review.name}</p>
+                                {/* CHANGE: 2026-10-23 — role pill (owner: "mention if someone is a CA"). */}
+                                {review.role && (
+                                    <span className="shrink-0 rounded-full border border-teal-100 bg-teal-50 px-1.5 py-0.5 text-[0.55rem] font-black uppercase tracking-wider text-[#045A57]">
+                                        {review.role}
+                                    </span>
+                                )}
+                            </div>
+                            <p className="truncate text-[0.65rem] text-slate-400">{review.date}</p>
                         </div>
                     </div>
-                    <StarRating rating={review.rating} size={feature ? 'w-4 h-4 sm:w-5 sm:h-5' : 'w-3 h-3'} />
+                    {/* Stars only when a rating exists — never invent one for an imported review. */}
+                    {typeof review.rating === 'number' && <StarRating rating={review.rating} size="w-3 h-3" />}
                 </div>
-                {feature ? (
-                    <div className="relative mt-1">
-                        <span aria-hidden className="pointer-events-none select-none absolute -top-1 left-0 font-playfair text-[5rem] sm:text-[6rem] leading-none text-[#006569]/10">
-                            &ldquo;
-                        </span>
-                        <p className="relative font-playfair text-[1.05rem] sm:text-xl leading-relaxed text-slate-600 pt-9 sm:pt-10">
-                            {review.text}
-                        </p>
-                    </div>
-                ) : (
-                    <p className="text-slate-600 leading-relaxed text-sm italic line-clamp-5">
-                        &ldquo;{review.text}&rdquo;
-                    </p>
-                )}
+                <p className="line-clamp-4 text-[0.8rem] italic leading-relaxed text-slate-600">
+                    &ldquo;{review.text}&rdquo;
+                </p>
             </div>
-            <div className={`mt-6 pt-4 border-t border-slate-50 flex items-center gap-1.5 ${feature ? 'sm:mt-8' : ''}`}>
-                <svg className={`text-[#006569] ${feature ? 'w-4 h-4 sm:w-5 sm:h-5' : 'w-3.5 h-3.5'}`} fill="currentColor" viewBox="0 0 20 20">
+            <div className="mt-2 flex items-center gap-1.5 border-t border-slate-50 pt-2.5">
+                <svg className="h-3.5 w-3.5 text-[#006569]" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                     <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                 </svg>
-                <span className={`font-black text-slate-300 uppercase tracking-widest ${feature ? 'text-[0.7rem] sm:text-xs' : 'text-[0.6rem]'}`}>Verified Review</span>
+                <span className="text-[0.55rem] font-black uppercase tracking-widest text-slate-300">Verified Review</span>
             </div>
-        </div>
+        </article>
     );
 });
+
+const MASK = {
+    maskImage: 'linear-gradient(to right, transparent 0%, black 4%, black 96%, transparent 100%)',
+    WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 4%, black 96%, transparent 100%)',
+};
 
 const CustomerReviews = ({ initialData }: { initialData?: Review[] }) => {
     const [reviews, setReviews] = useState<Review[]>(initialData || []);
     const [loading, setLoading] = useState(!initialData);
     const [isVisible, setIsVisible] = useState(false);
+    const [reduceMotion, setReduceMotion] = useState(false);
     const [activeIdx, setActiveIdx] = useState(0);
     const sectionRef = useRef<HTMLElement>(null);
     const carouselRef = useRef<HTMLDivElement>(null);
-    // CHANGE: 2026-09-17 — sm-carousel autoplay: track scroll position, pause on user touch,
-    // resume after 6s, skip entirely when the visitor prefers reduced motion.
+    // Mobile swipe autoplay bookkeeping (same rules as before: pause on interaction, resume
+    // after 6s, disabled entirely for prefers-reduced-motion).
     const scrollIdx = useRef(0);
     const userPaused = useRef(false);
     const resumeTimer = useRef<number | null>(null);
-    const reducedMotion = useRef(false);
 
     useEffect(() => {
         if (initialData) return;
@@ -105,10 +118,11 @@ const CustomerReviews = ({ initialData }: { initialData?: Review[] }) => {
     }, [initialData]);
 
     useEffect(() => {
-        reducedMotion.current =
+        setReduceMotion(
             typeof window.matchMedia === 'function'
                 ? window.matchMedia('(prefers-reduced-motion: reduce)').matches
-                : false;
+                : false
+        );
     }, []);
 
     useEffect(() => {
@@ -126,39 +140,17 @@ const CustomerReviews = ({ initialData }: { initialData?: Review[] }) => {
         };
     }, [loading, reviews.length]);
 
-    // CHANGE: 2026-09-17 (rev-3) — glitch-free infinite mobile loop. Scrolling into the duplicated
-    // copy is DEBOUNCED: the reset fires only after momentum/smooth scroll settles (120ms of no
-    // scroll events), then the position swaps to the identical real card via `% reviews.length`
-    // modulo mapping. Wrap to the 1st therefore looks like the very next card — no rapid jump,
-    // and multi-card momentum swipes still land on the right real card.
-    const loopTimer = useRef<number | null>(null);
-    const loopReset = () => {
+    // Split the list into two balanced rows for the opposite-direction desktop marquee.
+    const rows = useMemo(() => {
+        if (reviews.length <= 2) return [reviews, [] as Review[]];
+        const half = Math.ceil(reviews.length / 2);
+        return [reviews.slice(0, half), reviews.slice(half)];
+    }, [reviews]);
+
+    const step = () => {
         const el = carouselRef.current;
-        if (!el || el.clientWidth === 0) return;
-        const raw = Math.round(el.scrollLeft / el.clientWidth);
-        if (raw < reviews.length) return;
-        const logical = raw % reviews.length;
-        el.scrollTo({ left: logical * el.clientWidth, behavior: 'auto' });
-        scrollIdx.current = logical;
-        setActiveIdx(logical);
-    };
-    const handleCarouselScroll = () => {
-        const el = carouselRef.current;
-        if (!el || el.clientWidth === 0) return;
-        const raw = Math.round(el.scrollLeft / el.clientWidth);
-        if (raw >= reviews.length) {
-            if (loopTimer.current) window.clearTimeout(loopTimer.current);
-            loopTimer.current = window.setTimeout(loopReset, 120);
-            return;
-        }
-        if (loopTimer.current) {
-            window.clearTimeout(loopTimer.current);
-            loopTimer.current = null;
-        }
-        if (raw !== scrollIdx.current) {
-            scrollIdx.current = raw;
-            setActiveIdx(raw);
-        }
+        const first = el?.firstElementChild as HTMLElement | null;
+        return (first?.clientWidth ?? 264) + CARD_GAP;
     };
 
     const pauseAutoplay = () => {
@@ -169,65 +161,86 @@ const CustomerReviews = ({ initialData }: { initialData?: Review[] }) => {
         }, 6000);
     };
 
-    // CHANGE: 2026-09-17 — autoplay only when the section is on-screen, on sm-only carousel.
-    // CHANGE: 2026-09-17 (rev-3) — advance FORWARD one card (0..reviews.length) so wrapping past
-    // the last review slides into the duplicated first card; the debounced handler then swaps it
-    // to the real first card, keeping the loop seamless (last → first reads as the very next).
-    useEffect(() => {
+    const handleCarouselScroll = () => {
         const el = carouselRef.current;
-        if (!el || !isVisible || reviews.length <= 1 || reducedMotion.current) return;
-        const run = () => {
-            if (userPaused.current) return;
-            const next = Math.min(scrollIdx.current + 1, reviews.length);
-            el.scrollTo({ left: next * el.clientWidth, behavior: 'smooth' });
-        };
-        const id = window.setInterval(run, 5000);
-        return () => window.clearInterval(id);
-    }, [isVisible, reviews.length]);
-
-    useEffect(() => {
-        return () => {
-            if (resumeTimer.current) window.clearTimeout(resumeTimer.current);
-            if (loopTimer.current) window.clearTimeout(loopTimer.current);
-        };
-    }, []);
-
-    if (loading || reviews.length === 0) return null;
-
-    const speed = Math.max(25, reviews.length * 6);
+        if (!el) return;
+        const idx = Math.round(el.scrollLeft / step());
+        if (idx !== scrollIdx.current && idx >= 0 && idx < reviews.length) {
+            scrollIdx.current = idx;
+            setActiveIdx(idx);
+        }
+    };
 
     const goTo = (i: number) => {
         const el = carouselRef.current;
         if (!el) return;
         scrollIdx.current = i;
-        el.scrollTo({ left: i * el.clientWidth, behavior: 'smooth' });
+        setActiveIdx(i);
+        el.scrollTo({ left: i * step(), behavior: reduceMotion ? 'auto' : 'smooth' });
     };
 
+    useEffect(() => {
+        const el = carouselRef.current;
+        if (!el || !isVisible || reviews.length <= 1 || reduceMotion) return;
+        const id = window.setInterval(() => {
+            if (userPaused.current) return;
+            goTo(scrollIdx.current + 1 >= reviews.length ? 0 : scrollIdx.current + 1);
+        }, 6000);
+        return () => window.clearInterval(id);
+    }, [isVisible, reviews.length, reduceMotion]);
+
+    useEffect(() => {
+        return () => {
+            if (resumeTimer.current) window.clearTimeout(resumeTimer.current);
+        };
+    }, []);
+
+    if (loading || reviews.length === 0) return null;
+
     return (
-        <section ref={sectionRef} className={`w-full py-16 md:py-20 px-6 overflow-hidden bg-[linear-gradient(90deg,_rgba(249,251,245,1)_0%,_rgba(244,242,234,1)_53%,_rgba(238,236,223,1)_100%)] transition-all duration-1000 ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
-            <div className="max-w-7xl mx-auto">
-                <div className={`flex flex-col items-start transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-                    <div className="relative w-64 h-16 opacity-80">
+        <section
+            ref={sectionRef}
+            className={`w-full overflow-hidden bg-[linear-gradient(90deg,_rgba(249,251,245,1)_0%,_rgba(244,242,234,1)_53%,_rgba(238,236,223,1)_100%)] px-6 py-16 transition-all duration-1000 md:py-20 ${isVisible ? 'opacity-100' : 'opacity-0'}`}
+        >
+            <div className="mx-auto max-w-7xl">
+                <div className={`flex flex-col items-start transition-all duration-1000 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}>
+                    <div className="relative h-16 w-64 opacity-80">
                         <Image src="/google-reviews.png" alt="Google Reviews" fill className="object-contain object-left" sizes="300px" />
                     </div>
                 </div>
 
-                {/* Desktop (md+): unchanged infinite marquee */}
-                <div className="mt-2 relative overflow-hidden hidden md:block" style={{ maskImage: 'linear-gradient(to right, transparent 0%, black 4%, black 96%, transparent 100%)', WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 4%, black 96%, transparent 100%)' }}>
-                    <div
-                        className="flex gap-6"
-                        style={{
-                            willChange: 'transform',
-                            animation: isVisible ? `marquee ${speed}s linear infinite` : 'none',
-                        }}
-                    >
-                        {[...reviews, ...reviews].map((review, i) => (
-                            <ReviewCard key={`${review._id}-${i}`} review={review} />
-                        ))}
-                    </div>
+                {/* md+ : two compact rows scrolling in opposite directions. A row only animates
+                    when it holds enough cards to overflow the viewport (otherwise it would jump). */}
+                <div className="hidden md:block">
+                    {rows.map((row, rowIdx) =>
+                        row.length === 0 ? null : (
+                            <div
+                                key={rowIdx}
+                                className={`relative overflow-hidden ${rowIdx === 0 ? 'mt-2' : 'mt-5'}`}
+                                style={MASK}
+                            >
+                                <div
+                                    className="review-track flex w-max gap-5"
+                                    style={{
+                                        willChange: 'transform',
+                                        animation:
+                                            isVisible && !reduceMotion && row.length >= 3
+                                                ? `marquee ${Math.max(26, row.length * 8)}s linear infinite${rowIdx === 1 ? ' reverse' : ''}`
+                                                : 'none',
+                                    }}
+                                >
+                                    {[...row, ...row].map((review, i) => (
+                                        <div key={`${review._id ?? review.name}-${i}`} className="w-[280px] shrink-0 xl:w-[300px]">
+                                            <ReviewCard review={review} />
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )
+                    )}
                 </div>
 
-                {/* Mobile (sm & below): one large card per viewport, swipe + dots */}
+                {/* sm & below: swipeable row of the same compact cards + dots */}
                 <div
                     ref={carouselRef}
                     onScroll={handleCarouselScroll}
@@ -238,19 +251,19 @@ const CustomerReviews = ({ initialData }: { initialData?: Review[] }) => {
                     role="region"
                     aria-label="Customer reviews, swipe to browse"
                     tabIndex={0}
-                    className="md:hidden mt-2 flex overflow-x-auto snap-x snap-mandatory no-scrollbar focus:outline-none focus:ring-2 focus:ring-[#006569]/40 focus:rounded-2xl"
+                    className="no-scrollbar mt-2 flex snap-x snap-mandatory gap-5 overflow-x-auto pb-1 focus:rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#006569]/40 md:hidden"
                 >
-                    {[...reviews, ...reviews].map((review, i) => (
-                        <div key={`${review._id}-${i}`} className="w-full shrink-0 snap-start">
-                            <ReviewCard review={review} variant="feature" />
+                    {reviews.map((review) => (
+                        <div key={review._id ?? review.name} className="w-[264px] shrink-0 snap-start">
+                            <ReviewCard review={review} />
                         </div>
                     ))}
                 </div>
 
-                <div className="md:hidden mt-6 flex items-center justify-center gap-2" role="group" aria-label="Review navigation">
+                <div className="mt-6 flex items-center justify-center gap-2 md:hidden" role="group" aria-label="Review navigation">
                     {reviews.map((review, i) => (
                         <button
-                            key={review._id}
+                            key={review._id ?? review.name}
                             type="button"
                             onClick={() => goTo(i)}
                             aria-label={`Go to review ${i + 1}`}
@@ -266,6 +279,8 @@ const CustomerReviews = ({ initialData }: { initialData?: Review[] }) => {
                     0% { transform: translateX(0); }
                     100% { transform: translateX(-50%); }
                 }
+                /* Inline animation shorthand wins over stylesheets, so pause needs !important. */
+                .review-track:hover { animation-play-state: paused !important; }
                 .no-scrollbar::-webkit-scrollbar { display: none; }
                 .no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
             `}</style>

@@ -199,9 +199,14 @@ export async function deleteTutorial(id: string) {
 }
 
 // Reviews helpers
+// CHANGE: 2026-10-23 — 4 → 12. The homepage wall now shows TEN curated reviews (owner:
+// "sort best 10 and add them"); at 4 the list was silently truncated no matter how many
+// reviews the collection held, and addReview() refused any 5th row.
+export const MAX_REVIEWS = 12;
+
 async function fetchReviews() {
   const col = await getCollection('reviews');
-  const data = await col.find({}).sort({ createdAt: -1 }).limit(4).toArray();
+  const data = await col.find({}).sort({ createdAt: -1 }).limit(MAX_REVIEWS).toArray();
   return serializeData(data);
 }
 
@@ -210,8 +215,8 @@ export const getReviews = async () => fetchReviews();
 export async function addReview(data: any) {
   const col = await getCollection('reviews');
   const count = await col.countDocuments();
-  if (count >= 4) {
-    throw new Error('Maximum of 4 reviews reached. Please remove one before adding a new one.');
+  if (count >= MAX_REVIEWS) {
+    throw new Error(`Maximum of ${MAX_REVIEWS} reviews reached. Please remove one before adding a new one.`);
   }
   const result = await col.insertOne({
     ...data,
