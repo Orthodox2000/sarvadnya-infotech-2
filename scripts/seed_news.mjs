@@ -84,27 +84,54 @@ The bigger win is custom TDL. Off-the-shelf add-ons cover common cases; your bus
 If your team is still fixing reports in Excel after Tally exports them, evaluate add-ons before adding headcount. Cutting ten minutes from a screen your team uses two hundred times a day is worth real money - Sarvadnya builds and supports Tally add-ons for businesses across Mumbai, Navi Mumbai and beyond.`,
   },
   {
+    // CHANGE: 2026-10-26 — this post was factually wrong in three places, so it is rewritten.
+    // (1) It said TSS "keeps Tally Prime and Tally ERP 9 current" and advised ERP 9 owners to
+    // "renew at the current rate or pay more later" - TSS renewal on Tally.ERP 9 was
+    // discontinued for all customers from 16 August 2026, so that choice no longer exists.
+    // (2) The title promised "Pricing Changes" and the body never delivered a single price.
+    // (3) The expiry-check step pointed at "the licence and about screen" without a path.
+    // Dates and the free-upgrade cutoff below are Tally's own published position.
     slug: 'tally-tss-renewal-2026',
-    title: 'Tally TSS Renewal 2026: Pricing Changes and How to Prepare',
+    title: 'Tally TSS Renewal 2026: ERP 9 Renewals Discontinued, What Now',
     date: 'August 28, 2026',
     category: 'TSS & Renewals',
-    description: 'Tally TSS renewal 2026 explained - what changes, how Tally ERP 9 renewal pricing works, and the checklist to renew before the price changes.',
-    tags: ['tally renewal', 'tally tss', 'tally prime renewal', 'tally tss renewal'],
+    description: 'TSS renewal on Tally.ERP 9 was discontinued from 16 August 2026. What that means for your licence, who qualifies for a free TallyPrime upgrade, and how to renew.',
+    tags: ['tally renewal', 'tally tss', 'tally prime renewal', 'tally tss renewal', 'tally erp 9 tss renewal', 'tally erp 9 upgrade to tallyprime'],
     link: '/services/tss',
     author: 'Sarvadnya Infotech LLP',
-    content: `Tally TSS (Tally Software Services) is the annual subscription that keeps Tally Prime and Tally ERP 9 current - updates, statutory compliance changes and support. When TSS lapses, you keep using the software but lose updates and the ability to stay compliant as rules change.
+    content: `Tally TSS (Tally Software Services) is the annual subscription behind a TallyPrime licence - it keeps the software current with statutory releases, provides the connected services a business actually uses every week, and keeps support available. When TSS lapses, you can still open your data and enter vouchers, but compliance updates and connected features stop.
 
-Renewal timing is the single biggest cost lever for most businesses. Tally changes its renewal pricing from time to time, and renewing just before a price change saves real money for companies that plan ahead.
+The 2026 change that matters most is not a price change. It is a closure.
 
-- Check your TSS expiry date in Tally - it is shown in the licence and about screen
-- Inventory which of your machines are covered so you renew exactly what you need
-- Look at Tally Prime vs ERP 9 first - Prime includes newer features bundled in the subscription
-- Renewal is per-licence; consolidating old licences before renewing often reduces total cost
-- Keep GSTIN and company details ready - renewal is processed against them
+From 16 August 2026, TSS renewal on Tally.ERP 9 has been discontinued for all customers. If you are still running Tally.ERP 9, there is no renewal left to buy - the decision in front of you is an upgrade to TallyPrime, not another year of ERP 9. That changes the arithmetic completely: a business that had budgeted for a renewal now has to budget for a licence, and the earlier that is planned, the less disruptive it is.
 
-If you are on Tally ERP 9, the renewal decision is straightforward: renew at the current rate or pay more later. The earlier you confirm, the more predictable your cost.
+Who upgrades free and who pays:
 
-Sarvadnya Infotech handles TSS renewals for businesses anywhere in India - metro, city or town. We check your licence, confirm the right plan and complete renewal for you - typically one short conversation. If your renewal date is within the next two months, get in touch so we can lock in your pricing and keep your compliance updates uninterrupted.`,
+- If your TSS was active on or after 9 November 2020, the upgrade to TallyPrime is free
+- If it was not, the upgrade is a paid one, and the amount depends on your edition and user count
+- Either way the data file is the same one - the migration is a conversion, not a re-entry, so vouchers and masters come across
+
+What TSS actually keeps running on TallyPrime:
+
+- Statutory releases, so GST, e-invoice and e-way bill changes keep working as the rules change
+- Connected services: e-invoicing, e-way bills, GST return filing and GSTR-2A/2B downloads, bank payments and auto bank reconciliation, and mobile or WhatsApp access to reports
+- Technical support against a valid serial number
+- TallyDrive cloud backup eligibility - the included cloud storage comes with an active subscription
+
+How to check where you stand:
+
+- In TallyPrime, open F1 (Help) > Settings > License > Manage License - the expiry date and the renewal option sit on that screen
+- An Alt+R (Manage TSS Renewal) shortcut appears on the Gateway of Tally once your renewal is due
+- If you run several machines or companies, list every serial number first so you renew exactly what you need and nothing you have retired
+
+A practical checklist before you renew:
+
+- Confirm the serial number and the edition (Silver single-user, Gold multi-user, Server) for each licence in use
+- Check the expiry date, and renew before it lapses - renewing in time avoids a renewal gap
+- Keep the GSTIN and billing details ready, because the renewal is raised against them
+- If you are on ERP 9, treat it as an upgrade decision and ask for the free-eligibility check before assuming a cost
+
+Sarvadnya Infotech handles TSS renewals and ERP 9 to TallyPrime upgrades for businesses anywhere in India - metro, city or town. We check your serial number, confirm whether the upgrade is free or paid, and handle the migration. If your renewal date is within the next two months, get in touch so nothing stops working while you decide.`,
   },
   {
     slug: 'tally-3-star-partner-mumbai',
@@ -206,27 +233,46 @@ If you are a fresher exploring software companies in Navi Mumbai:
 Sarvadnya Infotech sits at the intersection - a software company in Navi Mumbai that implements Tally, builds custom TDL modules and cloud setups, and runs a structured careers programme with Tally support, IT sales and development roles open. Whether you are hiring software or hiring people, we are part of the Navi Mumbai tech ecosystem you can start from.`,
   },
   {
+    // CHANGE: 2026-10-26 — facts corrected. The old body said TallyDrive "works alongside Tally
+    // Prime and ERP 9" (it requires TallyPrime 7.0 or later - ERP 9 is not supported) and
+    // described restore as "a point in time" without explaining the version retention. It also
+    // omitted the two facts a buyer needs most: TallyDrive requires an active TSS, and the
+    // cloud copy is retained for 90 days after TSS expires. All figures below are Tally's own.
     slug: 'tallydrive-cloud-backup',
     title: 'TallyDrive Cloud Backup: Why Every Mumbai and Navi Mumbai Business Needs It',
     date: 'August 24, 2026',
     category: 'Cloud Backup',
-    description: 'TallyDrive cloud backup explained - automated offsite Tally backup, how it protects against data loss, and why Mumbai and Navi Mumbai businesses need it.',
-    tags: ['tallydrive', 'tally cloud backup', 'tallydrive cloud backup', 'tally backup'],
+    description: 'TallyDrive cloud backup explained - automated offsite backup for TallyPrime 7.0 and later, how restores work, the free storage limits and why TSS status matters.',
+    tags: ['tallydrive', 'tally cloud backup', 'tallydrive cloud backup', 'tally backup', 'tallyprime cloud backup', 'automatic tally backup'],
     link: '/products/tallydrive',
     author: 'Sarvadnya Infotech LLP',
     content: `A business that loses its Tally data loses its financial memory. One failed hard drive, one ransomware click, one stolen laptop - and ledgers, invoices, balances and customer history are gone. TallyDrive cloud backup exists to make that failure survivable.
 
 What happens when backup is manual is predictable: it is done on Fridays, skipped on busy weeks, and the last good copy is older than anyone wants to admit. Automated cloud backup removes the human step entirely.
 
-- Backups run automatically at your chosen schedule, every working day - no one has to remember
-- Data is stored offsite, so a single-machine failure does not destroy your records
-- Restore is practical - you select a point in time and get your data back, not an out-of-context file
-- It works alongside Tally Prime and ERP 9 without slowing your day-to-day work
-- Older versions are retained, so a bad voucher or corruption is recoverable
+What TallyDrive actually is:
 
-For Mumbai and Navi Mumbai businesses, monsoon power cuts, office moves and laptop theft are all real events - each has ended someone's accounting data story. A business with automated backup only notices after restore completes successfully.
+- A cloud backup service built into TallyPrime 7.0 and later - it is not available for Tally.ERP 9
+- Available while your Tally Software Services (TSS) subscription is active
+- Incremental after the first upload: only new or changed data is sent, so daily backups stay quick
+- Scheduled by you, and the backup runs from TallyPrime itself
+- Stored offsite with a password you set, plus a recovery key to keep separately
 
-Sarvadnya Infotech provides TallyDrive - automated, cloud-hosted Tally backup with simple restore - for single-user firms through multi-branch companies. If your Tally data currently lives only on your server, set up backup before you need it, not after.`,
+What you get on restore:
+
+- A list of saved versions to restore from - TallyPrime keeps 7 versions by default, and that number is configurable between 1 and 366
+- A usable company, not a loose file to reassemble - so a bad voucher batch or a corrupted company can be rolled back and the work redone
+- Protection against the failures a local copy cannot survive: disk failure, theft, fire, ransomware encrypting the server
+
+Storage and what happens when TSS stops:
+
+- 1 GB of cloud storage is included with an active TSS on TallyPrime single-user, and 3 GB on multi-user
+- Extra storage is available as an annual add-on if your data outgrows the included space
+- If TSS expires, TallyDrive access stops, but the backups already in the cloud are retained for 90 days - renew inside that window and nothing is lost
+
+For Mumbai and Navi Mumbai businesses, monsoon power cuts, office moves and laptop theft are all real events - each has ended someone's accounting data story. A business with automated backup only notices after a restore completes successfully.
+
+Sarvadnya Infotech configures TallyDrive - automated, cloud-hosted TallyPrime backup with simple restore - for single-user firms through multi-branch companies. If your Tally data currently lives only on your server, set up backup before you need it, not after.`,
   },
   {
     slug: 'smbs-cbd-belapur-certified-tally-partner',
@@ -252,38 +298,49 @@ SMB owners in CBD Belapur especially value partners who understand their headcou
 Sarvadnya Infotech is a Tally certified partner based in Belapur, Navi Mumbai, serving businesses of this exact shape since 2008. If you are happy with your current software but not your current partner, we are ready to help you switch smoothly.`,
   },
   {
+    // CHANGE: 2026-10-26 — corrected against Tally's own partner page (tallysolutions.com/partners).
+    // The old body described 5 Star as "the highest official partner tier before enterprise
+    // levels" - there is no tier above 5 Star. Tally certifies partners at exactly two levels
+    // (3-Star and 5-Star), and GVLA is a SEPARATE partner category for government and very large
+    // accounts, not a rung above 5-Star. The tier definitions are now Tally's own wording, and
+    // verification points at Tally's Locate a Partner directory instead of "ask for the
+    // credential".
     slug: 'tally-5-star-partner-mumbai',
     title: 'Tally Partner Tiers in Mumbai: 3 Star vs 5 Star, What the Certification Means',
     date: 'September 6, 2026',
     category: 'Tally Partner',
-    description: 'Tally partner tiers explained - what 3 star and 5 star certification mean, how to verify a partner tier, and why an honest 3 star Tally partner in Mumbai can be the right fit.',
+    description: 'Tally partner tiers explained - what 3 star and 5 star certification actually mean, how to verify a partner tier, and why an honest 3 star Tally partner in Mumbai can be the right fit.',
     tags: ['tally 3 star partner in mumbai', 'tally 5 star partner in mumbai', 'tally partner tiers', 'tally partner mumbai'],
     link: '/services',
     author: 'Sarvadnya Infotech LLP',
-    content: `Tally runs a tiered partner ecosystem, and the star rating on a partner's certification is a useful starting signal for how deeply that firm engages with Tally. This post explains the tiers - especially the difference between a 3 star and a 5 star Tally partner - and where an honest 3 star partner fits.
+    content: `Tally runs a tiered partner ecosystem, and the star rating on a partner's certification is a useful starting signal for how that firm is equipped to help you. This post explains the tiers - especially the difference between a 3 star and a 5 star Tally partner - and where an honest 3 star partner fits.
 
-What the star tiers mean:
+There are exactly two Tally Certified Partner levels:
 
-- 3 star partner: a certified partner who completes Tally's partner training and certification, sells and supports Tally Prime and ERP 9, and handles implementation, AMC, TSS renewal and add-ons for a real customer base
-- 5 star partner: the highest official partner tier before enterprise levels - deeper Tally engagement, newer-release and cloud specialisation, and more direct access to Tally's own support channels
-- Tiers above 3 star reflect Tally's ongoing engagement and certification programme; they do not automatically mean better day-to-day support, pricing or reliability
+- 3 star partner: certified to address business automation needs arising from the basic activities in accounting, inventory, banking and compliance. Tally positions 3 star partners for small and medium sized businesses with simple operations and straightforward use cases.
+- 5 star partner: Tally describes 5 star partners as veterans in the Tally business, with deep experience and expertise across diverse business segments and scenarios and in implementing Tally products for them. They are positioned for mature businesses with advanced automation needs and complex business or technical requirements.
 
-When a higher tier matters, and when it does not:
+Two other partner categories exist, and neither is a level above 5 star:
 
-- A 5 star credential carries more weight for complex, multi-branch enterprise deployments and firms that want maximum direct escalation paths to Tally
-- For a typical small or mid-size business, a certified 3 star partner with a strong local track record covers the same work: licensing, setup, training, TSS renewal, cloud backup and custom TDL modules
-- Check the same things at any tier: an official credential, a support SLA in writing, references from businesses your size, and renewal reminders that actually happen
+- Associate partners: they make the product available - a new licence or a TSS renewal - but they do not implement, train or support.
+- GVLA partners: Government and Very Large Account entities, served by a specialised Tally team across business management, supply chain, compliance, financial and project management. This is a separate segment, not a rung that a normal business buys up to.
 
-How to verify the tier honestly claimed:
+So "3 star vs 5 star" is really a question about your operations, not about prestige:
 
-- Ask to see the official Tally partner credential - the tier is printed on it
-- Cross-check on Tally's partner directory instead of trusting a website badge
-- Ask which certified staff would handle your account, and how their renewal and support process runs
-- Take two references from businesses near you - same software, same firm size
+- If your operations are simple and your needs are the standard set - invoicing, GST, inventory, banking, payroll - a 3 star certified partner is exactly the level Tally designed for that work.
+- If you run multiple branches, mixed business models, heavy customisation or complex integrations, a 5 star partner's breadth across scenarios is worth having.
+- A higher tier does not by itself mean better day-to-day support, pricing or responsiveness. Those come from the firm, not the badge.
+
+How to verify a tier honestly claimed:
+
+- Search the firm on Tally's Locate a Partner directory at tallysolutions.com/partners, which lists partner type and, where available, reviews and years as a partner
+- Check that the certification is current rather than described in the past tense
+- Ask which certified staff would handle your account, and how their support and renewal reminders actually run
+- Take two references from businesses near you - same software, similar firm size
 
 For the 3 star angle specifically, see our separate guide on what to look for in a Tally 3 star partner in Mumbai.
 
-About Sarvadnya Infotech: we are a Tally certified 3 star partner - and we state it plainly rather than hinting at a higher tier. That 3 star certification, backed by 1,500+ customers in Mumbai and Navi Mumbai since 2008, covers the full partner job: Tally Prime and ERP 9, TSS renewal, AMC, Tally on Cloud, automated backup and custom TDL modules. Compare tiers with the criteria above, ask for our credential and references, and decide on the facts - that is how a partner should want to be judged.`,
+About Sarvadnya Infotech: we are a Tally certified 3 star partner - and we state it plainly rather than hinting at a higher tier. That 3 star certification, backed by 1,500+ customers in Mumbai and Navi Mumbai since 2008, covers the full partner job for the businesses we serve: TallyPrime licensing, TSS renewal, AMC, TallyPrime on Cloud Access, automated backup and custom TDL modules. If your requirements are genuinely complex, we will tell you that a 5 star partner is the better fit rather than pretend otherwise. Compare tiers with the criteria above, verify us on Tally's directory, and decide on the facts - that is how a partner should want to be judged.`,
   },
   {
     slug: 'tally-partner-near-me',
@@ -353,10 +410,18 @@ Sarvadnya Infotech offers an HRMS solution that covers payroll, attendance and e
     // passive phrasing. Description now states the answer up front ("TSS = Tally Software
     // Services..."). `faqs` added — rendered as the visible article FAQ block AND as
     // FAQPage JSON-LD (P1 §2E.2). ASCII-only per house rule.
+    // CHANGE: 2026-10-26 — factual fixes. The post said TSS "keeps Tally Prime and Tally ERP 9
+    // current", but TSS renewal for Tally.ERP 9 was discontinued for all customers from
+    // 16 August 2026, so an ERP 9 owner reading it would look for a renewal that no longer
+    // exists. It also stated flatly that "a Tally licence stays valid for life" - true only for
+    // a PERPETUAL licence; a TallyPrime rental subscription has its own end date at which the
+    // software stops working, which is the exact opposite of what the post promised. Both are
+    // now split out explicitly, and the vague "no support for non-urgent issues" and the
+    // speculative "before a price change" line are gone.
     title: 'TSS in Tally: What It Means, Why It Expires, and How to Renew',
     date: 'September 5, 2026',
     category: 'TSS & Renewals',
-    description: "TSS = Tally Software Services, the annual subscription that keeps Tally Prime current with updates, compliance changes and support. Here is what 'TSS has expired' means on your licence screen and how renewal restores coverage.",
+    description: "TSS = Tally Software Services, the annual subscription that keeps TallyPrime current with updates, compliance changes and support. What 'TSS has expired' means on your licence screen, and how renewal restores coverage.",
     // CHANGE: 2026-10-13 — tags extended with the Search Console question variants
     // ("what is tally tss", "what is tss in tally", "what does tss mean") that were
     // already being served by this post but not declared.
@@ -366,55 +431,80 @@ Sarvadnya Infotech offers an HRMS solution that covers payroll, attendance and e
     faqs: [
       {
         q: 'What is the full form of TSS in Tally?',
-        a: 'TSS stands for Tally Software Services. It is the annual subscription plan for Tally Prime and Tally ERP 9 that covers product updates, statutory compliance changes and technical support from Tally.',
+        a: 'TSS stands for Tally Software Services. It is the annual subscription that sits alongside a TallyPrime licence and covers product releases, statutory compliance updates, connected services and technical support from Tally. TSS renewal for Tally.ERP 9 was discontinued for all customers from 16 August 2026.',
       },
       {
         // CHANGE: 2026-10-13 — distinguishes the two things owners conflate, and quietly
         // bridges to the licence-expiry post. Target: "what is tally tss".
+        // CHANGE: 2026-10-26 — adds the rental case, which the old answer denied by saying
+        // a licence "stays valid for life" without qualification.
         q: 'Is TSS the same as a Tally licence?',
-        a: 'No. A Tally licence is the one-time purchase that lets you run TallyPrime, and it stays valid for life. TSS is the annual subscription attached to that licence that keeps the software updated, compliant and supported. That is why a licence can be perfectly valid while TSS has expired.',
+        a: 'No. A perpetual TallyPrime licence is a one-time purchase that lets you run the software for as long as you like - it never expires. TSS is the annual subscription attached to that licence that keeps the software updated, compliant and supported. A TallyPrime rental (monthly subscription) is different again: it carries its own end date and the software stops working when it lapses. That is why a perpetual licence can be perfectly valid while TSS has expired, and why holding a TSS does not extend a rental.',
       },
       {
         q: 'What does "TSS expired" mean in Tally?',
-        a: 'TSS expired means your Tally Software Services coverage has lapsed. Your software keeps working and your data stays safe, but you stop receiving product updates, compliance releases and technical support until you renew.',
+        a: 'TSS expired means your Tally Software Services coverage has lapsed. On a perpetual licence the software keeps working and your data stays safe, but you stop receiving new releases and statutory compliance updates, the connected services stop, and technical support is no longer covered until you renew.',
       },
       {
         q: 'What does TSS renewal mean?',
-        a: 'TSS renewal means paying for the next period of your Tally Software Services subscription so updates, statutory compliance changes and technical support stay active. Once renewed, your licence shows the new coverage end date and updates resume immediately.',
+        a: 'TSS renewal means paying for the next period of your Tally Software Services subscription so releases, statutory compliance changes, connected services and technical support stay active. Once renewed, your licence shows the new coverage end date and the connected services unlock again.',
       },
       {
         q: 'Will Tally stop working if TSS expires?',
-        a: 'No. Tally Prime and Tally ERP 9 keep working and your vouchers and data remain usable. What you lose after expiry is protection: no more updates, no statutory compliance changes, and no technical support until renewal.',
+        a: 'It depends on the licence type, not on TSS. A perpetual TallyPrime licence keeps working with your data intact after TSS lapses - you lose updates, compliance changes, connected services and support. A TallyPrime rental subscription does stop working when its own subscription period ends, and TSS renewal does not extend that. Tally.ERP 9 keeps working, but there is no longer a TSS renewal to buy for it.',
+      },
+      {
+        // CHANGE: 2026-10-26 — the closure is the single most consequential fact for anyone
+        // still on ERP 9, so it gets its own answer instead of being buried in prose.
+        q: 'Can I still renew TSS for Tally.ERP 9?',
+        a: 'No. Tally discontinued TSS renewal on Tally.ERP 9 for all customers from 16 August 2026, so there is no new renewal period to buy. The path forward is an upgrade to TallyPrime: the upgrade is free if your TSS was active on or after 9 November 2020, and paid otherwise. Your existing data file is converted, not re-entered.',
       },
     ],
-    content: `TSS expiry meaning in Tally, in plain terms: TSS (Tally Software Services) is the annual subscription that keeps Tally Prime and Tally ERP 9 current with updates, statutory compliance changes and technical support. When the licence screen shows "TSS has expired", it means that coverage has lapsed.
+    content: `TSS expiry meaning in Tally, in plain terms: TSS (Tally Software Services) is the annual subscription that keeps a TallyPrime licence current - new releases, statutory compliance updates, the connected services and technical support. When the licence screen shows "TSS has expired", it means that coverage has lapsed.
 
-What happens when TSS is expired:
+First, separate the two things that both have an "expiry date":
 
-- The software keeps working - your data and vouchers are safe and usable
-- You stop receiving product updates and statutory compliance releases
-- Technical support from Tally is no longer covered for non-urgent issues
-- Tax and GST rule changes are not applied, which can leave your reports out of date
+- The licence. A perpetual TallyPrime licence never expires - you bought it, you own it, and it keeps running. A TallyPrime rental (monthly subscription) is different: it has its own end date, and when it lapses the software stops working.
+- TSS. Always annual, always dated. Its expiry does not switch the software off on a perpetual licence - it switches off the updates, the connected services and the support.
 
-So "TSS expired" does not mean Tally stops. It means your licence is no longer current, and the sooner you renew, the sooner updates and support resume. Most of the risk of an expired TSS is quiet: it does not stop you today, it surprises you at a compliance deadline.
+So "TSS expired" does not mean Tally stops. It means your licence is no longer current, and the sooner you renew, the sooner updates and support resume. Most of the risk is quiet: it does not stop you today, it surprises you at a compliance deadline.
+
+What actually stops when TSS lapses:
+
+- New releases and statutory updates, so a GST, e-invoice or e-way bill rule change is not applied
+- Connected services: e-invoicing, e-way bill generation, GST return filing and GSTR-2A/2B downloads, bank payments and auto bank reconciliation, and mobile or WhatsApp access to reports
+- Technical support against the serial number
+- TallyDrive eligibility - access stops, though backups already in the cloud are retained for 90 days
+
+What does not stop: your data. Vouchers, masters and reports stay readable on a perpetual licence, and nothing is deleted.
 
 How to check your status:
 
-- Open Tally and go to the licence or about screen - the TSS expiry date is shown there
-- Note which version you run, since renewal terms differ between Tally Prime and Tally ERP 9
-- If the renewal window is close, consolidate licences and confirm your GSTIN before renewing
+- In TallyPrime, open F1 (Help) > Settings > License > Manage License - the expiry date and the renewal option sit on that screen
+- An Alt+R (Manage TSS Renewal) shortcut appears on the Gateway of Tally once your renewal is due
+- If you run several machines or companies, list every serial number first so you renew exactly what you use and nothing you have retired
 
-Renewal itself is quick with a verified partner. Sarvadnya Infotech handles Tally TSS renewal for businesses anywhere in India - we check your licence, confirm the right plan and complete the renewal in one short conversation, fully remotely. If TSS expired on your setup, get in touch before a price change or a busy closing week.`,
+One important change in 2026: TSS renewal on Tally.ERP 9 was discontinued for all customers from 16 August 2026. If you are still on ERP 9, there is no renewal left to buy - the decision in front of you is an upgrade to TallyPrime, not another year of ERP 9. The upgrade is free if your TSS was active on or after 9 November 2020, and paid otherwise, and your data file is converted rather than re-entered.
+
+Renewal itself is quick with a verified partner. Sarvadnya Infotech handles Tally TSS renewal for businesses anywhere in India - we check your serial number, confirm the right plan and complete the renewal in one short conversation, fully remotely. If TSS has expired on your setup, get in touch before a busy closing week rather than after it.`,
   },
   {
     // CHANGE: 2026-10-07 — P1 companion post (plan §2B action 2). Exact-match target for
     // "how to check tss expiry date in tally prime" (15 impr, pos 8.2 -> page-1 goal).
     // ASCII-only per house rule. Its `faqs` feed the article FAQ block + FAQPage JSON-LD.
+    // CHANGE: 2026-10-26 — three corrections. (1) The old body said "go to the Help menu or
+    // the About screen" and pointed at "the licence and about screen" - the actual TallyPrime
+    // path is F1 (Help) > Settings > License > Manage License, so both the FAQ and the steps
+    // now name it. (2) The line "the renewal service period starts from the renewal date, so
+    // renewing late does not extend the old gap" asserted a start-date rule we cannot verify
+    // for every renewal type; it now tells readers to confirm the period at renewal time
+    // instead of promising a rule. (3) It offered renewal for "TallyPrime or Tally ERP 9" -
+    // TSS renewal on ERP 9 was discontinued from 16 August 2026.
     slug: 'how-to-check-tss-expiry-date-tallyprime',
     title: 'How to Check the TSS Expiry Date in TallyPrime',
     date: 'October 7, 2026',
     category: 'TSS & Renewals',
-    description: 'Step by step: how to check the TSS expiry date in TallyPrime on the licence screen, what the coverage end date means, and how to renew before it lapses.',
+    description: 'Step by step: how to check the TSS expiry date in TallyPrime from F1 (Help) > Settings > License > Manage License, what the coverage end date means, and how to renew before it lapses.',
     // CHANGE: 2026-10-13 — tags extended for the Search Console variants
     // ("how to check tally expiry date", "how to check tally prime license expiry date").
     tags: ['how to check tss expiry date in tally prime', 'tss expiry date', 'tss expired in tally means', 'tally tss renewal', 'how to check tally expiry date', 'how to check tally prime license expiry date', 'tally license expiry date'],
@@ -423,21 +513,24 @@ Renewal itself is quick with a verified partner. Sarvadnya Infotech handles Tall
     faqs: [
       {
         q: 'Where does TallyPrime show the TSS expiry date?',
-        a: 'TallyPrime shows your TSS coverage and expiry date on the licence screen, opened from the Help or About option. The same screen flags "TSS has expired" once the coverage end date passes.',
+        a: 'Press F1 (Help) > Settings > License > Manage License. That screen shows the licence details and the TSS coverage end date, and it is where the "TSS has expired" notice appears once the date passes.',
       },
       {
         q: 'What does the TSS expiry date on my licence mean?',
-        a: 'It is the last day your Tally Software Services subscription covers updates, statutory compliance changes and technical support. After that date, Tally keeps working but you stop receiving updates until you renew.',
+        a: 'It is the last day your Tally Software Services subscription covers releases, statutory compliance updates, the connected services and technical support. After that date the software keeps running on a perpetual licence, but updates and connected services stop until you renew.',
       },
       {
         q: 'Can I renew TSS after the expiry date has passed?',
-        a: 'Yes. Renewal is processed from your licence details even after expiry. Contact a Tally certified partner with your serial number and unlock code, and coverage resumes as soon as the renewal is applied.',
+        a: 'Yes. A lapsed TSS can still be renewed from your licence details. Share the serial number shown on the Manage License screen with a Tally certified partner and the renewal is applied to that serial number. Confirm the coverage start and end dates when you renew, because the period you get depends on your current licence status.',
       },
       {
         // CHANGE: 2026-10-13 — covers the "how to check tally expiry date" variant (owners
         // searching for the licence date, not the TSS date) and bridges to the licence post.
+        // CHANGE: 2026-10-26 — the rental sentence was misleading: a rental subscription
+        // covers the software and the services together for its term, so it is the rental
+        // period that is being renewed, not a separate TSS sitting on top of it.
         q: 'Does this show the Tally licence expiry date as well?',
-        a: 'The licence screen shows both: your licence details (serial number, edition, and whether it is a perpetual or rental licence) and the TSS coverage end date. A perpetual licence does not expire - only TSS does. A rental licence, however, does have an end date of its own, and TSS is renewed along with the rental period.',
+        a: 'The Manage License screen shows both. It carries your licence details - serial number, edition, and whether the licence is perpetual or a rental - and the TSS coverage end date. A perpetual licence does not expire, so only TSS has an end date. A TallyPrime rental subscription is different: it has its own end date, it covers the software and the services together for its term, and renewing the rental extends both.',
       },
     ],
     content: `Checking the TSS expiry date in TallyPrime takes under a minute, and knowing it early protects your business from a quietly lapsed subscription at a compliance deadline. Here is how to find it.
@@ -445,21 +538,23 @@ Renewal itself is quick with a verified partner. Sarvadnya Infotech handles Tall
 Where the TSS expiry date appears:
 
 - Open TallyPrime on the workstation where the licence is activated
-- Go to the Help menu or the About screen to open the licence window
-- Look for the TSS section - it shows the coverage end date for your licence
-- If the date has already passed, the same screen shows the "TSS has expired" notice
+- Press F1 (Help) > Settings > License > Manage License
+- The screen shows your licence details together with the TSS coverage end date
+- If the date has already passed, the same screen shows the "TSS has expired" notice and offers the renewal path
+- An Alt+R (Manage TSS Renewal) shortcut also appears on the Gateway of Tally once your renewal is due, which is the reminder most people notice first
 
 What the date means:
 
-- Before the expiry date: updates, compliance releases and support are covered
-- After the expiry date: Tally keeps working and your data stays safe, but updates stop until you renew
-- The renewal service period starts from the renewal date, so renewing late does not extend the old gap
+- Before the expiry date: releases, statutory compliance updates, the connected services and support are covered
+- After the expiry date: on a perpetual licence the software keeps working and your data stays safe, but updates and connected services stop until you renew
+- A TallyPrime rental subscription is the exception - it has its own end date and the software stops working when that period ends
 
 A quick habit that prevents surprises:
 
-- Check the licence screen once a month, or every time a GST or statutory change lands
-- Keep your serial number and unlock code handy - renewal needs both
-- Renew through a Tally certified partner so coverage is applied correctly against the right licence type (TallyPrime or Tally ERP 9)
+- Check the Manage License screen once a month, or every time a GST or statutory change lands
+- Keep the serial number shown on that screen handy - renewal is processed against it
+- Confirm the coverage start and end dates when you renew, rather than assuming the new period begins on a particular date
+- If you are on Tally.ERP 9, note that TSS renewal for it was discontinued for all customers from 16 August 2026, so the path there is an upgrade to TallyPrime rather than a renewal
 
 Sarvadnya Infotech renews TSS for businesses anywhere in India. Share your licence details and we check the expiry date, confirm the right plan and complete the renewal remotely in one short conversation.`,
   },
@@ -555,38 +650,50 @@ Licensing rules vary by country and depend on your current license and TSS statu
 See the TallyPrime license options on our products page, or contact Sarvadnya Infotech for a licensing check before you move.`,
   },
   {
+    // CHANGE: 2026-10-26 — corrected against TallyHelp while auditing TSS claims. The serial
+    // number and validity were both sourced from "F1 > About", which is the product-info
+    // screen; in TallyPrime they live on F1 (Help) > Settings > License > Manage License. The
+    // line "renew before expiry to get extra validity benefits wherever applicable" implied a
+    // bonus period Tally does not publish, so it is gone. Also added the 16 August 2026 ERP 9
+    // closure (that licence can no longer be renewed at all) and the licence-update step that
+    // has to happen before the new date shows. Description switched to ASCII (it carried a
+    // curly apostrophe, which the seed file's ASCII-only rule forbids).
     slug: 'how-to-renew-tally-tss-offline',
     title: 'How to Renew Tally TSS Offline: Steps, Requirements & When to Contact Us',
     date: 'October 22, 2026',
     category: 'Tally Prime',
-    description: 'Guide to renewing Tally Software Services (TSS) offline when online renewal isn’t possible. Learn the process, serial number requirement, and how Sarvadnya Infotech can help.',
+    description: 'Guide to renewing Tally Software Services (TSS) offline when online renewal is not possible - the process, the serial number you need, and how a Tally partner can help.',
     tags: ['tss renewal', 'tss offline renewal', 'renew tally tss', 'tally prime tss renewal', 'tally software services'],
     link: '/services/tss',
     author: 'Sarvadnya Infotech LLP',
-    content: `Tally Software Services (TSS) keeps your TallyPrime updated with the latest statutory changes like GST, e-Invoice, e-Way Bill and other compliance updates. In some cases, the online renewal option may not work due to network issues, license conditions or when the renewal prompt is missing.
+    content: `Tally Software Services (TSS) keeps your TallyPrime updated with the latest statutory changes like GST, e-Invoice, e-Way Bill and other compliance updates. In some cases the online renewal option may not work - because of network issues, licence conditions, or because the renewal prompt does not appear.
 
 When do you need offline TSS renewal?
-- Alt+R (Manage TSS Renewal) or F1 > Settings > License > Manage License > F9 (Renew TSS) is missing
-- Online payment/portal doesn't load
-- TSS expired and online renewal is not triggering
-- Working on a system with restricted internet access
+- Alt+R (Manage TSS Renewal) or F1 (Help) > Settings > License > Manage License > F9 (Renew TSS) is missing or does not open
+- The online payment page or the Tally Solutions portal does not load
+- TSS has expired and the online renewal is not triggering
+- The machine runs on restricted internet access, or has none
 
 What you need before starting:
-- TallyPrime Serial Number (Gateway of Tally > F1 (Help) > About)
-- Company details
-- Valid contact details (email/phone)
+- TallyPrime serial number - F1 (Help) > Settings > License > Manage License
+- Company name and the licence type (Silver, Gold or Server)
+- The registered mobile number and email on the licence
+- Your existing TSS coverage end date, so the right renewal period is chosen
 
 Steps to renew TSS offline:
-1. Get your serial number from TallyPrime (Gateway of Tally > F1 (Help) > About).
-2. Share your serial number and company details with your Tally Certified Partner - Sarvadnya Infotech LLP.
-3. We will check your license status and share the renewal details/invoice.
-4. After confirmation, we process the offline renewal and guide you on applying it to your TallyPrime license.
-5. Once updated, your TSS validity will reflect in TallyPrime (Help > About).
+1. Open F1 (Help) > Settings > License > Manage License and note the serial number and the current TSS coverage end date.
+2. Share the serial number and company details with your Tally Certified Partner - Sarvadnya Infotech LLP.
+3. We verify the licence and TSS status against the serial number, and confirm the renewal period and the amount.
+4. You receive the renewal details and the invoice against your company details.
+5. We process the offline renewal for that serial number.
+6. Update the licence from the Manage License screen and confirm the new coverage end date on the same screen.
 
 Important notes:
-- TSS works on all TallyPrime licenses (Silver, Gold and Server). It is not limited to Gold.
-- Renew before expiry to get extra validity benefits wherever applicable.
-- If TSS is expired, some features like e-Invoice/e-Way Bill generation, GSTR-2A/2B download, direct GST filing and certain banking utilities may be restricted.
+- TSS works on all TallyPrime licences (Silver, Gold and Server). It is not limited to Gold.
+- The Alt+R (Manage TSS Renewal) option only appears on the Gateway of Tally when your renewal is due - its absence does not mean TSS is missing.
+- Confirm the coverage start and end dates with your partner when you renew; the period you get depends on your current licence status.
+- If TSS is expired, features like e-Invoice and e-Way Bill generation, GSTR-2A/2B download, direct GST filing and certain banking utilities are restricted. Core accounting, inventory and reports keep working.
+- TSS renewal for Tally.ERP 9 was discontinued for all customers from 16 August 2026, so an ERP 9 licence cannot be renewed - the path there is an upgrade to TallyPrime.
 
 Need help with TSS renewal? Contact Sarvadnya Infotech LLP at https://sarvadnyainfotech.com/contact or visit https://sarvadnyainfotech.com/services/tss for assistance.`,
   },
@@ -596,89 +703,114 @@ Need help with TSS renewal? Contact Sarvadnya Infotech LLP at https://sarvadnyai
   // "document management software companies". Facts grounded on TallyHelp / tallysolutions.com
   // and the owner's DMS feature list; ASCII-only (hyphens, never em-dashes, no rupee glyph).
   {
+    // CHANGE: 2026-10-26 — full factual rewrite of this post against TallyHelp. Seven errors
+    // were corrected: the old "Create / Alter" screen label and the missing F12 reveal for
+    // "Use User Access Control"; the ERP 9 era "Types of Security" and "Users for Company"
+    // menu wording; the cut-off date being described outside the security level where it
+    // actually lives; the password policy being bundled into the same area as the cut-off
+    // date (it is its own Alt+K menu); the edit log having no enablement path at all; and a
+    // recovery paragraph that understated how much is unrecoverable.
     slug: 'how-to-lock-data-in-tallyprime',
     title: 'How to Lock Data in TallyPrime (Company, Users and Back-Dated Entries)',
     date: 'October 13, 2026',
     category: 'Tally Prime',
-    description: 'How to lock data in TallyPrime: enable Security Control and the administrator password, create user roles, and stop back-dated entries with a cut-off date.',
-    tags: ['how to lock data in tally prime', 'how to lock tally prime', 'security control in tally prime', 'user roles in tally prime', 'lock back dated vouchers tally', 'tallyvault'],
+    description: 'How to lock data in TallyPrime: enable user access control and the administrator password, create user roles, and stop back-dated entries with a cut-off date.',
+    tags: ['how to lock data in tally prime', 'how to lock tally prime', 'user access control in tally prime', 'user roles in tally prime', 'lock back dated vouchers tally', 'tallyvault', 'edit log in tally prime'],
     link: '/services/amc',
     author: 'Sarvadnya Infotech LLP',
     faqs: [
       {
         q: 'How do I lock my company data in TallyPrime?',
-        a: 'Open Alt+K (Company) - Create / Alter, set "Control User Access to Company Data" to Yes, and enter an administrator username and password. From then on TallyPrime asks for those credentials before the company opens. Press Ctrl+A to save.',
+        a: 'Press Alt+K (Company) > Alter, select the company, and set Control User Access to Company Data to Yes. If the option is not visible, press F12 (Configure) on that screen and set Use User Access Control to Yes. Enter the administrator username and password, then accept with Ctrl+A. From then on TallyPrime asks for those credentials every time the company is opened.',
       },
       {
         q: 'How do I stop users from entering or changing old vouchers?',
-        a: 'Use the cut-off date for back-dated vouchers along with "Days allowed for back dated vouchers". TallyPrime then refuses to record or alter a transaction before the date you set, which is what most businesses want after an audit or a filed GST return.',
+        a: 'Open Alt+K (Company) > User Roles, select the security level, and set Days Allowed for Back Dated Vouchers and the Cut-off Date for Back Dated Vouchers. Days allowed counts backwards from the date of the last entry; the cut-off date is a fixed date TallyPrime will not go before. If both are set, TallyPrime applies whichever is more restrictive.',
       },
       {
         q: 'I forgot the Security Control administrator password. What now?',
-        a: 'If both the administrator and user level passwords are lost, the documented way back is to restore a backup taken before the password was set. This is why you take a backup first and store the administrator password safely.',
+        a: 'TallyPrime has no self-service recovery for the company security password. Take a backup before you enable security and record the administrator password separately. If you are already locked out, restore a backup taken before the password was set, or contact Tally support with your licence and serial number - do not edit the data files directly.',
       },
       {
         q: 'Does locking data stop my accountant from working?',
-        a: 'No. Security levels are per user, so you can give your accountant full access while a data entry operator can only record vouchers. Nothing is lost - access is granted by role instead of by shared logins.',
+        a: 'No. Rights are per user role. TallyPrime ships with Owner and Data Entry Operator levels, and you can create more. Your accountant can keep full access while a data entry operator is limited to recording vouchers, so nobody has to share a single login.',
+      },
+      {
+        q: 'What is the difference between TallyVault and Security Control?',
+        a: 'Security Control asks for a username and password before a company opens and controls what each user can do inside it. TallyVault encrypts the company data itself, so even the company name does not appear in the company list without the vault password. They are separate options and can be used together, and the TallyVault password cannot be retrieved if it is lost.',
       },
     ],
-    content: `Locking data in TallyPrime is really three separate locks, and businesses usually need all three: a lock on opening the company, a lock on who can do what inside it, and a lock on how far back anyone can post. Here is how each one is set.
+    content: `Locking data in TallyPrime is really three separate locks, and most businesses need all three: a lock on opening the company, a lock on who can do what inside it, and a lock on how far back anyone can post. Here is how each one is set.
 
 Lock 1 - restrict access to the company:
 
-- Go to Alt+K (Company) and open Create / Alter
-- Set the option "Control User Access to Company Data" to Yes
-- Enter the administrator username and password - this user is the owner level account
-- Press Ctrl+A to save
+- Press Alt+K (Company) > Alter and select the company
+- If you do not see a Security section, press F12 (Configure) on that screen and set Use User Access Control to Yes
+- Set Control User Access to Company Data to Yes
+- Enter the Username (Administrator) and Password - this is the owner-level account
+- Accept with Ctrl+A
 
-From that point TallyPrime asks for credentials before the company opens, which is the single most effective step if the machine sits in a shared office. Keep the administrator password somewhere safe: if both the administrator and user level passwords are lost, the documented recovery path is restoring a backup that was taken before the password was set.
+From that point TallyPrime asks for credentials before the company opens, which is the single most effective step if the machine sits in a shared office. Two habits make it work: take a backup before you enable it, and record the administrator password somewhere safe. TallyPrime has no self-service recovery for this password.
 
 Lock 2 - restrict what each person can do:
 
-- Go to Alt+K (Company) - Users and Passwords - Types of Security
-- Create a security level and base it on a default such as Data Entry
-- Set the rights for that level: which voucher types can be created, altered or viewed, which reports and masters are reachable, and whether company administration, backup, restore or security settings are allowed
-- Then use Alt+K (Company) - Users and Passwords - Users for Company to create users and assign each one a security level
+- Press Alt+K (Company) > Users and Passwords and create one user per person: choose the user role, then enter a username and password
+- Press Alt+K (Company) > User Roles to open the Security Levels screen and define what that level may do: which voucher types can be created, altered or viewed, which reports and masters are reachable, and whether company administration, backup, restore or security settings are allowed
+- TallyPrime already ships with two levels, Owner and Data Entry Operator, and you can rename them or add more
 
-Two habits matter more than the settings. Give every person their own username instead of a shared login, and keep data entry, approval and reporting in different hands. TallyPrime's edit log records who changed a transaction and when, and that traceability is only useful if the name in the log belongs to one individual.
+Give every person their own username instead of a shared login, and keep data entry, approval and reporting in different hands. Row-level attribution is worthless if the name in the record is shared by four people.
 
 Lock 3 - restrict how far back entries can go:
 
-- Set the cut-off date for back-dated vouchers to the date you want protected
-- Set "Days allowed for back dated vouchers" to the window you actually want to permit
-- TallyPrime then refuses to record or alter a transaction before that date - useful once an audit or a GST return is closed
+- The two back-dated controls sit inside the security level, so open Alt+K (Company) > User Roles and select the level
+- Days Allowed for Back Dated Vouchers counts backwards from the date of the last entry, so the window moves as work is posted
+- Cut-off Date for Back Dated Vouchers is a fixed date, and TallyPrime refuses to record or alter anything before it - the right choice once an audit or a GST return is closed
+- If both are set, TallyPrime applies whichever is more restrictive
 
-The same area carries the password policy (strength, expiry, history, forced change on first login), and TallyVault, which encrypts the company data so that the company name and financial year are not even visible on the Select Company screen until the vault password is entered. If your business falls under the audit trail requirement of the Companies (Accounts) Rules, 2014, confirm with your chartered accountant what your configuration has to demonstrate.
+Two more settings worth knowing, because they are separate from the three locks above:
 
-Before you lock anything down, take a backup, write the administrator password down in a safe place, and test the setup with a data entry user - not with your own owner login. Then review it when staff change.
+Password Policy. Press Alt+K (Company) > Password Policy for the company-wide rules: minimum length, advanced strength, expiry, password history, change on first login and whether users may change their own password. You can exempt a specific user from the policy with F12 on the Users for Company screen.
 
-Sarvadnya Infotech is a Tally certified partner based in CBD Belapur, Navi Mumbai. We configure Security Control, user roles, cut-off dates and the edit log for businesses in Mumbai, Navi Mumbai and across India, and we keep the administrator credentials documented so a staff change never locks you out of your own books.`,
+Edit Log. From TallyPrime 2.1 onwards, press F12 (Configure) on the company alteration screen and set Set Edit Log Applicability to Yes, then enable Edit Log for the company. The Edit Log report then shows what changed in masters and transactions, and records company-level events such as enabling the log, data migration and data split. This is the setting that answers "who changed this voucher", and it is separate from user access control.
+
+TallyVault is the fourth lock, and it is a different kind of protection. Press Alt+K (Company) > TallyVault to set a vault password, or enter one while creating the company. The company data is encrypted, so the company name and financial year do not even appear in the company list until the vault password is entered. If your business falls under the audit trail requirement of the Companies (Accounts) Rules, 2014, confirm with your chartered accountant what your configuration has to demonstrate rather than assuming a checkbox is enough.
+
+Before you lock anything down: take a backup, store the administrator and vault passwords where two people can find them, and test the setup with a data entry user rather than your own owner login. Then review the roles whenever staff change.
+
+Sarvadnya Infotech is a Tally certified partner based in CBD Belapur, Navi Mumbai. We configure user access control, user roles, back-dated voucher limits and the edit log for businesses in Mumbai, Navi Mumbai and across India, and we document the administrator credentials so a staff change never locks you out of your own books.`,
   },
   {
+    // CHANGE: 2026-10-26 — rewritten against Tally Solutions' own ERP 9 GST guide. The old
+    // version sent readers to F3: Cmp Info as the primary path and listed "Unregistered or
+    // Consumer" as valid company registration types. In Tally.ERP 9 the GSTIN is entered on a
+    // dedicated GST Details screen opened from F11: Features > F3: Statutory & Taxation by
+    // setting "Set/alter GST details" to Yes, and a company registration is Regular or
+    // Composition (Unregistered/Consumer are party-ledger values). The TSS sentence now carries
+    // the actual discontinuation date (16 August 2026) instead of leaving it vague.
     slug: 'how-to-add-gst-number-in-tally-erp-9',
     title: 'How to Add a GST Number in Tally ERP 9 (and Change It Later)',
     date: 'October 13, 2026',
     category: 'GST & Compliance',
-    description: 'How to add a GST number (GSTIN) in Tally ERP 9 - at company creation or later - plus party ledger GST details, common state-code errors and why TSS status matters.',
+    description: 'How to add a GST number (GSTIN) in Tally ERP 9 - enable GST, open the GST Details screen, then set party ledger GST details, plus why TSS status matters.',
     tags: ['how to add gst number in tally erp 9', 'how to add gst in tally erp 9', 'gstin in tally erp 9', 'tally erp 9 gst registration', 'change gst number in tally'],
     link: '/services/tss',
     author: 'Sarvadnya Infotech LLP',
     faqs: [
       {
         q: 'Where do I enable GST in Tally ERP 9?',
-        a: 'From the Gateway of Tally open F11: Features, then F3: Statutory & Taxation, and set "Enable Goods and Services Tax (GST)" to Yes. Only after GST is enabled does Tally ERP 9 ask for registration details and show the GST reports.',
+        a: 'From the Gateway of Tally press F11: Features, then F3: Statutory & Taxation, and set "Enable Goods and Services Tax (GST)" to Yes. On the same screen set "Set/alter GST details" to Yes - that second option is what opens the GST Details screen where the GSTIN is entered. Only after GST is enabled does Tally ERP 9 show the GST reports.',
       },
       {
         q: 'How do I add the GST number to an existing company?',
-        a: 'Open the Gateway of Tally, go to F3: Cmp Info and alter the company. In the company alteration screen, set the GST details to Yes and enter your GSTIN, registration type and state, then save. The change applies to new vouchers from that point.',
+        a: 'Press F11: Features > F3: Statutory & Taxation, set "Set/alter GST details" to Yes, and the GST Details screen opens with the current values. Enter or replace the GSTIN/UIN, confirm the state and registration type, set the GST applicable from date, then accept with Ctrl+A. You can also reach the same details by altering the company from F3: Cmp Info.',
       },
       {
         q: 'Why is Tally not accepting my GSTIN?',
-        a: 'The usual causes are a wrong state code in the first two digits of the GSTIN, a registration type that does not match the number, or a mismatch between the company state and the GSTIN state. Correct the GSTIN against your certificate rather than retyping it from memory.',
+        a: 'The usual causes are a wrong state code in the first two digits, an incomplete GSTIN (it is 15 characters), a registration type that does not match the number, a GST applicable from date later than the vouchers you are entering, or a GSTIN that is not active on the GST portal. Copy the GSTIN from your registration certificate rather than retyping it from memory.',
       },
       {
         q: 'Do I need GST details on party ledgers as well?',
-        a: 'Yes, for correct tax treatment. Open the party ledger and fill in the GST and other statutory details - the party GSTIN and registration type (Regular, Composition, Unregistered or Consumer). Inter-state supply, reverse charge and unregistered-dealer purchases all depend on those fields being right.',
+        a: 'Yes, for correct tax treatment. Open the party ledger and enable GST and other statutory details, then fill in the party GSTIN and registration type (Regular, Composition, Unregistered or Consumer). Inter-state supply, reverse charge and unregistered-dealer purchases all read from those fields, so an empty party ledger silently produces the wrong tax.',
       },
     ],
     content: `Adding a GST number in Tally ERP 9 is a two part job: the company needs GST enabled and a GSTIN on record, and then every relevant party ledger needs its own GST details. Miss the second part and the tax on your invoices quietly goes wrong.
@@ -689,18 +821,22 @@ Step 1 - enable GST for the company:
 - Press F11: Features, then F3: Statutory & Taxation
 - Set "Enable Goods and Services Tax (GST)" to Yes
 
-Step 2 - add the GSTIN:
+Step 2 - open the GST Details screen and add the GSTIN:
 
-- For a new company, Tally ERP 9 asks for the GST registration details during company creation. Enter the GSTIN, the registration type (Regular, Composition, Unregistered or Consumer) and the state
-- For an existing company, open F3: Cmp Info from the Gateway of Tally and alter the company. Set the GST details to Yes, enter the GSTIN, registration type and state, and save
+- Still on that screen, set "Set/alter GST details" to Yes - this is the option that opens the GST Details screen. Setting only "Enable GST" turns the feature on without storing a number
+- Enter the GSTIN/UIN, and check that the state matches your registration certificate - it defaults to the state chosen when the company was created
+- Set the registration type: Regular, or Composition if you are under the composition scheme
+- Set the GST applicable from date, and the periodicity of GSTR-1 (monthly or quarterly) to match your turnover slab
+- Set "e-Way Bill applicable" and its threshold limit if you move goods, and turn on "Assessee of Other Territory" only if your unit is in an exclusive economic zone
+- Accept with Ctrl+A
 
-Step 3 - check the state code. The first two digits of a GSTIN are the state code, and the place of supply on your invoices follows it. A wrong state code is the most common reason Tally ERP 9 rejects or misreports a GSTIN, and it is easiest to fix immediately after entry rather than at return time.
+Step 3 - check the state code. The first two digits of a GSTIN are the state code, and the company state is what makes Tally treat a supply as intra-state or inter-state. Changing the state on the GST Details screen also changes the company master and affects how existing transactions are reported, so Tally warns you before it accepts the change. That warning is worth reading rather than dismissing.
 
-Step 4 - fill in party ledger GST details. Open each party ledger and complete the GST and other statutory details: the party GSTIN and registration type. Inter-state supply, reverse charge on unregistered purchases and input credit all read from these fields.
+Step 4 - fill in party ledger GST details. Open each party ledger, enable GST and other statutory details, and complete the party GSTIN and registration type. Inter-state supply, reverse charge on unregistered purchases and input credit all read from these fields - this is the step most businesses skip.
 
-Changing a GST number later is the same path in reverse: alter the company, replace the GSTIN, save, and reprint or re-check an invoice to confirm the new number is being picked up. If your GSTIN changed because of a business restructuring, review the party ledgers and stock items afterwards as well.
+Changing a GST number later follows the same path: F11: Features > F3: Statutory & Taxation > "Set/alter GST details" to Yes, replace the GSTIN, and accept. The alteration also updates the company master, so the new number is used for vouchers and printed on invoices from that point. Reprint or re-check one invoice to confirm the change landed, and if your GSTIN changed because of a restructuring, review the party ledgers and stock items afterwards as well.
 
-One thing to plan for while you are on Tally ERP 9: Tally has discontinued TSS renewal for Tally ERP 9, so updates and compliance releases for that release have an end point. If your GST filing depends on being current, check your TSS status and confirm your upgrade path to TallyPrime before a filing deadline forces the decision.
+One thing to plan for while you are on Tally ERP 9: TSS renewal for Tally ERP 9 was discontinued for all customers from 16 August 2026, so statutory releases and compliance updates for that release have a fixed end point. A GST portal change that needs a Tally-side update will not be delivered to ERP 9 any more. If your filing depends on being current, check your TSS status and confirm your upgrade path to TallyPrime before a filing deadline forces the decision.
 
 Sarvadnya Infotech is a Tally certified partner in CBD Belapur, Navi Mumbai. We set up and correct GST configuration in Tally ERP 9 and TallyPrime, handle TSS renewal and status checks, and support businesses across Mumbai, Navi Mumbai and India remotely.`,
   },

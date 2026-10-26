@@ -111,15 +111,21 @@ export default function TallyDrivePage() {
   // CHANGE: 2026-10-07 — Product JSON-LD (P1 rich results). Offer = the sellable Extra
   // Storage pack (₹1,200/yr, displayed on this page). No aggregateRating: this page's
   // "Most Popular Software" block lists Silver/Gold/Server/Cloud — never TallyDrive.
+  // CHANGE: 2026-10-26 — the Product and the Offer used to disagree ("TallyDrive Cloud
+  // Backup" vs "TallyDrive Extra Storage"), which Google flags as an Offer/Product mismatch.
+  // The only priced, sellable row on this page IS the storage pack — the 1 GB/3 GB base
+  // allowance is free with an active TSS and is described on-page as "Included with TSS",
+  // never sold. So the Product node now describes exactly what the Offer sells. Claiming
+  // TallyDrive itself costs ₹1,200/yr would be factually wrong.
   const tallydriveLd = useMemo(() => {
     const extra = resolve('tallydrive-extra-storage-1yr');
     return productJsonLd({
-      name: 'TallyDrive Cloud Backup',
-      description: 'TallyDrive keeps your TallyPrime data automatically backed up and synced to the cloud, with easy restores plus extra storage packs for growing businesses.',
+      name: 'TallyDrive Extra Storage (10 GB)',
+      description: 'Adds 10 GB of TallyDrive cloud backup space for one year, on top of the free 1 GB (single-user) / 3 GB (multi-user) allowance included with an active Tally subscription. TallyDrive keeps your TallyPrime data automatically backed up and synced to the cloud, with easy restores.',
       url: '/products/tallydrive',
       image: `${SITE_URL}/tallydrive%20logo.png`,
-      sku: 'tallydrive',
-      offers: extra ? [{ priceRupees: extra.payablePaise / 100, itemOffered: 'TallyDrive Extra Storage (1 Year)' }] : [],
+      sku: 'tallydrive-extra-storage-1yr',
+      offers: extra ? [{ priceRupees: extra.payablePaise / 100, itemOffered: 'TallyDrive Extra Storage (10 GB, 1 Year)' }] : [],
     });
   }, [resolve]);
   const [formName, setFormName] = useState('');

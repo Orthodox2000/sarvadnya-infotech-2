@@ -53,7 +53,7 @@ export const CATALOG: readonly CatalogProduct[] = [
   {
     id: 'tss-renewal',
     name: 'TSS Renewal — 1 Year',
-    description: 'One year of Tally Software Service: statutory updates, remote support and new releases.',
+    description: 'One year of Tally Software Services: statutory updates, remote support and new releases.',
     image: '/tssgold.png',
     pricePaise: 1100000,
     taxPct: GST_PCT,

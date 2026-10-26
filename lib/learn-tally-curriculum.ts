@@ -443,25 +443,45 @@ export const LESSONS: Lesson[] = [
       'alt f12 in tally',
       'alt+g in tally prime'
     ],
+    // CHANGE: 2026-10-26 — factual audit against Tally Solutions' official keyboard-shortcut
+    // reference (help.tallysolutions.com). Five entries were WRONG and are corrected here:
+    //   Alt+F2 was labelled "Change Date"        -> F2 is the date/period key; Alt+F2 changes
+    //                                               the period of the company.
+    //   Alt+F3 was labelled "Company Info Menu"   -> Alt+K opens the Company menu; Alt+F3 selects
+    //                                               and opens another company.
+    //   Alt+F12 was labelled "Advanced Config"    -> Alt+F12 filters data in a report.
+    //   Ctrl+F8 was labelled "Credit Note"        -> Ctrl+F8 opens Sales Order (Credit Note = Alt+F6).
+    //   Ctrl+F9 was labelled "Debit Note"         -> Ctrl+F9 opens Purchase Order (Debit Note = Alt+F5).
+    // Missing essentials (Ctrl+G, Alt+K, F2, F3, Ctrl+F3, Alt+F6, Alt+F5, Ctrl+F4, Ctrl+N) added
+    // so this quick-reference table covers the same keys the tables above teach.
     shortcuts: [
-      { keys: 'Alt+G', action: 'Go To - Search any menu/report/ledger/voucher' },
+      { keys: 'Alt+G', action: 'Go To - search and jump to any menu, report, ledger or voucher' },
+      { keys: 'Ctrl+G', action: 'Switch To - move between open tasks without losing context' },
+      { keys: 'Alt+K', action: 'Company menu (create / alter / select / shut / delete company)' },
       { keys: 'Alt+C', action: 'Create master on-the-fly' },
-      { keys: 'Ctrl+A', action: 'Accept/Save' },
-      { keys: 'Esc', action: 'Cancel/Go back' },
-      { keys: 'Ctrl+Q', action: 'Quit Tally Prime' },
-      { keys: 'Alt+F2', action: 'Change Date' },
-      { keys: 'Alt+F3', action: 'Company Info Menu' },
+      { keys: 'Ctrl+A', action: 'Accept / save the current screen' },
+      { keys: 'Esc', action: 'Cancel / go back to the previous screen' },
+      { keys: 'Ctrl+Q', action: 'Exit the screen or quit TallyPrime' },
+      { keys: 'F2', action: 'Change the date of voucher entry or the report date/period' },
+      { keys: 'Alt+F2', action: 'Change the period of the company' },
+      { keys: 'F3', action: 'Switch to another open company' },
+      { keys: 'Alt+F3', action: 'Select and open another company' },
+      { keys: 'Ctrl+F3', action: 'Shut the currently loaded companies' },
+      { keys: 'Ctrl+N', action: 'Open or hide the calculator panel' },
       { keys: 'F11', action: 'Company Features' },
-      { keys: 'F12', action: 'Configure' },
-      { keys: 'Alt+F12', action: 'Advanced Configuration' },
+      { keys: 'F12', action: 'Configure (current report/view)' },
+      { keys: 'Alt+F12', action: 'Filter data in a report' },
       { keys: 'F4', action: 'Contra Voucher' },
       { keys: 'F5', action: 'Payment Voucher' },
       { keys: 'F6', action: 'Receipt Voucher' },
       { keys: 'F7', action: 'Journal Voucher' },
       { keys: 'F8', action: 'Sales Voucher' },
       { keys: 'F9', action: 'Purchase Voucher' },
-      { keys: 'Ctrl+F8', action: 'Credit Note Voucher' },
-      { keys: 'Ctrl+F9', action: 'Debit Note Voucher' }
+      { keys: 'Alt+F6', action: 'Credit Note Voucher' },
+      { keys: 'Alt+F5', action: 'Debit Note Voucher' },
+      { keys: 'Ctrl+F8', action: 'Sales Order Voucher' },
+      { keys: 'Ctrl+F9', action: 'Purchase Order Voucher' },
+      { keys: 'Ctrl+F4', action: 'Payroll Voucher' }
     ],
     faqs: [
       {
@@ -511,8 +531,12 @@ export const LESSONS: Lesson[] = [
     title: 'How to Create a Company in Tally Prime',
     intro:
       'Set up your company profile correctly in Tally Prime with the right financial year, base currency and statutory settings.',
+    // CHANGE: 2026-10-26 — every path in this body used Alt+F3, which is the Select Company
+    // shortcut, not the company menu. In TallyPrime the Company menu is Alt+K (TallyHelp: "To
+    // open the company menu with the list of actions related to managing your company");
+    // F3 switches between already-open companies and Ctrl+F3 shuts every loaded company.
     bodyMd:
-      'Accurate company setup ensures correct reporting and compliance. Define financial year, address, GST details (if applicable), and security settings from the start. Keep masters clean to avoid reconciliation issues later.\n\nSteps to create a company (TallyPrime 7.2):\n1. Open Tally Prime and press Alt+F3 > Create Company (or from Company Info screen).\n2. Fill Company Name, Mailing Name, Address, State, Country and Contact details.\n3. Set Financial Year From (e.g., 01-04-YYYY) and Books Beginning From.\n4. Set Base Currency Symbol (e.g., INR).\n5. Configure GST (if applicable) and other statutory details as required.\n6. Accept with Ctrl+A.\n\nHow to open/select a company:\nAlt+F3 > Select Company > Choose your company and press Enter.\n\nHow to alter/edit company details:\nAlt+F3 > Alter > Select company name > Edit details and accept (Ctrl+A).\n\nHow to shut a company:\nAlt+F3 > Shut Company > Select company name > Enter.\n\nHow to delete a company:\nAlt+F3 > Alter > Select company > Press Alt+D > Confirm twice (Yes, Yes). (Take backup before deleting.)',
+      'Accurate company setup ensures correct reporting and compliance. Define financial year, address, GST details (if applicable), and security settings from the start. Keep masters clean to avoid reconciliation issues later.\n\nSteps to create a company (TallyPrime 7.2):\n1. Open TallyPrime and press Alt+K (Company) > Create Company.\n2. Fill Company Name, Mailing Name, Address, State, Country and Contact details.\n3. Set Financial Year From (e.g., 01-04-YYYY) and Books Beginning From.\n4. Set Base Currency Symbol (e.g., INR).\n5. Configure GST (if applicable) and other statutory details as required.\n6. Accept with Ctrl+A.\n\nHow to open/select a company:\nAlt+K (Company) > Select Company > choose your company and press Enter. (Alt+F3 does the same thing from anywhere - it opens the company selection list.)\n\nHow to switch between companies that are already open:\nPress F3 and pick from the list of open companies.\n\nHow to alter/edit company details:\nAlt+K (Company) > Alter > select the company > edit the details > accept (Ctrl+A).\n\nHow to shut a company:\nAlt+K (Company) > Shut Company > select the company > Enter. Ctrl+F3 shuts every loaded company at once.\n\nHow to delete a company:\nAlt+K (Company) > Alter > select the company > press Alt+D > confirm twice (Yes, Yes). Take a backup before deleting.',
     seoTitle: 'How to Create a Company in Tally Prime | Tally Insights',
     seoDescription:
       'Step-by-step guide on how to create a company in Tally Prime with financial year, address, and GST settings.',
@@ -524,9 +548,9 @@ export const LESSONS: Lesson[] = [
       {
         title: 'Create New Company',
         steps: [
-          'Open Tally Prime > Create Company',
-          'Enter Company Name, Mailing Name, Address',
-          'Set Financial Year and Books Beginning From',
+          'Open TallyPrime and press Alt+K (Company) > Create Company',
+          'Enter Company Name, Mailing Name, Address, State and Country',
+          'Set Financial Year From and Books Beginning From',
           'Configure Currency, GST and other statutory details',
           'Review and Accept (Ctrl+A)'
         ],
@@ -539,11 +563,15 @@ export const LESSONS: Lesson[] = [
     faqs: [
       {
         q: 'How to create a company in Tally Prime step by step?',
-        a: 'Open Tally Prime > Create Company, enter basic details, set financial year, configure currency/statutory settings, then save.'
+        a: 'Press Alt+K to open the Company menu, choose Create Company, fill the company and mailing name, address, financial year and books beginning date, set the base currency and statutory details, then save with Ctrl+A.'
       },
       {
         q: 'Can I edit company details later?',
-        a: 'Yes. Use Company Info > Alter to update details where permitted.'
+        a: 'Yes. Use Alt+K (Company) > Alter, select the company, change the details and accept with Ctrl+A. TallyPrime restricts some fields once books have started, so the fields it allows are the ones you can edit.'
+      },
+      {
+        q: 'What is the difference between F3 and Alt+F3 in Tally Prime?',
+        a: 'F3 switches between companies that are already loaded and open. Alt+F3 opens the company selection list so you can load and open a different company from the same or another data path. Ctrl+F3 shuts all loaded companies. To reach the menu with Create, Alter, Select, Shut and Delete, press Alt+K.'
       }
     ],
     modulePromo: {
@@ -765,37 +793,47 @@ export const LESSONS: Lesson[] = [
     sectionId: 'payroll-hrms',
     sectionTitle: 'Payroll, HR & Attendance',
     order: 1,
-    title: 'Payroll in TallyPrime: What Is Native, What Needs an HRMS Add-on',
+    title: 'Payroll in TallyPrime: The Built-In Payroll Module Explained',
     intro:
-      'Understand what TallyPrime 7.2 does for payroll on its own, what an HRMS add-on adds, and how salary, PF, ESI, TDS and payslips are actually handled.',
+      'TallyPrime 7.2 ships with a complete payroll module that is switched off by default. This guide shows how to enable it, what it handles natively for salary, PF, ESI, Professional Tax and TDS, and the few cases that genuinely need an HRMS add-on.',
     bodyMd:
-      "Payroll is the area where teams are most often disappointed. TallyPrime is a strong accounting and compliance engine, but it does not ship with a payroll engine of its own - there is no salary-structure screen, no attendance capture and no payslip designer in the core product. Being clear about that up front saves a week of searching for a button that does not exist.\n\n## What TallyPrime 7.2 handles natively\n| Task | How the core product handles it |\n| :-- | :-- |\n| Salary and wages expense | Book a Journal or Payment voucher against your Salary and Wages ledger |\n| Employee advances and recoveries | Receipt and Journal vouchers against an Advances ledger, then settle them monthly |\n| TDS on salary | Enable TDS in Company Features; the deduction is computed on the salary payment voucher and appears in the TDS reports |\n| Provident Fund, ESI and Professional Tax | Book through ledgers under Duties and Taxes with the right group so they land in the correct statutory report |\n| Splitting salary cost across branches or projects | Turn on cost centres (F11 > Accounting Features) and tag each salary voucher with the department |\n| Attendance, leave and shift planning | Not part of core TallyPrime - this is what an HRMS add-on provides |\n\n## What an HRMS add-on adds\n| Capability | What it gives the business |\n| :-- | :-- |\n| Employee master | One record per employee with documents, contact details, joining date, salary structure and bank details |\n| One-click payroll | Monthly payroll run that calculates earnings, overtime, deductions and net pay |\n| Attendance | Biometric or mobile check-in data feeding the payroll run |\n| Payslips | Employee-wise payslips the staff can download themselves |\n| Statutory compliance | Computes and reports PF, ESI, TDS and Professional Tax for the applicable state |\n| Post to Tally | Pushes the payroll result into TallyPrime as a Payment voucher plus the statutory entries, so nothing is re-typed by your accountant |\n\n## The recommended flow\n1. Enable the payroll/HRMS add-on from F11 > Add-Ons and accept.\n2. Create employee masters and salary structures in the HRMS screen, not in Tally.\n3. Import or capture attendance for the month.\n4. Run the payroll and review the preview before posting.\n5. Post to TallyPrime - the salary payment and statutory deductions land as vouchers.\n6. Review the TDS on salary and statutory reports in TallyPrime before you file.\n\nKeep a single rule: TallyPrime is the book of record for the amounts, the HRMS owns the people data. When both are kept in step, payroll stops being a manual exercise at month end.",
-    seoTitle: 'Payroll in Tally Prime: Native Features vs HRMS Add-on | Tally Insights',
+      "Most teams assume payroll needs a separate software licence. It does not. TallyPrime has a full payroll module built in - it is simply switched off by default, which is why so many businesses conclude the feature does not exist. Switch it on and employees, salary structures, attendance, pay sheets and payslips all live inside TallyPrime, and the salary cost posts to your books automatically.\n\n## Turning payroll on\n1. Open Company Features (F11).\n2. Press F11 again on the Features screen to show more features.\n3. Set Maintain Payroll to Yes and accept with Ctrl+A.\n\nThe Payroll menus and voucher types only appear after this step.\n\n## What TallyPrime payroll does natively\n| Capability | Where it lives in TallyPrime 7.2 |\n| :-- | :-- |\n| Employee groups and employees | Create Master > Payroll Masters > Employee Group / Employee |\n| Salary structure | Salary Details inside the employee record - earnings and deductions per employee |\n| Pay heads | Payroll Masters > Pay Head, with the calculation type that suits the head |\n| Attendance | Attendance voucher for the month, or attendance imported from a device |\n| Monthly salary run | Payroll voucher (Ctrl+F4), one per employee per month |\n| Statutory deductions | PF, ESI, NPS, Professional Tax and Income Tax through pay heads and the statutory records |\n| Pay sheet | Payroll Reports > Pay Sheet - one line per employee for the month |\n| Payroll register and statements | Payroll Register plus employee-wise and pay-head-wise statements |\n| Payslips | Print or email a payslip for an employee from inside TallyPrime |\n| Department-wise salary cost | Tag payroll vouchers with cost centres |\n\n## What is genuinely not native\n| Requirement | What it actually needs |\n| :-- | :-- |\n| Biometric or mobile check-in | A device or app that writes attendance into TallyPrime - the payroll calculation still happens in Tally |\n| Employee self-service (leave requests, own payslips, documents) | An HRMS or web portal |\n| Recruitment, onboarding, appraisals | An HRMS - TallyPrime has no HR process workflows |\n| Group-wide HR dashboards across many companies | An HRMS or a reporting layer on top of Tally data |\n\n## The honest split\nUse TallyPrime payroll when the requirement is to pay employees correctly, apply PF, ESI, Professional Tax and TDS as applicable, and keep salary cost in the same books as the rest of the business. That covers most small and mid-sized businesses, and it costs nothing extra beyond your existing licence.\n\nLook at an HRMS when the requirement moves from paying people to managing people - self-service, biometric attendance, leave workflows, appraisals, multi-company HR reporting.\n\n## One rule worth keeping\nSalary is a book-of-record transaction. If payroll is calculated in a separate system, post the result into TallyPrime systematically instead of re-typing it. A gap between the outside payroll register and the Tally salary ledger is the most common payroll audit problem we see, and it is entirely avoidable.",
+    seoTitle: 'Payroll in Tally Prime: Built-In Payroll Module Guide | Tally Insights',
     seoDescription:
-      'TallyPrime payroll natively, what an HRMS add-on adds, and the recommended payroll-to-Tally posting flow.',
+      'TallyPrime payroll is built in, not an add-on. How to enable Maintain Payroll, run salary vouchers, and get payslips, PF, ESI and TDS reports.',
     keywords: [
       'payroll in tally prime',
-      'tally prime hrms',
-      'tally payroll module',
-      'payslip in tally',
-      'tds on salary in tally prime'
+      'tally prime payroll module',
+      'maintain payroll in tally prime',
+      'how to enable payroll in tally prime',
+      'payslip in tally prime',
+      'tds on salary in tally prime',
+      'tally prime hrms'
     ],
+    // CHANGE: 2026-10-26 — every answer below was rewritten. The previous set said TallyPrime
+    // has no payroll module, which is false: payroll is native (F11 > Show more features >
+    // Maintain Payroll) and includes pay heads, salary details, attendance vouchers, the
+    // Payroll voucher (Ctrl+F4), pay sheets, payslips and PF/ESI/NPS/PT/TDS handling.
     faqs: [
       {
         q: 'Does Tally Prime have a built-in payroll module?',
-        a: 'No. Core TallyPrime handles the accounting side - salary vouchers, TDS on salary, PF, ESI and Professional Tax through ledgers - but attendance, salary structures and payslips come from an HRMS or payroll add-on.'
+        a: 'Yes. TallyPrime ships with a full payroll module, it is just hidden until you enable it. Open Company Features with F11, press F11 again on that screen to show more features, set Maintain Payroll to Yes and accept with Ctrl+A. The Payroll masters, the Attendance voucher and the Payroll voucher (Ctrl+F4) then become available.'
       },
       {
         q: 'How do I record salary expenses in Tally Prime?',
-        a: 'Post a Payment or Journal voucher against your Salary and Wages ledger. Turn on cost centres if you need to split salary cost by department.'
+        a: 'Once payroll is enabled, raise a Payroll voucher (Ctrl+F4) for each employee for the month. The voucher posts the earnings to your salary ledgers and the deductions to the PF, ESI, Professional Tax and TDS ledgers you mapped in the pay heads. A one-off payment outside payroll can still be booked with a Payment or Journal voucher against the Salary and Wages ledger.'
       },
       {
         q: 'Is TDS on salary computed automatically in Tally Prime?',
-        a: 'Yes, once TDS is enabled in Company Features and the employee TDS category is set, the deduction is computed on the salary voucher and reported under TDS reports.'
+        a: 'Yes. Once TDS on salary is enabled and the employee tax details are recorded, TallyPrime computes the deduction on the payroll voucher and reports it in the TDS reports and Form 24Q.'
       },
       {
-        q: 'Can an HRMS post payroll directly into Tally Prime?',
-        a: 'Yes. Our HRMS integrates with TallyPrime and pushes the monthly payroll result as vouchers, so the accountant does not re-key anything.'
+        q: 'Can I email payslips from Tally Prime?',
+        a: 'Yes. Open the Pay Sheet or the employee payroll report and print or email the payslip directly from TallyPrime, with the company details and month already filled in.'
+      },
+      {
+        q: 'When do I need an HRMS instead of Tally payroll?',
+        a: 'When the requirement is managing people rather than paying them: employee self-service, biometric or mobile attendance, leave approval workflows, appraisals, recruitment, and group-wide HR dashboards across several companies. For calculating salary and statutory deductions, TallyPrime payroll is sufficient.'
       }
     ],
     modulePromo: {
@@ -951,7 +989,7 @@ export const LESSONS: Lesson[] = [
     intro:
       'What Tally Software Services (TSS) is, which TallyPrime licence your business needs, how an ERP 9 upgrade works and what Tally Cloud Access gives you.',
     bodyMd:
-      "TSS - Tally Software Services - is the annual subscription behind TallyPrime. It is what keeps the product compliant, keeps the screens current and unlocks the statutory utilities. Most upgrade questions are really TSS questions, so they are answered together here.\n\n## What TSS gives you\n| With active TSS | Without TSS |\n| :-- | :-- |\n| Statutory updates for GST, e-Invoice, e-Way Bill and payroll compliance | Your accounting keeps working, but statutory utilities and downloads are restricted |\n| GSTR-2A and GSTR-2B download inside TallyPrime | These downloads are blocked |\n| e-Invoice and e-Way Bill generation through the IRP and the e-Way Bill portal | Generation is restricted until it is renewed |\n| Online support and the latest release fixes | You run on whatever version you installed |\n| Tally Cloud Access for remote working | No remote access through Tally Cloud |\n\n## Which licence fits\n| Licence | Who it is for | What it gives |\n| :-- | :-- | :-- |\n| Silver | Single user, single company | Full accounting and compliance for one person |\n| Gold | Multiple users and multiple companies | Multi-user work and more than one company book |\n| Server | A whole office or branch | Unlimited users on the local network, one shared data set |\n| Education | Learners and trainees | A free learning licence with limited company books |\n\nTSS is purchased against the licence type, so a Gold user buys a multi-user TSS and a Silver user buys a single-user TSS. Check the current licence before you buy - press F1 > About for the licence details, and Alt+R > Manage TSS Renewal for the TSS screen.\n\n## Moving from ERP 9 to Tally Prime\n1. Check that TSS is active on the ERP 9 licence. An ERP 9 licence with active TSS can generally be upgraded to Tally Prime without buying a fresh licence.\n2. Take a complete backup of the ERP 9 data folder and keep it.\n3. Install Tally Prime and choose the upgrade option when it points at the existing ERP 9 data.\n4. Let the upgrade finish, then check the data: ledger balances, opening stock, outstanding bills and the number of vouchers.\n5. Re-check company features - a few of them are not carried over automatically, GST and payroll settings in particular.\n6. Validate any TDL modules and add-ons you use against TallyPrime 7.2 before go-live.\n\n## Tally Cloud Access\nTally Cloud Access lets authorised users open company books remotely over the internet, with role-based control and your data still sitting in your office. It is the usual answer for a founder or an accountant who needs the books away from the office, and it removes the temptation to copy the data onto a laptop.",
+      "TSS - Tally Software Services - is the annual subscription behind TallyPrime. It is what keeps the product compliant, keeps the screens current and unlocks the statutory utilities. Most upgrade questions are really TSS questions, so they are answered together here.\n\n## What TSS gives you\n| With active TSS | Without TSS |\n| :-- | :-- |\n| Statutory updates for GST, e-Invoice, e-Way Bill and payroll compliance | Your accounting keeps working, but statutory utilities and downloads are restricted |\n| GSTR-2A and GSTR-2B download inside TallyPrime | These downloads are blocked |\n| e-Invoice and e-Way Bill generation through the IRP and the e-Way Bill portal | Generation is restricted until it is renewed |\n| Online support and the latest release fixes | You run on whatever version you installed |\n| Tally Cloud Access for remote working | No remote access through Tally Cloud |\n\n## Which licence fits\n| Licence | Who it is for | What it gives |\n| :-- | :-- | :-- |\n| Silver | Single user, single company | Full accounting and compliance for one person |\n| Gold | Multiple users and multiple companies | Multi-user work and more than one company book |\n| Server | A whole office or branch | Unlimited users on the local network, one shared data set |\n| Education | Learners and trainees | A free learning licence with limited company books |\n\nTSS is purchased against the licence type, so a Gold user buys a multi-user TSS and a Silver user buys a single-user TSS. Check what you hold before you buy - press F1 (Help) > Settings > License > Manage License, which shows the licence details together with the TSS coverage end date and the renewal option. From that screen press F9 (Renew TSS), or press Alt+R (Manage TSS Renewal) directly on the Gateway of Tally when your renewal is due.\n\n## Moving from ERP 9 to Tally Prime\n1. Check your TSS position on the ERP 9 licence. TSS renewal for Tally.ERP 9 was discontinued for all customers from 16 August 2026, so there is no new renewal period to buy - what matters now is whether TSS was active on or after 9 November 2020, which is what makes the upgrade to TallyPrime free. If it was not, the upgrade is paid.\n2. Take a complete backup of the ERP 9 data folder and keep it.\n3. Install Tally Prime and choose the upgrade option when it points at the existing ERP 9 data.\n4. Let the upgrade finish, then check the data: ledger balances, opening stock, outstanding bills and the number of vouchers.\n5. Re-check company features - a few of them are not carried over automatically, GST and payroll settings in particular.\n6. Validate any TDL modules and add-ons you use against TallyPrime 7.2 before go-live.\n\n## Tally Cloud Access\nTally Cloud Access lets authorised users open company books remotely over the internet, with role-based control and your data still sitting in your office. It is the usual answer for a founder or an accountant who needs the books away from the office, and it removes the temptation to copy the data onto a laptop.",
     seoTitle: 'TSS, Licensing, ERP 9 to Prime Upgrades and Tally Cloud | Tally Insights',
     seoDescription:
       'What TSS unlocks, which TallyPrime licence you need, ERP 9 to Tally Prime upgrades and Tally Cloud Access.',
@@ -970,11 +1008,11 @@ export const LESSONS: Lesson[] = [
       },
       {
         q: 'How do I check my TSS validity?',
-        a: 'Press Alt+R for Manage TSS Renewal, or F1 > About to see the licence and TSS details on screen.'
+        a: 'Press F1 (Help) > Settings > License > Manage License. That screen shows the licence details and the TSS coverage end date, and it is where you press F9 (Renew TSS). If the renewal date is near, Alt+R (Manage TSS Renewal) also appears on the Gateway of Tally.'
       },
       {
         q: 'Can I upgrade my ERP 9 licence to Tally Prime?',
-        a: 'Yes, if TSS is active on the ERP 9 licence. Take a full backup first, install Tally Prime, choose the upgrade option and then verify balances, stock and company features.'
+        a: 'Yes. The upgrade is free when TSS was active on or after 9 November 2020, and paid otherwise. Note that TSS renewal for Tally.ERP 9 was discontinued for all customers from 16 August 2026, so no new renewal period can be bought for ERP 9. Take a full backup first, install Tally Prime, choose the upgrade option, then verify balances, stock and company features.'
       },
       {
         q: 'What happens if TSS expires?',
@@ -1002,7 +1040,7 @@ export const LESSONS: Lesson[] = [
     intro:
       'Renew Tally Software Services offline when the online option will not load - what you need before you start, the exact steps, and how Sarvadnya Infotech processes the renewal.',
     bodyMd:
-      "If the online TSS renewal option does not show up, the portal will not load, or the machine has no internet access, the renewal can still be done offline through your Tally Certified Partner. This guide covers both the do-it-yourself checks and the offline path.\n\n## First, check whether you actually need the offline route\n| Symptom | What it usually means | Do this |\n| :-- | :-- | :-- |\n| No Manage TSS Renewal option in the menus | TSS is already active, or the licence type does not include TSS | Check F1 > About for the TSS validity date first |\n| The renewal screen does not load | A network or browser problem on that machine | Try a different network, or use the offline route below |\n| TSS has expired | The statutory utilities are restricted | Renew as soon as possible - do not wait for month end |\n| The office has no internet access | The machine cannot reach the licence server | Use the offline route below |\n\n## What you need before you start\n- The TallyPrime serial number - press F1 > About and note it down.\n- Company name and the licence type (Silver, Gold or Server).\n- The registered mobile number and email on the licence.\n- Your existing TSS validity date, so we can check the right renewal period.\n\n## The offline renewal steps\n1. Note the serial number from F1 > About and the current TSS validity from the same screen.\n2. Share the serial number and company details with your Tally Certified Partner - for us, that is Sarvadnya Infotech LLP.\n3. We verify the licence and TSS status against the serial number and confirm the renewal period and the amount.\n4. You receive the renewal details and the invoice against your company details.\n5. We process the offline TSS renewal for your serial number.\n6. Apply the renewal in TallyPrime and confirm the new validity date under F1 > About.\n\n## Which features come back after the renewal\n| Feature | Effect while TSS is expired | After renewal |\n| :-- | :-- | :-- |\n| GSTR-2A and GSTR-2B download | Not available | Available again from the portal |\n| e-Invoice generation with IRN | Blocked | Works with the IRP settings you already configured |\n| e-Way Bill generation | Blocked | Works again |\n| Direct statutory filing utilities | Restricted | Available |\n| Core accounting, inventory and reports | Unaffected | Unaffected |\n\n## Practical advice\n- Renew before expiry rather than after - it avoids a gap where your team is working on a restricted licence.\n- TSS is available on Silver, Gold and Server licences; it is not a Gold-only feature.\n- Keep the renewal invoice and the serial number on file - they are what you need if the licence is ever re-issued on a new machine.\n- Renewing early does not change what you are entitled to; the validity simply starts when the renewal is applied.\n\nFor the full offline renewal walkthrough, see our article on [how to renew Tally TSS offline](/news/how-to-renew-tally-tss-offline), or the [TSS service page](/services/tss).",
+      "If the online TSS renewal option does not show up, the portal will not load, or the machine has no internet access, the renewal can still be done offline through your Tally Certified Partner. This guide covers both the do-it-yourself checks and the offline path.\n\n## First, check whether you actually need the offline route\n| Symptom | What it usually means | Do this |\n| :-- | :-- | :-- |\n| No Manage TSS Renewal option in the menus | TSS is already active, or the renewal is not yet due | Check F1 (Help) > Settings > License > Manage License for the TSS coverage end date |\n| The renewal screen does not load | A network or browser problem on that machine | Try a different network, or use the offline route below |\n| TSS has expired | The statutory utilities are restricted | Renew as soon as possible - do not wait for month end |\n| The office has no internet access | The machine cannot reach the licence server | Use the offline route below |\n\n## What you need before you start\n- The TallyPrime serial number - press F1 (Help) > Settings > License > Manage License and note it down.\n- Company name and the licence type (Silver, Gold or Server).\n- The registered mobile number and email on the licence.\n- Your existing TSS validity date, so we can check the right renewal period.\n\n## The offline renewal steps\n1. Note the serial number and the current TSS coverage end date from F1 (Help) > Settings > License > Manage License.\n2. Share the serial number and company details with your Tally Certified Partner - for us, that is Sarvadnya Infotech LLP.\n3. We verify the licence and TSS status against the serial number and confirm the renewal period and the amount.\n4. You receive the renewal details and the invoice against your company details.\n5. We process the offline TSS renewal for your serial number.\n6. Update the licence from the Manage License screen and confirm the new coverage end date there.\n\n## Which features come back after the renewal\n| Feature | Effect while TSS is expired | After renewal |\n| :-- | :-- | :-- |\n| GSTR-2A and GSTR-2B download | Not available | Available again from the portal |\n| e-Invoice generation with IRN | Blocked | Works with the IRP settings you already configured |\n| e-Way Bill generation | Blocked | Works again |\n| Direct statutory filing utilities | Restricted | Available |\n| Core accounting, inventory and reports | Unaffected | Unaffected |\n\n## Practical advice\n- Renew before expiry rather than after - it avoids a gap where your team is working on a restricted licence.\n- TSS is available on Silver, Gold and Server licences; it is not a Gold-only feature.\n- Keep the renewal invoice and the serial number on file - they are what you need if the licence is ever re-issued on a new machine.\n- Confirm the coverage start and end dates with your partner when you renew - the period you get depends on your current licence status.\n- TSS renewal for Tally.ERP 9 was discontinued for all customers from 16 August 2026, so an ERP 9 licence can no longer be renewed; the path there is an upgrade to TallyPrime.\n\nFor the full offline renewal walkthrough, see our article on [how to renew Tally TSS offline](/news/how-to-renew-tally-tss-offline), or the [TSS service page](/services/tss).",
     seoTitle: 'How to Renew Tally TSS Offline: Steps and Requirements | Tally Insights',
     seoDescription:
       'Renew Tally Software Services offline: what you need, the exact steps and which features come back after renewal.',
@@ -1020,7 +1058,7 @@ export const LESSONS: Lesson[] = [
       },
       {
         q: 'Where do I find my Tally serial number?',
-        a: 'Press F1 > About in TallyPrime. The licence and serial number are shown on that screen.'
+        a: 'Press F1 (Help) > Settings > License > Manage License in TallyPrime. The licence details, including the serial number, are shown on that screen.'
       },
       {
         q: 'What stops working when TSS expires?',

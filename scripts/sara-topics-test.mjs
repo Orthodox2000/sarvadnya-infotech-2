@@ -145,6 +145,86 @@ test('teaching fallback points at the exact free guide', () => {
   if (!r.includes('/tally-insights/cost-centres/cost-centre-in-tally')) throw new Error(`got: ${r.slice(0, 160)}`);
 });
 
+// ─── Verified-fact regressions ─────────────────────────────────────────────
+// CHANGE: 2026-10-26 — WHY: an audit against TallyHelp found four TSS claims that Tally
+// does not publish — a "roughly 15 days before expiry" reminder window, a 10% discount on a
+// two-year renewal, a bonus month for renewing early, and validity that "syncs back into
+// Tally automatically". It also found the product name written two ways ("Tally Software
+// Service" / "Tally Subscription Service"; the official name is Tally Software Services).
+// These assertions pin the corrected wording so none of it can creep back in, and pin the
+// two real renewal paths plus the 16 August 2026 ERP 9 closure.
+console.log('📌 TSS facts (verified against TallyHelp)');
+
+function tssText() {
+  const parts = [];
+  const topic = saraTopics.find(x => x.label === 'TSS Renewal & Subscription');
+  if (!topic) throw new Error('TSS topic missing');
+  parts.push(topic.answer);
+  for (const f of topic.followUp ?? []) parts.push(`${f.label} ${f.answer}`);
+  parts.push(getFallbackResponse('tss renewal'));
+  parts.push(getTeachingFallbackResponse('tally tss renewal'));
+  return parts.join('\n');
+}
+
+test('no TSS answer claims a 15-day reminder window', () => {
+  if (/15\s*days/i.test(tssText())) throw new Error('unverified "15 days" claim is back');
+});
+test('no TSS answer promises a 10% discount or a bonus month', () => {
+  const t = tssText();
+  if (/10\s*%/.test(t)) throw new Error('unverified discount claim is back');
+  if (/extra month/i.test(t)) throw new Error('unverified bonus-month claim is back');
+});
+test('no TSS answer claims validity syncs back automatically', () => {
+  if (/syncs? back into Tally automatically/i.test(tssText())) {
+    throw new Error('unverified auto-sync claim is back — the licence must be updated');
+  }
+});
+test('the product name is Tally Software Services, never the singular or the wrong expansion', () => {
+  const t = tssText();
+  if (/Tally Software Service[^s]/.test(t)) throw new Error('singular "Tally Software Service" is back');
+  if (/Tally Subscription Service/.test(t)) throw new Error('wrong expansion "Tally Subscription Service" is back');
+  if (!t.includes('Tally Software Services')) throw new Error('correct product name missing');
+});
+test('the TSS answer gives both verified renewal paths', () => {
+  const t = tssText();
+  if (!t.includes('Alt+R (Manage TSS Renewal)')) throw new Error('Alt+R path missing');
+  if (!t.includes('F1 (Help) > Settings > License > Manage License')) throw new Error('Manage License path missing');
+  if (!t.includes('F9 (Renew TSS)')) throw new Error('F9 (Renew TSS) path missing');
+});
+test('the TSS answer tells the reader to update the licence after paying', () => {
+  if (!/update the licence/i.test(tssText())) throw new Error('licence-update step missing');
+});
+test('the TSS answer states the ERP 9 renewal closure date', () => {
+  if (!/16 August 2026/.test(tssText())) throw new Error('16 August 2026 ERP 9 closure missing');
+});
+test('the payroll answer keeps payroll native (Maintain Payroll, not an add-on)', () => {
+  const r = getTeachingFallbackResponse('payroll salary pf esi');
+  if (!/Maintain Payroll/i.test(r)) throw new Error(`payroll answer lost Maintain Payroll: ${r.slice(0, 120)}`);
+});
+test('the reports answer filters with Alt+F12, not a made-up shortcut', () => {
+  const r = getTeachingFallbackResponse('balance sheet report');
+  if (!/Alt\+F12/.test(r)) throw new Error(`reports answer lost Alt+F12: ${r.slice(0, 120)}`);
+  if (/Ctrl\+F for search/i.test(r)) throw new Error('the old wrong search shortcut is back');
+});
+test('the voucher shortcut list keeps the verified key mapping', () => {
+  const topic = saraTopics.find(x => x.label === 'Keyboard Shortcuts');
+  if (!topic) throw new Error('Keyboard Shortcuts topic missing');
+  const text = [topic.answer, ...(topic.followUp ?? []).map(f => f.answer)].join('\n');
+  const pairs = [
+    ['Ctrl+F8', 'Sales Order'],
+    ['Ctrl+F9', 'Purchase Order'],
+    ['Alt+F6', 'Credit Note'],
+    ['Alt+F5', 'Debit Note'],
+    ['Alt+F7', 'Stock Journal'],
+    ['Ctrl+F4', 'Payroll'],
+  ];
+  for (const [key, label] of pairs) {
+    const line = text.split('\n').find(l => l.includes(key));
+    if (!line) throw new Error(`${key} is missing from the voucher list`);
+    if (!line.includes(label)) throw new Error(`${key} should be ${label}, got: ${line.trim()}`);
+  }
+});
+
 // ─── Data sanity: no duplicate topics ──────────────────────────────────────
 console.log('🧩 Data sanity');
 // CHANGE: 2026-10-23 — expected count 9 → 10 after adding the Tally Shop topic.

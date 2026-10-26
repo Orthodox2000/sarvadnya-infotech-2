@@ -31,30 +31,46 @@ const TSS_ROW_SLUGS = [
 // cluster ("tss expired in tally means", "tss full form in tally", "tss renewal means",
 // "how to check tss expiry date") and are rendered BOTH as the visible accordion below and
 // as FAQPage JSON-LD, so the markup always matches on-page content.
+// CHANGE: 2026-10-26 — every answer rewritten after checking TallyHelp. Corrections:
+// (1) the first two answers said TSS "keeps Tally Prime and Tally ERP 9 current" - TSS
+// renewal on Tally.ERP 9 was discontinued for all customers from 16 August 2026, so that
+// claim is no longer true for either post or page; (2) "the licence screen (Help > About or
+// the Licence activation window)" was not a real path - it is F1 (Help) > Settings > License
+// > Manage License; (3) "share your serial number and unlock code" conflated two different
+// things - an unlock key is for ACTIVATION, renewal is processed against the serial number;
+// (4) "your coverage end date moves forward by the renewed period" asserted a start-date rule
+// we cannot verify for every renewal type; (5) "will Tally stop working" ignored the rental
+// licence case, which does stop when its own period ends.
 const TSS_FAQS: { q: string; a: string }[] = [
   {
     q: "What does 'TSS expired' mean in Tally?",
-    a: "TSS stands for Tally Software Services, the annual subscription that keeps Tally Prime and Tally ERP 9 current with updates, statutory compliance changes and technical support. When the licence screen shows 'TSS has expired', it means that coverage has lapsed. Your software keeps working and your data stays safe, but you stop receiving updates, compliance releases and support.",
+    a: "TSS stands for Tally Software Services, the annual subscription that keeps a TallyPrime licence current with releases, statutory compliance updates, connected services and technical support. When the licence screen shows 'TSS has expired', it means that coverage has lapsed. On a perpetual licence your software keeps working and your data stays safe, but updates, connected services and support stop until you renew.",
   },
   {
     q: 'What is the full form of TSS in Tally?',
-    a: 'TSS stands for Tally Software Services. It is the annual subscription plan for Tally Prime and Tally ERP 9 that covers product updates, GST and statutory compliance changes, and technical support from Tally.',
+    a: 'TSS stands for Tally Software Services. It is the annual subscription that sits alongside a TallyPrime licence and covers product releases, GST and statutory compliance updates, the connected services and technical support from Tally. TSS renewal for Tally.ERP 9 was discontinued for all customers from 16 August 2026.',
   },
   {
     q: 'What does TSS renewal mean?',
-    a: 'TSS renewal means paying for the next year of your Tally Software Services subscription so that updates, statutory compliance releases and technical support stay active. After renewal, your Tally licence shows the new coverage end date and you immediately receive the latest version and compliance updates.',
+    a: 'TSS renewal means paying for the next period of your Tally Software Services subscription so that releases, statutory compliance updates, connected services and technical support stay active. After renewal, update the licence from the Manage License screen so TallyPrime picks up the new coverage end date, and then you can upgrade to the latest release.',
   },
   {
     q: 'How do I check my TSS expiry date in TallyPrime?',
-    a: 'Open TallyPrime and go to the licence screen (Help > About or the Licence activation window). Your TSS coverage and its expiry date are shown there. If the date has passed, the licence screen also shows the "TSS has expired" notice, and renewal can be done quickly through a Tally partner.',
+    a: 'Press F1 (Help) > Settings > License > Manage License. That screen shows the licence details and the TSS coverage end date, and it is where the "TSS has expired" notice appears once the date passes. If the renewal date is near, the Gateway of Tally also shows an Alt+R (Manage TSS Renewal) shortcut.',
   },
   {
     q: 'Will Tally stop working when my TSS expires?',
-    a: 'No. Your Tally Prime software keeps working and your data and vouchers are safe and usable even after TSS expires. What you lose is protection: no more product updates, no statutory compliance changes, and no technical support from Tally until you renew.',
+    a: 'It depends on the licence type, not on TSS. A perpetual TallyPrime licence keeps working and your data and vouchers stay usable after TSS expires - what you lose is updates, statutory compliance changes, connected services and support. A TallyPrime rental subscription is different: it has its own end date, and the software stops working when that period ends.',
   },
   {
     q: 'How do I renew an expired TSS?',
-    a: 'Share your Tally serial number and unlock code with a Tally certified partner, and they will process the renewal. Once your TSS is renewed, updates and compliance releases resume immediately and your coverage end date moves forward by the renewed period.',
+    a: 'Share the serial number from your Manage License screen with a Tally certified partner and they will process the renewal against that serial number. You can also renew yourself from inside TallyPrime: press F1 (Help) > Settings > License > Manage License, then F9 (Renew TSS). Confirm the coverage start and end dates when you renew, then update the licence so TallyPrime shows the new date.',
+  },
+  {
+    // CHANGE: 2026-10-26 — the single most consequential TSS fact for anyone still on
+    // ERP 9, so it gets its own answer rather than being buried in prose.
+    q: 'Can I still renew TSS for Tally.ERP 9?',
+    a: 'No. Tally discontinued TSS renewal on Tally.ERP 9 for all customers from 16 August 2026, so there is no new renewal period to buy. The path forward is an upgrade to TallyPrime - free if your TSS was active on or after 9 November 2020, paid otherwise - and your existing data file is converted rather than re-entered.',
   },
 ];
 
@@ -62,7 +78,7 @@ export default function TSSPage() {
   const [modalConfig, setModalConfig] = useState<{isOpen: boolean; type: FormType; service: string}>({
     isOpen: false,
     type: 'enquire',
-    service: 'Tally Software Service (TSS) Renewal'
+    service: 'Tally Software Services (TSS) Renewal'
   });
   // CHANGE: 2026-10-07 — accordion state for the new TSS FAQ section (house pattern).
   const [openFaq, setOpenFaq] = useState<number | null>(0);
@@ -82,15 +98,22 @@ export default function TSSPage() {
   // CHANGE: 2026-10-07 — Product JSON-LD (P1 rich results). Offers = the SIX resolved plan
   // totals (incl. 18% GST) exactly as the pricing table displays them; low/high come from
   // the same source. No aggregateRating: this page shows no ratings.
+  // CHANGE: 2026-10-26 — each Offer now carries the plan's own name ("TSS Single User (1 Year)"
+  // …) taken from the same price item the row renders. Six unlabelled Offers on one Product
+  // were indistinguishable to Google's parser; the names come from lib/prices-catalog.mjs, so
+  // they cannot drift from the table.
   const tssLd = useMemo(() => {
-    const prices = TSS_ROW_SLUGS.map((slug) => resolve(slug)).filter(Boolean);
+    const prices = TSS_ROW_SLUGS.map((slug) => resolve(slug)).filter(Boolean) as { payablePaise: number; name: string }[];
     return productJsonLd({
       name: 'Tally Software Services (TSS) Renewal',
-      description: 'TSS (Tally Software Services) is the annual subscription that keeps Tally Prime and Tally ERP 9 current with updates, statutory compliance changes and technical support.',
+      description: 'TSS (Tally Software Services) is the annual subscription that keeps TallyPrime current with updates, statutory compliance changes and technical support.',
       url: '/services/tss',
       image: `${SITE_URL}/tss-icon.png`,
       sku: 'tss',
-      offers: prices.map((item) => ({ priceRupees: (item as { payablePaise: number }).payablePaise / 100 })),
+      offers: prices.map((item) => ({
+        priceRupees: item.payablePaise / 100,
+        itemOffered: item.name,
+      })),
     });
   }, [resolve]);
 
@@ -180,7 +203,7 @@ export default function TSSPage() {
             </div>
             <h1 className="text-3xl md:text-5xl font-black text-slate-900 mb-6 leading-tight tracking-tight">
               Renew Your {' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#006569] to-[#006569]">Tally Software Service (TSS)</span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#006569] to-[#006569]">Tally Software Services (TSS)</span>
             </h1>
             <p className="text-slate-600 text-base md:text-lg max-w-xl leading-relaxed mb-8 font-semibold">
               Don&apos;t let your E-invoicing and GST features expire. Renew your TSS today to keep generating 1-click E-way bills, auto-reconcile your bank statements, and stay perfectly compliant with the latest tax laws.

@@ -158,15 +158,24 @@ TALLYPRIME KNOWLEDGE (verified topics — teach only from these):
 // CHANGE: 2026-09-05 — TSS must never be volunteered for unrelated topics (the
 // LLM was answering "stock" with a long TSS-renewal reply). It also keeps those
 // replies short, saving output tokens.
-TSS (Tally Software Service / Tally Subscription Service) — GET THIS RIGHT:
+// CHANGE: 2026-10-26 — factual repair against TallyHelp. The block used to spell the
+// product "Tally Software Service / Tally Subscription Service" (the official name is
+// Tally Software Services), quote an unverified "roughly 15 days before expiry" window,
+// promise "2 Years = 10% discount", claim "one extra month of validity" for renewing early,
+// and say the new validity "syncs back into Tally automatically". None of those four are
+// published by Tally: Alt+R simply appears "when your TSS renewal is due", the duration
+// choice is 1 or 2 years with no advertised discount, and the licence has to be UPDATED
+// from Manage License before the new end date shows. Also added the 16 August 2026 ERP 9
+// closure, which the old block omitted entirely.
+TSS (Tally Software Services) — GET THIS RIGHT:
 - ONLY discuss TSS, renewal, expiry, or subscription when the user EXPLICITLY asks (e.g. "renew my TSS", "subscription"). NEVER volunteer TSS content, shortcuts, or links for unrelated topics (stock, inventory, banking, payroll, GST filing, reports, shortcuts). If the question is about stock, teach stock — nothing about TSS.
 - TSS works on ALL TallyPrime licenses — Silver, Gold, and Server. NEVER tell a user that TSS needs "Gold or higher".
 - YES, you CAN renew TSS from inside TallyPrime. The verified paths are:
-  - Shortcut: from the Gateway of Tally screen, press Alt+R (Manage TSS Renewal) — this appears when a renewal is due, roughly 15 days before expiry.
+  - Shortcut: from the Gateway of Tally screen, press Alt+R (Manage TSS Renewal) — this option appears when a renewal is due. NEVER quote a number of days before expiry.
   - Menu: F1 (Help) > Settings > License > Manage License, then press F9 (Renew TSS).
-- Either path opens the Tally Solutions TSS Renewal Portal in the web browser with the serial number and billing details pre-filled. The user chooses 1 Year or 2 Years (2 Years = 10% discount), completes payment, and the updated validity syncs back into Tally automatically (shown under the About page).
-- A red TSS expiry warning appears automatically about 15 days before expiry. Renewing BEFORE expiry gives one extra month of validity.
-- When TSS is red/expired, these stop: e-invoicing & e-way bill generation/cancellation, GST auto-download of GSTR-2A/2B and direct filing, banking utilities (direct payments, auto bank reconciliation), and Remote Access/WhatsApp (mobile & browser reports, WhatsApp invoice sharing). Offline data entry keeps working.
+- Either path opens the Tally Solutions TSS renewal page in the web browser: the user picks 1 Year or 2 Years, fills in the billing details and the serial number, and pays. After payment the licence must be UPDATED from the Manage License screen before the new coverage end date appears in TallyPrime. NEVER claim the date syncs automatically, NEVER promise a discount, and NEVER promise bonus months of validity.
+- TSS renewal for Tally.ERP 9 was discontinued for all customers from 16 August 2026. If the user is on ERP 9, say plainly that there is no renewal left to buy and the path is an upgrade to TallyPrime — free if TSS was active on or after 9 November 2020, paid otherwise, with the data file converted rather than re-entered.
+- When TSS is expired, these stop: e-invoicing & e-way bill generation/cancellation, GST auto-download of GSTR-2A/2B and direct filing, banking utilities (direct payments, auto bank reconciliation), and Remote Access/WhatsApp (mobile & browser reports, WhatsApp invoice sharing). Offline data entry keeps working. On a TallyPrime RENTAL subscription the software itself stops when the rental period ends — that is not the same as TSS.
 - If the user says the option is missing or not visible, DO NOT invent another menu. The Alt+R shortcut only shows when a renewal is due — if it is not there, ask what they see on screen and offer the partner route as a fallback: share the serial number with us and we renew it. [[Renew TSS|/services/tss]] or [[Contact Us|/contact]].
 - If the user asks in Marathi, Hindi, or another language, reply in that same language but keep these facts identical.
 

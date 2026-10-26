@@ -217,6 +217,19 @@ export function articleJsonLd({
 // (DB-driven with identical-number fallback), so the markup always matches what a visitor
 // sees. `aggregateRating` is emitted ONLY when the page visibly shows that product's own
 // rating (gold 4.8/120, server 4.7/85) — never fabricated.
+//
+// CHANGE: 2026-10-26 — Google Search Console structured-data cleanup. Three Offer fields are
+// intentionally and permanently OMITTED on this site, so do not "fix" them back in:
+//   • `hasMerchantReturnPolicy` — licences ARE returnable in limited cases, but there is no
+//     time limit and no cooling-off period, and the owner's rule is that the return policy is
+//     never published to customers. `MerchantReturnNotPermitted` would be a lie and
+//     `merchantReturnDays` cannot be filled honestly, so the field stays absent. The cost is
+//     only a GSC *recommendation* (merchant listing), not an error — price snippets still work.
+//   • `shippingDetails` — every sellable item is a digital licence / subscription delivered by
+//     email, so there is no physical shipment to describe.
+//   • `priceValidUntil` — awaiting the owner's pricing window; never guess a date.
+// `itemCondition` IS emitted (NewCondition): it is recommended, true for licence sales, and
+// costs nothing to be accurate about.
 export function productJsonLd({
   name,
   description,
@@ -249,6 +262,8 @@ export function productJsonLd({
         price: String(o.priceRupees),
         priceCurrency: o.priceCurrency || 'INR',
         availability: o.availability || 'https://schema.org/InStock',
+        // CHANGE: 2026-10-26 — licences/subscriptions are always new stock, never used.
+        itemCondition: 'https://schema.org/NewCondition',
         url: parallelPath(url),
         seller: { '@type': 'Organization', name: SITE_NAME },
       }))
