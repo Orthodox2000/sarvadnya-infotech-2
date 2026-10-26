@@ -116,6 +116,38 @@ try {
     dms && typeof dms.content === 'string' ? `${dms.content.length} chars` : 'missing'
   );
 
+  // CHANGE: 2026-10-26 — three pre-seed admin posts had NO `slug` (so the seed could never
+  // manage them, and the one about ERP 9 renewal pricing became wrong after TSS renewal on
+  // ERP 9 was discontinued). They were replaced by three factual seeded posts. Assert the
+  // replacements are live AND the originals are gone, so a re-import of an old dump cannot
+  // silently bring the wrong copy back.
+  const NEW_SLUGS_2026_10_26 = [
+    'tally-prime-rental-vs-perpetual-licence',
+    'tallyprime-silver-gold-server-difference',
+    'tally-custom-modules-supply-chain',
+  ];
+  const rewriteDocs = await news
+    .find({ slug: { $in: NEW_SLUGS_2026_10_26 } }, { projection: { slug: 1, title: 1, tags: 1, faqs: 1 } })
+    .toArray();
+  check('2026-10-26 batch: all 3 replacement posts are live', rewriteDocs.length === 3, `found ${rewriteDocs.length}/3`);
+  for (const slug of NEW_SLUGS_2026_10_26) {
+    const doc = rewriteDocs.find((d) => d.slug === slug);
+    check(
+      `  2026-10-26 post "${slug}" has title + tags + faqs (>= 3)`,
+      !!doc &&
+        !!doc.title &&
+        Array.isArray(doc.tags) &&
+        doc.tags.length > 0 &&
+        Array.isArray(doc.faqs) &&
+        doc.faqs.length >= 3,
+      doc ? doc.title : 'missing'
+    );
+  }
+  const unsluggedLeft = await news.countDocuments({ slug: { $exists: false } });
+  check('no unslugged legacy news docs remain', unsluggedLeft === 0, `${unsluggedLeft} remain`);
+  const obsoleteErp9 = await news.countDocuments({ title: /ERP 9 is set to change significantly/i });
+  check('the obsolete ERP 9 renewal-price post is gone', obsoleteErp9 === 0, `${obsoleteErp9} still present`);
+
   console.log(`\n${failed === 0 ? 'ALL NEWS-SEED VERIFICATIONS PASSED' : `${failed} VERIFICATIONS FAILED`} (${passed} passed / ${failed} failed)`);
   process.exitCode = failed === 0 ? 0 : 1;
 } catch (err) {

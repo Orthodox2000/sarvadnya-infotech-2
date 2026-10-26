@@ -987,6 +987,189 @@ If your team spends a working day every quarter hunting for scanned bills, an ac
 
 Sarvadnya Infotech is a Tally certified partner in CBD Belapur, Navi Mumbai. We implement TallyPrime add-on modules and document attachment for TallyPrime and Tally ERP 9, configure storage and permissions with you, and support businesses in Mumbai, Navi Mumbai and across India. Call 022 49647959 or 022 49742200, WhatsApp +91 98709 42557, or email info@sarvadnyainfotech.com - see our add-ons page or ask us what fits your voucher flow.`,
   },
+  // CHANGE: 2026-10-26 — replaces three pre-seed admin posts that had NO `slug` field.
+  // Those docs could never be reached by the upsert below (it matches on `slug`) and could
+  // never be deleted by REMOVE_SLUGS (also slug-based), so they sat outside this file's
+  // control. One was actively WRONG after TSS renewal on Tally.ERP 9 was discontinued on
+  // 16 Aug 2026 (it still urged "renew now at existing rates"); one described unverifiable
+  // "AI features"; one announced an expired webinar. They are deleted by exact title
+  // (LEGACY_UNSLUGGED_TITLES below) and their old title-derived URLs are 301-redirected in
+  // next.config.js, so nothing already indexed turns into a 404.
+  {
+    slug: 'tally-prime-rental-vs-perpetual-licence',
+    title: 'TallyPrime Rental vs Perpetual Licence: Which One Should You Buy?',
+    date: 'October 26, 2026',
+    category: 'Tally Prime',
+    description: 'Perpetual or rental TallyPrime licence: what each one buys, what happens when the term ends, and where TSS fits in. A plain comparison for Indian businesses.',
+    tags: ['tally prime license', 'tally prime on rent', 'tally prime rental', 'tally prime perpetual license', 'tally prime subscription', 'tally license renewal'],
+    link: '/products',
+    author: 'Sarvadnya Infotech LLP',
+    content: `TallyPrime can be held on two very different terms, and the difference only shows up on the day the term ends. On a perpetual licence you buy the right to use that edition and keep using it. On a rental licence you pay for a fixed period, and when that period is over the licence is over. Neither is a trick, but they behave nothing alike, so the decision belongs on how long you expect to use Tally - not on the first payment alone.
+
+What a perpetual licence buys:
+
+- The right to use one edition (Silver single user, Gold multi-user, Server client-server) on its licensed user count, with no end date
+- TSS as a separate annual subscription on top of it. TSS is what keeps statutory releases, the connected services and support running
+- Your data stays usable if TSS lapses: vouchers still open and entry still works, but statutory and e-invoice updates, the connected services (e-invoicing, e-way bill, GST returns, bank payments, mobile access) and support stop until TSS is renewed
+
+What a rental licence buys:
+
+- The same edition, for a defined term
+- When the term ends the licence ends. There is no "keeps working after the term" fallback the way a perpetual licence has
+- Renewing before the end date keeps you running. Letting it end means you stop using Tally until you renew
+
+What is the same either way:
+
+- The edition and the user count still decide what your team can do, whichever way you pay
+- Every licence carries a serial number, and renewals, upgrades and support are all raised against it
+- Your company data file is your own. How you pay for the licence does not change the file or require re-entry
+
+How to see what you hold right now:
+
+- In TallyPrime open F1 (Help) > Settings > License > Manage License
+- That screen shows the edition, the serial number, and either the TSS expiry date (perpetual) or the licence end date (rental)
+- When renewal is due, an Alt+R (Manage TSS Renewal) option appears on the Gateway of Tally
+
+How to decide:
+
+- If Tally is how the business runs its books and you expect to still be on it in three years, a perpetual licence is the simpler base
+- If you need Tally for one project, one contract, a seasonal business or a short audit cycle, a term licence matches the work
+- Compare the total cost across the years you expect to use it, and remember that TSS on a perpetual licence is an annual cost that does not disappear
+- Ask before you assume. A lapsed TSS on a perpetual licence is not the same as an expired rental licence, and treating the two as one is the most common mistake we see
+
+Sarvadnya Infotech handles TallyPrime licence purchases, TSS renewals and edition upgrades from CBD Belapur, Navi Mumbai for businesses anywhere in India. Send us the serial number from Manage License and we will tell you which licence you hold, when it ends or expires, and what the correct route is.`,
+    faqs: [
+      {
+        q: 'Does TallyPrime stop working when TSS expires?',
+        a: 'On a perpetual licence, no. The software still opens and you can still enter vouchers, but statutory releases, connected services such as e-invoicing and GST returns, and support stop until TSS is renewed. On a rental licence the licence itself ends when the term ends, so it must be renewed to keep using Tally.',
+      },
+      {
+        q: 'Can I move from a rental licence to a perpetual one?',
+        a: 'Yes. It is a licence change against the same serial number, not a reinstallation, and your company data file carries across unchanged. Ask us to check the current term first so the timing does not waste a period you have already paid for.',
+      },
+      {
+        q: 'Where do I see whether my licence is perpetual or rental?',
+        a: 'Open F1 (Help) > Settings > License > Manage License in TallyPrime. The screen shows the edition, the serial number, and either the TSS expiry date or the licence end date.',
+      },
+    ],
+  },
+  {
+    slug: 'tallyprime-silver-gold-server-difference',
+    title: 'TallyPrime Silver vs Gold vs Server: Which Edition Fits Your Team?',
+    date: 'October 26, 2026',
+    category: 'Tally Prime',
+    description: 'TallyPrime Silver, Gold and Server compared: single user, multi-user on a local network, and client-server - so you buy the edition your team will actually use.',
+    tags: ['tally prime silver vs gold', 'tally prime gold vs server', 'tally prime editions', 'tally prime multi user', 'tally prime single user', 'tally prime server'],
+    link: '/products',
+    author: 'Sarvadnya Infotech LLP',
+    content: `Three TallyPrime editions are sold, and the names describe how many people can work at once rather than how large the business is. Buying the wrong one costs twice - once for the licence you did not need, and again for the upgrade a few months later.
+
+What each edition is for:
+
+- Silver - single user. One person works in the company data at a time. Correct for an owner-operated business, a small office, or a firm where only one person ever keys in
+- Gold - multi-user on a local network. The data lives on one machine and the other users connect to it over the office network. Correct when several people key vouchers or raise bills from the same premises
+- Server - the client-server edition, for a larger or more distributed footprint where several users work at once and the load has to spread beyond one desktop. Licensed separately from Gold
+
+What actually decides it - not "how many employees", but "how many people need to be inside Tally at the same moment":
+
+- Count the people working in Tally during your busiest hour, not the headcount on the payroll
+- Note whether they all sit in one office. Gold assumes a local network; people spread across sites or working from home need a different answer, and that is a separate decision about how they reach the data
+- Be honest about the next twelve months. Buying Gold because "we might grow" when one person keys data wastes money; buying Silver and then finding four people keying every day means paying twice
+
+Changing edition later:
+
+- Upgrading from Silver to Gold, or Gold to Server, is a licence change, not a data migration. The same company data file carries your masters and vouchers across
+- TSS renewal, support and cloud backup continue against the same serial number
+- The edition in use, the serial number and the licensed user count are shown in F1 (Help) > Settings > License > Manage License
+
+Before you buy:
+
+- Confirm the edition you already hold, so you are not sold a second licence you do not need
+- Confirm whether TSS is current, because a new licence and an active subscription are two different payments
+- Confirm where the company data will live, and who backs it up
+
+Sarvadnya Infotech sells and supports all three TallyPrime editions from CBD Belapur, Navi Mumbai. Tell us how many people need to work in Tally at the same time and where they sit, and we will tell you the edition that fits - compare them on our products page or talk to us directly.`,
+    faqs: [
+      {
+        q: 'Can two people work in TallyPrime Silver at the same time?',
+        a: 'No. Silver is a single-user licence, so one person works in the company data at a time. If two or more people must key vouchers simultaneously, Gold (multi-user on a local network) or Server is the correct edition.',
+      },
+      {
+        q: 'Do I lose my data if I upgrade from Silver to Gold?',
+        a: 'No. The edition upgrade is a licence change, not a data migration. Your existing company data file opens in the new edition with masters and vouchers intact.',
+      },
+      {
+        q: 'Is TallyPrime Server included with Gold?',
+        a: 'No. Server is licensed separately from Gold. It is the client-server edition for a larger or more distributed footprint, not an add-on to a Gold licence.',
+      },
+      {
+        q: 'How do I know how many users my current licence allows?',
+        a: 'Open F1 (Help) > Settings > License > Manage License. The screen shows the edition in use, the serial number and the licence details.',
+      },
+    ],
+  },
+  {
+    slug: 'tally-custom-modules-supply-chain',
+    title: 'Tally Custom Modules for Supply Chain: What a TDL Module Can Do',
+    date: 'October 26, 2026',
+    category: 'Tally Add-Ons',
+    description: 'How a Tally TDL module fits around transport, container handling, clearing and forwarding, and warehousing - and when it beats a spreadsheet.',
+    tags: ['tally custom module', 'tally tdl module', 'tally supply chain', 'tally transport module', 'tally container handling', 'tally warehouse module'],
+    link: '/modules',
+    author: 'Sarvadnya Infotech LLP',
+    content: `A Tally module is TDL (Tally Definition Language) code that wraps one business line inside Tally. It does not replace Tally - it adds the screens, reports and controls your operation runs on but that Tally does not ship by default. For supply chain teams that is usually the difference between Tally holding the accounts and Tally holding the operation.
+
+What supply chain teams actually ask for:
+
+- Job-wise costing, so each consignment, container or clearing job shows its own revenue, direct costs and margin
+- Transporter-wise and route-wise reports, instead of retyping freight into a spreadsheet to find out which lane is losing money
+- Container and consignment tracking, with the packing, weight and document detail that travels with it
+- Warehouse invoices that carry the right packing and handling detail, not a generic tax invoice
+- Control points, so a dispatch or a rate change cannot be made by whoever happens to be at the keyboard
+
+When a module beats a workaround:
+
+- If the answer today is a spreadsheet someone fills every morning, a module is usually cheaper than the hours it removes
+- If a report has to be retyped every month, the module prints it from the same vouchers your accounts team already entered
+- If a control depends on someone remembering, the module enforces it at the moment of entry
+
+Ready-made modules we run today:
+
+- Transport business module - trip-level operations and billing inside Tally
+- Container handling module - logistics detail attached to the voucher instead of a separate register
+- Clearing and forwarding (CFA) module - job creation and import, multi-currency invoicing, reimbursable expense fetch, job closure and job-wise profitability
+- Warehouse management with invoice format - packing and handling detail printed on the invoice itself
+
+The full ready-made list, with what each one changes on screen, is on our shop page. The larger vertical solutions built around a single business type are on the modules page.
+
+What a module will not do:
+
+- It will not fix inconsistent masters. If items, parties or godowns are duplicated across the business, the new report will be consistently wrong
+- It will not replace a decision. A module can show that a lane is unprofitable; it cannot choose the carrier
+- It is not free-standing. It runs inside a licensed TallyPrime installation, and where it depends on current statutory or connected services it needs an active subscription
+
+If your workflow is not in the catalogue:
+
+- The modules above cover the common supply chain shapes, but every business has one report nobody else asks for
+- Custom TDL is built the same way each time: a short requirement conversation about the exact screen, report or control; a scope you approve; development and testing against a copy of your own data; then installation and a walkthrough with the people who will use it
+- You are not asked to describe the code. You describe the document you wish Tally would print
+
+Sarvadnya Infotech builds and supports Tally TDL modules from CBD Belapur, Navi Mumbai. Tell us the report or control you are missing and we will say whether a ready-made module already does it or whether it needs a build.`,
+    faqs: [
+      {
+        q: 'What is a TDL module in Tally?',
+        a: 'TDL (Tally Definition Language) is the language used to extend Tally. A module is TDL code that adds screens, reports and controls for one business line - for example job-wise costing for a clearing and forwarding agency - without replacing Tally itself.',
+      },
+      {
+        q: 'Can a module be built for my exact report?',
+        a: 'Yes. Custom TDL is built from your requirement: you show us the report, screen or control you need, we scope it, build it, and test it against a copy of your data before installing it.',
+      },
+      {
+        q: 'Do I need TSS for a custom module to work?',
+        a: 'The module runs inside your licensed TallyPrime installation. Where it depends on current statutory or connected services, an active TSS keeps those running, so we check the subscription before a build.',
+      },
+    ],
+  },
 ];
 
 async function seed() {
@@ -1020,6 +1203,26 @@ async function seed() {
       if (res.deletedCount) {
         removed++;
         console.log(`Removed legacy news post: ${slug}`);
+      }
+    }
+
+    // CHANGE: 2026-10-26 — three pre-seed admin posts were saved WITHOUT a `slug`, so neither
+    // the slug-keyed upsert below nor REMOVE_SLUGS could ever reach them. They were replaced by
+    // the three factual posts at the end of `posts` (rental vs perpetual licence, Silver/Gold/
+    // Server editions, supply-chain modules). Deletion is by EXACT title AND `slug` absent, so a
+    // future admin post that happens to reuse a title but has its own slug is never touched.
+    // Their old title-derived URLs are 301-redirected in next.config.js.
+    const LEGACY_UNSLUGGED_TITLES = [
+      'ERP 9 is set to change significantly from 1st July 2026',
+      'New TallyPrime v7.0 Released with Advanced AI Features!',
+      'Upcoming Webinar: Optimizing Your Supply Chain with Tally Custom Modules.',
+    ];
+
+    for (const title of LEGACY_UNSLUGGED_TITLES) {
+      const res = await col.deleteOne({ title, slug: { $exists: false } });
+      if (res.deletedCount) {
+        removed++;
+        console.log(`Removed legacy unslugged news post: ${title}`);
       }
     }
 

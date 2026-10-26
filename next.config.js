@@ -51,6 +51,15 @@ const nextConfig = {
       // CHANGE: 2026-09-17 — old WP blog post "Small Add-ons in Tally ERP 9" → its modern
       // news article (same topic, live seeded slug) so the GSC 404 row clears and equity passes.
       { source: '/small-add-ons-in-tally-erp-9', destination: '/news/tally-erp9-add-ons', permanent: true },
+      // CHANGE: 2026-10-26 — three pre-seed admin news posts had no `slug`, so their URLs were
+      // derived from the title + ObjectId tail. They were replaced by three factual seeded posts
+      // (see LEGACY_UNSLUGGED_TITLES in scripts/seed_news.mjs) and are now deleted from the DB.
+      // These 301s keep the old, already-indexed and sitemap-submitted URLs from turning into
+      // 404s. They are exact paths and contain no `?` or `+`, so Next accepts them (see the
+      // 2026-10-12 note in AGENTS.md).
+      { source: '/news/erp-9-is-set-to-change-significantly-from-1st-july-2026-a4c79b', destination: '/news/tally-tss-renewal-2026', permanent: true },
+      { source: '/news/new-tallyprime-v7-0-released-with-advanced-ai-features-a4c799', destination: '/news/tallyprime-silver-gold-server-difference', permanent: true },
+      { source: '/news/upcoming-webinar-optimizing-your-supply-chain-with-tally-custom-modules-a4c79c', destination: '/news/tally-custom-modules-supply-chain', permanent: true },
       // CHANGE: 2026-09-17 — full legacy-WP audit (scripts/audit-legacy-wp.mjs): 29 real user-facing
       // old pages 301 to their closest live equivalent so link equity consolidates and no old
       // URL can 404 again. `` covers the trailing-slash variant Googlebot crawls directly.
