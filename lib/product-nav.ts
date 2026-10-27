@@ -86,50 +86,6 @@ export const productItems: ProductItem[] = [
           { id: "a-view-all", label: "View All Add-ons", href: "/addons" },
         ]
       },
-      // CHANGE: 2026-10-23 — third column: the new /shop (107 items). Placed INSIDE the Modules
-      // menu rather than as a new top-level item because the product bar is horizontal-budget
-      // sensitive at 360px (see AGENTS §12); a desktop-only top-level entry adds the prominence
-      // on large screens without touching the mobile row.
-      {
-        id: "shop-group",
-        label: "Shop — All Solutions",
-        href: "/shop",
-        description: "107 TDLs, Excel importers, boosters and industry modules.",
-        subItems: [
-          { id: "shop-all", label: "Browse the Full Shop", href: "/shop" },
-          { id: "shop-addons", label: "TDL Add-ons", href: "/shop?group=addon" },
-          { id: "shop-excel", label: "Excel to Tally", href: "/shop?group=excel" },
-          { id: "shop-boosters", label: "Business Boosters", href: "/shop?group=booster" },
-          { id: "shop-modules", label: "Industry Modules", href: "/shop?group=module" },
-        ]
-      },
-    ],
-  },
-  {
-    // CHANGE: 2026-10-23 — top-level /shop entry for desktop. `desktopOnly` keeps the 360px
-    // row unchanged; mobile reaches the same page from Modules > Shop (all sizes).
-    label: "Shop",
-    href: "/shop",
-    desktopOnly: true,
-    subItems: [
-      {
-        id: "shop-all",
-        label: "All Solutions",
-        href: "/shop",
-        description: "107 TDLs, Excel importers, boosters and industry modules.",
-        subItems: [
-          { id: "shop-addons", label: "TDL Add-ons", href: "/shop?group=addon" },
-          { id: "shop-excel", label: "Excel to Tally", href: "/shop?group=excel" },
-          { id: "shop-boosters", label: "Business Boosters", href: "/shop?group=booster" },
-          { id: "shop-modules", label: "Industry Modules", href: "/shop?group=module" },
-        ]
-      },
-      {
-        id: "shop-by-need",
-        label: "Shop by what hurts",
-        href: "/shop#shop-filters",
-        description: "Filter by billing, credit, stock, reports, Excel or automation.",
-      },
     ],
   },
   {

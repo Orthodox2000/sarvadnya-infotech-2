@@ -62,7 +62,7 @@ export default function ShopPage() {
   ]);
 
   return (
-    <div className="min-h-screen bg-[linear-gradient(90deg,rgba(249,251,245,1)_0%,rgba(244,242,234,1)_53%,rgba(238,236,223,1)_100%)]">
+    <div className="min-h-screen bg-[#f7f7f7]">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify([itemListLd, breadcrumbLd]) }}

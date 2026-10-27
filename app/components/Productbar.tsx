@@ -85,7 +85,33 @@ const Productbar = () => {
       { id: "ai-search", label: "Site Search", href: "/search", description: "Search products, services, guides & more." },
     ],
   };
-  const allItems = [...items, aiItem];
+  // CHANGE: 2026-10-27 — Rename Shop to Solutions, move last/right of AI.
+  const solutionsItem: ProductItem & { desktopOnly?: boolean } = {
+    label: "Solutions",
+    href: "/shop",
+    desktopOnly: true,
+    subItems: [
+      {
+        id: "sol-all",
+        label: "All Solutions",
+        href: "/shop",
+        description: "107 TDLs, Excel importers, boosters and industry modules.",
+        subItems: [
+          { id: "sol-addons", label: "TDL Add-ons", href: "/shop?group=addon" },
+          { id: "sol-excel", label: "Excel to Tally", href: "/shop?group=excel" },
+          { id: "sol-boosters", label: "Business Boosters", href: "/shop?group=booster" },
+          { id: "sol-modules", label: "Industry Modules", href: "/shop?group=module" },
+        ]
+      },
+      {
+        id: "sol-by-need",
+        label: "Shop by what hurts",
+        href: "/shop#shop-filters",
+        description: "Filter by billing, credit, stock, reports, Excel or automation.",
+      },
+    ],
+  };
+  const allItems = [...items, aiItem, solutionsItem];
 
   // Background warmer for sub-items on hover
   const handleItemHover = (label: string) => {

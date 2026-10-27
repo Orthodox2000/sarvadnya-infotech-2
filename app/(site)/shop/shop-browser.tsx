@@ -73,31 +73,28 @@ const ShopCard = memo(function ShopCard({
   return (
     <article
       id={item.slug}
-      className={`scroll-mt-32 group flex h-full flex-col rounded-2xl border bg-white/90 p-4 sm:p-5 shadow-sm transition-all duration-200 hover:shadow-md hover:border-teal-300 ${
-        expanded ? 'border-teal-400 ring-1 ring-teal-200' : 'border-slate-200'
+      className={`scroll-mt-32 group flex h-full flex-col rounded-lg border bg-white shadow-sm transition-all duration-200 hover:shadow-lg hover:border-[#006569]/40 ${
+        expanded ? 'border-[#006569] ring-1 ring-[#006569]/20' : 'border-slate-200'
       }`}
     >
       <div className="mb-2 flex flex-wrap items-center gap-1.5">
-        <span className={`rounded-full border px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide ${GROUP_TONE[item.group]}`}>
+        <span className={`rounded border px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide ${GROUP_TONE[item.group]}`}>
           {groupLabel(item.group)}
         </span>
-        <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-slate-500">
+        <span className="rounded border border-slate-200 bg-slate-50 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide text-slate-500">
           {categoryLabel(item.category)}
         </span>
         {item.featured && (
-          <span className="ml-auto inline-flex items-center gap-1 rounded-full bg-[#006569] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white">
-            <svg className="h-2.5 w-2.5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-              <path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.2 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8L12 2z" />
-            </svg>
-            Popular
+          <span className="ml-auto inline-flex items-center rounded bg-[#006569] px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide text-white">
+            Best Seller
           </span>
         )}
       </div>
 
-      <h3 className="text-[15px] font-bold leading-snug text-slate-900 transition-colors group-hover:text-[#006569]">
+      <h3 className="text-[14px] font-bold leading-snug text-slate-900 transition-colors group-hover:text-[#006569] line-clamp-2">
         {item.title}
       </h3>
-      <p className="mt-1.5 line-clamp-3 text-[12.5px] leading-relaxed text-slate-600">{item.summary}</p>
+      <p className="mt-1.5 line-clamp-2 text-[12px] leading-relaxed text-slate-600">{item.summary}</p>
 
       {item.tags.length > 0 && (
         <ul className="mt-3 flex flex-wrap gap-1.5">
@@ -159,20 +156,17 @@ const ShopCard = memo(function ShopCard({
           onClick={() => onToggle(item.slug)}
           aria-expanded={expanded}
           aria-controls={detailId}
-          className="inline-flex h-9 flex-1 items-center justify-center gap-1 rounded-full border border-slate-300 px-3 text-[11.5px] font-bold text-slate-600 transition-colors hover:border-[#006569] hover:text-[#006569]"
+          className="inline-flex h-9 flex-1 items-center justify-center gap-1 rounded-md border border-slate-300 px-3 text-[11.5px] font-semibold text-slate-700 transition-colors hover:bg-slate-50"
         >
           {expanded ? 'Hide details' : 'Details'}
         </button>
         <button
           type="button"
           onClick={() => onBuy(item)}
-          className="inline-flex h-9 flex-1 items-center justify-center gap-1.5 rounded-full bg-[#006569] px-3 text-[11.5px] font-bold text-white shadow-sm transition-all hover:bg-[#045A57] active:scale-[0.98]"
+          className="inline-flex h-9 flex-1 items-center justify-center gap-1.5 rounded-md bg-[#FFD814] px-3 text-[11.5px] font-semibold text-slate-900 shadow-sm transition-all hover:bg-[#F7CA00] active:scale-[0.98]"
           aria-label={`Buy ${item.title} - request a quote`}
         >
-          Buy
-          <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" aria-hidden="true">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-          </svg>
+          Get Quote
         </button>
       </div>
     </article>
@@ -446,43 +440,11 @@ export default function ShopBrowser() {
 
   return (
     <>
-      {/* Featured strip */}
-      <section aria-labelledby="shop-featured" className="mx-auto max-w-7xl px-4 pb-4 md:px-6">
-        <div className="flex flex-wrap items-end justify-between gap-2">
-          <div>
-            <h2 id="shop-featured" className="text-[13px] font-black uppercase tracking-[0.18em] text-[#006569]">
-              Most asked for
-            </h2>
-            <p className="mt-1 text-[12.5px] text-slate-500">The ten our clients ask about first.</p>
-          </div>
-          <button
-            type="button"
-            onClick={() => setFeaturedOnly(true)}
-            className="text-[11.5px] font-bold text-[#006569] underline-offset-4 hover:underline"
-          >
-            Show all popular
-          </button>
-        </div>
-        <div className="-mx-1 mt-3 flex snap-x snap-mandatory gap-2.5 overflow-x-auto px-1 pb-2">
-          {TDL_FEATURED.map((item) => (
-            <button
-              key={item.slug}
-              type="button"
-              onClick={() => jumpTo(item.slug)}
-              className="w-[210px] shrink-0 snap-start rounded-xl border border-slate-200 bg-white/90 p-3 text-left shadow-sm transition-all hover:-translate-y-0.5 hover:border-teal-300 hover:shadow-md"
-            >
-              <span className="text-[9.5px] font-bold uppercase tracking-wide text-[#006569]">{categoryLabel(item.category)}</span>
-              <span className="mt-1 block line-clamp-2 text-[12.5px] font-bold leading-snug text-slate-800">{item.title}</span>
-            </button>
-          ))}
-        </div>
-      </section>
-
-      <div className="mx-auto max-w-7xl px-4 pb-16 md:px-6">
+      <div className="mx-auto max-w-7xl px-4 pb-16 pt-6 md:px-6">
         <div className="lg:grid lg:grid-cols-[248px_minmax(0,1fr)] lg:gap-7">
           {/* Sidebar */}
           <aside className="lg:sticky lg:top-24 lg:self-start">
-            <div className="rounded-2xl border border-slate-200 bg-white/80 p-3.5 shadow-sm backdrop-blur-sm">
+            <div className="rounded-lg border border-slate-200 bg-white p-3 shadow-sm">
               <div className="flex items-center justify-between gap-2 lg:hidden">
                 <button
                   type="button"
@@ -576,7 +538,7 @@ export default function ShopBrowser() {
               </div>
             ) : (
               <>
-                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
+                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                   {shown.map((item) => (
                     <ShopCard
                       key={item.slug}
