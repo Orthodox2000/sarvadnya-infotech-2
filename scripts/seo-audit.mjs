@@ -10,6 +10,8 @@
 //   5. Utility routes (checkout / demo / theme-settings) are noindex.
 //   6. WARN: description longer than 160 chars AFTER the auto-appended CONTACT_SUFFIX (Google
 //      truncates / rewrites descriptions anyway — trimming that copy is the owner's call).
+//   7. seoMetadata() must declare `images` in BOTH openGraph and twitter, because an explicit
+//      openGraph without `images` suppresses app/opengraph-image.tsx on every page.
 // Run: npm run check:seo   (exit 1 on any violation)
 import { readFileSync, readdirSync, statSync, existsSync } from 'node:fs'
 import { join, relative } from 'node:path'
@@ -58,8 +60,63 @@ function findCallEnd(src, openIdx) {
   return -1
 }
 
-function extractSeoCalls(src) {
-  const calls = []
+// CHANGE: 2026-10-27 — blank out comments before hunting for `seoMetadata(`.
+// WHY: the first version scanned raw source, so a comment that merely MENTIONED
+// seoMetadata() was parsed as a call with an empty argument list and the audit reported
+// "missing title / description / path" on a page that was correct. Strings are preserved
+// verbatim (a `//` inside 'https://…' is not a comment) and lengths are preserved so the
+// existing index/offset logic keeps working unchanged.
+function stripComments(src) {
+  let out = ''
+  let i = 0
+  while (i < src.length) {
+    const ch = src[i]
+    if (ch === '"' || ch === "'" || ch === '`') {
+      const quote = ch
+      out += ch
+      i++
+      while (i < src.length) {
+        if (src[i] === '\\') {
+          out += src[i] + (src[i + 1] ?? '')
+          i += 2
+          continue
+        }
+        out += src[i]
+        if (src[i] === quote) {
+          i++
+          break
+        }
+        i++
+      }
+      continue
+    }
+    if (ch === '/' && src[i + 1] === '/') {
+      while (i < src.length && src[i] !== '\n') {
+        out += ' '
+        i++
+      }
+      continue
+    }
+    if (ch === '/' && src[i + 1] === '*') {
+      out += '  '
+      i += 2
+      while (i < src.length && !(src[i] === '*' && src[i + 1] === '/')) {
+        out += src[i] === '\n' ? '\n' : ' '
+        i++
+      }
+      if (i < src.length) {
+        out += '  '
+        i += 2
+      }
+      continue
+    }
+    out += ch
+    i++
+  }
+  return out
+}
+
+function extractSeoCalls(src) {  const calls = []
   const marker = 'seoMetadata('
   let from = 0
   while (true) {
@@ -92,7 +149,7 @@ for (const file of files) {
   const rel = relative(ROOT, file).replaceAll('\\', '/')
   const src = readFileSync(file, 'utf8')
   if (!src.includes('seoMetadata(')) continue
-  for (const c of extractSeoCalls(src)) {
+  for (const c of extractSeoCalls(stripComments(src))) {
     checked++
     if (c.title === null) problems.push(`${rel}: seoMetadata missing title`)
     if (c.description === null) problems.push(`${rel}: seoMetadata missing description`)
@@ -124,6 +181,38 @@ const required = [
   'app/favicon.ico',
 ]
 for (const f of required) if (!existsSync(join(ROOT, f))) problems.push(`missing required file: ${f}`)
+
+// --- Share image (og:image / twitter:image) -------------------------------------------
+// CHANGE: 2026-10-27 — guard added. WHY: seoMetadata() returns an explicit `openGraph`
+// object, and in Next.js a page-level `openGraph` WITHOUT `images` REPLACES the
+// file-based app/opengraph-image.tsx inheritance instead of merging with it. Measured
+// before the fix: og:image was present on 0 of the 48 seoMetadata() pages, while /demo
+// and /cart (which declare no openGraph at all) still carried it — so the 2026-10-12
+// share-image work was inert site-wide. The file existing is not enough; the helper has
+// to declare the image, otherwise every share card silently loses its artwork again.
+const seoSrc = readFileSync(join(ROOT, 'lib/seo.ts'), 'utf8')
+const ogStart = seoSrc.indexOf('openGraph: {')
+const twStart = seoSrc.indexOf('twitter: {')
+const noindexStart = seoSrc.indexOf('...(noindex', twStart)
+if (ogStart === -1) problems.push('lib/seo.ts: seoMetadata() has no openGraph block')
+if (twStart === -1 || twStart < ogStart) problems.push('lib/seo.ts: seoMetadata() has no twitter block after openGraph')
+if (ogStart !== -1 && twStart > ogStart) {
+  const ogBlock = seoSrc.slice(ogStart, twStart)
+  if (!/\bimages\s*:/.test(ogBlock)) {
+    problems.push('lib/seo.ts: openGraph declares no `images` — that suppresses app/opengraph-image.tsx on every page (og:image disappears)')
+  }
+  const twBlock = seoSrc.slice(twStart, noindexStart === -1 ? seoSrc.length : noindexStart)
+  if (!/\bimages\s*:/.test(twBlock)) {
+    problems.push('lib/seo.ts: twitter declares no `images` — the X/Twitter card loses its artwork')
+  }
+  if (!/summary_large_image/.test(twBlock)) {
+    problems.push('lib/seo.ts: twitter card is not `summary_large_image` (a small card crops a 1200x630 share image)')
+  }
+}
+// The helper points at the file-based route, so the two must agree on the name.
+if (!/OG_IMAGE_PATH\s*=\s*['"]\/opengraph-image['"]/.test(seoSrc)) {
+  problems.push('lib/seo.ts: OG_IMAGE_PATH must be /opengraph-image (the app/opengraph-image.tsx route)')
+}
 
 // Root layout must export metadata
 const rootLayout = readFileSync(join(APP, 'layout.tsx'), 'utf8')

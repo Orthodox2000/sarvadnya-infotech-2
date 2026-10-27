@@ -52,7 +52,10 @@ const GONE_PATHS = new Set([
   '/hello-world', '/hello-world/', '/sample-blog', '/sample-blog/',
   '/category/uncategorized', '/category/uncategorized/',
 ]);
-const GONE_PREFIXES = ['/wp-includes/', '/wp-content/', '/wp-admin/', '/wp-json/', '/2021/', '/category/'];
+// CHANGE: 2026-10-27 — `/author/` added: Search Console still lists `/author/admin/` (a
+// WordPress author-archive artifact; it redirected to a 404 because nothing matches it here).
+// Any /author/* URL is WP noise on this stack, so 410 is the correct answer rather than a redirect.
+const GONE_PREFIXES = ['/wp-includes/', '/wp-content/', '/wp-admin/', '/wp-json/', '/2021/', '/category/', '/author/'];
 
 // CHANGE: 2026-09-17 — any dated WordPress post URL starts with /YYYY/ (e.g. /2021/02/…).
 const DATED_POST_RE = /\/\d{4}\//;

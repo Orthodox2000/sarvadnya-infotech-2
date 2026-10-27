@@ -1,6 +1,19 @@
 // CHANGE: 2026-10-09 — Minimal client-side draft tracker (non-submitted inputs)
 // Gradual, batched: debounce + blur + visibilitychange + pagehide. Uses sendBeacon/keepalive.
 // Stores full IP via server; client never sends IP. 30-day TTL enforced server-side.
+//
+// CHANGE: 2026-10-27 — a CHAT draft now needs a real email or it is never sent
+// (owner: "form draft too triggers automatically from ask sara even no actual email
+// is found, ensure proper regex matching exist before triggering form draft from ask
+// sara"). The chat callers started the tracker with NO fields and flush('unload')
+// skipped the "nothing changed" early return, so every modal close / page hide POSTed
+// `fields: {}` and produced a blank, unreachable row in the admin Form Drafts screen.
+// The rule lives in lib/draft-contact.mjs (shared with the server route, so the two
+// sides can never drift on what "valid" means). Non-chat entry points are unchanged:
+// a real form draft is captured gradually by design and gating it on a finished email
+// would stop it capturing anything at all.
+
+import { shouldCaptureDraft } from './draft-contact.mjs'
 
 export type EntryPoint = 'form'|'ask-sara'|'learn-sara'|'training'|'generic'
 
@@ -72,6 +85,10 @@ export class DraftTracker {
 
   flush(reason:'debounced'|'blur'|'visibility'|'unload'|'idle'|'manual'='manual') {
     if (this.draftId===null || this.sessionId===null) return
+    // CHANGE: 2026-10-27 — gate BEFORE the unload bypass below, otherwise a chat
+    // draft with no email still escapes via sendBeacon. Checked on the merged view
+    // so a field cleared later can never resurrect an old contact.
+    if (!shouldCaptureDraft(this.entryPoint, { ...this.lastSent, ...this.pending })) return
     const now = Date.now()
     if (reason!=='unload' && reason!=='blur' && now - this.lastFlushAt < 400) return
     const diff:Record<string,any>={}; let changed=false

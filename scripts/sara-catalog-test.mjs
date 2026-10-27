@@ -133,10 +133,19 @@ test('the sales block links every add-on to its /addons anchor', () => {
   for (const a of addons) assert(block.includes(`/addons#${a.id}`), `block is missing anchor for: ${a.id}`);
 });
 // CHANGE: 2026-10-23 — the shop has 107 items; a missing one means Sara cannot recommend it.
-test('the sales block contains every shop item and its /shop anchor', () => {
+// CHANGE: 2026-10-27 — the block no longer carries a description + link for all 107 (that alone
+// was ~25,500 chars and pushed every Groq request past the 8,000 tokens-per-minute wall, which
+// rejected the whole request). It now ships the 10 most-requested items WITH their /shop anchors
+// plus a per-collection NAME LIST for the other 97, so Sara can still name the exact item.
+test('the sales block links the featured shop items and names every other one', () => {
   const block = buildCatalogPromptBlock();
-  for (const item of TDL_ITEMS) {
+  const featured = TDL_ITEMS.filter((i) => i.featured);
+  assert(featured.length === 10, `expected 10 featured shop items, got ${featured.length}`);
+  for (const item of featured) {
     assert(block.includes(`/shop#${item.slug}`), `block is missing the shop link for: ${item.slug}`);
+  }
+  for (const item of TDL_ITEMS) {
+    assert(block.includes(item.title), `block does not name the shop item: ${item.slug}`);
   }
   assert(block.includes('Tally Shop'), 'block is missing the shop catalogue entry point');
 });

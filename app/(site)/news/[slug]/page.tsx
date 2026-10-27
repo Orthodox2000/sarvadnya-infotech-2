@@ -26,7 +26,10 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   if (!item) return seoMetadata({ title: 'Not Found', description: 'Article not found.', path: `/news/${slug}` });
   const title = item.seoTitle || item.title || 'News';
   const description = item.seoDescription || item.excerpt || excerptFrom(item.description || item.content || '', 160);
-  return seoMetadata({ title, description, path: `/news/${slug}`, keywords: item.tags });
+  // CHANGE: 2026-10-27 — pass the article's own cover image as the share image.
+  // seoMetadata() now always declares an og:image (it used to declare none, which
+  // suppressed the file-based opengraph-image.tsx), so an article with artwork prefers it.
+  return seoMetadata({ title, description, path: `/news/${slug}`, keywords: item.tags, image: item.coverImage });
 }
 
 /** Split article body into paragraphs + simple "- " bullet groups (server-side safe). */

@@ -18,6 +18,31 @@ const GEMINI_MODEL = "gemini-3.5-flash-lite";
 const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`;
 const TIMEOUT_MS = 30_000;
 const MAX_HISTORY_TURNS = 24;
+// CHANGE: 2026-10-27 — Groq's free tier is 8,000 tokens per minute, measured against the WHOLE
+// request, and it rejects an oversized request with a 413 that no key rotation can fix. This is
+// the input-side ceiling we keep every request under (the sales prompt alone is ~5,100).
+// Measured: the reply for "how r u" cost prompt_tokens 5,091 + completion 146.
+const GROQ_INPUT_TOKEN_BUDGET = 6_200;
+/** Rough token estimate (chars / 4). Good enough to keep a request inside a hard ceiling. */
+const estimateTokens = (text: string) => Math.ceil(text.length / 4);
+
+/**
+ * Keep the NEWEST messages that fit the budget.
+ * The final user turn is always kept, and a conversation never starts on an assistant turn.
+ */
+function trimHistory(messages: any[], budgetTokens: number): any[] {
+  const kept: any[] = [];
+  let used = 0;
+  for (let i = messages.length - 1; i >= 0; i -= 1) {
+    const content = messages[i]?.content;
+    const cost = estimateTokens(typeof content === 'string' ? content : JSON.stringify(content ?? '')) + 4;
+    if (kept.length > 0 && used + cost > budgetTokens) break;
+    used += cost;
+    kept.unshift(messages[i]);
+  }
+  while (kept.length > 1 && kept[0]?.role === 'assistant') kept.shift();
+  return kept.length > 0 ? kept : messages.slice(-1);
+}
 // CHANGE: 2026-10-22 — the two catalogue blocks, built once at module load from
 // lib/sara-catalog.mjs (the single source of truth for what we sell and teach).
 const CATALOG_BLOCK = buildCatalogPromptBlock();
@@ -273,12 +298,19 @@ async function callGemini(apiKey: string, messages: any[], signal: AbortSignal, 
   const contents = toGeminiContents(messages);
   if (contents.length === 0) throw new Error('No valid messages for Gemini');
 
-  // AIza... = classic API key (query param); AQ... = OAuth2 access token (Bearer header)
+  // CHANGE: 2026-10-27 — only a `ya29.` value is an OAuth2 ACCESS TOKEN and needs the
+  // Authorization header. The old branch treated every non-`AIza` value as a Bearer token,
+  // so the newer `AQ.…` API keys (which is what this project actually has) were sent as
+  // `Authorization: Bearer AQ.…` and Google answered 401 "Request had invalid authentication
+  // credentials" — every Gemini key was skipped on every request, leaving Groq (which was
+  // itself 413-ing on the oversized prompt) as the only provider. Verified directly:
+  // `x-goog-api-key: AQ.…` → 200, `Authorization: Bearer AQ.…` → 401.
+  const isOAuthToken = apiKey.startsWith('ya29.');
   const headers: Record<string, string> = { 'Content-Type': 'application/json' };
-  if (apiKey.startsWith('AIza')) {
-    headers['x-goog-api-key'] = apiKey;
-  } else {
+  if (isOAuthToken) {
     headers['Authorization'] = `Bearer ${apiKey}`;
+  } else {
+    headers['x-goog-api-key'] = apiKey;
   }
 
   const res = await fetch(GEMINI_URL, {
@@ -339,10 +371,12 @@ export async function POST(request: Request) {
     const isLearn = mode === 'learn';
 
     // openai/gpt-oss-120b needs a higher budget since reasoning tokens consume the window.
-    // Learn mode keeps the full budget (long, detailed teaching); sales/chatbox mode stays short.
+    // CHANGE: 2026-10-27 — learn mode was asking for 8,192 completion tokens on a ~4k-token
+    // prompt, which alone blows Groq's 8,000 tokens-per-minute ceiling; every learn request was
+    // rejected. 2,048 is a long answer and leaves the request inside the limit.
     const groqMaxTokens = (model: string) =>
       isLearn
-        ? (model.includes('gpt-oss-120b') ? 8192 : 2048)
+        ? (model.includes('gpt-oss-120b') ? 2048 : 1536)
         : (model.includes('gpt-oss-120b') ? 1536 : 768);
     const geminiMaxTokens = isLearn ? 4096 : 1024;
 
@@ -373,7 +407,13 @@ export async function POST(request: Request) {
     }
 
     // Trim history to keep payloads small (protects Groq free-tier TPM and Gemini free limits)
-    const trimmedMessages = messages.slice(-MAX_HISTORY_TURNS);
+    // CHANGE: 2026-10-27 — a turn COUNT is not a budget. 24 turns of real conversation pushed the
+    // request past Groq's 8,000 TPM wall even with the shrunk prompt, and Groq answers that with
+    // 413 "Request too large" (not retryable across keys), so the visitor got
+    // "AI service temporarily unavailable". History is now trimmed oldest-first against whatever
+    // is left of the budget once the system prompt is paid for.
+    const historyBudget = Math.max(600, GROQ_INPUT_TOKEN_BUDGET - estimateTokens(systemPrompt));
+    const trimmedMessages = trimHistory(messages.slice(-MAX_HISTORY_TURNS), historyBudget);
     let lastError: any = null;
 
     // PRIORITY: Gemini Flash first

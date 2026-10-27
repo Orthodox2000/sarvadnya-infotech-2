@@ -1,6 +1,6 @@
 {
   "name": "sarvadnya-infotech",
-  "version": "1.1.392",
+  "version": "1.1.393",
   "private": true,
   "license": "SEE LICENSE IN LICENSE",
   "scripts": {
@@ -23,7 +23,7 @@
     "test:demo-gateway": "node scripts/demo-razorpay-test.mjs",
     "log:excel-append": "node scripts/excel-log-append.mjs",
     "test:demo-guard": "node scripts/check-demo-independence-test.mjs",
-    "test:all": "node scripts/h1-audit.mjs && node scripts/seo-audit.mjs && node scripts/schema-audit.mjs && node scripts/insights-svg-audit.mjs && node scripts/check-demo-independence.mjs && node scripts/demo-cart-test.mjs && node scripts/demo-razorpay-test.mjs && node scripts/api-test.mjs && node scripts/sara-test.mjs && node scripts/sara-topics-test.mjs && node scripts/sara-guard-test.mjs && node scripts/sara-catalog-test.mjs && node scripts/cart-test.mjs && node scripts/order-status-test.mjs && node scripts/date-coerce-test.mjs && node scripts/payment-limit-test.mjs && node scripts/payment-gateway-test.mjs && node scripts/seo-links-test.mjs && node scripts/referral-code-test.mjs && node scripts/rating-summary-test.mjs",
+    "test:all": "node scripts/h1-audit.mjs && node scripts/seo-audit.mjs && node scripts/schema-audit.mjs && node scripts/insights-svg-audit.mjs && node scripts/check-demo-independence.mjs && node scripts/demo-cart-test.mjs && node scripts/demo-razorpay-test.mjs && node scripts/api-test.mjs && node scripts/sara-test.mjs && node scripts/sara-topics-test.mjs && node scripts/sara-guard-test.mjs && node scripts/sara-catalog-test.mjs && node scripts/cart-test.mjs && node scripts/order-status-test.mjs && node scripts/date-coerce-test.mjs && node scripts/payment-limit-test.mjs && node scripts/payment-gateway-test.mjs && node scripts/seo-links-test.mjs && node scripts/referral-code-test.mjs && node scripts/rating-summary-test.mjs && node scripts/draft-contact-test.mjs",
     "test:email": "node scripts/email-test.mjs",
     "test:cart": "node scripts/cart-test.mjs",
     "test:order-status": "node scripts/order-status-test.mjs",
@@ -49,6 +49,7 @@
     "test:seo": "node scripts/seo-links-test.mjs",
     "test:referral": "node scripts/referral-code-test.mjs",
     "test:ratings": "node scripts/rating-summary-test.mjs",
+    "test:draft-contact": "node scripts/draft-contact-test.mjs",
     "backfill:referral-codes": "node scripts/backfill-referral-codes.mjs",
     "migrate:blob": "node scripts/migrate-blob-store.mjs",
     "test:news-verify": "node scripts/news-seed-verify.mjs"

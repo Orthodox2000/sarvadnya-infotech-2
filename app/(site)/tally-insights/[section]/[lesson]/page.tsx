@@ -149,7 +149,11 @@ export default async function LessonPage({
     articleJsonLd({
       headline,
       description: lesson.seoDescription || lesson.intro,
-      slug: `/tally-insights/${lesson.sectionId}/${lesson.slug}`,
+      // CHANGE: 2026-10-27 — pass the FULL path as `path`, not as `slug`. `slug` is
+      // /news-scoped, so a path-like slug produced `url`/`mainEntityOfPage` values like
+      // `/news//tally-insights/...` — the malformed URLs Search Console reported as
+      // failed indexing. See articleJsonLd() in lib/seo.ts.
+      path: `/tally-insights/${lesson.sectionId}/${lesson.slug}`,
       datePublished: "2026-10-19",
       dateModified: "2026-10-19",
       author: "Sarvadnya Infotech LLP"

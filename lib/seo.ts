@@ -42,6 +42,23 @@ export const SITE_DESCRIPTION =
 const parallelPath = (path: string) =>
   path === '' ? SITE_URL : `${SITE_URL}${path.startsWith('/') ? path : `/${path}`}`;
 
+// CHANGE: 2026-10-27 — Open Graph / Twitter share image is now declared here.
+// WHY: seoMetadata() returns an explicit `openGraph` object, and in Next.js a page-level
+// `openGraph` WITHOUT `images` REPLACES the file-based app/opengraph-image.tsx inheritance
+// instead of merging with it. Measured: og:image was present on 0 of the 48 seoMetadata()
+// pages, while /demo and /cart (which declare no openGraph at all) still carried it — so the
+// 2026-10-12 share-image work had been inert site-wide. Declaring `images` makes the share
+// card deterministic on every page, and `image` lets a page pass its own artwork (news
+// coverImage). Local paths resolve against metadataBase; absolute URLs are used as-is.
+const OG_IMAGE_PATH = '/opengraph-image';
+const OG_IMAGE_WIDTH = 1200;
+const OG_IMAGE_HEIGHT = 630;
+// Keep in sync with `alt` in app/opengraph-image.tsx.
+const OG_IMAGE_ALT = 'Sarvadnya Infotech LLP — Tally Certified Partner Since 2008';
+
+const absoluteMedia = (src: string) =>
+  /^https?:\/\//i.test(src) ? src : parallelPath(src);
+
 // CHANGE: 2026-08-27 — helper to stamp canonical + OG/Twitter defaults onto Metadata.
 // CHANGE: 2026-09-07 — added noindex param to suppress indexing on low-value utility pages.
 export function seoMetadata({
@@ -50,12 +67,15 @@ export function seoMetadata({
   path,
   keywords,
   noindex,
+  image,
 }: {
   title: string;
   description: string;
   path: string;
   keywords?: string[];
   noindex?: boolean;
+  /** CHANGE: 2026-10-27 — optional share image (site-relative path or absolute URL). */
+  image?: string;
 }): Metadata {
   const canonical = parallelPath(path);
   // CHANGE: 2026-08-27 — build the FINAL <title> here and mark it `absolute` so the
@@ -71,6 +91,12 @@ export function seoMetadata({
   const finalKeywords = [
     ...new Set([...(keywords ?? []), ...SITE_KEYWORDS].map((k) => k.trim()).filter(Boolean)),
   ];
+  // CHANGE: 2026-10-27 — share image (see OG_IMAGE_PATH note above). A caller-supplied image
+  // has unknown dimensions, so only the default artwork advertises width/height.
+  const shareUrl = absoluteMedia(image || OG_IMAGE_PATH);
+  const openGraphImages = image
+    ? [{ url: shareUrl, alt: finalTitle }]
+    : [{ url: shareUrl, width: OG_IMAGE_WIDTH, height: OG_IMAGE_HEIGHT, alt: OG_IMAGE_ALT }];
   return {
     title: { absolute: finalTitle },
     description: finalDescription,
@@ -83,11 +109,13 @@ export function seoMetadata({
       siteName: SITE_NAME,
       type: 'website',
       locale: 'en_IN',
+      images: openGraphImages,
     },
     twitter: {
       card: 'summary_large_image',
       title: finalTitle,
       description: finalDescription,
+      images: [shareUrl],
     },
     ...(noindex ? { robots: { index: false, follow: false } } : {}),
   };
@@ -179,6 +207,7 @@ export function articleJsonLd({
   headline,
   description,
   slug,
+  path,
   datePublished,
   dateModified,
   author,
@@ -186,7 +215,16 @@ export function articleJsonLd({
 }: {
   headline: string;
   description: string;
-  slug: string;
+  /** Article slug under /news (the original, and still default, article location). */
+  slug?: string;
+  /**
+   * CHANGE: 2026-10-27 — full site path, for articles that do NOT live under /news.
+   * WHY: /tally-insights lesson pages passed their path as `slug`, and this builder prefixes
+   * `/news/` unconditionally — producing `url`/`mainEntityOfPage` values like
+   * `/news//tally-insights/...`. Google crawled those malformed URLs and reported them in
+   * Search Console as failed indexing (10 rows, 23-24 Oct 2026). `path` takes precedence.
+   */
+  path?: string;
   datePublished?: string | null;
   dateModified?: string | null;
   author?: string;
@@ -194,13 +232,14 @@ export function articleJsonLd({
 }): JsonLd {
   const authorName = author || SITE_NAME;
   const publisherLogo = `${SITE_URL}/logo.png`;
+  const articlePath = path || (slug ? `/news/${slug}` : '/news');
   return {
     '@context': 'https://schema.org',
     '@type': 'NewsArticle',
     headline,
     description,
-    url: parallelPath(`/news/${slug}`),
-    mainEntityOfPage: parallelPath(`/news/${slug}`),
+    url: parallelPath(articlePath),
+    mainEntityOfPage: parallelPath(articlePath),
     ...(datePublished ? { datePublished } : {}),
     ...(dateModified ? { dateModified } : {}),
     ...(image ? { image } : {}),

@@ -5,6 +5,7 @@ import Link from 'next/link';
 import SaraText from './SaraText';
 import { useVisitor } from './VisitorProvider';
 import { createDraftTracker } from '@/lib/draft-tracker';
+import { isValidEmail } from '@/lib/draft-contact.mjs';
 import { findMatchingTutorials, type Tutorial } from '@/lib/tutorial-matcher';
 import { matchTopic, getFallbackResponse, SARA_WELCOME, type Topic } from '@/lib/sara-topics';
 
@@ -17,7 +18,10 @@ import { matchTopic, getFallbackResponse, SARA_WELCOME, type Topic } from '@/lib
 // NO recipient configured yet (admin opt-in per destination), so chat leads SAVE
 // to the DB but email NOBODY until the owner adds one in the admin panel — and
 // the submit route ignore-gates localhost/LAN and rate-limits per IP.
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+// CHANGE: 2026-10-27 — the email rule moved to lib/draft-contact.mjs so the chat
+// capture, the draft tracker and the draft API all validate identically (owner:
+// "ensure proper regex matching exist before triggering form draft from ask sara").
+// The old inline /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/ also accepted junk like `a@b.c#`.
 // Lead-intent trigger for the "want a personalised quote?" offer card.
 const LEAD_INTENT_RE = /quote|pric|cost|buy|purchas|order|book|demo|trial|enquir|reach|consult|talk to|speak to|share (my |your )?detail|best (fit|option)/i;
 
@@ -335,6 +339,26 @@ export default function QuickSupportModal({ isOpen, onClose, initialQuestion }: 
     return id;
   };
 
+  // CHANGE: 2026-10-27 — ONE place that writes a turn to the transcript. Before this, every
+  // caller duplicated the same fetch and two paths (the offline/AI-error fallback in
+  // processChatMessage's catch, and the follow-up buttons) forgot it entirely, so chat_logs
+  // saved user turns with no answer next to them — from the admin panel those conversations
+  // looked one-sided. Fire-and-forget; skipped until /api/chats/start has resolved the chatId.
+  const appendTranscript = (role: 'user' | 'assistant', text: string, topic?: string) => {
+    if (!chatIdRefModal.current || !sessionId || !text) return;
+    fetch('/api/chats/append',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({chatId:chatIdRefModal.current,sessionId,turn:{role,text,topic}})}).catch(()=>{});
+  };
+
+  /**
+   * Type an answer AND save it to the transcript. Used by the lead-capture Q&A, whose
+   * questions and confirmations never went through processChatMessage.
+   */
+  const sayInChat = async (text: string, topic?: string) => {
+    const id = await typeMessage(text, topic);
+    appendTranscript('assistant', text, topic);
+    return id;
+  };
+
   const handleStop = () => {
     stopRequestedRef.current = true;
     if (abortControllerRef.current) {
@@ -364,9 +388,7 @@ export default function QuickSupportModal({ isOpen, onClose, initialQuestion }: 
 
     setMessages(prev => [...prev, userMessage]);
     setIsTyping(true);
-    if (chatIdRefModal.current && sessionId) {
-      fetch('/api/chats/append',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({chatId:chatIdRefModal.current,sessionId,turn:{role:'user',text}})}).catch(()=>{});
-    }
+    appendTranscript('user', text);
 
     const apiMessages = messages.map(m => ({
       role: m.sender === 'ai' ? 'assistant' : 'user',
@@ -398,18 +420,14 @@ export default function QuickSupportModal({ isOpen, onClose, initialQuestion }: 
         : '';
       if (clean && clean.length > 5) {
         const aiId = await typeMessage(clean, text);
-        if (chatIdRefModal.current && sessionId) {
-          fetch('/api/chats/append',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({chatId:chatIdRefModal.current,sessionId,turn:{role:'assistant',text:clean,topic:lastTopicRef.current||undefined}})}).catch(()=>{});
-        }
+        appendTranscript('assistant', clean, lastTopicRef.current || undefined);
         attachLeadOfferIfRelevant(aiId, text);
       } else {
         const result = matchTopic(text);
         if (result) lastTopicRef.current = result.topic.label;
         const ans = result ? result.topic.answer : getFallbackResponse(text);
         const aiId = await typeMessage(ans, text);
-        if (chatIdRefModal.current && sessionId) {
-          fetch('/api/chats/append',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({chatId:chatIdRefModal.current,sessionId,turn:{role:'assistant',text:ans,topic:result?result.topic.label:undefined}})}).catch(()=>{});
-        }
+        appendTranscript('assistant', ans, result ? result.topic.label : undefined);
         if (result) setMessages(prev => prev.map(m => m.text === result.topic.answer ? { ...m, followUp: result.topic.followUp } : m));
         attachLeadOfferIfRelevant(aiId, text);
       }
@@ -418,7 +436,11 @@ export default function QuickSupportModal({ isOpen, onClose, initialQuestion }: 
       if (err.name === 'AbortError') return;
       const result = matchTopic(text);
       if (result) lastTopicRef.current = result.topic.label;
-      const aiId = await typeMessage(result ? result.topic.answer : getFallbackResponse(text), text);
+      const answer = result ? result.topic.answer : getFallbackResponse(text);
+      const aiId = await typeMessage(answer, text);
+      // CHANGE: 2026-10-27 — the fallback answer is a real answer the visitor read on screen,
+      // so it belongs in the transcript too (it used to be dropped here).
+      appendTranscript('assistant', answer, result ? result.topic.label : undefined);
       if (result) setMessages(prev => prev.map(m => m.text === result.topic.answer ? { ...m, followUp: result.topic.followUp } : m));
       attachLeadOfferIfRelevant(aiId, text);
     } finally {
@@ -441,6 +463,9 @@ export default function QuickSupportModal({ isOpen, onClose, initialQuestion }: 
       sender: 'user',
       timestamp: new Date()
     }]);
+    // CHANGE: 2026-10-27 — follow-up button presses are turns too; they were never persisted.
+    appendTranscript('user', topic.label);
+    lastTopicRef.current = topic.label;
 
     setIsTyping(true);
     const delay = Math.min(600 + topic.answer.length * 8, 2000);
@@ -448,6 +473,7 @@ export default function QuickSupportModal({ isOpen, onClose, initialQuestion }: 
     setIsTyping(false);
 
     await typeMessage(topic.answer, topic.label);
+    appendTranscript('assistant', topic.answer, topic.label);
     setMessages(prev => prev.map(m => m.text === topic.answer ? { ...m, followUp: topic.followUp } : m));
   };
 
@@ -468,36 +494,46 @@ export default function QuickSupportModal({ isOpen, onClose, initialQuestion }: 
   const startLeadCapture = () => {
     if (capture.submitting || isTyping || isAiResponding) return;
     setCapture(c => ({ ...c, stage: 'ask-name' }));
-    void typeMessage('Happy to help with that! May I know your name?');
+    void sayInChat('Happy to help with that! May I know your name?');
   };
 
   const handleCaptureAnswer = async (raw: string) => {
     const text = raw.trim();
     if (capture.stage === 'ask-name') {
       if (text.length < 2) {
-        await typeMessage("Sorry — I didn't catch that. Could I get your name? (A couple of letters is fine!)");
+        await sayInChat("Sorry — I didn't catch that. Could I get your name? (A couple of letters is fine!)");
         return;
       }
       setCapture(c => ({ ...c, name: text, stage: 'ask-email' }));
-      await typeMessage(`Lovely, ${text.split(' ')[0]}! And your best email address — that's where the quote or reply lands.`);
+      // CHANGE: 2026-10-27 — record the captured answers on the draft tracker.
+      // Until now the chat tracker was started with NO fields and nothing ever fed
+      // it, so a chat "draft" could never hold a contact — which is exactly why the
+      // admin panel showed blank rows. See the gate in lib/draft-tracker.ts.
+      draftTrackerRef.current?.onInput('name', text);
+      await sayInChat(`Lovely, ${text.split(' ')[0]}! And your best email address — that's where the quote or reply lands.`);
       return;
     }
     if (capture.stage === 'ask-email') {
-      if (!EMAIL_RE.test(text)) {
-        await typeMessage("That email doesn't look quite right — mind sharing it again?");
+      if (!isValidEmail(text)) {
+        await sayInChat("That email doesn't look quite right — mind sharing it again?");
         return;
       }
       setCapture(c => ({ ...c, email: text.toLowerCase(), stage: 'ask-phone' }));
-      await typeMessage('Perfect. One last thing — your mobile or WhatsApp number (with country code if outside India) so our consultant can reach you:');
+      // CHANGE: 2026-10-27 — only a VALIDATED email reaches the tracker. This is the
+      // field the draft gate looks for, so it is the one that decides whether an
+      // Ask Sara draft is written at all (lib/draft-contact.mjs).
+      draftTrackerRef.current?.onInput('email', text.trim().toLowerCase());
+      await sayInChat('Perfect. One last thing — your mobile or WhatsApp number (with country code if outside India) so our consultant can reach you:');
       return;
     }
     if (capture.stage === 'ask-phone') {
       const digits = text.replace(/\D/g, '');
       if (digits.length < 7 || digits.length > 15) {
-        await typeMessage('Hmm, that number looks a bit off. Mind sharing the digits again, e.g. 98213 09060?');
+        await sayInChat('Hmm, that number looks a bit off. Mind sharing the digits again, e.g. 98213 09060?');
         return;
       }
       setCapture(c => ({ ...c, phone: text, stage: 'confirm', service: c.service || lastTopicRef.current || 'General enquiry' }));
+      draftTrackerRef.current?.onInput('phone', text);
       return;
     }
   };
@@ -506,7 +542,7 @@ export default function QuickSupportModal({ isOpen, onClose, initialQuestion }: 
   const editLead = () => {
     if (capture.submitting) return;
     setCapture(c => ({ ...c, name: '', email: '', phone: '', stage: 'ask-name' }));
-    void typeMessage("Sure — let's get it right. What's your name?");
+    void sayInChat("Sure — let's get it right. What's your name?");
   };
 
   // The ONLY thing that ever sends the lead — a deliberate user confirmation.
@@ -550,10 +586,10 @@ export default function QuickSupportModal({ isOpen, onClose, initialQuestion }: 
       }
       setCapture(c => ({ ...c, stage: 'done', submitting: false }));
       const first = (capture.name || '').trim().split(' ')[0];
-      await typeMessage(`Thanks ${first || 'there'}! Our team has your details and will reach out shortly. Keep asking me anything in the meantime — I'm here 24/7.`);
+      await sayInChat(`Thanks ${first || 'there'}! Our team has your details and will reach out shortly. Keep asking me anything in the meantime — I'm here 24/7.`);
     } catch {
       setCapture(c => ({ ...c, submitting: false }));
-      await typeMessage('Sorry — that did not go through. No stress: press "Looks good — share" again and we will retry.');
+      await sayInChat('Sorry — that did not go through. No stress: press "Looks good — share" again and we will retry.');
     }
   };
 
@@ -574,6 +610,7 @@ export default function QuickSupportModal({ isOpen, onClose, initialQuestion }: 
     ];
     if (injectionPatterns.some(p => p.test(userText))) {
       await typeMessage("I'm here to help with Tally and business solutions. How can I assist you with your TallyPrime setup, features, or services today?", userText);
+      appendTranscript('assistant', "I'm here to help with Tally and business solutions. How can I assist you with your TallyPrime setup, features, or services today?");
       return;
     }
 
@@ -583,6 +620,7 @@ export default function QuickSupportModal({ isOpen, onClose, initialQuestion }: 
     // is sent until the confirm card).
     if (capture.stage === 'ask-name' || capture.stage === 'ask-email' || capture.stage === 'ask-phone') {
       setMessages(prev => [...prev, { id: Date.now().toString(), text: userText, sender: 'user', timestamp: new Date() }]);
+      appendTranscript('user', userText);
       await handleCaptureAnswer(userText);
       return;
     }

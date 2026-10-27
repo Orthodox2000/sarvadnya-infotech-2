@@ -28,6 +28,9 @@
 //   8. The TallyDrive Product name matches its only Offer's `itemOffered` (the node describes
 //      the item that is actually sold - Extra Storage - not the whole product family).
 //   9. `sku` values are unique, so two pages cannot claim the same product identity.
+//  10. articleJsonLd() never receives a path as its `slug` (that produced
+//      /news/<full-path> URLs which Google reported as failed indexing); and the builder
+//      offers the `path` parameter non-/news articles need.
 //
 // Run: npm run check:schema   (exit 1 on any violation)
 
@@ -314,6 +317,54 @@ for (const { path, call } of callSites) {
 
 checked.push('no invented prices (Offer omitted where no price is shown)')
 checked.push('TallyDrive node name matches its only Offer')
+
+// ── 10. articleJsonLd(): a slug is a slug, never a path ──────────────────────────────────
+//
+// CHANGE: 2026-10-27 — rule added. WHY: articleJsonLd() prefixes `/news/` onto its `slug`
+// (that is where articles originally lived), so the Tally Insights lesson page passing its
+// full path as `slug` produced `url`/`mainEntityOfPage` like
+// `/news/tally-insights/gst-compliance/tally-gst` - URLs that do not exist. Google crawled
+// them and listed 10 of them in Search Console as failed indexing (23-24 Oct 2026). The
+// builder now also accepts an explicit `path` (which wins over `slug`); this rule makes the
+// mistake impossible to reintroduce, because any slash inside a `slug` value is a path.
+const articleCallSites = []
+for (const [path, { code }] of source) {
+  let idx = code.indexOf('articleJsonLd(')
+  while (idx !== -1) {
+    const lineStart = code.lastIndexOf('\n', idx) + 1
+    const lineText = code.slice(lineStart, code.indexOf('\n', idx))
+    if (!/^\s*import\b/.test(lineText) && !/export function articleJsonLd/.test(lineText)) {
+      articleCallSites.push({ path, call: extractCall(code, idx) })
+    }
+    idx = code.indexOf('articleJsonLd(', idx + 1)
+  }
+}
+
+if (!articleCallSites.length) {
+  problems.push('no articleJsonLd() call sites found - did the API change?')
+}
+if (!/export function articleJsonLd/.test(seoCode)) {
+  problems.push('lib/seo.ts: articleJsonLd() is missing')
+} else if (!/\bpath\??\s*:/.test(seoCode.slice(seoCode.indexOf('export function articleJsonLd')))) {
+  problems.push(
+    'lib/seo.ts: articleJsonLd() must accept an optional `path` - without it a non-/news ' +
+      'article has no honest URL to declare',
+  )
+}
+
+for (const { path, call } of articleCallSites) {
+  const file = rel(path)
+  const slug = call.match(/\bslug\s*:\s*(['"`])([\s\S]*?)\1/)
+  if (slug && slug[2].includes('/')) {
+    problems.push(
+      `${file}: articleJsonLd() received slug "${slug[2]}" - a slug must not contain a slash. ` +
+        'Slugs are appended to /news/, so a path here declares a URL that does not exist ' +
+        '(pass `path:` instead)',
+    )
+  }
+}
+
+checked.push(`${articleCallSites.length} articleJsonLd() call site(s) carry a real slug`)
 
 // ── report ────────────────────────────────────────────────────────────────────────────────
 

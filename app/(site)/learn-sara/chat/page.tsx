@@ -4,7 +4,11 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import Link from 'next/link';
 import SaraText from '@/app/components/SaraText';
 import { useVisitor } from '@/app/components/VisitorProvider';
-import { createDraftTracker } from '@/lib/draft-tracker';
+// CHANGE: 2026-10-27 — the draft tracker was REMOVED from Learn Sara. This screen has
+// no form and never collects a name/email/phone, so its tracker only ever POSTed
+// `fields: {}` and created a blank, unreachable row in the admin "Form Drafts" screen.
+// Drafts from a chat now require a real email (lib/draft-contact.mjs), so the only
+// thing left to do here is record the transcript — which /api/chats/* already does.
 import { findMatchingTutorials, type Tutorial } from '@/lib/tutorial-matcher';
 import { matchTopic, getTeachingFallbackResponse, type Topic } from '@/lib/sara-topics';
 
@@ -43,7 +47,6 @@ export default function LearnSaraPage() {
   const containerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const chatIdRef = useRef<string|null>(null);
-  const draftTrackerRef = useRef<ReturnType<typeof createDraftTracker>|null>(null);
   const { sessionId } = useVisitor();
 
   // Lock body scroll while the chat sheet is open
@@ -162,17 +165,9 @@ export default function LearnSaraPage() {
 
   useEffect(() => {
     if (sessionId && !chatIdRef.current) {
-      draftTrackerRef.current = createDraftTracker();
-      draftTrackerRef.current.setSessionId(sessionId);
-      draftTrackerRef.current.start({entryPoint:'learn-sara',path:'/learn-sara',source:'learn-sara-page',meta:{referrer:document.referrer,userAgent:navigator.userAgent}});
       fetch('/api/chats/start',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({sessionId,path:'/learn-sara',entryPoint:'learn-sara-page',meta:{referrer:document.referrer,userAgent:navigator.userAgent}})}).then(r=>r.json()).then(d=>{if(d.chatId) chatIdRef.current=d.chatId}).catch(()=>{});
     }
-    const onHide = () => { try { draftTrackerRef.current?.onVisibilityHidden(); draftTrackerRef.current?.onPageHide(); } catch {} }
-    document.addEventListener('visibilitychange', onHide);
-    window.addEventListener('pagehide', onHide);
     return () => {
-      document.removeEventListener('visibilitychange', onHide);
-      window.removeEventListener('pagehide', onHide);
       // CHANGE: 2026-10-09 — close the transcript when the page unmounts (parity with
       // Ask Sara, which ends its chat on close). keepalive lets the request survive unload.
       if (chatIdRef.current && sessionId) {
