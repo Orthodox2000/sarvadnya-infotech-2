@@ -7,8 +7,8 @@
   </defs>
   <rect width="1200" height="630" fill="#f1f5f9"/>
   <rect width="1200" height="160" fill="url(#g2)"/>
-  <text x="60" y="95" font-size="48" fill="#fff" font-weight="800" font-family="system-ui">Latest Version of Tally Prime</text>
-  <text x="60" y="135" font-size="20" fill="#ccfbf1" font-family="system-ui">Release-wise Updates, Compliance &amp; Compatibility</text>
+  <text x="60" y="95" font-size="48" fill="#fff" font-weight="800" font-family="system-ui">TallyPrime 7.2 - Latest Version</text>
+  <text x="60" y="135" font-size="20" fill="#ccfbf1" font-family="system-ui">Five New Features, Better GST Compliance &amp; A Safe Upgrade Path</text>
   <g transform="translate(60,200)">
     <rect width="1080" height="390" rx="16" fill="#fff" stroke="#e2e8f0"/>
     <circle cx="80" cy="90" r="24" fill="#006569"/>

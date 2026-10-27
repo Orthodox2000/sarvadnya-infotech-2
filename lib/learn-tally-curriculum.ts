@@ -371,30 +371,97 @@ export const LESSONS: Lesson[] = [
     sectionId: 'fundamentals-version-transitions',
     sectionTitle: 'Tally Fundamentals & Version Transitions',
     order: 2,
-    title: 'Latest Version of Tally Prime',
+    title: 'Latest Version of Tally Prime: TallyPrime 7.2',
     intro:
-      'As of now, TallyPrime 7.2 is the latest version of Tally Prime. Stay updated with release-wise changes, compliance updates and upgrade guidance.',
-    bodyMd:
-      'As of now, **TallyPrime 7.2** is the latest version of Tally Prime.\n\n**[Contact us for a free consultation regarding upgrades](/contact?service=Tally%20Upgradation)**',
-    seoTitle: 'Latest Version of Tally Prime - TallyPrime 7.2 | Tally Insights',
+      'As of now, TallyPrime 7.2 is the latest version of Tally Prime. Here is what changed in 7.2, what each update does for your team, and how to move your business onto it without disturbing your books.',
+    // CHANGE: 2026-10-27 — the page was two lines of text ("no data in it" per the owner) and the
+    // only content was a raw-markdown CTA. The body is now the complete 7.2 page and every release
+    // fact comes from the owner's own TallyPrime 7.2 artwork that ships with this site
+    // (public/images/insights/tallyprime-7.2.webp): the five new features, the three benefits, and
+    // the entitlement of each feature are transcribed from it — nothing about 7.2 is invented.
+    // The release/build behaviour described below (F1 > About shows the release; the About screen
+    // only changes once the update is installed) matches the same F1 (Help) product-information
+    // screen already documented for the licence pages.
+    // NOTE: written as a template literal, not a quoted string — the body is long enough that
+    // quoting it would mean one unreadable line, and a stray apostrophe inside a single-quoted
+    // literal silently breaks the file (the failure mode that corrupted a seed script before).
+    bodyMd: `As of now, **TallyPrime 7.2** is the latest version of Tally Prime.
+
+TallyPrime 7.2 is a compliance and productivity release. It adds five features that take manual work out of GST returns, purchase order printing, e-way bill and e-invoice generation, tobacco cess calculations and TDS filing, without changing the way you record day-to-day vouchers.
+
+## New features in TallyPrime 7.2
+
+| Feature | What it does |
+| :-- | :-- |
+| Personalized print of purchase orders | Customize and print purchase orders with personalized formats directly from your system. |
+| GSTR-9 export to Excel utility | Seamlessly export annual GSTR-9 returns directly into Excel format with ease. |
+| Login extended for the entire day for e-way bill / e-invoice generation | Enjoy uninterrupted generation with an extended all-day login session for e-way bills and e-invoices. |
+| Deemed taxable value support for tobacco products | Accurate tax calculations and compliance updates specifically for tobacco products and cess. |
+| TDS file now supports the latest FVU format | Fully compliant with the latest FVU formats for error-free TDS file generation and returns. |
+
+## What each 7.2 update means for your team
+
+- **Personalized print of purchase orders** - your purchase order layout is stored in TallyPrime, so the same format prints every time instead of being rebuilt in Word or Excel.
+- **GSTR-9 export to Excel utility** - the annual return moves straight into a spreadsheet, which is what your accountant needs for reconciliation before filing.
+- **All-day login for e-way bill and e-invoice generation** - the session no longer interrupts you in the middle of a dispatch day, so documents are generated when the goods actually move.
+- **Deemed taxable value for tobacco products** - deemed value and cess follow the statutory rule for tobacco inside TallyPrime instead of being calculated outside it.
+- **TDS file with the latest FVU format** - the TDS file is generated in the format the FVU validation utility expects, so the validation step stops failing on an old format.
+
+## Why businesses upgrade to 7.2
+
+| Benefit | Where it shows up in 7.2 |
+| :-- | :-- |
+| Better GST compliance | GSTR-9 export to Excel, deemed taxable value for tobacco, and the latest TDS FVU format |
+| Save time | Purchase orders print from a saved format and e-way bills generate without a mid-day re-login |
+| Reduce manual effort | Fewer spreadsheets, fewer re-typed documents and fewer validation failures |
+
+## How to check which TallyPrime version you are on
+
+1. Open TallyPrime.
+2. Press **F1 (Help)** and open **About**. The product information screen shows the TallyPrime release you are running.
+3. Compare that release with 7.2. If it shows an older release, you are not on the latest version.
+
+The release shown on the About screen changes only when the newer build is actually installed on that machine. If it still shows an older release after an update attempt, the update has not been applied there.
+
+## Upgrade to TallyPrime 7.2 safely
+
+An update is quick, but the order of the steps is what protects your books:
+
+1. Take a backup of every company you work in, and confirm the backup is readable before you start.
+2. Update one computer first, then open your regular reports - trial balance, GST reports and TDS - and compare the figures with the pre-update numbers.
+3. Update the other computers on the network only after the first one matches.
+4. If you use custom TDL modules or Tally add-ons, have them validated against 7.2 before the rest of the team moves.
+
+Customisation is the usual reason an update stalls. A TDL written for an older release has to be checked against the new build before it is trusted with live data, which is why we test modules on a copy of your data first.
+
+## Need help with the upgrade?
+
+We install and validate the update, keep your data on a verified backup, and check your GST and TDS outputs before the team goes back to work.
+
+**[Contact us for a free consultation regarding upgrades](/contact?service=Tally%20Upgradation)**`,
+    seoTitle: 'Latest Version of Tally Prime 7.2',
     seoDescription:
-      'TallyPrime 7.2 is the latest version of Tally Prime. Learn how to check version, upgrade safely and stay compliant.',
+      'TallyPrime 7.2 is the latest version of Tally Prime. Its five new features, how to check your version and how to upgrade.',
     keywords: [
       'latest version of tally',
       'latest version of tally prime',
       'tally prime latest version',
       'tallyprime 7.2',
-      'tally prime 7.2'
+      'tally prime 7.2',
+      'what is new in tallyprime 7.2',
+      'tallyprime 7.2 features',
+      'tally prime 7.2 release'
     ],
     versionNotes: [
       {
         from: 'Previous releases',
         to: 'TallyPrime 7.2',
         what: 'Latest stable release',
-        impact: 'Improved stability, compliance updates and feature enhancements',
+        impact:
+          'Better GST compliance (GSTR-9 export to Excel), personalized purchase order print, all-day login for e-way bill and e-invoice generation, deemed taxable value for tobacco products and the latest FVU format for TDS files',
         warnings: [
           'Custom TDL modules may need validation against TallyPrime 7.2',
-          'Add-ons should be tested in a backup before upgrading',
+          'Add-ons should be tested on a backed-up copy of the data before upgrading',
           'Keep TSS active for smooth statutory updates'
         ]
       }
@@ -402,20 +469,28 @@ export const LESSONS: Lesson[] = [
     faqs: [
       {
         q: 'What is the latest version of Tally Prime?',
-        a: 'The latest version of Tally Prime changes with each release. Check the official Tally Solutions release notes for the current version number and details.'
+        a: 'As of now, TallyPrime 7.2 is the latest version of Tally Prime. It adds five features: personalized print of purchase orders, GSTR-9 export to Excel, login extended for the entire day for e-way bill and e-invoice generation, deemed taxable value support for tobacco products, and TDS files in the latest FVU format.'
       },
       {
-        q: 'How do I check my Tally Prime version?',
-        a: 'Open Tally Prime and check the version displayed at the bottom or in About. Compare with the latest release notes.'
+        q: 'What are the new features in TallyPrime 7.2?',
+        a: 'TallyPrime 7.2 brings personalized print of purchase orders, a GSTR-9 export to Excel utility, an all-day login session for e-way bill and e-invoice generation, deemed taxable value support for tobacco products with cess, and TDS file support for the latest FVU format.'
       },
       {
-        q: 'What is Tally Prime?',
-        a: 'Tally Prime is the current-generation Tally software with simplified navigation, GoTo search, and improved usability for accounting, inventory and compliance.'
+        q: 'How do I check which Tally Prime version I am using?',
+        a: 'Open TallyPrime, press F1 (Help) and open About. The product information screen shows the release you are running. If it is older than 7.2, you are not on the latest version.'
+      },
+      {
+        q: 'What should I do before updating to TallyPrime 7.2?',
+        a: 'Take a backup of every company you work in, update one computer first, and compare your trial balance, GST reports and TDS outputs with the pre-update figures before updating the rest of the network.'
+      },
+      {
+        q: 'Do custom TDL modules need to be checked after upgrading to 7.2?',
+        a: 'Yes. A custom TDL module or Tally add-on built for an older release should be validated against TallyPrime 7.2 on a copy of your data before it is used in live work.'
       }
     ],
     modulePromo: {
       title: 'Release Validation for Custom Modules',
-      body: 'Our custom TDL modules are validated for compatibility. We help test and adjust modules for the latest Tally Prime release.',
+      body: 'Our custom TDL modules are validated for compatibility. We test and adjust your modules against TallyPrime 7.2 on a copy of your data before you go live.',
       productUrl: '/modules',
       badge: 'Our Modules'
     }

@@ -221,14 +221,31 @@ export default async function LessonPage({
             </div>
           )}
           {lesson.slug === 'latest-version-of-tally-prime' && (
-            <div className="mt-6 overflow-hidden rounded-2xl border border-slate-100 shadow-sm">
-              <img
-                src="/images/insights/latest-tally-prime.svg"
-                alt="Latest version of Tally Prime"
-                className="w-full h-auto"
-                loading="lazy"
+            <>
+              <div className="mt-6 overflow-hidden rounded-2xl border border-slate-100 shadow-sm">
+                <img
+                  src="/images/insights/latest-tally-prime.svg"
+                  alt="TallyPrime 7.2 is the latest version of Tally Prime"
+                  className="w-full h-auto"
+                  loading="lazy"
+                />
+              </div>
+              {/* CHANGE: 2026-10-27 — the official TallyPrime 7.2 artwork is now the page HERO.
+                  WHY: the owner asked for 7.2 to be the hero of this lesson ("ensure to use ...
+                  tallyprime 7.2 as its hero"). It used to sit far down the article, after the whole
+                  body, so the release it is about was never actually seen on arrival. It is the
+                  first visual proof that 7.2 is the current release, so it belongs in the header
+                  directly under the banner, before any body copy. The component (shared, no
+                  "use client") caps the portrait asset at 320/360/400 px per breakpoint, centres
+                  it and links the full-size image, so nothing overflows at 360 px. */}
+              <LessonFigure
+                src="/images/insights/tallyprime-7.2.webp"
+                alt="TallyPrime 7.2 new features and benefits - the latest release of Tally Prime"
+                caption="TallyPrime 7.2 - the latest release of Tally Prime. Click the image to open it full size."
+                width={1024}
+                height={1371}
               />
-            </div>
+            </>
           )}
           {lesson.slug === 'tally-prime-shortcuts-complete-list' && (
             <div className="mt-6 overflow-hidden rounded-2xl border border-slate-100 shadow-sm">
@@ -369,24 +386,6 @@ export default async function LessonPage({
             BOTH surfaces so a markdown table is a real <table> exactly where it was written. */}
         <article>
           <MarkdownBody md={lesson.bodyMd} />
-
-          {/* CHANGE: 2026-10-22 — show the official TallyPrime 7.2 artwork on the lesson that
-              states 7.2 is the latest release.
-              WHY: the owner supplied the 7.2 artwork and asked for it to be incorporated where
-              we mention 7.2, with a proper fit and correct alignment on every screen. The
-              LessonFigure component (shared with the hub) caps the portrait asset at
-              320/360/400 px per breakpoint, centres it, and links the full-size image.
-              The old "Download the TallyPrime 7.2 user guide (PDF)" button was REMOVED with
-              the PDF itself (the owner: "also remove pdf from public when work done"). */}
-          {lesson.slug === "latest-version-of-tally-prime" && (
-            <LessonFigure
-              src="/images/insights/tallyprime-7.2.webp"
-              alt="TallyPrime 7.2 - the latest release of Tally Prime"
-              caption="TallyPrime 7.2 - the latest release of Tally Prime. Click the image to open it full size."
-              width={1024}
-              height={1371}
-            />
-          )}
 
           {lesson.definitions && lesson.definitions.length > 0 && (
             <div className="not-prose mt-10">

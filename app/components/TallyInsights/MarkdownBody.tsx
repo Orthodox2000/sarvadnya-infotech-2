@@ -26,7 +26,14 @@ function renderInline(text: string, keyPrefix: string): ReactNode[] {
     if (part.length > 4 && part.startsWith("**") && part.endsWith("**")) {
       nodes.push(
         <strong key={key} className="font-bold text-slate-900">
-          {part.slice(2, -2)}
+          {/* CHANGE: 2026-10-27 — recurse instead of printing the raw inner text.
+              WHY: `INLINE_TOKEN` tries `**...**` BEFORE the link alternative, so a bold
+              link (`**[Contact us](/contact?...)`) was captured whole by this branch and
+              the inner markdown was emitted verbatim. The lesson page therefore shipped
+              the literal text "[Contact us for a free consultation regarding upgrades](/contact)"
+              to production. Re-parsing the inner content lets a link, code span or italic
+              nested inside bold render as the real inline node. */}
+          {renderInline(part.slice(2, -2), key)}
         </strong>
       );
       return;
@@ -75,7 +82,9 @@ function renderInline(text: string, keyPrefix: string): ReactNode[] {
     if (part.length > 2 && part.startsWith("*") && part.endsWith("*")) {
       nodes.push(
         <em key={key} className="italic">
-          {part.slice(1, -1)}
+          {/* CHANGE: 2026-10-27 — same recursion rule as <strong> above: an italic run may
+              wrap bold text, a link or a menu-path code span. */}
+          {renderInline(part.slice(1, -1), key)}
         </em>
       );
       return;

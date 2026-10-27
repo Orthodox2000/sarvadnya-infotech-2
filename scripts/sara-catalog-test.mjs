@@ -132,15 +132,25 @@ test('the sales block links every add-on to its /addons anchor', () => {
   const block = buildCatalogPromptBlock();
   for (const a of addons) assert(block.includes(`/addons#${a.id}`), `block is missing anchor for: ${a.id}`);
 });
-// CHANGE: 2026-10-23 — the shop has 107 items; a missing one means Sara cannot recommend it.
-// CHANGE: 2026-10-27 — the block no longer carries a description + link for all 107 (that alone
+// CHANGE: 2026-10-23 — the shop catalogue; a missing item means Sara cannot name it.
+// CHANGE: 2026-10-27 — the block no longer carries a description + link for all shop items (that alone
 // was ~25,500 chars and pushed every Groq request past the 8,000 tokens-per-minute wall, which
-// rejected the whole request). It now ships the 10 most-requested items WITH their /shop anchors
-// plus a per-collection NAME LIST for the other 97, so Sara can still name the exact item.
-test('the sales block links the featured shop items and names every other one', () => {
+// rejected the whole request). It ships the FEATURED items WITH their /shop anchors plus a
+// per-collection NAME LIST for the rest, so Sara can still name the exact item.
+// CHANGE: 2026-10-27 — the featured count is DATA, not a contract. This asserted `=== 10`, so the
+// shop commit that grew the catalogue (117 items, 13 featured) turned the suite red without a single
+// behaviour change: a data edit always breaks a hard-coded count. What the block must guarantee is
+// that EVERY featured item is linked and every item is named; the token ceiling below is what
+// actually protects the Groq budget.
+const CATALOG_BLOCK_CHAR_CEILING = 14_000;
+test('the sales block links every featured shop item and names every other one', () => {
   const block = buildCatalogPromptBlock();
   const featured = TDL_ITEMS.filter((i) => i.featured);
-  assert(featured.length === 10, `expected 10 featured shop items, got ${featured.length}`);
+  assert(featured.length > 0, 'no shop item is marked featured, so the block links none');
+  assert(
+    block.length <= CATALOG_BLOCK_CHAR_CEILING,
+    `catalogue block is ${block.length} chars (ceiling ${CATALOG_BLOCK_CHAR_CEILING}); Groq rejects the whole request past ~8k tokens`
+  );
   for (const item of featured) {
     assert(block.includes(`/shop#${item.slug}`), `block is missing the shop link for: ${item.slug}`);
   }
