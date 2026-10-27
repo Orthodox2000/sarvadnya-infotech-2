@@ -3,6 +3,10 @@
 import { useState, useEffect, useRef, memo, useMemo } from 'react';
 import Image from 'next/image';
 import type { Review } from '@/lib/reviews';
+// CHANGE: 2026-10-26 — The review wall is now the ONLY place a rating is shown, and it is
+// computed from the reviews that actually exist (lib/rating-summary.mjs). Everything that used
+// to carry a hand-typed star count (product sidebars, product JSON-LD, /contact) was removed.
+import { formatRating, normalizeRating, summariseRatings } from '@/lib/rating-summary.mjs';
 
 // CHANGE: 2026-09-18 — Review type now imported from lib/reviews.ts (was a local
 // re-declaration that could drift; _id is optional there, so keys stay safe).
@@ -23,25 +27,41 @@ import type { Review } from '@/lib/reviews';
 
 const CARD_GAP = 20; // px — must match `gap-5` on every track/carousel below
 
-function StarRating({ rating, size = 'w-4 h-4' }: { rating: number; size?: string }) {
+// CHANGE: 2026-10-26 — star graphics can now show a PARTIAL star, because the header average
+// is computed from real reviews and lands on values like 4.5 or 4.3. Rounding that up to five
+// full stars would overstate the reviews, which is the exact problem being fixed. Two stacked
+// rows (grey behind, gold clipped to `rating / 5`) render the fraction without extra assets.
+const STAR_PATH =
+    'M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z';
+
+function StarRow({ size, color }: { size: string; color: string }) {
     return (
-        <div className="flex shrink-0 gap-0.5" aria-label={`${rating} out of 5 stars`}>
+        <div className={`flex gap-0.5 ${color}`}>
             {[...Array(5)].map((_, i) => (
-                <svg
-                    key={i}
-                    className={`${size} ${i < rating ? 'text-yellow-400 fill-yellow-400' : 'text-slate-200 fill-slate-200'}`}
-                    viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg"
-                    aria-hidden="true"
-                >
-                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                <svg key={i} className={size} viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d={STAR_PATH} />
                 </svg>
             ))}
         </div>
     );
 }
 
+function StarRating({ rating, size = 'w-4 h-4' }: { rating: number; size?: string }) {
+    const pct = Math.max(0, Math.min(100, (rating / 5) * 100));
+    return (
+        <div className="relative shrink-0" role="img" aria-label={`${rating} out of 5 stars`}>
+            <StarRow size={size} color="text-slate-200 fill-slate-200" />
+            <div className="absolute inset-y-0 left-0 overflow-hidden" style={{ width: `${pct}%` }}>
+                <StarRow size={size} color="text-yellow-400 fill-yellow-400" />
+            </div>
+        </div>
+    );
+}
+
 const ReviewCard = memo(function ReviewCard({ review }: { review: Review }) {
+    // One rule for "does this review carry a usable star value" — the same normaliser the
+    // header average uses, so a card can never show stars the average ignores (or vice versa).
+    const rating = normalizeRating(review.rating);
     return (
         <article className="flex h-[200px] w-full flex-col justify-between overflow-hidden rounded-2xl border border-slate-100 bg-white p-4 shadow-sm">
             <div>
@@ -64,7 +84,7 @@ const ReviewCard = memo(function ReviewCard({ review }: { review: Review }) {
                         </div>
                     </div>
                     {/* Stars only when a rating exists — never invent one for an imported review. */}
-                    {typeof review.rating === 'number' && <StarRating rating={review.rating} size="w-3 h-3" />}
+                    {rating !== null && <StarRating rating={rating} size="w-3 h-3" />}
                 </div>
                 <p className="line-clamp-4 text-[0.8rem] italic leading-relaxed text-slate-600">
                     &ldquo;{review.text}&rdquo;
@@ -147,6 +167,12 @@ const CustomerReviews = ({ initialData }: { initialData?: Review[] }) => {
         return [reviews.slice(0, half), reviews.slice(half)];
     }, [reviews]);
 
+    // CHANGE: 2026-10-26 — Auto-computed, never typed by hand: the header average is derived
+    // from the live review list, so adding/editing/removing a review moves it automatically and
+    // it can never claim more reviews than the wall actually shows. `null` -> render nothing.
+    const ratingSummary = useMemo(() => summariseRatings(reviews), [reviews]);
+    const ratingText = formatRating(ratingSummary);
+
     const step = () => {
         const el = carouselRef.current;
         const first = el?.firstElementChild as HTMLElement | null;
@@ -203,10 +229,27 @@ const CustomerReviews = ({ initialData }: { initialData?: Review[] }) => {
             className={`w-full overflow-hidden bg-[linear-gradient(90deg,_rgba(249,251,245,1)_0%,_rgba(244,242,234,1)_53%,_rgba(238,236,223,1)_100%)] px-6 py-16 transition-all duration-1000 md:py-20 ${isVisible ? 'opacity-100' : 'opacity-0'}`}
         >
             <div className="mx-auto max-w-7xl">
-                <div className={`flex flex-col items-start transition-all duration-1000 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}>
+                <div className={`flex flex-wrap items-end justify-between gap-4 transition-all duration-1000 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}>
                     <div className="relative h-16 w-64 opacity-80">
                         <Image src="/google-reviews.png" alt="Google Reviews" fill className="object-contain object-left" sizes="300px" />
                     </div>
+                    {/* CHANGE: 2026-10-26 — the site's only displayed rating, and it is calculated
+                        from real reviews (replaces every hand-typed star count). Renders nothing
+                        when no review carries a rating, rather than falling back to a number. */}
+                    {ratingSummary && ratingText && (
+                        <div
+                            className="flex items-center gap-2.5 pb-1"
+                            aria-label={`${ratingText} out of 5 stars from ${ratingSummary.count} ${ratingSummary.count === 1 ? 'review' : 'reviews'}`}
+                        >
+                            <span className="text-2xl font-black leading-none text-[#006569]">{ratingText}</span>
+                            <div>
+                                <StarRating rating={ratingSummary.average} size="w-3.5 h-3.5" />
+                                <p className="mt-1 text-[0.65rem] font-semibold text-slate-500">
+                                    from {ratingSummary.count} {ratingSummary.count === 1 ? 'review' : 'reviews'}
+                                </p>
+                            </div>
+                        </div>
+                    )}
                 </div>
 
                 {/* md+ : two compact rows scrolling in opposite directions. A row only animates

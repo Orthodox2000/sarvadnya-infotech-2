@@ -146,6 +146,10 @@ const STATIC_PAGES = [
   { title: 'Tally on WhatsApp', url: '/services/tally-on-whatsapp', description: 'Send invoices and reports via WhatsApp.', type: 'Page' },
   { title: 'Tally Customization (TDL)', url: '/services/tdl', description: 'Custom Tally features for your business.', type: 'Page' },
   { title: 'Tally Software Services (TSS)', url: '/services/tss', description: 'Renew TSS for updates and remote access.', type: 'Page' },
+  // CHANGE: 2026-10-26 — the Sara guide hub and the free TSS expiry checker are real pages now,
+  // so a site search (and the AI recommendation list, which spreads this array) can surface them.
+  { title: 'Learn Sara: TallyPrime guides', url: '/learn-sara', description: 'Practical guides on GST, inventory, banking, payroll, reports, shortcuts, TSS and ERP 9 upgrades.', type: 'Page' },
+  { title: 'TSS Expiry Checker (free tool)', url: '/tools/tss-expiry-checker', description: 'Enter your TSS coverage end date and see how many days are left, and what stops when it expires.', type: 'Tool' },
 ];
 
 const SITE_MAP = [

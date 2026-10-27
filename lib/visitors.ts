@@ -590,13 +590,51 @@ export async function applyReverseDns(sessionId: string, rdns: string | null): P
 // Device parsing (dependency-free)
 // ---------------------------------------------------------------------------
 
+// CHANGE: 2026-10-26 — the original bot regex only caught `bot|spider|crawler|slurp|curl|
+// wget|headless|puppeteer|phantom|preview`, so several real crawlers were stored as PEOPLE.
+// Measured on the live collection (1,327 session docs): 16 docs from `facebookexternalhit`
+// (Meta link-preview fetcher), 2 from `Google-NotebookLM` and 2 from `Dataprovider.com` were
+// all `device.type: 'unknown'` and therefore counted in the humans KPI and shown in the
+// Visitors list as visitors. AI answer-engine crawlers (`ChatGPT-User`, `Claude-Web`,
+// `PerplexityBot` variants, `OAI-SearchBot`) have the same problem — a customer could not
+// tell them apart from real traffic.
+//
+// The list below is grouped so a future reader knows why each token is there. It is
+// deliberately broader than "bot": it also catches link unfurlers, SEO/monitoring crawlers,
+// headless renderers and plain HTTP libraries, none of which is a human on a browser.
+// `BOT_UA_PATTERN` is exported as a STRING because the nested admin panel needs the exact
+// same rule as a Mongo `$regex` (its `lib/visitor-groups.ts` re-declares this same source —
+// the two repos cannot import from each other, so keep them byte-identical).
+export const BOT_UA_PATTERN =
+  // classic crawlers
+  'bot|spider|crawler|slurp|archiver|scrapy|scraper' +
+  // link unfurlers / social previewers — ONLY the unambiguous crawler product names.
+  // Do NOT add bare `whatsapp`, `telegram`, `linkedin`, `twitter`, `pinterest` or `discord`:
+  // those words also appear in in-app browsers used by real customers (a WhatsApp or
+  // LinkedIn in-app tap would then be counted as a bot, and WhatsApp traffic in India is
+  // large). Every one of those tools' CRAWLER is already caught by `bot` (`LinkedInBot`,
+  // `Twitterbot`, `Pinterestbot`, `TelegramBot`) or by an explicit token below.
+  '|facebookexternalhit|facebookcatalog|meta-external|embedly|skypeuripreview|vkshare' +
+  // AI / answer-engine crawlers (2026)
+  '|chatgpt|openai|gptbot|oai-searchbot|claude|anthropic|perplexity|cohere|youbot|ccbot|' +
+  'bytespider|petal|notebooklm|googleother|google-extended|mediapartners|storebot' +
+  // SEO / monitoring / security scanners
+  '|ahrefs|semrush|mj12|dotbot|dataprovider|bitsight|hubspot|canvabot|sogou|yandex|baidu|' +
+  'duckduck|seznam|qwant|lighthouse|pagespeed|gtmetrix|uptime|pingdom|monitor|censys|' +
+  'shodan|masscan|zgrab|nmap' +
+  // headless renderers
+  '|headless|puppeteer|playwright|phantom|prerender|preview' +
+  // plain HTTP clients (never a browser)
+  '|curl|wget|libwww|httpclient|okhttp|go-http-client|python-requests|python-urllib|axios|' +
+  'node-fetch|undici|java\\/|jakarta|apache-http';
+
+const BOT_UA_RE = new RegExp(BOT_UA_PATTERN, 'i');
+
 export function parseDevice(ua: string): DeviceInfo {
   const s = String(ua || '');
   const lower = s.toLowerCase();
 
-  const isBot = /bot|spider|crawler|slurp|curl|wget|headless|puppeteer|phantom|preview/i.test(
-    lower
-  );
+  const isBot = BOT_UA_RE.test(lower);
   const isTablet =
     /ipad|tablet|playbook|kindle|silk/i.test(s) ||
     (/android/i.test(s) && !/mobile/i.test(s));

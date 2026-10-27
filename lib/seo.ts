@@ -215,8 +215,17 @@ export function articleJsonLd({
 // /services/tss) and the no-price Contact-Sales server page (offer omitted there — never
 // invent a price). Prices come from the same resolve()/payable figures the page displays
 // (DB-driven with identical-number fallback), so the markup always matches what a visitor
-// sees. `aggregateRating` is emitted ONLY when the page visibly shows that product's own
-// rating (gold 4.8/120, server 4.7/85) — never fabricated.
+// sees.
+//
+// CHANGE: 2026-10-26 — NO `aggregateRating` on any Product node, and no LocalBusiness rating
+// node either. Every star count on the site used to be typed by hand (4.8/120, 4.7/85,
+// 4.9/34 ...) and none of them could be traced to real review records, so they were all
+// removed (owner: "remove rating as most of them are fake, we only have testimonials and user
+// rating as real, also ensure those dashboard rating and auto moving and not manual").
+// Structured data may only state a rating that real reviews support, and no per-product review
+// data exists, so the honest value here is: omit it. The one rating the site does display is
+// computed from live reviews by `lib/rating-summary.mjs` and rendered by the review wall; it is
+// NOT marked up as aggregateRating because it is site-wide, not per-product.
 //
 // CHANGE: 2026-10-26 — Google Search Console structured-data cleanup. Three Offer fields are
 // intentionally and permanently OMITTED on this site, so do not "fix" them back in:
@@ -238,7 +247,6 @@ export function productJsonLd({
   sku,
   brand,
   offers,
-  aggregateRating,
 }: {
   name: string;
   description: string;
@@ -253,7 +261,6 @@ export function productJsonLd({
     availability?: string;
     itemOffered?: string;
   }[];
-  aggregateRating?: { ratingValue: string; reviewCount: string };
 }): JsonLd {
   const offerNodes = offers?.length
     ? offers.map((o) => ({
@@ -278,16 +285,6 @@ export function productJsonLd({
     ...(sku ? { sku } : {}),
     brand: { '@type': 'Brand', name: brand || 'Tally Solutions' },
     ...(offerNodes ? { offers: offerNodes.length === 1 ? offerNodes[0] : offerNodes } : {}),
-    ...(aggregateRating
-      ? {
-          aggregateRating: {
-            '@type': 'AggregateRating',
-            ratingValue: aggregateRating.ratingValue,
-            reviewCount: aggregateRating.reviewCount,
-            bestRating: '5',
-          },
-        }
-      : {}),
   };
 }
 
@@ -309,14 +306,6 @@ export function faqPageJsonLd(faqs: { q: string; a: string }[]): JsonLd {
 // CHANGE: 2026-10-07 — LocalBusiness variant carrying the aggregate rating displayed on
 // /contact (4.9★ / 34 reviews). Review items are deliberately NOT emitted — the page shows
 // only the aggregate, so individual Review nodes would be fabricated.
-export function localBusinessRatingJsonLd(ratingValue: string, reviewCount: string): JsonLd {
-  return {
-    ...localBusinessJsonLd(),
-    aggregateRating: {
-      '@type': 'AggregateRating',
-      ratingValue,
-      reviewCount,
-      bestRating: '5',
-    },
-  };
-}
+// CHANGE: 2026-10-26 — DELETED. The 4.9/34 figure was hand-typed and unsupported by review
+// records, so both the visible block on /contact and this builder were removed. The current
+// localBusinessJsonLd() (address, phone, areaServed) carries no rating at all.

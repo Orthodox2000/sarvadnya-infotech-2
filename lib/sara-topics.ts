@@ -21,11 +21,16 @@ export type Topic = {
   answer: string;
   keywords?: string[];
   followUp?: Topic[];
+  // CHANGE: 2026-10-26 — one-line summary used by the indexable guide pages (/learn-sara/
+  // <topic>) as the meta description and the hub card teaser. Optional on purpose: a topic
+  // added without it still renders, falling back to the first sentence of its answer.
+  description?: string;
 };
 
 export const saraTopics: Topic[] = [
   {
     label: "GST & Tax Filing",
+    description: "How GST works in TallyPrime: enabling GST, auto CGST/SGST/IGST, e-invoicing, e-way bills and GSTR-1 / GSTR-3B filing.",
     keywords: ["gst return", "gstr1", "gstr-1", "gstr", "tax filing", "e invoice", "einvoice", "eway bill", "e-way bill", "ewaybill"],
     answer: "TallyPrime handles GST automatically. Here's what you need to know:\n\n- Enable GST: Go to Company Features (F11) > Enable GST\n- Auto-calculation: Tally calculates CGST, SGST, IGST on every invoice\n- E-Invoicing: Generate directly from Tally (one click)\n- GSTR-1: Gateway > Reports > Statutory Reports > GST > GSTR-1\n- GSTR-3B: Same path, select GSTR-3B\n- E-Way Bill: Generate for shipments above ₹50,000\n\nTallyPrime also auto-reconciles your GSTR-2A/2B with purchase records.",
     followUp: [
@@ -35,6 +40,7 @@ export const saraTopics: Topic[] = [
   },
   {
     label: "Inventory Management",
+    description: "Stock items, godowns, batches, bill of materials, reorder levels and valuation methods in TallyPrime inventory.",
     keywords: ["stock", "stock item", "stock items", "stock entry", "items", "item", "goods", "product", "products", "godown", "godowns", "batch", "batches", "reorder", "barcode", "bom", "multi location", "multi-location"],
     answer: "TallyPrime's inventory is more powerful than most people realize:\n\n- Stock Items: Create with units, opening balance, and godown\n- Godowns: Track stock across multiple locations (F11 > Enable Godowns)\n- Batches: For medicines, food, or perishables with expiry tracking\n- BOM: Bill of Materials for manufacturing businesses\n- Reorder Levels: Set minimum stock and get alerts\n- Valuation: FIFO, LIFO, or Average — pick your method\n\nPro tip: Use 'Stock Summary' report to see real-time inventory across all locations.",
     followUp: [
@@ -44,6 +50,7 @@ export const saraTopics: Topic[] = [
   },
   {
     label: "Banking & Reconciliation",
+    description: "Auto bank reconciliation in TallyPrime: import a bank statement, match entries, print cheques and run cash-flow reports.",
     keywords: ["brs", "cheque", "bank statement", "neft", "rtgs", "upi", "reconcile", "reconciliation"],
     answer: "TallyPrime makes banking effortless:\n\n- Auto BRS: Import bank statement (CSV/OFX) and match entries automatically\n- Cheque Printing: Design and print cheques directly\n- E-Payments: Send payments to vendors via NEFT/RTGS from Tally\n- Post-Dated Cheques: Track PDCs with maturity reminders\n- Cash Flow Reports: Predict future cash positions\n\nTo start auto-reconciliation: Go to Banking > Bank Reconciliation > select your bank > Import Statement.",
     followUp: [
@@ -52,6 +59,7 @@ export const saraTopics: Topic[] = [
   },
   {
     label: "Payroll & Employees",
+    description: "Payroll is built into TallyPrime: switch it on, set pay heads, run attendance and the payroll voucher, and print payslips.",
     keywords: ["salary", "salaries", "pay structure", "pf", "esi", "attendance", "payslip", "employee", "employees", "hra"],
     // CHANGE: 2026-10-26 — payroll is NATIVE in TallyPrime (F11 > Show more features >
     // Maintain Payroll), so this answer no longer implies an add-on is needed and no longer
@@ -63,6 +71,7 @@ export const saraTopics: Topic[] = [
   },
   {
     label: "Reports & Analysis",
+    description: "TallyPrime reports for most business questions: balance sheet, profit and loss, cash flow and stock analysis.",
     keywords: ["report", "reports", "balance sheet", "profit", "cash flow", "dashboard", "ratio"],
     answer: "TallyPrime has 400+ built-in reports:\n\n- Balance Sheet: Real-time, drill-down to any ledger\n- Profit & Loss: See your business health at a glance\n- Cash Flow: Day-wise cash position\n- Stock Analysis: Aging, movement, slow/fast moving items\n- Ratio Analysis: Key financial ratios auto-calculated\n- Excel Export: Any report can be exported to Excel\n- Multi-period: Compare reports across different periods\n\nKeyboard shortcuts: Alt+F1 for detailed view, Alt+F12 for filter, F12 for configuration.",
     followUp: [
@@ -71,6 +80,7 @@ export const saraTopics: Topic[] = [
   },
   {
     label: "Keyboard Shortcuts",
+    description: "TallyPrime keyboard shortcuts that save the most time: vouchers, navigation and reports.",
     keywords: ["shortcut", "shortcuts", "hotkey", "hotkeys", "keys", "f4", "f5", "f6", "f7", "f8", "f9", "f10", "alt g", "ctrl a", "ctrl f"],
     // CHANGE: 2026-10-26 — checked against Tally Solutions' official shortcut reference.
     // Two keys were wrong: F1 opens the Help menu (F3 switches between open companies), and
@@ -85,11 +95,13 @@ export const saraTopics: Topic[] = [
     // CHANGE: 2026-09-11 — New topic: legacy ERP renewal discontinued. Sits BEFORE TSS so
     // ERP9/upgrade queries match here first (matcher keeps stable order on equal scores).
     label: "ERP 9 License Upgrade",
+    description: "Tally has discontinued Tally.ERP 9 renewals; ERP 9 users are given the option to upgrade the licence to TallyPrime.",
     keywords: ["erp9", "erp 9", "erp renewal", "erp9 renewal", "erp 9 renewal", "erp renewals", "erp 9 renewals", "discontinued", "legacy erp", "upgrade to tallyprime", "tallyprime upgrade", "erp upgrade"],
     answer: "Yes, Tally has officially discontinued legacy ERP renewals. Now ERP 9 users are given the option to upgrade their license to TallyPrime. For more customised information, contact Sarvadnya Infotech LLP. [[Contact Us|/contact]]",
   },
   {
     label: "TSS Renewal & Subscription",
+    description: "What TSS covers, how to renew it inside TallyPrime, what stops when it expires, and what to do on Tally.ERP 9 now.",
     keywords: ["tss", "renew", "renewal", "subscription", "serial number", "manage license"],
     answer: "TSS (Tally Software Services) is the annual subscription that keeps a TallyPrime licence current — new releases, statutory compliance updates, the connected services (e-invoicing, e-way bills, GST filing and GSTR-2A/2B download, bank payments and auto bank reconciliation, mobile/WhatsApp reports) and technical support.\n\nYes, you can renew TSS directly from inside TallyPrime:\n\n1. From the Gateway of Tally, press Alt+R (Manage TSS Renewal) — this option appears when your renewal is due.\n2. Or go to F1 (Help) > Settings > License > Manage License, then press F9 (Renew TSS).\n3. Tally opens the Tally Solutions TSS renewal page in your browser — pick 1 Year or 2 Years, fill in the billing details and the serial number, and pay.\n4. After payment, update the licence from Manage License so TallyPrime shows the new coverage end date.\n\nWhen TSS is expired the connected features stop — e-invoicing, e-way bills, GST filing and GSTR-2A/2B download, bank payments and auto-BRS, mobile/WhatsApp reports — but offline data entry keeps working and your data stays safe. On Tally.ERP 9 there is nothing left to renew: TSS renewal was discontinued for all customers from 16 August 2026, so the path there is an upgrade to TallyPrime.\n\nIf the option is not visible on your screen, tell us your serial number and we can renew it for you: [[Renew TSS|/services/tss]]",
     followUp: [
@@ -103,6 +115,7 @@ export const saraTopics: Topic[] = [
     // ("is there something for X?") should resolve here instantly and zero-token - and Sara
     // must still ask ONE question before recommending, per the consultant rule.
     label: "Tally Shop & Ready-Made Add-ons",
+    description: "107 ready-made TDL add-ons, Excel to Tally importers, boosters and industry modules TallyPrime businesses ask for most.",
     keywords: ["addon", "addons", "add-on", "add-ons", "add on", "add ons", "ready made", "ready-made", "shop", "catalogue", "catalog", "tdl list", "list of tdl", "addon list", "add-on list", "which addon", "what do you have", "what do you sell", "your products list"],
     answer: "Most requests are already built. Our shop has 107 ready-made solutions: TDL add-ons for a single job (invoice print formats, approvals, billing controls), Excel to Tally importers, business boosters and full industry modules - each one configured for your company, with no price on the page.\n\nTo point you at the right one, tell me: what has to happen, and where does it happen now (billing screen, purchase entry, a report, or outside Tally)?\n\n[[Browse the Shop|/shop]]\n[[Custom TDL|/services/tdl]]",
     followUp: [
@@ -122,6 +135,7 @@ export const saraTopics: Topic[] = [
     // overlap ("tallyprime", "how") from stealing unrelated queries such as
     // "how do I upgrade my licence to tallyprime".
     label: "TDL & Customisation",
+    description: "When a TallyPrime need is a TDL customisation, what the technical team needs to scope it, and what you can do without one.",
     keywords: ["tdl", "customisation", "customization", "customise", "customize", "custom report", "custom reports", "custom field", "custom voucher", "custom screen", "custom invoice", "write tdl", "draft tdl", "tdl customization", "tdl customisation"],
     answer: "A TDL is Tally's own extension language - the way to add custom screens, fields and reports inside TallyPrime. Writing one is done by our technical team, and I don't write code myself. Three quick things so I brief them properly:\n\n1. Should it sit on the screen you use every day, or as a separate report?\n2. What exactly should it show or do (and should it print, send or update anything)?\n3. How many people will use it, and how often?\n\n[[TDL Customization|/services/tdl]]",
     followUp: [
@@ -134,6 +148,36 @@ export const saraTopics: Topic[] = [
 // CHANGE: 2026-10-22 — the label of the custom-build topic. Exported so the
 // matcher can route build requests to it deterministically.
 export const TDL_TOPIC_LABEL = 'TDL & Customisation';
+
+// CHANGE: 2026-10-26 — SEO layer 1. Every Sara topic now has a real, indexable URL under
+// /learn-sara/<slug>, generated from the SAME answer text Sara speaks in chat. WHY: the page
+// used to be a chat-only, noindex screen, so the knowledge inside it could never rank; the
+// guides are server-rendered from this one source, so there is no second copy of the content
+// to keep in sync. The slug is derived here (not stored per topic) so the hub cards, the
+// guide pages, the sitemap and the search map can never disagree about an address.
+export function topicSlug(label: string): string {
+  return label
+    .toLowerCase()
+    .replace(/&/g, ' and ')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
+export type SaraGuide = { slug: string; label: string; topic: Topic };
+
+export const saraGuides: SaraGuide[] = saraTopics.map((topic) => ({
+  slug: topicSlug(topic.label),
+  label: topic.label,
+  topic,
+}));
+
+export function getSaraGuide(slug: string): SaraGuide | null {
+  return saraGuides.find((guide) => guide.slug === slug) ?? null;
+}
+
+export function getAllSaraGuideSlugs(): string[] {
+  return saraGuides.map((guide) => guide.slug);
+}
 
 export function matchTopic(query: string): { topic: Topic; score: number } | null {
   const queryLower = query.toLowerCase();

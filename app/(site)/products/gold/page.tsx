@@ -92,9 +92,13 @@ export default function TallyGoldPage() {
     [resolve],
   );
 
-  // CHANGE: 2026-10-07 — Product JSON-LD (P1 rich results). The Gold page's "Most Popular
-  // Software" block visibly lists TallyPrime Gold at 4.8★/120 reviews, so the aggregateRating
-  // is honest — it comes from data displayed ON THIS PAGE.
+  // CHANGE: 2026-10-07 — Product JSON-LD (P1 rich results).
+  // CHANGE: 2026-10-26 — `aggregateRating` REMOVED. The old 4.8/120 figure was a hand-typed
+  // number with no per-product review records behind it (owner: "remove rating as most of them
+  // are fake, we only have testimonials and user rating as real"). Product markup may only
+  // carry a rating that real reviews support, and no per-product review data exists, so the
+  // field is omitted entirely rather than fabricated. The site's one genuine rating is the
+  // average the review wall computes from live reviews (lib/rating-summary.mjs).
   const goldLd = useMemo(() => {
     const item = resolve('tallyprime-gold');
     return productJsonLd({
@@ -104,7 +108,6 @@ export default function TallyGoldPage() {
       image: `${SITE_URL}/PartnerBrands/Tally-Software.png`,
       sku: 'tallyprime-gold',
       offers: item ? [{ priceRupees: item.payablePaise / 100 }] : [],
-      aggregateRating: { ratingValue: '4.8', reviewCount: '120' },
     });
   }, [resolve]);
   const [formName, setFormName] = useState('');
@@ -221,8 +224,7 @@ export default function TallyGoldPage() {
   return (
     <div className="min-h-screen bg-slate-100 text-slate-900 font-sans">
       {/* CHANGE: 2026-10-07 — Product/Offer JSON-LD (P1 rich results). Prices come from the
-          same resolve() the pricing table renders, so markup matches the visible total.
-          aggregateRating mirrors the on-page "Most Popular Software" Gold row (4.8/120). */}
+          same resolve() the pricing table renders, so markup matches the visible total. */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(goldLd) }}
@@ -805,10 +807,10 @@ export default function TallyGoldPage() {
               <h3 className="text-sm font-bold text-slate-900 mb-4">Most Popular Software</h3>
               <div className="space-y-4">
                 {[
-                  { name: 'TallyPrime Gold', slug: '/products/gold', rating: '4.8', reviews: '120' },
-                  { name: 'TallyPrime Server', slug: '/products/server', rating: '4.7', reviews: '85' },
-                  { name: 'Tally on WhatsApp', slug: '/services/tally-on-whatsapp', rating: '4.9', reviews: '200' },
-                  { name: 'Tally Cloud Access', slug: '/cloud/tallycloudaccess', rating: '4.8', reviews: '85' },
+                  { name: 'TallyPrime Gold', slug: '/products/gold' },
+                  { name: 'TallyPrime Server', slug: '/products/server' },
+                  { name: 'Tally on WhatsApp', slug: '/services/tally-on-whatsapp' },
+                  { name: 'Tally Cloud Access', slug: '/cloud/tallycloudaccess' },
                 ].map((item) => (
                   <Link
                     key={item.name}
@@ -825,13 +827,6 @@ export default function TallyGoldPage() {
                       <p className="text-sm font-bold text-slate-700 group-hover:text-[#006569] transition-colors truncate">
                         {item.name}
                       </p>
-                      <span className="inline-flex items-center gap-1 text-xs text-slate-400">
-                        <svg className="size-3" viewBox="0 0 20 20" fill="#f59e0b" aria-hidden="true">
-                          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                        </svg>
-                        {item.rating}
-                        <span className="text-slate-300">({item.reviews} reviews)</span>
-                      </span>
                     </div>
                   </Link>
                 ))}

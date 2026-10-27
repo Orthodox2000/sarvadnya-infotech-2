@@ -14,11 +14,13 @@
 //   3. `hasMerchantReturnPolicy`, `shippingDetails` and `priceValidUntil` appear NOWHERE in
 //      app/ or lib/ (comment-stripped, so the explanatory comment in lib/seo.ts is allowed).
 //      These are permanent omissions, not TODOs - see the comment block in lib/seo.ts.
-//   4. `aggregateRating` is emitted ONLY where the page visibly shows that product's own
-//      rating: gold 4.8/120 and server 4.7/85. The numbers must match the on-page list, so
-//      the markup can never claim a rating a visitor cannot see.
-//   5. Silver, TallyDrive and TSS emit NO aggregateRating (their 4.8/120 figures belong to
-//      OTHER products in the sidebar block, and admitting that would be fake social proof).
+//   4. `aggregateRating` appears NOWHERE in app/ or lib/. Every per-product star count was
+//      hand-typed with no review records behind it, so it was all removed - the honest markup
+//      omits the field (see the note above productJsonLd() in lib/seo.ts).
+//   5. No hand-typed `rating: '…'` / `reviews: '…'` figures survive anywhere in app/, and the
+//      one permitted rating path is wired: lib/rating-summary.mjs exports the helpers and the
+//      review wall computes its average with summariseRatings(). That number moves by itself
+//      when reviews change, which is the whole point.
 //   6. /products/server emits NO Offer - the page shows no price, so the markup never
 //      invents one ("Contact Sales").
 //   7. Every Offer price derives from `payablePaise / 100` (the server-authoritative price),
@@ -168,20 +170,61 @@ for (const field of FORBIDDEN) {
 }
 checked.push('hasMerchantReturnPolicy / shippingDetails / priceValidUntil absent')
 
-// ── 4-9. per-call-site checks ─────────────────────────────────────────────────────────────
+// ── 4-5. ratings: the site may only display a computed one ────────────────────────────────
+//
+// CHANGE: 2026-10-26 — every hand-typed star count was removed from the site (product
+// sidebars, product JSON-LD, /contact). Owner: "remove rating as most of them are fake, we only
+// have testimonials and user rating as real, also ensure those dashboard rating and auto moving
+// and not manual." Two rules keep the fakes from creeping back.
 
-/** The only pages allowed to emit aggregateRating, with the figure their page displays. */
-const RATING_ALLOWLIST = {
-  'app/(site)/products/gold/page.tsx': { name: 'TallyPrime Gold', rating: '4.8', reviews: '120' },
-  'app/(site)/products/server/page.tsx': { name: 'TallyPrime Server', rating: '4.7', reviews: '85' },
+for (const [path, { code }] of source) {
+  if (/aggregateRating\s*:/.test(code)) {
+    problems.push(
+      `${rel(path)}: emits aggregateRating - no per-product review records exist, so a Product ` +
+        'rating cannot be honest. The only supported rating is the review-wall average computed ' +
+        'by lib/rating-summary.mjs (see the note in lib/seo.ts)',
+    )
+  }
+}
+checked.push('aggregateRating emitted nowhere (no real per-product reviews to back it)')
+
+// A hand-typed figure always looked like `rating: '4.8', reviews: '120'` in an item object.
+// Quoted literals only, so TS annotations (`rating: number`) and log strings stay legal.
+const HARDCODED_STARS = /\b(?:rating|reviews)\s*:\s*['"`]\s*\d/
+for (const [path, { code }] of source) {
+  for (const line of code.split('\n')) {
+    if (HARDCODED_STARS.test(line)) {
+      problems.push(
+        `${rel(path)}: hard-coded star figure (${line.trim()}) - ratings must be computed from ` +
+          'real reviews via lib/rating-summary.mjs, never typed by hand',
+      )
+    }
+  }
 }
 
-/** Pages that must never carry aggregateRating, even though 4.8/120 appears on them. */
-const RATING_FORBIDDEN = [
-  'app/(site)/products/silver/page.tsx',
-  'app/(site)/products/tallydrive/page.tsx',
-  'app/(site)/services/tss/page.tsx',
-]
+// The permitted path must actually exist and actually be used, otherwise the two rules above
+// would pass simply because nothing displays a rating at all.
+const RATING_HELPER = join(ROOT, 'lib', 'rating-summary.mjs')
+if (!existsSync(RATING_HELPER)) {
+  problems.push('lib/rating-summary.mjs is missing - it is the only permitted rating source')
+} else {
+  const helper = readFileSync(RATING_HELPER, 'utf8')
+  for (const fn of ['normalizeRating', 'summariseRatings', 'formatRating']) {
+    if (!new RegExp(`export function ${fn}\\b`).test(helper)) {
+      problems.push(`lib/rating-summary.mjs: expected exported ${fn}()`)
+    }
+  }
+  const wall = readFileSync(join(ROOT, 'app', 'components', 'CustomerReviews.tsx'), 'utf8')
+  if (!/from '@\/lib\/rating-summary\.mjs'/.test(wall) || !/summariseRatings\(/.test(wall)) {
+    problems.push(
+      'app/components/CustomerReviews.tsx: the review wall must compute its average with ' +
+        'summariseRatings() - a manual figure would defeat the whole rule',
+    )
+  }
+}
+checked.push('review-wall average computed from lib/rating-summary.mjs')
+
+// ── 6-9. per-call-site checks ─────────────────────────────────────────────────────────────
 
 /** The only page allowed to ship a Product with no Offer (it displays no price). */
 const NO_OFFER_ALLOWLIST = ['app/(site)/products/server/page.tsx']
@@ -216,52 +259,6 @@ for (const { path, call } of callSites) {
   if (sku) {
     if (skus.has(sku)) problems.push(`${file}: sku '${sku}' is already used by ${skus.get(sku)}`)
     else skus.set(sku, file)
-  }
-
-  const hasRating = /aggregateRating\s*:/.test(call)
-  const allowed = RATING_ALLOWLIST[file]
-
-  if (hasRating && !allowed) {
-    problems.push(
-      `${file}: emits aggregateRating but is not on the verified-ratings allowlist - ` +
-        'only pages that visibly display that product\'s own rating may do so (gold, server)',
-    )
-  }
-  if (!hasRating && allowed) {
-    problems.push(`${file}: expected aggregateRating (${allowed.rating}/${allowed.reviews}) - it is shown on the page`)
-  }
-  if (RATING_FORBIDDEN.includes(file) && hasRating) {
-    problems.push(
-      `${file}: must NOT emit aggregateRating - the 4.8/120 figure on this page belongs to OTHER ` +
-        'products in the "Most Popular Software" block, not to this product',
-    )
-  }
-
-  if (allowed && hasRating) {
-    const rv = call.match(/ratingValue:\s*'([^']+)'/)?.[1]
-    const rc = call.match(/reviewCount:\s*'([^']+)'/)?.[1]
-    if (rv !== allowed.rating || rc !== allowed.reviews) {
-      problems.push(
-        `${file}: aggregateRating ${rv ?? '?'}/${rc ?? '?'} does not match the allowlist ` +
-          `${allowed.rating}/${allowed.reviews}`,
-      )
-    }
-    // The same figure must be visible on the page, on a row naming THIS product.
-    const { code } = source.get(path)
-    const visible = code
-      .split('\n')
-      .some(
-        (l) =>
-          l.includes(`name: '${allowed.name}'`) &&
-          l.includes(`rating: '${allowed.rating}'`) &&
-          l.includes(`reviews: '${allowed.reviews}'`),
-      )
-    if (!visible) {
-      problems.push(
-        `${file}: aggregateRating ${allowed.rating}/${allowed.reviews} is NOT visible on the page for ` +
-          `"${allowed.name}" - markup must never claim a rating a visitor cannot see`,
-      )
-    }
   }
 
   const hasOffers = /offers\s*:/.test(call)
@@ -315,7 +312,6 @@ for (const { path, call } of callSites) {
   }
 }
 
-checked.push('aggregateRating allowlist matches the on-page ratings')
 checked.push('no invented prices (Offer omitted where no price is shown)')
 checked.push('TallyDrive node name matches its only Offer')
 

@@ -7,11 +7,16 @@ import { parseDateIso } from '@/lib/news-utils';
 // Console, and a URL that is not in the sitemap is a weaker candidate. The curriculum is a
 // static module, so this costs no database read and cannot fail.
 import { getAllLessonSlugs, SECTIONS } from '@/lib/learn-tally-curriculum';
+// CHANGE: 2026-10-26 — SEO layer 1/2: the Sara guide pages and the free TSS expiry checker are
+// now real, indexable content, so every one of them is listed individually.
+import { getAllSaraGuideSlugs } from '@/lib/sara-topics';
 
 // CHANGE: 2026-08-27 — baseUrl now sourced from central lib/seo.ts (new canonical domain).
 // CHANGE: 2026-08-31 — Sitemap now appends every /news/[slug] article (newest-aware lastModified)
 // so each blog article is independently crawlable/indexable. DB failures degrade to the static list.
 // CHANGE: 2026-09-07 — removed '/demo', '/search', '/learn-sara' (now noindexed utility pages).
+// CHANGE: 2026-10-26 — '/learn-sara' is BACK in the list: it is now a server-rendered guide hub
+// (the chat moved to /learn-sara/chat, which keeps the noindex). See the guideEntries block.
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = SITE_URL;
 
@@ -54,6 +59,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     '/terms',
     '/tutorials',
     '/tally-insights',
+    // CHANGE: 2026-10-26 — the guide hub and the free tool are real pages now (see guideEntries).
+    '/learn-sara',
+    '/tools',
+    '/tools/tss-expiry-checker',
   ];
 
   const staticEntries = routes.map((route) => ({
@@ -100,5 +109,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.7,
   }));
 
-  return [...staticEntries, ...sectionEntries, ...lessonEntries, ...articleEntries];
+  // CHANGE: 2026-10-26 — every Sara guide URL. Generated from the same lib/sara-topics.ts that
+  // renders the pages, so the sitemap can never list a guide that does not exist (and a new
+  // topic appears here the moment it is added to that file).
+  const guideEntries: MetadataRoute.Sitemap = getAllSaraGuideSlugs().map((slug) => ({
+    url: `${baseUrl}/learn-sara/${slug}`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly' as const,
+    priority: 0.7,
+  }));
+
+  return [...staticEntries, ...sectionEntries, ...lessonEntries, ...guideEntries, ...articleEntries];
 }

@@ -56,7 +56,16 @@ export function VisitorProvider({ children }: { children: React.ReactNode }) {
 
   const send = useCallback(
     (path: string) => {
-      if (!sessionId || document.visibilityState !== 'visible') return;
+      // CHANGE: 2026-10-26 — a hidden tab must not count as an active page view, but the path
+      // used to be DISCARDED here, so a visitor who opened a Google result in a background tab
+      // (mobile especially) was never recorded at all — one more reason the Visitors count sat
+      // below Search Console's click count. The path is now parked in `pendingPathRef` and
+      // flushed by the `visibilitychange` listener below the moment the tab becomes visible.
+      if (!sessionId) return;
+      if (document.visibilityState !== 'visible') {
+        pendingPathRef.current = path;
+        return;
+      }
 
       const sectionViews = sectionBuf.current;
       sectionBuf.current = [];
@@ -113,6 +122,20 @@ export function VisitorProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (sessionId) send(pathname);
   }, [pathname, sessionId, send]);
+
+  // CHANGE: 2026-10-26 — flush a beacon that was parked while the tab was hidden. Without
+  // this the deferred path was lost for good (see the guard inside `send`).
+  useEffect(() => {
+    const flushPending = () => {
+      if (document.visibilityState !== 'visible') return;
+      const parked = pendingPathRef.current;
+      if (!parked) return;
+      pendingPathRef.current = null;
+      send(parked);
+    };
+    document.addEventListener('visibilitychange', flushPending);
+    return () => document.removeEventListener('visibilitychange', flushPending);
+  }, [send]);
 
   const trackSection = useCallback((id: string) => {
     if (!id || sectionBuf.current.includes(id)) return;
