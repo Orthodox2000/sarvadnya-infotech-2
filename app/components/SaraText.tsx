@@ -27,12 +27,12 @@ function renderInline(segment: string, accent: string, onNavigate?: () => void) 
             key={pi}
             href={url}
             onClick={onNavigate}
-            className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-white font-bold transition-all my-1 mx-0.5 shadow-sm hover:opacity-90 active:scale-95 align-middle"
-            style={{ backgroundColor: accent }}
+            className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md font-semibold transition-all my-0.5 mx-0.5 hover:underline align-baseline"
+            style={{ color: accent }}
           >
-            <span className="text-[0.7em] uppercase tracking-wider">{label}</span>
-            <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+            <span>{label}</span>
+            <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
             </svg>
           </Link>
         );

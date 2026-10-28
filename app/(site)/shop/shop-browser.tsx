@@ -73,8 +73,8 @@ const ShopCard = memo(function ShopCard({
   return (
     <article
       id={item.slug}
-      className={`scroll-mt-32 group flex h-full flex-col rounded-lg border bg-white shadow-sm transition-all duration-200 hover:shadow-lg hover:border-[#006569]/40 ${
-        expanded ? 'border-[#006569] ring-1 ring-[#006569]/20' : 'border-slate-200'
+      className={`scroll-mt-32 group flex h-full flex-col rounded-xl border bg-white shadow-sm transition-all duration-200 hover:shadow-md hover:border-[#006569]/40 p-4 ${
+        expanded ? 'border-[#006569]/60 ring-1 ring-[#006569]/10' : 'border-slate-200'
       }`}
     >
       <div className="mb-2 flex flex-wrap items-center gap-1.5">
@@ -91,10 +91,10 @@ const ShopCard = memo(function ShopCard({
         )}
       </div>
 
-      <h3 className="text-[14px] font-bold leading-snug text-slate-900 transition-colors group-hover:text-[#006569] line-clamp-2">
+      <h3 className="text-[15px] font-bold leading-snug text-slate-900 transition-colors group-hover:text-[#006569] line-clamp-2">
         {item.title}
       </h3>
-      <p className="mt-1.5 line-clamp-2 text-[12px] leading-relaxed text-slate-600">{item.summary}</p>
+      <p className="mt-2 line-clamp-2 text-[12.5px] leading-relaxed text-slate-600">{item.summary}</p>
 
       {item.tags.length > 0 && (
         <ul className="mt-3 flex flex-wrap gap-1.5">
@@ -137,12 +137,12 @@ const ShopCard = memo(function ShopCard({
               <button
                 type="button"
                 onClick={() => onAsk(item)}
-                className="inline-flex items-center gap-1.5 rounded-full border border-[#006569]/25 bg-white px-3 py-1.5 text-[11px] font-bold text-[#006569] transition-colors hover:bg-teal-50"
+                className="inline-flex items-center gap-1.5 rounded-full border border-[#006569]/30 bg-white px-3 py-1.5 text-[11px] font-bold text-[#006569] transition-colors hover:bg-teal-50"
               >
-                <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                  <path d="M12 2l2 6h6l-5 3.8 2 6.2-5-3.7-5 3.7 2-6.2L4 8h6l2-6z" />
+                <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z" />
                 </svg>
-                Ask Sara about this
+                Ask AI Consultant Sara
               </button>
               <span className="text-[11px] text-slate-400">Tally vetted, set up by our team</span>
             </div>
@@ -156,15 +156,15 @@ const ShopCard = memo(function ShopCard({
           onClick={() => onToggle(item.slug)}
           aria-expanded={expanded}
           aria-controls={detailId}
-          className="inline-flex h-9 flex-1 items-center justify-center gap-1 rounded-md border border-slate-300 px-3 text-[11.5px] font-semibold text-slate-700 transition-colors hover:bg-slate-50"
+          className="inline-flex h-9 flex-1 items-center justify-center gap-1 rounded-lg border border-slate-300 px-3 text-[11.5px] font-semibold text-slate-700 transition-colors hover:bg-slate-50"
         >
           {expanded ? 'Hide details' : 'Details'}
         </button>
         <button
           type="button"
           onClick={() => onBuy(item)}
-          className="inline-flex h-9 flex-1 items-center justify-center gap-1.5 rounded-md bg-[#FFD814] px-3 text-[11.5px] font-semibold text-slate-900 shadow-sm transition-all hover:bg-[#F7CA00] active:scale-[0.98]"
-          aria-label={`Buy ${item.title} - request a quote`}
+          className="inline-flex h-9 flex-1 items-center justify-center gap-1.5 rounded-lg bg-[#006569] px-3 text-[11.5px] font-semibold text-white shadow-sm transition-all hover:bg-[#045A57] active:scale-[0.98]"
+          aria-label={`Get quote for ${item.title}`}
         >
           Get Quote
         </button>
@@ -440,12 +440,12 @@ export default function ShopBrowser() {
 
   return (
     <>
-      <div className="mx-auto max-w-7xl px-4 pb-16 pt-6 md:px-6">
+      <div className="mx-auto max-w-7xl px-4 pb-16 pt-8 sm:px-6 lg:px-8">
         <div className="lg:grid lg:grid-cols-[248px_minmax(0,1fr)] lg:gap-7">
           {/* Sidebar */}
           <aside className="lg:sticky lg:top-24 lg:self-start">
-            <div className="rounded-lg border border-slate-200 bg-white p-3 shadow-sm">
-              <div className="flex items-center justify-between gap-2 lg:hidden">
+            <div className="rounded-xl border border-slate-200 bg-white shadow-sm overflow-hidden">
+              <div className="flex items-center justify-between gap-2 px-3 py-2.5 lg:hidden">
                 <button
                   type="button"
                   onClick={() => setFiltersOpen((v) => !v)}
@@ -466,8 +466,7 @@ export default function ShopBrowser() {
                 </button>
               </div>
 
-              {/* Mobile: collapsible. Same 0fr -> 1fr grid trick as the Tally Insights sidebar so
-                  nothing jumps when it opens. Desktop: always visible. */}
+              {/* Mobile: collapsible. Desktop: own scroll so it doesn't grow the page. */}
               <div
                 id="shop-filters"
                 className={`grid transition-[grid-template-rows] duration-300 ease-out lg:block ${
@@ -475,7 +474,7 @@ export default function ShopBrowser() {
                 }`}
               >
                 <div className="overflow-hidden lg:overflow-visible">
-                  <div className="pt-3 lg:pt-0">
+                  <div className="px-3 pb-3 pt-3 lg:pt-3 lg:max-h-[calc(100vh-8rem)] lg:overflow-y-auto lg:pr-2">
                     {searchField}
                     <div className="mt-4">{filterBody}</div>
                   </div>
