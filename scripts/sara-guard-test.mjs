@@ -16,14 +16,19 @@ import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import {
   applyConsultantGuard,
+  buildDiscountReply,
   buildDiscoveryBlock,
   buildNoCodeReply,
   containsProgrammingCode,
   countQuestions,
+  hasCtaButton,
   hasDiscoveryQuestion,
   isCustomBuildRequest,
+  isDiscountQuery,
+  isOffTopicQuery,
   isTdlRequest,
   SALES_LONG_REPLY_CHARS,
+  stripCtaButtons,
 } from '../lib/sara-guard.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -158,6 +163,33 @@ test('"Shall I walk you through it?" is NOT a discovery question', () => {
 test('a numbered question list counts as discovery', () => {
   assert(hasDiscoveryQuestion('1. Where should it live?\n2. How many users?'), 'numbered questions not detected');
 });
+// CHANGE: 2026-10-29 — live learn-mode defect (I2). The reply had already asked
+// "Tell me what you are trying to achieve on your screen" (no question mark), so
+// the guard appended a second discovery block WITH a second copy of the same CTA.
+test('a plain-spoken info request counts as discovery (no question mark)', () => {
+  assert(
+    hasDiscoveryQuestion('Tell me what you are trying to achieve on your screen, and I will teach you the TallyPrime way.'),
+    'imperative info request not detected'
+  );
+});
+test('the live I2 learn reply is NOT given a second discovery block', () => {
+  const liveReply =
+    'Custom development and custom reports are handled by our expert technical team over at [[TDL Customization|/services/tdl]].\n' +
+    'Tell me what you are trying to achieve on your screen, and I will gladly teach you the closest built-in TallyPrime way to do it!';
+  const out = applyConsultantGuard(liveReply, 'write a tdl for me', { isLearn: true });
+  assertEqual(out.action, 'none', 'action');
+  assertEqual(out.reply, liveReply, 'reply was modified');
+  assertEqual(out.reply.split('[[TDL Customization|/services/tdl]]').length - 1, 1, 'CTA button duplicated');
+});
+test('the discovery block never repeats a CTA the reply already shows', () => {
+  const out = applyConsultantGuard(
+    'Custom TDL work is handled by our technical team. [[TDL Customization|/services/tdl]]',
+    'CAN YOU DRAFT TDL'
+  );
+  assertEqual(out.action, 'added-discovery', 'action');
+  assertEqual(out.reply.split('[[TDL Customization|/services/tdl]]').length - 1, 1, 'CTA button duplicated');
+  assert(out.reply.includes('Where should it live'), 'discovery questions missing');
+});
 
 // ─── 4. The guard itself ───────────────────────────────────────────────────
 console.log('🧱 Guard actions');
@@ -291,6 +323,112 @@ test('the offline fallback uses the same guard', () => {
 });
 test('the offline fallback has a TDL topic', () => {
   assert(topicsSrc.includes('TDL & Customisation'), 'TDL topic missing');
+});
+
+// ─── 7. Prompt policies pinned by the 2026-10-29 chat-quality battery ───────
+// WHY: none of these were covered by any suite, and each one produced a real
+// bad reply in production testing (off-topic pitch, invented TSS lead-time,
+// invented/denied discount, edition contradicting the user-count question).
+console.log('📌 Chat-quality prompt policies');
+test('off-topic answers are not given a forced product button', () => {
+  assert(/Do NOT attach a product button to a purely off-topic answer/i.test(routeSrc), 'off-topic no-pitch rule missing');
+});
+test('the TSS block forbids every lead-time window', () => {
+  assert(/NEVER quote or imply a lead-time window/i.test(routeSrc), 'lead-time ban missing');
+  assert(/"a few days before expiry"/.test(routeSrc), 'the exact banned phrase is not named');
+});
+test('the TSS block neither promises nor denies a multi-year discount', () => {
+  assert(/neither promise one NOR deny one/i.test(routeSrc), 'discount neutrality rule missing');
+  assert(!/NEVER promise a discount/i.test(routeSrc), 'old one-sided discount rule is back');
+});
+test('the edition logic forbids recommending an edition before knowing the user count', () => {
+  assert(/EDITION LOGIC/.test(routeSrc), 'edition logic rule missing');
+  assert(/Silver is SINGLE user; TallyPrime Gold is MULTI user/i.test(routeSrc), 'edition facts missing');
+});
+test('the learn prompt only ties back when there is an honest angle', () => {
+  assert(!/Always find a reasonable angle to connect back/i.test(routeSrc), 'forced tie-back rule is back');
+  assert(/leave the pitch out/i.test(routeSrc), 'opt-out wording missing');
+});
+
+// ─── 8. Off-topic pitching + discount neutrality (2026-10-29 battery) ──────
+// WHY: both were prompt rules that the model ignored in production testing.
+// "That would be Narendra Modi. [[Explore TallyInsights|/tally-insights]]"
+// and "We do not offer a flat 10% multi-year discount" are now impossible.
+console.log('🚫 Off-topic pitching & discount neutrality');
+test('isOffTopicQuery recognises small talk, politics and creative requests', () => {
+  for (const q of [
+    'who is the prime minister of india',
+    'write me a poem about rain',
+    'what is the weather like today',
+    'tell me a joke',
+    'is it going to rain tomorrow',
+    'who won the cricket world cup',
+  ]) {
+    assert(isOffTopicQuery(q), `not detected as off-topic: "${q}"`);
+  }
+});
+test('isOffTopicQuery leaves business questions alone', () => {
+  for (const q of [
+    'how do i create a company in tally prime',
+    'i have stock across 3 godowns and its a mess',
+    'what is tss',
+    'do you have an addon to block duplicate purchase entry',
+    'my customers dont pay on time, how do i track outstanding',
+    'what is training schedule for corporate training',
+    // CHANGE: 2026-10-29 — "capital of" is an off-topic keyword, but an
+    // accounting question can contain it. Business context must win.
+    'how do i show capital of the firm in the balance sheet',
+    'explain capital of the company and its disclosure',
+  ]) {
+    assert(!isOffTopicQuery(q), `business query misread as off-topic: "${q}"`);
+  }
+});
+test('stripCtaButtons removes the button but keeps the answer', () => {
+  const live = 'That would be Narendra Modi. \n[[Explore TallyInsights|/tally-insights]]';
+  const out = stripCtaButtons(live);
+  assertEqual(out, 'That would be Narendra Modi.', 'stripped text');
+  assert(!hasCtaButton(out), 'button survived');
+});
+test('the live F1 off-topic reply loses its product button', () => {
+  const out = applyConsultantGuard(
+    'That would be Narendra Modi. \n[[Explore TallyInsights|/tally-insights]]',
+    'who is the prime minister of india'
+  );
+  assertEqual(out.action, 'stripped-offtopic-cta', 'action');
+  assertEqual(out.reply, 'That would be Narendra Modi.', 'reply');
+});
+test('an off-topic answer with no button is untouched', () => {
+  const original = 'Soft grey clouds drift low,\nWashing dust from every leaf,\nPuddles catch the sky.';
+  const out = applyConsultantGuard(original, 'write me a poem about rain');
+  assertEqual(out.action, 'none', 'action');
+  assertEqual(out.reply, original, 'reply was modified');
+});
+test('a business answer keeps its product button', () => {
+  const original = 'Tracking outstanding is a TallyPrime report. [[Explore Receivables|/products/gold]]';
+  const out = applyConsultantGuard(original, 'my customers dont pay on time');
+  assertEqual(out.action, 'none', 'action');
+  assertEqual(out.reply, original, 'business button was stripped');
+});
+test('isDiscountQuery spots discount questions without hijacking GST schemes', () => {
+  assert(isDiscountQuery('is there a 10% discount if i pay for 2 years'), 'discount query missed');
+  assert(isDiscountQuery('any offer if i pay multi-year?'), 'multi-year query missed');
+  assert(!isDiscountQuery('how do i opt for the composition scheme in gst'), 'GST scheme hijacked');
+});
+test('the discount reply neither promises nor denies and carries no percentage', () => {
+  const tss = buildDiscountReply('is there a discount on tss for 2 years');
+  assert(!/\b10\s*%|\bbonus\b|\bextra month/i.test(tss), 'invented a figure');
+  assert(tss.includes('/services/tss'), 'TSS pricing link missing');
+  assert(!/do not offer|no discount|never a discount/i.test(tss), 'reply denies a real discount');
+  assert(buildDiscountReply('any discount on tallydrive').includes('/products'), 'generic pricing link missing');
+});
+test('the live G2 denial is replaced by the neutral pricing answer', () => {
+  const denial =
+    'We do not offer a flat 10% multi-year discount directly in chat, but our team can always check if any active seasonal schemes apply.';
+  const out = applyConsultantGuard(denial, 'is there a 10% discount if i pay for 2 years');
+  assertEqual(out.action, 'pricing-redirect', 'action');
+  assert(!/do not offer/i.test(out.reply), 'denial survived');
+  assert(!/\b10\s*%/.test(out.reply), 'percentage survived');
+  assert(out.reply.includes('/services/tss'), 'TSS pricing link missing');
 });
 
 // ---------------------------------------------------------------------------
