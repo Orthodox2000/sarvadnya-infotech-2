@@ -54,7 +54,7 @@ const faqs: { q: string; a: string; cta?: { label: string; type: string } | { la
   },
   {
     q: 'Can I buy more storage if I need it?',
-    a: 'Yes! Extra storage is available starting at ₹1,200 per year for an additional 10 GB of cloud backup space.',
+    a: 'Yes! Extra storage is available starting at ₹1,200 per year for additional cloud backup space.',
     cta: { label: 'Get Storage Quote', type: 'quote' },
   },
   {
@@ -100,7 +100,7 @@ export default function TallyDrivePage() {
       ...BASE_DRIVE_PLANS,
       {
         plan: 'Extra Storage',
-        storage: '10 GB',
+        storage: '-',
         validity: 'Per year',
         price: extra ? `₹${formatRupeesPlain(extra.payablePaise)}/year` : '₹1,200/year',
         slug: 'tallydrive-extra-storage-1yr',
@@ -117,15 +117,16 @@ export default function TallyDrivePage() {
   // allowance is free with an active TSS and is described on-page as "Included with TSS",
   // never sold. So the Product node now describes exactly what the Offer sells. Claiming
   // TallyDrive itself costs ₹1,200/yr would be factually wrong.
+  // CHANGE: 2026-10-28 — remove "10 GB" from Extra Storage per owner request.
   const tallydriveLd = useMemo(() => {
     const extra = resolve('tallydrive-extra-storage-1yr');
     return productJsonLd({
-      name: 'TallyDrive Extra Storage (10 GB)',
-      description: 'Adds 10 GB of TallyDrive cloud backup space for one year, on top of the free 1 GB (single-user) / 3 GB (multi-user) allowance included with an active Tally subscription. TallyDrive keeps your TallyPrime data automatically backed up and synced to the cloud, with easy restores.',
+      name: 'TallyDrive Extra Storage',
+      description: 'Adds extra TallyDrive cloud backup space for one year, on top of the free 1 GB (single-user) / 3 GB (multi-user) allowance included with an active Tally subscription. TallyDrive keeps your TallyPrime data automatically backed up and synced to the cloud, with easy restores.',
       url: '/products/tallydrive',
       image: `${SITE_URL}/tallydrive%20logo.png`,
       sku: 'tallydrive-extra-storage-1yr',
-      offers: extra ? [{ priceRupees: extra.payablePaise / 100, itemOffered: 'TallyDrive Extra Storage (10 GB, 1 Year)' }] : [],
+      offers: extra ? [{ priceRupees: extra.payablePaise / 100, itemOffered: 'TallyDrive Extra Storage (1 Year)' }] : [],
     });
   }, [resolve]);
   const [formName, setFormName] = useState('');
@@ -285,7 +286,7 @@ export default function TallyDrivePage() {
 
             {/* Action Buttons */}
             <div className="hidden md:flex flex-col gap-2 shrink-0">
-              {/* CHANGE: 2026-10-02 — "Get Now" became "Buy Now!" — buys the 10 GB Extra
+              {/* CHANGE: 2026-10-02 — "Get Now" became "Buy Now!" — buys the Extra
                   Storage pack (bundled with a TSS renewal suggestion). */}
               <BuyNowButton slug="tallydrive-extra-storage-1yr" />
               <button
@@ -709,7 +710,7 @@ export default function TallyDrivePage() {
                 suggestion) goes into the cart from here. */}
             <div className="mt-8 rounded-2xl border border-[#D4EAEA] bg-gradient-to-br from-[#E5F4F4]/70 to-white p-6 text-center">
               <h3 className="text-base font-black text-slate-900">Need more backup space?</h3>
-              <p className="mt-1 text-sm text-slate-600">Add 10 GB of extra TallyDrive storage to your cart — one year at a time.</p>
+              <p className="mt-1 text-sm text-slate-600">Add extra TallyDrive storage to your cart — one year at a time.</p>
               <div className="mt-4 flex flex-wrap items-center justify-center gap-3">
                 <BuyNowButton slug="tallydrive-extra-storage-1yr" />
                 <button
