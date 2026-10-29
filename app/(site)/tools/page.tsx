@@ -10,12 +10,16 @@ import Link from "next/link";
 import Footer from "../../components/Footer";
 import { breadcrumbJsonLd, seoMetadata } from "@/lib/seo";
 
+// CHANGE: 2026-10-29 — action-first title naming the actual tool (the hub only has one so far) and a
+// description that leads with the free/no-signup promise for CTR.
 export const metadata: Metadata = seoMetadata({
-  title: "Free Tally Tools",
+  title: "Free TSS Expiry Checker for Tally",
   description:
-    "Free TSS expiry checker: enter the coverage end date from TallyPrime to see the days left and what stops.",
+    "Free Tally tools by Sarvadnya Infotech. Start with the TSS expiry checker and see the days left on your licence. No signup, nothing stored.",
   path: "/tools",
   keywords: ["free tally tools", "tss expiry checker", "tallyprime tools", "tally utilities"],
+  // CHANGE: 2026-10-29 — free-tool page: the promise is the answer (see lib/seo.ts `contactSuffix`).
+  contactSuffix: false,
 });
 
 const TOOLS = [

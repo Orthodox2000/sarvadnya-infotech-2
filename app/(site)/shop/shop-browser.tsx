@@ -15,6 +15,14 @@
 //     low-end phones this site targets.
 
 import { useState, useMemo, useCallback, useEffect, useRef, memo } from 'react';
+// CHANGE: 2026-10-29 — removed `import { isGatewayConfigured } from '@/lib/cart/payment'`.
+// WHY: that module is SERVER-ONLY (it imports `node:crypto` and the Razorpay SDK and reads
+// `RAZORPAY_KEY_SECRET`). Importing it into this client island pulled `node:crypto` into the
+// browser bundle and broke `next build` outright ("UnhandledSchemeError: Reading from
+// node:crypto is not handled by plugins"). It could never have worked either: the gate reads
+// `process.env.RAZORPAY_KEY_ID`, which is not a NEXT_PUBLIC_ variable and is therefore
+// `undefined` in the browser, so it always returned false. Shop items are quote requests and
+// carry no prices by rule (AGENTS §29), so the static "Get Quote" label is the correct one.
 import {
   TDL_ITEMS,
   TDL_GROUPS,
@@ -73,10 +81,15 @@ const ShopCard = memo(function ShopCard({
   return (
     <article
       id={item.slug}
-      className={`scroll-mt-32 group flex h-full flex-col rounded-xl border bg-white shadow-sm transition-all duration-200 hover:shadow-md hover:border-[#006569]/40 p-4 ${
+      className={`scroll-mt-32 group relative flex h-full flex-col rounded-xl border bg-white shadow-sm transition-all duration-200 hover:shadow-md hover:border-[#006569]/40 p-4 ${
         expanded ? 'border-[#006569]/60 ring-1 ring-[#006569]/10' : 'border-slate-200'
       }`}
     >
+      {item.featured && (
+        <span className="absolute -top-2 right-3 z-10 inline-flex items-center rounded-full bg-[#006569] px-2 py-0.5 text-[9px] font-bold uppercase tracking-wide text-white shadow-sm">
+          Best Seller
+        </span>
+      )}
       <div className="mb-2 flex flex-wrap items-center gap-1.5">
         <span className={`rounded border px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide ${GROUP_TONE[item.group]}`}>
           {groupLabel(item.group)}
@@ -84,11 +97,6 @@ const ShopCard = memo(function ShopCard({
         <span className="rounded border border-slate-200 bg-slate-50 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide text-slate-500">
           {categoryLabel(item.category)}
         </span>
-        {item.featured && (
-          <span className="ml-auto inline-flex items-center rounded bg-[#006569] px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide text-white">
-            Best Seller
-          </span>
-        )}
       </div>
 
       <h3 className="text-[15px] font-bold leading-snug text-slate-900 transition-colors group-hover:text-[#006569] line-clamp-2">

@@ -19,10 +19,12 @@ import { breadcrumbJsonLd, seoMetadata } from "@/lib/seo";
 // CHANGE: 2026-10-23 - Hub metadata moved here from the route layout.
 // WHY: the layout metadata applied to the whole /tally-insights subtree, so every future
 // section/lesson page would inherit the hub's canonical. Metadata is now owned per page.
+// CHANGE: 2026-10-29 — title now names the search intent (the old one dropped "knowledge hub"),
+// keeping the "& Guides" hook for CTR.
 export const metadata: Metadata = seoMetadata({
-  title: "TallyPrime & ERP 9 Knowledge Hub",
+  title: "TallyPrime Knowledge Hub & Guides",
   description:
-    "TallyPrime and Tally ERP 9 guides on company setup, vouchers, GST, reconciliation, payroll, reports and TSS.",
+    "TallyPrime and Tally ERP 9 guides on company setup, vouchers, GST, reconciliation, payroll, reports and TSS, with official shortcut lists.",
   path: "/tally-insights",
   keywords: [
     "tally insights",
@@ -32,6 +34,8 @@ export const metadata: Metadata = seoMetadata({
     "tallyprime tutorials",
     "tally knowledge hub",
   ],
+  // CHANGE: 2026-10-29 — reference hub: answer first, no repeated contact tail (see lib/seo.ts).
+  contactSuffix: false,
 });
 
 export default function TallyInsightsPage() {

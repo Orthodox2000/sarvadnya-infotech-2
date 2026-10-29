@@ -68,6 +68,7 @@ export function seoMetadata({
   keywords,
   noindex,
   image,
+  contactSuffix = true,
 }: {
   title: string;
   description: string;
@@ -76,6 +77,18 @@ export function seoMetadata({
   noindex?: boolean;
   /** CHANGE: 2026-10-27 — optional share image (site-relative path or absolute URL). */
   image?: string;
+  /**
+   * CHANGE: 2026-10-29 — per-page control of the auto-appended contact CTA.
+   * WHY: the same 38-character "| Call: ... | Navi Mumbai" tail was being stamped onto all 49
+   * pages, so every snippet in a SERP for our own content pages ended with an identical phone
+   * number instead of the actual answer. Owner ruling: "we don't need same content on every, we
+   * can keep on contact section and other important pages but optimise for max output."
+   * So commercial / high-intent pages keep it (default true), and reference-first surfaces
+   * (news, Tally Insights, Learn Sara guides, tools, legal, noindex utilities) set
+   * `contactSuffix: false` and spend the whole 160-char budget on their own answer.
+   * 38 chars are released per opted-out page.
+   */
+  contactSuffix?: boolean;
 }): Metadata {
   const canonical = parallelPath(path);
   // CHANGE: 2026-08-27 — build the FINAL <title> here and mark it `absolute` so the
@@ -84,7 +97,8 @@ export function seoMetadata({
   const alreadyBranded = title.toLowerCase().includes('sarvadnya infotech');
   const finalTitle = alreadyBranded ? title : `${title} | ${SITE_NAME}`;
   // CHANGE: 2026-09-03 — append contact details to every meta description for SEO visibility.
-  const finalDescription = `${description}${CONTACT_SUFFIX}`;
+  // CHANGE: 2026-10-29 — only when the page opts in (see `contactSuffix` above).
+  const finalDescription = contactSuffix ? `${description}${CONTACT_SUFFIX}` : description;
   // CHANGE: 2026-10-13 — merge the site-wide brand + location keywords (SITE_KEYWORDS) into
   // whatever this page declared, deduped, page-specific first. Guarantees every page carries
   // the company name, Mumbai / Navi Mumbai / CBD Belapur and the partner terms. Invisible.
@@ -162,6 +176,24 @@ export function localBusinessJsonLd(): JsonLd {
     // CHANGE: 2026-10-13 — areaServed widened from the bare 'IN' country code to the actual
     // service area (Mumbai / Navi Mumbai / CBD Belapur + India). Local-SEO signal, invisible.
     areaServed: ['CBD Belapur', 'Navi Mumbai', 'Mumbai', 'IN'],
+    // CHANGE: 2026-10-29 — LocalBusiness enrichment (P0 from the claude-seo adoption review).
+    // `sameAs` reuses the SAME four social profiles already verified in orgJsonLd(), so the two
+    // nodes can never disagree about which accounts are ours. `foundingDate` is the year the
+    // site states everywhere ("Tally Certified Partner Since 2008").
+    sameAs: [
+      'https://facebook.com/sarvadnyainfotech',
+      'https://www.instagram.com/sarvadnya.infotech/',
+      'https://linkedin.com/company/sarvadnyainfotech',
+      'https://www.youtube.com/@sarvadnyainfotechtally',
+    ],
+    foundingDate: '2008',
+    // `hasMap` encodes the SAME canonical address we already publish (the one the /contact page
+    // renders), so nothing new is asserted — it only gives crawlers a machine-readable map link.
+    hasMap: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+      '73, Vindhya Commercial Premises, Sector 11, CBD Belapur, Navi Mumbai, Maharashtra'
+    )}`,
+    // DELIBERATELY NOT ADDED (needs verified owner data, never invent):
+    //   geo { latitude, longitude } and openingHoursSpecification.
   };
 }
 

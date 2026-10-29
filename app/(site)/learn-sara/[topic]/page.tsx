@@ -29,6 +29,9 @@ export async function generateMetadata({ params }: { params: Promise<{ topic: st
     description,
     path: `/learn-sara/${guide.slug}`,
     keywords: [guide.label.toLowerCase(), ...(guide.topic.keywords ?? [])],
+    // CHANGE: 2026-10-29 — answer-first guide page: no contact CTA in the snippet, so the
+    // whole 160-char budget carries the guide's own answer instead of a repeated phone number.
+    contactSuffix: false,
   });
 }
 

@@ -27,7 +27,9 @@ export async function generateMetadata({
     title,
     description,
     path: `/tally-insights/${sec.id}`,
-    keywords
+    keywords,
+    // CHANGE: 2026-10-29 — answer-first reference page (see lib/seo.ts `contactSuffix`).
+    contactSuffix: false,
   });
 }
 

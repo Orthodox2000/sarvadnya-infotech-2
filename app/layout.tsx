@@ -53,7 +53,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={cn("h-full antialiased", "font-sans", geist.variable, playfair.variable)} style={{ colorScheme: "only light" }} data-scroll-behavior="smooth" suppressHydrationWarning>
+    <html lang="en-IN" className={cn("h-full antialiased", "font-sans", geist.variable, playfair.variable)} style={{ colorScheme: "only light" }} data-scroll-behavior="smooth" suppressHydrationWarning>
       <head suppressHydrationWarning />
       <body className="relative min-h-full w-full bg-background text-foreground" suppressHydrationWarning>
         {/* CHANGE: 2026-08-27 — Organization + WebSite JSON-LD for search/AI indexing. */}

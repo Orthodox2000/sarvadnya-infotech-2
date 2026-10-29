@@ -8,9 +8,10 @@ import { seoMetadata } from "@/lib/seo";
 // CHANGE: 2026-09-17 (rev-2) — last clause replaced with positive framing per owner
 // ("Nothing you don't" reads negatively for a feature page): "Every feature you need.
 // Built for growth."
+// CHANGE: 2026-10-29 — action-first title + tightened description for CTR (impressions without clicks).
 export const metadata = seoMetadata({
-  title: "Every feature you need. Built for growth.",
-  description: "Every feature you need. Built for growth. From invoicing to payroll, TallyPrime handles all your accounting features across every category — designed for growing Indian businesses.",
+  title: "See What TallyPrime Can Do",
+  description: "Invoicing, inventory, payroll, GST and reports. See every TallyPrime capability and pick what your business needs.",
   path: "/capabilities",
   keywords: ["tallyprime features", "tally capabilities", "tallyprime invoicing", "tallyprime payroll", "gst ready"],
 });

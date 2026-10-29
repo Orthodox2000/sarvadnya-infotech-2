@@ -7,9 +7,12 @@ import { getContent, getPartners, getReviews, getSettings } from '@/lib/mongodb-
 import { seoMetadata, localBusinessJsonLd } from "@/lib/seo";
 
 // CHANGE: 2026-08-27 — SEO metadata for AI/search indexing.
+// CHANGE: 2026-10-29 — description now leads with the action and fits the 160-char display limit
+// incl. CONTACT_SUFFIX (the old one was 183 chars and was being truncated). Title unchanged: on a
+// branded query "Sarvadnya Infotech LLP — Tally Certified Partner Since 2008" is the strongest hook.
 export const metadata = seoMetadata({
   title: "Sarvadnya Infotech LLP — Tally Certified Partner Since 2008",
-  description: "Tally Certified Partner trusted by 1500+ MSMEs. TallyPrime (Silver, Gold, Server), Tally on Cloud, AMC, Tally on WhatsApp, TallyDrive cloud backup, HRMS, TDL customization & corporate training.",
+  description: "Buy TallyPrime, renew TSS or move Tally to cloud — certified partner since 2008, 1,500+ businesses served.",
   path: "/",
   keywords: ["sarvadnya infotech", "tally certified partner", "tally partner", "tallyprime", "tally on cloud", "tally on whatsapp", "tallydrive"],
 });

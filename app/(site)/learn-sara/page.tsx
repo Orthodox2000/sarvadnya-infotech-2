@@ -12,10 +12,11 @@ import { saraExcerpt } from "@/app/components/SaraGuideBody";
 import { saraGuides } from "@/lib/sara-topics";
 import { breadcrumbJsonLd, seoMetadata } from "@/lib/seo";
 
+// CHANGE: 2026-10-29 — action-first title + trimmed description for CTR (impressions without clicks).
 export const metadata: Metadata = seoMetadata({
-  title: "Learn Sara: TallyPrime Guides",
+  title: "Learn TallyPrime Step by Step",
   description:
-    "Practical TallyPrime guides on GST, inventory, banking, payroll, reports, shortcuts, TSS renewal and ERP 9 upgrades.",
+    "Free step-by-step TallyPrime guides on GST, inventory, banking, payroll, reports, TSS renewal and ERP 9 upgrades. No signup needed.",
   path: "/learn-sara",
   keywords: [
     "learn tally prime",
@@ -25,6 +26,8 @@ export const metadata: Metadata = seoMetadata({
     "tally gst guide",
     "tss renewal guide",
   ],
+  // CHANGE: 2026-10-29 — guide hub: answer first, no repeated contact tail (see lib/seo.ts).
+  contactSuffix: false,
 });
 
 export default function LearnSaraHubPage() {

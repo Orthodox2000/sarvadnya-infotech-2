@@ -7,9 +7,12 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
   ...seoMetadata({
     title: "Theme Settings",
+    // CHANGE: 2026-10-29 — dev colour reference, noindex; full 160-char budget now available
+    // because the contact tail is opted out (see lib/seo.ts `contactSuffix`).
     description:
-      "Theme colour reference for the Sarvadnya Infotech website — primary, secondary, buttons, headings, paragraph and background colours.",
+      "Colour reference for the Sarvadnya Infotech website — primary, secondary, buttons, headings and backgrounds for every section.",
     path: "/theme-settings",
+    contactSuffix: false,
   }),
   robots: { index: false, follow: false },
 };

@@ -51,7 +51,10 @@ export async function generateMetadata({
     title,
     description,
     path: `/tally-insights/${l.sectionId}/${l.slug}`,
-    keywords
+    keywords,
+    // CHANGE: 2026-10-29 — answer-first reference page (see lib/seo.ts `contactSuffix`).
+    // A lesson snippet must lead with the actual answer, not the same phone tail on all 16.
+    contactSuffix: false,
   });
 }
 

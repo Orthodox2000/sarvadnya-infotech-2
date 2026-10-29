@@ -8,8 +8,10 @@
 //   4. Required SEO plumbing exists: app/robots.ts, app/sitemap.ts, app/opengraph-image.tsx,
 //      app/favicon.ico, and the root layout metadata export.
 //   5. Utility routes (checkout / demo / theme-settings) are noindex.
-//   6. WARN: description longer than 160 chars AFTER the auto-appended CONTACT_SUFFIX (Google
-//      truncates / rewrites descriptions anyway — trimming that copy is the owner's call).
+//   6. WARN: description longer than 160 chars AFTER an appended CONTACT_SUFFIX. Since
+//      2026-10-29 the suffix is per-page (`contactSuffix: false` opts out), so the check only
+//      adds the 38-char tail for pages that still carry it. (Google truncates / rewrites
+//      descriptions anyway — trimming that copy is the owner's call.)
 //   7. seoMetadata() must declare `images` in BOTH openGraph and twitter, because an explicit
 //      openGraph without `images` suppresses app/opengraph-image.tsx on every page.
 // Run: npm run check:seo   (exit 1 on any violation)
@@ -133,7 +135,15 @@ function extractSeoCalls(src) {  const calls = []
       // undefined => caller skips checks it cannot statically evaluate.
       return new RegExp(`\\b${field}\\b`).test(block) ? undefined : null
     }
-    calls.push({ title: grab('title'), description: grab('description'), path: grab('path') })
+    calls.push({
+      title: grab('title'),
+      description: grab('description'),
+      path: grab('path'),
+      // CHANGE: 2026-10-29 — the contact CTA is now per-page (lib/seo.ts `contactSuffix`).
+      // A page that sets `contactSuffix: false` gets the full 160-char description budget
+      // instead of 122, so the length check must know which case it is looking at.
+      usesContactSuffix: !/\bcontactSuffix\s*:\s*false\b/.test(block),
+    })
     from = end === -1 ? src.length : end
   }
   return calls
@@ -144,6 +154,9 @@ const problems = []
 const warnings = []
 const titles = new Map()
 let checked = 0
+// CHANGE: 2026-10-29 — split counters so the contact-CTA policy is visible on every run.
+let withSuffix = 0
+let withoutSuffix = 0
 
 for (const file of files) {
   const rel = relative(ROOT, file).replaceAll('\\', '/')
@@ -166,9 +179,13 @@ for (const file of files) {
       else titles.set(finalTitle, rel)
     }
     if (typeof c.description === 'string') {
-      const full = c.description.length + CONTACT_SUFFIX.length
-      if (full > DESC_MAX) warnings.push(`${rel}: description ${full} chars incl. suffix (>${DESC_MAX})`)
+      // CHANGE: 2026-10-29 — the budget depends on whether this page opted into the contact CTA.
+      const suffixLen = c.usesContactSuffix ? CONTACT_SUFFIX.length : 0
+      const full = c.description.length + suffixLen
+      if (full > DESC_MAX) warnings.push(`${rel}: description ${full} chars${suffixLen ? ' incl. suffix' : ''} (>${DESC_MAX})`)
       if (c.description.length < DESC_MIN) warnings.push(`${rel}: description ${c.description.length} chars (<${DESC_MIN})`)
+      if (c.usesContactSuffix) withSuffix++
+      else withoutSuffix++
     }
   }
 }
@@ -227,6 +244,9 @@ for (const p of ['app/(site)/checkout/page.tsx', 'app/(site)/demo/page.tsx', 'ap
 }
 
 console.log(`[seo-audit] checked ${checked} seoMetadata() calls across the app`)
+// CHANGE: 2026-10-29 — report the contact-CTA split (commercial pages keep it, answer-first
+// pages opt out and get the full 160-char budget).
+console.log(`[seo-audit] contact CTA: ${withSuffix} page(s) on, ${withoutSuffix} opt-ed out`)
 if (warnings.length) {
   console.log(`\nWARN (${warnings.length}) — non-fatal (length nits; the brand/CTA at the end is what truncates):`)
   for (const w of warnings) console.log('  ~ ' + w)

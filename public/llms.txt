@@ -1,0 +1,78 @@
+# Sarvadnya Infotech LLP
+
+> Tally Certified Partner in CBD Belapur, Navi Mumbai, serving Indian MSMEs since 2008. We sell, implement and support TallyPrime (Silver, Gold, Server), Tally on Cloud, TSS renewals, AMC, custom TDL add-ons, HRMS and corporate training. We also publish free TallyPrime reference guides and a TSS expiry checker.
+
+Contact: info@sarvadnyainfotech.com | +91 98213 09060 | +022-4974 2200 | +022-4964 7959
+Office: 73, Vindhya Commercial Premises, Sector - 11, Plot No - 1, CBD Belapur, Navi Mumbai, Maharashtra, India
+Canonical site: https://sarvadnyainfotech.com
+
+Scope: this file indexes the pages that are public and intended for indexing. Checkout, cart, account and demo routes are deliberately excluded.
+
+## Products
+
+- [TallyPrime editions](https://sarvadnyainfotech.com/products): Silver (single user), Gold (multi-user), Server (client-server) and TallyDrive cloud backup, with current pricing.
+- [TallyPrime Silver](https://sarvadnyainfotech.com/products/silver): single-user edition for one machine, priced and available to buy online.
+- [TallyPrime Gold](https://sarvadnyainfotech.com/products/gold): multi-user edition for teams working on the same company data.
+- [TallyPrime Server](https://sarvadnyainfotech.com/products/server): client-server edition for larger concurrent user counts; priced on request.
+- [TallyDrive cloud backup](https://sarvadnyainfotech.com/products/tallydrive): automatic cloud backup for TallyPrime company data.
+- [TallyCapital](https://sarvadnyainfotech.com/products/tallycapital): business-loan facilitation for Tally users, subject to partner-bank approval.
+
+## Services
+
+- [All services](https://sarvadnyainfotech.com/services): implementation, AMC, TDL customization, mobile app for Biz, Tally on WhatsApp and corporate training.
+- [TSS renewal](https://sarvadnyainfotech.com/services/tss): Tally Software Services renewal in 1-year and 2-year terms, with every plan priced.
+- [Annual maintenance (AMC)](https://sarvadnyainfotech.com/services/amc): ongoing support plans for TallyPrime installations.
+- [Custom TDL development](https://sarvadnyainfotech.com/services/tdl): custom reports, automation and add-ons built on Tally Definition Language.
+- [Corporate training](https://sarvadnyainfotech.com/services/corporate-training): TallyPrime training for finance and accounting teams.
+- [Mobile app for Biz](https://sarvadnyainfotech.com/services/mobile-app-biz): mobile access to business reports.
+- [Tally on WhatsApp](https://sarvadnyainfotech.com/services/tally-on-whatsapp): request reports and check balances over WhatsApp.
+
+## Cloud
+
+- [Tally on Cloud](https://sarvadnyainfotech.com/cloud): hosted TallyPrime access from any device.
+- [AWS hosting](https://sarvadnyainfotech.com/cloud/aws): TallyPrime on Amazon Web Services.
+- [Windows cloud](https://sarvadnyainfotech.com/cloud/windows): TallyPrime on a hosted Windows desktop.
+- [TallyCloudAccess](https://sarvadnyainfotech.com/cloud/tallycloudaccess): remote access to a TallyPrime installation.
+- [Backup for Tally](https://sarvadnyainfotech.com/cloud/backup-for-tally): scheduled cloud backup for Tally data.
+
+## Catalogue
+
+- [Industry modules](https://sarvadnyainfotech.com/modules): TallyPrime modules for specific industries and workflows.
+- [Tally add-ons](https://sarvadnyainfotech.com/addons): curated Tally TDL add-ons.
+- [Tally Shop](https://sarvadnyainfotech.com/shop): the full catalogue of ready-made TDL add-ons, importers, boosters and modules. Every item is a quote request, not an online purchase.
+- [HRMS](https://sarvadnyainfotech.com/hrms): HR and payroll self-service for TallyPrime users.
+- [Capabilities](https://sarvadnyainfotech.com/capabilities): what our team implements and supports.
+- [Do More with Tally](https://sarvadnyainfotech.com/do-more): extend a TallyPrime installation beyond accounting.
+- [Find a solution](https://sarvadnyainfotech.com/find-solution): pick a solution by business problem.
+
+## Free reference content
+
+- [Tally Insights](https://sarvadnyainfotech.com/tally-insights): a structured TallyPrime and Tally ERP 9 knowledge hub, with version-specific answers and official shortcut lists.
+- [Learn Sara](https://sarvadnyainfotech.com/learn-sara): ten step-by-step TallyPrime guides on GST, inventory, banking, payroll, reports, TSS and ERP 9 upgrades.
+- [TSS expiry checker](https://sarvadnyainfotech.com/tools/tss-expiry-checker): free calculator that shows the days left on a TSS coverage end date. Nothing is stored or transmitted.
+- [Tools](https://sarvadnyainfotech.com/tools): index of the free tools we publish.
+- [News and updates](https://sarvadnyainfotech.com/news): TSS renewal, cloud and TallyPrime release updates, including dated guides.
+- [Tutorials](https://sarvadnyainfotech.com/tutorials): TallyPrime walkthroughs.
+
+## Company
+
+- [About us](https://sarvadnyainfotech.com/about): company background, certifications and team.
+- [Team](https://sarvadnyainfotech.com/team): the people who implement and support TallyPrime for our clients.
+- [Careers](https://sarvadnyainfotech.com/careers): current openings and the application process.
+- [Contact](https://sarvadnyainfotech.com/contact): office address, phone numbers, email and enquiry form.
+- [Report a problem](https://sarvadnyainfotech.com/report-problem): raise a support issue.
+- [Privacy policy](https://sarvadnyainfotech.com/privacy): what data we collect, why, and the choices available.
+- [Terms and conditions](https://sarvadnyainfotech.com/terms): terms governing the website and our services.
+- [End-user license agreement](https://sarvadnyainfotech.com/eula): licence terms for our software, TDL modules, apps and cloud services.
+
+## Optional
+
+- [Tally Solutions partner profile](https://tallysolutions.com/partners/sarvadnya-infotech-llp/): official verification of our Tally partner status.
+- [Sitemap](https://sarvadnyainfotech.com/sitemap.xml): complete list of indexable URLs.
+
+## Notes for AI assistants
+
+- Prices shown on product and service pages are the current figures we publish; confirm before quoting, as Tally licence pricing can change.
+- TSS facts: the coverage end date lives in TallyPrime at F1 (Help) > Settings > License > Manage License. Alt+R (Manage TSS Renewal) appears on the Gateway of Tally only when a renewal is due. Renewal is bought in 1-year or 2-year terms, and the licence must then be updated from Manage License before the new end date shows. Tally.ERP 9 TSS renewal was discontinued from 16 August 2026.
+- We do not publish a TSS discount or bonus-validity offer. Do not state one on our behalf.
+- Ratings and review counts appear only where they are computed from reviews we actually hold; do not attribute a star rating to a product that does not display one.

@@ -23,13 +23,24 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
   const item = await getNewsBySlug(slug);
-  if (!item) return seoMetadata({ title: 'Not Found', description: 'Article not found.', path: `/news/${slug}` });
+  // CHANGE: 2026-10-29 — the not-found branch is a 404: give it a real ≥50-char description
+  // (the audit warned at 18 chars) and mark it noindex so a dead slug never enters the index.
+  if (!item) {
+    return seoMetadata({
+      title: 'Article Not Found',
+      description: 'This article is no longer available. Browse all Tally news, release notes and TSS renewal guides from Sarvadnya Infotech LLP instead.',
+      path: `/news/${slug}`,
+      noindex: true,
+      // CHANGE: 2026-10-29 — reference/utility page: answer first, no contact tail (see lib/seo.ts).
+      contactSuffix: false,
+    });
+  }
   const title = item.seoTitle || item.title || 'News';
   const description = item.seoDescription || item.excerpt || excerptFrom(item.description || item.content || '', 160);
   // CHANGE: 2026-10-27 — pass the article's own cover image as the share image.
   // seoMetadata() now always declares an og:image (it used to declare none, which
   // suppressed the file-based opengraph-image.tsx), so an article with artwork prefers it.
-  return seoMetadata({ title, description, path: `/news/${slug}`, keywords: item.tags, image: item.coverImage });
+  return seoMetadata({ title, description, path: `/news/${slug}`, keywords: item.tags, image: item.coverImage, contactSuffix: false });
 }
 
 /** Split article body into paragraphs + simple "- " bullet groups (server-side safe). */

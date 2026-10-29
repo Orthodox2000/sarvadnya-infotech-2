@@ -6,13 +6,19 @@ import { seoMetadata } from "@/lib/seo";
 
 // CHANGE: 2026-08-27 — SEO metadata for AI/search indexing.
 // CHANGE: 2026-08-31 — Metadata strengthened with target keywords; cards link internally to /news/[slug].
+// CHANGE: 2026-10-29 — action-first title + tightened description for CTR (impressions without
+// clicks). The "tally partner / software companies in Navi Mumbai" targets stay in `keywords`.
 export const metadata = seoMetadata({
-  title: "Tally News & Software Company Updates in Navi Mumbai",
-  description: "Latest Tally, TSS renewal, cloud and software insights from Sarvadnya Infotech LLP — a certified Tally partner in Belapur, Navi Mumbai. Tips for tally partners & software companies in Mumbai.",
+  title: "Tally News, TSS & Cloud Updates",
+  description:
+    "Latest TSS renewal, cloud and TallyPrime updates from a certified partner in Belapur, Navi Mumbai. Read the guides and checklists.",
   path: "/news",
   // CHANGE: 2026-10-13 — "tally dealers mumbai" removed: the owner scrubbed all reseller/"dealer"
   // branding from the blog (news stays partner-framed). Replaced with the local partner term.
   keywords: ["tally news", "tally partner mumbai", "tally partner navi mumbai", "tally erp 9 add ons", "software companies in belapur", "software companies in navi mumbai", "tally updates", "tally announcements"],
+  // CHANGE: 2026-10-29 — content hub: the snippet leads with the answer, not a repeated phone
+  // tail, so the freed 38 chars go into genuine value (see lib/seo.ts `contactSuffix`).
+  contactSuffix: false,
 });
 
 export default async function NewsPage() {

@@ -12,7 +12,7 @@ import { breadcrumbJsonLd, faqPageJsonLd, seoMetadata } from "@/lib/seo";
 export const metadata: Metadata = seoMetadata({
   title: "TSS Expiry Checker for TallyPrime",
   description:
-    "Enter your TSS coverage end date to see the days left, what keeps working and what stops when TSS expires.",
+    "Enter your TSS coverage end date to see the days left, what keeps working and what stops when TSS expires. Free, no signup, nothing stored.",
   path: "/tools/tss-expiry-checker",
   keywords: [
     "tss expiry checker",
@@ -21,6 +21,8 @@ export const metadata: Metadata = seoMetadata({
     "tss renewal tallyprime",
     "tss expired",
   ],
+  // CHANGE: 2026-10-29 — free-tool page: lead with the tool's promise (see lib/seo.ts).
+  contactSuffix: false,
 });
 
 // CHANGE: 2026-10-26 — every answer below is the audited TSS wording used in
