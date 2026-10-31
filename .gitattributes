@@ -1,0 +1,16 @@
+# CHANGE: 2026-10-31 — the module brochures are real PDFs in public/brochures/.
+# Without this, git rendered the 7.7 MB CFA PDF as ~34k text lines in every diff
+# (it has no early NUL byte) and a checkout on a machine with core.autocrlf=true
+# could have rewritten its line endings and corrupted the file. Binaries are
+# declared explicitly so they are never text-converted.
+*.pdf binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.gif binary
+*.ico binary
+*.svg text eol=lf
+*.mp4 binary
+*.woff binary
+*.woff2 binary

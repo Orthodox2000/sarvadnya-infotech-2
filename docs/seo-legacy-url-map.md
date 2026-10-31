@@ -3,7 +3,9 @@
 > Source: `old cpanl backups/sarvadny_wp458.sql.gz` (3.1 MB) — the old Softaculous/WordPress
 > MySQL dump. Tables carry the `wpmh_` prefix (Bluehost/Newfold install). Permalink structure was
 > `/%year%/%monthnum%/%day%/%postname%/`; home was `https://sarvadnyainfotech.com`.
-> Generator script: `scripts/audit-legacy-wp.mjs` (output `scripts/legacy-wp-audit.json`).
+> Generator script: `scripts/audit-legacy-wp.mjs` — **deleted 2026-10-31** (one-off audit, already run;
+> the WordPress dump is no longer in the repo). Its output `scripts/legacy-wp-audit.json` is kept as the
+> historical manifest this map is derived from.
 
 ## Why these URLs exist
 

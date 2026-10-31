@@ -86,3 +86,9 @@ certificates
 # public/logo.png is the web-optimized serving copy; the full-res master lives here
 # (gitignored so the 5.4 MB art file never enters the repo) per owner: "keep new logo — optimize it".
 brand-assets/
+
+# CHANGE: 2026-10-31 — repo cleanup. `snapshots/` was 16 MB of Puppeteer screenshots produced by
+# the now-deleted scripts/capture_snapshots.mjs, and `dev-server.log` was a stray `next dev` log.
+# Both were tracked, neither was read by the app. Ignored so they cannot be re-committed.
+/snapshots/
+dev-server.log

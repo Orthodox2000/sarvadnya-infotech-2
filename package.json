@@ -53,6 +53,7 @@
     "test:draft-contact": "node scripts/draft-contact-test.mjs",
     "test:careers-email": "node scripts/careers-email-test.mjs",
     "seed:careers-recipient": "node scripts/seed-careers-recipient.mjs",
+    "update:module-brochures": "node scripts/update-module-brochures.mjs",
     "backfill:referral-codes": "node scripts/backfill-referral-codes.mjs",
     "migrate:blob": "node scripts/migrate-blob-store.mjs",
     "test:news-verify": "node scripts/news-seed-verify.mjs"

@@ -12,7 +12,8 @@ const modules = [
     shortDescription: "Job billing and reimbursables for CFA agencies — all inside Tally.",
     fullDescription: "Clearing & forwarding means many jobs, expenses, and bills — and reimbursables get missed. This module keeps every job's expenses and income connected in Tally. Reimbursable amounts auto-fill when you bill — no digging through files. Print CFA-format invoices with QR / IRN, bill in multiple currencies, and close jobs once done. Billing and books stay in one place.",
     videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-    brochureUrl: "/brochures/cf-agent-module.pdf",
+    // CHANGE: 2026-10-31 — real PDF brochure (owner replaced the old image brochures).
+    brochureUrl: "/brochures/cfa-module-brochure.pdf",
     image: "/assets/images/1586528116311-ad8dd3c8310d.jpg",
     features: [
       "Create jobs with all documentation details — no more scattered files",
@@ -40,7 +41,7 @@ const modules = [
     shortDescription: "Auto maintenance bills and interest for 70+ member societies.",
     fullDescription: "If your society has 70+ members, maintenance bills and interest take forever each month. Set each member's charges once, and the module generates bills and interest vouchers itself — monthly, quarterly, or your cycle. Bills print with outstanding and interest details, late-payment interest is auto-calculated, and GST is handled per the Society Act. You stop doing the math.",
     videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-    brochureUrl: "/brochures/society-module.pdf",
+    brochureUrl: "/brochures/housing-society-module-brochure.pdf",
     image: "/housing society.png",
     features: [
       "Set each member's maintenance charges once — bills generate themselves",
@@ -68,7 +69,7 @@ const modules = [
     shortDescription: "Broker commission and rate difference tracking in Tally.",
     fullDescription: "Selling through agents means month-end chaos — commission, rate differences, and who's been paid. This module keeps it in Tally. Set commission at item or broker level, pick the agent in any sale, and commission calculates on your rate only. Tag amounts as paid when settled, and pull broker-wise reports anytime. Your agents see exactly what they're owed.",
     videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-    brochureUrl: "/brochures/commission-module.pdf",
+    brochureUrl: "/brochures/salesman-agent-module-brochure.pdf",
     image: "/assets/images/1554224155-6726b3ff858f.jpg",
     features: [
       "Set commission for each broker or stock item — quantity or percentage based",
@@ -95,7 +96,7 @@ const modules = [
     shortDescription: "Create, track and bill lorry receipts from Tally.",
     fullDescription: "Transport businesses live on LRs. This module lets you create LRs with all details, see every LR on one page, and auto-create invoices from unbilled ones. Bill one LR or many in a single invoice, print with LR details, and export the annexure. Billing runs off the LR itself, so errors go down and nothing sits unbilled.",
     videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-    brochureUrl: "/brochures/transport-module.pdf",
+    brochureUrl: "/brochures/transport-module-brochure.pdf",
     image: "/assets/images/1519003722824-194d4455a60c.jpg",
     features: [
       "Create LRs (lorry receipts) with all required details — own or hired vehicles",
@@ -122,9 +123,8 @@ const modules = [
     shortDescription: "Log sheet billing for container handling firms.",
     fullDescription: "In container handling, log sheets pile up and billing gets messy. Create log sheets with container and vehicle details, pick the ones to bill — one party or several — and print the bill with annexure. The unbilled log sheet report shows exactly what's pending, so nothing goes unpaid.",
     videoUrl: "https://youtu.be/YqqtzzDL6o8",
-    // CHANGE: 2026-09-18 — real brochure PDF exists on disk as "container handling module broucher.pdf".
-    // Old value pointed at a nonexistent /brochures/container-handling-module.pdf. URL-encode the space.
-    brochureUrl: "/brochures/container%20handling%20module%20broucher.pdf",
+    // CHANGE: 2026-10-31 — replaced the old space-and-typo filename with the clean PDF.
+    brochureUrl: "/brochures/container-handling-module-brochure.pdf",
     image: "/contaner-mgt.jpg",
     features: [
       "Create log sheets with container & vehicle details",
@@ -151,7 +151,7 @@ const modules = [
     shortDescription: "Color and size stock tracking for garment and footwear sellers.",
     fullDescription: "In garments and footwear, one design comes in many colors and sizes — stock becomes a headache. This module creates items as you enter purchases or sales, tracks by color and size, and keeps billing fast. Invoices print with color and size columns for more items per page, and the closing stock report shows exactly what's left.",
     videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-    brochureUrl: "/brochures/garment-module.pdf",
+    brochureUrl: "/brochures/garment-footwear-module-brochure.pdf",
     image: "/assets/images/1523381210434-271e8be1f52b.jpg",
     features: [
       "Items created automatically during purchase & sales entry",
