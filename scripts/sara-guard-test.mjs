@@ -26,8 +26,11 @@ import {
   isCustomBuildRequest,
   isDiscountQuery,
   isOffTopicQuery,
+  isShortcutLabel,
   isTdlRequest,
+  formatShortcut,
   SALES_LONG_REPLY_CHARS,
+  sanitizeShortcutButtons,
   stripCtaButtons,
 } from '../lib/sara-guard.mjs';
 
@@ -429,6 +432,110 @@ test('the live G2 denial is replaced by the neutral pricing answer', () => {
   assert(!/do not offer/i.test(out.reply), 'denial survived');
   assert(!/\b10\s*%/.test(out.reply), 'percentage survived');
   assert(out.reply.includes('/services/tss'), 'TSS pricing link missing');
+});
+
+// ---------------------------------------------------------------------------
+// 2026-10-30 — keyboard shortcuts must never become links.
+//
+// Live defect: asked "how do i print an invoice in tallyprime" on the deployed
+// site, Sara answered "press [[Ctrl + P|/tutorials]]". The model wrapped a KEY
+// in the [[Label|/url]] button syntax and invented a destination for it, so the
+// visitor got a button that promised a page about a keystroke. A second variant
+// arrived as pipe-less raw markup ([[Alt + P]]), which the renderer printed
+// verbatim because it had no branch for a tag without a URL.
+// ---------------------------------------------------------------------------
+console.log('⌨️  Keyboard shortcuts are never page links');
+
+const LIVE_SHORTCUT_REPLY =
+  'In TallyPrime, open the invoice and press [[Ctrl + P|/tutorials]] to print it.';
+
+test('a key combination is recognised as a shortcut', () => {
+  for (const label of ['Ctrl + P', 'Alt + F5', 'Ctrl+Shift+N', 'F11', 'Esc', 'Shift', 'alt+p']) {
+    assert(isShortcutLabel(label), `not recognised as a shortcut: "${label}"`);
+  }
+});
+
+test('a page or product label is NOT mistaken for a shortcut', () => {
+  for (const label of [
+    'Pay',
+    'Silver',
+    'View Silver Pricing',
+    'Tally Insights',
+    'F11 > Company Features',
+    'TDL Customization',
+    'Get a Quote',
+  ]) {
+    assert(!isShortcutLabel(label), `downgraded a real link: "${label}"`);
+  }
+});
+
+test('formatShortcut prints the keys the way a keyboard does', () => {
+  assertEqual(formatShortcut('ctrl+p'), 'Ctrl + P', 'ctrl+p');
+  assertEqual(formatShortcut('ALT+F5'), 'Alt + F5', 'ALT+F5');
+  assertEqual(formatShortcut('alt + p'), 'Alt + P', 'alt + p');
+  assertEqual(formatShortcut('shift'), 'Shift', 'shift');
+});
+
+test('the fabricated URL is stripped and the key is kept', () => {
+  const out = sanitizeShortcutButtons(LIVE_SHORTCUT_REPLY);
+  assert(out.changed, 'change not reported');
+  assert(!out.text.includes('/tutorials'), 'invented page URL survived');
+  assert(out.text.includes('[[Ctrl + P]]'), `canonical key tag missing: ${out.text}`);
+});
+
+test('a pipe-less shortcut tag is canonicalised, not printed raw', () => {
+  const out = sanitizeShortcutButtons('Then press [[alt+p]] on the keyboard.');
+  assertEqual(out.text, 'Then press [[Alt + P]] on the keyboard.', 'pipe-less shortcut');
+});
+
+test('a pipe-less non-shortcut tag loses its brackets', () => {
+  const out = sanitizeShortcutButtons('See [[Tally Insights]] for more.');
+  assertEqual(out.text, 'See Tally Insights for more.', 'raw markup left in the reply');
+});
+
+test('a genuine page button is left exactly as it is', () => {
+  const original = 'You can compare editions here: [[View Pricing|/products]]';
+  const out = sanitizeShortcutButtons(original);
+  assert(!out.changed, 'real button reported as changed');
+  assertEqual(out.text, original, 'real button was rewritten');
+});
+
+test('a keyboard badge is not a call to action', () => {
+  assert(!hasCtaButton('Press [[Ctrl + P]] to print.'), 'kbd badge counted as a CTA');
+  assert(hasCtaButton('Press [[View Pricing|/products]].'), 'real button not counted');
+});
+
+test('stripCtaButtons removes the pitch but keeps the keystroke', () => {
+  const out = stripCtaButtons('Press [[Ctrl + P]] to print.\n[[Explore TallyInsights|/tally-insights]]');
+  assertEqual(out, 'Press [[Ctrl + P]] to print.', 'stripped text');
+});
+
+test('the live reply leaves the guard with a clean key badge', () => {
+  const out = applyConsultantGuard(LIVE_SHORTCUT_REPLY, 'how do i print an invoice in tallyprime');
+  assertEqual(out.action, 'fixed-shortcut-markup', 'action');
+  assert(!out.reply.includes('/tutorials'), 'invented URL survived the guard');
+  assert(out.reply.includes('[[Ctrl + P]]'), `key badge missing: ${out.reply}`);
+  assert(out.reply.includes('to print it'), 'the answer itself was damaged');
+});
+
+test('a real CTA next to a shortcut survives the guard', () => {
+  const out = applyConsultantGuard(
+    'Press [[Ctrl + P]] to print, or read the guide: [[View Guides|/tally-insights]]',
+    'how do i print an invoice in tallyprime'
+  );
+  assertEqual(out.action, 'fixed-shortcut-markup', 'action');
+  assert(out.reply.includes('[[View Guides|/tally-insights]]'), 'real button was stripped');
+});
+
+test('the renderer draws a <kbd> badge and the prompt forbids the pattern', () => {
+  const saraText = readFileSync(join(ROOT, 'app/components/SaraText.tsx'), 'utf8');
+  assert(/<kbd/.test(saraText), 'SaraText has no kbd element');
+  assert(/isShortcutLabel\(label\)/.test(saraText), 'SaraText does not branch on a shortcut label');
+  const route = readFileSync(join(ROOT, 'app/api/chat/route.ts'), 'utf8');
+  assert(
+    /NEVER put a keyboard shortcut or a key name inside \[\[ \]\]/.test(route),
+    'the prompt does not forbid a key inside [[ ]]'
+  );
 });
 
 // ---------------------------------------------------------------------------

@@ -32,6 +32,7 @@ const posts = [
   {
     slug: 'tally-partner-mumbai',
     title: 'How to Choose the Right Tally Partner in Mumbai: Checklist (Star Rating, TSS, AMC)',
+    seoTitle: 'Tally Partner in Mumbai: Checklist',
     date: 'August 31, 2026',
     category: 'Tally Partner',
     description: 'A practical checklist for choosing a Tally partner in Mumbai - star certification, TSS renewal, support SLA, cloud backup and add-on capability - plus how to verify a claim.',
@@ -58,6 +59,7 @@ At Sarvadnya Infotech LLP we have supported Tally for businesses since 2008 - Ta
   {
     slug: 'tally-erp9-add-ons',
     title: 'Tally ERP 9 Add-Ons That Save Hours: 8 TDL Solutions for Indian Businesses',
+    seoTitle: 'Tally ERP 9 Add-Ons (8 TDLs)',
     date: 'August 29, 2026',
     category: 'Tally Add-Ons',
     description: '8 practical Tally ERP 9 add-ons (TDL solutions) for invoicing, dispatch, sales and purchase controls - and when custom TDL beats a manual workaround.',
@@ -93,6 +95,7 @@ If your team is still fixing reports in Excel after Tally exports them, evaluate
     // Dates and the free-upgrade cutoff below are Tally's own published position.
     slug: 'tally-tss-renewal-2026',
     title: 'Tally TSS Renewal 2026: ERP 9 Renewals Discontinued, What Now',
+    seoTitle: 'TSS Renewal 2026: What Changed',
     date: 'August 28, 2026',
     category: 'TSS & Renewals',
     description: 'TSS renewal on Tally.ERP 9 was discontinued from 16 August 2026. What that means for your licence, who qualifies for a free TallyPrime upgrade, and how to renew.',
@@ -136,6 +139,7 @@ Sarvadnya Infotech handles TSS renewals and ERP 9 to TallyPrime upgrades for bus
   {
     slug: 'tally-3-star-partner-mumbai',
     title: 'What to Look for in a Tally 3 Star Partner in Mumbai',
+    seoTitle: 'Tally 3 Star Partner in Mumbai',
     date: 'August 30, 2026',
     category: 'Tally Partner',
     description: 'Tally partner tiers explained - what a Tally 3 star partner is, what certification levels mean, and how to verify one in Mumbai.',
@@ -160,6 +164,7 @@ Sarvadnya Infotech is an official Tally certified 3 star partner (since 2008) se
   {
     slug: 'cloud-tally-cities-agra-patna-lucknow-mumbai',
     title: 'Cloud Tally Setup in Agra, Patna, Lucknow & Mumbai: Pricing and What to Expect',
+    seoTitle: 'Cloud Tally: Setup and Pricing',
     date: 'August 27, 2026',
     category: 'Cloud',
     description: 'Tally on Cloud setup across Indian cities - how remote access, hosting and backup work, what pricing depends on, and the checklist before you switch.',
@@ -185,6 +190,7 @@ Sarvadnya Infotech deploys and supports Tally on Cloud - official Tally licenses
   {
     slug: 'it-companies-in-belapur',
     title: 'IT Companies in Belapur: How Certified Tally Partners Support Navi Mumbai Business',
+    seoTitle: 'IT Companies in Belapur',
     date: 'August 26, 2026',
     category: 'Local Business',
     description: 'How IT companies in Belapur and Navi Mumbai serve local business - software, accounting automation, cloud and support - and how to pick a partner.',
@@ -208,6 +214,7 @@ Sarvadnya Infotech is based in Belapur, Navi Mumbai - a Tally certified partner 
   {
     slug: 'software-companies-in-navi-mumbai',
     title: 'Software Companies in Navi Mumbai (Including for Freshers): What to Look For',
+    seoTitle: 'Software Companies in Navi Mumbai',
     date: 'August 25, 2026',
     category: 'Local Business',
     description: 'How to evaluate software companies in Navi Mumbai - whether you need an implementation partner for your business or want to start your career.',
@@ -240,6 +247,7 @@ Sarvadnya Infotech sits at the intersection - a software company in Navi Mumbai 
     // cloud copy is retained for 90 days after TSS expires. All figures below are Tally's own.
     slug: 'tallydrive-cloud-backup',
     title: 'TallyDrive Cloud Backup: Why Every Mumbai and Navi Mumbai Business Needs It',
+    seoTitle: 'TallyDrive Cloud Backup Explained',
     date: 'August 24, 2026',
     category: 'Cloud Backup',
     description: 'TallyDrive cloud backup explained - automated offsite backup for TallyPrime 7.0 and later, how restores work, the free storage limits and why TSS status matters.',
@@ -277,6 +285,7 @@ Sarvadnya Infotech configures TallyDrive - automated, cloud-hosted TallyPrime ba
   {
     slug: 'smbs-cbd-belapur-certified-tally-partner',
     title: 'Why SMBs in CBD Belapur Choose a Certified Tally Partner',
+    seoTitle: 'Tally Partner in CBD Belapur',
     date: 'August 23, 2026',
     category: 'Local Business',
     description: 'Why small and mid-size businesses in CBD Belapur work with a certified Tally partner - compliance, support proximity and automation that answers the phone.',
@@ -307,6 +316,7 @@ Sarvadnya Infotech is a Tally certified partner based in Belapur, Navi Mumbai, s
     // credential".
     slug: 'tally-5-star-partner-mumbai',
     title: 'Tally Partner Tiers in Mumbai: 3 Star vs 5 Star, What the Certification Means',
+    seoTitle: 'Tally 3 Star vs 5 Star Partner',
     date: 'September 6, 2026',
     category: 'Tally Partner',
     description: 'Tally partner tiers explained - what 3 star and 5 star certification actually mean, how to verify a partner tier, and why an honest 3 star Tally partner in Mumbai can be the right fit.',
@@ -345,6 +355,7 @@ About Sarvadnya Infotech: we are a Tally certified 3 star partner - and we state
   {
     slug: 'tally-partner-near-me',
     title: 'Tally Partner Near Me: How to Find and Verify a Certified Tally Partner',
+    seoTitle: 'Tally Partner Near Me: Verify One',
     date: 'September 7, 2026',
     category: 'Tally Partner',
     description: 'Searching "tally partner near me"? Here is a repeatable way to find and verify a certified Tally partner in Mumbai, Navi Mumbai and Belapur - and the questions to ask.',
@@ -376,6 +387,7 @@ For businesses in Mumbai, Navi Mumbai, CBD Belapur and Vashi, Sarvadnya Infotech
   {
     slug: 'tally-hrms-software',
     title: 'Tally HRMS Explained: Payroll, Attendance and Leave for SMBs',
+    seoTitle: 'Tally HRMS: Payroll & Attendance',
     date: 'September 4, 2026',
     category: 'HRMS',
     description: 'Tally HRMS for payroll, attendance and leave management - how an HRMS connects to your Tally data and what small and mid-size businesses should look for.',
@@ -419,6 +431,7 @@ Sarvadnya Infotech offers an HRMS solution that covers payroll, attendance and e
     // now split out explicitly, and the vague "no support for non-urgent issues" and the
     // speculative "before a price change" line are gone.
     title: 'TSS in Tally: What It Means, Why It Expires, and How to Renew',
+    seoTitle: 'TSS in Tally: Meaning & Renewal',
     date: 'September 5, 2026',
     category: 'TSS & Renewals',
     description: "TSS = Tally Software Services, the annual subscription that keeps TallyPrime current with updates, compliance changes and support. What 'TSS has expired' means on your licence screen, and how renewal restores coverage.",
@@ -502,6 +515,7 @@ Renewal itself is quick with a verified partner. Sarvadnya Infotech handles Tall
     // TSS renewal on ERP 9 was discontinued from 16 August 2026.
     slug: 'how-to-check-tss-expiry-date-tallyprime',
     title: 'How to Check the TSS Expiry Date in TallyPrime',
+    seoTitle: 'Check TSS Expiry in TallyPrime',
     date: 'October 7, 2026',
     category: 'TSS & Renewals',
     description: 'Step by step: how to check the TSS expiry date in TallyPrime from F1 (Help) > Settings > License > Manage License, what the coverage end date means, and how to renew before it lapses.',
@@ -561,6 +575,7 @@ Sarvadnya Infotech renews TSS for businesses anywhere in India. Share your licen
   {
     slug: 'tally-cloud-access',
     title: 'Tally Cloud Access: Work on Your Tally from Anywhere, Securely',
+    seoTitle: 'Tally Cloud Access: Work Anywhere',
     date: 'September 2, 2026',
     category: 'Cloud',
     description: 'Tally cloud access explained - how to run Tally Prime and ERP 9 over the cloud, what a secure remote access setup includes, and what pricing depends on.',
@@ -591,6 +606,7 @@ Sarvadnya Infotech deploys Tally cloud access for businesses in Mumbai, Navi Mum
   {
     slug: 'cbd-belapur-it-companies-list',
     title: 'IT Companies in CBD Belapur, Navi Mumbai: A Working List',
+    seoTitle: 'IT Companies in CBD Belapur',
     date: 'September 3, 2026',
     category: 'Local Business',
     description: 'A practical working list of the IT companies in CBD Belapur, Navi Mumbai - software, support and accounting automation - plus how to filter the list to your need.',
@@ -626,6 +642,7 @@ Sarvadnya Infotech is a Tally certified partner and IT company based in Belapur,
   {
     slug: 'tallyprime-international-licenses',
     title: 'Using TallyPrime Outside India: International Licenses Explained',
+    seoTitle: 'TallyPrime Outside India: Licences',
     date: 'October 2, 2026',
     category: 'Tally Prime',
     description: 'Why a domestic Indian TallyPrime license stops working abroad permanently, and the upgrade or international license options for UAE, Singapore, UK and other regions.',
@@ -660,6 +677,7 @@ See the TallyPrime license options on our products page, or contact Sarvadnya In
     // curly apostrophe, which the seed file's ASCII-only rule forbids).
     slug: 'how-to-renew-tally-tss-offline',
     title: 'How to Renew Tally TSS Offline: Steps, Requirements & When to Contact Us',
+    seoTitle: 'Renew Tally TSS Offline: Steps',
     date: 'October 22, 2026',
     category: 'Tally Prime',
     description: 'Guide to renewing Tally Software Services (TSS) offline when online renewal is not possible - the process, the serial number you need, and how a Tally partner can help.',
@@ -712,6 +730,7 @@ Need help with TSS renewal? Contact Sarvadnya Infotech LLP at https://sarvadnyai
     // recovery paragraph that understated how much is unrecoverable.
     slug: 'how-to-lock-data-in-tallyprime',
     title: 'How to Lock Data in TallyPrime (Company, Users and Back-Dated Entries)',
+    seoTitle: 'Lock Data in TallyPrime: How To',
     date: 'October 13, 2026',
     category: 'Tally Prime',
     description: 'How to lock data in TallyPrime: enable user access control and the administrator password, create user roles, and stop back-dated entries with a cut-off date.',
@@ -789,6 +808,7 @@ Sarvadnya Infotech is a Tally certified partner based in CBD Belapur, Navi Mumba
     // the actual discontinuation date (16 August 2026) instead of leaving it vague.
     slug: 'how-to-add-gst-number-in-tally-erp-9',
     title: 'How to Add a GST Number in Tally ERP 9 (and Change It Later)',
+    seoTitle: 'Add GST Number in Tally ERP 9',
     date: 'October 13, 2026',
     category: 'GST & Compliance',
     description: 'How to add a GST number (GSTIN) in Tally ERP 9 - enable GST, open the GST Details screen, then set party ledger GST details, plus why TSS status matters.',
@@ -843,6 +863,7 @@ Sarvadnya Infotech is a Tally certified partner in CBD Belapur, Navi Mumbai. We 
   {
     slug: 'what-is-tally-capital',
     title: 'What Is TallyCapital? Business Loans for TallyPrime Users Explained',
+    seoTitle: 'TallyCapital: Business Loans',
     date: 'October 13, 2026',
     category: 'Business Finance',
     description: 'What TallyCapital is: the Tally group financing service that offers pre-qualified business loans to existing Tally customers from inside TallyPrime, and what approval depends on.',
@@ -892,6 +913,7 @@ Sarvadnya Infotech is a Tally certified partner in CBD Belapur, Navi Mumbai. If 
   {
     slug: 'document-management-system-for-tally',
     title: 'Document Management System in TallyPrime: Find Documents in Seconds',
+    seoTitle: 'Document Management in TallyPrime',
     date: 'October 23, 2026',
     category: 'Tally Add-ons',
     description: 'Attach, open and email any document inside TallyPrime. Bills, challans and certificates stay linked to their voucher or master, audit-ready in one click.',
@@ -998,6 +1020,7 @@ Sarvadnya Infotech is a Tally certified partner in CBD Belapur, Navi Mumbai. We 
   {
     slug: 'tally-prime-rental-vs-perpetual-licence',
     title: 'TallyPrime Rental vs Perpetual Licence: Which One Should You Buy?',
+    seoTitle: 'TallyPrime Rental vs Perpetual',
     date: 'October 26, 2026',
     category: 'Tally Prime',
     description: 'Perpetual or rental TallyPrime licence: what each one buys, what happens when the term ends, and where TSS fits in. A plain comparison for Indian businesses.',
@@ -1056,6 +1079,7 @@ Sarvadnya Infotech handles TallyPrime licence purchases, TSS renewals and editio
   {
     slug: 'tallyprime-silver-gold-server-difference',
     title: 'TallyPrime Silver vs Gold vs Server: Which Edition Fits Your Team?',
+    seoTitle: 'TallyPrime Silver, Gold, Server',
     date: 'October 26, 2026',
     category: 'Tally Prime',
     description: 'TallyPrime Silver, Gold and Server compared: single user, multi-user on a local network, and client-server - so you buy the edition your team will actually use.',
@@ -1111,6 +1135,7 @@ Sarvadnya Infotech sells and supports all three TallyPrime editions from CBD Bel
   {
     slug: 'tally-custom-modules-supply-chain',
     title: 'Tally Custom Modules for Supply Chain: What a TDL Module Can Do',
+    seoTitle: 'Tally TDL Modules for Supply Chain',
     date: 'October 26, 2026',
     category: 'Tally Add-Ons',
     description: 'How a Tally TDL module fits around transport, container handling, clearing and forwarding, and warehousing - and when it beats a spreadsheet.',
@@ -1236,10 +1261,15 @@ async function seed() {
         // CHANGE: 2026-09-16 — also compare tags, so tag-only edits (dealer scrub) propagate.
         // CHANGE: 2026-10-07 — also compare title and faqs, so the P1 retitle and the new
         // FAQ block (FAQPage JSON-LD source) propagate to the live doc.
+        // CHANGE: 2026-10-30 — also compare seoTitle. 25 posts had titles of 71-107 chars in
+        // the rendered <title> (check:seo TITLE_MAX = 60 incl. the 25-char brand suffix), so a
+        // short SERP title was added to each. Without this field in the comparison the new
+        // seoTitles would never reach the live docs - the seed would report "unchanged".
         const same = existing.content === post.content
           && existing.description === post.description
           && existing.date === post.date
           && existing.title === post.title
+          && (existing.seoTitle ?? null) === (post.seoTitle ?? null)
           && JSON.stringify(existing.tags ?? null) === JSON.stringify(post.tags ?? null)
           && JSON.stringify(existing.faqs ?? null) === JSON.stringify(post.faqs ?? null);
         if (same) { skipped++; continue; }

@@ -6,11 +6,33 @@ import {
   resolveRecipients,
   sendInternalFormCopy,
   sendClientAutoreply,
+  sendTemplatedEmail,
   maskEmail,
 } from '@/lib/email';
 import type { FormSubmissionPayload } from '@/lib/email';
 
 export type EmailJobStatus = 'pending' | 'processing' | 'sent' | 'failed' | 'dead';
+
+// CHANGE: 2026-10-30 — Careers emails (resume saved / job application) carry
+// their own HTML instead of the generic form copy. WHY: the company copy needs
+// hiring fields and a resume link, and the candidate confirmation must be a
+// branded acknowledgement that is NOT gated by AUTO_REPLY_ENABLED. Rather than
+// adding a parallel sender (and a second ledger field), the custom templates
+// ride the same jobKey claim and the same `autoReply` ledger slot, so
+// exactly-once dedupe and the existing soft-retry branch keep working.
+export interface EmailJobCustom {
+  /** Internal copy to the company recipients (subject/HTML built by the caller). */
+  company?: { subject: string; html: string; replyTo?: string };
+  /** Second email: the candidate/applicant acknowledgement. */
+  applicant?: {
+    to: string;
+    subject: string;
+    html: string;
+    replyTo?: string;
+    /** Attach the site logo as cid:sarvadnya-logo (HTML must reference it). */
+    inlineLogo?: boolean;
+  };
+}
 
 // CHANGE: 2026-09-21 — Client auto-reply ledger. Each submission owns TWO sends
 // under the same jobKey: the internal company copy (job.status) plus the branded
@@ -41,6 +63,9 @@ export interface EmailJob {
   lastError?: string | null;
   messageId?: string;
   autoReply?: AutoReplyLedger;
+  /** CHANGE: 2026-10-30 — verbatim custom templates (careers). Absent on
+   *  ordinary form submissions, which keep using the built-in copy + auto-reply. */
+  custom?: EmailJobCustom;
   createdAt: Date;
   updatedAt: Date;
   expireAt?: Date;
@@ -112,6 +137,64 @@ function terminalExpiry(): Date {
   return new Date(Date.now() + TTL_MS);
 }
 
+// CHANGE: 2026-10-30 — The two halves of a job, in ONE place. A job carrying
+// `custom` templates (careers) sends them verbatim; every other job keeps the
+// existing form-copy + client auto-reply behaviour, so no existing route changes.
+type HalfResult = { ok: boolean; skipped?: boolean; error?: string; sentTo?: string };
+
+async function sendCompanyHalf(job: {
+  submission: FormSubmissionPayload;
+  recipients: string[];
+  from: string;
+  formType: string;
+  custom?: EmailJobCustom;
+}): Promise<HalfResult & { messageId?: string; recipients: string[] }> {
+  const custom = job.custom?.company;
+  if (!custom) {
+    return sendInternalFormCopy(job.submission, { recipients: job.recipients, from: job.from });
+  }
+  const res = await sendTemplatedEmail({
+    to: job.recipients,
+    from: job.from,
+    subject: custom.subject,
+    html: custom.html,
+    replyTo: custom.replyTo,
+    tags: [
+      { name: 'source', value: 'careers' },
+      { name: 'form_type', value: job.formType },
+      { name: 'audience', value: 'company' },
+    ],
+  });
+  return {
+    ok: res.ok,
+    error: res.error,
+    messageId: res.messageId,
+    recipients: res.sentTo.length > 0 ? res.sentTo : job.recipients,
+  };
+}
+
+async function sendSecondHalf(job: {
+  submission: FormSubmissionPayload;
+  formType: string;
+  custom?: EmailJobCustom;
+}): Promise<HalfResult> {
+  const custom = job.custom?.applicant;
+  if (!custom) return sendClientAutoreply(job.submission);
+  const res = await sendTemplatedEmail({
+    to: custom.to,
+    subject: custom.subject,
+    html: custom.html,
+    replyTo: custom.replyTo,
+    inlineLogo: custom.inlineLogo,
+    tags: [
+      { name: 'source', value: 'careers' },
+      { name: 'form_type', value: job.formType },
+      { name: 'audience', value: 'applicant' },
+    ],
+  });
+  return { ok: res.ok, skipped: res.skipped, error: res.error, sentTo: res.sentTo[0] };
+}
+
 // Direct (inline) send with exactly-once dedupe. The email_queue collection
 // doubles as a send ledger: the unique jobKey upsert claims a send slot — the
 // first caller owns it and sends via Resend immediately; any retry/duplicate
@@ -124,10 +207,12 @@ export async function sendEmailDirect(input: {
   formType?: string;
   destination?: string;
   submission: FormSubmissionPayload;
+  /** CHANGE: 2026-10-30 — optional caller-built templates (careers). */
+  custom?: EmailJobCustom;
 }): Promise<DirectSendResult> {
   await ensureIndexes();
 
-  const { jobKey, formType, destination, submission } = input;
+  const { jobKey, formType, destination, submission, custom } = input;
   const type = String(formType || 'general').trim().toLowerCase() || 'general';
 
   // Page-level destinations win. A destination that is unconfigured (or
@@ -154,6 +239,9 @@ export async function sendEmailDirect(input: {
   };
   const cleanDestination = String(destination || '').trim().toLowerCase().slice(0, 40);
   if (cleanDestination) setFields.destination = cleanDestination;
+  // CHANGE: 2026-10-30 — persist the custom templates so a retry from the admin
+  // drain (or an external scheduler) can re-send exactly the same HTML.
+  if (custom) setFields.custom = custom;
 
   const result = await col.updateOne(
     { jobKey },
@@ -179,11 +267,12 @@ export async function sendEmailDirect(input: {
   }
 
   // Fresh claim → send the internal copy NOW (directly, inline in the request),
-  // then the branded client auto-reply. Both are recorded against this jobKey;
-  // the auto-reply is kill-switch gated (AUTO_REPLY_ENABLED) and skipped when
-  // the submitter gave no valid email — so a pending rollout sends nothing new.
-  const res = await sendInternalFormCopy(submission, { recipients, from });
-  const autoReplyRes = await sendClientAutoreply(submission);
+  // then the second email (the branded client auto-reply, or — for a careers job
+  // — the caller's applicant template). Both are recorded against this jobKey;
+  // the default second email is kill-switch gated (AUTO_REPLY_ENABLED) and
+  // skipped when the submitter gave no valid email.
+  const res = await sendCompanyHalf({ submission, recipients, from, formType: type, custom });
+  const autoReplyRes = await sendSecondHalf({ submission, formType: type, custom });
 
   const autoReplyLedger: AutoReplyLedger = autoReplyRes.skipped
     ? { status: 'skipped' }
@@ -311,7 +400,11 @@ export async function processEmailQueue(
     processed++;
 
     const autoReplyAttempt = (job.autoReply?.attempts || 0) + 1;
-    const autoReplyRes = await sendClientAutoreply(job.submission);
+    const autoReplyRes = await sendSecondHalf({
+      submission: job.submission,
+      formType: job.formType,
+      custom: job.custom,
+    });
     const autoReplyLedger: AutoReplyLedger = autoReplyRes.skipped
       ? { status: 'skipped' }
       : autoReplyRes.ok
@@ -334,9 +427,12 @@ export async function processEmailQueue(
       continue;
     }
 
-    const res = await sendInternalFormCopy(job.submission, {
+    const res = await sendCompanyHalf({
+      submission: job.submission,
       recipients: job.recipients,
       from: job.from,
+      formType: job.formType,
+      custom: job.custom,
     });
 
     if (res.ok) {

@@ -82,7 +82,13 @@ export default async function NewsArticlePage({ params }: { params: Promise<{ sl
     .filter((n) => n.slug !== item.slug)
     .slice(0, 3);
 
-  const headline = item.seoTitle || item.title;
+  // CHANGE: 2026-10-30 — the H1 is the article's editorial headline (`item.title`), while
+  // `item.seoTitle` is only the <title> tag. WHY: seoTitle is written to fit Google's ~60-char
+  // snippet including the 25-char brand suffix, so it is necessarily shorter than a good
+  // headline. Using it here too meant shortening the <title> would also shrink the article's
+  // visible H1. JSON-LD `headline` already used `item.title`, so the markup stays consistent
+  // with what is rendered.
+  const headline = item.title;
   const datePublished = (item as any).dateIso || item.date;
 
   const articleLd = articleJsonLd({

@@ -12,6 +12,44 @@ interface SaraTextProps {
 
 const CODE_BLOCK_RE = /^```[\s\S]*```$/;
 
+// CHANGE: 2026-10-30 — a [[...]] tag whose label is a KEYBOARD SHORTCUT must
+// never become a link (a key has no page). The guard strips the invented URL
+// server-side; this is the rendering half, so an old stored reply or a guide
+// body still shows a proper key badge instead of raw markup. Kept local on
+// purpose: this is a client component and must not import the server guard's
+// topic table.
+const KEY_TOKEN_RE =
+  /^(?:ctrl|control|alt|shift|cmd|command|win|windows|meta|fn|esc|escape|enter|return|tab|space|spacebar|backspace|delete|del|insert|ins|home|end|pgup|pgdn|pageup|pagedown|up|down|left|right|arrowup|arrowdown|arrowleft|arrowright|prtsc|printscreen|f(?:[1-9]|1[0-2])|[a-z]|\d|[,./;'[\]\\`=-])$/i;
+
+function isShortcutLabel(label: string): boolean {
+  const raw = label.trim();
+  if (!raw || raw.length > 40 || /[>|]/.test(raw)) return false;
+  const tokens = raw.split('+').map((t) => t.trim());
+  if (tokens.some((t) => !t || !KEY_TOKEN_RE.test(t))) return false;
+  if (tokens.length === 1) {
+    const only = tokens[0].toLowerCase();
+    return (
+      only.length === 1 ||
+      /^\d$/.test(only) ||
+      /^f(?:[1-9]|1[0-2])$/.test(only) ||
+      /^(?:ctrl|alt|shift|esc|escape|enter|return|tab|space|backspace|delete|del|insert|home|end|pgup|pgdn|pageup|pagedown|prtsc|printscreen|cmd|win|meta|fn)$/.test(only)
+    );
+  }
+  return true;
+}
+
+function KeyboardKey({ label, accent }: { label: string; accent: string }) {
+  return (
+    <kbd
+      className="mx-0.5 inline-block rounded-md border border-slate-300 border-b-2 bg-slate-50 px-1.5 py-0.5 font-mono text-[0.8em] font-semibold leading-none text-slate-800 shadow-[inset_0_-1px_0_rgba(15,23,42,0.08)] align-baseline"
+      style={{ color: accent }}
+    >
+      {label}
+    </kbd>
+  );
+}
+
+
 function renderInline(segment: string, accent: string, onNavigate?: () => void) {
   const lines = segment.split('\n');
 
@@ -21,7 +59,13 @@ function renderInline(segment: string, accent: string, onNavigate?: () => void) 
     const nodes = parts.map((part, pi) => {
       if (part.startsWith('[[') && part.endsWith(']]')) {
         const [label, url] = part.slice(2, -2).split('|');
-        if (!url) return <React.Fragment key={pi}>{part}</React.Fragment>;
+        // CHANGE: 2026-10-30 — a shortcut is never a link, whether or not the
+        // model attached a (fabricated) URL to it. Draw a key badge instead.
+        if (isShortcutLabel(label)) {
+          return <KeyboardKey key={pi} label={label.trim()} accent={accent} />;
+        }
+        // A pipe-less tag is raw markup, not a destination: show the words only.
+        if (!url) return <React.Fragment key={pi}>{label}</React.Fragment>;
         return (
           <Link
             key={pi}

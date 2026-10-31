@@ -18,7 +18,12 @@ export type NewsItem = {
 
   // Blog/SEO fields (optional — auto-derived from the above when absent)
   slug?: string;           // URL slug; explicit > auto-derived (title-slug + id tail)
-  seoTitle?: string;       // Overrides the <title>/H1 keyword treatment when set
+  // CHANGE: 2026-10-30 — seoTitle now overrides ONLY the <title> tag, not the H1.
+  // WHY: the H1 is the editorial headline and is what a reader sees; the <title> is the
+  // ~60-character SERP snippet. Using one field for both forced a choice between a truncated
+  // search result and a truncated article heading. The news page renders `item.title` as the
+  // H1 and `item.seoTitle || item.title` as the <title>.
+  seoTitle?: string;       // <title> override (<= 35 chars so the brand suffix fits in 60)
   seoDescription?: string; // Overrides the meta description when set
   excerpt?: string;        // Short teaser (derived from description/content when absent)
   readingTime?: number;    // Read minutes (derived when absent)

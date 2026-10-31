@@ -85,9 +85,31 @@ const ShopCard = memo(function ShopCard({
         expanded ? 'border-[#006569]/60 ring-1 ring-[#006569]/10' : 'border-slate-200'
       }`}
     >
+      {/*
+        CHANGE: 2026-10-30 — the "Best Seller" tag moved OUT of the card and now sits fully
+        above it (owner: "move out of box on top", "redesign it properly").
+        WHY: the old pill was `-top-2 right-3`, i.e. it straddled the card's own top border and
+        covered the first row of group/category chips on narrow cards. It is now anchored with
+        `bottom-full`, so its bottom edge stops at the card's top border and nothing inside the
+        card is ever obscured; a small rotated square acts as a pointer down to the card so the
+        tag still reads as belonging to it. The card grid gained `gap-y-6` (was a uniform
+        `gap-3`) to reserve the ~20px of vertical room the tag needs, so tags never collide with
+        the row above. `pointer-events-none` keeps the decoration out of the click target.
+      */}
       {item.featured && (
-        <span className="absolute -top-2 right-3 z-10 inline-flex items-center rounded-full bg-[#006569] px-2 py-0.5 text-[9px] font-bold uppercase tracking-wide text-white shadow-sm">
+        <span className="pointer-events-none absolute bottom-full right-2 z-10 mb-1.5 inline-flex items-center gap-1 rounded-md bg-gradient-to-b from-[#00747a] to-[#00565a] px-2 py-0.5 text-[9px] font-bold uppercase leading-none tracking-wide text-white shadow-[0_2px_6px_rgba(0,101,105,0.30)] ring-1 ring-[#004a4d]/25">
+          <svg
+            aria-hidden="true"
+            viewBox="0 0 24 24"
+            className="h-2.5 w-2.5 fill-current"
+          >
+            <path d="M12 2.5l2.9 6.06 6.6.86-4.85 4.55 1.22 6.53L12 17.3l-5.87 3.2 1.22-6.53L2.5 9.42l6.6-.86L12 2.5z" />
+          </svg>
           Best Seller
+          <span
+            aria-hidden="true"
+            className="absolute -bottom-[3px] right-2.5 h-1.5 w-1.5 rotate-45 rounded-[1px] bg-[#00565a]"
+          />
         </span>
       )}
       <div className="mb-2 flex flex-wrap items-center gap-1.5">
@@ -545,7 +567,10 @@ export default function ShopBrowser() {
               </div>
             ) : (
               <>
-                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                {/* CHANGE: 2026-10-30 — `gap-y-6` (24px) instead of a uniform 12px gap: the
+                    "Best Seller" tag now sits fully ABOVE the card, so each row needs that
+                    vertical room or the tag of one row would overlap the card above it. */}
+                <div className="grid grid-cols-1 gap-x-3 gap-y-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                   {shown.map((item) => (
                     <ShopCard
                       key={item.slug}

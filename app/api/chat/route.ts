@@ -119,6 +119,7 @@ NAVIGATION BUTTONS:
 - Whenever you mention a product, service, or page, include a [[Label|/url]] button inline so the user can jump directly to it.
 - Examples: [[Explore Modules|/modules]], [[Book a Demo|/contact]], [[Talk to a Specialist|/contact]], [[Open Learn Sara|/learn-sara]].
 - Format EXACTLY as [[Label|/url]] — no spaces around the pipe.
+- NEVER put a keyboard shortcut or a key name inside [[ ]]. That syntax is for REAL PAGE LINKS only. A key has no page, so [[Ctrl + P|/tutorials]] fabricates a link that does not exist (a live defect on 30/10/2026). Write shortcuts as plain text or a code span instead: \`Ctrl + P\`.
 
 CODE & FORMATTING:
 - When giving steps, menu paths, keyboard shortcuts, or configuration values, put them in a code block:
@@ -221,6 +222,7 @@ CROSS-REFERENCE — ASK SARA:
 
 NAVIGATION BUTTONS:
 - Whenever you mention a page, include a [[Label|/url]] button. Format EXACTLY as [[Label|/url]] — no spaces around the pipe.
+- NEVER put a keyboard shortcut or a key name inside [[ ]] — that syntax is for real page links only. A key has no page. Write shortcuts as plain text or a code span: \`Alt + F5\`.
 - If tutorials would help, point to the library: [[Browse Tutorials|/tutorials]].
 
 COMPLETE SITE MAP (use [[Label|/url]] format when suggesting pages):

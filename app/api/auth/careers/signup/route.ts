@@ -12,6 +12,13 @@ import {
   isValidReferralCodeFormat,
   generateUniqueReferralCode,
 } from '@/lib/careers-referral.mjs';
+// CHANGE: 2026-10-31 — Welcome email to the candidate's own address on signup.
+// Sent with sendTemplatedEmail (not sendEmailDirect): signup is inherently
+// once-per-address — a duplicate returns 409 before this point — so the
+// exactly-once email_queue ledger is not needed, and a candidate copy must not
+// depend on the company `careers` recipient being configured.
+import { getCompanyContact, hasInlineLogo, sendTemplatedEmail } from '@/lib/email';
+import { ACCOUNT_CREATED_SUBJECT, buildAccountCreatedHtml } from '@/lib/email-careers.mjs';
 
 // CHANGE: 2026-10-16 — per-IP fixed window (20 signups/min is far above any human rate).
 // CHANGE: 2026-10-17 — env-overridable like every other public-write limiter (see .env.example).
@@ -135,6 +142,42 @@ export async function POST(req: NextRequest) {
 
     const token = await createCareersSession(result.insertedId, userAgent, ip);
     await setCareersSessionCookie(token);
+
+    // CHANGE: 2026-10-31 — Welcome mail to the account's own address. Never blocks
+    // the response: the account already exists, so a mail failure is logged and
+    // swallowed (a candidate must not see a signup error because Resend is down).
+    try {
+      const company = await getCompanyContact();
+      const siteUrl = String(process.env.SITE_URL || '').replace(/\/+$/, '') || 'https://sarvadnyainfotech.com';
+      const inlineLogo = hasInlineLogo();
+
+      const html = buildAccountCreatedHtml({
+        name: fullName || '',
+        email: email.toLowerCase(),
+        referralCode,
+        loginUrl: `${siteUrl}/careers/login`,
+        company,
+        // A cid: reference is only correct when the attachment is really there.
+        logo: inlineLogo ? { cid: 'sarvadnya-logo' } : undefined,
+      });
+
+      const mailResult = await sendTemplatedEmail({
+        to: email.toLowerCase(),
+        subject: ACCOUNT_CREATED_SUBJECT,
+        html,
+        replyTo: company.email,
+        inlineLogo,
+        tags: [
+          { name: 'source', value: 'careers-signup' },
+          { name: 'form_type', value: 'careers' },
+        ],
+      });
+      if (mailResult.error) {
+        console.error('Careers signup email not sent (account was created):', mailResult.error);
+      }
+    } catch (mailError) {
+      console.error('Careers signup email error (account was created):', mailError);
+    }
 
     const safeUser = {
       _id: result.insertedId.toString(),

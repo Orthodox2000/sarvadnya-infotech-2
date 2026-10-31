@@ -16,6 +16,10 @@
 //      (a mismatched viewBox is what distorts or crops an image when it is scaled by CSS);
 //   C. inside every card group, text never sits within 20px of the card's bottom edge and
 //      never starts above the card's top edge, and the card itself stays inside the canvas.
+//   D. CHANGE 2026-10-30 - every numbered step row carries its number badge. The owner
+//      reported "page no 4 isn't appearing" on the vouchers lesson; the real cause was
+//      tally-vouchers.svg drawing the 4th <circle> with no "4" <text> inside it, so the row
+//      looked like an empty dot. The row existed, the badge did not.
 // Width fitting needs a font engine, so the browser probe used to fix these files
 // (/tmp/opencode/verify-insight-svgs.cjs, 30/30) is the tool for that; this guard locks the
 // two failure modes that actually shipped.
@@ -85,9 +89,31 @@ for (const name of files) {
         violations.push(`${rel}: "${label}" baseline y=${baseline} starts above its card (needs ${MIN_TOP_PAD}px)`)
       }
     }
+
+    // D. Every numbered step row must actually show its number.
+    const stepCircles = [...body.matchAll(/<circle\b[^>]*\bcx="80"[^>]*\bcy="([\d.]+)"[^>]*\/>/g)].map((m) => Number(m[1]))
+    const stepBadges = [...body.matchAll(/<text\b[^>]*\bx="80"[^>]*\by="([\d.]+)"[^>]*text-anchor="middle"[^>]*>(\d+)<\/text>/g)].map((m) => ({
+      y: Number(m[1]),
+      n: Number(m[2]),
+    }))
+    if (stepCircles.length !== stepBadges.length) {
+      violations.push(
+        `${rel}: ${stepCircles.length} numbered step row(s) but ${stepBadges.length} number badge(s) - a row renders as an empty dot`
+      )
+    }
+    for (const cy of stepCircles) {
+      // A badge is the number drawn inside its own circle (centre + ~8px for 20px type).
+      const badge = stepBadges.find((b) => Math.abs(b.y - (cy + 8)) <= 12)
+      if (!badge) violations.push(`${rel}: step row at cy=${cy} has no number badge inside its circle`)
+    }
+    const numbers = stepBadges.map((b) => b.n).sort((a, b) => a - b)
+    const expected = numbers.map((_, i) => i + 1)
+    if (numbers.length && numbers.join(',') !== expected.join(',')) {
+      violations.push(`${rel}: step numbers are ${numbers.join(',')} but a numbered list must read 1..${numbers.length}`)
+    }
+
     outside = outside.replace(g[0], '')
-  }
-  for (const t of outside.matchAll(/<text\b[^>]*\by="([\d.]+)"[^>]*>([^<]*)/g)) {
+  }  for (const t of outside.matchAll(/<text\b[^>]*\by="([\d.]+)"[^>]*>([^<]*)/g)) {
     const baseline = Number(t[1])
     if (baseline + 4 > vh - MIN_CANVAS_PAD) {
       violations.push(`${rel}: "${t[2].slice(0, 40)}" baseline y=${baseline} overflows the ${vh}px canvas`)

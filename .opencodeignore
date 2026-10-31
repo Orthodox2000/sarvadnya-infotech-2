@@ -1,0 +1,51 @@
+# .opencodeignore — keeps heavy/generated files out of the agent's context.
+# Rule of thumb: never ignore source or docs. Only ignore things that are
+# generated, vendored, binary, or historical dumps.
+
+# ---- Build output & caches (regenerated, never edited by hand) ----
+.next/
+out/
+dist/
+coverage/
+.turbo/
+*.tsbuildinfo
+tsconfig.tsbuildinfo
+
+# ---- Dependencies ----
+node_modules/
+package-lock.json
+
+# ---- Nested admin repo (own git repo, own rules — see AGENTS.md §2.4) ----
+sarvadnya-advanced/
+
+# ---- Secrets ----
+.env*
+!.env.example
+
+# ---- Sabotage the always-loaded instruction file would be fatal ----
+!AGENTS.md
+
+# ---- Tooling state ----
+.gemini/
+.superpowers/
+.vscode/
+.idea/
+
+# ---- Heavy asset & brand folders ----
+brand-assets/
+public/
+snapshots/
+backups/
+New folder/
+
+# ---- Large text/data dumps & historical logs ----
+daily logs/
+*.log
+*.csv
+SESSION-LOG-*.md
+SESSION-DETAILS-*.csv
+WEBSITE_CONTENT_SOFT_COPY.md
+PROJECT_MASTER_DOCUMENTATION.md
+
+# ---- 151 KB per-version changelog (history lives in docs/HISTORY.md now) ----
+GEMINI.md

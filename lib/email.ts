@@ -77,6 +77,11 @@ const FORM_TYPE_LABELS: Record<string, string> = {
   demo: 'Enquiry Request',
   general: 'Contact Request',
   'tss-renewal': 'TSS Renewal',
+  // CHANGE: 2026-10-30 — careers emails (resume saved / job application) so the
+  // admin send ledger labels them correctly instead of "Web Enquiry". Not added
+  // to FORM_TYPES on purpose: careers routing is destination-first ('careers'),
+  // and an unknown type must never fall back to the general recipient list.
+  careers: 'Careers / Job Applications',
 };
 
 export function isValidEmail(value: string): boolean {
@@ -444,6 +449,14 @@ function loadInlineLogo(): { buffer: Buffer; base64: string } | null {
   }
 }
 
+// CHANGE: 2026-10-30 — Lets a caller decide the logo source BEFORE building the
+// HTML: a `cid:` reference is only correct when the attachment will really be
+// there. When this returns false the careers templates fall back to the hosted
+// URL instead of rendering a broken image.
+export function hasInlineLogo(): boolean {
+  return loadInlineLogo() !== null;
+}
+
 export async function sendClientAutoreply(
   submission: FormSubmissionPayload,
   options?: { from?: string; baseUrl?: string; company?: Partial<AutoreplyCompany> }
@@ -521,6 +534,95 @@ export async function sendClientAutoreply(
     return { ok: false, sentTo: submission.email, error: error.message || 'Resend auto-reply send failed' };
   }
   return { ok: true, sentTo: submission.email, messageId: data?.id };
+}
+
+// CHANGE: 2026-10-30 — Generic templated send, used by the careers emails
+// (resume saved / job application). WHY a second sender path at all: the form
+// copy is built from FormSubmissionPayload and the client thank-you is a fixed
+// marketing template — neither can carry hiring fields, and the applicant
+// confirmation must NOT be gated by AUTO_REPLY_ENABLED (that switch exists to
+// silence the marketing thank-you on enquiries; an application acknowledgement
+// is a core promised behaviour per the owner). This sends a caller-built HTML
+// body with the same transport guarantees: sender from config, the global CC,
+// and the logo embedded inline (cid:) so it renders even with images blocked.
+export interface TemplatedSendInput {
+  to: string | string[];
+  subject: string;
+  html: string;
+  replyTo?: string;
+  from?: string;
+  /** Attach public/TallyCertificate.png as cid:sarvadnya-logo for the HTML. */
+  inlineLogo?: boolean;
+  tags?: { name: string; value: string }[];
+}
+
+export interface TemplatedSendResult {
+  ok: boolean;
+  sentTo: string[];
+  messageId?: string;
+  error?: string;
+  skipped?: boolean;
+}
+
+export async function sendTemplatedEmail(input: TemplatedSendInput): Promise<TemplatedSendResult> {
+  const to = (Array.isArray(input.to) ? input.to : [input.to])
+    .map((value) => String(value || '').trim().toLowerCase())
+    .filter((value) => isValidEmail(value));
+  // De-duplicate: the same address twice would make Resend reject the send.
+  const uniqueTo = Array.from(new Set(to));
+  if (uniqueTo.length === 0) {
+    return { ok: false, skipped: true, sentTo: [], error: 'No valid recipient address' };
+  }
+  if (!String(input.subject || '').trim()) {
+    return { ok: false, skipped: true, sentTo: uniqueTo, error: 'Missing subject' };
+  }
+  if (!String(input.html || '').trim()) {
+    return { ok: false, skipped: true, sentTo: uniqueTo, error: 'Missing HTML body' };
+  }
+
+  const { apiKey, from: configuredFrom } = await getEmailConfig();
+  if (!apiKey) {
+    return { ok: false, sentTo: uniqueTo, error: 'RESEND_API_KEY is not configured' };
+  }
+
+  const from = String(input.from || '').trim() || configuredFrom;
+  if (!isValidEmail(from)) {
+    return { ok: false, sentTo: uniqueTo, error: `Invalid sender address: ${from}` };
+  }
+
+  const replyTo = input.replyTo && isValidEmail(input.replyTo) ? String(input.replyTo).trim() : undefined;
+
+  // Never CC someone who is already a direct recipient (Resend rejects duplicates).
+  const globalCc = await getGlobalCc();
+  const cc = globalCc ? globalCc.filter((address) => !uniqueTo.includes(address)) : null;
+
+  const logoFile = input.inlineLogo ? loadInlineLogo() : null;
+
+  const resend = new Resend(apiKey);
+  const { data, error } = await resend.emails.send({
+    from,
+    to: uniqueTo,
+    ...(cc && cc.length > 0 ? { cc } : {}),
+    subject: input.subject,
+    html: input.html,
+    ...(replyTo ? { replyTo } : {}),
+    attachments: logoFile
+      ? [
+          {
+            filename: 'sarvadnya-logo.png',
+            content: logoFile.buffer,
+            contentType: 'image/png',
+            contentId: 'sarvadnya-logo',
+          },
+        ]
+      : undefined,
+    ...(input.tags && input.tags.length > 0 ? { tags: input.tags } : {}),
+  });
+
+  if (error) {
+    return { ok: false, sentTo: uniqueTo, error: error.message || 'Resend send failed' };
+  }
+  return { ok: true, sentTo: uniqueTo, messageId: data?.id };
 }
 
 export async function getEmailDiagnostic(): Promise<EmailDiagnostic> {

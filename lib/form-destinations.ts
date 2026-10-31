@@ -71,6 +71,12 @@ export const FORM_DESTINATIONS: FormDestination[] = [
   // panel, so chat leads SAVE to the DB but email NOBODY until then (the safety
   // contract: a misconfiguration can never fire an unwanted email on live).
   { key: 'ask-sara', label: 'Ask Sara Chat Leads', paths: [], category: 'others' },
+  // CHANGE: 2026-10-30 — Careers emails (owner: "send to both applicant and
+  // company"). The job-application form action and the resume route both submit
+  // with destination 'careers' (they are server actions / API routes with no
+  // page path, so paths=[] — the explicit destination drives routing). OPT-IN:
+  // until EMAIL_DESTINATION_RECIPIENTS.careers is seeded, these send nothing.
+  { key: 'careers', label: 'Careers / Job Applications', paths: ['/careers'], category: 'others' },
 ];
 
 // CHANGE: 2026-09-18 — removed unused KNOWN_DESTINATION_KEYS export (zero importers).

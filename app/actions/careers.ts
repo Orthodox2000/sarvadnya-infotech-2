@@ -13,7 +13,32 @@ import {
 } from '@/lib/visitors';
 import type { GeoInfo } from '@/lib/visitors';
 import { storeResume } from '@/lib/careers-storage';
+// CHANGE: 2026-10-30 — Careers email (owner: "send to both applicant and company").
+// A submitted application used to notify nobody. The company copy carries the
+// hiring fields + an application link; the candidate gets a branded confirmation.
+// Both ride the existing exactly-once send path (jobKey claim in email_queue), so
+// a double-submit can never email twice.
+import { createHash } from 'node:crypto';
+import { getCompanyContact, hasInlineLogo } from '@/lib/email';
+import { sendEmailDirect } from '@/lib/email-queue';
+import {
+  applicationCompanySubject,
+  APPLICATION_CONFIRMATION_SUBJECT,
+  buildApplicationCompanyHtml,
+  buildApplicantConfirmationHtml,
+} from '@/lib/email-careers.mjs';
+
 const MEGA_ENABLED = process.env.MEGA_ENABLED === 'true' || process.env.MEGA_ENABLED === '1';
+
+// Stable, short dedupe key. NOTE: the resume URL changes on every re-upload, so it
+// must NOT be part of the key — re-applying for the same role with the same details
+// is the duplicate we want to collapse.
+function applicationJobKey(fields: { email: string; jobId: string; phone: string; fullName: string }): string {
+  const digest = createHash('sha256')
+    .update([fields.email, fields.jobId, fields.phone, fields.fullName].join('|'))
+    .digest('hex');
+  return `career-app:${digest.slice(0, 32)}`;
+}
 
 export async function submitApplication(formData: FormData) {
   try {
@@ -107,6 +132,89 @@ export async function submitApplication(formData: FormData) {
       userAgent: meta.userAgent || undefined,
       geo,
     });
+
+    // CHANGE: 2026-10-30 — Notify the company + confirm to the candidate.
+    // Never blocks the response: the application is already saved, so an email
+    // failure is logged and swallowed (the candidate must not see an error for a
+    // notification problem). Sending is opt-in per destination: until
+    // EMAIL_DESTINATION_RECIPIENTS.careers is seeded this returns
+    // 'no-recipient-configured' and sends nothing — including no candidate copy.
+    try {
+      const company = await getCompanyContact();
+      const inlineLogo = hasInlineLogo();
+      const appliedAt = new Date();
+
+      const companyHtml = buildApplicationCompanyHtml({
+        application: {
+          jobId,
+          jobTitle,
+          fullName,
+          email,
+          phone,
+          city: city || undefined,
+          gender: gender || undefined,
+          age,
+          qualification: qualification || undefined,
+          skills: skills || undefined,
+          experience,
+          experienceDetails: experienceDetails || undefined,
+          message,
+          resumeUrl,
+          resumeName,
+          appliedAt,
+        },
+        company,
+      });
+
+      const applicantHtml = buildApplicantConfirmationHtml({
+        name: fullName,
+        jobTitle,
+        company,
+        // A cid: reference is only correct when the attachment is really there.
+        logo: inlineLogo ? { cid: 'sarvadnya-logo' } : undefined,
+      });
+
+      const mailResult = await sendEmailDirect({
+        jobKey: applicationJobKey({ email, jobId, phone, fullName }),
+        formType: 'careers',
+        destination: 'careers',
+        submission: {
+          name: fullName,
+          email,
+          contact: phone,
+          service: jobTitle,
+          description: message,
+          formType: 'careers',
+          destination: 'careers',
+          ip: meta.secGpc ? undefined : meta.ip,
+          userAgent: meta.userAgent || undefined,
+          geo,
+        },
+        custom: {
+          company: {
+            subject: applicationCompanySubject(fullName, jobTitle),
+            html: companyHtml,
+            // Reply goes straight to the candidate.
+            replyTo: email,
+          },
+          applicant: {
+            to: email,
+            subject: APPLICATION_CONFIRMATION_SUBJECT,
+            html: applicantHtml,
+            replyTo: company.email,
+            inlineLogo,
+          },
+        },
+      });
+      if (mailResult.error) {
+        visitorLog('warn', 'careers application email not sent', {
+          ip: maskIp(meta.ip),
+          error: mailResult.error,
+        });
+      }
+    } catch (mailError) {
+      console.error('Careers application email error (application was saved):', mailError);
+    }
 
     revalidatePath('/admin/careers/responses');
     return { success: true };

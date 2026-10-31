@@ -11,6 +11,7 @@
     <text x="130" y="157" font-size="20" font-weight="700" fill="#0f172a">Payment &amp; Receipt</text><text x="130" y="187" font-size="16" fill="#334155">Outflow/Inflows with ledgers</text>
     <circle cx="80" cy="223" r="24" fill="#14b8a6"/><text x="80" y="231" font-size="20" fill="#fff" text-anchor="middle" font-weight="800">3</text>
     <text x="130" y="233" font-size="20" font-weight="700" fill="#0f172a">Sales &amp; Purchase</text><text x="130" y="263" font-size="16" fill="#334155">GST enabled transactions</text>
-    <circle cx="80" cy="299" r="24" fill="#0ea5a5"/><text x="130" y="309" font-size="20" font-weight="700" fill="#0f172a">Journal &amp; Adjustments</text><text x="130" y="339" font-size="16" fill="#334155">Non-cash entries correctly classified</text>
+    <circle cx="80" cy="299" r="24" fill="#0ea5a5"/><text x="80" y="307" font-size="20" fill="#fff" text-anchor="middle" font-weight="800">4</text>
+    <text x="130" y="309" font-size="20" font-weight="700" fill="#0f172a">Journal &amp; Adjustments</text><text x="130" y="339" font-size="16" fill="#334155">Non-cash entries correctly classified</text>
   </g>
 </svg>
