@@ -1,6 +1,6 @@
 import { MetadataRoute } from 'next';
 import { SITE_URL } from '@/lib/seo';
-import { getNews } from '@/lib/mongodb-utils';
+import { getModules, getNews } from '@/lib/mongodb-utils';
 import { parseDateIso } from '@/lib/news-utils';
 // CHANGE: 2026-10-22 — the /tally-insights lesson pages are now listed in the sitemap.
 // WHY: the owner asked for the new guides to be submitted for indexing in Google Search
@@ -19,6 +19,36 @@ import { getAllSaraGuideSlugs } from '@/lib/sara-topics';
 // (the chat moved to /learn-sara/chat, which keeps the noindex). See the guideEntries block.
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = SITE_URL;
+
+  // CHANGE: 2026-11-02 — each module now has its own indexable page.
+  // WHY: a sitemap that stamps every run with `new Date()` teaches Google to distrust
+  // <lastmod> (it sees a "modified today" URL on every crawl). Use the module document's own
+  // updatedAt/createdAt where the DB has one, and omit the field when it does not.
+  const coerceDate = (value: unknown): Date | undefined => {
+    if (!value) return undefined;
+    const date = value instanceof Date ? value : new Date(String(value));
+    return Number.isNaN(date.getTime()) ? undefined : date;
+  };
+
+  let moduleEntries: MetadataRoute.Sitemap = [];
+  try {
+    const modules = await getModules();
+    const seen = new Set<string>();
+    moduleEntries = modules.flatMap((m: any) => {
+      const id = String(m.id || m._id || '').trim();
+      if (!id || seen.has(id)) return [];
+      seen.add(id);
+      return [{
+        url: `${baseUrl}/modules/${id}`,
+        lastModified: coerceDate(m.updatedAt) ?? coerceDate(m.createdAt),
+        changeFrequency: 'monthly' as const,
+        // Commercial landing pages, one per module — same weight as the section hubs.
+        priority: 0.8,
+      }];
+    });
+  } catch (e) {
+    console.error('Sitemap: failed to fetch modules', e);
+  }
 
   const routes = [
     '',
@@ -119,5 +149,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.7,
   }));
 
-  return [...staticEntries, ...sectionEntries, ...lessonEntries, ...guideEntries, ...articleEntries];
+  return [...staticEntries, ...moduleEntries, ...sectionEntries, ...lessonEntries, ...guideEntries, ...articleEntries];
 }

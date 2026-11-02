@@ -1,3 +1,13 @@
+/**
+ * CHANGE: 2026-11-02 — one canonical URL builder for every module.
+ * WHY: module links used to be `#fragment` deep links into /modules (id-based routing).
+ * Each module now has its own page at /modules/<id>, so nav, footer, search, Sara and the
+ * module cards all build the href from here instead of repeating the string.
+ */
+export function moduleHref(id?: string | null): string {
+  return `/modules/${encodeURIComponent(String(id || "").trim())}`;
+}
+
 export interface Module {
 
   _id?: string;

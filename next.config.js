@@ -25,7 +25,10 @@ const csp = [
   // and only `https://www.google.com` was allowed — so with no `map_iframe_url` in settings the
   // browser blocked the frame and the Contact page shipped an empty grey box. Verified with a
   // console probe: "Framing 'https://maps.google.com/' violates ... frame-src".
-  `frame-src 'self' https://www.google.com https://maps.google.com https://*.razorpay.com https://news.google.com https://accounts.google.com`,
+  // CHANGE: 2026-11-02 — YouTube frames are needed by the module pages' "showcase video"
+  // block (app/components/modules/ModuleVideo.tsx). Without these the poster renders and the
+  // play press produces a blocked frame. youtube-nocookie is the privacy-enhanced host.
+  `frame-src 'self' https://www.google.com https://maps.google.com https://www.youtube.com https://www.youtube-nocookie.com https://*.razorpay.com https://news.google.com https://accounts.google.com`,
   `object-src 'none'`,
   `base-uri 'self'`,
   `form-action 'self'`,

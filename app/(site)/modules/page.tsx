@@ -3,15 +3,12 @@
 import { useState, useEffect } from 'react';
 import { Module } from '@/lib/modules';
 import ModuleCard from "../../components/ModuleCard";
-import ModuleModal from "../../components/ModuleModal";
 import Footer from "../../components/Footer";
 import UnifiedContactModal, { FormType } from "../../components/UnifiedContactModal";
 
 export default function ModulesPage() {
   const [modules, setModules] = useState<Module[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedModule, setSelectedModule] = useState<Module | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [contactModalConfig, setContactModalConfig] = useState<{isOpen: boolean; type: FormType; service: string}>({
     isOpen: false,
     type: 'enquire',
@@ -43,11 +40,6 @@ export default function ModulesPage() {
     const el = document.getElementById(hash);
     if (el) setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'start' }), 300);
   }, [modules]);
-
-  const handleViewDetails = (module: Module) => {
-    setSelectedModule(module);
-    setIsModalOpen(true);
-  };
 
   const handleEnquire = (module: Module) => {
     setContactModalConfig({
@@ -110,7 +102,6 @@ export default function ModulesPage() {
               <ModuleCard
                 key={module._id || module.id}
                 module={module}
-                onViewDetails={handleViewDetails}
                 onEnquire={handleEnquire}
               />
             ))}
@@ -139,14 +130,7 @@ export default function ModulesPage() {
         </div>
       </section>
 
-      {/* Modals */}
-      <ModuleModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        module={selectedModule}
-        onEnquire={handleEnquire}
-      />
-
+      {/* Modal */}
       <UnifiedContactModal
         isOpen={contactModalConfig.isOpen}
         onClose={() => setContactModalConfig(prev => ({ ...prev, isOpen: false }))}

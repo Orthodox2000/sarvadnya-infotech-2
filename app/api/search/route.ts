@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import { getModules, getTutorials, getNews, getPartners, getSettings } from '@/lib/mongodb-utils';
 import { findSemanticResults } from '@/lib/search-indexer';
+// CHANGE: 2026-11-02 — module URLs built from the single helper for consistency.
+import { moduleHref } from '@/lib/modules';
 // CHANGE: 2026-10-23 — the /shop catalogue (107 TDLs, importers, boosters, modules) is searchable.
 // WHY: it is the largest body of content on the site and it is pure data, so matching it costs no
 // database read. Without this, a search for "duplicate purchase" found nothing at all.
@@ -240,7 +242,8 @@ export async function GET(request: Request) {
 
     modules.forEach((m: any) => {
       const moduleId = m.id || m._id;
-      const moduleUrl = `/modules#${moduleId}`;
+      // CHANGE: 2026-11-02 — modules have their own pages now (was /modules#<id>).
+      const moduleUrl = moduleHref(moduleId);
       if (m.title?.toLowerCase().includes(query) || m.description?.toLowerCase().includes(query)) {
         dbResults.push({
           title: m.title, description: m.description, url: moduleUrl, type: 'Module',

@@ -1,15 +1,15 @@
 'use client';
 
-import { Module } from '@/lib/modules';
+import { Module, moduleHref } from '@/lib/modules';
 import Image from 'next/image';
+import Link from 'next/link';
 
 interface ModuleCardProps {
   module: Module;
-  onViewDetails: (module: Module) => void;
   onEnquire: (module: Module) => void;
 }
 
-export default function ModuleCard({ module, onViewDetails, onEnquire }: ModuleCardProps) {
+export default function ModuleCard({ module, onEnquire }: ModuleCardProps) {
   // CHANGE: 2026-09-07 — anchor id + scroll-mt-40 so #fragment deep-links scroll to the matching module card.
   return (
     <div id={module.id} className="group relative bg-white rounded-2xl overflow-hidden border border-slate-100 shadow-sm hover:shadow-2xl transition-all duration-500 flex flex-col h-full scroll-mt-40">
@@ -66,12 +66,13 @@ export default function ModuleCard({ module, onViewDetails, onEnquire }: ModuleC
         </div>
 
         <div className="flex items-center gap-2">
-          <button
-            onClick={() => onViewDetails(module)}
-            className="flex-1 py-2.5 bg-[#006569] text-white text-[11px] border font-bold rounded-xl hover:bg-[#FAFAFA] hover:text-[#006569] hover:border-[#006569] transition-colors shadow-lg shadow-slate-200"
+          {/* CHANGE: 2026-11-02 — "More Details" now opens the module's own page instead of a modal. */}
+          <Link
+            href={moduleHref(module.id || module._id)}
+            className="flex-1 py-2.5 text-center bg-[#006569] text-white text-[11px] border font-bold rounded-xl hover:bg-[#FAFAFA] hover:text-[#006569] hover:border-[#006569] transition-colors shadow-lg shadow-slate-200"
           >
-            Explore Details
-          </button>
+            More Details
+          </Link>
           <button
             onClick={() => onEnquire(module)}
             className="w-10 h-10 flex items-center justify-center rounded-xl border border-slate-200 text-[#006569] hover:bg-teal-50 transition-all"

@@ -1,3 +1,20 @@
+/**
+ * COMMENTED OUT — 2026-11-02, DO NOT DELETE.
+ *
+ * WHY RETIRED: the module detail content moved to its own indexable route,
+ * app/(site)/modules/[slug]/page.tsx, and the "More Details" card button is now a <Link>
+ * to that page (see app/components/ModuleCard.tsx). The listing page therefore no longer
+ * imports this component, so it is dead code — kept, not deleted, because the owner asked
+ * for it to be retained.
+ *
+ * WHY IT HAD TO GO: a modal gave all six modules one URL (/modules), so none of them could
+ * rank on its own, and the brochure video/brochure PDF could not be linked or shared.
+ *
+ * To bring it back: uncomment the block below, re-add the `ModuleModal` import and the
+ * `selectedModule` / `isModalOpen` state in app/(site)/modules/page.tsx, and pass
+ * `onViewDetails` to <ModuleCard> again.
+ */
+/*
 'use client';
 
 import { useEffect, useState, useCallback } from 'react';
@@ -191,3 +208,4 @@ export default function ModuleModal({ isOpen, onClose, module, onEnquire }: Modu
     </div>
   );
 }
+*/
