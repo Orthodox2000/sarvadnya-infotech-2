@@ -163,11 +163,18 @@ export function isTssSlug(slug: unknown): slug is string {
 }
 
 /**
+ * CHANGE: 2026-11-02 — owner: a TSS serial is exactly 9 digits and starts with 7.
+ * One definition, used by the checkout input filter AND this server-side check
+ * (`/api/cart/order` reprices and re-validates, so the client can never bypass it).
+ */
+export const TSS_SERIAL_RE = /^7\d{8}$/;
+
+/**
  * Validates the buyer's TSS serial numbers — one per TSS cart line (multi-licence
- * carts, owner pick). Mirrors the existing /api/tss-renewal free-text handling
- * (trim, strip <>, cap 64; no invented format regex). Only slugs present in
- * `tssSlugs` are required; extra keys in `raw` are ignored. `value` carries the
- * cleaned serials for persistence.
+ * carts, owner pick). Trim + strip `<>`, then the owner's format rule
+ * (`TSS_SERIAL_RE`: 9 digits, first digit 7). Only slugs present in `tssSlugs`
+ * are required; extra keys in `raw` are ignored. `value` carries the cleaned
+ * serials for persistence.
  */
 export function validateTssSerials(raw: unknown, tssSlugs: string[]): TssSerialsValidation {
   const src = (raw && typeof raw === 'object' ? raw : {}) as Record<string, unknown>;
@@ -182,6 +189,11 @@ export function validateTssSerials(raw: unknown, tssSlugs: string[]): TssSerials
     }
     if (cleaned.length > 64) {
       errors[slug] = 'TSS serial must be 64 characters or fewer.';
+      continue;
+    }
+    // CHANGE: 2026-11-02 — owner rule: 9 digits, first digit 7.
+    if (!TSS_SERIAL_RE.test(cleaned)) {
+      errors[slug] = 'TSS serial must be 9 digits and start with 7.';
       continue;
     }
     value[slug] = cleaned;

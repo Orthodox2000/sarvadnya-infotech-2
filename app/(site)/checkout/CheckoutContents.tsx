@@ -140,8 +140,15 @@ function SummaryLine({
               id={`serial-${line.slug}`}
               type="text"
               value={serial ?? ''}
-              onChange={(e) => onSerialChange(e.target.value)}
-              placeholder="e.g. your Tally serial"
+              // CHANGE: 2026-11-02 — owner: TSS serial is 9 digits, first digit 7.
+              // Filter keystrokes/paste to digits and cap at 9 here; the format rule
+              // itself lives in validateTssSerials (TSS_SERIAL_RE) and is re-checked
+              // by /api/cart/order, so this is UX only, never the gate.
+              onChange={(e) => onSerialChange(e.target.value.replace(/\D/g, '').slice(0, 9))}
+              placeholder="e.g. 712345678"
+              inputMode="numeric"
+              pattern="7[0-9]{8}"
+              maxLength={9}
               autoComplete="off"
               spellCheck={false}
               aria-invalid={serialError ? true : undefined}

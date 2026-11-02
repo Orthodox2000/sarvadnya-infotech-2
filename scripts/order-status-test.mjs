@@ -199,12 +199,22 @@ test('multiple simultaneous errors reported together', () => {
   assertErrors(r, ['name', 'email', 'phone']);
 });
 
-// ─── validateTssSerials (owner 2026-10-03) ──────────────────────────────────
-console.log('🔢 validateTssSerials (one serial per TSS line)');
+// ─── validateTssSerials (owner 2026-10-03; format rule 2026-11-02) ──────────
+console.log('🔢 validateTssSerials (one serial per TSS line, 9 digits starting with 7)');
 test('valid serial accepted and trimmed', () => {
-  const r = validateTssSerials({ 'tss-single-1yr': '  ABC-123XY  ' }, ['tss-single-1yr']);
+  const r = validateTssSerials({ 'tss-single-1yr': '  712345678  ' }, ['tss-single-1yr']);
   assertOk(r);
-  if (r.value['tss-single-1yr'] !== 'ABC-123XY') throw new Error(`serial ${JSON.stringify(r.value['tss-single-1yr'])}`);
+  if (r.value['tss-single-1yr'] !== '712345678') throw new Error(`serial ${JSON.stringify(r.value['tss-single-1yr'])}`);
+});
+test('serial not starting with 7 rejected', () => {
+  assertErrors(validateTssSerials({ 'tss-single-1yr': '812345678' }, ['tss-single-1yr']), ['tss-single-1yr']);
+});
+test('8-digit and 10-digit serials rejected', () => {
+  assertErrors(validateTssSerials({ 'tss-single-1yr': '71234567' }, ['tss-single-1yr']), ['tss-single-1yr']);
+  assertErrors(validateTssSerials({ 'tss-single-1yr': '7123456789' }, ['tss-single-1yr']), ['tss-single-1yr']);
+});
+test('letters/dashes rejected', () => {
+  assertErrors(validateTssSerials({ 'tss-single-1yr': 'ABC-123XY' }, ['tss-single-1yr']), ['tss-single-1yr']);
 });
 test('blank serial rejected with slug-keyed error', () => {
   const r = validateTssSerials({ 'tss-single-1yr': '   ' }, ['tss-single-1yr']);
@@ -215,31 +225,27 @@ test('missing slug entry rejected (TSS line with no serial)', () => {
   assertErrors(r, ['tss-auditor-2yr']);
 });
 test('unknown slug ignored entirely', () => {
-  const r = validateTssSerials({ 'tss-single-1yr': 'ABC', bogus: 'X' }, ['tss-single-1yr']);
+  const r = validateTssSerials({ 'tss-single-1yr': '712345678', bogus: 'X' }, ['tss-single-1yr']);
   assertOk(r);
   if ('bogus' in r.value) throw new Error('unknown slug kept in value');
   if (Object.keys(r.value).length !== 1) throw new Error(`value keys ${Object.keys(r.value)}`);
 });
-test('<> stripped from serial', () => {
-  const r = validateTssSerials({ 'tss-single-1yr': '<AB>C' }, ['tss-single-1yr']);
+test('<> stripped from serial (and then fails the 9-digit rule)', () => {
+  const r = validateTssSerials({ 'tss-single-1yr': '<71234>5678' }, ['tss-single-1yr']);
   assertOk(r);
-  if (r.value['tss-single-1yr'] !== 'ABC') throw new Error(`serial ${JSON.stringify(r.value['tss-single-1yr'])}`);
+  if (r.value['tss-single-1yr'] !== '712345678') throw new Error(`serial ${JSON.stringify(r.value['tss-single-1yr'])}`);
 });
 test('serial of only < > becomes blank -> rejected', () => {
   const r = validateTssSerials({ 'tss-single-1yr': '<><>' }, ['tss-single-1yr']);
   assertErrors(r, ['tss-single-1yr']);
 });
-test('65-char serial rejected', () => {
-  const r = validateTssSerials({ 'tss-single-1yr': 'A'.repeat(65) }, ['tss-single-1yr']);
+test('oversized serial rejected', () => {
+  const r = validateTssSerials({ 'tss-single-1yr': '7'.repeat(65) }, ['tss-single-1yr']);
   assertErrors(r, ['tss-single-1yr']);
-});
-test('64-char serial accepted (boundary)', () => {
-  const r = validateTssSerials({ 'tss-single-1yr': 'A'.repeat(64) }, ['tss-single-1yr']);
-  assertOk(r);
 });
 test('two TSS lines: one bad -> only that slug errors; value has the good one', () => {
   const r = validateTssSerials(
-    { 'tss-single-1yr': 'GOOD123', 'tss-multi-2yr': '' },
+    { 'tss-single-1yr': '712345678', 'tss-multi-2yr': '' },
     ['tss-single-1yr', 'tss-multi-2yr'],
   );
   assertErrors(r, ['tss-multi-2yr']);
