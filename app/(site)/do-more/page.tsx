@@ -5,7 +5,6 @@ import Image from 'next/image';
 import Footer from "../../components/Footer";
 import UnifiedContactModal, { FormType } from "../../components/UnifiedContactModal";
 import Link from 'next/link';
-import PreferredSource from "../../components/PreferredSource";
 
 type Solution = {
   name: string;
@@ -127,10 +126,6 @@ export default function DoMorePage() {
           </div>
         </section>
 
-        {/* CHANGE: 2026-11-02 — Google preferred-source opt-in (see PreferredSource.tsx). */}
-        <div className="max-w-6xl mx-auto px-6 pb-10">
-          <PreferredSource />
-        </div>
       </div>
 
       <UnifiedContactModal 

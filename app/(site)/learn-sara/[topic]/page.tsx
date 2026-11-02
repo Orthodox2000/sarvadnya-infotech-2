@@ -10,7 +10,6 @@ import Footer from "../../../components/Footer";
 import SaraGuideBody, { saraExcerpt } from "@/app/components/SaraGuideBody";
 import { getAllSaraGuideSlugs, getSaraGuide, saraGuides } from "@/lib/sara-topics";
 import { breadcrumbJsonLd, faqPageJsonLd, seoMetadata } from "@/lib/seo";
-import PreferredSource from "@/app/components/PreferredSource";
 
 // Only the ten real topics exist. A hand-typed slug must 404, never render a near-miss page.
 export const dynamicParams = false;
@@ -210,10 +209,6 @@ export default async function SaraGuidePage({ params }: { params: Promise<{ topi
           </ul>
         </section>
 
-        {/* CHANGE: 2026-11-02 — Google preferred-source opt-in (see PreferredSource.tsx). */}
-        <div className="mt-10">
-          <PreferredSource />
-        </div>
       </main>
 
       <Footer />

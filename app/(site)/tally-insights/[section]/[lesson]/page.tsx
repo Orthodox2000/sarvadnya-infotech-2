@@ -13,7 +13,6 @@ import { articleJsonLd, breadcrumbJsonLd, faqPageJsonLd, seoMetadata } from "@/l
 import MarkdownBody from "@/app/components/TallyInsights/MarkdownBody";
 import LessonFigure from "@/app/components/TallyInsights/LessonFigure";
 import TallyInsightsNav from "@/app/components/TallyInsights/TallyInsightsNav";
-import PreferredSource from "@/app/components/PreferredSource";
 
 export const dynamicParams = false;
 
@@ -515,11 +514,6 @@ export default async function LessonPage({
             {lesson.modulePromo && <ModulePromoCard promo={lesson.modulePromo} />}
           </div>
         </article>
-
-        {/* CHANGE: 2026-11-02 — Google preferred-source opt-in (see PreferredSource.tsx). */}
-        <div className="mt-10">
-          <PreferredSource />
-        </div>
 
         <div className="mt-12 flex flex-col sm:flex-row justify-between gap-4">
           {prev ? (

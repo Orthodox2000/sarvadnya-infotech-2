@@ -4,7 +4,6 @@ import { useState, useEffect, useMemo } from 'react';
 import Footer from "../../components/Footer";
 import Image from 'next/image';
 import Link from 'next/link';
-import PreferredSource from "../../components/PreferredSource";
 
 export default function TutorialsPage() {
     const [tutorials, setTutorials] = useState<any[]>([]);
@@ -320,11 +319,6 @@ export default function TutorialsPage() {
                     </div>
                 </div>
             )}
-
-            {/* CHANGE: 2026-11-02 — Google preferred-source opt-in (see PreferredSource.tsx). */}
-            <div className="max-w-6xl mx-auto px-6 pb-10">
-                <PreferredSource />
-            </div>
 
             <Footer />
         </div>

@@ -6,7 +6,6 @@ import ModuleCard from "../../components/ModuleCard";
 import ModuleModal from "../../components/ModuleModal";
 import Footer from "../../components/Footer";
 import UnifiedContactModal, { FormType } from "../../components/UnifiedContactModal";
-import PreferredSource from "../../components/PreferredSource";
 
 export default function ModulesPage() {
   const [modules, setModules] = useState<Module[]>([]);
@@ -117,11 +116,6 @@ export default function ModulesPage() {
             ))}
           </div>
         )}
-      </section>
-
-      {/* CHANGE: 2026-11-02 — Google preferred-source opt-in (see PreferredSource.tsx). */}
-      <section className="px-6 pb-4 max-w-7xl mx-auto">
-        <PreferredSource />
       </section>
 
       {/* Trust Banner (High Contrast CTA) */}

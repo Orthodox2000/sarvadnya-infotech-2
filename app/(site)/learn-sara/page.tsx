@@ -11,7 +11,6 @@ import Footer from "../../components/Footer";
 import { saraExcerpt } from "@/app/components/SaraGuideBody";
 import { saraGuides } from "@/lib/sara-topics";
 import { breadcrumbJsonLd, seoMetadata } from "@/lib/seo";
-import PreferredSource from "@/app/components/PreferredSource";
 
 // CHANGE: 2026-10-29 — action-first title + trimmed description for CTR (impressions without clicks).
 export const metadata: Metadata = seoMetadata({
@@ -146,10 +145,6 @@ export default function LearnSaraHubPage() {
           about your setup.
         </p>
 
-        {/* CHANGE: 2026-11-02 — Google preferred-source opt-in (see PreferredSource.tsx). */}
-        <div className="mt-10">
-          <PreferredSource />
-        </div>
       </main>
 
       <Footer />

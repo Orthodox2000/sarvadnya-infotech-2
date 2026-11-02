@@ -9,7 +9,6 @@ import { useCart } from '@/lib/cart/store';
 import { priceRowView, type PriceRowView } from '@/lib/prices';
 import CartAddButton from '../../../components/cart/CartAddButton';
 import SeoCrossLinks from '../../../components/SeoCrossLinks';
-import PreferredSource from '../../../components/PreferredSource';
 // CHANGE: 2026-10-07 — Product/Offer + FAQPage JSON-LD (P1 rich results, §2E + §2B). SITE_URL
 // makes images absolute; builders take the SAME numbers the pricing table displays.
 import { productJsonLd, faqPageJsonLd, SITE_URL } from '@/lib/seo';
@@ -395,11 +394,6 @@ export default function TSSPage() {
           })}
         </div>
       </section>
-
-      {/* CHANGE: 2026-11-02 — Google preferred-source opt-in (see PreferredSource.tsx). */}
-      <div className="max-w-5xl mx-auto px-6 pb-4">
-        <PreferredSource />
-      </div>
 
       {/* Renewal Form Section */}
       <section className="bg-[#006569] py-14 px-6">

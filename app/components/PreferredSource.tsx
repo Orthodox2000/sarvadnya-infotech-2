@@ -13,56 +13,51 @@ import Script from "next/script";
 // this page). The library ships a MutationObserver (verified in the served bundle), so a button
 // mounted by a client-side App Router navigation is picked up as well — no re-init needed.
 //
+// CHANGE: 2026-11-02 — owner: "just ensure people only see bare minimum". The card copy, the
+// heading, the deeplink and both layout variants are GONE; what remains is Google's own button
+// and nothing else, pinned top-right below the site chrome so it is the first thing a reader
+// sees without a block of text.
+//
+// WHY IT IS STILL A BUTTON AND NOT AN AUTOMATIC OPT-IN (do not "fix" this):
+//   1. There is no server-side API. Google exposes `preferredSource.addPreferredSource()` only to
+//      the browser, and its own documentation states the end-user flow is unchanged — Google
+//      still asks the reader to confirm. Nothing can be added "in the backend".
+//   2. Browsers require a real user gesture, so the flow cannot be triggered on page load.
+//   3. Rendering a lookalike "Continue as <name>" Google account screen to hide what is being
+//      consented to would be deceptive and would put the domain's eligibility at risk.
+//
 // Eligibility is domain-level only (https://sarvadnyainfotech.com is eligible; a subdirectory
 // would not be), and the site must also be included in Search generative AI features in Search
 // Console. That is a Search Console setting, not something this component can assert.
 //
 // CSP: news.google.com is allowed in script-src/connect-src/img-src and the Google hosts the
 // opt-in flow may use are in frame-src (see next.config.js).
-const PREFERRED_SOURCE_PREFERENCES_URL =
-  "https://www.google.com/preferences/source?q=sarvadnyainfotech.com";
 
 type PreferredSourceProps = {
   /** Google's own button theme. Every surface on this site is light. */
   theme?: "light" | "dark";
-  /** `card` draws the house card chrome; `inline` drops it for use inside an existing panel. */
-  variant?: "card" | "inline";
   className?: string;
 };
 
 export default function PreferredSource({
   theme = "light",
-  variant = "card",
   className = "",
 }: PreferredSourceProps) {
-  const body = (
+  return (
     <>
-      <p className="text-[10px] font-black uppercase tracking-[0.15em] text-[#006569]">
-        Google preferred source
-      </p>
-      <p className="mt-2 text-sm font-medium leading-relaxed text-slate-600">
-        Add <span className="font-bold text-slate-800">Sarvadnya Infotech</span> as a preferred
-        source in Google Search. Once you choose us, our TallyPrime, TSS and Tally Insights
-        content is more likely to appear for you in Top Stories, AI Mode and AI Overviews with a
-        preferred badge.
-      </p>
-      <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2">
+      {/*
+        Fixed, below the site chrome. MEASURED: NewsFeed h-[20px] + Navbar h-10 (40 px, lg:h-16 =
+        64 px) + Productbar h-7 (28 px) = 88 px on phones and 112 px on desktop, so the previous
+        76 px / 100 px offsets sat UNDER the product bar and were never visible. 92 px / 118 px
+        clear the chrome with a 4–6 px breathing gap. z-[60] keeps it above page content but below
+        the header (z-2000) and the Ask Sara button (z-3000).
+      */}
+      <div
+        className={`fixed right-3 top-[92px] z-[60] origin-top-right scale-90 sm:scale-100 lg:top-[118px] lg:right-4 ${className}`}
+      >
         {/* The Google library replaces this node with its localized, Google-styled button. */}
         {/* No data-lang on purpose: Google then uses the reader's browser language. */}
         <div {...{ "google-add-preferred-source-btn": "" }} data-theme={theme} />
-        {/*
-          Fallback for a browser/extension that blocks the Google script: the same flow as a
-          plain deeplink (Search Central's deeplink implementation). Kept visually secondary so
-          it never competes with the official button.
-        */}
-        <a
-          href={PREFERRED_SOURCE_PREFERENCES_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-xs font-bold text-[#0f5f63] underline-offset-2 hover:text-[#006569] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#006569] focus-visible:ring-offset-2 rounded"
-        >
-          Or open Google source preferences
-        </a>
       </div>
       <Script
         id="google-preferred-source-lib"
@@ -70,18 +65,5 @@ export default function PreferredSource({
         strategy="afterInteractive"
       />
     </>
-  );
-
-  if (variant === "inline") {
-    return <div className={className}>{body}</div>;
-  }
-
-  return (
-    <aside
-      aria-label="Add Sarvadnya Infotech as a preferred source in Google Search"
-      className={`rounded-2xl border border-[#D4EAEA] bg-[#F5F4ED]/60 p-5 sm:p-6 ${className}`}
-    >
-      {body}
-    </aside>
   );
 }

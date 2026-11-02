@@ -16,6 +16,11 @@ import CartAddedPopover from "../components/cart/CartAddedPopover";
 // (a display:none ancestor hides even fixed-position descendants). Here it is a sibling of
 // the sticky chrome, so it overlays correctly at every viewport.
 import CartDrawer from "../components/cart/CartDrawer";
+// CHANGE: 2026-11-02 — Google preferred-source button, mounted ONCE for the whole (site) group.
+// WHY site-wide: the owner wants it on "the homepage or any page", not only the 14 content pages
+// it started on. PreferredSourceGate hides it on /checkout, /demo and /cart (see its comment).
+import PreferredSource from "../components/PreferredSource";
+import PreferredSourceGate from "../components/PreferredSourceGate";
 
 const NewsFeed = dynamic(() => import("../components/NewsFeed"), {
   loading: () => (
@@ -95,6 +100,11 @@ export default async function SiteLayout({
           <CartAddedPopover />
           {/* CHANGE: 2026-10-02 — the cart drawer, mounted ONCE site-wide (see import note). */}
           <CartDrawer />
+          {/* CHANGE: 2026-11-02 — preferred-source opt-in, mounted once here instead of per page.
+              The gate keeps Google's script off /checkout, /demo and /cart. */}
+          <PreferredSourceGate>
+            <PreferredSource />
+          </PreferredSourceGate>
         </VisitorProvider>
       </CartProvider>
       <Analytics />

@@ -15,7 +15,6 @@ import {
   SECTIONS,
 } from "@/lib/learn-tally-curriculum";
 import { breadcrumbJsonLd, seoMetadata } from "@/lib/seo";
-import PreferredSource from "@/app/components/PreferredSource";
 
 // CHANGE: 2026-10-23 - Hub metadata moved here from the route layout.
 // WHY: the layout metadata applied to the whole /tally-insights subtree, so every future
@@ -170,10 +169,6 @@ export default function TallyInsightsPage() {
           </section>
         </div>
 
-        {/* CHANGE: 2026-11-02 — Google preferred-source opt-in (see PreferredSource.tsx). */}
-        <div className="mt-10">
-          <PreferredSource />
-        </div>
       </main>
       <Footer />
     </div>

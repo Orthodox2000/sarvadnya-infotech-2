@@ -5,7 +5,6 @@ import Footer from "../../../components/Footer";
 import TallyInsightsNav from "@/app/components/TallyInsights/TallyInsightsNav";
 import { getInsightsNavModel, getLessonsBySection, getSectionById, SECTIONS } from "@/lib/learn-tally-curriculum";
 import { breadcrumbJsonLd, seoMetadata } from "@/lib/seo";
-import PreferredSource from "@/app/components/PreferredSource";
 
 export const dynamicParams = false;
 
@@ -107,10 +106,6 @@ export default async function TallyInsightsSectionPage({
               >
                 Back to All Guides
               </Link>
-            </div>
-            {/* CHANGE: 2026-11-02 — Google preferred-source opt-in (see PreferredSource.tsx). */}
-            <div className="mt-6">
-              <PreferredSource />
             </div>
           </section>
         </div>
