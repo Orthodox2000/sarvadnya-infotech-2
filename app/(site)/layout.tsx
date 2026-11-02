@@ -17,8 +17,9 @@ import CartAddedPopover from "../components/cart/CartAddedPopover";
 // the sticky chrome, so it overlays correctly at every viewport.
 import CartDrawer from "../components/cart/CartDrawer";
 // CHANGE: 2026-11-02 — Google preferred-source button, mounted ONCE for the whole (site) group.
-// WHY site-wide: the owner wants it on "the homepage or any page", not only the 14 content pages
-// it started on. PreferredSourceGate hides it on /checkout, /demo and /cart (see its comment).
+// WHY one mount: a per-page mount duplicated the <Script> and added 14 maintenance points.
+// PreferredSourceGate restricts it to /tally-insights, /news and /tutorials (see its comment) —
+// everywhere else gets the small footer link instead.
 import PreferredSource from "../components/PreferredSource";
 import PreferredSourceGate from "../components/PreferredSourceGate";
 
@@ -101,7 +102,7 @@ export default async function SiteLayout({
           {/* CHANGE: 2026-10-02 — the cart drawer, mounted ONCE site-wide (see import note). */}
           <CartDrawer />
           {/* CHANGE: 2026-11-02 — preferred-source opt-in, mounted once here instead of per page.
-              The gate keeps Google's script off /checkout, /demo and /cart. */}
+              The gate allows only /tally-insights, /news and /tutorials. */}
           <PreferredSourceGate>
             <PreferredSource />
           </PreferredSourceGate>

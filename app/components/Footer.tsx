@@ -338,6 +338,20 @@ export default function Footer({ settings: initialSettings }: { settings?: SiteS
                 <p>© {year} <span className="whitespace-nowrap">Sarvadnya Infotech LLP</span>. All Rights Reserved.</p>
                 {/* CHANGE: 2026-08-24 — Single legal-links row (added Report a Problem) — the left-column duplicates were removed. */}
                 <div className="flex flex-wrap justify-center gap-x-6 gap-y-2">
+                    {/* CHANGE: 2026-11-02 — small, site-wide path to Google's preferred-source
+                        opt-in. WHY A LINK AND NOT THE BUTTON: the Google button (and its
+                        publisher.js) is restricted to /tally-insights, /news and /tutorials; this
+                        deeplink is the documented fallback form and costs no third-party script,
+                        no layout space and no click of its own. No return-policy or ranking claim
+                        is made here — the label is the action, nothing more. */}
+                    <a
+                        href="https://www.google.com/preferences/source?q=sarvadnyainfotech.com"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="hover:text-white transition-colors"
+                    >
+                        Preferred source
+                    </a>
                     <Link href="/careers" className="hover:text-white transition-colors">Careers</Link>
                     <Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
                     <Link href="/terms" className="hover:text-white transition-colors">Terms &amp; Conditions</Link>
