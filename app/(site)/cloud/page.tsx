@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import Footer from "../../components/Footer";
 import UnifiedContactModal, { FormType } from "../../components/UnifiedContactModal";
+import PreferredSource from "../../components/PreferredSource";
 const TAG_STYLES: Record<string, { bg: string; txt: string }> = {
   green: { bg: '#cdebe5', txt: '#006569' },
   blue: { bg: '#D4EAEA', txt: '#006569' },
@@ -321,6 +322,11 @@ export default function CloudPage() {
           </div>
         </div>
       </section> */}
+
+      {/* CHANGE: 2026-11-02 — Google preferred-source opt-in (see PreferredSource.tsx). */}
+      <section className="px-6 max-w-6xl mx-auto pb-4">
+        <PreferredSource />
+      </section>
 
       <UnifiedContactModal
         isOpen={modalConfig.isOpen}

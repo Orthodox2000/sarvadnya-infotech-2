@@ -116,7 +116,9 @@ export const SECTIONS: Section[] = [
       'tally erp 9 vs tally prime',
       'latest version of tally prime',
       'tally upgrade',
-      'tallyprime 7.2'
+      'tallyprime 7.2',
+      // CHANGE: 2026-11-02 — two-word spelling is a separate query (see lib/seo.ts).
+      'tally prime 7.2'
     ]
   },
   {
@@ -383,7 +385,7 @@ export const LESSONS: Lesson[] = [
     order: 2,
     title: 'Latest Version of Tally Prime: TallyPrime 7.2',
     intro:
-      'As of now, TallyPrime 7.2 is the latest version of Tally Prime. Here is what changed in 7.2, what each update does for your team, and how to move your business onto it without disturbing your books.',
+      'As of now, TallyPrime 7.2 (also written Tally Prime 7.2) is the latest version of Tally Prime. Here is what changed in 7.2, what each update does for your team, and how to move your business onto it without disturbing your books.',
     // CHANGE: 2026-10-27 — the page was two lines of text ("no data in it" per the owner) and the
     // only content was a raw-markdown CTA. The body is now the complete 7.2 page and every release
     // fact comes from the owner's own TallyPrime 7.2 artwork that ships with this site
@@ -395,7 +397,7 @@ export const LESSONS: Lesson[] = [
     // NOTE: written as a template literal, not a quoted string — the body is long enough that
     // quoting it would mean one unreadable line, and a stray apostrophe inside a single-quoted
     // literal silently breaks the file (the failure mode that corrupted a seed script before).
-    bodyMd: `As of now, **TallyPrime 7.2** is the latest version of Tally Prime.
+    bodyMd: `As of now, **TallyPrime 7.2** is the latest version of Tally Prime. Tally writes the product name as one word, **TallyPrime 7.2**; the two-word spelling **Tally Prime 7.2** refers to exactly the same release, so either way of searching leads to the same version.
 
 TallyPrime 7.2 is a compliance and productivity release. It adds five features that take manual work out of GST returns, purchase order printing, e-way bill and e-invoice generation, tobacco cess calculations and TDS filing, without changing the way you record day-to-day vouchers.
 
@@ -451,7 +453,7 @@ We install and validate the update, keep your data on a verified backup, and che
 **[Contact us for a free consultation regarding upgrades](/contact?service=Tally%20Upgradation)**`,
     seoTitle: 'Latest Version of Tally Prime 7.2',
     seoDescription:
-      'TallyPrime 7.2 is the latest version of Tally Prime. Its five new features, how to check your version and how to upgrade.',
+      'TallyPrime 7.2, also written Tally Prime 7.2, is the latest version of Tally Prime. Its five new features, how to check your version and how to upgrade.',
     keywords: [
       'latest version of tally',
       'latest version of tally prime',
@@ -460,7 +462,10 @@ We install and validate the update, keep your data on a verified backup, and che
       'tally prime 7.2',
       'what is new in tallyprime 7.2',
       'tallyprime 7.2 features',
-      'tally prime 7.2 release'
+      'tally prime 7.2 features',
+      'tallyprime 7.2 release',
+      'tally prime 7.2 release',
+      'tallyprime 7.2 vs tally prime 7.2'
     ],
     versionNotes: [
       {
@@ -477,6 +482,12 @@ We install and validate the update, keep your data on a verified backup, and che
       }
     ],
     faqs: [
+      {
+        // CHANGE: 2026-11-02 — naming FAQ so the page answers BOTH spellings, and the
+        // FAQPage JSON-LD carries them too (the same array feeds both).
+        q: 'Is it TallyPrime 7.2 or Tally Prime 7.2?',
+        a: 'Both names refer to the same release. Tally writes the product name as one word, TallyPrime 7.2, while Tally Prime 7.2 is the two-word spelling most people type into search. The version, the five features and the upgrade steps are identical.'
+      },
       {
         q: 'What is the latest version of Tally Prime?',
         a: 'As of now, TallyPrime 7.2 is the latest version of Tally Prime. It adds five features: personalized print of purchase orders, GSTR-9 export to Excel, login extended for the entire day for e-way bill and e-invoice generation, deemed taxable value support for tobacco products, and TDS files in the latest FVU format.'

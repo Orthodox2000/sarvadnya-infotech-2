@@ -28,6 +28,8 @@ export const metadata: Metadata = {
     // CHANGE: 2026-10-13 — brand + location terms per owner ("all pages contain company name,
     // location and other SEO triggering keywords"), metadata only.
     'CBD Belapur', 'Navi Mumbai', 'Tally partner Navi Mumbai', 'Tally certified partner',
+    // CHANGE: 2026-11-02 — both spellings of the current release (see lib/seo.ts SITE_KEYWORDS).
+    'TallyPrime 7.2', 'Tally Prime 7.2',
   ],
   icons: { icon: '/logo.png' },
   alternates: { canonical: SITE_URL },

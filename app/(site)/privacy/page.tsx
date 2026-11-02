@@ -125,6 +125,9 @@ export default function PrivacyPolicyPage() {
             <li><strong className="text-slate-900">ipwho.is (or configured IP lookup provider)</strong> — IP-to-location enrichment, proxy/VPN/Tor/hosting detection.</li>
             <li><strong className="text-slate-900">Groq</strong> — AI response generation for the Ask Sara chat assistant.</li>
             <li><strong className="text-slate-900">Tally Solutions</strong> — as necessary to fulfill product licenses, renewals, and support requests you make.</li>
+            {/* CHANGE: 2026-11-02 — Google's preferred-source button loads publisher.js on
+                content pages (see app/components/PreferredSource.tsx). */}
+            <li><strong className="text-slate-900">Google</strong> — the &quot;preferred source&quot; opt-in button (Google publisher.js) and Google Search features you choose to enable.</li>
           </ul>
         </section>
 

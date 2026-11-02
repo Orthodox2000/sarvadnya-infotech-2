@@ -10,17 +10,22 @@
 // global directive — scoping would only ever add, never narrow.
 const csp = [
   `default-src 'self'`,
-  `script-src 'self' 'unsafe-eval' 'unsafe-inline' https://vercel.live https://*.razorpay.com https://*.vercel-insights.com https://va.vercel-scripts.com https://sc.lfeeder.com`,
+  // CHANGE: 2026-11-02 — https://news.google.com added for Google's preferred-source
+  // publisher.js (app/components/PreferredSource.tsx). The library is script-src, its
+  // runtime calls are connect-src, and its button/flow artwork comes from Google's
+  // static hosts (gstatic). news.google.com + accounts.google.com are allowed in
+  // frame-src because the opt-in flow can render Google's account surface in an iframe.
+  `script-src 'self' 'unsafe-eval' 'unsafe-inline' https://vercel.live https://*.razorpay.com https://*.vercel-insights.com https://va.vercel-scripts.com https://sc.lfeeder.com https://news.google.com`,
   `style-src 'self' 'unsafe-inline'`,
-  `img-src 'self' data: blob: https://*.public.blob.vercel-storage.com https://img.youtube.com https://sarvadnya-infotech.vercel.app https://sarvadnyainfotech.com https://www.sarvadnyainfotech.com https://*.vercel-scripts.com`,
-  `font-src 'self' data:`,
-  `connect-src 'self' https://api.groq.com https://*.razorpay.com https://*.public.blob.vercel-storage.com https://sarvadnya-infotech.vercel.app https://sarvadnyainfotech.com https://www.sarvadnyainfotech.com https://*.vercel-insights.com https://sc.lfeeder.com`,
+  `img-src 'self' data: blob: https://*.public.blob.vercel-storage.com https://img.youtube.com https://sarvadnya-infotech.vercel.app https://sarvadnyainfotech.com https://www.sarvadnyainfotech.com https://*.vercel-scripts.com https://news.google.com https://*.gstatic.com https://www.google.com`,
+  `font-src 'self' data: https://*.gstatic.com`,
+  `connect-src 'self' https://api.groq.com https://*.razorpay.com https://*.public.blob.vercel-storage.com https://sarvadnya-infotech.vercel.app https://sarvadnyainfotech.com https://www.sarvadnyainfotech.com https://*.vercel-insights.com https://sc.lfeeder.com https://news.google.com https://accounts.google.com`,
   // CHANGE: 2026-10-26 — added https://maps.google.com. The /contact page's map iframe falls
   // back to `https://maps.google.com/maps?q=...&output=embed` (app/(site)/contact/page.tsx),
   // and only `https://www.google.com` was allowed — so with no `map_iframe_url` in settings the
   // browser blocked the frame and the Contact page shipped an empty grey box. Verified with a
   // console probe: "Framing 'https://maps.google.com/' violates ... frame-src".
-  `frame-src 'self' https://www.google.com https://maps.google.com https://*.razorpay.com`,
+  `frame-src 'self' https://www.google.com https://maps.google.com https://*.razorpay.com https://news.google.com https://accounts.google.com`,
   `object-src 'none'`,
   `base-uri 'self'`,
   `form-action 'self'`,

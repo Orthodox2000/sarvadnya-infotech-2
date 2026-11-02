@@ -15,6 +15,7 @@ import {
   SECTIONS,
 } from "@/lib/learn-tally-curriculum";
 import { breadcrumbJsonLd, seoMetadata } from "@/lib/seo";
+import PreferredSource from "@/app/components/PreferredSource";
 
 // CHANGE: 2026-10-23 - Hub metadata moved here from the route layout.
 // WHY: the layout metadata applied to the whole /tally-insights subtree, so every future
@@ -33,6 +34,9 @@ export const metadata: Metadata = seoMetadata({
     "tally erp 9 guide",
     "tallyprime tutorials",
     "tally knowledge hub",
+    // CHANGE: 2026-11-02 — both spellings of the current release (see lib/seo.ts).
+    "tallyprime 7.2",
+    "tally prime 7.2",
   ],
   // CHANGE: 2026-10-29 — reference hub: answer first, no repeated contact tail (see lib/seo.ts).
   contactSuffix: false,
@@ -164,6 +168,11 @@ export default function TallyInsightsPage() {
               </Link>
             </div>
           </section>
+        </div>
+
+        {/* CHANGE: 2026-11-02 — Google preferred-source opt-in (see PreferredSource.tsx). */}
+        <div className="mt-10">
+          <PreferredSource />
         </div>
       </main>
       <Footer />

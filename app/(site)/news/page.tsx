@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { getNews } from '@/lib/mongodb-utils';
 import { NewsItem } from '@/lib/news';
 import { seoMetadata } from "@/lib/seo";
+import PreferredSource from "@/app/components/PreferredSource";
 
 // CHANGE: 2026-08-27 — SEO metadata for AI/search indexing.
 // CHANGE: 2026-08-31 — Metadata strengthened with target keywords; cards link internally to /news/[slug].
@@ -121,6 +122,11 @@ export default async function NewsPage() {
               TSS Renewal
             </Link>
           </div>
+        </div>
+
+        {/* CHANGE: 2026-11-02 — Google preferred-source opt-in (see PreferredSource.tsx). */}
+        <div className="mt-10">
+          <PreferredSource />
         </div>
       </div>
     </div>

@@ -5,6 +5,7 @@ import { getNews, getNewsBySlug } from '@/lib/mongodb-utils';
 import { SITE_NAME, SITE_URL, articleJsonLd, breadcrumbJsonLd, faqPageJsonLd, seoMetadata } from '@/lib/seo';
 import { NewsItem } from '@/lib/news';
 import { excerptFrom } from '@/lib/news-utils';
+import PreferredSource from '@/app/components/PreferredSource';
 
 // CHANGE: 2026-08-31 — First DYNAMIC route in the project. Individual SEO landing pages for each
 // news item → /news/[slug]. Force-dynamic so admin-published posts appear without a rebuild.
@@ -174,6 +175,12 @@ export default async function NewsArticlePage({ params }: { params: Promise<{ sl
               </Link>
             )}
           </div>
+        </div>
+
+        {/* CHANGE: 2026-11-02 — Google preferred-source opt-in (see PreferredSource.tsx).
+            This is the surface Google actually badges in Top Stories. */}
+        <div className="mt-10">
+          <PreferredSource />
         </div>
       </article>
 

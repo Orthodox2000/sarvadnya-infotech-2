@@ -5,6 +5,7 @@ import Link from 'next/link';
 import RupeeIcon from '../../components/RupeeIcon';
 import { capabilityCategories } from '@/lib/capabilities';
 import Footer from '@/app/components/Footer';
+import PreferredSource from '@/app/components/PreferredSource';
 
 export default function CapabilitiesPage() {
   const [activeCat, setActiveCat] = useState(capabilityCategories[0].id);
@@ -166,6 +167,11 @@ export default function CapabilitiesPage() {
             </button>
           ) : <div />}
         </div>
+      </section>
+
+      {/* CHANGE: 2026-11-02 — Google preferred-source opt-in (see PreferredSource.tsx). */}
+      <section className="px-6 max-w-6xl mx-auto pb-4">
+        <PreferredSource />
       </section>
 
       {/* CTA */}

@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { ArrowRight, CheckCircle2, FileText, BarChart3, Link, ShieldCheck, Activity } from 'lucide-react';
 import Footer from '../../../components/Footer';
 import UnifiedContactModal, { FormType } from '../../../components/UnifiedContactModal';
+import PreferredSource from '../../../components/PreferredSource';
 
 const features = [
   {
@@ -289,6 +290,11 @@ export default function TDLPage() {
             </div>
           </div>
         </div>
+      </section>
+
+      {/* CHANGE: 2026-11-02 — Google preferred-source opt-in (see PreferredSource.tsx). */}
+      <section className="px-6 max-w-6xl mx-auto pb-4">
+        <PreferredSource />
       </section>
 
       {/* CTA Section */}

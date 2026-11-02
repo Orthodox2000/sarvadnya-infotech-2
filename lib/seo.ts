@@ -34,6 +34,11 @@ export const SITE_KEYWORDS = [
   'Tally partner Mumbai',
   'Tally partner Navi Mumbai',
   'Tally partner CBD Belapur',
+  // CHANGE: 2026-11-02 — the release is searched as both "TallyPrime 7.2" (Tally's own
+  // one-word spelling) and "Tally Prime 7.2" (the two-word form most people type). The two
+  // strings rank as different queries, so both are carried on every seoMetadata() page.
+  'TallyPrime 7.2',
+  'Tally Prime 7.2',
 ];
 
 export const SITE_DESCRIPTION =
