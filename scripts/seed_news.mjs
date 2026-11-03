@@ -774,13 +774,17 @@ Need help with TSS renewal? Contact Sarvadnya Infotech LLP at https://sarvadnyai
     // means the snippet was not answering. "Lock Data in TallyPrime: How To" is not a sentence
     // anyone types; the "how to" moved to the front and "previous year" (86 of the 182
     // impressions in the lock cluster) is now in the title.
+    // CHANGE: 2026-11-03 - owner request: the post now also covers the two targeted locking
+    // modules we configure (GST period lock, e-invoice lock), because a company-wide cut-off
+    // date stops all accounting work, not just the GST side. Date moved to the update day and
+    // two query-shaped FAQ entries added so the new sections are answerable from a snippet.
     slug: 'how-to-lock-data-in-tallyprime',
     title: 'How to Lock Data in TallyPrime (Company, Users and Back-Dated Entries)',
     seoTitle: 'How to Lock Data in TallyPrime (Previous Year)',
-    date: 'October 13, 2026',
+    date: 'November 3, 2026',
     category: 'Tally Prime',
-    description: 'How to lock Tally data for a previous year or a closed period in TallyPrime: user access control, user roles and a cut-off date that blocks back-dated entries.',
-    tags: ['how to lock data in tally prime', 'how to lock tally prime', 'user access control in tally prime', 'user roles in tally prime', 'lock back dated vouchers tally', 'tallyvault', 'edit log in tally prime'],
+    description: 'How to lock Tally data for a previous year or a closed period in TallyPrime: user access control, user roles, a cut-off date that blocks back-dated entries, and targeted GST and e-invoice locks.',
+    tags: ['how to lock data in tally prime', 'how to lock tally prime', 'user access control in tally prime', 'user roles in tally prime', 'lock back dated vouchers tally', 'tallyvault', 'edit log in tally prime', 'lock gst data in tally', 'e invoice lock in tally'],
     link: '/services/amc',
     author: 'Sarvadnya Infotech LLP',
     faqs: [
@@ -803,6 +807,14 @@ Need help with TSS renewal? Contact Sarvadnya Infotech LLP at https://sarvadnyai
       {
         q: 'What is the difference between TallyVault and Security Control?',
         a: 'Security Control asks for a username and password before a company opens and controls what each user can do inside it. TallyVault encrypts the company data itself, so even the company name does not appear in the company list without the vault password. They are separate options and can be used together, and the TallyVault password cannot be retrieved if it is lost.',
+      },
+      {
+        q: 'Can I lock only GST data and still post other entries?',
+        a: 'Not with the built-in TallyPrime controls. A cut-off date freezes every voucher before that date, including bank entries, contra transfers and non-GST expenses. We configure a GST period lock module that freezes the sales, purchase, debit note and credit note vouchers for a filed return period while the rest of the accounting stays open.',
+      },
+      {
+        q: 'How do I stop a user from changing an e-invoice after the IRN is generated?',
+        a: 'The e-invoice lock module locks the voucher as soon as the IRN and QR code are recorded. A regular user cannot change the amounts, items or party details, and cannot delete the voucher, even when back-dated entry and voucher alteration are allowed elsewhere. Only an authorised user can start a proper amendment or an IRP cancellation.',
       },
     ],
     content: `Locking data in TallyPrime is really three separate locks, and most businesses need all three: a lock on opening the company, a lock on who can do what inside it, and a lock on how far back anyone can post. Here is how each one is set.
@@ -839,6 +851,16 @@ Password Policy. Press Alt+K (Company) > Password Policy for the company-wide ru
 Edit Log. From TallyPrime 2.1 onwards, press F12 (Configure) on the company alteration screen and set Set Edit Log Applicability to Yes, then enable Edit Log for the company. The Edit Log report then shows what changed in masters and transactions, and records company-level events such as enabling the log, data migration and data split. This is the setting that answers "who changed this voucher", and it is separate from user access control.
 
 TallyVault is the fourth lock, and it is a different kind of protection. Press Alt+K (Company) > TallyVault to set a vault password, or enter one while creating the company. The company data is encrypted, so the company name and financial year do not even appear in the company list until the vault password is entered. If your business falls under the audit trail requirement of the Companies (Accounts) Rules, 2014, confirm with your chartered accountant what your configuration has to demonstrate rather than assuming a checkbox is enough.
+
+Two narrower locks we configure on top
+
+The four locks above are company-wide. A company-wide cut-off date is the right answer once a year is closed, but it is a blunt instrument for statutory work: it stops every voucher, including the bank entries, contra transfers and non-GST expenses you still have to post after a return is filed. These are the two targeted modules we build and configure for that gap. They sit on top of user access control, they do not replace it.
+
+GST period lock. Once a monthly or quarterly GSTR-1 or GSTR-3B return is filed, this module locks the GST-impacting vouchers for that return period - sales, purchases, debit notes and credit notes. Everything else in the same period stays open, so routine accounting does not stop. Filed figures cannot drift afterwards, and nobody has to police the cut-off date by hand.
+
+e-Invoice lock. The moment an IRN and QR code are generated, the invoice has to stay exactly as it was sent to the IRP portal. This module locks that voucher when the IRN is recorded: amounts, items, party details and deletion are blocked for regular users, even where back-dated entry or voucher alteration is allowed for other daily work. Only an authorised user can begin a proper amendment or an IRP cancellation, so an operator cannot put the portal and the books out of step by accident.
+
+Both are configured per company, with the roles and the unlock path documented, so the lock protects the compliance position without locking your own team out of routine work.
 
 Before you lock anything down: take a backup, store the administrator and vault passwords where two people can find them, and test the setup with a data entry user rather than your own owner login. Then review the roles whenever staff change.
 

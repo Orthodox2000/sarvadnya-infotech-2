@@ -25,7 +25,12 @@ export default function ModuleCard({ module, onEnquire }: ModuleCardProps) {
       className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-[#C5E3E3] bg-white shadow-sm transition-colors hover:border-[#006569] scroll-mt-40"
     >
       {/* Image Container */}
-      <div className="relative h-40 w-full overflow-hidden bg-[#D4EAEA]">
+      {/* CHANGE: 2026-11-03 - fixed h-40 replaced with the image's native 3:2 ratio.
+          WHY: a fixed height crops the photograph differently at every card width (the
+          container-handling artwork is 1920x1280), so on a phone the truck was cut and on
+          desktop the crop was different again. With an aspect ratio the height follows the
+          width at every breakpoint and the framing stays identical. */}
+      <div className="relative aspect-[3/2] w-full overflow-hidden bg-[#D4EAEA]">
         <Image
           src={module.image}
           alt={module.title}

@@ -273,8 +273,8 @@ export default async function ModuleDetailPage({
       {/* Video — only when the module has a real, embeddable video */}
       {hasVideo && (
         <section id="video" className="border-b-2 border-[#033B38] bg-[#E5F4F4] px-5 py-12 scroll-mt-32 sm:px-6 sm:py-14">
-          <div className="mx-auto grid max-w-6xl items-center gap-8 lg:grid-cols-12">
-            <div className="lg:col-span-7">
+          <div className="mx-auto max-w-6xl">
+            <div className="max-w-3xl">
               <p className="font-mono text-[10px] font-extrabold uppercase tracking-wider text-[#006569]">
                 {videoCopy.eyebrow}
               </p>
@@ -282,22 +282,31 @@ export default async function ModuleDetailPage({
                 {videoCopy.title}
               </h2>
               <p className="mt-2 text-sm font-medium leading-relaxed text-slate-600">{videoCopy.body}</p>
-              <div className="mt-6">
-                <ModuleVideo videoUrl={detail.videoUrl} title={detail.title} />
-              </div>
             </div>
 
-            <ul className="space-y-3 lg:col-span-5">
-              {detail.features.slice(0, 4).map((feature) => (
-                <li
-                  key={feature}
-                  className="flex items-start gap-3 rounded-xl border border-[#C5E3E3] bg-white p-4 text-sm font-semibold text-slate-700"
-                >
-                  <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[#006569]" aria-hidden="true" />
-                  {feature}
-                </li>
-              ))}
-            </ul>
+            {/* CHANGE: 2026-11-03 - the four feature cards now share a row with the video and
+                stretch to its height. WHY: the cards were a short column centred beside the
+                video, so their bottom edge floated above the video's bottom edge on every page
+                and looked misaligned. `items-stretch` + `lg:auto-rows-fr` makes the four cards
+                divide exactly the video's height; below lg they stack at natural height.
+                Copy moved above the pair so both columns start on the same line. */}
+            <div className="mt-6 grid items-stretch gap-6 lg:grid-cols-12">
+              <div className="lg:col-span-7">
+                <ModuleVideo videoUrl={detail.videoUrl} title={detail.title} />
+              </div>
+
+              <ul className="grid gap-3 lg:col-span-5 lg:auto-rows-fr">
+                {detail.features.slice(0, 4).map((feature) => (
+                  <li
+                    key={feature}
+                    className="flex items-center gap-3 rounded-xl border border-[#C5E3E3] bg-white p-4 text-sm font-semibold text-slate-700"
+                  >
+                    <CheckCircle2 className="h-4 w-4 shrink-0 text-[#006569]" aria-hidden="true" />
+                    {feature}
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </section>
       )}
@@ -394,9 +403,16 @@ export default async function ModuleDetailPage({
               </h2>
               <p className="mt-3 text-sm font-medium leading-relaxed text-slate-600">{simulatorCopy.body}</p>
             </div>
-            <div className="mt-8">
+            {/* CHANGE: 2026-11-03 - the simulator is a fixed-width TallyPrime window (tables,
+                key strip, row actions) and cannot be made usable at phone widths without
+                redesigning every screen. It now renders from md up and the phone gets a short
+                note instead of a broken mock. The #simulator anchor still resolves on phones. */}
+            <div className="mt-8 hidden md:block">
               <Simulator id={detail.simulator} />
             </div>
+            <p className="mx-auto mt-6 max-w-xl rounded-xl border border-[#C5E3E3] bg-white p-4 text-center text-xs font-semibold leading-relaxed text-slate-600 md:hidden">
+              The interactive walkthrough needs a wider screen. Open this page on a tablet or desktop to click through the module.
+            </p>
           </div>
         </section>
       )}
