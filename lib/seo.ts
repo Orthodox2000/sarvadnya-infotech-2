@@ -49,16 +49,34 @@ const parallelPath = (path: string) =>
 
 // CHANGE: 2026-10-27 — Open Graph / Twitter share image is now declared here.
 // WHY: seoMetadata() returns an explicit `openGraph` object, and in Next.js a page-level
-// `openGraph` WITHOUT `images` REPLACES the file-based app/opengraph-image.tsx inheritance
-// instead of merging with it. Measured: og:image was present on 0 of the 48 seoMetadata()
+// `openGraph` WITHOUT `images` REPLACES any layout-level / file-convention image instead of
+// merging with it. (The app/opengraph-image.tsx file convention this originally referred to
+// was retired on 2026-11-03; there is now exactly one share image, the static JPEG below.)
+// Measured: og:image was present on 0 of the 48 seoMetadata()
 // pages, while /demo and /cart (which declare no openGraph at all) still carried it — so the
 // 2026-10-12 share-image work had been inert site-wide. Declaring `images` makes the share
 // card deterministic on every page, and `image` lets a page pass its own artwork (news
 // coverImage). Local paths resolve against metadataBase; absolute URLs are used as-is.
-const OG_IMAGE_PATH = '/opengraph-image';
-const OG_IMAGE_WIDTH = 1200;
-const OG_IMAGE_HEIGHT = 630;
-// Keep in sync with `alt` in app/opengraph-image.tsx.
+// CHANGE: 2026-11-03 — the share image is the owner's own website thumbnail
+// (public/website-thumbnail.png) instead of the recorder's frame grab.
+// HISTORY of this constant, so nobody re-invents the loop:
+//   1. /opengraph-image (generated text-only card) — WhatsApp showed "an image I never seen"
+//      because it carried only a plain "S" tile, no logo. Retired.
+//   2. /video-thumbnail.jpg (the homepage hero-video poster) — correct subject, but it is a
+//      frame from the video, not site artwork.
+//   3. /website-thumbnail.png — the owner supplied this on 2026-11-03 as THE website
+//      thumbnail, so it is now the single share image on every page.
+// The video thumbnail is NOT deleted: public/video-thumbnail.jpg is still the `poster` on the
+// two hero <video> elements (app/components/HomeHero.tsx) and nothing else uses it.
+// The file was uploaded as "website thumbnail.png" — renamed to drop the space, because an
+// og:image URL with %20 in it is exactly the kind of thing WhatsApp and Facebook reject.
+const OG_IMAGE_PATH = '/website-thumbnail.png';
+// MEASURED, not assumed: `file public/website-thumbnail.png` → PNG 1280x720, 8-bit RGB
+// (colortype 2, so there is no alpha channel — a transparent thumbnail is rejected by Google
+// and renders as a black box in some clients). Declaring 1200x630 here (as the retired
+// generated card did) makes WhatsApp/LinkedIn crop on a lie.
+const OG_IMAGE_WIDTH = 1280;
+const OG_IMAGE_HEIGHT = 720;
 const OG_IMAGE_ALT = 'Sarvadnya Infotech LLP — Tally Certified Partner Since 2008';
 
 const absoluteMedia = (src: string) =>

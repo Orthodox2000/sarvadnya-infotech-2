@@ -336,7 +336,9 @@ export const LESSONS: Lesson[] = [
       'Understand the key difference between Tally ERP 9 and Tally Prime. Compare interface, features, usability and upgrade path for your business.',
     bodyMd:
       "Tally Prime is the modern interface built on the same trusted accounting engine that businesses have used in Tally.ERP 9. **TallyPrime 7.2** is the latest version. Both products record the same vouchers, hold the same masters and produce the same core reports, so an upgrade changes the workspace rather than the accounting.\n\n| Feature | **Tally ERP 9** | **Tally Prime (7.2)** |\n| :-- | :-- | :-- |\n| **User Interface (UI/UX)** | Traditional, function-key driven, menu-centric | Modern, clean, graphical and more intuitive |\n| **Navigation** | Mostly Gateway of Tally menus + F-keys | **Go To (Alt+G)** and **Switch To** for instant search and faster navigation |\n| **Keyboard Shortcuts** | Heavily reliant on F-keys and Alt/Ctrl combinations | More consistent and streamlined (e.g., Alt+G for Go To). Easier for new users |\n| **Reporting** | Reports via menus, more steps for customisation | Enhanced reporting via Go To with contextual options to view, filter, print/export |\n| **Printing & Exporting** | Multi-step print/export configuration | Simplified with better preview and flexible formats (PDF, Excel, JPEG) |\n| **Multi-Tasking** | Limited - usually need to close current screen | **Switch To** lets you move between tasks (e.g., voucher entry while checking a report) |\n| **Installation & Upgrade** | Standard installation, upgrades often manual | Smoother, more guided upgrade with better detection of older Tally data |\n| **Data Migration** | N/A | Seamless migration from Tally ERP 9 to Tally Prime supported in most cases |\n| **Licensing** | Legacy licensing model | Existing ERP 9 licenses can be upgraded to Tally Prime if **TSS** is active (no extra license cost in most upgrade cases) |\n\n**Similarities:** Core accounting, inventory, payroll, taxation (GST/TDS/TCS), data integrity, security and largely compatible data structure.\n\n## What has not changed\n\n- **The accounting engine.** A sale is still a sale and the trial balance still has to agree. Nothing about the way debit and credit work changes when you move.\n- **The masters.** Ledgers, groups, stock items, godowns and cost centres keep their meaning, which is why an existing company can be loaded into TallyPrime instead of being rebuilt from scratch.\n- **The report set.** Trial balance, balance sheet, profit and loss, the day book and the GST reports exist in both products.\n\n## Where the daily work differs\n\nIn Tally.ERP 9 almost every task starts from the Gateway of Tally and then moves down through menu levels. TallyPrime replaces that with Go To (**Alt+G**), one search box that reaches vouchers, masters and reports without knowing which menu they live under. **Switch To** keeps several areas open at the same time, so a report can be opened without closing the voucher that was being typed. **F3** switches between the companies already loaded, **Alt+F3** opens the company selection list, and **F1 (Help) > About** shows the exact release installed on that machine.\n\n## Licensing and TSS before you plan the move\n\nA perpetual Tally.ERP 9 licence can be upgraded to TallyPrime. Two dates decide the path a company takes:\n\n- Tally.ERP 9 **TSS renewal was discontinued for all customers from 16 August 2026**.\n- The free upgrade to TallyPrime applies where **TSS was active on or after 9 November 2020**.\n\nTSS is what carried updates, statutory releases and remote access, so an ERP 9 company that was relying on renewal has no renewal left to buy. Check your own licence status with a certified partner before planning the move, because a licence that lapsed before that date follows a different commercial path.\n\n## How an upgrade is usually done\n\n1. Take a readable backup of every company before anything is installed.\n2. Install TallyPrime on one computer only.\n3. Load the companies and compare the trial balance, the GST reports and the TDS reports with the pre-upgrade numbers.\n4. Move the rest of the network only after the first machine matches.\n5. Validate custom TDL modules and add-ons against the new release on a copy of the data.\n\n## Who should plan the move now\n\nAny business still working in Tally.ERP 9 should plan the upgrade rather than wait, because the old release no longer receives the renewal that kept it current. Teams that run custom TDL reports or add-ons should build the module validation step into the schedule, because that is the part that takes time. A single-machine business that only raises standard invoices usually completes the move in an afternoon.\n\n**Recommendation:** **Tally Prime is highly recommended for all businesses.** Moving to TallyPrime 7.2 keeps you on a release that is still supported, and the data already entered moves with you.",
-    seoTitle: 'Compare Tally ERP 9 and Tally Prime',
+    // CHANGE: 2026-11-03 — GSC 28d: 104 impressions, 0 clicks, position 5.2. Position five and
+    // no clicks means the snippet failed, not the ranking; lead with the comparison users type.
+    seoTitle: 'Tally ERP 9 vs Tally Prime: What Changed',
     seoDescription:
       "Compare Tally ERP 9 and Tally Prime: interface, navigation, reporting, licensing and the upgrade path, including what changed and what did not.",
     keywords: [
@@ -451,7 +453,10 @@ Customisation is the usual reason an update stalls. A TDL written for an older r
 We install and validate the update, keep your data on a verified backup, and check your GST and TDS outputs before the team goes back to work.
 
 **[Contact us for a free consultation regarding upgrades](/contact?service=Tally%20Upgradation)**`,
-    seoTitle: 'Latest Version of Tally Prime 7.2',
+    // CHANGE: 2026-11-03 — GSC 28d: 333 impressions, 2 clicks, position 9.7. The query is
+    // literally "tally prime 7.2" (169 impressions, 0 clicks), so the release number now
+    // leads the title instead of sitting after "Latest Version of".
+    seoTitle: 'Tally Prime 7.2: Latest Version & New Features',
     seoDescription:
       'TallyPrime 7.2, also written Tally Prime 7.2, is the latest version of Tally Prime. Its five new features, how to check your version and how to upgrade.',
     keywords: [
@@ -526,10 +531,19 @@ We install and validate the update, keep your data on a verified backup, and che
     intro:
       'Master essential Tally Prime keyboard shortcuts to speed up data entry, navigation and reporting for your business team in TallyPrime 7.2.',
     bodyMd:
-      "Shortcut keys in TallyPrime are primarily used to simplify the recording of transactions, navigation, and reporting. They help you work faster without relying heavily on the mouse.\n\n## Hidden/Essential Keys\n| Action | Shortcut Key |\n| :-- | :-- |\n| Go back to previous screen / close current screen | Esc |\n| Remove input provided/selected for a field | Backspace |\n| Open Company Features screen | F11 |\n| Move between fields/menus/lines/columns | Arrow Keys, Tab / Shift+Tab, Up/Down, Left/Right |\n| Move to beginning/end of text or list | Home / End / PgUp / PgDn |\n| Move to first/last field or line | Ctrl+Home / Ctrl+End |\n| Accept or save a screen | Ctrl+A |\n| Expand or collapse group in a table | Alt+Enter |\n| Rewrite data | Ctrl+Alt+R |\n| Quit the application | Alt+F4 |\n| View build information / TDL/Add-on details | Ctrl+Alt+B / Ctrl+Alt+T |\n| Open or hide calculator panel | Ctrl+N |\n| Exit a screen or application | Ctrl+Q |\n\n## Navigation in TallyPrime\n| Action | Shortcut Key |\n| :-- | :-- |\n| Go To (search & jump to masters/reports/vouchers) | Alt+G |\n| Switch To (move between tasks without losing context) | Ctrl+G |\n| Open Company menu | Alt+K |\n| Switch to another company / Open another company / Shut company | F3 / Alt+F3 / Ctrl+F3 |\n| Change date/period for voucher entry or reports | F2 / Alt+F2 |\n| Configuration (applicable for current report/view) | F12 |\n| Help / Contextual TallyHelp | F1 / Ctrl+F1 |\n| Change display language / data entry language | Ctrl+K / Ctrl+W |\n| Import / Export / Print / Email menus | Alt+O / Alt+E / Alt+P / Alt+M |\n\n## Voucher Shortcuts\n| Voucher Type | Shortcut Key |\n| :-- | :-- |\n| Contra Voucher | F4 |\n| Payment Voucher | F5 |\n| Receipt Voucher | F6 |\n| Journal Voucher | F7 |\n| Sales Voucher | F8 |\n| Purchase Voucher | F9 |\n| Credit Note | Alt+F6 |\n| Debit Note | Alt+F5 |\n| Stock Journal | Alt+F7 |\n| Physical Stock | Ctrl+F7 |\n| Delivery Note | Alt+F8 |\n| Receipt Note | Alt+F9 |\n| Sales Order / Purchase Order | Ctrl+F8 / Ctrl+F9 |\n| Rejection In / Rejection Out | Ctrl+F6 / Ctrl+F5 |\n| Payroll Voucher | Ctrl+F4 |\n| List of all vouchers | F10 |\n\n## Voucher Operations\n| Action | Shortcut Key |\n| :-- | :-- |\n| Create master on-the-fly | Alt+C |\n| Open calculator panel (from amount field) | Alt+C |\n| Retrieve narration from previous ledger / previous voucher | Alt+R / Ctrl+R |\n| Delete voucher/transaction | Alt+D |\n| Cancel voucher | Alt+X |\n| Remove item/ledger line | Ctrl+D |\n| Mark as Optional / Post-Dated | Ctrl+L / Ctrl+T |\n| Autofill details | Ctrl+F |\n| Change voucher mode | Ctrl+H |\n| Open Stock Query for selected stock item | Alt+S |\n| Copy/Paste from input field | Ctrl+C / Ctrl+V (or Ctrl+Alt+C / Ctrl+Alt+V) |\n\n## Report Shortcuts\n| Action | Shortcut Key |\n| :-- | :-- |\n| Detailed/Condensed view | Alt+F1 / Alt+F5 |\n| Drill down from a line | Enter |\n| Insert/Add voucher in report / Create entry by duplicating | Alt+I / Alt+A / Alt+2 |\n| Delete/Cancel voucher from report / Remove entry | Alt+D / Alt+X / Ctrl+R |\n| Hide/Show details / Unhide lines | Alt+T / Alt+U / Ctrl+U |\n| Expand/Collapse information | Shift+Enter / Alt+Enter |\n| Alter master during voucher entry or from drill-down | Ctrl+Enter |\n| Select/Deselect lines / Range selection / Select all / Invert selection | Spacebar / Shift+Spacebar / Shift+Up/Down / Ctrl+Spacebar / Ctrl+Shift+Home/End / Ctrl+Alt+I |\n| Add/Alter/Delete/Auto-repeat columns | Alt+C / Alt+A / Alt+D / Alt+N |\n| Filter / Conditional filter / Exception reports | Alt+F12 / Ctrl+F12 / Ctrl+J |\n| Change view / Navigate to Voucher View | Ctrl+H / Ctrl+B |\n\n## Import/Export/Print/Email\n| Action | Shortcut Key |\n| :-- | :-- |\n| Print / Export / Email current voucher or report | Ctrl+P / Ctrl+E / Ctrl+M |\n\nTip: In TallyPrime 7.2, use Alt+G (Go To) as your fastest way to discover and jump to any action, report or master from anywhere. Use the searchable table on this page to quickly find the shortcut you need.",
-    seoTitle: 'TallyPrime Shortcuts Cheat Sheet',
+      "Shortcut keys in TallyPrime are primarily used to simplify the recording of transactions, navigation, and reporting. They help you work faster without relying heavily on the mouse.\n\n## Function Keys F1 to F12 in TallyPrime\n| Key | What it does |\n| :-- | :-- |\n| F1 | Help / contextual TallyHelp for the screen you are on |\n| F2 | Change the date of voucher entry, or the date/period of a report |\n| F3 | Switch to another open company |\n| F4 | Contra voucher |\n| F5 | Payment voucher |\n| F6 | Receipt voucher |\n| F7 | Journal voucher |\n| F8 | Sales voucher |\n| F9 | Purchase voucher |\n| F10 | List of all voucher types |\n| F11 | Company Features screen |\n| F12 | Configuration for the current report/view |\n\n## Hidden/Essential Keys\n| Action | Shortcut Key |\n| :-- | :-- |\n| Go back to previous screen / close current screen | Esc |\n| Remove input provided/selected for a field | Backspace |\n| Open Company Features screen | F11 |\n| Move between fields/menus/lines/columns | Arrow Keys, Tab / Shift+Tab, Up/Down, Left/Right |\n| Move to beginning/end of text or list | Home / End / PgUp / PgDn |\n| Move to first/last field or line | Ctrl+Home / Ctrl+End |\n| Accept or save a screen | Ctrl+A |\n| Expand or collapse group in a table | Alt+Enter |\n| Rewrite data | Ctrl+Alt+R |\n| Quit the application | Alt+F4 |\n| View build information / TDL/Add-on details | Ctrl+Alt+B / Ctrl+Alt+T |\n| Open or hide calculator panel | Ctrl+N |\n| Exit a screen or application | Ctrl+Q |\n\n## Navigation in TallyPrime\n| Action | Shortcut Key |\n| :-- | :-- |\n| Go To (search & jump to masters/reports/vouchers) | Alt+G |\n| Switch To (move between tasks without losing context) | Ctrl+G |\n| Open Company menu | Alt+K |\n| Switch to another company / Open another company / Shut company | F3 / Alt+F3 / Ctrl+F3 |\n| Change date/period for voucher entry or reports | F2 / Alt+F2 |\n| Configuration (applicable for current report/view) | F12 |\n| Help / Contextual TallyHelp | F1 / Ctrl+F1 |\n| Change display language / data entry language | Ctrl+K / Ctrl+W |\n| Import / Export / Print / Email menus | Alt+O / Alt+E / Alt+P / Alt+M |\n\n## Voucher Shortcuts\n| Voucher Type | Shortcut Key |\n| :-- | :-- |\n| Contra Voucher | F4 |\n| Payment Voucher | F5 |\n| Receipt Voucher | F6 |\n| Journal Voucher | F7 |\n| Sales Voucher | F8 |\n| Purchase Voucher | F9 |\n| Credit Note | Alt+F6 |\n| Debit Note | Alt+F5 |\n| Stock Journal | Alt+F7 |\n| Physical Stock | Ctrl+F7 |\n| Delivery Note | Alt+F8 |\n| Receipt Note | Alt+F9 |\n| Sales Order / Purchase Order | Ctrl+F8 / Ctrl+F9 |\n| Rejection In / Rejection Out | Ctrl+F6 / Ctrl+F5 |\n| Payroll Voucher | Ctrl+F4 |\n| List of all vouchers | F10 |\n\n## Voucher Operations\n| Action | Shortcut Key |\n| :-- | :-- |\n| Create master on-the-fly | Alt+C |\n| Open calculator panel (from amount field) | Alt+C |\n| Retrieve narration from previous ledger / previous voucher | Alt+R / Ctrl+R |\n| Delete voucher/transaction | Alt+D |\n| Cancel voucher | Alt+X |\n| Remove item/ledger line | Ctrl+D |\n| Mark as Optional / Post-Dated | Ctrl+L / Ctrl+T |\n| Autofill details | Ctrl+F |\n| Change voucher mode | Ctrl+H |\n| Open Stock Query for selected stock item | Alt+S |\n| Copy/Paste from input field | Ctrl+C / Ctrl+V (or Ctrl+Alt+C / Ctrl+Alt+V) |\n\n## Report Shortcuts\n| Action | Shortcut Key |\n| :-- | :-- |\n| Detailed/Condensed view | Alt+F1 / Alt+F5 |\n| Drill down from a line | Enter |\n| Insert/Add voucher in report / Create entry by duplicating | Alt+I / Alt+A / Alt+2 |\n| Delete/Cancel voucher from report / Remove entry | Alt+D / Alt+X / Ctrl+R |\n| Hide/Show details / Unhide lines | Alt+T / Alt+U / Ctrl+U |\n| Expand/Collapse information | Shift+Enter / Alt+Enter |\n| Alter master during voucher entry or from drill-down | Ctrl+Enter |\n| Select/Deselect lines / Range selection / Select all / Invert selection | Spacebar / Shift+Spacebar / Shift+Up/Down / Ctrl+Spacebar / Ctrl+Shift+Home/End / Ctrl+Alt+I |\n| Add/Alter/Delete/Auto-repeat columns | Alt+C / Alt+A / Alt+D / Alt+N |\n| Filter / Conditional filter / Exception reports | Alt+F12 / Ctrl+F12 / Ctrl+J |\n| Change view / Navigate to Voucher View | Ctrl+H / Ctrl+B |\n\n## Import/Export/Print/Email\n| Action | Shortcut Key |\n| :-- | :-- |\n| Print / Export / Email current voucher or report | Ctrl+P / Ctrl+E / Ctrl+M |\n\nTip: In TallyPrime 7.2, use Alt+G (Go To) as your fastest way to discover and jump to any action, report or master from anywhere. Use the searchable table on this page to quickly find the shortcut you need.",
+    // CHANGE: 2026-11-03 — GSC 28d: 708 impressions, 0 clicks, position 9.8 (the largest
+    // zero-click page on the site). Impressions come from long-tail shortcut queries
+    // ("tally shortcut keys", "delivery note shortcut key in tally"), so the title now says
+    // "shortcut keys" in the order people type it and names what the page actually is.
+    // CHANGE: 2026-11-03 — same page, same facts, re-pointed at the actual query set. GSC
+    // shows 60+ long-tail queries under this one page and they are overwhelmingly
+    // "<key> is used for in tally" and "F1 to F12" shapes. "The Complete List" said nothing a
+    // searcher typed; "Complete F1-F12 List" matches "tally function keys", "tally keys name",
+    // "complete shortcut keys" and "what is f1, f2 ... f12 in tally" at once.
+    seoTitle: 'Tally Prime Shortcut Keys: Complete F1-F12 List',
     seoDescription:
-      'Tally Prime shortcut keys including Alt+G, voucher shortcuts and navigation keys for faster accounting.',
+      'Every Tally Prime shortcut key on one page: F1 to F12, delivery note Alt+F8, narration Alt+R, unhide Alt+U, plus voucher, navigation and report keys.',
     keywords: [
       'tally prime shortcut keys pdf',
       'shortcut key to delete company in tally',
@@ -537,7 +551,36 @@ We install and validate the update, keep your data on a verified backup, and che
       'how to delete a ledger in tally shortcut',
       'shortcut for payment voucher in tally',
       'alt f12 in tally',
-      'alt+g in tally prime'
+      'alt+g in tally prime',
+      // CHANGE: 2026-11-03 — the exact strings from the 4-31 Oct GSC export, so the page
+      // stops relying on Google connecting "cheat sheet" to "shortcut key". Every one of
+      // these is now answered on the page (tables + FAQ), nothing is listed that the page
+      // does not answer.
+      'tally shortcut keys',
+      'tally prime shortcut keys',
+      'tally all shortcut keys',
+      'tally function keys',
+      'tally keys name',
+      'delivery note shortcut key in tally',
+      'receipt note shortcut key in tally prime',
+      'contra voucher shortcut key',
+      'payment voucher shortcut key',
+      'tally prime narration shortcut key',
+      'shortcut key for narration in tally prime',
+      'tally unhide shortcut key',
+      'duplicate entry shortcut key in tally prime',
+      'stock query shortcut key in tally prime',
+      'tally prime copy paste shortcut key',
+      'alt f7 is used for in tally',
+      'alt f6 in tally',
+      'alt f8 is used for in tally',
+      'alt f2 in tally',
+      'ctrl f8 shortcut key is used for in tally',
+      'sales order in tally prime shortcut keys',
+      'shortcut to create ledger in tally',
+      'company create in tally shortcut keys',
+      'tally prime rewrite shortcut key',
+      'how to open calculator in tally prime'
     ],
     // CHANGE: 2026-10-26 — factual audit against Tally Solutions' official keyboard-shortcut
     // reference (help.tallysolutions.com). Five entries were WRONG and are corrected here:
@@ -577,7 +620,23 @@ We install and validate the update, keep your data on a verified backup, and che
       { keys: 'Alt+F5', action: 'Debit Note Voucher' },
       { keys: 'Ctrl+F8', action: 'Sales Order Voucher' },
       { keys: 'Ctrl+F9', action: 'Purchase Order Voucher' },
-      { keys: 'Ctrl+F4', action: 'Payroll Voucher' }
+      { keys: 'Ctrl+F4', action: 'Payroll Voucher' },
+      // CHANGE: 2026-11-03 — the queries that dominate this page name these keys directly
+      // (delivery note, receipt note, stock journal, duplicate entry, narration, unhide,
+      // stock query). They were in the tables above but missing from this quick reference,
+      // which is the block most likely to be lifted into a featured snippet.
+      { keys: 'Alt+F7', action: 'Stock Journal Voucher' },
+      { keys: 'Alt+F8', action: 'Delivery Note Voucher' },
+      { keys: 'Alt+F9', action: 'Receipt Note Voucher' },
+      { keys: 'Ctrl+F7', action: 'Physical Stock Voucher' },
+      { keys: 'Ctrl+F6', action: 'Rejection In Voucher' },
+      { keys: 'Ctrl+F5', action: 'Rejection Out Voucher' },
+      { keys: 'F10', action: 'List of all voucher types' },
+      { keys: 'Alt+2', action: 'Create entry by duplicating in a report' },
+      { keys: 'Alt+R', action: 'Retrieve narration from the previous ledger/voucher' },
+      { keys: 'Alt+S', action: 'Stock Query for the selected stock item' },
+      { keys: 'Alt+T / Alt+U', action: 'Hide/Show details, unhide lines in a report' },
+      { keys: 'F1', action: 'Help / contextual TallyHelp' }
     ],
     faqs: [
       {
@@ -599,6 +658,87 @@ We install and validate the update, keep your data on a verified backup, and che
       {
         q: 'Where can I find a printable Tally Prime shortcut keys PDF?',
         a: 'Download the Tally Prime Shortcuts Cheat-Sheet PDF below using the form to keep it offline and share with your team.'
+      },
+      // CHANGE: 2026-11-03 — GSC long-tail pass. The 60 queries below the head term are all
+      // "what is <key> used for" or "shortcut key for <document>" shapes, and the page already
+      // answered every one of them in the tables above - it just never said so in a sentence
+      // Google could lift into a snippet. Each answer restates a key mapping from those tables;
+      // no new shortcut is introduced, and nothing here is a claim about Tally's behaviour.
+      {
+        q: 'What is Alt+F7 used for in Tally?',
+        a: 'Alt+F7 opens the Stock Journal voucher. The plain function keys F4 to F9 are the regular voucher types (Contra, Payment, Receipt, Journal, Sales, Purchase); the Alt+F combinations open the rest: Alt+F5 Debit Note, Alt+F6 Credit Note, Alt+F7 Stock Journal, Alt+F8 Delivery Note, Alt+F9 Receipt Note.'
+      },
+      {
+        q: 'What is Alt+F6 used for in Tally?',
+        a: 'Alt+F6 opens the Credit Note voucher. The matching Debit Note is Alt+F5.'
+      },
+      {
+        q: 'What is Alt+F8 used for in Tally?',
+        a: 'Alt+F8 opens the Delivery Note voucher. Receipt Note, the inward counterpart, is Alt+F9, and Physical Stock is Ctrl+F7.'
+      },
+      {
+        q: 'What is the delivery note shortcut key in Tally Prime?',
+        a: 'Alt+F8. From any screen press Alt+F8 to open the Delivery Note voucher, the same way F8 opens the Sales voucher.'
+      },
+      {
+        q: 'What is the receipt note shortcut key in Tally Prime?',
+        a: 'Alt+F9. Receipt Note sits next to Alt+F8 Delivery Note, Ctrl+F7 Physical Stock and Alt+F7 Stock Journal.'
+      },
+      {
+        q: 'What is the contra voucher shortcut key in Tally Prime?',
+        a: 'F4. Contra is the first of the six plain function-key vouchers: F4 Contra, F5 Payment, F6 Receipt, F7 Journal, F8 Sales, F9 Purchase.'
+      },
+      {
+        q: 'What is the narration shortcut in Tally Prime?',
+        a: 'Alt+R retrieves the narration used on the previous ledger or voucher so you do not retype it; Ctrl+R retrieves the previous ledger. Both are listed under Voucher Operations above.'
+      },
+      {
+        q: 'What is the unhide shortcut key in Tally Prime?',
+        a: 'Alt+U unhides the lines you hid in a report, Alt+T toggles Hide/Show details, and Ctrl+U is the report-level unhide. The hide and unhide keys are on the same row of the Report Shortcuts table above.'
+      },
+      {
+        q: 'What is the duplicate entry shortcut key in Tally Prime?',
+        a: 'Alt+2 creates an entry by duplicating an existing one in a report. Alt+I and Alt+A insert or add a voucher from the same screen.'
+      },
+      {
+        q: 'What is the stock query shortcut key in Tally Prime?',
+        a: 'Alt+S opens the Stock Query for the stock item selected on the screen.'
+      },
+      {
+        q: 'What is Ctrl+F8 used for in Tally?',
+        a: 'Ctrl+F8 opens the Sales Order voucher and Ctrl+F9 opens Purchase Order. Do not confuse them with F8 (Sales voucher) or Alt+F8 (Delivery Note) - the Ctrl and Alt prefixes are different vouchers.'
+      },
+      {
+        q: 'Which keys are in the sales order cycle in Tally Prime?',
+        a: 'Sales Order Ctrl+F8, Delivery Note Alt+F8, Rejection In Ctrl+F6, Sales voucher F8. Ctrl+F7 is Physical Stock, not a rejection, so a pair that maps Ctrl+F7 to Rejection In is the incorrect one in that question.'
+      },
+      {
+        q: 'What is Alt+F2 and Alt+F3 used for in Tally?',
+        a: 'Alt+F2 changes the period of the company. Alt+F3 selects and opens another company. F2 is the date key for voucher entry and reports, F3 switches between already-open companies, and Ctrl+F3 shuts the loaded companies.'
+      },
+      {
+        q: 'What is Alt+K used for in Tally?',
+        a: 'Alt+K opens the Company menu - create, alter, select, shut or delete a company. Alt+F3 opens another company directly, and F11 opens Company Features.'
+      },
+      {
+        q: 'What is the shortcut key for company features in Tally Prime?',
+        a: 'F11 opens Company Features. F12 opens Configure for the report or view you are currently on.'
+      },
+      {
+        q: 'What is Ctrl+A in Tally?',
+        a: 'Ctrl+A accepts or saves the current screen. Esc cancels and goes back to the previous screen.'
+      },
+      {
+        q: 'Which keys copy and paste in Tally Prime?',
+        a: 'Ctrl+C and Ctrl+V from an input field, or Ctrl+Alt+C and Ctrl+Alt+V where the plain combination is already taken by the screen.'
+      },
+      {
+        q: 'What is the rewrite shortcut key in Tally Prime?',
+        a: 'Ctrl+Alt+R rewrites data. Ctrl+Alt+B shows build information and Ctrl+Alt+T shows TDL/add-on details.'
+      },
+      {
+        q: 'How do I open the calculator in Tally Prime?',
+        a: 'Ctrl+N opens or hides the calculator panel. From an amount field, Alt+C also opens it. A cloud or remote TallyPrime session uses exactly the same keys, because you are typing into TallyPrime itself rather than into a browser page.'
       }
     ],
     leadMagnet: {
@@ -633,7 +773,9 @@ We install and validate the update, keep your data on a verified backup, and che
     // F3 switches between already-open companies and Ctrl+F3 shuts every loaded company.
     bodyMd:
       "Accurate company setup ensures correct reporting and compliance. Define the financial year, address, GST details (if applicable) and security settings at the start, and keep your masters clean to avoid reconciliation issues later.\n\n## Steps to create a company (TallyPrime 7.2)\n\n1. Open TallyPrime and press **Alt+K** (Company) > **Create Company**.\n2. Fill Company Name, Mailing Name, Address, State, Country and Contact details.\n3. Set Financial Year From (for example 01-04-YYYY) and Books Beginning From.\n4. Set the Base Currency Symbol, which is INR for an Indian company.\n5. Configure GST details if the business is registered.\n6. Accept with **Ctrl+A**.\n\n## Decide these before you start\n\n| Field | Why it matters later |\n| :-- | :-- |\n| Company Name | Appears on every invoice, report and payslip. Changing it later changes how historical prints look. |\n| Financial Year From | Sets the reporting year. A wrong year surfaces months later as a period error. |\n| Books Beginning From | The date from which vouchers may be entered. It can be earlier than the financial year start when opening balances go further back. |\n| State | Decides the place of supply on GST invoices, and therefore CGST/SGST versus IGST. |\n| GSTIN | Needed before the first tax invoice is raised. A missing GSTIN blocks the GST reports. |\n\n## Open, switch, alter and shut a company\n\n- **Select a company:** Alt+K (Company) > Select Company, then choose the company and press Enter. Alt+F3 opens the same selection list from anywhere.\n- **Switch between companies already open:** press **F3** and pick from the list.\n- **Alter company details:** Alt+K (Company) > Alter > select the company > edit > **Ctrl+A**.\n- **Shut a company:** Alt+K (Company) > Shut Company > select the company > Enter. **Ctrl+F3** shuts every loaded company at once.\n- **Delete a company:** Alt+K (Company) > Alter > select the company > **Alt+D** > confirm twice. Take a backup first, because this is not reversible.\n\n## Security and access\n\nThe company is only protected if access is controlled. User Access Control is configured from **Alt+K (Company) > Alter**, then **F12 > Use User Access Control = Yes**. A separate password policy sits under **Alt+K > Password Policy**. Configure both before the books go live, not after the first dispute.\n\n## After the company is created\n\n1. Press **F11** (Company Features) and switch on only the features the business uses: GST, TDS, cost centres, payroll, inventory.\n2. Create the masters. Groups and ledgers first, then stock items if inventory is enabled.\n3. Enter opening balances through a Journal voucher or through the opening balance of each ledger.\n4. Check the trial balance before a single live transaction is entered.\n\n## One company is one set of books\n\nA company in TallyPrime holds one balance sheet, one profit and loss statement and one GST registration, so the unit to think in is the legal entity rather than the office. Two branches of the same entity belong in one company and are separated with cost centres, godowns or branch ledgers. Two different legal entities need two companies, even when the same people run both, because the books and the tax registration belong to the entity. A newly created company also starts empty: it has the default groups, but no ledgers, no stock items and no carried-over masters, so the chart of accounts has to be built before the first voucher.\n\n## Common mistakes\n\n- Creating a second company for the next year instead of altering the existing one.\n- Leaving the state blank, then discovering that GST invoices split the wrong way.\n- Enabling every feature at once, which clutters the voucher menu for a team that only raises invoices.\n- Skipping opening balances, so the first balance sheet has nothing to compare against.",
-    seoTitle: 'Create a Company in Tally Prime',
+    // CHANGE: 2026-11-03 — GSC 28d: 58 impressions, 0 clicks, position 11.7. The page was
+    // missing the "how to" that every query for it starts with.
+    seoTitle: 'How to Create a Company in Tally Prime',
     seoDescription:
       "Create a company in Tally Prime step by step: company details, financial year, base currency, GST setup, security settings and the mistakes to avoid.",
     keywords: [
@@ -690,9 +832,12 @@ We install and validate the update, keep your data on a verified backup, and che
       'Learn how ledgers and groups form the chart of accounts and keep your books structured for clean reporting.',
     bodyMd:
       "Groups are the skeleton of every report. A ledger holds the balance; the group above it decides where that balance lands in the balance sheet or the profit and loss statement. Get the grouping right at the start and the reports take care of themselves.\n\n## Groups versus ledgers\n\n- **Group:** a classification. TallyPrime ships a fixed set of primary groups - Assets, Liabilities, Income and Expenses - with sub-groups such as Current Assets, Fixed Assets, Investments, Sundry Debtors, Sundry Creditors, Bank Accounts, Cash-in-Hand, Duties and Taxes, Loans, Capital Account, Sales Accounts, Purchase Accounts, Branch/Divisions and the direct and indirect income and expense groups.\n- **Ledger:** an actual account. A customer, a supplier, a bank, a rent account or a salary account is a ledger.\n\nA ledger inherits its position in the reports from the group it sits under. That is why a bank account created under Cash-in-Hand looks wrong on the balance sheet: the section is wrong, not the amount.\n\n## Create a ledger\n\n1. Press **Alt+G** (Go To) and choose **Create Master > Ledger**.\n2. Enter the ledger name.\n3. Choose the group the account belongs to.\n4. Fill the fields that group requires - GST details for a party or a tax ledger, banking details for a bank ledger.\n5. Enter the opening balance when you are migrating from another system.\n6. Accept with **Ctrl+A**.\n\n## Which group for which ledger\n\n| Ledger | Correct group |\n| :-- | :-- |\n| A customer you sell to | Sundry Debtors under Current Assets |\n| A supplier you buy from | Sundry Creditors under Current Liabilities |\n| Current account at a bank | Bank Accounts under Current Assets |\n| Cash box | Cash-in-Hand under Current Assets |\n| GST payable | Duties and Taxes under Current Liabilities |\n| Rent, electricity, stationery | Indirect Expenses |\n| Salary and wages | Indirect Expenses, or Direct Expenses when it is a trading cost |\n| Sales of goods | Sales Accounts |\n| Machinery, furniture, vehicles | Fixed Assets |\n| Owner or partner capital | Capital Account |\n\n## Display and alter a ledger\n\n- **Display:** Alt+G > **Display Report > Ledger**, then select the ledger. The report shows the opening balance, every voucher and the closing balance.\n- **Alter:** Alt+G > **Alter Master > Ledger**, select the ledger, make the correction and accept with **Ctrl+A**.\n\nAlter the ledger instead of creating a second one with a corrected name, otherwise the history splits across two accounts and neither balance is complete.\n\n## Inventory masters\n\nWhen inventory is enabled, the same discipline applies to stock:\n\n- **Stock Group:** Alt+G > Create Master > Stock Group.\n- **Unit of Measure:** Alt+G > Create Master > Unit of Measure.\n- **Stock Item:** Alt+G > Create Master > Stock Item.\n\nA stock item inherits its reporting position from its stock group, and its quantities depend on the unit assigned to it, so create the unit before the item.\n\n## Naming rules worth keeping\n\n- One ledger per real account. Two ledgers for the same bank means two balances to reconcile every month.\n- Use the party name exactly as it appears on its GST registration, so the invoice and the return agree.\n- Keep the naming pattern consistent, for example a prefix per bank, because Go To searches names rather than meanings.\n- Do not delete a ledger that already has vouchers. Alter or rename it.\n\n## Checking that the structure is right\n\nOpen the balance sheet and read the groups, not the totals. If a balance appears in a section you did not expect, the ledger is under the wrong group. Correct the group on the ledger and the reports follow it.",
-    seoTitle: 'Create Ledgers & Groups in Tally',
+    // CHANGE: 2026-11-03 — GSC 28d: 137 impressions, 1 click, position 8.4. "ledger master in
+    // tally prime" (34 impressions, 0 clicks) was the visible query; "Create Ledgers & Groups"
+    // contained none of its words.
+    seoTitle: 'Ledger Master in Tally Prime: Create & Alter',
     seoDescription:
-      "Create ledgers and groups in Tally Prime: which group each ledger belongs to, display and alter paths, inventory masters and naming rules that keep reports clean.",
+      "Create a ledger master in Tally Prime, choose the right group, and alter it later - plus how groups decide what every report shows.",
     keywords: [
       'masters in tally',
       'ledgers in tally',
@@ -765,9 +910,14 @@ We install and validate the update, keep your data on a verified backup, and che
     intro: 'Understand types of vouchers in Tally Prime with examples for accurate transaction recording.',
     bodyMd:
       "Every transaction in TallyPrime is recorded through a voucher, and the voucher type decides which ledgers it can touch and which report it lands in. Pick the wrong type and the amount is still in the books, but the report built on that type will be wrong.\n\n## The voucher types and when to use them\n\n| Voucher | Shortcut | Use it for |\n| :-- | :-- | :-- |\n| Contra | **F4** | Cash deposited into a bank, cash withdrawn from a bank, or a transfer between two bank accounts |\n| Payment | **F5** | Money going out for an expense, a fixed asset, or a creditor |\n| Receipt | **F6** | Money coming in from a customer or any other receipt |\n| Journal | **F7** | Adjustments between two non-cash ledgers |\n| Sales | **F8** | Selling goods or services to a customer |\n| Purchase | **F9** | Buying goods or services from a supplier |\n| Debit Note | **Alt+F5** | A purchase return, or a reduction in what the business owes a supplier |\n| Credit Note | **Alt+F6** | A sales return, or a reduction in what a customer owes the business |\n| Stock Journal | **Alt+F7** | Moving stock between godowns, or converting raw material into finished goods |\n| Payroll | **Ctrl+F4** | Monthly salary for an employee, once payroll is enabled |\n\nContra, Payment, Receipt and Journal are the accounting vouchers. Sales, Purchase, Debit Note and Credit Note carry inventory and tax, so they need those features enabled. A company that only has accounting switched on still has the first four.\n\n## What a contra entry actually is\n\nA contra entry moves money between two accounts that both belong to the same business - cash to bank, bank to cash, or one bank account to another. It is not income and it is not an expense, which is why the two ledgers sit on opposite sides of the same voucher and the combined cash and bank balance does not change.\n\n- **Cash deposited into the bank:** debit the bank ledger, credit Cash-in-Hand.\n- **Cash withdrawn for office use:** debit Cash-in-Hand, credit the bank ledger.\n- **Transfer between two bank accounts:** debit the receiving bank, credit the sending bank.\n\nRecord a deposit as a Receipt instead of a Contra and the bank balance rises while the cash balance never falls, so together they overstate the money the business actually holds. That single mistake is the most common reason a cash and bank summary will not reconcile.\n\n## Recording a day of entries in the right order\n\n1. Purchases and expenses first, so the ledgers exist with the right balances.\n2. Sales and receipts next, so debtors reflect what was actually collected.\n3. Contra entries last, so the cash and bank position matches the day's physical count and the bank statement.\n\n## Finding a voucher later\n\nPress **Alt+G** and open **Display Report > Day Book** to see every voucher for a date range, or open the relevant register and drill into the voucher. Editing a posted voucher changes the reports immediately, so alter only the voucher that actually needs correcting.\n\n## Common mistakes\n\n- Using a Payment voucher for a bank-to-bank transfer, which posts an expense that never happened.\n- Recording a sales return as a Receipt, which reduces the debtor without reducing the sale.\n- Raising a Journal for cash, which leaves the cash ledger out of the cash summary.\n- Using a Sales voucher with inventory switched off and expecting stock to move. Stock needs the inventory feature.",
-    seoTitle: 'Record Vouchers in Tally Prime',
+    // CHANGE: 2026-11-03 — GSC 28d (4-31 Oct): 853 impressions, 1 click, position 8.0. The
+    // searcher's own words are "types of voucher in tally" (58), "tally voucher types" (34),
+    // "types of vouchers in tally" (22) — 114 impressions at 0 clicks — and the Oct-29
+    // "Record Vouchers..." title contained none of them. The query now leads the title and the
+    // verb moved into the tail: action-first does not mean verb-first.
+    seoTitle: 'Types of Vouchers in Tally Prime & When to Use Each',
     seoDescription:
-      "Types of vouchers in Tally Prime with shortcuts: Contra, Payment, Receipt, Journal, Sales, Purchase and notes, plus how a contra entry actually works.",
+      "All voucher types in Tally Prime - Contra, Payment, Receipt, Journal, Sales, Purchase and notes - with the shortcut and what each one posts.",
     keywords: [
       'types of vouchers in tally',
       'what is contra entry in tally',
@@ -822,7 +972,8 @@ We install and validate the update, keep your data on a verified backup, and che
     intro: 'Learn the difference between Cost Centre and Cost Category, how to enable them, create them and allocate expenses/incomes for department/project-wise analysis.',
     bodyMd:
       "## What are Cost Centres and Cost Categories?\n- **Cost Centre:** A unit like Department, Branch, Sales Team or Project used to track costs/revenues. Example: Marketing, Sales, HR, Production.\n- **Cost Category:** Used when the same voucher needs to be split across different dimensions. Example: allocate an expense by Department and by Project at the same time.\n\n## What you will learn\n- How to enable Cost Centres in TallyPrime\n- Difference between Cost Centre and Cost Category\n- How to create Cost Centres and Cost Categories\n- How to allocate in vouchers\n- How to view Cost Centre reports\n\n## 1. Enable Cost Centres\n1. Press F11 (Company Features) > Accounting Features.\n2. Set Maintain Cost Centres to Yes.\n3. If you need multiple dimensions, set More than one payroll / cost category as required.\n4. Accept with Ctrl+A.\n\n## 2. Create Cost Centres\n1. Go To (Alt+G) > Create Master > Cost Centre (or Accounts Info > Cost Centres > Create).\n2. Enter the Cost Centre Name (e.g., Sales, Marketing, Accounts).\n3. Under - select Primary or parent cost centre if creating sub-centres.\n4. Accept with Ctrl+A.\n\n## 3. Create Cost Categories (optional but useful)\nUse this only if you need to track by more than one classification in the same voucher.\n\n1. Go To (Alt+G) > Create Master > Cost Category > Create.\n2. Enter Category Name (e.g., Projects, Regions).\n3. Create Cost Centres under that Cost Category.\n4. Accept with Ctrl+A.\n\n## 4. Allocate in Vouchers\nWhen booking an expense, income or journal voucher:\n1. In the ledger allocation screen, TallyPrime will prompt for Cost Centre details if Maintain Cost Centres is enabled.\n2. Select the relevant Cost Centre (or Cost Category + Cost Centre).\n3. Enter the amount for that allocation.\n4. Accept and continue.\n\n**Example:** Book a Salary voucher and allocate to different departments using cost centres to see department-wise salary cost.\n\n## 5. View Cost Centre Reports\n| Report | Path | Purpose |\n| :-- | :-- | :-- |\n| Cost Category Summary | Display > Statement of Accounts > Cost Centres > Cost Category Summary | Summary by cost category |\n| Cost Centre Breakup | Display > Statement of Accounts > Cost Centres > Cost Centre Breakup | Detailed breakup of a cost centre |\n| Ledger Breakup | Open any cost centre report > drill down | See which ledgers contributed to that cost centre |\n\n## Cost centre versus a group\n\nA group decides where a balance lands on the balance sheet. A cost centre divides an amount that has already been booked, without changing the ledger it sits in. Rent is still rent in the profit and loss statement whether it is allocated to two departments or twenty; the cost centre report is what tells you how much of it belongs to each department. That is why cost centres never replace ledgers - they sit alongside them.\n\n## Allocating in a sales or purchase voucher\n\nCost centres are not limited to expenses. On a sales voucher, allocating the line to a branch cost centre gives revenue by branch. On a purchase voucher it gives purchase cost by project. The allocation screen appears once the feature is enabled and the ledger is one that supports it, so if the prompt does not appear, check that Maintain Cost Centres is still set to Yes and that the voucher has an amount to allocate.\n\n## What cost centres do not do\n\n- They do not change the ledger balance or the trial balance; they only split an amount for analysis.\n- They do not replace a separate company for a different business; that needs its own books.\n- They are not a substitute for inventory godowns, which track stock quantities rather than money.\n- They do not report on their own unless you open the cost centre reports rather than the standard statements.\n\n## When to use Cost Centres vs Cost Categories\n| Scenario | Recommendation |\n| :-- | :-- |\n| Track by Department only (Sales/HR/Accounts) | Use Cost Centres only |\n| Track by Department and Project together on the same entry | Use Cost Categories + Cost Centres |\n| Track branch-wise expenses | Use Cost Centres with branch names |\n| Simple profitability by team | Use Cost Centres only (easier to manage) |\n\n## Tips\n- Keep cost centre names short and consistent (avoid duplicates).\n- Don't create too many cost centres at the start - add as needed.\n- Use cost centres mainly for expenses/incomes where analysis is required.\n- Review Cost Centre Breakup reports monthly for better cost control.\n- Decide the naming convention before the first allocation, because renaming later leaves old vouchers under the old name.",
-    seoTitle: 'Set Up Cost Centres in TallyPrime',
+    // CHANGE: 2026-11-03 — GSC 28d: 59 impressions, 0 clicks, position 10.7.
+    seoTitle: 'Cost Centre in Tally: Setup & Reports',
     seoDescription:
       "Enable and use Cost Centres and Cost Categories in TallyPrime for department, branch and project reporting, with allocation steps and the reports to check.",
     keywords: [
@@ -877,9 +1028,12 @@ We install and validate the update, keep your data on a verified backup, and che
       'Enable GST in TallyPrime 7.2, configure ledgers with HSN/SAC and GSTIN, raise GST invoices and produce GSTR-1, GSTR-3B and GST reports.',
     bodyMd:
       "GST is built into TallyPrime 7.2 - there is no separate GST add-on to buy. Once GST is switched on in Company Features, TallyPrime adds GST fields to your masters and vouchers, prints GST-compliant invoices, and produces the statutory reports you need for filing.\n\n## 1. Enable GST in Company Features\nPress F11 (Company Features) and switch on the GST options you need. Every option is independent, so most businesses enable plain GST first and add e-Invoicing or e-Way Bills later.\n\n| Option | What it turns on | When you need it |\n| :-- | :-- | :-- |\n| Maintain GST | GST fields on ledgers and vouchers, plus the GST report set | Every GST-registered business |\n| Maintain GST with TDS | TDS deducted on GST payments, with reporting for it | Businesses that deduct TDS while paying GST |\n| Maintain GST with TCS | Tax collected at source on GST | Businesses receiving large GST payments from registered buyers |\n| Enable e-Invoicing | IRP invoice numbering and IRN capture on invoices | Turnover above the notified e-Invoice threshold (Rs 5 crore) |\n| Enable e-Way Bills | e-Way Bill details on sales and purchase documents | Goods movement above the notified e-Way Bill threshold (Rs 50,000) |\n\nAccept the screen with Ctrl+A. The change applies to the company immediately.\n\n## 2. Create the ledgers that GST needs\n| Ledger type | Where it goes | Key settings |\n| :-- | :-- | :-- |\n| Party ledger (customer / supplier) | Any of the normal groups | Enable GST = Yes, Applicable for = Goods or Services, HSN code or SAC, GSTIN and State for registered parties |\n| GST output ledgers (CGST, SGST, IGST at each rate) | Duties and Taxes | One ledger per rate, for example GST 5, 12, 18 and 28 |\n| Input tax credit ledgers (Input CGST, Input SGST, Input IGST) | Duties and Taxes | Without these, the tax you pay on purchases is treated as an expense instead of a credit |\n| Non-GST ledgers | Normal groups | Leave Enable GST = No so that no tax is calculated against them |\n\nSet the HSN code to the number of digits the law asks for (2, 4, 6 or 8) and make sure the state on the party ledger matches the state in its GSTIN - a mismatch is the most common reason for a wrong tax split.\n\n## 3. Raise a GST invoice\n1. Press F8 for a Sales voucher and pick the customer ledger.\n2. Enter the item name, quantity and rate. The GST rate and HSN/SAC flow in from the ledger setup.\n3. Check the tax split - CGST plus SGST for an intra-state sale, IGST for an inter-state sale.\n4. Press Alt+P to print. Choose Original for Recipient, Duplicate for Transporter or Counterfoil.\n5. Set invoice numbering under F11 > Accounts Info > Invoice Numbering so every invoice number is generated and reused consistently across the GST reports.\n\nA GST invoice must carry the supplier GSTIN, the buyer GSTIN and state, a sequential invoice number and date, the HSN/SAC, the taxable value, the tax split and the total. The printed invoice from TallyPrime already carries all of these.\n\n## 4. Work with the GST reports\nGateway of Tally > Display > Statutory Reports > GST Reports gives you GSTR-1, GSTR-3B, GST Summary, GST Invoice details and the input tax credit reconciliation. Press Alt+E on any report to export it to Excel, XML or JSON, which is how most accountants hand data to their filing software.\n\nDownloading GSTR-2A and GSTR-2B from the portal, e-Invoice and e-Way Bill utilities all need an active TSS. When TSS expires, TallyPrime keeps your accounting working but those statutory utilities are restricted until it is renewed.",
-    seoTitle: 'GST in Tally Prime: Setup & Reports',
+    // CHANGE: 2026-11-03 — GSC 28d: 347 impressions, 1 click (0.29%), position 6.7. The
+    // snippet now promises the three things people ask for (enable, invoice, report) instead
+    // of listing report names.
+    seoTitle: 'GST in Tally Prime: Setup, Invoice & Reports',
     seoDescription:
-      'Enable GST in TallyPrime, configure ledgers with HSN and GSTIN, raise invoices and generate GSTR-1, GSTR-3B and reports.',
+      'Enable GST in TallyPrime, set GSTIN and HSN on the ledgers, raise a GST invoice and pull GSTR-1 or GSTR-3B - with the menu path for each step.',
     keywords: [
       'gst in tally prime',
       'how to enable gst in tally prime',

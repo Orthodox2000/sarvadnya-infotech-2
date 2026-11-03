@@ -27,8 +27,11 @@
 
 import { MongoClient } from 'mongodb';
 import 'dotenv/config';
+import { pathToFileURL } from 'node:url';
 
-const posts = [
+// CHANGE: 2026-11-03 — exported so maintenance scripts (scripts/update-news-seo.mjs) read the
+// SAME title/description values instead of keeping a second copy that silently drifts.
+export const posts = [
   {
     slug: 'tally-partner-mumbai',
     title: 'How to Choose the Right Tally Partner in Mumbai: Checklist (Star Rating, TSS, AMC)',
@@ -93,12 +96,15 @@ If your team is still fixing reports in Excel after Tally exports them, evaluate
     // (2) The title promised "Pricing Changes" and the body never delivered a single price.
     // (3) The expiry-check step pointed at "the licence and about screen" without a path.
     // Dates and the free-upgrade cutoff below are Tally's own published position.
+    // CHANGE: 2026-11-03 — GSC 28d: 59 impressions, 0 clicks, position 6.78. "What Changed" is
+    // vague; the change itself (ERP 9 TSS renewal discontinued 16 August 2026) is the hook and
+    // is already the article's own first fact.
     slug: 'tally-tss-renewal-2026',
     title: 'Tally TSS Renewal 2026: ERP 9 Renewals Discontinued, What Now',
-    seoTitle: 'TSS Renewal 2026: What Changed',
+    seoTitle: 'TSS Renewal 2026: ERP 9 Discontinued',
     date: 'August 28, 2026',
     category: 'TSS & Renewals',
-    description: 'TSS renewal on Tally.ERP 9 was discontinued from 16 August 2026. What that means for your licence, who qualifies for a free TallyPrime upgrade, and how to renew.',
+    description: 'TSS renewal on Tally.ERP 9 was discontinued from 16 August 2026. What that means for your licence, who gets a free TallyPrime upgrade, and how to renew.',
     tags: ['tally renewal', 'tally tss', 'tally prime renewal', 'tally tss renewal', 'tally erp 9 tss renewal', 'tally erp 9 upgrade to tallyprime'],
     link: '/services/tss',
     author: 'Sarvadnya Infotech LLP',
@@ -188,9 +194,13 @@ For example, a business migrating in Mumbai may need multi-user gold access plus
 Sarvadnya Infotech deploys and supports Tally on Cloud - official Tally licenses, AWS-hosted access and automated backups - for businesses in Mumbai, Navi Mumbai, Pune and across cities served remotely. Tell us your city and headcount and we will confirm your suitable setup.`,
   },
   {
+    // CHANGE: 2026-11-03 — GSC 28d: 28 impressions at position 14.25 while the sibling post
+    // /news/cbd-belapur-it-companies-list holds the same cluster at position 6.52 with 610
+    // impressions. Two pages ranking for one query split the signal, so this one is re-scoped to
+    // IT *support* and the list post is the canonical answer. No URL change, no content change.
     slug: 'it-companies-in-belapur',
     title: 'IT Companies in Belapur: How Certified Tally Partners Support Navi Mumbai Business',
-    seoTitle: 'IT Companies in Belapur',
+    seoTitle: 'IT Support Companies in Belapur',
     date: 'August 26, 2026',
     category: 'Local Business',
     description: 'How IT companies in Belapur and Navi Mumbai serve local business - software, accounting automation, cloud and support - and how to pick a partner.',
@@ -314,12 +324,17 @@ Sarvadnya Infotech is a Tally certified partner based in Belapur, Navi Mumbai, s
     // accounts, not a rung above 5-Star. The tier definitions are now Tally's own wording, and
     // verification points at Tally's Locate a Partner directory instead of "ask for the
     // credential".
+    // CHANGE: 2026-11-03 — GSC 28d: 18 impressions, 0 clicks, position 5.83; the query is
+    // "tally 5 star partner in mumbai" (4, position 14.5) and the old title dropped the city.
+    // "Mumbai" is a typed qualifier and belongs in the title. The order stays 3 Star before 5
+    // Star on purpose: the post's own 2026-10-26 correction is that Sarvadnya is a 3 star
+    // partner, so the title must not read as a 5 star claim.
     slug: 'tally-5-star-partner-mumbai',
     title: 'Tally Partner Tiers in Mumbai: 3 Star vs 5 Star, What the Certification Means',
-    seoTitle: 'Tally 3 Star vs 5 Star Partner',
+    seoTitle: 'Tally Partner Tiers in Mumbai: 3 Star vs 5 Star',
     date: 'September 6, 2026',
     category: 'Tally Partner',
-    description: 'Tally partner tiers explained - what 3 star and 5 star certification actually mean, how to verify a partner tier, and why an honest 3 star Tally partner in Mumbai can be the right fit.',
+    description: 'Tally partner tiers explained: what 3 star and 5 star certification mean, how to verify the tier, and why an honest 3 star Tally partner in Mumbai can fit.',
     tags: ['tally 3 star partner in mumbai', 'tally 5 star partner in mumbai', 'tally partner tiers', 'tally partner mumbai'],
     link: '/services',
     author: 'Sarvadnya Infotech LLP',
@@ -431,10 +446,15 @@ Sarvadnya Infotech offers an HRMS solution that covers payroll, attendance and e
     // now split out explicitly, and the vague "no support for non-urgent issues" and the
     // speculative "before a price change" line are gone.
     title: 'TSS in Tally: What It Means, Why It Expires, and How to Renew',
-    seoTitle: 'TSS in Tally: Meaning & Renewal',
+    // CHANGE: 2026-11-03 — GSC 28d: 741 impressions, 1 click (0.13%), position 5.77. The cluster
+    // is "tss expired in tally means" (53), "tss expired in tally" (25), "tss has expired in
+    // tally" (13), "tss meaning in tally" (9), plus 53 impressions on "tss full form" variants -
+    // and "TSS in Tally: Meaning & Renewal" matched almost none of it. The question people
+    // actually type now leads the title; the description answers it in the first line.
+    seoTitle: 'TSS Expired in Tally? What It Means',
     date: 'September 5, 2026',
     category: 'TSS & Renewals',
-    description: "TSS = Tally Software Services, the annual subscription that keeps TallyPrime current with updates, compliance changes and support. What 'TSS has expired' means on your licence screen, and how renewal restores coverage.",
+    description: "TSS means Tally Software Services, the yearly subscription that keeps TallyPrime current. What 'TSS has expired' means, and what a renewal restores.",
     // CHANGE: 2026-10-13 — tags extended with the Search Console question variants
     // ("what is tally tss", "what is tss in tally", "what does tss mean") that were
     // already being served by this post but not declared.
@@ -513,12 +533,15 @@ Renewal itself is quick with a verified partner. Sarvadnya Infotech handles Tall
     // for every renewal type; it now tells readers to confirm the period at renewal time
     // instead of promising a rule. (3) It offered renewal for "TallyPrime or Tally ERP 9" -
     // TSS renewal on ERP 9 was discontinued from 16 August 2026.
+    // CHANGE: 2026-11-03 — GSC 28d: 122 impressions, 0 clicks, position 5.5. "Check TSS Expiry
+    // in TallyPrime" dropped the "how to" that every matching query starts with (the sibling
+    // tool page now owns "verify", so this one keeps "check" and stays a distinct title).
     slug: 'how-to-check-tss-expiry-date-tallyprime',
     title: 'How to Check the TSS Expiry Date in TallyPrime',
-    seoTitle: 'Check TSS Expiry in TallyPrime',
+    seoTitle: 'How to Check TSS Expiry in TallyPrime',
     date: 'October 7, 2026',
     category: 'TSS & Renewals',
-    description: 'Step by step: how to check the TSS expiry date in TallyPrime from F1 (Help) > Settings > License > Manage License, what the coverage end date means, and how to renew before it lapses.',
+    description: 'How to check the TSS expiry date in TallyPrime: F1 (Help) > Settings > License > Manage License, what the coverage end date means, and when to renew.',
     // CHANGE: 2026-10-13 — tags extended for the Search Console variants
     // ("how to check tally expiry date", "how to check tally prime license expiry date").
     tags: ['how to check tss expiry date in tally prime', 'tss expiry date', 'tss expired in tally means', 'tally tss renewal', 'how to check tally expiry date', 'how to check tally prime license expiry date', 'tally license expiry date'],
@@ -573,12 +596,15 @@ A quick habit that prevents surprises:
 Sarvadnya Infotech renews TSS for businesses anywhere in India. Share your licence details and we check the expiry date, confirm the right plan and complete the renewal remotely in one short conversation.`,
   },
   {
+    // CHANGE: 2026-11-03 — GSC 28d: 523 impressions, 0 clicks, position 10.37 - the largest
+    // zero-click news page after the shortcuts lesson. "Work Anywhere" is a tagline; the query
+    // is the product phrase plus an intent (how / cost), so the title now carries both.
     slug: 'tally-cloud-access',
     title: 'Tally Cloud Access: Work on Your Tally from Anywhere, Securely',
-    seoTitle: 'Tally Cloud Access: Work Anywhere',
+    seoTitle: 'Tally Cloud Access: How It Works & Costs',
     date: 'September 2, 2026',
     category: 'Cloud',
-    description: 'Tally cloud access explained - how to run Tally Prime and ERP 9 over the cloud, what a secure remote access setup includes, and what pricing depends on.',
+    description: 'Tally cloud access: run Tally Prime or ERP 9 on a hosted server, work from any device with daily backups. What it includes, what it costs, who needs it.',
     tags: ['tally cloud access', 'tally on cloud', 'cloud tally mumbai', 'tally remote access'],
     link: '/cloud/tallycloudaccess',
     author: 'Sarvadnya Infotech LLP',
@@ -604,12 +630,17 @@ What pricing depends on: number of users, storage and backup retention, your Tal
 Sarvadnya Infotech deploys Tally cloud access for businesses in Mumbai, Navi Mumbai, Pune and across India - official Tally licenses, AWS-hosted access and automated backups, with migration and staff training included. Tell us your headcount and we will confirm the right setup.`,
   },
   {
+    // CHANGE: 2026-11-03 — GSC 28d: 610 impressions, 10 clicks (1.64%), position 6.52. The list
+    // cluster is "it companies in belapur" (81), "it companies in belapur navi mumbai" (22),
+    // "belapur it companies" (28) - so the city pair now matches the query order and "CBD" is
+    // left to the body. This post is the canonical winner for the cluster (see the plan doc);
+    // the weaker /news/it-companies-in-belapur was re-scoped so the two stop competing.
     slug: 'cbd-belapur-it-companies-list',
     title: 'IT Companies in CBD Belapur, Navi Mumbai: A Working List',
-    seoTitle: 'IT Companies in CBD Belapur',
+    seoTitle: 'IT Companies in Belapur, Navi Mumbai',
     date: 'September 3, 2026',
     category: 'Local Business',
-    description: 'A practical working list of the IT companies in CBD Belapur, Navi Mumbai - software, support and accounting automation - plus how to filter the list to your need.',
+    description: 'A working list of IT companies in Belapur, Navi Mumbai - Tally partners, software, support and automation firms - and how to shortlist one for your need.',
     tags: ['cbd belapur it companies list', 'list of companies in belapur', 'it companies in cbd belapur', 'software companies in cbd belapur'],
     link: '/about',
     author: 'Sarvadnya Infotech LLP',
@@ -640,12 +671,17 @@ Sarvadnya Infotech is a Tally certified partner and IT company based in Belapur,
   // (UAE, Singapore, UK examples). No short-trip nuance claimed - stick to the owner's copy,
   // no invented travel-policy details. ASCII-only (hyphens, never em-dashes - see AGENTS.md).
   {
+    // CHANGE: 2026-11-03 — GSC 28d: 94 impressions, 1 click (1.06%), position 3.79 — the worst
+    // CTR of any page ranking in the top four. The queries are "tally international license" (8)
+    // and "is tally used outside india" (6, position 2.8), and the old title carried neither
+    // phrase ("TallyPrime" one word, "Licences" as a bare trailing noun). The description was
+    // also 165 chars, so the reason to click was cut mid-sentence.
     slug: 'tallyprime-international-licenses',
     title: 'Using TallyPrime Outside India: International Licenses Explained',
-    seoTitle: 'TallyPrime Outside India: Licences',
+    seoTitle: 'Tally International License: Working Outside India',
     date: 'October 2, 2026',
     category: 'Tally Prime',
-    description: 'Why a domestic Indian TallyPrime license stops working abroad permanently, and the upgrade or international license options for UAE, Singapore, UK and other regions.',
+    description: 'A domestic Indian TallyPrime license is not designed to keep working abroad; a permanent move needs an international edition. Options by region.',
     tags: ['tallyprime international license', 'tally international edition', 'tally outside india', 'tally prime middle east', 'tally uae'],
     link: '/products',
     author: 'Sarvadnya Infotech LLP',
@@ -728,12 +764,17 @@ Need help with TSS renewal? Contact Sarvadnya Infotech LLP at https://sarvadnyai
     // actually lives; the password policy being bundled into the same area as the cut-off
     // date (it is its own Alt+K menu); the edit log having no enablement path at all; and a
     // recovery paragraph that understated how much is unrecoverable.
+    // CHANGE: 2026-11-03 — GSC 28d: 1,984 impressions, 40 clicks (2.02%), position 3.05 - the
+    // site's biggest page, and still the biggest absolute click loss: position ~2 with 2% CTR
+    // means the snippet was not answering. "Lock Data in TallyPrime: How To" is not a sentence
+    // anyone types; the "how to" moved to the front and "previous year" (86 of the 182
+    // impressions in the lock cluster) is now in the title.
     slug: 'how-to-lock-data-in-tallyprime',
     title: 'How to Lock Data in TallyPrime (Company, Users and Back-Dated Entries)',
-    seoTitle: 'Lock Data in TallyPrime: How To',
+    seoTitle: 'How to Lock Data in TallyPrime (Previous Year)',
     date: 'October 13, 2026',
     category: 'Tally Prime',
-    description: 'How to lock data in TallyPrime: enable user access control and the administrator password, create user roles, and stop back-dated entries with a cut-off date.',
+    description: 'How to lock Tally data for a previous year or a closed period in TallyPrime: user access control, user roles and a cut-off date that blocks back-dated entries.',
     tags: ['how to lock data in tally prime', 'how to lock tally prime', 'user access control in tally prime', 'user roles in tally prime', 'lock back dated vouchers tally', 'tallyvault', 'edit log in tally prime'],
     link: '/services/amc',
     author: 'Sarvadnya Infotech LLP',
@@ -806,12 +847,16 @@ Sarvadnya Infotech is a Tally certified partner based in CBD Belapur, Navi Mumba
     // setting "Set/alter GST details" to Yes, and a company registration is Regular or
     // Composition (Unregistered/Consumer are party-ledger values). The TSS sentence now carries
     // the actual discontinuation date (16 August 2026) instead of leaving it vague.
+    // CHANGE: 2026-11-03 — GSC 28d: 714 impressions, 3 clicks (0.42%), position 5.87. The GST
+    // cluster is "how to enable gst in tally erp 9" (17), "how to change gst number in tally
+    // prime" (12+7), "how to add gst number ..." (8) - all 0 clicks. The title now opens with
+    // the "how to" those queries share, and the description covers add *and* change.
     slug: 'how-to-add-gst-number-in-tally-erp-9',
     title: 'How to Add a GST Number in Tally ERP 9 (and Change It Later)',
-    seoTitle: 'Add GST Number in Tally ERP 9',
+    seoTitle: 'How to Add GST Number in Tally ERP 9',
     date: 'October 13, 2026',
     category: 'GST & Compliance',
-    description: 'How to add a GST number (GSTIN) in Tally ERP 9 - enable GST, open the GST Details screen, then set party ledger GST details, plus why TSS status matters.',
+    description: 'How to add a GST number (GSTIN) in Tally ERP 9: enable GST, open GST Details, set party GSTIN - and how to change it later. Why TSS status matters.',
     tags: ['how to add gst number in tally erp 9', 'how to add gst in tally erp 9', 'gstin in tally erp 9', 'tally erp 9 gst registration', 'change gst number in tally'],
     link: '/services/tss',
     author: 'Sarvadnya Infotech LLP',
@@ -861,12 +906,15 @@ One thing to plan for while you are on Tally ERP 9: TSS renewal for Tally ERP 9 
 Sarvadnya Infotech is a Tally certified partner in CBD Belapur, Navi Mumbai. We set up and correct GST configuration in Tally ERP 9 and TallyPrime, handle TSS renewal and status checks, and support businesses across Mumbai, Navi Mumbai and India remotely.`,
   },
   {
+    // CHANGE: 2026-11-03 — GSC 28d: 236 impressions, 1 click (0.42%), position 6.7. Both
+    // spellings are searched - "tally capital" (35+19+9) and "tallycapital" (15) - and the old
+    // title carried only the one-word form, which reads as a brand name and not as an answer.
     slug: 'what-is-tally-capital',
     title: 'What Is TallyCapital? Business Loans for TallyPrime Users Explained',
-    seoTitle: 'TallyCapital: Business Loans',
+    seoTitle: 'Tally Capital (TallyCapital): What It Is',
     date: 'October 13, 2026',
     category: 'Business Finance',
-    description: 'What TallyCapital is: the Tally group financing service that offers pre-qualified business loans to existing Tally customers from inside TallyPrime, and what approval depends on.',
+    description: "Tally Capital, or TallyCapital, is the Tally group's business-loan service for existing Tally customers, applied for in TallyPrime. What approval depends on.",
     tags: ['what is tally capital', 'tallycapital', 'tally business loan', 'business loan for tally users', 'unsecured business loan msme', 'tally capital financing'],
     link: '/products/tallycapital',
     author: 'Sarvadnya Infotech LLP',
@@ -1292,4 +1340,9 @@ async function seed() {
   }
 }
 
-seed();
+// CHANGE: 2026-11-03 — run only when this file is executed directly. `node scripts/seed_news.mjs`
+// still matches (argv[1] is this file), but `import { posts } from './seed_news.mjs'` no longer
+// triggers a full seed against the live cluster.
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+  seed();
+}

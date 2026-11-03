@@ -5,7 +5,8 @@
 //      because the brand lives at the END, so truncation drops only the brand, not the
 //      descriptive head).
 //   3. No duplicate titles across pages (duplicate titles compete in SERPs).
-//   4. Required SEO plumbing exists: app/robots.ts, app/sitemap.ts, app/opengraph-image.tsx,
+//   4. Required SEO plumbing exists: app/robots.ts, app/sitemap.ts, the share image declared
+//      by lib/seo.ts (checked below by resolving OG_IMAGE_PATH to public/<file>),
 //      app/favicon.ico, and the root layout metadata export.
 //   5. Utility routes (checkout / demo / theme-settings) are noindex.
 //   6. WARN: description longer than 160 chars AFTER an appended CONTACT_SUFFIX. Since
@@ -13,7 +14,12 @@
 //      adds the 38-char tail for pages that still carry it. (Google truncates / rewrites
 //      descriptions anyway — trimming that copy is the owner's call.)
 //   7. seoMetadata() must declare `images` in BOTH openGraph and twitter, because an explicit
-//      openGraph without `images` suppresses app/opengraph-image.tsx on every page.
+//      openGraph without `images` drops the share image on every page.
+// CHANGE: 2026-11-03 — the share image moved from the generated /opengraph-image route to the
+// static public/website-thumbnail.png (owner-supplied site thumbnail; the video poster
+// public/video-thumbnail.jpg is now only the hero <video> poster), so rule 4 no longer looks
+// for a .tsx file convention; it resolves whatever OG_IMAGE_PATH says and requires that file to
+// exist (see below).
 // Run: npm run check:seo   (exit 1 on any violation)
 import { readFileSync, readdirSync, statSync, existsSync } from 'node:fs'
 import { join, relative } from 'node:path'
@@ -194,7 +200,6 @@ for (const file of files) {
 const required = [
   'app/robots.ts',
   'app/sitemap.ts',
-  'app/opengraph-image.tsx',
   'app/favicon.ico',
 ]
 for (const f of required) if (!existsSync(join(ROOT, f))) problems.push(`missing required file: ${f}`)
@@ -207,6 +212,9 @@ for (const f of required) if (!existsSync(join(ROOT, f))) problems.push(`missing
 // and /cart (which declare no openGraph at all) still carried it — so the 2026-10-12
 // share-image work was inert site-wide. The file existing is not enough; the helper has
 // to declare the image, otherwise every share card silently loses its artwork again.
+// CHANGE: 2026-11-03 — the image itself is now static (public/website-thumbnail.png), so this
+// block also proves the declared path resolves to a real file. A typo here would ship
+// og:image pointing at a 404 on every page, which WhatsApp renders as no preview at all.
 const seoSrc = readFileSync(join(ROOT, 'lib/seo.ts'), 'utf8')
 const ogStart = seoSrc.indexOf('openGraph: {')
 const twStart = seoSrc.indexOf('twitter: {')
@@ -216,7 +224,7 @@ if (twStart === -1 || twStart < ogStart) problems.push('lib/seo.ts: seoMetadata(
 if (ogStart !== -1 && twStart > ogStart) {
   const ogBlock = seoSrc.slice(ogStart, twStart)
   if (!/\bimages\s*:/.test(ogBlock)) {
-    problems.push('lib/seo.ts: openGraph declares no `images` — that suppresses app/opengraph-image.tsx on every page (og:image disappears)')
+    problems.push('lib/seo.ts: openGraph declares no `images` — the share preview loses its artwork on every page')
   }
   const twBlock = seoSrc.slice(twStart, noindexStart === -1 ? seoSrc.length : noindexStart)
   if (!/\bimages\s*:/.test(twBlock)) {
@@ -226,9 +234,26 @@ if (ogStart !== -1 && twStart > ogStart) {
     problems.push('lib/seo.ts: twitter card is not `summary_large_image` (a small card crops a 1200x630 share image)')
   }
 }
-// The helper points at the file-based route, so the two must agree on the name.
-if (!/OG_IMAGE_PATH\s*=\s*['"]\/opengraph-image['"]/.test(seoSrc)) {
-  problems.push('lib/seo.ts: OG_IMAGE_PATH must be /opengraph-image (the app/opengraph-image.tsx route)')
+// The helper names the share image; that path MUST resolve to a real file in public/.
+// CHANGE: 2026-11-03 — was a hard-coded `/opengraph-image` literal (the old generated route).
+// Now the path is whatever lib/seo.ts declares, and the guard fails if the file is missing.
+const ogPathMatch = seoSrc.match(/OG_IMAGE_PATH\s*=\s*['"]([^'"]+)['"]/)
+if (!ogPathMatch) {
+  problems.push('lib/seo.ts: no OG_IMAGE_PATH literal — the share image cannot be verified')
+} else {
+  const ogPath = ogPathMatch[1]
+  const ogFile = join(ROOT, 'public', ogPath.replace(/^\//, ''))
+  if (!existsSync(ogFile)) {
+    problems.push(`lib/seo.ts: OG_IMAGE_PATH is ${ogPath} but public${ogPath} does not exist (og:image would 404)`)
+  }
+  // WhatsApp/LinkedIn/Facebook want a landscape image; a portrait or square share image gets
+  // cropped to a strip. Guard the declared ratio rather than trusting memory.
+  const w = seoSrc.match(/OG_IMAGE_WIDTH\s*=\s*(\d+)/)
+  const h = seoSrc.match(/OG_IMAGE_HEIGHT\s*=\s*(\d+)/)
+  if (!w || !h) problems.push('lib/seo.ts: OG_IMAGE_WIDTH / OG_IMAGE_HEIGHT must be numeric literals')
+  else if (Number(w[1]) / Number(h[1]) < 1.5) {
+    problems.push(`lib/seo.ts: share image is ${w[1]}x${h[1]} (ratio < 1.5) — social cards will crop it`)
+  }
 }
 
 // Root layout must export metadata

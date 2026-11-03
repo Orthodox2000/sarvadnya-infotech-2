@@ -173,8 +173,13 @@ historical mirror — never assume it has history `origin` lacks. `git remote -v
 ### 5.2 SEO plumbing
 - `seoMetadata()` in `lib/seo.ts` is the single metadata helper for ~50 pages. It **must** declare
   `images` in **both** `openGraph` and `twitter` (with `summary_large_image`) — a page-level `openGraph`
-  object without `images` **replaces** the file-based `app/opengraph-image.tsx` and silently kills the share
-  card everywhere. It takes `contactSuffix` to opt out of the phone/location tail on reference pages.
+  object without `images` **replaces** the layout's share image and silently kills the share card
+  everywhere. The one share image is **`public/website-thumbnail.png`** (1280×720, the owner's site
+  artwork, no alpha channel); **`public/video-thumbnail.jpg` is now only the homepage hero-video `poster`
+  and must not be used as a share image again** — a plain in-place overwrite of either file will not
+  propagate, because images are served `immutable` for a year;
+  `app/opengraph-image.tsx` / `app/twitter-image.tsx` were retired on 2026-11-03, so do not recreate them.
+  It takes `contactSuffix` to opt out of the phone/location tail on reference pages.
 - `articleJsonLd()` takes **`path`** for anything outside `/news` — `slug` gets `/news/` prefixed and
   produced double-slash URLs that GSC flagged. A slash inside `slug` now fails `check:schema`.
 - **Ratings are computed, never typed.** The only permitted rating on the site is the review-wall average

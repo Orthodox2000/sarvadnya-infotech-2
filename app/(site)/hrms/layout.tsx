@@ -4,9 +4,11 @@ import { seoMetadata } from "@/lib/seo";
 // so per-route metadata lives in this colocated server layout.
 // CHANGE: 2026-08-27 — SEO metadata for AI/search indexing.
 // CHANGE: 2026-10-29 — action-first title + tightened description for CTR (impressions without clicks).
+// CHANGE: 2026-11-03 — GSC 28d: /hrms 39 impressions, 0 clicks, position 7.6; the only visible
+// query is "tally hrms". "Get HRMS Built Into TallyPrime" never contains that phrase.
 export const metadata = seoMetadata({
-  title: "Get HRMS Built Into TallyPrime",
-  description: "Manage payroll, attendance, employee lifecycle and statutory compliance inside TallyPrime on one platform.",
+  title: "Tally HRMS & Payroll Software",
+  description: "Payroll, attendance, employee lifecycle and statutory compliance inside TallyPrime, on one platform.",
   path: "/hrms",
   keywords: ["tally hrms", "tallyprime hrms", "tally payroll", "payroll software", "attendance software"],
 });

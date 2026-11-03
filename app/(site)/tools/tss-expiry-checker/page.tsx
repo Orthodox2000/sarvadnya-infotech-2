@@ -9,10 +9,13 @@ import Footer from "../../../components/Footer";
 import TssExpiryChecker from "./TssExpiryChecker";
 import { breadcrumbJsonLd, faqPageJsonLd, seoMetadata } from "@/lib/seo";
 
+// CHANGE: 2026-11-03 — GSC 28d: 33 impressions, 0 clicks, position 6.7; the demand is "tss
+// verify" (57 impressions, 0 clicks) and "verify tss" (10, 0). The tool's title now leads with
+// the verb those queries start with. contactSuffix stays off, so the full 160 chars are free.
 export const metadata: Metadata = seoMetadata({
-  title: "TSS Expiry Checker for TallyPrime",
+  title: "Verify TSS Expiry in TallyPrime",
   description:
-    "Enter your TSS coverage end date to see the days left, what keeps working and what stops when TSS expires. Free, no signup, nothing stored.",
+    "Check how many days are left on your TSS: enter the coverage end date to see what keeps working and what stops when TSS expires. Free, no signup.",
   path: "/tools/tss-expiry-checker",
   keywords: [
     "tss expiry checker",

@@ -38,8 +38,9 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const title = item.seoTitle || item.title || 'News';
   const description = item.seoDescription || item.excerpt || excerptFrom(item.description || item.content || '', 160);
   // CHANGE: 2026-10-27 — pass the article's own cover image as the share image.
-  // seoMetadata() now always declares an og:image (it used to declare none, which
-  // suppressed the file-based opengraph-image.tsx), so an article with artwork prefers it.
+  // seoMetadata() always declares an og:image (it used to declare none, which suppressed the
+  // then-file-convention card), so an article with artwork prefers it; without one it falls
+  // back to the site share image, public/website-thumbnail.png (2026-11-03).
   return seoMetadata({ title, description, path: `/news/${slug}`, keywords: item.tags, image: item.coverImage, contactSuffix: false });
 }
 

@@ -40,20 +40,32 @@ export const metadata: Metadata = {
     siteName: SITE_NAME,
     locale: 'en_IN',
     type: 'website',
+    // CHANGE: 2026-11-03 — this is now the REAL default share image everywhere.
+    // WHY: /website-thumbnail.png is public/website-thumbnail.png — the website thumbnail the
+    // owner supplied (PNG, 1280x720, 8-bit RGB with no alpha channel). It replaced
+    // /video-thumbnail.jpg here, which stays in use only as the homepage hero-video poster.
+    // A declared aspect ratio that does not match the bytes is what makes WhatsApp crop the
+    // preview oddly, so the numbers below are the file's real dimensions. `lib/seo.ts`
+    // OG_IMAGE_* carries the same measured numbers for the pages that call seoMetadata()
+    // (which is nearly all of them).
     images: [
       {
-        url: '/video-thumbnail.jpg', 
-        width: 1200,
-        height: 630,
-        alt: `${SITE_NAME} Logo`,
+        url: '/website-thumbnail.png',
+        width: 1280,
+        height: 720,
+        alt: `${SITE_NAME} — Tally Certified Partner Since 2008`,
       },
     ],
-    
+
   },
   twitter: {
     card: 'summary_large_image',
     title: SITE_TITLE,
     description: SITE_DESCRIPTION,
+    // CHANGE: 2026-11-03 — images added so the X/Twitter card is the same artwork as
+    // WhatsApp/OG (it previously had none and relied on the retired app/twitter-image.tsx).
+    // Same file as openGraph above; X follows OG when a card is not given its own image.
+    images: ['/website-thumbnail.png'],
   },
   robots: { index: true, follow: true },
 };
