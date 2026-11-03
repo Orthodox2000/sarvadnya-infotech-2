@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { SimControl, SimKey, TallyChrome } from "./TallyChrome";
 import { Plus, Zap, Printer, Download } from "lucide-react";
 
 /**
@@ -291,93 +292,74 @@ export default function ContainerSimulator() {
   }
 
   return (
-    <div className="overflow-hidden rounded-2xl border-2 border-[#033B38] bg-white shadow-[0_8px_0_0_#033B38]">
-      {/* Screen switcher */}
-      <div className="flex flex-col gap-3 border-b-2 border-[#033B38] bg-[#033B38] p-3 lg:flex-row lg:items-center lg:justify-between">
-        <div className="flex items-center gap-2.5">
-          <span className="rounded-sm bg-[#D4EAEA] px-2 py-1 font-mono text-[10px] font-extrabold uppercase tracking-wider text-[#033B38]">
-            Live TallyPrime screen
-          </span>
-          <span className="text-[11px] font-semibold text-[#E5F4F4] sm:text-xs">
-            Click a screen or a Tally function key to walk through the module.
-          </span>
-        </div>
+    <TallyChrome
+      company="Sample Container Logistics (FY 2025-26)"
+      tabs={TABS}
+      active={screen}
+      onTab={(id) => go(id as Screen)}
+      title={SCREEN_META[screen].title}
+      crumb={SCREEN_META[screen].crumb}
+      toast={toast}
+      titleBarExtra={
+        <>
+          <button
+            type="button"
+            onClick={() =>
+              go(screen === "loadsheet" ? "voucher" : screen === "voucher" ? "annexure" : "loadsheet")
+            }
+            className="rounded-sm border border-[#033B38] bg-white px-2 py-0.5 font-bold text-[#033B38] hover:bg-[#E5F4F4]"
+          >
+            G: Go To
+          </button>
+          <button type="button" onClick={() => go("annexure")} className="hover:text-[#D4EAEA]">
+            E: Export
+          </button>
+          <button type="button" onClick={() => go("annexure")} className="hover:text-[#D4EAEA]">
+            P: Print
+          </button>
+        </>
+      }
+      sidebar={
+        <>
+          <div className="space-y-1">
+            <p className="px-1 pb-0.5 text-[9px] font-extrabold uppercase tracking-wider text-slate-500">
+              TallyPrime keys
+            </p>
+            <SimKey label="F2: Period" onClick={() => setToast("Period selected: 12-Apr-25 to 15-Apr-25")} />
+            <SimKey
+              label="F3: Company"
+              onClick={() => setToast("Active company: Sample Container Logistics")}
+            />
+            <SimKey label="F4: Contra" muted />
+            <SimKey label="F5: Payment" muted />
+            <SimKey label="F6: Receipt" muted />
+            <SimKey label="F7: Journal" muted />
+            <SimKey label="F9: Purchase" muted />
+            <SimKey label="F8: Sales / Bill" onClick={() => go("voucher")} />
+            <SimKey label="F10: Load Sheet" onClick={() => go("loadsheet")} />
 
-        <div className="flex flex-wrap gap-2" aria-label="TallyPrime screens">
-          {TABS.map((tab) => {
-            const active = screen === tab.id;
-            return (
-              <button
-                key={tab.id}
-                type="button"
-                aria-pressed={active}
-                onClick={() => go(tab.id)}
-                className={`flex items-center gap-2 rounded px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-wider transition-colors sm:text-[11px] ${
-                  active
-                    ? "border border-[#D4EAEA] bg-[#D4EAEA] text-[#033B38]"
-                    : "border border-[#C5E3E3]/40 bg-[#045A57] text-[#E5F4F4] hover:bg-white hover:text-[#033B38]"
-                }`}
-              >
-                <span
-                  className={`inline-flex h-5 w-5 items-center justify-center rounded-full text-[10px] ${
-                    active ? "bg-[#006569] text-white" : "bg-[#033B38] text-white"
-                  }`}
-                >
-                  {tab.step}
-                </span>
-                {tab.label}
-              </button>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* TallyPrime window chrome */}
-      <div className="select-none font-mono text-xs">
-        <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[#045A57] bg-[#045A57] px-3 py-1.5 text-white">
-          <div className="flex flex-wrap items-center gap-3">
-            <div className="flex items-center gap-1.5 rounded-sm border border-[#C5E3E3]/50 bg-[#033B38] px-2.5 py-0.5">
-              <span className="font-sans text-sm font-black tracking-tight text-[#D4EAEA]">Tally</span>
-              <span className="font-sans text-[11px] font-bold text-white">Prime</span>
-              <span className="ml-1 rounded-sm bg-[#D4EAEA] px-1 text-[9px] font-extrabold text-[#033B38]">
-                GOLD
-              </span>
-            </div>
-            <div className="hidden flex-wrap items-center gap-3 text-[10px] font-sans font-medium xl:flex">
-              <span>K: Company</span>
-              <span>Y: Data</span>
-              <span>Z: Exchange</span>
-              <button
-                type="button"
-                onClick={() => go(screen === "loadsheet" ? "voucher" : screen === "voucher" ? "annexure" : "loadsheet")}
-                className="rounded-sm border border-[#033B38] bg-white px-2 py-0.5 font-bold text-[#033B38] hover:bg-[#E5F4F4]"
-              >
-                G: Go To
-              </button>
-              <span>O: Import</span>
-              <button type="button" onClick={() => go("annexure")} className="hover:text-[#D4EAEA]">
-                E: Export
-              </button>
-              <span>M: E-mail</span>
-              <button type="button" onClick={() => go("annexure")} className="hover:text-[#D4EAEA]">
-                P: Print
-              </button>
-            </div>
+            <p className="px-1 pb-0.5 pt-2 text-[9px] font-extrabold uppercase tracking-wider text-[#033B38]">
+              Module controls
+            </p>
+            <SimControl label="B: Billed / Unbilled" onClick={cycleBilling} />
+            <SimControl label="H: Filter size" onClick={cycleSize} />
+            <SimControl label="F: Annexure print" onClick={() => go("annexure")} />
+            <SimControl
+              label="H: Export print"
+              icon={<Download className="h-3 w-3" aria-hidden="true" />}
+              onClick={exportAnnexure}
+            />
           </div>
-          <div className="text-[10px] font-sans font-semibold text-[#D4EAEA]">
-            Company: <span className="font-bold text-white">Sample Container Logistics (FY 2025-26)</span>
+
+          <div className="rounded-sm border border-[#C5E3E3] bg-white p-2 text-[10px] leading-tight text-slate-600">
+            <strong className="mb-0.5 block text-[#033B38]">Interactive tip:</strong>
+            click <span className="font-bold underline">B: Billed / Unbilled</span> or{" "}
+            <span className="font-bold underline">F: Annexure print</span> above.
           </div>
-        </div>
-
-        <div className="flex flex-wrap items-center justify-between gap-2 bg-[#006569] px-3 py-1 font-sans text-[11px] font-bold text-white">
-          <span>{SCREEN_META[screen].title}</span>
-          <span className="rounded-sm bg-[#D4EAEA] px-1.5 py-0.5 font-mono text-[10px] font-extrabold text-[#033B38]">
-            Ctrl+M
-          </span>
-        </div>
-
-        <div className="grid min-h-[460px] grid-cols-1 lg:grid-cols-12">
-          <div className="flex flex-col justify-between border-b border-[#C5E3E3] bg-white lg:col-span-10 lg:border-b-0 lg:border-r">
+        </>
+      }
+    >
+      <div className="flex min-h-full flex-col justify-between">
             {screen === "loadsheet" && (
               <div className="flex flex-1 flex-col justify-between">
                 <div>
@@ -856,106 +838,7 @@ export default function ContainerSimulator() {
                 </div>
               </div>
             )}
-          </div>
-
-          {/* Function-key sidebar */}
-          <div className="flex flex-col justify-between gap-2 bg-[#E5F4F4] p-2 font-sans text-[11px] lg:col-span-2">
-            <div className="space-y-1">
-              <p className="px-1 pb-0.5 text-[9px] font-extrabold uppercase tracking-wider text-slate-500">
-                TallyPrime keys
-              </p>
-              {[
-                { label: "F2: Period", onClick: () => setToast("Period selected: 12-Apr-25 to 15-Apr-25") },
-                { label: "F3: Company", onClick: () => setToast("Active company: Sample Container Logistics") },
-              ].map((key) => (
-                <button
-                  key={key.label}
-                  type="button"
-                  onClick={key.onClick}
-                  className="w-full rounded-sm border border-[#C5E3E3] border-b-2 border-b-[#B8DEDE] bg-white px-2 py-1.5 text-left text-[10px] hover:bg-[#D4EAEA]"
-                >
-                  {key.label}
-                </button>
-              ))}
-              {["F4: Contra", "F5: Payment", "F6: Receipt", "F7: Journal", "F9: Purchase"].map((label) => (
-                <span
-                  key={label}
-                  className="block w-full rounded-sm border border-[#D4EAEA] bg-white/60 px-2 py-1 text-[10px] text-slate-400"
-                >
-                  {label}
-                </span>
-              ))}
-              <button
-                type="button"
-                onClick={() => go("voucher")}
-                className="w-full rounded-sm border border-[#C5E3E3] border-b-2 border-b-[#B8DEDE] bg-white px-2 py-1.5 text-left text-[10px] font-semibold hover:bg-[#D4EAEA]"
-              >
-                F8: Sales / Bill
-              </button>
-              <button
-                type="button"
-                onClick={() => go("loadsheet")}
-                className="w-full rounded-sm border border-[#C5E3E3] border-b-2 border-b-[#B8DEDE] bg-white px-2 py-1.5 text-left text-[10px] font-semibold hover:bg-[#D4EAEA]"
-              >
-                F10: Load Sheet
-              </button>
-
-              <p className="px-1 pb-0.5 pt-2 text-[9px] font-extrabold uppercase tracking-wider text-[#033B38]">
-                Module controls
-              </p>
-              <button
-                type="button"
-                onClick={cycleBilling}
-                className="w-full rounded-sm border border-[#045A57] border-b-2 border-b-[#033B38] bg-[#D4EAEA] px-2 py-2 text-left text-[10px] font-extrabold text-[#033B38] hover:bg-[#C5E3E3]"
-              >
-                B: Billed / Unbilled
-              </button>
-              <button
-                type="button"
-                onClick={cycleSize}
-                className="w-full rounded-sm border border-[#045A57] border-b-2 border-b-[#033B38] bg-[#D4EAEA] px-2 py-2 text-left text-[10px] font-extrabold text-[#033B38] hover:bg-[#C5E3E3]"
-              >
-                H: Filter size
-              </button>
-              <button
-                type="button"
-                onClick={() => go("annexure")}
-                className="w-full rounded-sm border border-[#045A57] border-b-2 border-b-[#033B38] bg-[#D4EAEA] px-2 py-2 text-left text-[10px] font-extrabold text-[#033B38] hover:bg-[#C5E3E3]"
-              >
-                F: Annexure print
-              </button>
-              <button
-                type="button"
-                onClick={exportAnnexure}
-                className="inline-flex w-full items-center gap-1.5 rounded-sm border border-[#045A57] border-b-2 border-b-[#033B38] bg-[#D4EAEA] px-2 py-2 text-left text-[10px] font-extrabold text-[#033B38] hover:bg-[#C5E3E3]"
-              >
-                <Download className="h-3 w-3" aria-hidden="true" />
-                H: Export print
-              </button>
-            </div>
-
-            <div className="rounded-sm border border-[#C5E3E3] bg-white p-2 text-[10px] leading-tight text-slate-600">
-              <strong className="mb-0.5 block text-[#033B38]">Interactive tip:</strong>
-              click <span className="font-bold underline">B: Billed / Unbilled</span> or{" "}
-              <span className="font-bold underline">F: Annexure print</span> above.
-            </div>
-          </div>
-        </div>
-
-        <div className="flex flex-wrap items-center justify-between gap-2 border-t border-[#C5E3E3] bg-[#E5F4F4] px-3 py-1.5 text-[10px] text-[#033B38]">
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="font-bold">TALLY MAIN</span>
-            <span aria-hidden="true">→</span>
-            <span className="font-bold text-[#006569]">{SCREEN_META[screen].crumb}</span>
-          </div>
-          <p
-            aria-live="polite"
-            className="rounded-sm border border-[#045A57] bg-[#D4EAEA] px-2 py-0.5 font-sans font-bold text-[#033B38]"
-          >
-            {toast}
-          </p>
-        </div>
       </div>
-    </div>
+    </TallyChrome>
   );
 }

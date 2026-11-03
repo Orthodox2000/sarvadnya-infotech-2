@@ -32,10 +32,10 @@ export default function ModuleCta({
   )}`;
 
   return (
-    <section id="demo" className="border-b-2 border-[#033B38] bg-white px-6 py-16 scroll-mt-32">
+    <section id="demo" className="border-b-2 border-[#033B38] bg-[#E5F4F4] px-5 py-14 scroll-mt-32 sm:px-6 sm:py-16">
       <div className="mx-auto max-w-6xl">
         {pricing && pricing.length > 0 && (
-          <div className="mb-8 flex flex-col items-start justify-between gap-4 rounded-2xl border-2 border-[#033B38] bg-[#E5F4F4] p-5 shadow-[0_4px_0_0_#033B38] sm:flex-row sm:items-center sm:p-6">
+          <div className="mb-8 flex flex-col items-start justify-between gap-4 rounded-2xl border-2 border-[#033B38] bg-white p-5 shadow-[0_4px_0_0_#033B38] sm:flex-row sm:items-center sm:p-6">
             <div>
               <p className="font-mono text-[10px] font-bold uppercase tracking-wider text-[#006569]">
                 Module pricing · TDL licence
@@ -63,7 +63,7 @@ export default function ModuleCta({
                   {pricing.map((row) => (
                     <li
                       key={row.label}
-                      className="flex flex-wrap items-baseline justify-between gap-2 rounded-xl border border-[#C5E3E3] bg-white px-4 py-2.5"
+                      className="flex flex-wrap items-baseline justify-between gap-2 rounded-xl border border-[#C5E3E3] bg-[#E5F4F4] px-4 py-2.5"
                     >
                       <span className="text-xs font-bold text-slate-700">{row.label}</span>
                       <span className="font-mono text-base font-black text-[#006569]">{row.price}</span>
@@ -112,11 +112,11 @@ export default function ModuleCta({
             </div>
           </div>
 
-          <div className="rounded-2xl border-2 border-[#033B38] bg-[#E5F4F4] p-6 shadow-[0_6px_0_0_#033B38] sm:p-8 lg:col-span-7">
+          <div className="rounded-2xl border-2 border-[#033B38] bg-white p-6 shadow-[0_6px_0_0_#033B38] sm:p-8 lg:col-span-7">
             <h2 className="text-2xl font-black text-[#033B38]">Book a live TallyPrime demo</h2>
             <p className="mt-1 text-sm font-medium text-slate-600">
-              Tell us how your container movements are billed today. We will walk you through load
-              sheets, auto-invoicing and annexure printing on your own process.
+              Tell us how this process runs in your business today. We will walk you through the same
+              module on your own workflow.
             </p>
 
             <div className="mt-6 space-y-3">

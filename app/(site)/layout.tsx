@@ -18,8 +18,9 @@ import CartAddedPopover from "../components/cart/CartAddedPopover";
 import CartDrawer from "../components/cart/CartDrawer";
 // CHANGE: 2026-11-02 — Google preferred-source button, mounted ONCE for the whole (site) group.
 // WHY one mount: a per-page mount duplicated the <Script> and added 14 maintenance points.
-// PreferredSourceGate restricts it to /tally-insights, /news and /tutorials (see its comment) —
-// everywhere else gets the small footer link instead.
+// PreferredSourceGate restricts it to /tally-insights, /news, /tutorials and /modules (see its
+// comment) — everywhere else gets the small footer link instead. The button itself appears once
+// for five seconds per browser session.
 import PreferredSource from "../components/PreferredSource";
 import PreferredSourceGate from "../components/PreferredSourceGate";
 

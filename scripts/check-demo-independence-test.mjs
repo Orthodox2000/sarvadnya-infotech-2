@@ -84,7 +84,10 @@ probe(
 probe(
   'allowlist drift: extra /demo on a NEW line in an allowlisted file is caught',
   'app/robots.ts',
-  (s) => s.replace('disallow: [', "disallow: ['/demo', "),
+  // CHANGE: 2026-11-03 — robots.ts moved its private paths into PRIVATE_PATHS on 2026-10-29 and
+  // the old `disallow: [` anchor no longer existed, so this probe silently mutated nothing and
+  // reported a failure. Anchor on the array that actually holds the paths.
+  (s) => s.replace('const PRIVATE_PATHS = [', "const PRIVATE_PATHS = [\n  '/demo',"),
   1,
 );
 

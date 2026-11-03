@@ -6,6 +6,10 @@ import ModuleCard from "../../components/ModuleCard";
 import Footer from "../../components/Footer";
 import UnifiedContactModal, { FormType } from "../../components/UnifiedContactModal";
 
+// CHANGE: 2026-11-03 — flat, non-animated listing.
+// WHY: the owner asked for the same theme as the module detail pages. The pale gradient
+// background, the two blurred glow divs, the gradient text and the image hover zoom are gone;
+// the page is now dark hero → light grid → dark CTA, all from the teal scale.
 export default function ModulesPage() {
   const [modules, setModules] = useState<Module[]>([]);
   const [loading, setLoading] = useState(true);
@@ -50,82 +54,80 @@ export default function ModulesPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[linear-gradient(90deg,rgba(249,251,245,1)_0%,rgba(244,242,234,1)_53%,rgba(238,236,223,1)_100%)]">
-      {/* Compact Hero Section (Radiant Sky Theme) */}
-      <section className=" relative pt-12 md:pt-12 md:pb-8 px-6 overflow-hidden ">
-        {/* Background Effects */}
-        <div className="absolute inset-0 opacity-40 pointer-events-none">
-          <div className="absolute top-0 right-0 w-[60%] h-[60%] bg-white/40 blur-[130px] -mr-32 -mt-32" />
-          <div className="absolute bottom-0 left-0 w-[40%] h-[40%] bg-teal-200/30 blur-[110px] -ml-24 -mb-24" />
-        </div>
-
-        <div className="relative z-10 max-w-7xl mx-auto text-center">
-          
-          <div className="inline-flex items-center gap-1.5 px-2 py-1 rounded-full bg-slate-900/5 border border-slate-900/10 text-slate-500 text-[10px] font-bold uppercase tracking-[0.2em] mb-8 backdrop-blur-sm">
-            <span className="flex h-1 w-1 rounded-full bg-slate-400"></span>
+    <div className="min-h-screen bg-white">
+      {/* Hero — same dark band as every module detail page */}
+      <section className="border-b-2 border-[#033B38] bg-[#033B38] px-5 py-12 sm:px-6 sm:py-16">
+        <div className="mx-auto max-w-7xl text-center">
+          <p className="inline-flex items-center gap-2 rounded-sm border border-[#C5E3E3]/40 bg-[#045A57] px-3 py-1 font-mono text-[10px] font-extrabold uppercase tracking-wider text-[#E5F4F4]">
+            <span className="h-1.5 w-1.5 rounded-full bg-[#D4EAEA]" aria-hidden="true" />
             Specialized Solutions
-          </div>
-          <h1 className="text-3xl md:text-5xl font-black text-slate-900 mb-6 leading-tight tracking-tight">
-            Ready-to-Run<br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#006569] to-[#006569] drop-shadow-[0_2px_15px_rgba(0,101,105,0.2)]">Industry Modules</span>
+          </p>
+          <h1 className="mt-4 text-3xl font-black leading-tight tracking-tight text-white sm:text-5xl">
+            Ready-to-run industry modules
           </h1>
-          <p className="text-slate-600/80 text-sm md:text-xl max-w-5xl mx-auto leading-relaxed font-semibold">
-            Why start from scratch? We&apos;ve already designed and tested the exact features your business needs. Simply plug in our pre-built modules to transform your Tally into a complete, easy-to-use system that handles your daily operations instantly.
+          <p className="mx-auto mt-4 max-w-3xl text-sm font-medium leading-relaxed text-[#E5F4F4] sm:text-lg">
+            Why start from scratch? We have already designed and tested the exact features your
+            business needs. Plug in our pre-built modules and turn Tally into a complete system that
+            handles your daily operations from day one.
           </p>
         </div>
       </section>
 
       {/* Modules Grid */}
-      <section className="py-12 px-6 max-w-7xl mx-auto ">
-        {loading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
-            {Array.from({ length: 6 }).map((_, i) => (
-              <div key={i} className="rounded-[1.5rem] border border-slate-200 p-4 md:p-[18px] shadow-sm animate-pulse">
-                <div className="h-28 rounded-2xl bg-slate-200" />
-                <div className="mt-4 space-y-3">
-                  <div className="h-5 w-3/4 rounded bg-slate-200" />
-                  <div className="h-4 w-full rounded bg-slate-200" />
-                  <div className="h-4 w-5/6 rounded bg-slate-200" />
-                  <div className="grid grid-cols-2 gap-2 mt-4">
-                    <div className="h-6 rounded-full bg-slate-200" />
-                    <div className="h-6 rounded-full bg-slate-200" />
-                    <div className="h-6 rounded-full bg-slate-200" />
-                    <div className="h-6 rounded-full bg-slate-200" />
+      <section className="border-b-2 border-[#033B38] bg-[#E5F4F4] px-5 py-12 sm:px-6 sm:py-14">
+        <div className="mx-auto max-w-7xl">
+          {loading ? (
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {Array.from({ length: 6 }).map((_, i) => (
+                <div key={i} className="rounded-2xl border border-[#C5E3E3] bg-white p-4">
+                  <div className="h-36 rounded-xl bg-[#D4EAEA]" />
+                  <div className="mt-4 space-y-3">
+                    <div className="h-5 w-3/4 rounded bg-[#D4EAEA]" />
+                    <div className="h-4 w-full rounded bg-[#E5F4F4]" />
+                    <div className="h-4 w-5/6 rounded bg-[#E5F4F4]" />
+                    <div className="mt-4 grid grid-cols-2 gap-2">
+                      <div className="h-9 rounded-xl bg-[#E5F4F4]" />
+                      <div className="h-9 rounded-xl bg-[#E5F4F4]" />
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-            {modules.map((module) => (
-              <ModuleCard
-                key={module._id || module.id}
-                module={module}
-                onEnquire={handleEnquire}
-              />
-            ))}
-          </div>
-        )}
+              ))}
+            </div>
+          ) : modules.length === 0 ? (
+            <p className="rounded-2xl border border-[#C5E3E3] bg-white p-8 text-center text-sm font-semibold text-slate-600">
+              Module list is unavailable right now. Call 022 49647959 or WhatsApp +91 98709 42557 and
+              we will send the brochures directly.
+            </p>
+          ) : (
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {modules.map((module) => (
+                <ModuleCard
+                  key={module._id || module.id}
+                  module={module}
+                  onEnquire={handleEnquire}
+                />
+              ))}
+            </div>
+          )}
+        </div>
       </section>
 
-      {/* Trust Banner (High Contrast CTA) */}
-      <section className="py-16 px-6 bg-slate-950 relative overflow-hidden">
-        {/* Subtle decorative glow */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-full bg-[#006569]/10 blur-[120px] pointer-events-none"></div>
-        
-        <div className="max-w-4xl mx-auto text-center relative z-10">
-          <h2 className="text-2xl md:text-4xl font-black text-white mb-6">Need a Custom TDL Solution?</h2>
-          <p className="text-slate-400 text-sm md:text-lg mb-10 leading-relaxed max-w-2xl mx-auto">
-            Don't see a module that fits your specific needs? Our TDL experts can develop a bespoke solution tailored 
-            exactly to your business processes.
+      {/* Trust Banner — flat dark band, no glow */}
+      <section className="border-b-2 border-[#033B38] bg-[#033B38] px-5 py-14 sm:px-6 sm:py-16">
+        <div className="mx-auto max-w-4xl text-center">
+          <h2 className="text-2xl font-black text-white sm:text-4xl">Need a custom TDL solution?</h2>
+          <p className="mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-[#E5F4F4] sm:text-lg">
+            Don&apos;t see a module that fits your specific needs? Our TDL experts can develop a bespoke
+            solution tailored exactly to your business processes.
           </p>
-          <button 
+          <button
             onClick={() => setContactModalConfig({ isOpen: true, type: 'callback', service: 'Bespoke TDL Customization' })}
-            className="group px-10 py-4 bg-[#006569] text-white rounded-full font-bold transition-all shadow-xl shadow-teal-900/20 flex items-center gap-3 mx-auto"
+            className="mx-auto mt-8 inline-flex items-center gap-3 rounded-xl border-2 border-[#D4EAEA] bg-[#D4EAEA] px-8 py-3.5 text-xs font-extrabold uppercase tracking-wider text-[#033B38] shadow-[0_2px_0_0_#045A57] transition-colors hover:bg-white"
           >
-            Consult Our Team
-            <svg className="w-5 h-5 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+            Consult our team
+            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5" aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
           </button>
         </div>
       </section>

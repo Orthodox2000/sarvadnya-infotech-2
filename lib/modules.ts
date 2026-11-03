@@ -8,6 +8,31 @@ export function moduleHref(id?: string | null): string {
   return `/modules/${encodeURIComponent(String(id || "").trim())}`;
 }
 
+/**
+ * CHANGE: 2026-11-03 — one definition of "this URL is a real, embeddable YouTube video".
+ *
+ * WHY: five modules still carry `https://www.youtube.com/embed/dQw4w9WgXcQ` in the database.
+ * That is a placeholder, not a product video. Embedding it (or linking it as "Watch Video")
+ * shipped a Rickroll on a Tally partner site. Everything — the module page, the module card
+ * and ModuleVideo — must ask this helper instead of testing `videoUrl` for truthiness.
+ */
+const YOUTUBE_VIDEO_RE =
+  /(?:youtu\.be\/|youtube\.com\/(?:embed\/|watch\?v=|shorts\/|live\/))([A-Za-z0-9_-]{11})/;
+
+const PLACEHOLDER_VIDEO_IDS = new Set(["dQw4w9WgXcQ"]);
+
+export function youTubeVideoId(url?: string | null): string | null {
+  if (!url) return null;
+  const match = String(url).match(YOUTUBE_VIDEO_RE);
+  if (!match) return null;
+  if (PLACEHOLDER_VIDEO_IDS.has(match[1])) return null;
+  return match[1];
+}
+
+export function hasEmbeddableVideo(url?: string | null): boolean {
+  return Boolean(youTubeVideoId(url));
+}
+
 export interface Module {
 
   _id?: string;

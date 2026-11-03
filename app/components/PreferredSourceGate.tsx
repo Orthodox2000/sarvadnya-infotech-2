@@ -17,7 +17,11 @@ import { usePathname } from 'next/navigation';
 //
 // Segment-exact deliberately: `/newsletter` must not match `/news`, and `/tutorials-archive` must
 // not match `/tutorials`. A bare `startsWith('/news')` would swallow both.
-const ALLOWED_PREFIXES = ['/tally-insights', '/news', '/tutorials'] as const;
+//
+// CHANGE: 2026-11-03 — the six module pages are now real brochure landings, so `/modules` joins
+// the allow-list. The component itself appears once for 5 seconds per browser session (see
+// PreferredSource.tsx), so this does not add a permanent overlay to the listing or its children.
+const ALLOWED_PREFIXES = ['/tally-insights', '/news', '/tutorials', '/modules'] as const;
 
 function isAllowed(pathname: string): boolean {
   return ALLOWED_PREFIXES.some(
