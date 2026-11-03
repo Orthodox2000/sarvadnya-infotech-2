@@ -108,6 +108,14 @@ const nextConfig = {
       { source: '/ensure-quality-training-and-service-thereafter-increase-client-satisfaction', destination: '/services', permanent: true },
       // 2026-10-12 — clear GSC 404s reported by user
       { source: '/news/tally-dealers-mumbai', destination: '/news', permanent: true },
+      // CHANGE: 2026-11-03 — cannibalisation 301 (owner-approved). /news/it-companies-in-belapur
+      // (28 impressions, position 14.25) and /news/cbd-belapur-it-companies-list (610 impressions,
+      // position 6.52) were chasing the same "it companies in belapur" cluster, so the weak URL is
+      // retired into the strong one instead of competing. The article document is NOT deleted: its
+      // slug is listed in RETIRED_NEWS_SLUGS (lib/news-utils.ts), which fetchNews() filters, so it
+      // disappears from the listing, search, related posts and sitemap while this 301 keeps its
+      // inbound links working. Keep the two in step — see the comment on that constant.
+      { source: '/news/it-companies-in-belapur', destination: '/news/cbd-belapur-it-companies-list', permanent: true },
       { source: '/category/uncategorized', destination: '/news', permanent: true },
       { source: '/category/uncategorized/', destination: '/news', permanent: true },
       { source: '/shop/bumper stickers', destination: '/products', permanent: true },

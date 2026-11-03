@@ -9,6 +9,16 @@ import { NewsItem } from './news';
 
 export const DEFAULT_AUTHOR = 'Sarvadnya Infotech LLP';
 
+// CHANGE: 2026-11-03 — retired news slugs (owner-approved 301s).
+// WHY a list instead of a DB delete: the article keeps its content and its _id (recoverable, and
+// the admin panel still shows it), while the frontend stops treating it as a live page. Every
+// consumer that reads getNews() - the /news listing, /api/news, site search, related posts and
+// sitemap.xml - goes through fetchNews(), which filters this list, so there is one place to add or
+// undo a retirement. The matching 301 lives in next.config.js `redirects()`; the two must be kept
+// in step (a slug here without a redirect throws away its inbound links, a redirect without an
+// entry here leaves a dead URL in the sitemap).
+export const RETIRED_NEWS_SLUGS = ['it-companies-in-belapur'];
+
 /** Deterministic URL slug from a title. Lowercases, strips punctuation, collapses whitespace. */
 export function slugifyText(text: string): string {
   return text

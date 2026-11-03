@@ -38,7 +38,9 @@ const SLUGS = [
   'what-is-tally-capital',
   'how-to-check-tss-expiry-date-tallyprime',
   'cbd-belapur-it-companies-list',
-  'it-companies-in-belapur',
+  // REMOVED 2026-11-03: 'it-companies-in-belapur' — retired into the list post by a 301 (see
+  // RETIRED_NEWS_SLUGS in lib/news-utils.ts). Its title no longer reaches a visitor, so keeping it
+  // here would just be a second, invisible copy of the same fix.
   'tally-tss-renewal-2026',
   'tallyprime-international-licenses',
   'tally-5-star-partner-mumbai',

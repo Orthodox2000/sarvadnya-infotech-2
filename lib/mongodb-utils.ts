@@ -1,7 +1,7 @@
 import clientPromise from './mongodb';
 import { ObjectId } from 'mongodb';
 import { staticPartners } from './partners';
-import { enrichNews } from './news-utils';
+import { enrichNews, RETIRED_NEWS_SLUGS } from './news-utils';
 // Caching disabled
 
 export async function getDb() {
@@ -326,7 +326,15 @@ export async function deletePartner(id: string) {
 async function fetchNews() {
   const col = await getCollection('news');
   const data = await col.find({}).toArray();
-  data.sort((a, b) => {
+  // CHANGE: 2026-11-03 — drop retired (301'd) slugs before anything sees the list.
+  // WHY here and not at each consumer: this function feeds the /news listing, /api/news, the
+  // search API, related posts and sitemap.xml. Filtering at the source means a retired article
+  // cannot keep appearing as a card that links to a redirect, and the sitemap cannot advertise a
+  // URL that 301s (GSC reports that as "Page with redirect"). The document itself is untouched.
+  const live = RETIRED_NEWS_SLUGS.length
+    ? data.filter((d) => !RETIRED_NEWS_SLUGS.includes(enrichNews(d).slug as string))
+    : data;
+  live.sort((a, b) => {
     const ta = new Date(a.date).getTime();
     const tb = new Date(b.date).getTime();
     const va = Number.isNaN(ta) ? 0 : ta;
@@ -334,7 +342,7 @@ async function fetchNews() {
     if (va !== vb) return vb - va;
     return String(b._id).localeCompare(String(a._id));
   });
-  return serializeData(data.map((d) => enrichNews(d)));
+  return serializeData(live.map((d) => enrichNews(d)));
 }
 
 export const getNews = async () => fetchNews();

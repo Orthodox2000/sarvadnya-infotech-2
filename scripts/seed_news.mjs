@@ -198,6 +198,11 @@ Sarvadnya Infotech deploys and supports Tally on Cloud - official Tally licenses
     // /news/cbd-belapur-it-companies-list holds the same cluster at position 6.52 with 610
     // impressions. Two pages ranking for one query split the signal, so this one is re-scoped to
     // IT *support* and the list post is the canonical answer. No URL change, no content change.
+    // RETIRED 2026-11-03 (owner-approved): the re-scope was not enough, so this URL now 301s to
+    // /news/cbd-belapur-it-companies-list (next.config.js) and its slug sits in RETIRED_NEWS_SLUGS
+    // (lib/news-utils.ts), which fetchNews() filters. The post is deliberately KEPT here so the
+    // copy and its _id survive; to bring it back, remove the slug from that list and the redirect,
+    // and give it its own topic so it does not re-split the Belapur cluster.
     slug: 'it-companies-in-belapur',
     title: 'IT Companies in Belapur: How Certified Tally Partners Support Navi Mumbai Business',
     seoTitle: 'IT Support Companies in Belapur',

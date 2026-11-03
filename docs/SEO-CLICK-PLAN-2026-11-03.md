@@ -218,10 +218,13 @@ Search Console's own reporting lags a further 2–3 days. Anything measured soon
    duplicate, Alt+R narration, Alt+S stock query, Alt+T/Alt+U hide-unhide), and 19 new FAQs answer the
    "what is `<key>` used for" shape that produced most of those impressions. No new shortcut fact was
    introduced — every answer restates a mapping the page already had (see §8.2).
-4. **Two of our posts compete for one Belapur query.** `/news/cbd-belapur-it-companies-list` (610 imps,
-   pos 6.5) and `/news/it-companies-in-belapur` (28 imps, pos 14.25) target the same cluster. Today's
-   change re-scopes the weaker one to "IT support"; the proper fix is a 301 of the weak URL into the
-   strong one. **Needs owner approval** — it retires a published URL.
+4. ~~**Two of our posts compete for one Belapur query.**~~ **DONE 2026-11-03, owner-approved.**
+   `/news/cbd-belapur-it-companies-list` (610 imps, pos 6.5) and `/news/it-companies-in-belapur`
+   (28 imps, pos 14.25) chased the same cluster, so the weak URL now **301s** into the strong one:
+   `next.config.js` carries the redirect, and its slug sits in `RETIRED_NEWS_SLUGS`
+   (`lib/news-utils.ts`), which `fetchNews()` filters — so the article leaves the listing, search,
+   related posts and `sitemap.xml` at the source. The document itself is kept (recoverable, still
+   visible in the admin panel); un-retiring is two edits, not a restore.
 5. **`/news/tally-hrms-software` (15 imps) vs `/hrms` (39 imps).** Editorial vs commercial, same
    query. Keep both, but make the commercial page the one that answers "tally hrms" and let the post
    own "payroll software".
