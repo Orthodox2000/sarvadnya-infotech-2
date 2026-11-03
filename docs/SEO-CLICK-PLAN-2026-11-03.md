@@ -160,14 +160,19 @@ correction is that Sarvadnya is a 3 star partner, so the title must not read as 
 Two mechanical details that matter:
 
 - **16 of these are code** (`lib/learn-tally-curriculum.ts`, `app/(site)/**/layout.tsx`,
-  `app/(site)/tools/tss-expiry-checker/page.tsx`) — they go live on the next deploy.
+  `app/(site)/tools/tss-expiry-checker/page.tsx`) — **live since `364b20f`** (deployed 2026-11-03,
+  verified on the domain).
 - **11 are MongoDB documents.** `/news/[slug]` reads `seoTitle` and `description` from the `news`
   collection, so `scripts/seed_news.mjs` alone changes nothing on the live site. Those 11 have been
   pushed with `node scripts/update-news-seo.mjs --apply` (dry-run by default; it writes only those two
   fields, on an explicit slug list, and the values are imported from the seed so there is no second
   copy to drift). Re-running it reports `0 to update`, which is the idempotency check.
-- The news route is **`force-dynamic`**, so those 11 titles are live now, without a deploy. The 16 code
-  titles need the next deploy.
+- The news route is **`force-dynamic`**, so those 11 titles were live immediately, without a deploy. The
+  16 code titles went live with the rest on **`364b20f`**.
+
+**Deployed status (2026-11-03):** everything in this document is live. Commit `364b20f`, pushed to
+`origin` and `secondary`, Vercel served the build in ~100 s. Spot-checked on the domain: the lesson's
+`<title>`, `/cloud`, `/services`, `/products`, `/about`, and `og:image` on `/`.
 
 Descriptions were rewritten on the same pages so the snippet reads as an answer and not a listing.
 
