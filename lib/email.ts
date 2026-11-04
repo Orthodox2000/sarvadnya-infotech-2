@@ -14,6 +14,10 @@ import {
   DEFAULT_COMPANY,
 } from '@/lib/email-autoreply.mjs';
 import type { AutoreplyCompany } from '@/lib/email-autoreply.mjs';
+// CHANGE: 2026-11-04 — Same masthead/footer markup for every template (internal
+// form copy included), so the brand cannot drift template by template.
+import { renderBrandHeader, renderBrandFooter } from '@/lib/email-brand.mjs';
+import type { EmailLogo } from '@/lib/email-brand.mjs';
 
 export interface FormSubmissionPayload {
   name: string;
@@ -111,7 +115,12 @@ export function getSubject(formType?: string): string {
   return `New ${getFormTypeLabel(formType)} — Sarvadnya Infotech`;
 }
 
-export function buildFormEmailHtml(submission: FormSubmissionPayload): string {
+export function buildFormEmailHtml(
+  submission: FormSubmissionPayload,
+  options?: { company?: AutoreplyCompany; logo?: EmailLogo }
+): string {
+  const company = options?.company || DEFAULT_COMPANY;
+
   const gpcOptOut = !submission.geo && !submission.ip;
 
   const location = submission.geo
@@ -166,26 +175,31 @@ export function buildFormEmailHtml(submission: FormSubmissionPayload): string {
   return `
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="x-apple-disable-message-reformatting" />
+    <title>New ${escapeHtml(getFormTypeLabel(submission.formType))}</title>
+  </head>
   <body style="margin:0;padding:0;background:#f1f3f2;font-family:Arial,Helvetica,sans-serif;">
     <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background:#f1f3f2;padding:24px 12px;">
       <tr>
         <td align="center">
-          <table role="presentation" width="100%" style="max-width:560px;background:#ffffff;border-radius:14px;overflow:hidden;box-shadow:0 8px 24px rgba(31,77,58,0.08);">
-            <tr>
-              <td style="background:#006569;padding:22px 24px;">
-                <p style="margin:0;color:#ffffff;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;white-space:nowrap;">Sarvadnya Infotech LLP</p>
-                <h1 style="margin:6px 0 0;color:#ffffff;font-size:20px;font-weight:800;">New ${escapeHtml(getFormTypeLabel(submission.formType))}</h1>
-              </td>
-            </tr>
+          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:560px;background:#ffffff;border-radius:14px;overflow:hidden;box-shadow:0 8px 24px rgba(31,77,58,0.08);">
+            ${renderBrandHeader({ company, logo: options?.logo })}
             <tr>
               <td style="padding:24px;">
+                <p style="margin:0 0 6px;color:#045A57;font-size:20px;font-weight:800;">New ${escapeHtml(getFormTypeLabel(submission.formType))}</p>
                 <p style="margin:0 0 16px;color:#5b6b64;font-size:13px;line-height:1.5;">A new web enquiry has been received. Details below:</p>
                 <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse:collapse;">
                   ${rowsHtml}
                 </table>
-                <p style="margin:20px 0 0;color:#8a9a92;font-size:11px;line-height:1.5;">This is an automated notification. Reply to this email to respond to the enquirer directly (their address is set as the reply-to).${submission.sessionId ? ` Captured via passive visitor identification · Session ${submission.sessionId.slice(0, 8)}…` : ' Captured via passive visitor identification.'}</p>
               </td>
             </tr>
+            ${renderBrandFooter({
+              company,
+              footerHtml: `This is an automated notification. Reply to this email to respond to the enquirer directly (their address is set as the reply-to).${submission.sessionId ? ` Captured via passive visitor identification · Session ${escapeHtml(submission.sessionId.slice(0, 8))}…` : ' Captured via passive visitor identification.'}`,
+            })}
           </table>
         </td>
       </tr>
@@ -306,7 +320,7 @@ export async function resolveRecipients(input: {
 
 export async function sendInternalFormCopy(
   submission: FormSubmissionPayload,
-  options?: { recipients?: string[]; from?: string }
+  options?: { recipients?: string[]; from?: string; destination?: string }
 ): Promise<SendResult> {
   const { apiKey, from: configuredFrom } = await getEmailConfig();
 
@@ -327,9 +341,14 @@ export async function sendInternalFormCopy(
   }
 
   const resend = new Resend(apiKey);
-  // CHANGE: 2026-10-07 — Global CC (one address, all emails) rides the same
-  // payload as the recipients; null when disabled/invalid → no cc key at all.
-  const globalCc = await getGlobalCc();
+  // CHANGE: 2026-11-04 — Global CC is now destination-scoped: only a category
+  // ticked in the admin Email Config may carry it (see getGlobalCc). The explicit
+  // option wins so a queue retry uses the job's stored destination.
+  const globalCc = await getGlobalCc(options?.destination || submission.destination || submission.formType);
+  // CHANGE: 2026-11-04 — Internal copy renders the same masthead as customer
+  // mail, with the logo embedded inline so it shows even when images are blocked.
+  const company = await getCompanyContact();
+  const logoFile = loadInlineLogo();
   const sendPayload: {
     from: string;
     to: string[];
@@ -337,13 +356,29 @@ export async function sendInternalFormCopy(
     subject: string;
     html: string;
     replyTo?: string;
+    attachments?: { filename: string; content: Buffer; contentType: string; contentId: string }[];
     tags: { name: string; value: string }[];
   } = {
     from,
     to: recipients,
     ...(globalCc ? { cc: globalCc } : {}),
     subject: getSubject(submission.formType),
-    html: buildFormEmailHtml(submission),
+    html: buildFormEmailHtml(submission, {
+      company,
+      logo: logoFile ? { cid: 'sarvadnya-logo' } : undefined,
+    }),
+    ...(logoFile
+      ? {
+          attachments: [
+            {
+              filename: 'sarvadnya-logo.png',
+              content: logoFile.buffer,
+              contentType: 'image/png',
+              contentId: 'sarvadnya-logo',
+            },
+          ],
+        }
+      : {}),
     tags: [
       { name: 'source', value: 'web-form' },
       { name: 'form_type', value: submission.formType || 'general' },
@@ -385,13 +420,28 @@ export async function isAutoreplyEnabled(): Promise<boolean> {
   return normalizeFlag(process.env.AUTO_REPLY_ENABLED || '0');
 }
 
-// CHANGE: 2026-10-07 — One GLOBAL CC, applied to every send: the internal form
-// copy AND the client auto-reply (owner: "One global CC, all emails"). The
-// toggle + address are admin-editable (settings EMAIL_CC_ENABLED / EMAIL_CC,
-// falling back to env vars so a fresh deploy is silent). Disabled by default
-// and an invalid address yields NO cc — enabling can never break a send, and
-// each send guards independently so a missing config never triggers email.
-export async function getGlobalCc(): Promise<string[] | null> {
+// CHANGE: 2026-11-04 — Per-category global CC. The master switch alone no
+// longer CCs anything: a page/category must ALSO be ticked in the admin Email
+// Config (setting `EMAIL_CC_DESTINATIONS`, JSON array of destination/form keys).
+// Owner: "I don't want global CC… each email config has a tick mark; if active,
+// that category can trigger global CC." An empty list therefore means NO CC
+// anywhere — the safe default after this change.
+function parseCcDestinations(raw: unknown): string[] {
+  const value = String(raw || '').trim();
+  if (!value) return [];
+  const clean = (list: unknown[]): string[] =>
+    list.map((item) => String(item || '').trim().toLowerCase()).filter(Boolean);
+  try {
+    const parsed = JSON.parse(value);
+    if (Array.isArray(parsed)) return clean(parsed);
+    if (typeof parsed === 'string') return clean(parsed.split(','));
+  } catch {
+    return clean(value.split(','));
+  }
+  return [];
+}
+
+export async function getGlobalCc(destination?: string): Promise<string[] | null> {
   let settings: Record<string, any> = {};
   try {
     settings = await getSettings();
@@ -403,6 +453,13 @@ export async function getGlobalCc(): Promise<string[] | null> {
   if (!enabled) return null;
   const address = String(settings.EMAIL_CC || process.env.EMAIL_CC || '').trim().toLowerCase();
   if (!isValidEmail(address)) return null;
+  const key = String(destination || '').trim().toLowerCase();
+  // No destination → no CC. Only an explicitly ticked category may carry it.
+  if (!key) return null;
+  const allowed = parseCcDestinations(
+    settings.EMAIL_CC_DESTINATIONS || process.env.EMAIL_CC_DESTINATIONS || ''
+  );
+  if (!allowed.includes(key)) return null;
   return [address];
 }
 
@@ -498,9 +555,9 @@ export async function sendClientAutoreply(
     : { url: `${siteUrl}/TallyCertificate.png` };
 
   const resend = new Resend(apiKey);
-  // CHANGE: 2026-10-07 — Global CC applies to the customer auto-reply too
-  // (owner: "one global CC, all emails"); null when disabled → no cc key.
-  const globalCc = await getGlobalCc();
+  // CHANGE: 2026-11-04 — Global CC is destination-scoped now (see getGlobalCc);
+  // an unticked category sends no CC even when the master switch is on.
+  const globalCc = await getGlobalCc(submission.destination || submission.formType);
   const { data, error } = await resend.emails.send({
     from,
     to: [submission.email],
@@ -553,6 +610,11 @@ export interface TemplatedSendInput {
   from?: string;
   /** Attach public/TallyCertificate.png as cid:sarvadnya-logo for the HTML. */
   inlineLogo?: boolean;
+  /**
+   * Destination/form key that decides whether the global CC applies. Only a
+   * category ticked in the admin Email Config receives the CC (2026-11-04).
+   */
+  ccDestination?: string;
   tags?: { name: string; value: string }[];
 }
 
@@ -593,7 +655,8 @@ export async function sendTemplatedEmail(input: TemplatedSendInput): Promise<Tem
   const replyTo = input.replyTo && isValidEmail(input.replyTo) ? String(input.replyTo).trim() : undefined;
 
   // Never CC someone who is already a direct recipient (Resend rejects duplicates).
-  const globalCc = await getGlobalCc();
+  // CHANGE: 2026-11-04 — destination-scoped: no tick = no CC, even if enabled.
+  const globalCc = await getGlobalCc(input.ccDestination);
   const cc = globalCc ? globalCc.filter((address) => !uniqueTo.includes(address)) : null;
 
   const logoFile = input.inlineLogo ? loadInlineLogo() : null;

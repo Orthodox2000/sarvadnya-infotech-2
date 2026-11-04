@@ -93,6 +93,10 @@ export async function POST(req: NextRequest) {
     // well-formed code that EXISTS on another account, else signup is blocked with a
     // distinct `code` the client uses for its 3-strike "continue without referral" hint.
     let referredBy: string | undefined;
+    // CHANGE: 2026-11-04 — also keep the referrer's name so the welcome mail can
+    // say who the code belongs to (owner: "mention name of reference person
+    // attached to email which is auto attached with reference code").
+    let referrerName: string | undefined;
     if (rawReferral != null && String(rawReferral).trim() !== '') {
       const code = normalizeReferralCode(String(rawReferral));
       if (!isValidReferralCodeFormat(code)) {
@@ -101,7 +105,10 @@ export async function POST(req: NextRequest) {
           { status: 400 }
         );
       }
-      const referrer = await users.findOne({ referralCode: code }, { projection: { _id: 1 } });
+      const referrer = await users.findOne(
+        { referralCode: code },
+        { projection: { _id: 1, fullName: 1, email: 1 } }
+      );
       if (!referrer) {
         return NextResponse.json(
           { error: 'This referral code is invalid.', code: 'INVALID_REFERRAL' },
@@ -109,6 +116,7 @@ export async function POST(req: NextRequest) {
         );
       }
       referredBy = code;
+      referrerName = String(referrer.fullName || '').trim() || undefined;
     }
 
     const existing = await users.findOne({ email: email.toLowerCase() });
@@ -155,6 +163,8 @@ export async function POST(req: NextRequest) {
         name: fullName || '',
         email: email.toLowerCase(),
         referralCode,
+        // CHANGE: 2026-11-04 — names the person the referral code belongs to.
+        referrerName,
         loginUrl: `${siteUrl}/careers/login`,
         company,
         // A cid: reference is only correct when the attachment is really there.
@@ -167,6 +177,9 @@ export async function POST(req: NextRequest) {
         html,
         replyTo: company.email,
         inlineLogo,
+        // CHANGE: 2026-11-04 — the global CC only applies to a ticked category,
+        // so the welcome mail must declare which category it is.
+        ccDestination: 'careers',
         tags: [
           { name: 'source', value: 'careers-signup' },
           { name: 'form_type', value: 'careers' },

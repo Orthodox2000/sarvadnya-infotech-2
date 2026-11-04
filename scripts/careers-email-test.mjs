@@ -367,6 +367,38 @@ test('carries the referral code the account was just issued', () => {
   has(accountCreated, 'How it works');
 });
 
+// CHANGE: 2026-11-04 — the welcome mail must name the person the referral code
+// belongs to (owner instruction). Asserted here so a future refactor of the
+// template cannot quietly drop the lookup result on the floor.
+test('names the referrer attached to the code, in the body and in the table', () => {
+  const html = buildAccountCreatedHtml({ ...ACCOUNT, referrerName: 'Rohit Deshmukh' });
+  has(html, 'Rohit Deshmukh');
+  has(html, 'Referred by');
+  has(html, 'shared by');
+  // The code and the person travel together in one sentence.
+  has(html, `shared by <strong>Rohit Deshmukh</strong>`);
+  has(html, ACCOUNT.referralCode);
+});
+
+test('escapes a hostile referrer name and omits the line when there is none', () => {
+  const hostile = buildAccountCreatedHtml({
+    ...ACCOUNT,
+    referrerName: '<img src=x onerror=alert(3)>',
+  });
+  lacks(hostile, '<img src=x onerror=alert(3)>');
+  has(hostile, '&lt;img');
+
+  // Accounts created without a referral carry no name — and no dangling row.
+  lacks(accountCreated, 'Referred by');
+  lacks(accountCreated, 'shared by');
+  lacks(accountCreated, 'undefined');
+
+  // A blank lookup result behaves exactly like an absent one.
+  const blank = buildAccountCreatedHtml({ ...ACCOUNT, referrerName: '   ' });
+  lacks(blank, 'Referred by');
+  lacks(blank, 'shared by');
+});
+
 test('links to the careers login page, and only over http(s)', () => {
   has(accountCreated, `href="${ACCOUNT.loginUrl}"`);
   has(accountCreated, 'Sign in to your account');

@@ -147,11 +147,17 @@ async function sendCompanyHalf(job: {
   recipients: string[];
   from: string;
   formType: string;
+  destination?: string;
   custom?: EmailJobCustom;
 }): Promise<HalfResult & { messageId?: string; recipients: string[] }> {
   const custom = job.custom?.company;
   if (!custom) {
-    return sendInternalFormCopy(job.submission, { recipients: job.recipients, from: job.from });
+    return sendInternalFormCopy(job.submission, {
+      recipients: job.recipients,
+      from: job.from,
+      // CHANGE: 2026-11-04 — destination-scoped global CC for the internal copy.
+      destination: job.destination,
+    });
   }
   const res = await sendTemplatedEmail({
     to: job.recipients,
@@ -159,6 +165,8 @@ async function sendCompanyHalf(job: {
     subject: custom.subject,
     html: custom.html,
     replyTo: custom.replyTo,
+    // CHANGE: 2026-11-04 — the global CC only rides a ticked category.
+    ccDestination: job.destination || job.formType,
     tags: [
       { name: 'source', value: 'careers' },
       { name: 'form_type', value: job.formType },
@@ -176,6 +184,7 @@ async function sendCompanyHalf(job: {
 async function sendSecondHalf(job: {
   submission: FormSubmissionPayload;
   formType: string;
+  destination?: string;
   custom?: EmailJobCustom;
 }): Promise<HalfResult> {
   const custom = job.custom?.applicant;
@@ -186,6 +195,8 @@ async function sendSecondHalf(job: {
     html: custom.html,
     replyTo: custom.replyTo,
     inlineLogo: custom.inlineLogo,
+    // CHANGE: 2026-11-04 — destination-scoped global CC.
+    ccDestination: job.destination || job.formType,
     tags: [
       { name: 'source', value: 'careers' },
       { name: 'form_type', value: job.formType },
@@ -271,8 +282,8 @@ export async function sendEmailDirect(input: {
   // — the caller's applicant template). Both are recorded against this jobKey;
   // the default second email is kill-switch gated (AUTO_REPLY_ENABLED) and
   // skipped when the submitter gave no valid email.
-  const res = await sendCompanyHalf({ submission, recipients, from, formType: type, custom });
-  const autoReplyRes = await sendSecondHalf({ submission, formType: type, custom });
+  const res = await sendCompanyHalf({ submission, recipients, from, formType: type, destination: cleanDestination, custom });
+  const autoReplyRes = await sendSecondHalf({ submission, formType: type, destination: cleanDestination, custom });
 
   const autoReplyLedger: AutoReplyLedger = autoReplyRes.skipped
     ? { status: 'skipped' }
@@ -403,6 +414,7 @@ export async function processEmailQueue(
     const autoReplyRes = await sendSecondHalf({
       submission: job.submission,
       formType: job.formType,
+      destination: job.destination,
       custom: job.custom,
     });
     const autoReplyLedger: AutoReplyLedger = autoReplyRes.skipped
@@ -432,6 +444,7 @@ export async function processEmailQueue(
       recipients: job.recipients,
       from: job.from,
       formType: job.formType,
+      destination: job.destination,
       custom: job.custom,
     });
 

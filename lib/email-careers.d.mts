@@ -46,6 +46,8 @@ export interface AccountCreatedEmailData {
   name?: string;
   email?: string;
   referralCode?: string;
+  /** Name of the candidate who shared the referral code (server-side lookup). */
+  referrerName?: string;
   loginUrl?: string;
 }
 
@@ -85,6 +87,7 @@ export function buildAccountCreatedHtml(options?: {
   name?: string;
   email?: string;
   referralCode?: string;
+  referrerName?: string;
   loginUrl?: string;
   company?: Partial<CareerCompany>;
   logo?: CareerLogo;
