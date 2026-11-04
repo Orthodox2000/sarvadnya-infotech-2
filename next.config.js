@@ -175,6 +175,22 @@ const nextConfig = {
           { key: 'X-DNS-Prefetch-Control', value: 'on' },
         ],
       },
+      // CHANGE: 2026-11-04 — OWNER-INSTRUCTED: /diwali.png must load on OTHER ORIGINS
+      // (embedded/pasted outside sarvadnyainfotech.com). The global `/(.*)` rule above sets
+      // `Cross-Origin-Resource-Policy: same-origin`, which makes a cross-origin <img> fail even
+      // though the file is public, so this rule relaxes CORP for this one asset and adds the
+      // matching CORS header. ORDER MATTERS: Next merges header rules instead of replacing them
+      // and a later match overwrites an earlier key (resolve-routes.js `resHeaders[key] = value`),
+      // so this block MUST stay AFTER `/(.*)`. Deliberately one asset — do not widen it to a
+      // pattern without asking the owner. The Next optimizer URL (`/_next/image?url=%2Fdiwali.png`)
+      // is NOT covered; embed the raw `/diwali.png` path.
+      {
+        source: '/diwali.png',
+        headers: [
+          { key: 'Cross-Origin-Resource-Policy', value: 'cross-origin' },
+          { key: 'Access-Control-Allow-Origin', value: '*' },
+        ],
+      },
       {
         source: '/:path((?:.+)\\.(?:jpg|jpeg|png|gif|webp|avif|svg|ico|css|js|woff2?))',
         headers: [
