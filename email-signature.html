@@ -10,23 +10,35 @@
   ============================================================================
   SARVADNYA INFOTECH LLP - EMAIL SIGNATURE / FOOTER
   ============================================================================
-  Compact, full-width layout: brand column + contact column, then the
-  certified-partner strip, services line and legal line.
+  Compact, full-width layout: "Best regards" sign-off (editable placeholders),
+  then the brand column + contact column, then the certified-partner strip,
+  services line and legal line.
 
   IMAGE HOSTING / CORS
   --------------------
-  Every image is served from https://sarvadnyainfotech.com/email-signature/
-  (plus /TallyCertificate.png). The site's global header sends
+  Every image is served from https://sarvadnyainfotech.com/email-signature/:
+  social/*.png for the five social marks, tallyprime.png, tallycapital.png and
+  the four partner marks. The site's global header sends
   `Cross-Origin-Resource-Policy: same-origin`, which makes a cross-origin
   <img> fail in the browser (ERR_BLOCKED_BY_RESPONSE.NotSameOrigin) even
   though the file is public. next.config.js therefore relaxes CORP/CORS for
-  exactly `/email-signature/:path*` and `/TallyCertificate.png`.
+  `/email-signature/:path*` (and /TallyCertificate.png, kept for other embeds).
 
-  Those two header rules only take effect once the site is redeployed (or
-  after a `next dev` restart). Email clients fetch images server-side, so
-  Gmail / Outlook / Apple Mail are unaffected by CORP.
+  Those header rules only take effect once the site is redeployed (or after a
+  `next dev` restart). Email clients fetch images server-side, so Gmail /
+  Outlook / Apple Mail are unaffected by CORP.
 
   Base64 data URIs are deliberately NOT used: Gmail strips them.
+
+  TYPE: Calibri first, then Segoe UI / Candara / Trebuchet MS / Arial. The
+  wordmark follows the site navbar - 21px, weight 700, slate-900, "LLP" at 900,
+  with a clamp(12px, 4.7vw, 21px) so it still fits beside the two Tally marks on
+  a 320px screen.
+
+  SIGN-OFF: the four [bracketed] placeholders at the top of the signature are
+  per-sender. Replace [Employee Name], [Designation], [+91 XXXXX XXXXX] and
+  [name@sarvadnyainfotech.com], and point the tel: / mailto: hrefs at the same
+  values. Nothing personal is hard-coded, so the file can be reused as-is.
 
   Gmail: Settings > See all settings > General > Signature > paste from the
          first <table ...> to the last </table>.
@@ -35,8 +47,8 @@
 
 <style>
   html, body { margin: 0; padding: 0; width: 100%; background: #ffffff; overflow-x: hidden; }
-  body { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
-  .sig-shell { font-family: Arial, Helvetica, sans-serif; color: #3D4A5C; }
+  body { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; font-family: Calibri, 'Segoe UI', Candara, 'Trebuchet MS', Arial, Helvetica, sans-serif; }
+  .sig-shell { font-family: Calibri, 'Segoe UI', Candara, 'Trebuchet MS', Arial, Helvetica, sans-serif; color: #3D4A5C; }
   .sig-shell a { text-decoration: none; }
   .sig-col {
     display: block;
@@ -65,6 +77,29 @@
       <!-- ================= SIGNATURE START ================= -->
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="width:100%;border-collapse:collapse;background:#FFFFFF;">
 
+        <!-- Sign-off — sits ABOVE the brand block, where a mail reader expects it.
+             Each sender edits the four bracketed placeholders: name, designation,
+             mobile and email (and the tel:/mailto: hrefs to match). -->
+        <tr>
+          <td class="sig-cell" style="padding:18px 16px 14px 16px;background-color:#FFFFFF;text-align:left;font-size:11.5px;line-height:1.6;">
+            <div style="font-size:11.5px;line-height:1.6;color:#5A677B;">Best regards,</div>
+
+            <div style="padding-top:6px;font-size:15px;font-size:clamp(13px,4vw,16px);line-height:1.25;font-weight:700;color:#0F172A;">
+              [Employee Name]
+            </div>
+
+            <div style="padding-top:1px;font-size:11.5px;line-height:1.5;font-weight:600;color:#006569;">
+              [Designation]
+            </div>
+
+            <div style="padding-top:5px;font-size:11.5px;line-height:1.7;color:#3D4A5C;word-break:break-word;overflow-wrap:break-word;">
+              <a href="tel:+91XXXXXXXXXX" style="color:#033B38;font-weight:600;text-decoration:none;">[+91 XXXXX XXXXX]</a>
+              <span style="padding:0 5px;color:#C7D0DD;">&middot;</span>
+              <a href="mailto:name@sarvadnyainfotech.com" style="color:#033B38;font-weight:600;text-decoration:none;">[name@sarvadnyainfotech.com]</a>
+            </div>
+          </td>
+        </tr>
+
         <!-- Brand accent bar -->
         <tr>
           <td height="3" bgcolor="#006569" style="height:3px;line-height:3px;font-size:0;background-color:#006569;">&nbsp;</td>
@@ -77,31 +112,35 @@
 
               <!-- ===== BRAND ===== -->
               <div class="sig-col" style="display:block;width:100%;box-sizing:border-box;vertical-align:top;padding:18px 16px;font-size:11.5px;line-height:1.6;">
-                <!-- Certificate + wordmark on ONE row, always. The table is FLUID
-                     (table-layout:fixed, 38% / 62%) so the mark scales with the
-                     container instead of forcing a fixed 104px+171px row:
-                     at a 320px screen the 288px content box gives a 102px mark and a
-                     179px name cell, which holds the 15px wordmark (171px) on one line.
-                     Below ~300px the mark keeps shrinking and the name may wrap inside
-                     its cell - it is still the same row as the certificate, and it can
-                     never push the page wide. -->
-                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="width:100%;border-collapse:collapse;table-layout:fixed;">
+                <!-- Navbar row: TallyPrime mark, TallyCapital mark, then the wordmark —
+                     the same order and pairing the site navbar uses, at the navbar's
+                     18/21px wordmark scale (clamp keeps it legible on a phone). Widths
+                     are percentages inside a fixed-layout table and each <img> is
+                     max-width:100% + height:auto, so both marks shrink with the
+                     container instead of forcing a hard minimum width. -->
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="width:100%;border-collapse:collapse;">
                   <tr>
-                    <td width="38%" valign="middle" style="width:38%;padding:0 7px 0 0;font-size:0;line-height:0;">
-                      <a href="https://sarvadnyainfotech.com" target="_blank" rel="noopener noreferrer" style="display:block;line-height:0;text-decoration:none;border:0;">
-                        <img src="https://sarvadnyainfotech.com/TallyCertificate.png"
-                             width="104" height="22"
-                             alt="Tally Certified Partner"
-                             style="display:block;width:100%;max-width:104px;height:auto;border:0;outline:none;text-decoration:none;">
+                    <td width="41" valign="middle" style="width:41px;padding:0 6px 0 0;font-size:0;line-height:0;">
+                      <a href="https://sarvadnyainfotech.com/products" target="_blank" rel="noopener noreferrer" style="display:block;line-height:0;text-decoration:none;border:0;">
+                        <img src="https://sarvadnyainfotech.com/email-signature/tallyprime.png"
+                             width="41" height="36" alt="TallyPrime"
+                             style="display:block;width:auto;height:36px;max-width:100%;border:0;outline:none;text-decoration:none;">
                       </a>
                     </td>
-                    <td valign="middle" style="padding:0;font-size:15px;font-size:clamp(11px,4.5vw,15px);line-height:1.2;font-weight:700;color:#0F172A;">
+                    <td width="48" valign="middle" style="width:48px;padding:0 6px 0 0;font-size:0;line-height:0;">
+                      <a href="https://sarvadnyainfotech.com/products" target="_blank" rel="noopener noreferrer" style="display:block;line-height:0;text-decoration:none;border:0;">
+                        <img src="https://sarvadnyainfotech.com/email-signature/tallycapital.png"
+                             width="48" height="36" alt="TallyCapital"
+                             style="display:block;width:auto;height:36px;max-width:100%;border:0;outline:none;text-decoration:none;">
+                      </a>
+                    </td>
+                    <td valign="middle" style="padding:0;text-align:left;font-size:18px;font-size:clamp(12px,4.7vw,21px);line-height:1.1;font-weight:700;color:#0F172A;">
                       Sarvadnya Infotech <span style="font-weight:900;">LLP</span>
                     </td>
                   </tr>
                 </table>
 
-                <div style="margin-top:6px;font-size:9.5px;line-height:1.4;font-weight:700;color:#006569;letter-spacing:1.2px;text-transform:uppercase;">
+                <div style="margin-top:6px;text-align:left;font-size:9.5px;line-height:1.4;font-weight:700;color:#006569;letter-spacing:1.2px;text-transform:uppercase;">
                   Tally Certified Partner &middot; Trusted Since 2008
                 </div>
 
@@ -185,17 +224,17 @@
         <!-- Certified Industry Partners -->
         <tr>
           <td class="sig-cell" style="padding:9px 16px 10px 16px;border-top:1px solid #E6EDF5;background-color:#F7FBFB;">
-            <div style="padding-bottom:7px;font-size:9px;line-height:1.4;font-weight:700;letter-spacing:1.3px;text-transform:uppercase;color:#006569;text-align:center;">
+            <div style="padding-bottom:7px;font-size:9px;line-height:1.4;font-weight:700;letter-spacing:1.3px;text-transform:uppercase;color:#006569;text-align:left;">
               Certified Industry Partners
             </div>
 
-            <!-- Square 64px-high tiles, capped at 300px and centred: a logo is never
-                 stretched across ~200px of empty card. Percentages + table-layout:fixed
-                 keep the strip inside the container at every width
-                 (4 x 23.5% + 3 x 2% = 100%). The label rides INSIDE the link and the
-                 image carries alt="" so a blocked image can never print the partner
-                 name twice. -->
-            <table role="presentation" align="center" width="300" cellpadding="0" cellspacing="0" border="0" style="width:100%;max-width:300px;border-collapse:collapse;table-layout:fixed;margin:0 auto;">
+            <!-- Square 64px-high tiles, capped at 300px and LEFT-ALIGNED like the rest of
+                 the signature: a logo is never stretched across ~200px of empty card.
+                 Percentages + table-layout:fixed keep the strip inside the container at
+                 every width (4 x 23.5% + 3 x 2% = 100%). The label rides INSIDE the link
+                 and the image carries alt="" so a blocked image can never print the
+                 partner name twice. -->
+            <table role="presentation" align="left" width="300" cellpadding="0" cellspacing="0" border="0" style="width:100%;max-width:300px;border-collapse:collapse;table-layout:fixed;">
               <tr>
                 <td width="23.5%" height="64" align="center" valign="middle" style="width:23.5%;height:64px;padding:0;background-color:#FFFFFF;border:1px solid #D9E8E8;border-radius:8px;">
                   <a href="https://sarvadnyainfotech.com/products" target="_blank" rel="noopener noreferrer" style="display:block;text-decoration:none;border:0;">
