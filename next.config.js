@@ -191,6 +191,26 @@ const nextConfig = {
           { key: 'Access-Control-Allow-Origin', value: '*' },
         ],
       },
+      // CHANGE: 2026-11-05 — OWNER-INSTRUCTED: the email signature (repo-root
+      // `email-signature.html`) embeds these assets, and the global `/(.*)` rule above makes
+      // every one of them fail cross-origin in a browser with
+      // `net::ERR_BLOCKED_BY_RESPONSE.NotSameOrigin`. Scoped to the signature's own icon
+      // folder plus the Tally certificate it uses; do not widen this to the whole /public tree.
+      // Must stay AFTER `/(.*)` — a later matching rule overwrites the earlier header key.
+      {
+        source: '/email-signature/:path*',
+        headers: [
+          { key: 'Cross-Origin-Resource-Policy', value: 'cross-origin' },
+          { key: 'Access-Control-Allow-Origin', value: '*' },
+        ],
+      },
+      {
+        source: '/TallyCertificate.png',
+        headers: [
+          { key: 'Cross-Origin-Resource-Policy', value: 'cross-origin' },
+          { key: 'Access-Control-Allow-Origin', value: '*' },
+        ],
+      },
       {
         source: '/:path((?:.+)\\.(?:jpg|jpeg|png|gif|webp|avif|svg|ico|css|js|woff2?))',
         headers: [
