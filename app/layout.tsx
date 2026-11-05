@@ -2,6 +2,8 @@ import type { Metadata, Viewport } from "next";
 import { Geist, Playfair_Display } from "next/font/google";
 import { cn } from "@/lib/utils";
 import { SITE_DESCRIPTION, SITE_NAME, SITE_TITLE, SITE_URL, orgJsonLd, webSiteJsonLd } from "@/lib/seo";
+// CHANGE: 2026-11-05 — TEMPORARY Diwali greeting: the first-visit preload lives in lib/diwali-popup.ts.
+import { buildDiwaliPreloadScript } from "@/lib/diwali-popup";
 import "./globals.css";
 
 const geist = Geist({subsets:['latin'],variable:'--font-sans'});
@@ -77,7 +79,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en-IN" className={cn("h-full antialiased", "font-sans", geist.variable, playfair.variable)} style={{ colorScheme: "only light" }} data-scroll-behavior="smooth" suppressHydrationWarning>
-      <head suppressHydrationWarning />
+      <head suppressHydrationWarning>
+        {/* CHANGE: 2026-11-05 — TEMPORARY Diwali greeting preload. Runs during HTML parse, i.e.
+            BEFORE the app bundle hydrates, and only for visitors with no `svd_diwali_2026` flag
+            (and not on /checkout or /demo). The popup itself cannot render until hydration
+            because it decides "first visit" from localStorage; without this the artwork request
+            would only start once the JS had run. Returns cost nothing — the link is never
+            created for a returning visitor. See lib/diwali-popup.ts and
+            app/components/DiwaliPopup.tsx. */}
+        <script id="diwali-preload" dangerouslySetInnerHTML={{ __html: buildDiwaliPreloadScript() }} />
+      </head>
       <body className="relative min-h-full w-full bg-background text-foreground" suppressHydrationWarning>
         {/* CHANGE: 2026-08-27 — Organization + WebSite JSON-LD for search/AI indexing. */}
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([orgJsonLd(), webSiteJsonLd()]) }} />
