@@ -12,18 +12,18 @@
   ============================================================================
   Compact, full-width layout: "Best regards" sign-off (editable placeholders),
   then the brand column + contact column, then the certified-partner strip,
-  the services line with a short Customized Modules on Tally list, and the
+  the services line, the Customized Modules on Tally pointer list, and the
   legal line.
 
   IMAGE HOSTING / CORS
   --------------------
   Every image is served from https://sarvadnyainfotech.com/email-signature/:
-  social/*.png for the five social marks, tallyprime.png, tallycapital.png and
-  the four partner marks. The site's global header sends
+  social/*.png for the five social marks and the four partner marks, plus the
+  brand-row certificate at /TallyCertificate.png. The site's global header sends
   `Cross-Origin-Resource-Policy: same-origin`, which makes a cross-origin
   <img> fail in the browser (ERR_BLOCKED_BY_RESPONSE.NotSameOrigin) even
   though the file is public. next.config.js therefore relaxes CORP/CORS for
-  `/email-signature/:path*` (and /TallyCertificate.png, kept for other embeds).
+  `/email-signature/:path*` and `/TallyCertificate.png`.
 
   Those header rules only take effect once the site is redeployed (or after a
   `next dev` restart). Email clients fetch images server-side, so Gmail /
@@ -33,8 +33,8 @@
 
   TYPE: Calibri first, then Segoe UI / Candara / Trebuchet MS / Arial. The
   wordmark follows the site navbar - 21px, weight 700, slate-900, "LLP" at 900,
-  with a clamp(12px, 4.7vw, 21px) so it still fits beside the two Tally marks on
-  a 320px screen.
+  with a clamp(12px, 4.7vw, 21px) so it still fits beside the Tally Certificate
+  mark on a 320px screen.
 
   SIGN-OFF: the four [bracketed] placeholders at the top of the signature are
   per-sender. Replace [Employee Name], [Designation], [+91 XXXXX XXXXX] and
@@ -113,26 +113,19 @@
 
               <!-- ===== BRAND ===== -->
               <div class="sig-col" style="display:block;width:100%;box-sizing:border-box;vertical-align:top;padding:18px 16px;font-size:11.5px;line-height:1.6;">
-                <!-- Navbar row: TallyPrime mark, TallyCapital mark, then the wordmark —
-                     the same order and pairing the site navbar uses, at the navbar's
-                     18/21px wordmark scale (clamp keeps it legible on a phone). Widths
-                     are percentages inside a fixed-layout table and each <img> is
-                     max-width:100% + height:auto, so both marks shrink with the
-                     container instead of forcing a hard minimum width. -->
+                <!-- Certificate + wordmark on ONE row, as in the site navbar: the
+                     Tally Certificate mark sits immediately left of the name. The
+                     table is auto-layout with a 107px first cell and a fluid image
+                     (width:100%;max-width:107px;height:auto), so the mark shrinks
+                     with the container instead of forcing a hard minimum width.
+                     The certificate is 2991x634 (4.72:1), so 107px wide = 23px tall. -->
                 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="width:100%;border-collapse:collapse;">
                   <tr>
-                    <td width="41" valign="middle" style="width:41px;padding:0 6px 0 0;font-size:0;line-height:0;">
-                      <a href="https://sarvadnyainfotech.com/products" target="_blank" rel="noopener noreferrer" style="display:block;line-height:0;text-decoration:none;border:0;">
-                        <img src="https://sarvadnyainfotech.com/email-signature/tallyprime.png"
-                             width="41" height="36" alt="TallyPrime"
-                             style="display:block;width:auto;height:36px;max-width:100%;border:0;outline:none;text-decoration:none;">
-                      </a>
-                    </td>
-                    <td width="48" valign="middle" style="width:48px;padding:0 6px 0 0;font-size:0;line-height:0;">
-                      <a href="https://sarvadnyainfotech.com/products" target="_blank" rel="noopener noreferrer" style="display:block;line-height:0;text-decoration:none;border:0;">
-                        <img src="https://sarvadnyainfotech.com/email-signature/tallycapital.png"
-                             width="48" height="36" alt="TallyCapital"
-                             style="display:block;width:auto;height:36px;max-width:100%;border:0;outline:none;text-decoration:none;">
+                    <td width="107" valign="middle" style="width:107px;padding:0 7px 0 0;font-size:0;line-height:0;">
+                      <a href="https://sarvadnyainfotech.com" target="_blank" rel="noopener noreferrer" style="display:block;line-height:0;text-decoration:none;border:0;">
+                        <img src="https://sarvadnyainfotech.com/TallyCertificate.png"
+                             width="107" height="23" alt="Tally Certified Partner"
+                             style="display:block;width:100%;max-width:107px;height:auto;border:0;outline:none;text-decoration:none;">
                       </a>
                     </td>
                     <td valign="middle" style="padding:0;text-align:left;font-size:18px;font-size:clamp(12px,4.7vw,21px);line-height:1.1;font-weight:700;color:#0F172A;">
@@ -285,40 +278,28 @@
               <a href="https://sarvadnyainfotech.com/products" target="_blank" rel="noopener noreferrer" style="color:#045A57;font-weight:600;text-decoration:none;">TallyPrime Licences</a><span style="padding:0 5px;color:#C7D0DD;">&middot;</span><a href="https://sarvadnyainfotech.com/services/tss" target="_blank" rel="noopener noreferrer" style="color:#045A57;font-weight:600;text-decoration:none;">TSS Renewal</a><span style="padding:0 5px;color:#C7D0DD;">&middot;</span><a href="https://sarvadnyainfotech.com/services/amc" target="_blank" rel="noopener noreferrer" style="color:#045A57;font-weight:600;text-decoration:none;">AMC &amp; Support</a><span style="padding:0 5px;color:#C7D0DD;">&middot;</span><a href="https://sarvadnyainfotech.com/services/tdl" target="_blank" rel="noopener noreferrer" style="color:#045A57;font-weight:600;text-decoration:none;">TDL Customisation</a><span style="padding:0 5px;color:#C7D0DD;">&middot;</span><a href="https://sarvadnyainfotech.com/cloud/tallycloudaccess" target="_blank" rel="noopener noreferrer" style="color:#045A57;font-weight:600;text-decoration:none;">Tally on Cloud</a><span style="padding:0 5px;color:#C7D0DD;">&middot;</span><a href="https://sarvadnyainfotech.com/hrms" target="_blank" rel="noopener noreferrer" style="color:#045A57;font-weight:600;text-decoration:none;">HRMS &amp; Payroll</a>
             </div>
 
-            <!-- Customized modules — the short form of the owner's list, presented as
-                 separate chips (brand name in 600, the "what it does" tail muted) so
-                 each module is distinguishable at a glance and the set reflows cleanly
-                 at 280px instead of reading as one long sentence. The NEW module is the
-                 only filled chip, so it carries the emphasis without an extra badge. -->
+            <!-- Customized modules — the owner's list verbatim, presented as one-line
+                 pointers: a hanging indent (padding-left + negative text-indent) keeps
+                 wrapped details aligned under the module name instead of under the
+                 bullet. Module names sit at weight 600 in brand ink, their parenthetical
+                 detail at weight 400, so each line is scannable. -->
             <div style="margin-top:8px;padding-top:8px;border-top:1px dashed #D9E8E8;">
               <div style="padding-bottom:5px;font-size:9px;line-height:1.4;font-weight:700;letter-spacing:1.3px;text-transform:uppercase;color:#006569;">
                 <a href="https://sarvadnyainfotech.com/services/tdl" target="_blank" rel="noopener noreferrer" style="color:#006569;text-decoration:none;">Customized Modules on Tally</a>
               </div>
 
-              <div style="font-size:0;line-height:0;">
-                <span style="display:inline-block;margin:0 5px 5px 0;padding:2px 8px;background-color:#006569;border:1px solid #006569;border-radius:4px;font-size:11px;line-height:1.55;font-weight:600;color:#FFFFFF;">
-                  Bank-Statement Auto-Entry <span style="font-weight:700;color:#C5E3E3;letter-spacing:0.6px;">NEW</span>
-                </span><span style="display:inline-block;margin:0 5px 5px 0;padding:2px 8px;background-color:#F4F9F9;border:1px solid #D4EAEA;border-radius:4px;font-size:11px;line-height:1.55;font-weight:600;color:#033B38;">
-                  Cloud Service <span style="font-weight:400;color:#5A677B;">&middot; anywhere, anytime</span>
-                </span><span style="display:inline-block;margin:0 5px 5px 0;padding:2px 8px;background-color:#F4F9F9;border:1px solid #D4EAEA;border-radius:4px;font-size:11px;line-height:1.55;font-weight:600;color:#033B38;">
-                  Advance CFA
-                </span><span style="display:inline-block;margin:0 5px 5px 0;padding:2px 8px;background-color:#F4F9F9;border:1px solid #D4EAEA;border-radius:4px;font-size:11px;line-height:1.55;font-weight:600;color:#033B38;">
-                  Basic CFA <span style="font-weight:400;color:#5A677B;">&middot; multi-currency</span>
-                </span><span style="display:inline-block;margin:0 5px 5px 0;padding:2px 8px;background-color:#F4F9F9;border:1px solid #D4EAEA;border-radius:4px;font-size:11px;line-height:1.55;font-weight:600;color:#033B38;">
-                  Housing Society
-                </span><span style="display:inline-block;margin:0 5px 5px 0;padding:2px 8px;background-color:#F4F9F9;border:1px solid #D4EAEA;border-radius:4px;font-size:11px;line-height:1.55;font-weight:600;color:#033B38;">
-                  Transport <span style="font-weight:400;color:#5A677B;">&middot; LR + auto-billing</span>
-                </span><span style="display:inline-block;margin:0 5px 5px 0;padding:2px 8px;background-color:#F4F9F9;border:1px solid #D4EAEA;border-radius:4px;font-size:11px;line-height:1.55;font-weight:600;color:#033B38;">
-                  Container Handling <span style="font-weight:400;color:#5A677B;">&middot; log sheet + auto-billing</span>
-                </span><span style="display:inline-block;margin:0 5px 5px 0;padding:2px 8px;background-color:#F4F9F9;border:1px solid #D4EAEA;border-radius:4px;font-size:11px;line-height:1.55;font-weight:600;color:#033B38;">
-                  Broker / Agent Commission
-                </span><span style="display:inline-block;margin:0 5px 5px 0;padding:2px 8px;background-color:#F4F9F9;border:1px solid #D4EAEA;border-radius:4px;font-size:11px;line-height:1.55;font-weight:600;color:#033B38;">
-                  Ready Garment <span style="font-weight:400;color:#5A677B;">&middot; colour &amp; size</span>
-                </span><span style="display:inline-block;margin:0 5px 5px 0;padding:2px 8px;background-color:#F4F9F9;border:1px solid #D4EAEA;border-radius:4px;font-size:11px;line-height:1.55;font-weight:600;color:#033B38;">
-                  Business Boosters <span style="font-weight:400;color:#5A677B;">&middot; document attach, e-sign, GST return &amp; e-invoice lock</span>
-                </span><span style="display:inline-block;margin:0;padding:2px 0;font-size:11px;line-height:1.55;font-style:italic;color:#8A97AA;">
-                  and many more&hellip;
-                </span>
+              <div style="font-size:11.5px;line-height:1.65;color:#5A677B;">
+                <div style="padding:1px 0 1px 12px;text-indent:-12px;"><span style="color:#006569;">&bull;</span>&nbsp; <span style="font-weight:600;color:#033B38;">Auto-Entry from Bank-Statement to Tally</span> <span style="font-weight:700;color:#006569;">(NEW)</span></div>
+                <div style="padding:1px 0 1px 12px;text-indent:-12px;"><span style="color:#006569;">&bull;</span>&nbsp; <span style="font-weight:600;color:#033B38;">Cloud Service for Tally</span> <span style="color:#5A677B;">(Work from Anywhere, anytime!)</span></div>
+                <div style="padding:1px 0 1px 12px;text-indent:-12px;"><span style="color:#006569;">&bull;</span>&nbsp; <span style="font-weight:600;color:#033B38;">Advance CFA Module</span> <span style="color:#5A677B;">(for Clearing &amp; Forwarding agencies)</span></div>
+                <div style="padding:1px 0 1px 12px;text-indent:-12px;"><span style="color:#006569;">&bull;</span>&nbsp; <span style="font-weight:600;color:#033B38;">Basic CFA Module</span> <span style="color:#5A677B;">(Invoice format with Multi currency &amp; logo)</span></div>
+                <div style="padding:1px 0 1px 12px;text-indent:-12px;"><span style="color:#006569;">&bull;</span>&nbsp; <span style="font-weight:600;color:#033B38;">Housing Society Module</span></div>
+                <div style="padding:1px 0 1px 12px;text-indent:-12px;"><span style="color:#006569;">&bull;</span>&nbsp; <span style="font-weight:600;color:#033B38;">Transport Business Module</span> <span style="color:#5A677B;">(LR Entry + Auto-billing)</span></div>
+                <div style="padding:1px 0 1px 12px;text-indent:-12px;"><span style="color:#006569;">&bull;</span>&nbsp; <span style="font-weight:600;color:#033B38;">Container Handling Module</span> <span style="color:#5A677B;">(Log Sheet Entry + Auto-Billing)</span></div>
+                <div style="padding:1px 0 1px 12px;text-indent:-12px;"><span style="color:#006569;">&bull;</span>&nbsp; <span style="font-weight:600;color:#033B38;">Broker / Agent Commission Module</span> <span style="color:#5A677B;">(Item wise commission setup)</span></div>
+                <div style="padding:1px 0 1px 12px;text-indent:-12px;"><span style="color:#006569;">&bull;</span>&nbsp; <span style="font-weight:600;color:#033B38;">Ready Garment Module</span> <span style="color:#5A677B;">(Auto create Items with color &amp; Size)</span></div>
+                <div style="padding:1px 0 1px 12px;text-indent:-12px;"><span style="color:#006569;">&bull;</span>&nbsp; <span style="font-weight:700;letter-spacing:0.3px;color:#033B38;">BUSINESS BOOSTERS</span> <span style="color:#5A677B;">(e.g. Document Attachment / Digitally Signed Documents / Lock GST Return / Lock e-invoices)</span></div>
+                <div style="padding:1px 0 1px 12px;text-indent:-12px;font-style:italic;color:#8A97AA;"><span style="color:#C7D0DD;">&bull;</span>&nbsp; and many more&hellip;</div>
               </div>
             </div>
           </td>
