@@ -65,9 +65,18 @@
 
         <!-- Sign-off — sits ABOVE the brand block, where a mail reader expects it.
              Each sender edits the four bracketed placeholders: name, designation,
-             mobile and email. They are plain text, NOT tel:/mailto: links, and they
-             are not STYLED like links either: body ink (#5A677B) at weight 400,
-             no underline, so the block cannot read as a clickable contact.
+             mobile and email. There is no <a> anywhere in this block, but a mail
+             client still AUTO-LINKS a plain email address and a plain phone number
+             when it renders the message (that is where the blue underline comes
+             from). Inline colour cannot stop that, so the fixed parts of the two
+             values carry an invisible zero-width space (&#8203;): inside the
+             domain after "sarvadnya" and inside the dialling code after "+91".
+             The rendered text is unchanged and nothing is clickable, because the
+             client no longer sees a single contiguous address or number.
+             Keep the ZWSP when editing: replace only "name" and the X digits —
+             retyping the whole address throws the invisible break away.
+             Colour is the brand green handled elsewhere in this file (#033B38,
+             weight 600) as the owner asked, with no underline.
              NO class="sig-cell" here on purpose: that class carries a media query
              that re-applies padding-left:16px !important below 820px, which would
              re-indent the block. Its padding is inline and flush left (0), so the
@@ -84,8 +93,8 @@
               [Designation]
             </div>
 
-            <div style="padding-top:5px;font-size:11.5px;line-height:1.7;color:#5A677B;font-weight:400;text-decoration:none;word-break:break-word;overflow-wrap:break-word;">
-              [+91 XXXXX XXXXX]<span style="padding:0 5px;color:#C7D0DD;">&middot;</span>[name@sarvadnyainfotech.com]
+            <div style="padding-top:5px;font-size:11.5px;line-height:1.7;color:#033B38;font-weight:600;text-decoration:none;word-break:break-word;overflow-wrap:break-word;">
+              [+91&#8203; XXXXX XXXXX]<span style="padding:0 5px;color:#C7D0DD;font-weight:400;">&middot;</span>[name@sarvadnya&#8203;infotech.com]
             </div>
           </td>
         </tr>
