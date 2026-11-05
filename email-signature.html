@@ -38,8 +38,9 @@
 
   SIGN-OFF: the four [bracketed] placeholders at the top of the signature are
   per-sender. Replace [Employee Name], [Designation], [+91 XXXXX XXXXX] and
-  [name@sarvadnyainfotech.com], and point the tel: / mailto: hrefs at the same
-  values. Nothing personal is hard-coded, so the file can be reused as-is.
+  [name@sarvadnyainfotech.com]. They are deliberately plain text, not tel: or
+  mailto: links - the owner asked for normal text below "Best regards".
+  Nothing personal is hard-coded, so the file can be reused as-is.
 
   Gmail: Settings > See all settings > General > Signature > paste from the
          first <table ...> to the last </table>.
@@ -51,21 +52,15 @@
   body { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; font-family: Calibri, 'Segoe UI', Candara, 'Trebuchet MS', Arial, Helvetica, sans-serif; }
   .sig-shell { font-family: Calibri, 'Segoe UI', Candara, 'Trebuchet MS', Arial, Helvetica, sans-serif; color: #3D4A5C; }
   .sig-shell a { text-decoration: none; }
-  .sig-col {
-    display: block;
-    width: 100%;
-    box-sizing: border-box;
-    vertical-align: top;
-    font-size: 11.5px;
-    line-height: 1.6;
-  }
-  @media (min-width: 820px) {
-    .sig-col { display: inline-block !important; width: 50% !important; }
-    .sig-col-contact { border-left: 1px solid #D9E8E8; }
-  }
+  /* The two-column row is a real <table> (see the markup): the 50/50 split,
+     the contact divider and the cell padding all live in HTML / inline styles,
+     so the columns stay side by side in a client that drops this stylesheet -
+     which is exactly what happens when a signature is pasted into Gmail.
+     Below 820px the cells are turned into blocks so the columns stack. */
   @media (max-width: 819px) {
-    .sig-col + .sig-col { border-top: 1px solid #E6EDF5; }
-    .sig-cell { padding-left: 16px !important; padding-right: 16px !important; }
+    .sig-col { display: block !important; width: 100% !important; box-sizing: border-box !important; }
+    .sig-col-contact { border-left: 0 !important; border-top: 1px solid #E6EDF5; padding-left: 0 !important; }
+    .sig-cell { padding-left: 0 !important; padding-right: 16px !important; }
   }
 </style>
 </head>
@@ -80,9 +75,14 @@
 
         <!-- Sign-off — sits ABOVE the brand block, where a mail reader expects it.
              Each sender edits the four bracketed placeholders: name, designation,
-             mobile and email (and the tel:/mailto: hrefs to match). -->
+             mobile and email. They are plain text, NOT tel:/mailto: links — the
+             owner asked for normal text below "Best regards".
+             NO class="sig-cell" here on purpose: that class carries a media query
+             that re-applies padding-left:16px !important below 820px, which would
+             re-indent the block. Its padding is inline and flush left (0), so the
+             sign-off is strictly aligned to the left edge at every width. -->
         <tr>
-          <td class="sig-cell" style="padding:18px 16px 14px 16px;background-color:#FFFFFF;text-align:left;font-size:11.5px;line-height:1.6;">
+          <td style="padding:18px 16px 14px 0;background-color:#FFFFFF;text-align:left;font-size:11.5px;line-height:1.6;">
             <div style="font-size:11.5px;line-height:1.6;color:#5A677B;">Best regards,</div>
 
             <div style="padding-top:6px;font-size:15px;font-size:clamp(13px,4vw,16px);line-height:1.25;font-weight:700;color:#0F172A;">
@@ -93,10 +93,8 @@
               [Designation]
             </div>
 
-            <div style="padding-top:5px;font-size:11.5px;line-height:1.7;color:#3D4A5C;word-break:break-word;overflow-wrap:break-word;">
-              <a href="tel:+91XXXXXXXXXX" style="color:#033B38;font-weight:600;text-decoration:none;">[+91 XXXXX XXXXX]</a>
-              <span style="padding:0 5px;color:#C7D0DD;">&middot;</span>
-              <a href="mailto:name@sarvadnyainfotech.com" style="color:#033B38;font-weight:600;text-decoration:none;">[name@sarvadnyainfotech.com]</a>
+            <div style="padding-top:5px;font-size:11.5px;line-height:1.7;color:#033B38;font-weight:600;word-break:break-word;overflow-wrap:break-word;">
+              [+91 XXXXX XXXXX]<span style="padding:0 5px;color:#C7D0DD;font-weight:400;">&middot;</span>[name@sarvadnyainfotech.com]
             </div>
           </td>
         </tr>
@@ -106,13 +104,22 @@
           <td height="3" bgcolor="#006569" style="height:3px;line-height:3px;font-size:0;background-color:#006569;">&nbsp;</td>
         </tr>
 
-        <!-- Two columns -->
+        <!-- Two columns.
+             Built as a TABLE, not as two inline-block divs: mail clients drop the
+             <style> block when a signature is pasted (Gmail keeps only the table
+             markup) and several also strip box-sizing, so a div with
+             width:100% + 32px of padding overflows the mail pane and the second
+             column wraps to the next line at EVERY width. Table cells carry the
+             50/50 split in HTML attributes, so the columns stay side by side with
+             no stylesheet at all; the media query below only stacks them on a
+             phone (best effort - clients without <style> keep two fluid cells). -->
         <tr>
           <td style="padding:0;">
-            <div style="font-size:0;line-height:0;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="width:100%;border-collapse:collapse;">
+              <tr>
 
               <!-- ===== BRAND ===== -->
-              <div class="sig-col" style="display:block;width:100%;box-sizing:border-box;vertical-align:top;padding:18px 16px;font-size:11.5px;line-height:1.6;">
+              <td class="sig-col" width="50%" valign="top" style="width:50%;padding:18px 16px 18px 0;vertical-align:top;font-size:11.5px;line-height:1.6;">
                 <!-- Certificate + wordmark on ONE row, as in the site navbar: the
                      Tally Certificate mark sits immediately left of the name. The
                      table is auto-layout with a 107px first cell and a fluid image
@@ -145,41 +152,10 @@
                     73, Vindhya Commercial Premises, Sector - 11, Plot No - 1, CBD Belapur, Mumbai, Maharashtra
                   </a>
                 </div>
-
-                <!-- Social icons: 20px PNGs, 10px apart -->
-                <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;margin-top:9px;">
-                  <tr>
-                    <td style="padding:0 10px 0 0;font-size:0;line-height:0;">
-                      <a href="https://wa.me/919870942557" title="WhatsApp" target="_blank" rel="noopener noreferrer" style="display:block;line-height:0;text-decoration:none;">
-                        <img src="https://sarvadnyainfotech.com/email-signature/social/whatsapp.png" width="20" height="20" alt="WhatsApp" style="display:block;width:20px;height:20px;border:0;outline:none;text-decoration:none;">
-                      </a>
-                    </td>
-                    <td style="padding:0 10px 0 0;font-size:0;line-height:0;">
-                      <a href="https://www.linkedin.com/company/sarvadnya-infotech-llp/" title="LinkedIn" target="_blank" rel="noopener noreferrer" style="display:block;line-height:0;text-decoration:none;">
-                        <img src="https://sarvadnyainfotech.com/email-signature/social/linkedin.png" width="20" height="20" alt="LinkedIn" style="display:block;width:20px;height:20px;border:0;outline:none;text-decoration:none;">
-                      </a>
-                    </td>
-                    <td style="padding:0 10px 0 0;font-size:0;line-height:0;">
-                      <a href="https://www.instagram.com/sarvadnya.infotech/" title="Instagram" target="_blank" rel="noopener noreferrer" style="display:block;line-height:0;text-decoration:none;">
-                        <img src="https://sarvadnyainfotech.com/email-signature/social/instagram.png" width="20" height="20" alt="Instagram" style="display:block;width:20px;height:20px;border:0;outline:none;text-decoration:none;">
-                      </a>
-                    </td>
-                    <td style="padding:0 10px 0 0;font-size:0;line-height:0;">
-                      <a href="https://www.facebook.com/sarvadnyainfotech" title="Facebook" target="_blank" rel="noopener noreferrer" style="display:block;line-height:0;text-decoration:none;">
-                        <img src="https://sarvadnyainfotech.com/email-signature/social/facebook.png" width="20" height="20" alt="Facebook" style="display:block;width:20px;height:20px;border:0;outline:none;text-decoration:none;">
-                      </a>
-                    </td>
-                    <td style="padding:0;font-size:0;line-height:0;">
-                      <a href="https://www.youtube.com/@sarvadnyainfotechtally" title="YouTube" target="_blank" rel="noopener noreferrer" style="display:block;line-height:0;text-decoration:none;">
-                        <img src="https://sarvadnyainfotech.com/email-signature/social/youtube.png" width="20" height="20" alt="YouTube" style="display:block;width:20px;height:20px;border:0;outline:none;text-decoration:none;">
-                      </a>
-                    </td>
-                  </tr>
-                </table>
-              </div>
+              </td>
 
               <!-- ===== CONTACT ===== -->
-              <div class="sig-col sig-col-contact" style="display:block;width:100%;box-sizing:border-box;vertical-align:top;padding:18px 16px;font-size:11.5px;line-height:1.6;">
+              <td class="sig-col sig-col-contact" width="50%" valign="top" style="width:50%;padding:18px 16px;vertical-align:top;border-left:1px solid #D9E8E8;font-size:11.5px;line-height:1.6;">
                 <div style="padding-bottom:7px;font-size:9px;line-height:1.4;font-weight:700;letter-spacing:1.3px;text-transform:uppercase;color:#006569;">
                   Contact
                 </div>
@@ -209,15 +185,47 @@
                     <a href="https://sarvadnyainfotech.com" target="_blank" rel="noopener noreferrer" style="color:#033B38;font-weight:600;text-decoration:none;">sarvadnyainfotech.com</a>
                   </div>
                 </div>
-              </div>
 
-            </div>
+                <!-- Social icons: below the contact rows so they read as the tail of
+                     the Contact column. 20px PNGs, 10px apart. -->
+                <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;margin-top:10px;">
+                  <tr>
+                    <td style="padding:0 10px 0 0;font-size:0;line-height:0;">
+                      <a href="https://wa.me/919870942557" title="WhatsApp" target="_blank" rel="noopener noreferrer" style="display:block;line-height:0;text-decoration:none;">
+                        <img src="https://sarvadnyainfotech.com/email-signature/social/whatsapp.png" width="20" height="20" alt="WhatsApp" style="display:block;width:20px;height:20px;border:0;outline:none;text-decoration:none;">
+                      </a>
+                    </td>
+                    <td style="padding:0 10px 0 0;font-size:0;line-height:0;">
+                      <a href="https://www.linkedin.com/company/sarvadnya-infotech-llp/" title="LinkedIn" target="_blank" rel="noopener noreferrer" style="display:block;line-height:0;text-decoration:none;">
+                        <img src="https://sarvadnyainfotech.com/email-signature/social/linkedin.png" width="20" height="20" alt="LinkedIn" style="display:block;width:20px;height:20px;border:0;outline:none;text-decoration:none;">
+                      </a>
+                    </td>
+                    <td style="padding:0 10px 0 0;font-size:0;line-height:0;">
+                      <a href="https://www.instagram.com/sarvadnya.infotech/" title="Instagram" target="_blank" rel="noopener noreferrer" style="display:block;line-height:0;text-decoration:none;">
+                        <img src="https://sarvadnyainfotech.com/email-signature/social/instagram.png" width="20" height="20" alt="Instagram" style="display:block;width:20px;height:20px;border:0;outline:none;text-decoration:none;">
+                      </a>
+                    </td>
+                    <td style="padding:0 10px 0 0;font-size:0;line-height:0;">
+                      <a href="https://www.facebook.com/sarvadnyainfotech" title="Facebook" target="_blank" rel="noopener noreferrer" style="display:block;line-height:0;text-decoration:none;">
+                        <img src="https://sarvadnyainfotech.com/email-signature/social/facebook.png" width="20" height="20" alt="Facebook" style="display:block;width:20px;height:20px;border:0;outline:none;text-decoration:none;">
+                      </a>
+                    </td>
+                    <td style="padding:0;font-size:0;line-height:0;">
+                      <a href="https://www.youtube.com/@sarvadnyainfotechtally" title="YouTube" target="_blank" rel="noopener noreferrer" style="display:block;line-height:0;text-decoration:none;">
+                        <img src="https://sarvadnyainfotech.com/email-signature/social/youtube.png" width="20" height="20" alt="YouTube" style="display:block;width:20px;height:20px;border:0;outline:none;text-decoration:none;">
+                      </a>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+              </tr>
+            </table>
           </td>
         </tr>
 
         <!-- Certified Industry Partners -->
         <tr>
-          <td class="sig-cell" style="padding:9px 16px 10px 16px;border-top:1px solid #E6EDF5;background-color:#F7FBFB;">
+          <td class="sig-cell" style="padding:9px 16px 10px 0;border-top:1px solid #E6EDF5;background-color:#F7FBFB;">
             <div style="padding-bottom:7px;font-size:9px;line-height:1.4;font-weight:700;letter-spacing:1.3px;text-transform:uppercase;color:#006569;text-align:left;">
               Certified Industry Partners
             </div>
@@ -272,7 +280,7 @@
              and the same 11.5px body text as the contact values, so the strip no longer
              reads as a different font. -->
         <tr>
-          <td class="sig-cell" style="padding:9px 16px 10px 16px;border-top:1px solid #E6EDF5;background-color:#F7FBFB;">
+          <td class="sig-cell" style="padding:9px 16px 10px 0;border-top:1px solid #E6EDF5;background-color:#F7FBFB;">
             <div style="padding-bottom:4px;font-size:9px;line-height:1.4;font-weight:700;letter-spacing:1.3px;text-transform:uppercase;color:#006569;">Services</div>
             <div style="font-size:11.5px;line-height:1.7;color:#5A677B;">
               <a href="https://sarvadnyainfotech.com/products" target="_blank" rel="noopener noreferrer" style="color:#045A57;font-weight:600;text-decoration:none;">TallyPrime Licences</a><span style="padding:0 5px;color:#C7D0DD;">&middot;</span><a href="https://sarvadnyainfotech.com/services/tss" target="_blank" rel="noopener noreferrer" style="color:#045A57;font-weight:600;text-decoration:none;">TSS Renewal</a><span style="padding:0 5px;color:#C7D0DD;">&middot;</span><a href="https://sarvadnyainfotech.com/services/amc" target="_blank" rel="noopener noreferrer" style="color:#045A57;font-weight:600;text-decoration:none;">AMC &amp; Support</a><span style="padding:0 5px;color:#C7D0DD;">&middot;</span><a href="https://sarvadnyainfotech.com/services/tdl" target="_blank" rel="noopener noreferrer" style="color:#045A57;font-weight:600;text-decoration:none;">TDL Customisation</a><span style="padding:0 5px;color:#C7D0DD;">&middot;</span><a href="https://sarvadnyainfotech.com/cloud/tallycloudaccess" target="_blank" rel="noopener noreferrer" style="color:#045A57;font-weight:600;text-decoration:none;">Tally on Cloud</a><span style="padding:0 5px;color:#C7D0DD;">&middot;</span><a href="https://sarvadnyainfotech.com/hrms" target="_blank" rel="noopener noreferrer" style="color:#045A57;font-weight:600;text-decoration:none;">HRMS &amp; Payroll</a>
@@ -307,7 +315,7 @@
 
         <!-- Legal / footer -->
         <tr>
-          <td class="sig-cell" style="padding:7px 16px 8px 16px;border-top:1px solid #E6EDF5;background-color:#FFFFFF;">
+          <td class="sig-cell" style="padding:7px 16px 8px 0;border-top:1px solid #E6EDF5;background-color:#FFFFFF;">
             <div style="font-size:10px;line-height:1.8;color:#8A97AA;">
               &copy; 2026 Sarvadnya Infotech LLP. All rights reserved.
               <span style="color:#C7D0DD;padding:0 3px;">&middot;</span>
