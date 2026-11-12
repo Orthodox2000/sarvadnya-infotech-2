@@ -86,20 +86,39 @@ const ShopCard = memo(function ShopCard({
       }`}
     >
       {/*
-        CHANGE: 2026-11-12 — the "Best Seller" tag is back INSIDE the card as a stamp badge
-        (owner: "that shop best seller tag is weird, fix it inside card, make it as a stamp tick
-        or badge", then "it must not look weird and outside card").
-        SHAPE: a filled teal pill with a tick, pinned to the RIGHT of the card's own chip row with
-        `ml-auto` — so it sits in the top-right corner of the card, like a stamp, while staying in
-        normal flow. Filled vs. the outlined group/category chips is what makes it read as a badge
-        rather than a third category.
-        WHY NOT absolute: the old (2026-10-30) tag used `absolute bottom-full` to hang OUTSIDE the
-        card and needed `pointer-events-none` + a reserved `gap-y-6` grid. An in-card absolute
-        corner stamp is worse still: at the 360px floor the card is ~330px wide, so a corner stamp
-        either covers the chip row or forces `pr-*` reservation that pushes "TDL Add-on" and
-        "Billing & Invoicing" onto two lines. In flow with `ml-auto`, the row simply wraps — the
-        badge drops to its own right-aligned line and nothing is ever covered or overflowed.
+        CHANGE: 2026-11-12 — "Best Seller" is now a DIAGONAL CORNER RIBBON, the classic crossed
+        band across the card's top-right corner (owner picked it after rejecting the above-card
+        tag and then the inline pill: "make a corner crossed best seller").
+
+        HOW IT IS BUILT, and why it cannot spill or clip a letter:
+        - The wrapper is a 72x72 box welded to the card's top-right corner. It carries
+          `overflow-hidden rounded-tr-xl`, so anything inside is clipped to the card's own 12px
+          radius — the ribbon can never poke outside the card, which is exactly what the previous
+          two attempts got wrong.
+        - The teal shape is a `clip-path` triangle (full top edge + full right edge + hypotenuse),
+          not a rotated rectangle. A rotated rectangle leaves a bare notch at the corner unless it
+          is offset so far out that the text gets cut; the triangle covers the corner completely
+          and still gives a straight diagonal edge for the label.
+        - The label is a single rotated line centred on the triangle's median (x + y = 72 in box
+          coords). It sits ~11px in from the hypotenuse, where the open chord is ~79px wide;
+          "BEST SELLER" at 9px/0.08em is ~70px, so it has ~4px of clearance each end.
+        - Geometry check against the content: the triangle satisfies u + v <= 72 where u is the
+          distance from the card's right edge. The chip row is left-aligned (u >= ~100 at every
+          width down to 360px) and the title starts at v ~= 54, where the triangle has already
+          withdrawn past the 20px padding (u <= 18). So nothing is covered, at any width.
       */}
+      {item.featured && (
+        <div className="pointer-events-none absolute right-0 top-0 z-10 h-[72px] w-[72px] overflow-hidden rounded-tr-xl">
+          <span
+            aria-hidden="true"
+            className="absolute inset-0 bg-[#006569]"
+            style={{ clipPath: 'polygon(100% 0, 0 0, 100% 100%)' }}
+          />
+          <span className="absolute left-[-16px] top-[21px] h-3.5 w-[120px] rotate-45 text-center text-[9px] font-bold uppercase leading-[14px] tracking-[0.08em] text-white">
+            Best Seller
+          </span>
+        </div>
+      )}
       <div className="mb-3 flex flex-wrap items-center gap-2">
         <span className={`rounded border px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide ${GROUP_TONE[item.group]}`}>
           {groupLabel(item.group)}
@@ -107,21 +126,6 @@ const ShopCard = memo(function ShopCard({
         <span className="rounded border border-slate-200 bg-slate-50 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide text-slate-500">
           {categoryLabel(item.category)}
         </span>
-        {item.featured && (
-          <span className="ml-auto inline-flex items-center gap-1 rounded-full bg-[#006569] px-2 py-1 text-[9px] font-bold uppercase tracking-wide text-white shadow-[inset_0_0_0_1px_rgba(255,255,255,0.28),0_1px_2px_rgba(0,101,105,0.25)]">
-            <svg
-              aria-hidden="true"
-              viewBox="0 0 24 24"
-              className="h-3 w-3 shrink-0"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="3"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-            </svg>
-            Best Seller
-          </span>
-        )}
       </div>
 
       <h3 className="text-[15.5px] font-bold leading-snug text-slate-900 transition-colors group-hover:text-[#006569] line-clamp-2">
@@ -183,20 +187,20 @@ const ShopCard = memo(function ShopCard({
         </div>
       </div>
 
-      <div className="mt-auto flex items-center gap-2.5 pt-5">
+      <div className="mt-auto flex items-center gap-2 pt-5">
         <button
           type="button"
           onClick={() => onToggle(item.slug)}
           aria-expanded={expanded}
           aria-controls={detailId}
-          className="inline-flex h-10 flex-1 items-center justify-center gap-1 rounded-lg border border-slate-300 px-3.5 text-[12px] font-semibold text-slate-700 transition-colors hover:bg-slate-50"
+          className="inline-flex h-10 flex-1 items-center justify-center whitespace-nowrap rounded-lg border border-slate-300 px-2 text-[11.5px] font-semibold text-slate-700 transition-colors hover:bg-slate-50"
         >
-          {expanded ? 'Hide details' : 'Details'}
+          {expanded ? 'Hide' : 'Details'}
         </button>
         <button
           type="button"
           onClick={() => onBuy(item)}
-          className="inline-flex h-10 flex-1 items-center justify-center gap-1.5 rounded-lg bg-[#006569] px-3.5 text-[12px] font-semibold text-white shadow-sm transition-all hover:bg-[#045A57] active:scale-[0.98]"
+          className="inline-flex h-10 flex-1 items-center justify-center whitespace-nowrap rounded-lg bg-[#006569] px-2 text-[11.5px] font-semibold text-white shadow-sm transition-all hover:bg-[#045A57] active:scale-[0.98]"
           aria-label={`Get quote for ${item.title}`}
         >
           Get Quote
