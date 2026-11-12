@@ -1,12 +1,30 @@
 'use client';
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Footer from "../../components/Footer";
+import {
+  TEAM_HERO_VIDEO_PATH,
+  TEAM_HERO_POSTER_PATH,
+  TEAM_HERO_VIDEO_UPLOADED_ISO,
+  TEAM_HERO_VIDEO_UPLOADED_LABEL,
+  TEAM_HERO_VIDEO_TITLE,
+  TEAM_HERO_VIDEO_ALT,
+} from "@/lib/team-media";
+
+// CHANGE: 2026-11-12 — the hero's right slot is now a MEDIA slot, not an image slot.
+// It plays the team's Diwali 2026 celebration video (muted, autoplaying, seamless loop) and
+// degrades to a still frame when the visitor prefers reduced motion or the file cannot play.
+// Paths + upload date live in lib/team-media.ts so this page and the metadata layout cannot
+// drift apart. The re-encode notes (64 MB -> 4.0 MB) are documented there.
+// Only a URL with a video extension is treated as a video, so the existing admin `hero_image`
+// field can hold either a photo or a video without a schema change.
+const VIDEO_SRC = /\.(mp4|webm|ogv|mov)(\?|#|$)/i;
 
 const DEFAULTS = {
   hero_title: 'Meet the Experts Behind Your Success',
   hero_quote: '"At Sarvadnya Infotech, our strength lies in our unity and our shared passion for simplifying business technology. We don\'t just solve problems; we build lasting relationships with our clients."',
   hero_image: '',
+  hero_video: '',
   culture_title: 'Our Employee Culture',
   culture_items: [
     { title: 'Constant Innovation', desc: 'We encourage our team to stay ahead of the curve with regular training and certifications.' },
@@ -16,14 +34,64 @@ const DEFAULTS = {
 
 };
 
+/**
+ * Resolve the hero media from CMS content.
+ * Precedence: explicit `hero_video` -> a video URL stored in `hero_image` -> the bundled
+ * celebration video. `hero_image` (when it really is a photo) is kept as the error fallback,
+ * so an already-configured team photo is never lost.
+ */
+function resolveHeroMedia(content: any) {
+  const configuredVideo = String(content?.hero_video || content?.hero_video_url || '').trim();
+  const legacy = String(content?.hero_image || '').trim();
+  const legacyIsVideo = VIDEO_SRC.test(legacy);
+  return {
+    video: configuredVideo || (legacyIsVideo ? legacy : TEAM_HERO_VIDEO_PATH),
+    still: (!legacyIsVideo && legacy) || TEAM_HERO_POSTER_PATH,
+  };
+}
+
 export default function TeamPage() {
   const [content, setContent] = useState<any>(DEFAULTS);
   const [teamMembers, setTeamMembers] = useState<any[]>([]);
+  const [reduceMotion, setReduceMotion] = useState(false);
+  const [videoFailed, setVideoFailed] = useState(false);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+
+  const hero = resolveHeroMedia(content);
 
   useEffect(() => {
     fetchContent();
     fetchTeam();
   }, []);
+
+  // CHANGE: 2026-11-12 — honour `prefers-reduced-motion`: those visitors get the poster still
+  // instead of a moving hero. The preference is only readable on the client, so it is resolved
+  // in an effect — the element is swapped for the <img> as soon as it is known.
+  useEffect(() => {
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const sync = () => setReduceMotion(mq.matches);
+    sync();
+    mq.addEventListener?.('change', sync);
+    return () => mq.removeEventListener?.('change', sync);
+  }, []);
+
+  // CHANGE: 2026-11-12 — autoplay is best-effort: some mobile browsers reject play() even when
+  // the element is muted, and an unhandled rejection shows up as a console error. Swallow it,
+  // and stop looping while the tab is hidden so a background tab does not decode video.
+  useEffect(() => {
+    const el = videoRef.current;
+    if (!el || videoFailed || reduceMotion) return;
+
+    const play = () => {
+      const attempt = el.play();
+      if (attempt && typeof attempt.catch === 'function') attempt.catch(() => {});
+    };
+
+    play();
+    const onVisibility = () => (document.hidden ? el.pause() : play());
+    document.addEventListener('visibilitychange', onVisibility);
+    return () => document.removeEventListener('visibilitychange', onVisibility);
+  }, [hero.video, reduceMotion, videoFailed]);
 
   const fetchContent = async () => {
     try {
@@ -73,22 +141,44 @@ export default function TeamPage() {
             </p>
           </div>
           <div className="flex-1 w-full max-w-2xl">
-            <div className="relative aspect-[16/9] rounded-[2.5rem] overflow-hidden bg-white/80 backdrop-blur-sm shadow-2xl border border-slate-200 flex items-center justify-center p-2">
-              <div className="w-full h-full rounded-[2rem] overflow-hidden">
-                {content.hero_image ? (
-                  <img src={content.hero_image} className="w-full h-full object-cover" alt="Team Hero" />
-                ) : (
-                  <div className="w-full h-full bg-slate-50 flex items-center justify-center">
-                    <div className="text-center p-8 opacity-20 text-[#006569]">
-                      <svg className="w-24 h-24 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                      </svg>
-                      <span className="text-sm font-black uppercase tracking-widest">Main Team Photo</span>
-                    </div>
-                  </div>
-                )}
+            <figure className="m-0">
+              <div className="relative aspect-[16/9] rounded-[2.5rem] overflow-hidden bg-white/80 backdrop-blur-sm shadow-2xl border border-slate-200 flex items-center justify-center p-2">
+                <div className="relative w-full h-full rounded-[2rem] overflow-hidden bg-slate-900">
+                  {reduceMotion || videoFailed ? (
+                    <img
+                      src={videoFailed ? hero.still : TEAM_HERO_POSTER_PATH}
+                      className="w-full h-full object-cover"
+                      width={1280}
+                      height={720}
+                      alt={TEAM_HERO_VIDEO_ALT}
+                    />
+                  ) : (
+                    <video
+                      ref={videoRef}
+                      key={hero.video}
+                      src={hero.video}
+                      poster={TEAM_HERO_POSTER_PATH}
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      preload="metadata"
+                      disablePictureInPicture
+                      controls={false}
+                      // CHANGE: 2026-11-12 — accessible name + tooltip for the autoplaying hero.
+                      aria-label={TEAM_HERO_VIDEO_TITLE}
+                      title={TEAM_HERO_VIDEO_TITLE}
+                      className="w-full h-full object-cover"
+                      onError={() => setVideoFailed(true)}
+                    />
+                  )}
+                </div>
               </div>
-            </div>
+              <figcaption className="mt-4 flex flex-wrap items-center justify-between gap-x-4 gap-y-1 px-2 text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.18em] text-slate-500">
+                <span>Diwali 2026 celebration</span>
+                <time dateTime={TEAM_HERO_VIDEO_UPLOADED_ISO}>{TEAM_HERO_VIDEO_UPLOADED_LABEL}</time>
+              </figcaption>
+            </figure>
           </div>
         </div>
       </section>

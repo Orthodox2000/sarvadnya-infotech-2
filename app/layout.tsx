@@ -82,10 +82,10 @@ export default function RootLayout({
       <head suppressHydrationWarning>
         {/* CHANGE: 2026-11-05 — TEMPORARY Diwali greeting preload. Runs during HTML parse, i.e.
             BEFORE the app bundle hydrates, and only for visitors with no `svd_diwali_2026` flag
-            (and not on /checkout or /demo). The popup itself cannot render until hydration
-            because it decides "first visit" from localStorage; without this the artwork request
-            would only start once the JS had run. Returns cost nothing — the link is never
-            created for a returning visitor. See lib/diwali-popup.ts and
+            (and not on the checkout or demo-cart routes). The popup itself cannot render until
+            hydration because it decides "first visit" from localStorage; without this the
+            artwork request would only start once the JS had run. Returns cost nothing — the
+            link is never created for a returning visitor. See lib/diwali-popup.ts and
             app/components/DiwaliPopup.tsx. */}
         <script id="diwali-preload" dangerouslySetInnerHTML={{ __html: buildDiwaliPreloadScript() }} />
       </head>

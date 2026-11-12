@@ -26,6 +26,9 @@ const PRIVATE_PATHS = [
   '/checkout/success/',
   '/sarvadnya-mobile.mp4',
   '/sarvadnya%20trial%202.mp4',
+  // CHANGE: 2026-11-12 — the /team hero video follows the same policy as the two hero videos
+  // above: the file must not be indexed as a standalone result, the page embedding it is.
+  '/videos/team-diwali-2026.mp4',
 ];
 
 // CHANGE: 2026-10-29 — explicit per-crawler groups (P0 from the claude-seo adoption review).

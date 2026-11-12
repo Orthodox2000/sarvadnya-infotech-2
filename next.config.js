@@ -225,6 +225,16 @@ const nextConfig = {
           { key: 'X-Robots-Tag', value: 'noindex, nofollow' },
         ],
       },
+      // CHANGE: 2026-11-12 — the /team hero video and its poster are versioned by filename, so
+      // the whole folder can be cached hard. Without this, mp4s fall through to Next's default
+      // `public, max-age=0` and a 4 MB clip is revalidated on every visit. Replace the FILE NAME
+      // (not the bytes) when the clip changes — «immutable» will not pick up an in-place edit.
+      {
+        source: '/videos/:path*',
+        headers: [
+          { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' },
+        ],
+      },
       {
         source: '/api/:path*',
         headers: [

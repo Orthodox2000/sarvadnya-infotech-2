@@ -103,11 +103,13 @@ const Productbar = () => {
           { id: "sol-modules", label: "Industry Modules", href: "/shop?group=module" },
         ]
       },
+      // CHANGE: 2026-11-12 — "Shop by what hurts" was too colloquial for a B2B menu;
+      // rephrased to plain, professional wording (same destination, same filters).
       {
         id: "sol-by-need",
-        label: "Shop by what hurts",
+        label: "Browse by business need",
         href: "/shop#shop-filters",
-        description: "Filter by billing, credit, stock, reports, Excel or automation.",
+        description: "Billing, credit control, stock, reports, Excel import or automation.",
       },
     ],
   };

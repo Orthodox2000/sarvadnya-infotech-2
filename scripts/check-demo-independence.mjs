@@ -46,6 +46,15 @@ const ALLOWLIST = [
     expectedCount: 1,
     why: 'NOT a route — this is the regex alternative /demo|trial|free|try|test/ matching the user\'s own word "demo". The link target was repointed to /contact; the regex must keep matching.',
   },
+  // CHANGE: 2026-11-12 — the Diwali popup (2026-11-05) introduced this reference and left the
+  // guard red. It is a SKIP list, i.e. the popup must NOT render on the test-only cart — the
+  // opposite of a production link into /demo. Pinned at 1 so any additional reference trips
+  // ALLOWLIST DRIFT instead of hiding here.
+  {
+    file: 'lib/diwali-popup.ts',
+    expectedCount: 1,
+    why: 'DIWALI_SKIP_PATHS lists the routes where the greeting is suppressed, so /demo must be named here; it is an exclusion, never a link',
+  },
 ];
 
 function* walk(dir) {

@@ -321,6 +321,32 @@ Redesigned 2026-10-05 across five rounds. **There is no hero band** — the page
 
 ---
 
+### 15. `/team` hero right slot — video media slot (Diwali 2026)
+
+The hero's right-hand card on `/team` was a bare `<img src={content.hero_image}>`. Since
+**2026-11-12** it is a **media slot**: it plays the team's Diwali 2026 celebration clip muted, on
+autoplay and on an endless loop. The owner supplied a 64 MB phone recording and a 1420×756
+`team thumbnail.png`; both were processed once and committed as small web assets. The two masters
+now live in **`media-source/`** (gitignored) — never in `public/`.
+
+| Fact | Detail |
+| :--- | :--- |
+| **Files** | `public/videos/team-diwali-2026.mp4` — **3.92 MB**, 41.37 s, 960×720, H.264 High @ L4.0, ~792 kbps, **no audio track**. `public/videos/team-diwali-2026-poster.webp` — **107 KB**, 1280×720, generated from `team thumbnail.png`. Master recording lives in **`media-source/`** (gitignored) — never in `public/`, where it would be deployed, publicly fetchable and swept into a commit by `git add -A`. |
+| **Encode recipe** | `scale=960:720:force_original_aspect_ratio=decrease,format=yuv420p` · `libx264 -profile:v high -level 4.0 -preset slow -crf 30 -maxrate 1500k -bufsize 3000k` · `-g 60 -keyint_min 60 -sc_threshold 0` (a keyframe every 2 s **and at the loop point**) · `-an` · `-movflags +faststart`. 64 MB → 3.92 MB, a **94 %** reduction with the source resolution untouched. Audio was dropped deliberately: the hero autoplays muted, so the 130 kbps AAC was bytes nobody could hear. |
+| **Streaming** | `+faststart` moves the `moov` atom ahead of `mdat` (verified by byte scan), so playback starts before the file finishes downloading. The `/videos/:path*` header rule in `next.config.js` serves the folder `Cache-Control: public, max-age=31536000, immutable`. |
+| **⚠️ Version by filename** | Because the folder is `immutable`, **editing the bytes in place will not reach returning visitors for a year**. A new clip ships as a NEW filename (and `lib/team-media.ts` is the single place the path is declared). Same rule the share-image note in §5.2 of `AGENTS.md` records. |
+| **Autoplay contract** | `<video autoPlay loop muted playsInline preload="metadata" disablePictureInPicture controls={false}>`. `muted` + `playsInline` are mandatory for mobile autoplay; unmuting or dropping `playsInline` silently brings back a play button or an inline fullscreen takeover. A `play()` call runs in an effect and **its promise rejection is swallowed** — iOS low-power mode and some mobile browsers reject autoplay even when muted, and an unhandled rejection is the only realistic console error this slot can produce. |
+| **Loop hygiene** | `visibilitychange` pauses the element while the tab is hidden and resumes it on return, so a background tab stops decoding video. The 2 s GOP means the loop restarts without a long seek. |
+| **Fallback chain** | `prefers-reduced-motion: reduce` → the poster `<img>` (never a moving hero). `onError` → `content.hero_image` when that field holds a real photo, else the poster. Autoplay rejected → the browser leaves the poster frame up; nothing else degrades. |
+| **CMS precedence** | `hero_video` → a **video URL** stored in the existing `hero_image` field (detected by `/\.(mp4|webm|ogv|mov)(\?|#|$)/i`) → the bundled clip. **The bundled clip wins when neither is a video**, which is why the video appears with no DB write; the live content doc still holds the old blob JPG, now used only as the error fallback. The admin panel's team editor still ships an image picker only — making `hero_video` editable is a nested-repo task (see §10), not a frontend one. |
+| **Upload date** | Pinned once in `lib/team-media.ts` (`2026-11-12`) and rendered as a visible `<time dateTime="2026-11-12">Uploaded 12 Nov 2026</time>` in the hero caption, beside "Diwali 2026 celebration". The caption is the accessible description too — the video is decorative-adjacent, so it carries `aria-label`/`title` but no controls. |
+| **SEO stance — no `VideoObject`** | Deliberately **absent**. The site already removed `videoJsonLd()` on 2026-09-11 because a hero/background video is not a "watch page" and GSC reported *"Video isn't on a watch page"* (comment left in `app/(site)/page.tsx`). Re-adding it here recreates that defect. Instead: the `.mp4` is listed in `robots.ts` `PRIVATE_PATHS`, the pre-existing `X-Robots-Tag: noindex` rule in `next.config.js` already covers every video file, and `/team`'s share image is now the poster (`seoMetadata({ image })`), so a shared link previews the video. |
+| **Don't** | Don't add `controls`, don't unmute, don't move the path out of `lib/team-media.ts`, don't reuse a filename after re-encoding, and don't put the master recording back under `public/`. |
+| **Known trade-off** | The clip is **4:3** and the card is `aspect-[16/9]`, so `object-cover` crops ~12.5 % off the top and bottom. If faces get cut, switch the media class to `object-contain` on the existing `bg-slate-900` backdrop (no layout change needed) or re-encode a 16:9 centre crop. |
+| **Verification (2026-11-12)** | `npm run typecheck` clean · `npm run build` green with `/team` prerendered static (3.24 kB route, 119 kB first load — the video adds **no** JS) · `npm run test:all` **exit 0**, 490 PASS lines, suites 28/28 · 23/23 · 49/49 · 37/37 · 23/23 · all static guards PASS · prerendered `team.html` probed for the `<video src/poster/autoPlay/loop/muted/playsInline>`, `og:image` + `twitter:image` = poster, and the `Uploaded 12 Nov 2026` `<time>`. |
+
+---
+
 ## Appendix — verbatim originals
 
 Preserved exactly as they appeared in `AGENTS.md` before the 2026-10-30 split, so nothing

@@ -92,3 +92,8 @@ brand-assets/
 # Both were tracked, neither was read by the app. Ignored so they cannot be re-committed.
 /snapshots/
 dev-server.log
+
+# CHANGE: 2026-11-12 — the raw 64 MB "sarvadnya diwali video.mp4" recording. The site serves the
+# re-encoded public/videos/team-diwali-2026.mp4 (4.0 MB); the master stays here, out of public/,
+# so it is never uploaded, crawled or swept into a commit by `git add -A`.
+/media-source/

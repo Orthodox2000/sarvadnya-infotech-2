@@ -102,8 +102,8 @@ export default async function SiteLayout({
           {/* CHANGE: 2026-09-30 — informational data-collection notice */}
           <ConsentBanner />
           {/* CHANGE: 2026-11-05 — TEMPORARY Diwali greeting, mounted ONCE for the whole (site)
-              group. First browser visit only, stays until the visitor closes it, skips
-              /checkout + /demo. */}
+              group. First browser visit only, stays until the visitor closes it, skips the
+              checkout and demo-cart routes. */}
           <DiwaliPopup />
           {/* CHANGE: 2026-10-02 — cart "added" popover renders site-wide from the store event. */}
           <CartAddedPopover />
