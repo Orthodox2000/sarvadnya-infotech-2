@@ -50,6 +50,16 @@ export type ModuleGalleryItem = {
   src: string;
   alt: string;
   caption: string;
+  /**
+   * CHANGE: 2026-11-12 — native pixel size of the file.
+   *
+   * WHY: a single-image gallery used to sit in a fixed `aspect-[4/3]` box with `object-cover`,
+   * so a wide photo (2816x1536) lost ~25% of its width to the crop even on a desktop that had
+   * room for all of it. The page now derives the box from the real ratio, so the photo renders
+   * uncropped at the width the section offers. Keep these numbers in sync with the file.
+   */
+  width?: number;
+  height?: number;
 };
 
 /**
@@ -186,16 +196,22 @@ const CONTAINER_HANDLING: ModuleDetail = {
     {
       src: "/contaner-mgt.jpg",
       alt: "Container truck carrying a shipping container",
+      width: 1920,
+      height: 1280,
       caption: "One movement, one load sheet — vehicle, container and route together.",
     },
     {
       src: "/assets/images/1519003722824-194d4455a60c.jpg",
       alt: "Goods vehicle on a highway",
+      width: 800,
+      height: 530,
       caption: "Export, import and empty movements bill from the same register.",
     },
     {
       src: "/assets/images/1586528116311-ad8dd3c8310d.jpg",
       alt: "Cargo and shipping documentation",
+      width: 800,
+      height: 533,
       caption: "The annexure carries the container details behind every bill.",
     },
   ],
@@ -357,16 +373,22 @@ const CFA_AGENCIES: ModuleDetail = {
     {
       src: "/assets/images/1586528116311-ad8dd3c8310d.jpg",
       alt: "Cargo and shipping documentation",
+      width: 800,
+      height: 533,
       caption: "Job documents, shipment details and expenses stay on one job record.",
     },
     {
       src: "/contaner-mgt.jpg",
       alt: "Container truck carrying a shipping container",
+      width: 1920,
+      height: 1280,
       caption: "Transport, labour, port and misc costs are logged as they happen.",
     },
     {
       src: "/assets/images/1519003722824-194d4455a60c.jpg",
       alt: "Goods vehicle on a highway",
+      width: 800,
+      height: 530,
       caption: "Reimbursables reach the invoice instead of sitting in a file.",
     },
   ],
@@ -528,6 +550,8 @@ const HOUSING_SOCIETIES: ModuleDetail = {
     {
       src: "/housing society.png",
       alt: "Residential housing society building",
+      width: 2816,
+      height: 1536,
       caption: "Every flat, member and charge sits in one TallyPrime record.",
     },
   ],
@@ -686,6 +710,8 @@ const SALES_COMMISSION: ModuleDetail = {
     {
       src: "/assets/images/1554224155-6726b3ff858f.jpg",
       alt: "Sales team reviewing orders and commission records",
+      width: 800,
+      height: 459,
       caption: "The agent is picked on the sale, so commission follows the invoice.",
     },
   ],
@@ -839,16 +865,22 @@ const LOGISTICS_TRANSPORT: ModuleDetail = {
     {
       src: "/assets/images/1519003722824-194d4455a60c.jpg",
       alt: "Goods vehicle on a highway",
+      width: 800,
+      height: 530,
       caption: "One LR carries the party, route, vehicle, weight and rate.",
     },
     {
       src: "/contaner-mgt.jpg",
       alt: "Container truck carrying a shipping container",
+      width: 1920,
+      height: 1280,
       caption: "Own or hired vehicles are recorded on the same LR.",
     },
     {
       src: "/assets/images/1586528116311-ad8dd3c8310d.jpg",
       alt: "Cargo and shipping documentation",
+      width: 800,
+      height: 533,
       caption: "The invoice prints with LR details; the annexure exports separately.",
     },
   ],
@@ -1007,6 +1039,8 @@ const GARMENT_RETAIL: ModuleDetail = {
     {
       src: "/assets/images/1523381210434-271e8be1f52b.jpg",
       alt: "Garment and footwear display in a retail store",
+      width: 2816,
+      height: 1536,
       caption: "Every style, colour and size stays visible at the counter.",
     },
   ],

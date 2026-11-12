@@ -173,6 +173,9 @@ export default async function ModuleDetailPage({
   const howItWorksCopy = detail.howItWorksCopy ?? { eyebrow: "How it works", title: "Three steps. That's the whole process." };
   const benefitsCopy = detail.benefitsCopy ?? { eyebrow: "Business benefits", title: "What changes for your team" };
   const galleryCopy = detail.galleryCopy ?? { eyebrow: "On the ground", title: "Built around the real workflow" };
+  // CHANGE: 2026-11-12 — a one-photo gallery is a hero-scale photo, not a card, so it is
+  // rendered full-width with its own aspect ratio. See the gallery block below.
+  const singleGallery = detail.gallery?.length === 1;
 
   return (
     <div className="min-h-screen bg-white text-slate-900">
@@ -530,32 +533,52 @@ export default async function ModuleDetailPage({
               </h2>
             </div>
 
+            {/* CHANGE: 2026-11-12 — the single-image case used to be forced into
+                `mx-auto max-w-2xl` + `aspect-[4/3]` + `object-cover`. In a 1152px-wide section
+                that capped a 2816x1536 photo at 672px and then cropped ~27% of its width, which
+                is the "cropped weirdly" the owner reported on the housing-society page. A lone
+                photo now takes the whole content column and the tile height follows the file's
+                own ratio (`width`/`height` on the gallery item), so the framing is the file's
+                framing at every width and nothing is cut. `object-contain` is the guarantee:
+                even if a future item carries the wrong dimensions it letterboxes instead of
+                cropping. Multi-image galleries stay a uniform 3-up grid — every source photo in
+                them is natively 3:2 (the same ratio ModuleCard already uses), so `object-cover`
+                there is effectively a no-op crop. */}
             <div
               className={`mt-8 grid grid-cols-1 gap-5 ${
-                detail.gallery.length === 1
-                  ? "mx-auto max-w-2xl"
-                  : "sm:grid-cols-2 lg:grid-cols-3"
+                singleGallery ? "" : "sm:grid-cols-2 lg:grid-cols-3"
               }`}
             >
-              {detail.gallery.map((item) => (
-                <figure
-                  key={item.src + item.caption}
-                  className="overflow-hidden rounded-2xl border border-[#C5E3E3] bg-[#E5F4F4]"
-                >
-                  <div className="relative aspect-[4/3] w-full bg-[#D4EAEA]">
-                    <Image
-                      src={item.src}
-                      alt={item.alt}
-                      fill
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                      className="object-cover"
-                    />
-                  </div>
-                  <figcaption className="border-t border-[#C5E3E3] p-4 text-xs font-semibold leading-relaxed text-slate-600">
-                    {item.caption}
-                  </figcaption>
-                </figure>
-              ))}
+              {detail.gallery.map((item) => {
+                const nativeRatio =
+                  item.width && item.height ? `${item.width} / ${item.height}` : "16 / 9";
+                return (
+                  <figure
+                    key={item.src + item.caption}
+                    className="overflow-hidden rounded-2xl border border-[#C5E3E3] bg-[#E5F4F4]"
+                  >
+                    <div
+                      className={`relative w-full bg-[#D4EAEA] ${singleGallery ? "" : "aspect-[3/2]"}`}
+                      style={singleGallery ? { aspectRatio: nativeRatio } : undefined}
+                    >
+                      <Image
+                        src={item.src}
+                        alt={item.alt}
+                        fill
+                        sizes={
+                          singleGallery
+                            ? "(max-width: 1200px) calc(100vw - 2.5rem), 1152px"
+                            : "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        }
+                        className={singleGallery ? "object-contain" : "object-cover"}
+                      />
+                    </div>
+                    <figcaption className="border-t border-[#C5E3E3] p-4 text-xs font-semibold leading-relaxed text-slate-600">
+                      {item.caption}
+                    </figcaption>
+                  </figure>
+                );
+              })}
             </div>
           </div>
         </section>
@@ -659,7 +682,10 @@ export default async function ModuleDetailPage({
                     href={moduleHref(id)}
                     className="group overflow-hidden rounded-2xl border border-[#C5E3E3] bg-[#E5F4F4] transition-colors hover:border-[#033B38]"
                   >
-                    <div className="relative h-32 w-full bg-[#D4EAEA]">
+                    {/* CHANGE: 2026-11-12 — fixed `h-32` cropped these 3:2 module photos
+                        differently at every card width (the same defect ModuleCard fixed on
+                        2026-11-03). The card now follows the artwork's native ratio. */}
+                    <div className="relative aspect-[3/2] w-full bg-[#D4EAEA]">
                       {module.image && (
                         <Image
                           src={module.image}
