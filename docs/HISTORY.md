@@ -1408,3 +1408,28 @@ Ops note: `next start -p 3311` was stopped **by PID** (`60815` → `60816`), nev
 | **Collision check** | The band occupies `u + v` in **[31, 65]** (`u` = distance from the card's right edge, `v` = from the top). Chip row is left-aligned (`u >= ~100`); the title's first line starts at `v ≈ 50`, i.e. `u + v >= 70`. Clear by ~5px at every width. |
 | **Unchanged** | Card spacing pass (follow-up 1), the `whitespace-nowrap` / 11.5px action buttons (follow-up 2), `pointer-events-none` on the ribbon. |
 | **Not done** | No screenshot — fit is arithmetic plus the `overflow-hidden` clip as the hard guarantee. |
+
+### 2026-11-12 (follow-up 4) — Homepage review wall: both rows now marquee on every screen size
+
+| Fact | Detail |
+| :--- | :--- |
+| **Ask** | Owner: *"2 rows, i want them moving from left to right slowly and consistent on all sizes, you can just repeat same ones"*. |
+| **Change** | `app/components/CustomerReviews.tsx`: the `<md`-only snap-swipe carousel, its 6s autoplay, its dot pills, `activeIdx`/`carouselRef`/`scrollIdx`/`userPaused`/`resumeTimer` and the whole `step`/`goTo`/`pauseAutoplay` block are **deleted**. Every breakpoint now renders the same **two marquee rows**. |
+| **Direction** | Both rows travel **left → right** (new `@keyframes review-marquee-ltr`, `-50% → 0`). Previously row 1 went left and row 2 was `animation-direction: reverse`. |
+| **"Repeat the same ones"** | New `buildLoop(row)` repeats each row until **half** of the doubled track exceeds `LOOP_MIN_HALF_PX = 1600` (the rows live inside `max-w-7xl` = 1280px, so that margin guarantees no gap on the widest layout). Rows are then rendered `[...loop, ...loop]` and slid by one period, so the wrap is seamless. 5 reviews → 3 + 2 cards → tracks of 6 + 6 cards per half, i.e. 24 card nodes total. |
+| **Seamless maths** | A flex track of 2N cards only has 2N−1 gaps, so a plain `translateX(-50%)` overshoots one period by half a gap and jumps 10px each cycle. The keyframe is `calc(-50% - ${CARD_GAP / 2}px)`; `CARD_GAP` is still 20 and must stay in sync with `gap-5`. |
+| **Speed** | `CARD_SECONDS = 8` → duration = `loop.length × 8s` (≈48s per cycle), which keeps the **px/second identical** at 360px and 1280px instead of the old `row.length × 8s`. Hover still pauses (`animation-play-state: paused !important`); `prefers-reduced-motion` still disables the animation entirely; `IntersectionObserver` still gates it off-screen. |
+| **Card widths** | `w-[264px] sm:w-[280px] xl:w-[300px]` — 264px is the old mobile width, so a card still clears a 320px viewport with the section's `px-6`. |
+| **A11y** | The duplicated half of each track is `aria-hidden`, so the repeated cards are not announced twice. |
+| **Not done** | No browser pass (owner working mode: no iterative build/verify). Speed is the arithmetic above; flip the keyframe to `0 → -50%` if the owner wants the rows travelling the other way. |
+
+### 2026-11-12 (follow-up 4) — module pages: "On the ground" photo rendered at full width, uncropped
+
+| Fact | Detail |
+| :--- | :--- |
+| **Ask** | Owner: *"on module page of housing society, image in section 'On the ground — Built around the society office' is cropped weirdly despite on desktop we have width to view entire image, investigate other places as well where we can ensure full width render in available space."* |
+| **Root cause** | The gallery block in `app/(site)/modules/[slug]/page.tsx` had a single-image special case: `mx-auto max-w-2xl` + `aspect-[4/3]` + `object-cover`. Inside the `max-w-6xl` (1152px) section that (a) shrank the photo to **672px** — 42% of the available column unused — and (b) forced a **4:3** box on a **2816x1536 (1.83:1)** file, so `object-cover` cut ~27% of the width. Both defects at once is the "cropped weirdly". Affected **housing-societies**, **cf-agencies** (agent photo, 800x459) and **garment-retail** (2816x1536) — all three are single-photo galleries. |
+| **Fix** | `ModuleGalleryItem` gained optional **`width`/`height`** (real pixel size of each file, filled in for all 12 gallery entries). A lone gallery image now takes the **whole content column** and the tile's `aspectRatio` is derived from the file itself, with `object-contain` so a wrong/absent dimension letterboxes instead of cropping. `sizes` for that case is `(max-width: 1200px) calc(100vw - 2.5rem), 1152px`. Multi-image galleries keep the 3-up grid but the tile ratio went **`4/3` → `3/2`**: every photo used there is natively 3:2 (1920x1280, 800x530, 800x533), so the crop is now effectively zero and it matches the ratio `ModuleCard` already adopted on 2026-11-03. |
+| **Second place found (same defect class)** | The "Other modules" cards at the bottom of the same page still used a fixed **`h-32`** image box — exactly the defect `ModuleCard` fixed on 2026-11-03 but never back-ported. Now `aspect-[3/2]`, so the crop no longer changes with card width. |
+| **Checked, deliberately unchanged** | Module **hero** (`fill object-cover opacity-35`) is a 35%-opacity background texture behind a content-sized band — cropping there is intentional. `/team` square portraits and the `/services/*` two-column `aspect-[4/3]` photos are column-scoped design crops, not wasted space. `/about` gallery already uses `w-full h-auto`. Footer `h-32` box is the map **iframe** (scales, nothing to crop). |
+| **Not done** | No browser/Puppeteer screenshot (owner's single-turn mode: no builds/dev servers started on my own initiative). Math: at 1152px the housing photo renders 1152x628 instead of 672x504-with-crop; at the 360px floor it is 320x175, still uncropped. |

@@ -14,18 +14,37 @@ import { formatRating, normalizeRating, summariseRatings } from '@/lib/rating-su
 // CHANGE: 2026-10-23 — Owner: "sort best 10 and add them", "mention if someone is a CA",
 // "multi-direction carousel, smaller cards, all with different messages", "ensure proper fit
 // for all widths". The old design (one 320×272 marquee row on desktop + a single huge
-// feature card on phones) is replaced:
-//   • md+  = TWO compact rows scrolling in OPPOSITE directions (row 1 left, row 2 right).
-//   • <md  = a snap-swipe row of the SAME compact cards (264px) + teal pill dots + gentle
-//            autoplay that pauses on any interaction (the old one-card-per-viewport card was
-//            too large to read comfortably and forced a full-width scroll per review).
-//   • the card itself is now 280×200 (was 320×272) and renders a `role` pill (e.g. CA) and
-//     stars only when a rating was supplied — imported Google reviews may carry no star count,
-//     and inventing one would be fake social proof.
-// Cards have no fixed pixel width inside `ReviewCard`; the row wrappers own the width so the
-// mobile swipe row and the desktop marquee stay visually identical.
+// feature card on phones) was replaced by two compact rows (card is now 280×200) carrying a
+// `role` pill (e.g. CA) and stars only when a rating was supplied — imported Google reviews
+// may carry no star count, and inventing one would be fake social proof.
+//
+// CHANGE: 2026-11-12 — Owner: "2 rows, moving from left to right slowly and consistent on all
+// sizes, you can just repeat the same ones". So:
+//   • the mobile-only snap-swipe carousel, its autoplay and its dot pills are gone — every
+//     breakpoint now shows the SAME two marquee rows;
+//   • both rows travel left -> right (previously only row 2 was reversed);
+//   • each row repeats its own cards enough times that half of the doubled track is wider than
+//     the widest possible window (the rows live inside `max-w-7xl`). That is what makes the
+//     -50% loop seamless instead of leaving a gap on a wide screen;
+//   • duration comes from the card count in the loop, so the px/second speed is the same on a
+//     360px phone and a 1280px desktop.
+// Cards have no fixed pixel width inside `ReviewCard`; the row wrappers own the width.
 
-const CARD_GAP = 20; // px — must match `gap-5` on every track/carousel below
+const CARD_GAP = 20; // px — must match `gap-5` on every track below
+// Marquee geometry. Rows sit inside `max-w-7xl` (1280px), so half a track only has to beat
+// 1280px for the loop to be seamless — 1600px leaves margin without bloating the DOM.
+const LOOP_MIN_HALF_PX = 1600;
+const CARD_WIDTH = 300; // widest card (`xl:w-[300px]`) — only used to size the loop
+const CARD_SECONDS = 8; // slow: one card slides past roughly every 8s, at every breakpoint
+
+/** Repeat a row until half of the doubled track is wider than the widest window. */
+function buildLoop(row: Review[]): Review[] {
+    if (row.length === 0) return [];
+    const copies = Math.max(2, Math.ceil(LOOP_MIN_HALF_PX / (row.length * (CARD_WIDTH + CARD_GAP))));
+    const loop: Review[] = [];
+    for (let i = 0; i < copies; i += 1) loop.push(...row);
+    return loop;
+}
 
 // CHANGE: 2026-10-26 — star graphics can now show a PARTIAL star, because the header average
 // is computed from real reviews and lands on values like 4.5 or 4.3. Rounding that up to five
@@ -110,14 +129,7 @@ const CustomerReviews = ({ initialData }: { initialData?: Review[] }) => {
     const [loading, setLoading] = useState(!initialData);
     const [isVisible, setIsVisible] = useState(false);
     const [reduceMotion, setReduceMotion] = useState(false);
-    const [activeIdx, setActiveIdx] = useState(0);
     const sectionRef = useRef<HTMLElement>(null);
-    const carouselRef = useRef<HTMLDivElement>(null);
-    // Mobile swipe autoplay bookkeeping (same rules as before: pause on interaction, resume
-    // after 6s, disabled entirely for prefers-reduced-motion).
-    const scrollIdx = useRef(0);
-    const userPaused = useRef(false);
-    const resumeTimer = useRef<number | null>(null);
 
     useEffect(() => {
         if (initialData) return;
@@ -160,66 +172,21 @@ const CustomerReviews = ({ initialData }: { initialData?: Review[] }) => {
         };
     }, [loading, reviews.length]);
 
-    // Split the list into two balanced rows for the opposite-direction desktop marquee.
+    // Split the list into two balanced rows. Each row is then repeated by `buildLoop` so the
+    // marquee can wrap without a gap, whatever the screen width.
     const rows = useMemo(() => {
-        if (reviews.length <= 2) return [reviews, [] as Review[]];
+        if (reviews.length <= 1) return [reviews, [] as Review[]];
         const half = Math.ceil(reviews.length / 2);
         return [reviews.slice(0, half), reviews.slice(half)];
     }, [reviews]);
+
+    const loops = useMemo(() => rows.map(buildLoop), [rows]);
 
     // CHANGE: 2026-10-26 — Auto-computed, never typed by hand: the header average is derived
     // from the live review list, so adding/editing/removing a review moves it automatically and
     // it can never claim more reviews than the wall actually shows. `null` -> render nothing.
     const ratingSummary = useMemo(() => summariseRatings(reviews), [reviews]);
     const ratingText = formatRating(ratingSummary);
-
-    const step = () => {
-        const el = carouselRef.current;
-        const first = el?.firstElementChild as HTMLElement | null;
-        return (first?.clientWidth ?? 264) + CARD_GAP;
-    };
-
-    const pauseAutoplay = () => {
-        userPaused.current = true;
-        if (resumeTimer.current) window.clearTimeout(resumeTimer.current);
-        resumeTimer.current = window.setTimeout(() => {
-            userPaused.current = false;
-        }, 6000);
-    };
-
-    const handleCarouselScroll = () => {
-        const el = carouselRef.current;
-        if (!el) return;
-        const idx = Math.round(el.scrollLeft / step());
-        if (idx !== scrollIdx.current && idx >= 0 && idx < reviews.length) {
-            scrollIdx.current = idx;
-            setActiveIdx(idx);
-        }
-    };
-
-    const goTo = (i: number) => {
-        const el = carouselRef.current;
-        if (!el) return;
-        scrollIdx.current = i;
-        setActiveIdx(i);
-        el.scrollTo({ left: i * step(), behavior: reduceMotion ? 'auto' : 'smooth' });
-    };
-
-    useEffect(() => {
-        const el = carouselRef.current;
-        if (!el || !isVisible || reviews.length <= 1 || reduceMotion) return;
-        const id = window.setInterval(() => {
-            if (userPaused.current) return;
-            goTo(scrollIdx.current + 1 >= reviews.length ? 0 : scrollIdx.current + 1);
-        }, 6000);
-        return () => window.clearInterval(id);
-    }, [isVisible, reviews.length, reduceMotion]);
-
-    useEffect(() => {
-        return () => {
-            if (resumeTimer.current) window.clearTimeout(resumeTimer.current);
-        };
-    }, []);
 
     if (loading || reviews.length === 0) return null;
 
@@ -252,28 +219,33 @@ const CustomerReviews = ({ initialData }: { initialData?: Review[] }) => {
                     )}
                 </div>
 
-                {/* md+ : two compact rows scrolling in opposite directions. A row only animates
-                    when it holds enough cards to overflow the viewport (otherwise it would jump). */}
-                <div className="hidden md:block">
-                    {rows.map((row, rowIdx) =>
-                        row.length === 0 ? null : (
+                {/* Two rows, every breakpoint, both travelling left -> right at the same slow
+                    speed. Each row renders its loop twice (`loop` + `loop`) and slides by exactly
+                    -50%, so the wrap is seamless; the second copy is aria-hidden so the repeated
+                    cards are not announced again by a screen reader. */}
+                <div className="mt-2 space-y-5">
+                    {loops.map((loop, rowIdx) =>
+                        loop.length === 0 ? null : (
                             <div
                                 key={rowIdx}
-                                className={`relative overflow-hidden ${rowIdx === 0 ? 'mt-2' : 'mt-5'}`}
+                                className="relative overflow-hidden"
                                 style={MASK}
                             >
                                 <div
                                     className="review-track flex w-max gap-5"
                                     style={{
                                         willChange: 'transform',
-                                        animation:
-                                            isVisible && !reduceMotion && row.length >= 3
-                                                ? `marquee ${Math.max(26, row.length * 8)}s linear infinite${rowIdx === 1 ? ' reverse' : ''}`
-                                                : 'none',
+                                        animation: isVisible && !reduceMotion
+                                            ? `review-marquee-ltr ${loop.length * CARD_SECONDS}s linear infinite`
+                                            : 'none',
                                     }}
                                 >
-                                    {[...row, ...row].map((review, i) => (
-                                        <div key={`${review._id ?? review.name}-${i}`} className="w-[280px] shrink-0 xl:w-[300px]">
+                                    {[...loop, ...loop].map((review, i) => (
+                                        <div
+                                            key={`${rowIdx}-${review._id ?? review.name}-${i}`}
+                                            className="w-[264px] shrink-0 sm:w-[280px] xl:w-[300px]"
+                                            aria-hidden={i >= loop.length ? true : undefined}
+                                        >
                                             <ReviewCard review={review} />
                                         </div>
                                     ))}
@@ -282,50 +254,18 @@ const CustomerReviews = ({ initialData }: { initialData?: Review[] }) => {
                         )
                     )}
                 </div>
-
-                {/* sm & below: swipeable row of the same compact cards + dots */}
-                <div
-                    ref={carouselRef}
-                    onScroll={handleCarouselScroll}
-                    onPointerDown={pauseAutoplay}
-                    onTouchStart={pauseAutoplay}
-                    onWheel={pauseAutoplay}
-                    onKeyDown={pauseAutoplay}
-                    role="region"
-                    aria-label="Customer reviews, swipe to browse"
-                    tabIndex={0}
-                    className="no-scrollbar mt-2 flex snap-x snap-mandatory gap-5 overflow-x-auto pb-1 focus:rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#006569]/40 md:hidden"
-                >
-                    {reviews.map((review) => (
-                        <div key={review._id ?? review.name} className="w-[264px] shrink-0 snap-start">
-                            <ReviewCard review={review} />
-                        </div>
-                    ))}
-                </div>
-
-                <div className="mt-6 flex items-center justify-center gap-2 md:hidden" role="group" aria-label="Review navigation">
-                    {reviews.map((review, i) => (
-                        <button
-                            key={review._id ?? review.name}
-                            type="button"
-                            onClick={() => goTo(i)}
-                            aria-label={`Go to review ${i + 1}`}
-                            aria-current={i === activeIdx}
-                            className={`h-2 rounded-full transition-all duration-300 ${i === activeIdx ? 'w-6 bg-[#006569]' : 'w-2 bg-slate-300 hover:bg-slate-400'}`}
-                        />
-                    ))}
-                </div>
             </div>
 
             <style>{`
-                @keyframes marquee {
-                    0% { transform: translateX(0); }
-                    100% { transform: translateX(-50%); }
+                /* The track holds the loop twice, so one period is half of it PLUS half a gap
+                   (a flex track of 2N cards only has 2N-1 gaps). Without the extra half-gap the
+                   row would jump 10px at every wrap. */
+                @keyframes review-marquee-ltr {
+                    0% { transform: translateX(calc(-50% - ${CARD_GAP / 2}px)); }
+                    100% { transform: translateX(0); }
                 }
                 /* Inline animation shorthand wins over stylesheets, so pause needs !important. */
                 .review-track:hover { animation-play-state: paused !important; }
-                .no-scrollbar::-webkit-scrollbar { display: none; }
-                .no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
             `}</style>
         </section>
     );
