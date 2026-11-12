@@ -86,35 +86,31 @@ const ShopCard = memo(function ShopCard({
       }`}
     >
       {/*
-        CHANGE: 2026-11-12 — "Best Seller" is now a DIAGONAL CORNER RIBBON, the classic crossed
-        band across the card's top-right corner (owner picked it after rejecting the above-card
-        tag and then the inline pill: "make a corner crossed best seller").
+        CHANGE: 2026-11-12 — "Best Seller" is now a RIBBON PROPER: a diagonal teal band behind
+        the words only. The corner itself is NOT filled (owner: "i want a ribbon effect, only text
+        has a background diagonally" — the previous `clip-path` triangle made the whole corner one
+        flat colour).
 
-        HOW IT IS BUILT, and why it cannot spill or clip a letter:
-        - The wrapper is a 72x72 box welded to the card's top-right corner. It carries
-          `overflow-hidden rounded-tr-xl`, so anything inside is clipped to the card's own 12px
-          radius — the ribbon can never poke outside the card, which is exactly what the previous
-          two attempts got wrong.
-        - The teal shape is a `clip-path` triangle (full top edge + full right edge + hypotenuse),
-          not a rotated rectangle. A rotated rectangle leaves a bare notch at the corner unless it
-          is offset so far out that the text gets cut; the triangle covers the corner completely
-          and still gives a straight diagonal edge for the label.
-        - The label is a single rotated line centred on the triangle's median (x + y = 72 in box
-          coords). It sits ~11px in from the hypotenuse, where the open chord is ~79px wide;
-          "BEST SELLER" at 9px/0.08em is ~70px, so it has ~4px of clearance each end.
-        - Geometry check against the content: the triangle satisfies u + v <= 72 where u is the
-          distance from the card's right edge. The chip row is left-aligned (u >= ~100 at every
-          width down to 360px) and the title starts at v ~= 54, where the triangle has already
-          withdrawn past the 20px padding (u <= 18). So nothing is covered, at any width.
+        GEOMETRY (all inside a 72x72 box welded to the card's top-right corner):
+        - The wrapper keeps `overflow-hidden rounded-tr-xl`, so the band's ends are cut by the
+          card's own top/right edges and the 12px radius. That is what makes it read as a ribbon
+          running across the corner instead of a pill floating inside the card.
+        - The band is a 150x24 rotated-45 rectangle whose centre sits on the corner diagonal at a
+          perpendicular distance d = 34px. Two consequences, both deliberate:
+            * visible axis length = 2d = 68px, so the ~60px label keeps ~4px clear at each cut end;
+            * the band's near edge lands 31px along each edge from the corner, leaving a small
+              white corner tip — that white tip is the "ribbon" look, not a bug.
+        - Collision check: the band occupies u + v in [31, 65] (u = distance from the card's right
+          edge, v = from the top). The chip row is left-aligned (u >= ~100) and the title's first
+          line starts at v ~= 50, i.e. u + v >= 70 — clear of the band by ~5px at every width.
       */}
       {item.featured && (
         <div className="pointer-events-none absolute right-0 top-0 z-10 h-[72px] w-[72px] overflow-hidden rounded-tr-xl">
           <span
             aria-hidden="true"
-            className="absolute inset-0 bg-[#006569]"
-            style={{ clipPath: 'polygon(100% 0, 0 0, 100% 100%)' }}
+            className="absolute left-[-27px] top-[12px] h-6 w-[150px] rotate-45 bg-[#006569] shadow-[0_1px_3px_rgba(0,101,105,0.28)]"
           />
-          <span className="absolute left-[-16px] top-[21px] h-3.5 w-[120px] rotate-45 text-center text-[9px] font-bold uppercase leading-[14px] tracking-[0.08em] text-white">
+          <span className="absolute left-[-27px] top-[12px] flex h-6 w-[150px] rotate-45 items-center justify-center whitespace-nowrap text-[8.5px] font-bold uppercase tracking-[0.04em] leading-none text-white">
             Best Seller
           </span>
         </div>
