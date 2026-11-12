@@ -81,55 +81,58 @@ const ShopCard = memo(function ShopCard({
   return (
     <article
       id={item.slug}
-      className={`scroll-mt-32 group relative flex h-full flex-col rounded-xl border bg-white shadow-sm transition-all duration-200 hover:shadow-md hover:border-[#006569]/40 p-4 ${
+      className={`scroll-mt-32 group relative flex h-full flex-col rounded-xl border bg-white shadow-sm transition-all duration-200 hover:shadow-md hover:border-[#006569]/40 p-5 ${
         expanded ? 'border-[#006569]/60 ring-1 ring-[#006569]/10' : 'border-slate-200'
       }`}
     >
       {/*
-        CHANGE: 2026-10-30 — the "Best Seller" tag moved OUT of the card and now sits fully
-        above it (owner: "move out of box on top", "redesign it properly").
-        WHY: the old pill was `-top-2 right-3`, i.e. it straddled the card's own top border and
-        covered the first row of group/category chips on narrow cards. It is now anchored with
-        `bottom-full`, so its bottom edge stops at the card's top border and nothing inside the
-        card is ever obscured; a small rotated square acts as a pointer down to the card so the
-        tag still reads as belonging to it. The card grid gained `gap-y-6` (was a uniform
-        `gap-3`) to reserve the ~20px of vertical room the tag needs, so tags never collide with
-        the row above. `pointer-events-none` keeps the decoration out of the click target.
+        CHANGE: 2026-11-12 — the "Best Seller" tag is back INSIDE the card as a stamp badge
+        (owner: "that shop best seller tag is weird, fix it inside card, make it as a stamp tick
+        or badge", then "it must not look weird and outside card").
+        SHAPE: a filled teal pill with a tick, pinned to the RIGHT of the card's own chip row with
+        `ml-auto` — so it sits in the top-right corner of the card, like a stamp, while staying in
+        normal flow. Filled vs. the outlined group/category chips is what makes it read as a badge
+        rather than a third category.
+        WHY NOT absolute: the old (2026-10-30) tag used `absolute bottom-full` to hang OUTSIDE the
+        card and needed `pointer-events-none` + a reserved `gap-y-6` grid. An in-card absolute
+        corner stamp is worse still: at the 360px floor the card is ~330px wide, so a corner stamp
+        either covers the chip row or forces `pr-*` reservation that pushes "TDL Add-on" and
+        "Billing & Invoicing" onto two lines. In flow with `ml-auto`, the row simply wraps — the
+        badge drops to its own right-aligned line and nothing is ever covered or overflowed.
       */}
-      {item.featured && (
-        <span className="pointer-events-none absolute bottom-full right-2 z-10 mb-1.5 inline-flex items-center gap-1 rounded-md bg-gradient-to-b from-[#00747a] to-[#00565a] px-2 py-0.5 text-[9px] font-bold uppercase leading-none tracking-wide text-white shadow-[0_2px_6px_rgba(0,101,105,0.30)] ring-1 ring-[#004a4d]/25">
-          <svg
-            aria-hidden="true"
-            viewBox="0 0 24 24"
-            className="h-2.5 w-2.5 fill-current"
-          >
-            <path d="M12 2.5l2.9 6.06 6.6.86-4.85 4.55 1.22 6.53L12 17.3l-5.87 3.2 1.22-6.53L2.5 9.42l6.6-.86L12 2.5z" />
-          </svg>
-          Best Seller
-          <span
-            aria-hidden="true"
-            className="absolute -bottom-[3px] right-2.5 h-1.5 w-1.5 rotate-45 rounded-[1px] bg-[#00565a]"
-          />
-        </span>
-      )}
-      <div className="mb-2 flex flex-wrap items-center gap-1.5">
+      <div className="mb-3 flex flex-wrap items-center gap-2">
         <span className={`rounded border px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide ${GROUP_TONE[item.group]}`}>
           {groupLabel(item.group)}
         </span>
         <span className="rounded border border-slate-200 bg-slate-50 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide text-slate-500">
           {categoryLabel(item.category)}
         </span>
+        {item.featured && (
+          <span className="ml-auto inline-flex items-center gap-1 rounded-full bg-[#006569] px-2 py-1 text-[9px] font-bold uppercase tracking-wide text-white shadow-[inset_0_0_0_1px_rgba(255,255,255,0.28),0_1px_2px_rgba(0,101,105,0.25)]">
+            <svg
+              aria-hidden="true"
+              viewBox="0 0 24 24"
+              className="h-3 w-3 shrink-0"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="3"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+            </svg>
+            Best Seller
+          </span>
+        )}
       </div>
 
-      <h3 className="text-[15px] font-bold leading-snug text-slate-900 transition-colors group-hover:text-[#006569] line-clamp-2">
+      <h3 className="text-[15.5px] font-bold leading-snug text-slate-900 transition-colors group-hover:text-[#006569] line-clamp-2">
         {item.title}
       </h3>
-      <p className="mt-2 line-clamp-2 text-[12.5px] leading-relaxed text-slate-600">{item.summary}</p>
+      <p className="mt-2.5 line-clamp-2 text-[13px] leading-relaxed text-slate-600">{item.summary}</p>
 
       {item.tags.length > 0 && (
-        <ul className="mt-3 flex flex-wrap gap-1.5">
+        <ul className="mt-4 flex flex-wrap gap-2">
           {item.tags.map((t) => (
-            <li key={t} className="rounded-md bg-[#F4F6F4] px-1.5 py-0.5 text-[10.5px] font-semibold text-slate-500">
+            <li key={t} className="rounded-md bg-[#F4F6F4] px-2 py-1 text-[11px] font-semibold text-slate-500">
               {t}
             </li>
           ))}
@@ -140,16 +143,16 @@ const ShopCard = memo(function ShopCard({
       <div
         id={detailId}
         className={`grid transition-[grid-template-rows,opacity] duration-300 ease-out ${
-          expanded ? 'mt-4 grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'
+          expanded ? 'mt-5 grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'
         }`}
         aria-hidden={!expanded}
       >
         <div className="overflow-hidden">
-          <div className="rounded-xl border border-slate-200 bg-[#FAFBF8] p-3.5">
+          <div className="rounded-xl border border-slate-200 bg-[#FAFBF8] p-4">
             {item.detail.length > 0 ? (
-              <ul className="space-y-1.5">
+              <ul className="space-y-2">
                 {item.detail.map((d) => (
-                  <li key={d} className="flex gap-2 text-[12px] leading-relaxed text-slate-600">
+                  <li key={d} className="flex gap-2.5 text-[12.5px] leading-relaxed text-slate-600">
                     <svg className="mt-[3px] h-3 w-3 shrink-0 text-[#006569]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" aria-hidden="true">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                     </svg>
@@ -158,42 +161,42 @@ const ShopCard = memo(function ShopCard({
                 ))}
               </ul>
             ) : (
-              <p className="text-[12px] leading-relaxed text-slate-600">
+              <p className="text-[12.5px] leading-relaxed text-slate-600">
                 Configured around your voucher types during implementation, so it fits the way your team already works.
               </p>
             )}
 
-            <div className="mt-3 flex flex-wrap items-center gap-2 border-t border-slate-200 pt-3">
+            <div className="mt-4 flex flex-wrap items-center gap-2.5 border-t border-slate-200 pt-4">
               <button
                 type="button"
                 onClick={() => onAsk(item)}
-                className="inline-flex items-center gap-1.5 rounded-full border border-[#006569]/30 bg-white px-3 py-1.5 text-[11px] font-bold text-[#006569] transition-colors hover:bg-teal-50"
+                className="inline-flex items-center gap-2 rounded-full border border-[#006569]/30 bg-white px-3.5 py-2 text-[11.5px] font-bold text-[#006569] transition-colors hover:bg-teal-50"
               >
                 <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z" />
                 </svg>
                 Ask AI Consultant Sara
               </button>
-              <span className="text-[11px] text-slate-400">Tally vetted, set up by our team</span>
+              <span className="text-[11.5px] text-slate-400">Tally vetted, set up by our team</span>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="mt-auto flex items-center gap-2 pt-4">
+      <div className="mt-auto flex items-center gap-2.5 pt-5">
         <button
           type="button"
           onClick={() => onToggle(item.slug)}
           aria-expanded={expanded}
           aria-controls={detailId}
-          className="inline-flex h-9 flex-1 items-center justify-center gap-1 rounded-lg border border-slate-300 px-3 text-[11.5px] font-semibold text-slate-700 transition-colors hover:bg-slate-50"
+          className="inline-flex h-10 flex-1 items-center justify-center gap-1 rounded-lg border border-slate-300 px-3.5 text-[12px] font-semibold text-slate-700 transition-colors hover:bg-slate-50"
         >
           {expanded ? 'Hide details' : 'Details'}
         </button>
         <button
           type="button"
           onClick={() => onBuy(item)}
-          className="inline-flex h-9 flex-1 items-center justify-center gap-1.5 rounded-lg bg-[#006569] px-3 text-[11.5px] font-semibold text-white shadow-sm transition-all hover:bg-[#045A57] active:scale-[0.98]"
+          className="inline-flex h-10 flex-1 items-center justify-center gap-1.5 rounded-lg bg-[#006569] px-3.5 text-[12px] font-semibold text-white shadow-sm transition-all hover:bg-[#045A57] active:scale-[0.98]"
           aria-label={`Get quote for ${item.title}`}
         >
           Get Quote
@@ -515,7 +518,7 @@ export default function ShopBrowser() {
 
           {/* Results */}
           <div ref={resultsRef} className="mt-5 min-w-0 lg:mt-0">
-            <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+            <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
               <p className="text-[12.5px] font-bold text-slate-500" aria-live="polite">
                 {activeFilters === 0 ? (
                   <>{TDL_ITEMS.length} solutions in the catalogue</>
@@ -567,10 +570,10 @@ export default function ShopBrowser() {
               </div>
             ) : (
               <>
-                {/* CHANGE: 2026-10-30 — `gap-y-6` (24px) instead of a uniform 12px gap: the
-                    "Best Seller" tag now sits fully ABOVE the card, so each row needs that
-                    vertical room or the tag of one row would overlap the card above it. */}
-                <div className="grid grid-cols-1 gap-x-3 gap-y-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                {/* CHANGE: 2026-11-12 — roomier grid (owner: "increase spacing in shop cards as
+                    currently all seems cramped"): 16px between cards, 20px from `sm` up. Card
+                    padding went 16px -> 20px and every internal gap was widened to match. */}
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3 xl:grid-cols-4">
                   {shown.map((item) => (
                     <ShopCard
                       key={item.slug}
