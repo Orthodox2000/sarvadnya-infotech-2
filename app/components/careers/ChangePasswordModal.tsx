@@ -46,7 +46,7 @@ export default function ChangePasswordModal({ isOpen, onClose }: ChangePasswordM
       <div className="w-full max-w-md bg-white rounded-xl p-6" onClick={e => e.stopPropagation()}>
         <h2 className="text-lg font-black mb-4">Change Password</h2>
         {success ? (
-          <p className="text-sm text-green-600">Password changed. Logging out...</p>
+          <p className="text-sm text-teal-700">Password changed. Logging out...</p>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
