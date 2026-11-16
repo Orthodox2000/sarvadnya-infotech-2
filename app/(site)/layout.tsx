@@ -9,9 +9,9 @@ import { Analytics } from "@vercel/analytics/next"
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import { VisitorProvider } from "../components/VisitorProvider";
 import ConsentBanner from "../components/ConsentBanner";
-// CHANGE: 2026-11-05 — TEMPORARY Diwali greeting (first visit, stays until dismissed).
-// REMOVAL: delete this import + the <DiwaliPopup /> mount below, then the component file.
-import DiwaliPopup from "../components/DiwaliPopup";
+// CHANGE: 2026-11-16 — greeting popup (first visit at once, returning visitors after 20 s).
+// REMOVAL: delete this import + the <GreetingPopup /> mount below, then the component file.
+import GreetingPopup from "../components/GreetingPopup";
 import { CartProvider } from "@/lib/cart/store";
 import CartAddedPopover from "../components/cart/CartAddedPopover";
 // CHANGE: 2026-10-02 — ONE drawer mount for both navbar variants. Mounting it inside the
@@ -101,10 +101,11 @@ export default async function SiteLayout({
           <NotificationToast />
           {/* CHANGE: 2026-09-30 — informational data-collection notice */}
           <ConsentBanner />
-          {/* CHANGE: 2026-11-05 — TEMPORARY Diwali greeting, mounted ONCE for the whole (site)
-              group. First browser visit only, stays until the visitor closes it, skips the
-              checkout and demo-cart routes. */}
-          <DiwaliPopup />
+          {/* CHANGE: 2026-11-16 — greeting popup, mounted ONCE for the whole (site) group.
+              Opens immediately for a first visit and stays until the visitor closes it; a
+              returning visitor gets it 20 s after landing, once. Skips the checkout and
+              demo-cart routes. */}
+          <GreetingPopup />
           {/* CHANGE: 2026-10-02 — cart "added" popover renders site-wide from the store event. */}
           <CartAddedPopover />
           {/* CHANGE: 2026-10-02 — the cart drawer, mounted ONCE site-wide (see import note). */}
