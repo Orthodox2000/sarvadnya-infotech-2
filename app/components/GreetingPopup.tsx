@@ -183,15 +183,12 @@ export default function GreetingPopup() {
         onClick={(e) => e.stopPropagation()}
         className="relative w-[min(90vw,160vh,56rem)] animate-in zoom-in-95 duration-300 motion-reduce:animate-none"
       >
-        {/* CHANGE: 2026-11-16 — the greeting card is now the launch notice for the DMS module.
-            The whole artwork is one link: clicking it navigates AND closes the card. The
-            backdrop and the ✕ still dismiss without leaving the page. The CTA pill sits
-            inside the link (pointer-events-none), so there is one click target, not two. */}
+        {/* CHANGE: 2026-11-16 — popup shows only the image. Clicking the image opens the linked page. */}
         <Link
           href={GREETING_CTA_HREF}
           onClick={close}
-          aria-label={`${GREETING_CTA_LABEL}. Open the module page.`}
-          className="group relative block aspect-[2/1] w-full overflow-hidden rounded-2xl shadow-[0_24px_70px_-18px_rgba(0,0,0,0.75)] ring-1 ring-white/15 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+          aria-label={GREETING_ART.alt}
+          className="relative block aspect-[2/1] w-full overflow-hidden rounded-2xl shadow-[0_24px_70px_-18px_rgba(0,0,0,0.75)] ring-1 ring-white/15 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
         >
           <Image
             src={GREETING_ART.src}
@@ -205,18 +202,6 @@ export default function GreetingPopup() {
             draggable={false}
             className="h-full w-full select-none object-contain"
           />
-
-          <span
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-x-0 bottom-0 flex justify-center p-3 sm:p-4"
-          >
-            <span className="inline-flex items-center gap-2 rounded-full bg-[#006569] px-4 py-2 text-[11px] font-extrabold uppercase tracking-wider text-white shadow-lg ring-1 ring-white/25 transition-colors group-hover:bg-[#045A57]">
-              {GREETING_CTA_LABEL}
-              <svg viewBox="0 0 20 20" fill="currentColor" className="h-3.5 w-3.5" aria-hidden="true">
-                <path d="M4 10a1 1 0 0 1 1-1h7.586L9.293 5.707a1 1 0 1 1 1.414-1.414l4.999 5a1 1 0 0 1 0 1.414l-4.999 5a1 1 0 0 1-1.414-1.414L12.586 11H5a1 1 0 0 1-1-1z" />
-              </svg>
-            </span>
-          </span>
         </Link>
 
         <button
