@@ -1,7 +1,7 @@
 'use client';
 
 // CHANGE: 2026-11-16 — the Diwali greeting card became the general greeting card.
-// Artwork: public/er.png (1280x640, 2:1, owner-supplied) via the pre-encoded
+// Artwork: public/ev.png (1280x640, 2:1, owner-supplied) via the pre-encoded
 // public/greeting-popup.webp. No "Diwali" wording anywhere in the UI.
 //
 // TIMING (owner, 2026-11-16):
@@ -20,7 +20,7 @@
 //      app/(site)/layout.tsx
 //   4. delete the `buildGreetingPreloadScript` import and the `<script id="greeting-preload">`
 //      line in app/layout.tsx
-// Optionally delete public/greeting-popup.webp. public/er.png is the owner's master and may be
+// Optionally delete public/greeting-popup.webp. public/ev.png is the owner's master and may be
 // kept. The `svd_greeting_2026` flag can stay in visitors' localStorage; nothing reads it again.
 //
 // WHY A MODAL AND NOT A CORNER TOAST: the artwork is a greeting card. A card needs room on
@@ -38,9 +38,12 @@
 // underneath once the card is closed.
 
 import Image from 'next/image';
+import Link from 'next/link';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import {
   GREETING_ART,
+  GREETING_CTA_HREF,
+  GREETING_CTA_LABEL,
   GREETING_LEGACY_KEY,
   GREETING_REVISIT_DELAY_MS,
   GREETING_SKIP_PATHS,
@@ -66,6 +69,14 @@ export default function GreetingPopup() {
   useEffect(() => {
     if (shownRef.current) return;
 
+    let sessionHandled = false;
+    try {
+      sessionHandled = window.sessionStorage.getItem(`${GREETING_STORAGE_KEY}_session`) === '1';
+    } catch {
+      // Ignore: without session storage we fall back to localStorage/ref guards.
+    }
+    if (sessionHandled) return;
+
     const path = window.location.pathname;
     if (GREETING_SKIP_PATHS.some((p) => path === p || path.startsWith(`${p}/`))) return;
 
@@ -80,6 +91,14 @@ export default function GreetingPopup() {
     }
     if (alreadySeen) return;
 
+    const markSessionHandled = () => {
+      try {
+        window.sessionStorage.setItem(`${GREETING_STORAGE_KEY}_session`, '1');
+      } catch {
+        // Ignore: failing to persist only means a repeat view in this tab is possible.
+      }
+    };
+
     const reveal = () => {
       // Re-check the skip list at REVEAL time, not only at mount: a returning visitor can
       // navigate onto the checkout or the demo cart during the 20 s countdown, and a blocking
@@ -87,6 +106,7 @@ export default function GreetingPopup() {
       // flag, so the visitor still gets the card on a later visit.
       const now = window.location.pathname;
       if (GREETING_SKIP_PATHS.some((p) => now === p || now.startsWith(`${p}/`))) return;
+      markSessionHandled();
       try {
         window.localStorage.setItem(GREETING_STORAGE_KEY, '1');
       } catch {
@@ -101,6 +121,7 @@ export default function GreetingPopup() {
       return;
     }
 
+    markSessionHandled();
     const timer = window.setTimeout(reveal, GREETING_REVISIT_DELAY_MS);
     return () => window.clearTimeout(timer);
   }, []);
@@ -160,20 +181,43 @@ export default function GreetingPopup() {
           overlay's `p-4` already eats 32 px at the narrowest breakpoint. */}
       <div
         onClick={(e) => e.stopPropagation()}
-        className="relative aspect-[2/1] w-[min(90vw,160vh,56rem)] animate-in zoom-in-95 duration-300 motion-reduce:animate-none"
+        className="relative w-[min(90vw,160vh,56rem)] animate-in zoom-in-95 duration-300 motion-reduce:animate-none"
       >
-        <Image
-          src={GREETING_ART.src}
-          alt={GREETING_ART.alt}
-          width={GREETING_ART.width}
-          height={GREETING_ART.height}
-          // Already the final, pre-sized WebP — see the note in lib/greeting-popup.ts. The
-          // <head> preload script requests the exact same URL, so there is one download, not two.
-          unoptimized
-          priority
-          draggable={false}
-          className="h-full w-full select-none rounded-2xl object-contain shadow-[0_24px_70px_-18px_rgba(0,0,0,0.75)] ring-1 ring-white/15"
-        />
+        {/* CHANGE: 2026-11-16 — the greeting card is now the launch notice for the DMS module.
+            The whole artwork is one link: clicking it navigates AND closes the card. The
+            backdrop and the ✕ still dismiss without leaving the page. The CTA pill sits
+            inside the link (pointer-events-none), so there is one click target, not two. */}
+        <Link
+          href={GREETING_CTA_HREF}
+          onClick={close}
+          aria-label={`${GREETING_CTA_LABEL}. Open the module page.`}
+          className="group relative block aspect-[2/1] w-full overflow-hidden rounded-2xl shadow-[0_24px_70px_-18px_rgba(0,0,0,0.75)] ring-1 ring-white/15 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+        >
+          <Image
+            src={GREETING_ART.src}
+            alt={GREETING_ART.alt}
+            width={GREETING_ART.width}
+            height={GREETING_ART.height}
+            // Already the final, pre-sized WebP — see the note in lib/greeting-popup.ts. The
+            // <head> preload script requests the exact same URL, so there is one download, not two.
+            unoptimized
+            priority
+            draggable={false}
+            className="h-full w-full select-none object-contain"
+          />
+
+          <span
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-x-0 bottom-0 flex justify-center p-3 sm:p-4"
+          >
+            <span className="inline-flex items-center gap-2 rounded-full bg-[#006569] px-4 py-2 text-[11px] font-extrabold uppercase tracking-wider text-white shadow-lg ring-1 ring-white/25 transition-colors group-hover:bg-[#045A57]">
+              {GREETING_CTA_LABEL}
+              <svg viewBox="0 0 20 20" fill="currentColor" className="h-3.5 w-3.5" aria-hidden="true">
+                <path d="M4 10a1 1 0 0 1 1-1h7.586L9.293 5.707a1 1 0 1 1 1.414-1.414l4.999 5a1 1 0 0 1 0 1.414l-4.999 5a1 1 0 0 1-1.414-1.414L12.586 11H5a1 1 0 0 1-1-1z" />
+              </svg>
+            </span>
+          </span>
+        </Link>
 
         <button
           ref={closeRef}

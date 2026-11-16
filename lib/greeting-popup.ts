@@ -38,16 +38,25 @@ export const GREETING_REVISIT_DELAY_MS = 20_000;
 export const GREETING_SKIP_PATHS = ['/checkout', '/demo'] as const;
 
 /**
+ * CHANGE: 2026-11-16 — the greeting card is also the launch notice for the new Document
+ * Management module. Clicking the artwork (or its CTA pill) routes here and closes the card.
+ * One constant, so the component cannot drift from the module page route. Remove this pair
+ * together with the CTA markup in GreetingPopup.tsx if the card should stop linking.
+ */
+export const GREETING_CTA_HREF = '/modules/document-management';
+export const GREETING_CTA_LABEL = 'New: Document Management for TallyPrime';
+
+/**
  * ONE artwork for every width, pre-encoded once from the owner's PNG with sharp and committed
  * as a static file:
- *   greeting-popup.webp  1280x640 (2:1), 66 KB  <- public/er.png 1280x640, 540 KB
+ *   greeting-popup.webp  1280x640 (2:1), 65 KB  <- public/ev.png 1280x640
  * WHY A SINGLE 2:1 ASSET: the owner supplied one image, so the card keeps one box of the same
  * ratio and `object-contain` fits it whole — no crop, no stretch, no srcset pair to download.
  * WHY NOT next/image's optimizer: the card caps at 56rem (896 CSS px), so 1280 px is already
- * ~1.4x and re-encoding a 540 KB PNG on a cold request gains nothing; the file is served
+ * ~1.4x and re-encoding the source PNG on a cold request gains nothing; the file is served
  * `immutable, max-age=31536000` by the existing static-header rule.
- * REGENERATE (only if public/er.png is replaced):
- *   node -e "require('sharp')('public/er.png').resize(1280,640,{fit:'inside'}).webp({quality:82,effort:6}).toFile('public/greeting-popup.webp')"
+ * REGENERATE (only if public/ev.png is replaced):
+ *   node -e "require('sharp')('public/ev.png').resize(1280,640,{fit:'inside'}).webp({quality:82,effort:6}).toFile('public/greeting-popup.webp')"
  * Registered by the static-file cache rule only — no next.config change is needed for it.
  *
  * ALT TEXT: deliberately generic — it describes who is greeting, not the artwork, because the

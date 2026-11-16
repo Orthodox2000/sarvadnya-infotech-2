@@ -1565,3 +1565,13 @@ Ops note: `next start -p 3311` was stopped **by PID** (`60815` → `60816`), nev
 | **Why corrective** | The displayed "4.5 from 4 reviews" on the home screen was reported as a bug/unwanted presentation; this change removes that aggregate display from the homepage reviews section. |
 | **Docs/logs** | Updated `docs/HISTORY.md`, `daily logs/2026-11-16.md`, and `daily logs/excel logs.csv` (row 120) with today's corrective note. |
 | **Verification (requested)** | Build/typecheck/tests executed on request in this session (results recorded in the session report). No database writes were performed as part of this fix. |
+
+### 2026-11-16 (sixth session) — Greeting popup: use `ev.png`, fix same-session repeat, remove unused old images
+
+| Fact | Detail |
+| :--- | :--- |
+| **Report** | Owner: *"we have ev.png updated image, ensure that one is used and replace current image, both are same same and quality, and delete unused images old ones"* and *"fix issue when despite ones i saw a popup, after 20s i see that again in same session"*. |
+| **Image replacement** | Regenerated `public/greeting-popup.webp` from `public/ev.png` (1280×640, same 2:1 fit, WebP quality/effort unchanged: 82/6; output ~65 KB). `lib/greeting-popup.ts` and `app/components/GreetingPopup.tsx` comments/regen instructions now reference `ev.png` as the master source. `GREETING_ART.src` remains `/greeting-popup.webp` (no preload/component URL drift). |
+| **Same-session repeat fix** | `app/components/GreetingPopup.tsx`: added a per-tab session guard (`sessionStorage` key `${GREETING_STORAGE_KEY}_session`) so the popup decision is handled once per tab session. The guard is set when showing immediately (first visit) and when scheduling/revealing the delayed returning-visitor popup, preventing a second 20s-triggered appearance in the same session after the popup was already seen/handled. Existing localStorage flags and skip-path checks remain in place. |
+| **Deleted unused old images** | Removed `public/er.png`, `public/diwali-popup-square.webp`, and `public/diwali-popup-wide.webp` (no longer referenced by the greeting popup implementation). Kept `public/ev.png` (master) and `public/greeting-popup.webp` (served asset). |
+| **Verified** | Single-pass update: `sharp` conversion/metadata check for `ev.png`/generated WebP only; no build, dev server, typecheck, or `check:*` suite run. |
