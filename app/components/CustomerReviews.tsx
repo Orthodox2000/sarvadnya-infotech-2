@@ -3,10 +3,7 @@
 import { useState, useEffect, useRef, memo, useMemo } from 'react';
 import Image from 'next/image';
 import type { Review } from '@/lib/reviews';
-// CHANGE: 2026-10-26 — The review wall is now the ONLY place a rating is shown, and it is
-// computed from the reviews that actually exist (lib/rating-summary.mjs). Everything that used
-// to carry a hand-typed star count (product sidebars, product JSON-LD, /contact) was removed.
-import { formatRating, normalizeRating, summariseRatings } from '@/lib/rating-summary.mjs';
+import { normalizeRating } from '@/lib/rating-summary.mjs';
 
 // CHANGE: 2026-09-18 — Review type now imported from lib/reviews.ts (was a local
 // re-declaration that could drift; _id is optional there, so keys stay safe).
@@ -182,12 +179,6 @@ const CustomerReviews = ({ initialData }: { initialData?: Review[] }) => {
 
     const loops = useMemo(() => rows.map(buildLoop), [rows]);
 
-    // CHANGE: 2026-10-26 — Auto-computed, never typed by hand: the header average is derived
-    // from the live review list, so adding/editing/removing a review moves it automatically and
-    // it can never claim more reviews than the wall actually shows. `null` -> render nothing.
-    const ratingSummary = useMemo(() => summariseRatings(reviews), [reviews]);
-    const ratingText = formatRating(ratingSummary);
-
     if (loading || reviews.length === 0) return null;
 
     return (
@@ -200,23 +191,6 @@ const CustomerReviews = ({ initialData }: { initialData?: Review[] }) => {
                     <div className="relative h-16 w-64 opacity-80">
                         <Image src="/google-reviews.png" alt="Google Reviews" fill className="object-contain object-left" sizes="300px" />
                     </div>
-                    {/* CHANGE: 2026-10-26 — the site's only displayed rating, and it is calculated
-                        from real reviews (replaces every hand-typed star count). Renders nothing
-                        when no review carries a rating, rather than falling back to a number. */}
-                    {ratingSummary && ratingText && (
-                        <div
-                            className="flex items-center gap-2.5 pb-1"
-                            aria-label={`${ratingText} out of 5 stars from ${ratingSummary.count} ${ratingSummary.count === 1 ? 'review' : 'reviews'}`}
-                        >
-                            <span className="text-2xl font-black leading-none text-[#006569]">{ratingText}</span>
-                            <div>
-                                <StarRating rating={ratingSummary.average} size="w-3.5 h-3.5" />
-                                <p className="mt-1 text-[0.65rem] font-semibold text-slate-500">
-                                    from {ratingSummary.count} {ratingSummary.count === 1 ? 'review' : 'reviews'}
-                                </p>
-                            </div>
-                        </div>
-                    )}
                 </div>
 
                 {/* Two rows, every breakpoint, both travelling left -> right at the same slow
