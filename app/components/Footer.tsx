@@ -309,8 +309,14 @@ export default function Footer({ settings: initialSettings }: { settings?: SiteS
                                     Hardcoded so it always shows even if DB settings only hold the mobile number.
                                     2026-08-26 — Removed whitespace-nowrap: it forced the line onto one width and
                                     overflowed the narrow (1/6) footer column on PC. It now wraps naturally. */}
+                                {/* CHANGE: 2026-11-17 — each landline on its own line, no "/" separator.
+                                    Separate anchors so clicking the second number dials the second
+                                    number; block + leading-tight keeps them as two tight rows. */}
                                 <a href="tel:+912249742200" className="hover:text-[#B8DEDE] transition-colors block leading-tight">
-                                    +022-4974 2200 <br> +022-4964 7959
+                                    +022-4974 2200
+                                </a>
+                                <a href="tel:+912249647959" className="hover:text-[#B8DEDE] transition-colors block leading-tight">
+                                    +022-4964 7959
                                 </a>
                                 {supportPhone.split(',').map((num, i) => (
                                     <a key={i} href={`tel:${num.trim()}`} className="hover:text-[#B8DEDE] transition-colors block leading-tight">
