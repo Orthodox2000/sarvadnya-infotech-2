@@ -51,15 +51,50 @@ import {
   GREETING_SKIP_PATHS,
 } from '@/lib/greeting-popup';
 
+// CHANGE: 2026-11-17 — one duration for BOTH directions, so the slow entry and the slow exit are
+// the same animation played forwards and backwards. Kept here rather than only in the class names
+// because the close handler must wait exactly this long before unmounting the card.
+const GREETING_TRANSITION_MS = 700;
+
 export default function GreetingPopup() {
   const [open, setOpen] = useState(false);
+  // `closing` keeps the card mounted while the exit animation plays; `open` stays true so the
+  // scroll lock and Escape handler remain in force until the card is actually gone.
+  const [closing, setClosing] = useState(false);
+  const closeTimerRef = useRef<number | null>(null);
   const closeRef = useRef<HTMLButtonElement | null>(null);
   // In-memory twin of the stored flag. WHY: the layout does NOT remount on client-side
   // navigation, but with storage blocked (private mode) the write silently fails, and without
   // this guard a re-run of the effect could hand the visitor a card per page.
   const shownRef = useRef(false);
 
-  const close = useCallback(() => setOpen(false), []);
+  // CHANGE: 2026-11-17 — play the exit at the same slow pace as the entry, then unmount.
+  // A second call (double click, Esc while already closing) is a no-op; reduced-motion users skip
+  // the wait and get an immediate close, matching the `motion-reduce:animate-none` classes below.
+  const close = useCallback(() => {
+    if (closeTimerRef.current !== null) return;
+    const reduceMotion =
+      typeof window !== 'undefined' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduceMotion) {
+      setOpen(false);
+      return;
+    }
+    setClosing(true);
+    closeTimerRef.current = window.setTimeout(() => {
+      closeTimerRef.current = null;
+      setClosing(false);
+      setOpen(false);
+    }, GREETING_TRANSITION_MS);
+  }, []);
+
+  // A navigation or unmount mid-exit must not leave a dangling timer writing to a dead component.
+  useEffect(
+    () => () => {
+      if (closeTimerRef.current !== null) window.clearTimeout(closeTimerRef.current);
+    },
+    [],
+  );
 
   // Timing decision. Runs ONCE per page load (mount-only deps): the (site) group layout stays
   // mounted across client-side navigation, so "20 s on the site" is measured from the landing
@@ -164,7 +199,9 @@ export default function GreetingPopup() {
       aria-modal="true"
       aria-label="Greeting from Sarvadnya Infotech LLP"
       onClick={close}
-      className="fixed inset-0 z-[100002] flex items-center justify-center bg-[#033B38]/30 p-4 backdrop-blur-[2px] animate-in fade-in duration-300 motion-reduce:animate-none sm:p-6"
+      className={`fixed inset-0 z-[100002] flex items-center justify-center bg-[#033B38]/30 p-4 backdrop-blur-[2px] duration-700 ease-in-out motion-reduce:animate-none sm:p-6 ${
+        closing ? 'animate-out fade-out fill-mode-forwards' : 'animate-in fade-in'
+      }`}
     >
       {/* FITTING RULE — one artwork, one box, so every width behaves the same way:
             w = min(90vw, 160vh, 56rem)  and  aspect-[2/1]
@@ -176,7 +213,9 @@ export default function GreetingPopup() {
           overlay's `p-4` already eats 32 px at the narrowest breakpoint. */}
       <div
         onClick={(e) => e.stopPropagation()}
-        className="relative w-[min(90vw,160vh,56rem)] animate-in zoom-in-95 duration-300 motion-reduce:animate-none"
+        className={`relative w-[min(90vw,160vh,56rem)] duration-700 ease-in-out motion-reduce:animate-none ${
+          closing ? 'animate-out zoom-out-95 fade-out fill-mode-forwards' : 'animate-in zoom-in-95 fade-in'
+        }`}
       >
         {/* CHANGE: 2026-11-16 — popup shows only the image. Clicking the image opens the linked page. */}
         <Link
