@@ -110,8 +110,9 @@ export default async function SiteLayout({
           <ConsentBanner />
           {/* CHANGE: 2026-11-17 — greeting popup, mounted ONCE for the whole (site) group.
               New visitor session -> opens immediately; repeat session (admin visitor cookie
-              already present) -> opens 20 s after landing. Once per browser tab session; the
-              flag is raised in sessionStorage. Skips the checkout and demo-cart routes. */}
+              already present) -> opens 20 s after landing. The sessionStorage flag is raised at
+              show time and reset to false on each repeat visit, so later visits still get the
+              20 s timer. Skips the checkout and demo-cart routes. */}
           <GreetingPopup />
           {/* CHANGE: 2026-10-02 — cart "added" popover renders site-wide from the store event. */}
           <CartAddedPopover />

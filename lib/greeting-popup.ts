@@ -12,8 +12,8 @@
 // BEHAVIOUR (owner, 2026-11-17):
 //   new visitor      -> no `svd_vid` cookie at load -> the card opens as soon as it mounts
 //   repeat visitor   -> `svd_vid` cookie already present -> opens GREETING_REVISIT_DELAY_MS later
-//   either way the flag is raised in SESSION storage, so it is once per browser tab session,
-//     not "once forever" — a repeat visitor can see it again in a later session.
+//   the flag is raised in SESSION storage at show time, but a visit that already has a visitor
+//     session resets it to false first, so the 20 s timer is guaranteed on every repeat visit.
 //   neither sees it on /checkout or on the test-only demo cart.
 //
 // "Repeat visitor" comes from VisitorProvider's long-lived `svd_vid` cookie — the very id
@@ -29,7 +29,10 @@
  */
 export const GREETING_STORAGE_KEY = 'svd_greeting_2026';
 
-/** sessionStorage key — the popup has already been handled in this browser tab session. */
+/**
+ * sessionStorage key. '1' = handled; a repeat visit resets it to '0' before scheduling its timer
+ * so an older flag can never suppress the card on the 2nd, 3rd, ... visit.
+ */
 export const GREETING_SESSION_KEY = `${GREETING_STORAGE_KEY}_session`;
 
 /**

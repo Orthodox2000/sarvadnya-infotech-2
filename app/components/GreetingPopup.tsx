@@ -11,9 +11,10 @@
 //                       (GREETING_REVISIT_DELAY_MS). The cookie is the same session id the admin
 //                       records in `visitors`; the <head> script captures its presence before
 //                       VisitorProvider can create it.
-//   Once per browser tab session: the flag is raised in sessionStorage at SHOW time, not stored
-//   forever in localStorage — a repeat visitor can see the card again in a later session.
-//   New visitors never get a second card 20 s later — the flag is already written at open time.
+//   Once per page load: the flag is raised in sessionStorage at SHOW time, but a visit that
+//   already has a visitor session RESETS it to false first — so the 20 s timer is guaranteed on
+//   the 2nd, 3rd, ... visit too (owner bug report 2026-11-17). The in-memory shownRef still blocks
+//   a second card within one page load, and new visitors still get the immediate card.
 //
 // HOW TO REMOVE IT (four steps, nothing else to unpick — no DB, env, settings or CSS change):
 //   1. delete app/components/GreetingPopup.tsx
@@ -106,23 +107,35 @@ export default function GreetingPopup() {
   useEffect(() => {
     if (shownRef.current) return;
 
-    // One popup per browser tab session (owner 2026-11-17). Not localStorage: a repeat visitor
-    // in a later session must still get the card, after the 20 s delay.
+    // Repeat = the admin's visitor-session cookie already existed at load time. The <head>
+    // script wrote the global before VisitorProvider could create the cookie on a first visit.
+    const returning =
+      (window as unknown as Record<string, unknown>)[GREETING_RETURNING_GLOBAL] === true;
+
     let sessionHandled = false;
     try {
       sessionHandled = window.sessionStorage.getItem(GREETING_SESSION_KEY) === '1';
     } catch {
       // Ignore: without session storage the in-memory ref still blocks a second card this mount.
     }
-    if (sessionHandled) return;
+
+    // CHANGE: 2026-11-17 (owner bug report) — on a 3rd+ visit the flag left by an earlier visit in
+    // the same tab was still '1', so the 20 s timer never ran and no card appeared. When a visitor
+    // session exists, reset the flag to false FIRST so the timer is guaranteed on every repeat
+    // visit. shownRef still prevents a second card inside this page load. A brand-new session
+    // keeps the guard: it has no cookie yet, so a stale flag means it already got the card here.
+    if (returning) {
+      try {
+        window.sessionStorage.setItem(GREETING_SESSION_KEY, '0');
+      } catch {
+        // Ignore: with storage blocked the flag cannot suppress anything anyway.
+      }
+    } else if (sessionHandled) {
+      return;
+    }
 
     const path = window.location.pathname;
     if (GREETING_SKIP_PATHS.some((p) => path === p || path.startsWith(`${p}/`))) return;
-
-    // Repeat = the admin's visitor-session cookie already existed at load time. The <head>
-    // script wrote the global before VisitorProvider could create the cookie on a first visit.
-    const returning =
-      (window as unknown as Record<string, unknown>)[GREETING_RETURNING_GLOBAL] === true;
 
     const markSessionHandled = () => {
       try {
