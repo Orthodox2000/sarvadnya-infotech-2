@@ -15,10 +15,21 @@ export default function ModuleCta({
   title,
   pricing,
   brochureUrl,
+  heading = "Book a live TallyPrime demo",
+  asideTitle = "Ready to speed up your billing?",
+  bullets = [
+    "Get a free demo at your convenience",
+    "Chat with our team on WhatsApp",
+    "See the module in action today",
+  ],
 }: {
   title: string;
   pricing?: { label: string; price: string }[];
   brochureUrl: string;
+  /** CHANGE: 2026-11-16 — optional DMS copy; existing modules keep the defaults. */
+  heading?: string;
+  asideTitle?: string;
+  bullets?: string[];
 }) {
   const [modal, setModal] = useState<{ open: boolean; type: FormType }>({
     open: false,
@@ -26,9 +37,12 @@ export default function ModuleCta({
   });
   const [showPrice, setShowPrice] = useState(false);
 
+  // CHANGE: 2026-11-16 — strip the trailing "for/in TallyPrime" once, so the WhatsApp
+  // message does not read "… for TallyPrime in TallyPrime" and the price heading is clean.
+  const moduleName = title.replace(/ (for|in) TallyPrime$/, "").trim() || title;
   const service = `Module: ${title}`;
   const whatsapp = `https://wa.me/919870942557?text=${encodeURIComponent(
-    `Hi Sarvadnya Infotech, I would like a demo of the ${title} in TallyPrime.`,
+    `Hi Sarvadnya Infotech, I would like a demo of the ${moduleName} in TallyPrime.`,
   )}`;
 
   return (
@@ -41,7 +55,7 @@ export default function ModuleCta({
                 Module pricing · TDL licence
               </p>
               <h2 className="mt-1 text-xl font-black text-[#033B38] sm:text-2xl">
-                {title.replace(/ in TallyPrime$/, "")}
+                {moduleName}
               </h2>
               <p className="mt-1 text-sm font-medium text-slate-600">
                 Installation, setup and operator training are handled by our team.
@@ -80,11 +94,11 @@ export default function ModuleCta({
             <p className="inline-block rounded-sm border border-[#C5E3E3]/40 bg-[#045A57] px-2.5 py-1 font-mono text-[10px] font-extrabold uppercase tracking-wider text-[#E5F4F4]">
               Sarvadnya Infotech LLP
             </p>
-            <h2 className="mt-3 text-2xl font-black sm:text-3xl">Ready to speed up your billing?</h2>
+            <h2 className="mt-3 text-2xl font-black sm:text-3xl">{asideTitle}</h2>
             <ul className="mt-3 space-y-1.5 text-sm font-medium text-[#E5F4F4]">
-              <li>• Get a free demo at your convenience</li>
-              <li>• Chat with our team on WhatsApp</li>
-              <li>• See the module in action today</li>
+              {bullets.map((bullet) => (
+                <li key={bullet}>• {bullet}</li>
+              ))}
             </ul>
 
             <div className="mt-6 space-y-2.5">
@@ -113,7 +127,7 @@ export default function ModuleCta({
           </div>
 
           <div className="rounded-2xl border-2 border-[#033B38] bg-white p-6 shadow-[0_6px_0_0_#033B38] sm:p-8 lg:col-span-7">
-            <h2 className="text-2xl font-black text-[#033B38]">Book a live TallyPrime demo</h2>
+            <h2 className="text-2xl font-black text-[#033B38]">{heading}</h2>
             <p className="mt-1 text-sm font-medium text-slate-600">
               Tell us how this process runs in your business today. We will walk you through the same
               module on your own workflow.

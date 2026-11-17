@@ -99,7 +99,17 @@ const Productbar = () => {
         subItems: [
           { id: "sol-addons", label: "TDL Add-ons", href: "/shop?group=addon" },
           { id: "sol-excel", label: "Excel to Tally", href: "/shop?group=excel" },
-          { id: "sol-boosters", label: "Business Boosters", href: "/shop?group=booster" },
+          {
+            id: "sol-boosters",
+            label: "Business Boosters",
+            href: "/shop?group=booster",
+            // CHANGE: 2026-11-17 — DMS is a curated page, not a shop/DB row, so link it
+            // directly here (as well as under Modules > Business Modules). Same route the
+            // greeting popup opens; keep both in sync with lib/module-details.ts.
+            subItems: [
+              { id: "sol-dms", label: "Document Management", href: "/modules/document-management" },
+            ],
+          },
           { id: "sol-modules", label: "Industry Modules", href: "/shop?group=module" },
         ]
       },

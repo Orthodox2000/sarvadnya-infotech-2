@@ -80,13 +80,13 @@ export default function RootLayout({
   return (
     <html lang="en-IN" className={cn("h-full antialiased", "font-sans", geist.variable, playfair.variable)} style={{ colorScheme: "only light" }} data-scroll-behavior="smooth" suppressHydrationWarning>
       <head suppressHydrationWarning>
-        {/* CHANGE: 2026-11-16 — greeting popup preload. Runs during HTML parse, i.e. BEFORE the
-            app bundle hydrates, and only for a true first visit: either stored flag (the new
-            `svd_greeting_2026` or the retired Diwali one) suppresses it, as do the checkout and
-            demo-cart routes. The popup itself cannot render until hydration because it decides
-            first-visit from localStorage; without this the artwork request would only start once
-            the JS had run. A returning visitor is not preloaded on purpose — their card waits
-            20 s. See lib/greeting-popup.ts and app/components/GreetingPopup.tsx. */}
+        {/* CHANGE: 2026-11-17 — greeting popup preload. Runs during HTML parse, i.e. BEFORE the
+            app bundle hydrates. It (a) captures whether the admin visitor-session cookie
+            `svd_vid` already exists into a window global — the new/repeat signal the popup
+            needs — and (b) preloads the artwork for a NEW session only, whose card opens on
+            mount. A repeat session waits 20 s and is not speculatively preloaded. The per-tab
+            sessionStorage flag and the checkout/demo-cart skip list suppress both. The popup
+            itself renders after hydration. See lib/greeting-popup.ts + GreetingPopup.tsx. */}
         <script id="greeting-preload" dangerouslySetInnerHTML={{ __html: buildGreetingPreloadScript() }} />
       </head>
       <body className="relative min-h-full w-full bg-background text-foreground" suppressHydrationWarning>

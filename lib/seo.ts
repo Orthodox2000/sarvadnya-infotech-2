@@ -176,7 +176,9 @@ export function orgJsonLd(): JsonLd {
     telephone: SITE_CONTACT.phone,
     address: { '@type': 'PostalAddress', streetAddress: '73, Vindhya Commercial Premises, Sector - 11, Plot No - 1, CBD Belapur', addressLocality: 'Navi Mumbai', addressRegion: 'MH', addressCountry: 'IN' },
     sameAs: [
-      'https://facebook.com/sarvadnyainfotech',
+      // CHANGE: 2026-11-16 — facebook.com/sarvadnyainfotech is a dead page (error page); the live
+      // profile is the owner's pfbid URL. Keep in sync with Footer + the settings collection.
+      'https://www.facebook.com/people/Suman-Sawant/pfbid02fQZB9QyH59fPFffaWDfHKWhpp9mZjBSKN5x3T2zYUbgcpWW49LDAAy8Eiutqfs97l/',
       'https://www.instagram.com/sarvadnya.infotech/',
       'https://linkedin.com/company/sarvadnyainfotech',
       'https://www.youtube.com/@sarvadnyainfotechtally',
@@ -204,7 +206,7 @@ export function localBusinessJsonLd(): JsonLd {
     // nodes can never disagree about which accounts are ours. `foundingDate` is the year the
     // site states everywhere ("Tally Certified Partner Since 2008").
     sameAs: [
-      'https://facebook.com/sarvadnyainfotech',
+      'https://www.facebook.com/people/Suman-Sawant/pfbid02fQZB9QyH59fPFffaWDfHKWhpp9mZjBSKN5x3T2zYUbgcpWW49LDAAy8Eiutqfs97l/',
       'https://www.instagram.com/sarvadnya.infotech/',
       'https://linkedin.com/company/sarvadnyainfotech',
       'https://www.youtube.com/@sarvadnyainfotechtally',

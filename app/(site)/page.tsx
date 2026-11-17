@@ -5,6 +5,9 @@ import FAQ from '../components/faq'
 import Footer from '../components/Footer'
 import { getContent, getPartners, getReviews, getSettings } from '@/lib/mongodb-utils'
 import { seoMetadata, localBusinessJsonLd } from "@/lib/seo";
+// CHANGE: 2026-11-16 — getSettings() is the raw uppercase-key map; normalise before handing it to
+// client components (see lib/site-settings.ts).
+import { normaliseSettings } from '@/lib/site-settings';
 
 // CHANGE: 2026-08-27 — SEO metadata for AI/search indexing.
 // CHANGE: 2026-10-29 — description now leads with the action and fits the 160-char display limit
@@ -30,6 +33,10 @@ export default async function Home() {
     getContent('home_faq'),
     getSettings()
   ]);
+  // CHANGE: 2026-11-16 — the raw map was passed straight into <Footer>, so `settings.facebook_url`
+  // etc. were undefined and the social icons rendered href="#" permanently (the truthy prop also
+  // stopped Footer's own /api/settings fetch from ever running).
+  const siteSettings = normaliseSettings(settingsData);
 
   return (
     <main className="bg-[linear-gradient(90deg,_rgba(249,251,245,1)_0%,_rgba(244,242,234,1)_53%,_rgba(238,236,223,1)_100%)] ">
@@ -40,8 +47,8 @@ export default async function Home() {
       <CertifiedPartners initialData={partnersData} />
   
       <CustomerReviews initialData={reviewsData} />
-      <FAQ initialData={faqData} initialSettings={settingsData} />
-      <Footer settings={settingsData} />
+      <FAQ initialData={faqData} initialSettings={siteSettings} />
+      <Footer settings={siteSettings} />
     </main>
   );
 }

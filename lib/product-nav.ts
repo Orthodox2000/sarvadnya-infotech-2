@@ -65,6 +65,9 @@ export const productItems: ProductItem[] = [
           { id: "m-trans", label: "Transport Module", href: "/modules/logistics-transport" },
           { id: "m-container", label: "Container Handling Module", href: "/modules/container-handling" },
           { id: "m-garment", label: "Garment / Footwear Module", href: "/modules/garment-retail" },
+          // CHANGE: 2026-11-16 — DMS page is curated in lib/module-details.ts, not the modules
+          // collection, so it is deliberately linked here instead of relying on a DB row.
+          { id: "m-dms", label: "Document Management", href: "/modules/document-management" },
           // {
           //   id: "m-excel",
           //   label: "Excel to Tally",

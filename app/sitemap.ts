@@ -69,6 +69,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     '/find-solution',
     '/hrms',
     '/modules',
+    // CHANGE: 2026-11-16 — curated DMS page. It has no modules DB row, so the dynamic
+    // moduleEntries loop above cannot discover it; list the URL explicitly.
+    '/modules/document-management',
     '/news',
     '/privacy',
     '/products',

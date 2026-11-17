@@ -1,17 +1,19 @@
 'use client';
 
-// CHANGE: 2026-11-16 — the Diwali greeting card became the general greeting card.
-// Artwork: public/ev.png (1280x640, 2:1, owner-supplied) via the pre-encoded
-// public/greeting-popup.webp. No "Diwali" wording anywhere in the UI.
+// CHANGE: 2026-11-17 — timing now follows the visitor session the admin tracks, not a retired
+// localStorage flag. Artwork: public/ev.png (1280x640, 2:1, owner-supplied) via the pre-encoded
+// public/greeting-popup.webp.
 //
-// TIMING (owner, 2026-11-16):
-//   first-time visitor  -> opens immediately on mount, stays until the visitor closes it
-//                          (the ✕, a click outside, or Esc)
-//   returning visitor   -> opens 20 s after landing (GREETING_REVISIT_DELAY_MS), and only once
-//   new visitors never get a second card 20 s later — the first card may still be open, and the
-//   flag is already written, so the delay branch can never fire for them.
-// "Returning" is decided by the RETIRED Diwali flag (GREETING_LEGACY_KEY): those visitors have
-// already had the old card, which is exactly who the 20 s rule is for.
+// TIMING (owner, 2026-11-17):
+//   NEW visitor      -> no `svd_vid` cookie at page load -> opens immediately on mount and stays
+//                       until the visitor closes it (the ✕, a click outside, or Esc).
+//   REPEAT visitor   -> `svd_vid` cookie already present -> opens 20 s after landing
+//                       (GREETING_REVISIT_DELAY_MS). The cookie is the same session id the admin
+//                       records in `visitors`; the <head> script captures its presence before
+//                       VisitorProvider can create it.
+//   Once per browser tab session: the flag is raised in sessionStorage at SHOW time, not stored
+//   forever in localStorage — a repeat visitor can see the card again in a later session.
+//   New visitors never get a second card 20 s later — the flag is already written at open time.
 //
 // HOW TO REMOVE IT (four steps, nothing else to unpick — no DB, env, settings or CSS change):
 //   1. delete app/components/GreetingPopup.tsx
@@ -43,11 +45,10 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import {
   GREETING_ART,
   GREETING_CTA_HREF,
-  GREETING_CTA_LABEL,
-  GREETING_LEGACY_KEY,
+  GREETING_RETURNING_GLOBAL,
   GREETING_REVISIT_DELAY_MS,
+  GREETING_SESSION_KEY,
   GREETING_SKIP_PATHS,
-  GREETING_STORAGE_KEY,
 } from '@/lib/greeting-popup';
 
 export default function GreetingPopup() {
@@ -63,43 +64,41 @@ export default function GreetingPopup() {
   // Timing decision. Runs ONCE per page load (mount-only deps): the (site) group layout stays
   // mounted across client-side navigation, so "20 s on the site" is measured from the landing
   // page, not from the last route change — a visitor who keeps browsing still gets the card.
-  // localStorage is read in an effect, never during render (the server cannot know what the
-  // browser has stored). The flag is written at OPEN time, not at close time, so navigating
-  // away mid-show cannot make the card reappear — the exact bug ConsentBanner hit in September.
+  // The new/repeat decision was captured in <head> (before VisitorProvider creates `svd_vid`);
+  // the per-tab flag is sessionStorage, read/written in this effect, never during render.
+  // It is raised at SHOW time, not close time, so navigating away mid-show cannot make the card
+  // reappear — the exact bug ConsentBanner hit in September.
   useEffect(() => {
     if (shownRef.current) return;
 
+    // One popup per browser tab session (owner 2026-11-17). Not localStorage: a repeat visitor
+    // in a later session must still get the card, after the 20 s delay.
     let sessionHandled = false;
     try {
-      sessionHandled = window.sessionStorage.getItem(`${GREETING_STORAGE_KEY}_session`) === '1';
+      sessionHandled = window.sessionStorage.getItem(GREETING_SESSION_KEY) === '1';
     } catch {
-      // Ignore: without session storage we fall back to localStorage/ref guards.
+      // Ignore: without session storage the in-memory ref still blocks a second card this mount.
     }
     if (sessionHandled) return;
 
     const path = window.location.pathname;
     if (GREETING_SKIP_PATHS.some((p) => path === p || path.startsWith(`${p}/`))) return;
 
-    let alreadySeen = false;
-    let returning = false;
-    try {
-      alreadySeen = window.localStorage.getItem(GREETING_STORAGE_KEY) === '1';
-      returning = window.localStorage.getItem(GREETING_LEGACY_KEY) === '1';
-    } catch {
-      // Storage blocked (private mode / cookies disabled): treat as a first visit. It just
-      // cannot be remembered, so this visitor may see the card again on a later visit.
-    }
-    if (alreadySeen) return;
+    // Repeat = the admin's visitor-session cookie already existed at load time. The <head>
+    // script wrote the global before VisitorProvider could create the cookie on a first visit.
+    const returning =
+      (window as unknown as Record<string, unknown>)[GREETING_RETURNING_GLOBAL] === true;
 
     const markSessionHandled = () => {
       try {
-        window.sessionStorage.setItem(`${GREETING_STORAGE_KEY}_session`, '1');
+        window.sessionStorage.setItem(GREETING_SESSION_KEY, '1');
       } catch {
         // Ignore: failing to persist only means a repeat view in this tab is possible.
       }
     };
 
     const reveal = () => {
+      if (shownRef.current) return;
       // Re-check the skip list at REVEAL time, not only at mount: a returning visitor can
       // navigate onto the checkout or the demo cart during the 20 s countdown, and a blocking
       // card over a payment form is a lost order. Bailing here deliberately does NOT write the
@@ -107,21 +106,17 @@ export default function GreetingPopup() {
       const now = window.location.pathname;
       if (GREETING_SKIP_PATHS.some((p) => now === p || now.startsWith(`${p}/`))) return;
       markSessionHandled();
-      try {
-        window.localStorage.setItem(GREETING_STORAGE_KEY, '1');
-      } catch {
-        // Ignore: failing to persist only means a repeat view.
-      }
       shownRef.current = true;
       setOpen(true);
     };
 
     if (!returning) {
+      // New session -> immediate popup, flag raised in reveal().
       reveal();
       return;
     }
 
-    markSessionHandled();
+    // Repeat visitor -> wait, then show and raise the flag in the session.
     const timer = window.setTimeout(reveal, GREETING_REVISIT_DELAY_MS);
     return () => window.clearTimeout(timer);
   }, []);

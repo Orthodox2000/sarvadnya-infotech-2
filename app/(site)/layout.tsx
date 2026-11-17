@@ -4,6 +4,9 @@ import type { Metadata } from 'next';
 import Navbar from "../components/Navbar";
 import Productbar from "../components/Productbar";
 import { getSettings, getNews } from "@/lib/mongodb-utils";
+// CHANGE: 2026-11-16 — getSettings() returns the raw uppercase-key map; components read
+// snake_case fields. Normalise once here (see lib/site-settings.ts).
+import { normaliseSettings } from "@/lib/site-settings";
 import { CONTACT_SUFFIX } from "@/lib/seo";
 import { Analytics } from "@vercel/analytics/next"
 import { SpeedInsights } from "@vercel/speed-insights/next"
@@ -72,6 +75,10 @@ export default async function SiteLayout({
     getSettingsData(),
     getNews().catch(() => [])
   ]);
+  // CHANGE: 2026-11-16 — SupportButton reads whatsapp_phone/support_phone; the raw map made both
+  // undefined and (being truthy) skipped its /api/settings fetch, so the floating WhatsApp button
+  // used the hard-coded support number instead of the configured WhatsApp number.
+  const siteSettings = normaliseSettings(settings);
 
   return (
     <>
@@ -97,14 +104,14 @@ export default async function SiteLayout({
 
         <VisitorProvider>
           {children}
-          <SupportButton initialSettings={settings} />
+          <SupportButton initialSettings={siteSettings} />
           <NotificationToast />
           {/* CHANGE: 2026-09-30 — informational data-collection notice */}
           <ConsentBanner />
-          {/* CHANGE: 2026-11-16 — greeting popup, mounted ONCE for the whole (site) group.
-              Opens immediately for a first visit and stays until the visitor closes it; a
-              returning visitor gets it 20 s after landing, once. Skips the checkout and
-              demo-cart routes. */}
+          {/* CHANGE: 2026-11-17 — greeting popup, mounted ONCE for the whole (site) group.
+              New visitor session -> opens immediately; repeat session (admin visitor cookie
+              already present) -> opens 20 s after landing. Once per browser tab session; the
+              flag is raised in sessionStorage. Skips the checkout and demo-cart routes. */}
           <GreetingPopup />
           {/* CHANGE: 2026-10-02 — cart "added" popover renders site-wide from the store event. */}
           <CartAddedPopover />

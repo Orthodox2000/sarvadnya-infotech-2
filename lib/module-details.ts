@@ -108,6 +108,18 @@ export type ModuleDetail = {
   gallery?: ModuleGalleryItem[];
   /** Which interactive walkthrough to render. Omitted = no simulator section. */
   simulator?: ModuleSimulatorId;
+  /**
+   * CHANGE: 2026-11-16 — DMS has no walkthrough video yet. The page renders a visible
+   * "coming soon" card instead of silently omitting the section, so the brochure page still
+   * explains that a video is on the way. Remove this flag when a real videoUrl is supplied.
+   */
+  videoComingSoon?: boolean;
+  /** CHANGE: 2026-11-16 — DMS "Attach at every level" groups (company, stock item, party, transaction). */
+  attachGroups?: { title: string; items: string[] }[];
+  /** CHANGE: 2026-11-16 — DMS "Who uses it" audience cards. */
+  audiences?: { title: string; body: string }[];
+  /** CHANGE: 2026-11-16 — optional CTA copy so a non-billing module does not reuse billing wording. */
+  ctaCopy?: { heading: string; asideTitle: string; bullets: string[] };
 };
 
 const CONTAINER_HANDLING: ModuleDetail = {
@@ -1118,6 +1130,152 @@ const GARMENT_RETAIL: ModuleDetail = {
   simulator: "garment",
 };
 
+// CHANGE: 2026-11-16 — Document Management System landing page. Content transcribed from
+// the owner-supplied module page/brochure; no claim is added beyond that source. The module
+// is not in the modules collection (admin-managed), so this curated entry is what makes
+// /modules/document-management render even though /modules/<id> is otherwise DB-driven.
+// `image` is deliberately empty: the owner has no product photo yet, and the hero template
+// falls back to the solid teal band instead of shipping a broken or unrelated image.
+const DOCUMENT_MANAGEMENT: ModuleDetail = {
+  id: "document-management",
+  title: "Document Management System for TallyPrime",
+  eyebrow: "TallyPrime Add-on · Document Management",
+  heroLead:
+    "Find documents in seconds. Attach once, then open or email in a click. Every invoice, certificate and agreement stays linked to its voucher or master, right inside TallyPrime.",
+  suitedFor: [
+    "Chartered accountants",
+    "C&F agents & CHAs",
+    "Transporters",
+    "Trusts & NGOs",
+    "Schools & colleges",
+  ],
+  image: "",
+  imageAlt: "",
+  videoUrl: "",
+  videoComingSoon: true,
+  brochureUrl: "/brochures/dms-module-brochure.pdf",
+  shortDescription: "Attach, view and email documents inside TallyPrime.",
+  fullDescription:
+    "Invoices, GST certificates, agreements and other proof documents usually live outside Tally - in folders, on someone's phone or in a WhatsApp chat. This module attaches those files to the voucher or master they belong to, so the document opens from the same screen. Attach one file or many, open or print them in a click, and email them to a client, vendor or your CA without leaving TallyPrime.",
+  metaTitle: "Document Management System for TallyPrime",
+  metaDescription:
+    "Attach invoices, GST certificates and agreements to any TallyPrime voucher or master. Open or email them in one click, audit-ready.",
+  keywords: [
+    "document management system for tally",
+    "document management tallyprime",
+    "tally document attachment",
+    "attach documents to tally voucher",
+    "tally dms module",
+    "email documents from tally",
+    "audit ready documents tally",
+    "paperless documentation tally",
+  ],
+  features: [
+    "Attach any number of documents to a transaction or master",
+    "PDF, Excel, Word and image files all work",
+    "Open the attachment in a click from any transaction or master",
+    "See every attachment in one report, split by master and transaction",
+    "Email attached documents without leaving TallyPrime",
+    "Add outside files to the same email for clients or your CA",
+  ],
+  benefits: [
+    "No more audit panic: proof is ready all year, on-site or online",
+    "No more document hunting: no folders, no WhatsApp chats",
+    "Nothing gets lost: each file stays linked to its entry",
+    "Centrally stored: one place, no overlap, role-based access",
+  ],
+  problem: {
+    eyebrow: "The everyday headache",
+    title: "Your entries are in Tally. Your proof is everywhere else.",
+    body: "Invoices sit in a cabinet, challans live on someone's phone, scanned bills hide in Downloads. Then the auditor asks for a vendor bill from eight months ago. The module attaches each document to the entry it belongs to.",
+  },
+  flow: {
+    inputTitle: "Step A · Attach once",
+    inputs: ["Pick a voucher or master", "Add one file or many", "Save as usual"],
+    engine: "Keeps each file linked to its record.",
+    outputTitle: "Step B · Find in a click",
+    outputs: ["Open from any screen", "Print or email it", "Audit-ready all year"],
+  },
+  videoCopy: {
+    eyebrow: "See it in TallyPrime",
+    title: "The document trail, inside TallyPrime",
+    body: "The walkthrough is being recorded. Until it is ready, the four points beside it and the brochure cover the same ground.",
+  },
+  whatYouGetCopy: { eyebrow: "What you get", title: "Attach, view and email. All inside Tally." },
+  howItWorksCopy: { eyebrow: "Simple by design", title: "Three steps. That's the whole job." },
+  benefitsCopy: { eyebrow: "Why teams choose Sarvadnya", title: "Audit-ready, without the panic" },
+  steps: [
+    {
+      tag: "Attach",
+      title: "Attach once",
+      body: "Add the file to the voucher or master while you work. Scanned or digital, one or many.",
+    },
+    {
+      tag: "Open",
+      title: "Find it in a click",
+      body: "Open the document from the same screen, or from the single attachments report.",
+    },
+    {
+      tag: "Share",
+      title: "Print or email",
+      body: "Send it to a client, vendor or your CA without leaving TallyPrime.",
+    },
+  ],
+  attachGroups: [
+    { title: "Company", items: ["Company PAN", "GST certificate", "& more"] },
+    { title: "Stock item", items: ["Product image", "Rate chart", "& more"] },
+    { title: "Party master", items: ["GST certificate", "PAN copy", "Agreement copy"] },
+    { title: "Transaction", items: ["Invoices", "Purchase orders", "Any document"] },
+  ],
+  audiences: [
+    { title: "Chartered accountants", body: "Client records, always at hand." },
+    { title: "C&F agents", body: "Consignment papers, sorted." },
+    { title: "CHAs", body: "Clearance documents, ready." },
+    { title: "Transporters", body: "Trip papers, linked to billing." },
+    { title: "Trusts & NGOs", body: "Receipts and records, in order." },
+    { title: "Schools & colleges", body: "Admission and fee papers, organised." },
+  ],
+  ctaCopy: {
+    heading: "Book a live TallyPrime demo",
+    asideTitle: "Ready for paperless documentation?",
+    bullets: [
+      "Free demo at your convenience",
+      "Bring one messy voucher and your messiest folder",
+      "See it on your own TallyPrime data",
+    ],
+  },
+  faqs: [
+    {
+      q: "What does the Document Management System for TallyPrime do?",
+      a: "It lets you attach files such as invoices, purchase orders, GST certificates and agreements to any voucher or master in TallyPrime. You can then open, print or email them from the same screen.",
+    },
+    {
+      q: "How is it different from saving files in folders or a cloud drive?",
+      a: "Folders depend on people remembering where something was saved. Here each document is linked to the entry it belongs to, so you open the voucher and the proof is already there.",
+    },
+    {
+      q: "Which file types can I attach?",
+      a: "PDF, Excel, Word and images such as JPG. Nothing needs to be converted first.",
+    },
+    {
+      q: "How does it help during audits?",
+      a: "Proof documents stay ready all year. For an on-site or online audit, open the entry and show the document - no sitting with your CA to dig papers out.",
+    },
+    {
+      q: "Can I email documents from inside Tally?",
+      a: "Yes. Email the attached documents, or add outside files to the same email, straight from TallyPrime.",
+    },
+    {
+      q: "Who controls who can view or upload?",
+      a: "Rights are set by user role, so an administrator and a staff member see and do different things. Audit logs keep the trail accountable.",
+    },
+    {
+      q: "Is it only for large businesses?",
+      a: "No. Small shops, growing firms and large offices all use it. If your work runs on paperwork, it saves time from the first week.",
+    },
+  ],
+};
+
 export const moduleDetails: Record<string, ModuleDetail> = {
   "container-handling": CONTAINER_HANDLING,
   "cf-agencies": CFA_AGENCIES,
@@ -1125,6 +1283,8 @@ export const moduleDetails: Record<string, ModuleDetail> = {
   "sales-commission": SALES_COMMISSION,
   "logistics-transport": LOGISTICS_TRANSPORT,
   "garment-retail": GARMENT_RETAIL,
+  // CHANGE: 2026-11-16 — curated page that does not need a modules DB row.
+  "document-management": DOCUMENT_MANAGEMENT,
 };
 
 export function getModuleDetail(slug: string): ModuleDetail | null {

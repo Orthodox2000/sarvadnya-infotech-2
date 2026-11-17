@@ -184,17 +184,24 @@ export default async function ModuleDetailPage({
         dangerouslySetInnerHTML={{ __html: JSON.stringify([breadcrumb, ...(faqLd ? [faqLd] : [])]) }}
       />
 
-      {/* Hero — the module's own image is the background */}
+      {/* Hero — the module's own image is the background.
+          CHANGE: 2026-11-16 — the image is optional. DMS has no product photo yet, so an
+          empty `detail.image` must NOT reach next/image (it throws on an empty src). The
+          solid #033B38 band is the complete hero in that case. */}
       <section className="relative overflow-hidden border-b-2 border-[#033B38] bg-[#033B38] px-5 py-10 sm:px-6 sm:py-16">
-        <Image
-          src={detail.image}
-          alt=""
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover opacity-35"
-        />
-        <div className="absolute inset-0 bg-[#033B38]/80" aria-hidden="true" />
+        {detail.image && (
+          <>
+            <Image
+              src={detail.image}
+              alt=""
+              fill
+              priority
+              sizes="100vw"
+              className="object-cover opacity-35"
+            />
+            <div className="absolute inset-0 bg-[#033B38]/80" aria-hidden="true" />
+          </>
+        )}
 
         <div className="relative mx-auto max-w-6xl">
           <nav
@@ -296,6 +303,70 @@ export default async function ModuleDetailPage({
             <div className="mt-6 grid items-stretch gap-6 lg:grid-cols-12">
               <div className="lg:col-span-7">
                 <ModuleVideo videoUrl={detail.videoUrl} title={detail.title} />
+              </div>
+
+              <ul className="grid gap-3 lg:col-span-5 lg:auto-rows-fr">
+                {detail.features.slice(0, 4).map((feature) => (
+                  <li
+                    key={feature}
+                    className="flex items-center gap-3 rounded-xl border border-[#C5E3E3] bg-white p-4 text-sm font-semibold text-slate-700"
+                  >
+                    <CheckCircle2 className="h-4 w-4 shrink-0 text-[#006569]" aria-hidden="true" />
+                    {feature}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* CHANGE: 2026-11-16 — visible video placeholder for a module with no video yet.
+          WHY: the DMS page should still say a walkthrough is coming instead of silently
+          dropping the section. `id="video"` is kept so the anchor is stable when the real
+          video lands; the day `videoUrl` is set, `hasVideo` renders the player above instead. */}
+      {!hasVideo && detail.videoComingSoon && (
+        <section id="video" className="border-b-2 border-[#033B38] bg-[#E5F4F4] px-5 py-12 scroll-mt-32 sm:px-6 sm:py-14">
+          <div className="mx-auto max-w-6xl">
+            <div className="max-w-3xl">
+              <p className="font-mono text-[10px] font-extrabold uppercase tracking-wider text-[#006569]">
+                {videoCopy.eyebrow}
+              </p>
+              <h2 className="mt-2 text-2xl font-black tracking-tight text-[#033B38] sm:text-3xl">
+                {videoCopy.title}
+              </h2>
+              <p className="mt-2 text-sm font-medium leading-relaxed text-slate-600">{videoCopy.body}</p>
+            </div>
+
+            <div className="mt-6 grid items-stretch gap-6 lg:grid-cols-12">
+              <div className="lg:col-span-7">
+                <div className="flex aspect-video w-full flex-col items-center justify-center rounded-2xl border-2 border-[#033B38] bg-white p-6 text-center shadow-[0_8px_0_0_#033B38]">
+                  <span className="flex h-14 w-14 items-center justify-center rounded-full border-2 border-[#033B38] bg-[#D4EAEA] text-[#033B38]">
+                    <PlayCircle className="h-6 w-6" aria-hidden="true" />
+                  </span>
+                  <p className="mt-4 text-lg font-black text-[#033B38]">Walkthrough video coming soon</p>
+                  <p className="mt-2 max-w-md text-xs font-medium leading-relaxed text-slate-600">
+                    We are recording a short walkthrough of the module. Until then, book a free demo or
+                    open the brochure.
+                  </p>
+                  <div className="mt-5 flex flex-wrap justify-center gap-3">
+                    <a
+                      href="#demo"
+                      className="inline-flex items-center justify-center gap-2 rounded-xl border-2 border-[#033B38] bg-[#006569] px-4 py-2 text-[11px] font-extrabold uppercase tracking-wider text-white transition-colors hover:bg-[#045A57]"
+                    >
+                      <CalendarIcon />
+                      Book a free demo
+                    </a>
+                    <a
+                      href={detail.brochureUrl}
+                      download
+                      className="inline-flex items-center justify-center gap-2 rounded-xl border-2 border-[#033B38] bg-white px-4 py-2 text-[11px] font-extrabold uppercase tracking-wider text-[#033B38] transition-colors hover:bg-[#D4EAEA]"
+                    >
+                      <Download className="h-4 w-4" aria-hidden="true" />
+                      Brochure (PDF)
+                    </a>
+                  </div>
+                </div>
               </div>
 
               <ul className="grid gap-3 lg:col-span-5 lg:auto-rows-fr">
@@ -458,7 +529,7 @@ export default async function ModuleDetailPage({
                       </ul>
                     </div>
                     <a
-                      href="#simulator"
+                      href={detail.simulator ? "#simulator" : "#demo"}
                       className="mt-5 flex items-center justify-between border-t border-[#C5E3E3] pt-3 text-[11px] font-bold text-[#006569] hover:text-[#033B38]"
                     >
                       {pillar.footerLabel}
@@ -483,6 +554,47 @@ export default async function ModuleDetailPage({
           )}
         </div>
       </section>
+
+      {/* CHANGE: 2026-11-16 — DMS "Attach at every level" groups. Optional and data-driven,
+          so the six existing modules are untouched. Kept as a dark band between the white
+          What-you-get section and the light How-it-works section to preserve the page rhythm. */}
+      {detail.attachGroups && detail.attachGroups.length > 0 && (
+        <section className="border-b-2 border-[#033B38] bg-[#033B38] px-5 py-12 sm:px-6 sm:py-14">
+          <div className="mx-auto max-w-6xl">
+            <div className="mx-auto max-w-3xl text-center">
+              <p className="font-mono text-[10px] font-extrabold uppercase tracking-wider text-[#C5E3E3]">
+                Attach at every level
+              </p>
+              <h2 className="mt-2 text-2xl font-black tracking-tight text-white sm:text-3xl">
+                A few examples of what you can attach
+              </h2>
+            </div>
+
+            <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {detail.attachGroups.map((group) => (
+                <div
+                  key={group.title}
+                  className="rounded-2xl border border-[#C5E3E3]/30 bg-[#045A57] p-5"
+                >
+                  <h3 className="text-sm font-black uppercase tracking-wide text-[#D4EAEA]">
+                    {group.title}
+                  </h3>
+                  <ul className="mt-3 flex flex-wrap gap-2">
+                    {group.items.map((item) => (
+                      <li
+                        key={item}
+                        className="rounded-md border border-[#C5E3E3]/30 bg-white/10 px-2.5 py-1 text-xs font-medium text-white"
+                      >
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* How it works */}
       {detail.steps && (
@@ -513,6 +625,38 @@ export default async function ModuleDetailPage({
                   </div>
                   <h3 className="mt-4 text-lg font-black text-[#033B38]">{step.title}</h3>
                   <p className="mt-2 text-sm font-medium leading-relaxed text-slate-600">{step.body}</p>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* CHANGE: 2026-11-16 — DMS "Made for paperwork-heavy businesses / Who uses it".
+          Optional, so modules without audience copy skip this band entirely. White here
+          keeps the light How-it-works section and the light Benefits section separated. */}
+      {detail.audiences && detail.audiences.length > 0 && (
+        <section className="border-b-2 border-[#033B38] bg-white px-5 py-12 sm:px-6 sm:py-14">
+          <div className="mx-auto max-w-6xl">
+            <div className="mx-auto max-w-3xl text-center">
+              <p className="font-mono text-[10px] font-extrabold uppercase tracking-wider text-[#006569]">
+                Made for paperwork-heavy businesses
+              </p>
+              <h2 className="mt-2 text-2xl font-black tracking-tight text-[#033B38] sm:text-3xl">
+                Who uses it
+              </h2>
+            </div>
+
+            <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {detail.audiences.map((audience) => (
+                <article
+                  key={audience.title}
+                  className="rounded-2xl border border-[#C5E3E3] bg-[#E5F4F4] p-5"
+                >
+                  <h3 className="text-sm font-black text-[#033B38]">{audience.title}</h3>
+                  <p className="mt-1 text-xs font-medium leading-relaxed text-slate-600">
+                    {audience.body}
+                  </p>
                 </article>
               ))}
             </div>
@@ -649,7 +793,14 @@ export default async function ModuleDetailPage({
         </section>
       )}
 
-      <ModuleCta title={detail.title} pricing={detail.pricing} brochureUrl={detail.brochureUrl} />
+      <ModuleCta
+        title={detail.title}
+        pricing={detail.pricing}
+        brochureUrl={detail.brochureUrl}
+        heading={detail.ctaCopy?.heading}
+        asideTitle={detail.ctaCopy?.asideTitle}
+        bullets={detail.ctaCopy?.bullets}
+      />
 
       {/* Other modules */}
       {related.length > 0 && (
