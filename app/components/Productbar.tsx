@@ -236,14 +236,33 @@ const Productbar = () => {
                         {(subItem.subItems?.length ?? 0) > 0 && (
                           <div className="flex flex-col gap-1 ml-2.5 pl-3 border-l border-[#E9F1FA]">
                             {(subItem.subItems || []).map((nestedItem: ProductSubItem) => (
-                              <Link
-                                key={nestedItem.id}
-                                href={nestedItem.href}
-                                className="block py-1 px-3 rounded-md text-[12px] font-bold text-slate-500 hover:text-[#0C3353] transition-all hover:bg-teal-100"
-                                onClick={handleLinkClick}
-                              >
-                                {nestedItem.label}
-                              </Link>
+                              <div key={nestedItem.id} className="flex flex-col gap-0.5">
+                                <Link
+                                  href={nestedItem.href}
+                                  className="block py-1 px-3 rounded-md text-[12px] font-bold text-slate-500 hover:text-[#0C3353] transition-all hover:bg-teal-100"
+                                  onClick={handleLinkClick}
+                                >
+                                  {nestedItem.label}
+                                </Link>
+                                {/* CHANGE: 2026-11-17 — third level, needed by the Document Management
+                                    link under Business Boosters. The type has always been recursive but
+                                    the renderer stopped at two levels, so that entry never appeared.
+                                    Indentation stays inside the 90vw mobile megamenu at 360 px. */}
+                                {(nestedItem.subItems?.length ?? 0) > 0 && (
+                                  <div className="flex flex-col gap-0.5 ml-2 pl-2.5 border-l border-[#E9F1FA]">
+                                    {(nestedItem.subItems || []).map((deepItem: ProductSubItem) => (
+                                      <Link
+                                        key={deepItem.id}
+                                        href={deepItem.href}
+                                        className="block py-1 px-2 rounded-md text-[11px] font-semibold text-slate-500 hover:text-[#0C3353] transition-all hover:bg-teal-100"
+                                        onClick={handleLinkClick}
+                                      >
+                                        {deepItem.label}
+                                      </Link>
+                                    ))}
+                                  </div>
+                                )}
+                              </div>
                             ))}
                           </div>
                         )}
