@@ -16,7 +16,10 @@ const csp = [
   // static hosts (gstatic). news.google.com + accounts.google.com are allowed in
   // frame-src because the opt-in flow can render Google's account surface in an iframe.
   `script-src 'self' 'unsafe-eval' 'unsafe-inline' https://vercel.live https://*.razorpay.com https://*.vercel-insights.com https://va.vercel-scripts.com https://sc.lfeeder.com https://news.google.com`,
-  `style-src 'self' 'unsafe-inline'`,
+  // CHANGE: 2026-11-19 — fonts.googleapis.com is allowed ONLY so the fallback stylesheet
+  // in app/layout.tsx can resolve the Google family names when a self-hosted woff2 fails.
+  // The primary faces are local (`self`); gstatic was already allowed in font-src.
+  `style-src 'self' 'unsafe-inline' https://fonts.googleapis.com`,
   `img-src 'self' data: blob: https://*.public.blob.vercel-storage.com https://img.youtube.com https://sarvadnya-infotech.vercel.app https://sarvadnyainfotech.com https://www.sarvadnyainfotech.com https://*.vercel-scripts.com https://news.google.com https://*.gstatic.com https://www.google.com`,
   `font-src 'self' data: https://*.gstatic.com`,
   `connect-src 'self' https://api.groq.com https://*.razorpay.com https://*.public.blob.vercel-storage.com https://sarvadnya-infotech.vercel.app https://sarvadnyainfotech.com https://www.sarvadnyainfotech.com https://*.vercel-insights.com https://sc.lfeeder.com https://news.google.com https://accounts.google.com`,

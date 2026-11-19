@@ -249,7 +249,10 @@ html {
 
 body {
   forced-color-adjust: none;
-  font-family: var(--font-sans);
+  /* CHANGE: 2026-11-19 — --font-sans is the self-hosted Geist face (with its own
+     Google/System fallback list from next/font/local). The extra names here keep
+     the documented fallback chain explicit at the point of use. */
+  font-family: var(--font-sans), 'Geist', ui-sans-serif, system-ui, sans-serif;
   max-width: 100%;
   position: relative;
   touch-action: pan-y;
@@ -615,12 +618,13 @@ main > div:first-of-type {
   animation: lightning-glow 2.5s ease-in-out infinite;
 }
 
+/* CHANGE: 2026-11-19 — self-hosted faces first, Google family names kept as fallback. */
 .font-playfair {
-  font-family: var(--font-playfair), Georgia, 'Times New Roman', serif;
+  font-family: var(--font-playfair), 'Playfair Display', Georgia, 'Times New Roman', serif;
 }
 
 .font-inter {
-  font-family: var(--font-sans), 'Inter', ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--font-sans), 'Geist', 'Inter', ui-sans-serif, system-ui, sans-serif;
 }
 /* CHANGE: 2026-09-16 — CertifiedPartners radial network: flowing connector dashes. Stroke dash
    array is 1 unit dash + 3 unit gap (4-unit cycle); animating the dash-offset 4 -> 0 loops seamlessly.

@@ -128,9 +128,25 @@ export function middleware(request: NextRequest) {
   return response;
 }
 
+// CHANGE: 2026-11-19 — VERCEL FLUID CPU / EDGE COST FIX.
+// WHY: the old catch-all `'/((?!_next/static|_next/image|favicon\\.ico).*)'` invoked this
+// Edge middleware for EVERY request that was not an _next static/image file — including
+// every logo, hero PNG, 4 MB team video, brochure PDF, font and llms.txt in /public,
+// plus every other _next/* request. Middleware is the only Edge function in this repo
+// (all 11 API routes that need it are explicitly `runtime = 'nodejs'`, and Next 15's
+// remaining default IS nodejs; `proxy.ts` is inert — Next 15.5.29 has only
+// MIDDLEWARE_FILENAME, verified in node_modules/next/dist/lib/constants.js). Every one
+// of those asset hits was billed as Fluid CPU in iad1 for logic that can only ever
+// apply to documents and /api routes.
+// FIX: exclude all _next/* internals, favicon and any path ending in a real static
+// file extension. The extension list is explicit (not `.*\.[a-z0-9]+$`) so document
+// slugs that legitimately contain a dot — e.g. /news/tallyprime-7.2 — still pass
+// through and keep getting the www 301 / legacy 410 / admin 404 behaviour.
+// NOTE: a spot check must still include '/', '/api/*', '/admin', '/news/tallyprime-7.2',
+// '/housing society.png' (excluded), '/videos/team-diwali-2026.mp4' (excluded).
 export const config = {
   matcher: [
     '/api/:path*',
-    '/((?!_next/static|_next/image|favicon\\.ico).*)',
+    '/((?!_next/|favicon\\.ico|.*\\.(?:png|jpe?g|gif|webp|avif|svg|ico|woff2?|ttf|otf|eot|mp4|webm|mov|m4v|ogv|pdf|css|js|mjs|map|txt|html|json|xml|csv)$).*)',
   ],
 };

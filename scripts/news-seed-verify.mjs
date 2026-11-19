@@ -148,6 +148,56 @@ try {
   const obsoleteErp9 = await news.countDocuments({ title: /ERP 9 is set to change significantly/i });
   check('the obsolete ERP 9 renewal-price post is gone', obsoleteErp9 === 0, `${obsoleteErp9} still present`);
 
+  // CHANGE: 2026-11-17 — audit cluster for the Document Management System page. The three
+  // posts must be live with their tags + FAQ blocks (the article page renders both from these
+  // fields), and the storage claims an auditor-facing reader will rely on must be present.
+  const NEW_SLUGS_2026_11_17 = [
+    'audit-preparation-checklist-small-business',
+    'attach-documents-in-tallyprime',
+    'audit-document-struggles-and-solutions',
+  ];
+  const auditDocs = await news
+    .find({ slug: { $in: NEW_SLUGS_2026_11_17 } }, { projection: { slug: 1, title: 1, tags: 1, faqs: 1, content: 1, link: 1 } })
+    .toArray();
+  check('2026-11-17 audit batch: all 3 posts are live', auditDocs.length === 3, `found ${auditDocs.length}/3`);
+  for (const slug of NEW_SLUGS_2026_11_17) {
+    const doc = auditDocs.find((d) => d.slug === slug);
+    check(
+      `  2026-11-17 post "${slug}" has title + tags + faqs (>= 5)`,
+      !!doc &&
+        !!doc.title &&
+        Array.isArray(doc.tags) &&
+        doc.tags.length > 0 &&
+        Array.isArray(doc.faqs) &&
+        doc.faqs.length >= 5,
+      doc ? doc.title : 'missing'
+    );
+    check(
+      `  2026-11-17 post "${slug}" links to the DMS module page`,
+      !!doc && doc.link === '/modules/document-management',
+      doc ? String(doc.link) : 'missing'
+    );
+  }
+  const attachDoc = auditDocs.find((d) => d.slug === 'attach-documents-in-tallyprime');
+  check(
+    'attach-documents post carries the link-only storage facts',
+    !!attachDoc &&
+      typeof attachDoc.content === 'string' &&
+      attachDoc.content.includes('Tally keeps the link') &&
+      attachDoc.content.includes('No dedicated document server') &&
+      attachDoc.content.includes('PDF, Excel, Word and image files all attach without conversion'),
+    attachDoc && typeof attachDoc.content === 'string' ? `${attachDoc.content.length} chars` : 'missing'
+  );
+  const checklistDoc = auditDocs.find((d) => d.slug === 'audit-preparation-checklist-small-business');
+  check(
+    'audit-preparation-checklist post keeps its checklist + preparation framing',
+    !!checklistDoc &&
+      typeof checklistDoc.content === 'string' &&
+      checklistDoc.content.includes('What an auditor actually asks for') &&
+      checklistDoc.content.includes('What good preparation looks like through the year'),
+    checklistDoc && typeof checklistDoc.content === 'string' ? `${checklistDoc.content.length} chars` : 'missing'
+  );
+
   console.log(`\n${failed === 0 ? 'ALL NEWS-SEED VERIFICATIONS PASSED' : `${failed} VERIFICATIONS FAILED`} (${passed} passed / ${failed} failed)`);
   process.exitCode = failed === 0 ? 0 : 1;
 } catch (err) {

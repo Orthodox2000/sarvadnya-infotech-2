@@ -94,7 +94,9 @@ export default function CloudPage() {
   return (
     <div className="min-h-screen bg-[#f6f5ef] font-sans antialiased">
 
-      <div className="bg-[url('/mobilebg.png')] md:bg-[url('/cardbg.png')] bg-cover bg-center bg-no-repeat">
+      {/* CHANGE: 2026-11-19 — WebP backgrounds: 23KB/14KB instead of 864KB/1.5MB PNG,
+          and the new filenames bust the one-year immutable cache on cached PNGs. */}
+      <div className="bg-[url('/mobilebg.webp')] md:bg-[url('/cardbg.webp')] bg-cover bg-center bg-no-repeat">
         {/* Header */}
         <section className="relative z-10 pt-16 pb-6 md:pt-8 md:pb-8 px-6 max-w-7xl mx-auto">
           <h1 className="text-4xl md:text-[2.75rem] font-extrabold tracking-tight mb-4 text-[#1a1c20]">

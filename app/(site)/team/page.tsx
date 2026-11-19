@@ -151,6 +151,8 @@ export default function TeamPage() {
                       width={1280}
                       height={720}
                       alt={TEAM_HERO_VIDEO_ALT}
+                      decoding="async"
+                      fetchPriority="high"
                     />
                   ) : (
                     <video
@@ -194,7 +196,7 @@ export default function TeamPage() {
             {teamMembers.map((member, idx) => (
               <div key={member._id} className="group flex flex-col items-center text-center">
                  <div className="relative w-full aspect-square rounded-[3rem] overflow-hidden bg-white shadow-lg border border-slate-100 mb-8 group-hover:shadow-2xl transition-all duration-500 group-hover:-translate-y-2">
-                    <img src={member.imageUrl} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt={member.name} />
+                    <img src={member.imageUrl} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt={member.name} loading="lazy" decoding="async" />
                     <div className="absolute inset-0 bg-gradient-to-t from-[#006569]/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                  </div>
                  <h4 className="font-black text-slate-900 text-xl mb-1 leading-tight group-hover:text-[#006569] transition-colors">{member.name}</h4>

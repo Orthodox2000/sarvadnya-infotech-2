@@ -153,7 +153,7 @@ export default function TutorialsPage() {
                                                 This is the fallback tile shown when a tutorial has no thumbnail:
                                                 it carries no information of its own — the tutorial title is
                                                 already the card's <h3> — so it is explicitly decorative. */}
-                                            <img src="/logo.svg" alt="" aria-hidden="true" className="w-12 h-auto opacity-30" style={{ filter: 'invert(31%) sepia(94%) saturate(1131%) hue-rotate(167deg) brightness(91%) contrast(98%)' }} />
+                                            <img src="/logo.svg" alt="" aria-hidden="true" className="w-12 h-auto opacity-30" style={{ filter: 'invert(31%) sepia(94%) saturate(1131%) hue-rotate(167deg) brightness(91%) contrast(98%)' }} loading="lazy" decoding="async" />
                                         </div>
                                     )
                                 )}

@@ -195,7 +195,9 @@ export default function TallyCapitalPage() {
       </nav>
 
       {/* ===== SECTION 1: HERO — The Loan Hook ===== */}
-      <div className="bg-[url('/mobilebg.png')] md:bg-[url('/cardbg.png')] bg-cover bg-center bg-no-repeat">
+      {/* CHANGE: 2026-11-19 — WebP backgrounds: 23KB/14KB instead of 864KB/1.5MB PNG,
+          and the new filenames bust the one-year immutable cache on cached PNGs. */}
+      <div className="bg-[url('/mobilebg.webp')] md:bg-[url('/cardbg.webp')] bg-cover bg-center bg-no-repeat">
         <section className="relative z-10 pt-10 pb-10 md:pt-12 md:pb-12 px-4 sm:px-6 max-w-7xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
             {/* Left: Copy */}

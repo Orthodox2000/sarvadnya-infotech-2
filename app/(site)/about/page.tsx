@@ -80,8 +80,9 @@ export default function AboutPage() {
           </div>
           <div className="flex-1 w-full max-w-sm">
             <div className="relative aspect-[4/3] rounded-3xl overflow-hidden bg-white/80 backdrop-blur-sm shadow-2xl border border-slate-200 flex items-center justify-center">
+              {/* CHANGE: 2026-11-19 — above-the-fold: decode off the main thread, prioritise fetch. */}
               {content.hero_image ? (
-                <img src={content.hero_image} className="w-full h-full object-cover" alt="About Hero" />
+                <img src={content.hero_image} className="w-full h-full object-cover" alt="About Hero" decoding="async" fetchPriority="high" />
               ) : (
                 <div className="text-[#006569] opacity-20 text-center p-6">
                   <svg className="w-20 h-20 mx-auto mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -113,7 +114,7 @@ export default function AboutPage() {
             <div className="flex-1 w-full max-w-xs">
               <div className="relative aspect-square rounded-[2.5rem] overflow-hidden bg-slate-50 shadow-xl border border-slate-100 flex items-center justify-center group">
                 {content.partner1_image ? (
-                  <img src={content.partner1_image} className="w-full h-full object-cover" alt={content.partner1_name} />
+                  <img src={content.partner1_image} className="w-full h-full object-cover" alt={content.partner1_name} loading="lazy" decoding="async" />
                 ) : (
                   <div className="text-[#006569] opacity-30 text-center transition-transform group-hover:scale-110">
                     <svg className="w-16 h-16 mx-auto mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -146,7 +147,7 @@ export default function AboutPage() {
             <div className="flex-1 w-full max-w-xs">
               <div className="relative aspect-square rounded-[2.5rem] overflow-hidden bg-white shadow-xl border border-slate-100 flex items-center justify-center group">
                 {content.partner2_image ? (
-                  <img src={content.partner2_image} className="w-full h-full object-cover" alt={content.partner2_name} />
+                  <img src={content.partner2_image} className="w-full h-full object-cover" alt={content.partner2_name} loading="lazy" decoding="async" />
                 ) : (
                   <div className="text-[#006569] opacity-30 text-center transition-transform group-hover:scale-110">
                     <svg className="w-16 h-16 mx-auto mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -181,7 +182,7 @@ export default function AboutPage() {
            <div className="columns-1 sm:columns-2 lg:columns-3 gap-8 space-y-8">
               {gallery.map((item, idx) => (
                 <div key={item._id} className="relative group rounded-[2.5rem] overflow-hidden shadow-lg border border-slate-100 break-inside-avoid transition-all duration-500 hover:shadow-2xl hover:-translate-y-2">
-                   <img src={item.imageUrl} className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105" alt={item.name} />
+                   <img src={item.imageUrl} className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105" alt={item.name} loading="lazy" decoding="async" />
                    <div className="absolute inset-0 bg-gradient-to-t from-[#006569]/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-8">
                       <h4 className="text-white font-black text-xl mb-1 tracking-tight">{item.name}</h4>
                       {item.description && <p className="text-white/80 text-xs font-bold leading-relaxed">{item.description}</p>}

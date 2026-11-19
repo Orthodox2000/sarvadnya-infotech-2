@@ -1,13 +1,38 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Playfair_Display } from "next/font/google";
+// CHANGE: 2026-11-19 — fonts are self-hosted. The woff2 files are committed under
+// app/fonts/ and emitted by Next as hashed, immutable /_next/static/media assets, so
+// the site no longer depends on fonts.googleapis.com / fonts.gstatic.com for the
+// primary render. Google is retained only as a fallback (see the <head> link below
+// and the `fallback` stacks on each localFont call).
+import localFont from "next/font/local";
 import { cn } from "@/lib/utils";
 import { SITE_DESCRIPTION, SITE_NAME, SITE_TITLE, SITE_URL, orgJsonLd, webSiteJsonLd } from "@/lib/seo";
 // CHANGE: 2026-11-16 — greeting popup: the first-visit preload lives in lib/greeting-popup.ts.
 import { buildGreetingPreloadScript } from "@/lib/greeting-popup";
 import "./globals.css";
 
-const geist = Geist({subsets:['latin'],variable:'--font-sans'});
-const playfair = Playfair_Display({subsets:['latin'],variable:'--font-playfair'});
+// CHANGE: 2026-11-19 — self-hosted variable fonts. `fallback` deliberately keeps the
+// Google family names (and a system stack) after the local face: if a font file fails
+// to load, the browser falls through to Google's CSS rather than to a bare generic.
+const geist = localFont({
+  src: "./fonts/geist-latin.woff2",
+  weight: "100 900",
+  style: "normal",
+  display: "swap",
+  variable: "--font-sans",
+  preload: true,
+  fallback: ["Geist", "ui-sans-serif", "system-ui", "sans-serif"],
+});
+
+const playfair = localFont({
+  src: "./fonts/playfair-display-latin.woff2",
+  weight: "400 900",
+  style: "normal",
+  display: "swap",
+  variable: "--font-playfair",
+  preload: true,
+  fallback: ["Playfair Display", "Georgia", "Times New Roman", "serif"],
+});
 
 // CHANGE: 2026-10-09 — Third-party live chat removed. First-party Ask Sara remains.
 
@@ -80,6 +105,15 @@ export default function RootLayout({
   return (
     <html lang="en-IN" className={cn("h-full antialiased", "font-sans", geist.variable, playfair.variable)} style={{ colorScheme: "only light" }} data-scroll-behavior="smooth" suppressHydrationWarning>
       <head suppressHydrationWarning>
+        {/* CHANGE: 2026-11-19 — Google Fonts as FALLBACK ONLY. The self-hosted faces above
+            are first in every font-family stack, so the browser does not request these
+            font files while the local woff2 loads. They exist for the failure case:
+            if a local file is unavailable, the `fallback` names resolve against this
+            stylesheet instead of collapsing to a generic system font. CSP style-src
+            therefore allows fonts.googleapis.com; font-src already allows gstatic. */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Playfair+Display:wght@400..900&display=swap" />
         {/* CHANGE: 2026-11-17 — greeting popup preload. Runs during HTML parse, i.e. BEFORE the
             app bundle hydrates. It (a) captures whether the admin visitor-session cookie
             `svd_vid` already exists into a window global — the new/repeat signal the popup

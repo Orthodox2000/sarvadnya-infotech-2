@@ -1270,6 +1270,327 @@ Sarvadnya Infotech builds and supports Tally TDL modules from CBD Belapur, Navi 
       },
     ],
   },
+  // CHANGE: 2026-11-17 — audit cluster for the Document Management System page. Owner:
+  // "create few articles on struggles of audit and solution for ease in audit, and attach
+  // documents in tallyprime ... tally only stores links to these files and supports multiple
+  // formats ... for SEO and title, focus on audit solution and best preparation for audit".
+  // Three posts, distinct search intents (checklist / how it works / problem+solution), all
+  // pointing at /modules/document-management. Facts limited to the brochure plus the owner's
+  // storage statements: Tally keeps the link, the file stays where the business keeps it,
+  // no dedicated server and no extra cloud space, PDF/Excel/Word/images supported.
+  {
+    slug: 'audit-preparation-checklist-small-business',
+    title: 'Audit Preparation Checklist for Small Businesses: Keep Every Proof Ready',
+    seoTitle: 'Audit Preparation Checklist',
+    date: 'November 17, 2026',
+    category: 'Tally Add-ons',
+    description: 'A practical audit preparation checklist: the documents an auditor asks for, how to file them through the year, and how to reach any proof in a click.',
+    tags: ['audit preparation checklist', 'how to prepare for audit', 'documents required for audit', 'audit preparation for small business', 'statutory audit checklist india', 'audit ready documents', 'gst audit documents', 'tallyprime audit preparation'],
+    link: '/modules/document-management',
+    author: 'Sarvadnya Infotech LLP',
+    faqs: [
+      {
+        q: 'What documents should I keep ready before an audit?',
+        a: 'Every voucher needs its proof: sales invoices with challans or e-way bills, purchase invoices with the supplier bill and delivery note, bank statements with reconciliation, GST returns and tax paid challans, TDS returns, loan and rent agreements, fixed asset bills, salary registers with PF and ESI challans, and stock verification sheets. Keep them in the same place all year and the audit file builds itself.',
+      },
+      {
+        q: 'How early should audit preparation start?',
+        a: 'It starts on the day a voucher is entered, not a month before the audit. If the supporting document is attached to the entry at that moment, preparation costs seconds per voucher. If it is left for later, someone has to rebuild the trail from folders, email and WhatsApp.',
+      },
+      {
+        q: 'The auditor is online and wants a bill right now. What helps?',
+        a: 'A document that opens from the voucher itself. In TallyPrime that is what an attachment module does - open the entry the auditor named, and the bill, challan or certificate opens from the same screen and can be emailed on the spot.',
+      },
+      {
+        q: 'Do I need to scan every bill?',
+        a: 'No. Scan what the audit samples, what statutory proof depends on, and what a customer or supplier may question later. Most businesses scan purchase invoices, statutory certificates, agreements and payment proof, and keep the rest as a numbered physical file.',
+      },
+      {
+        q: 'Does attaching documents make my Tally data heavier?',
+        a: 'No. The attachment module stores only a reference to the file, and the file stays in the folder you keep it in. Your company data does not grow by the size of the documents, and no separate server or extra cloud storage is needed.',
+      },
+      {
+        q: 'What breaks an otherwise organised audit file?',
+        a: 'Moved folders, renamed files and unlabelled scans. A link is only as good as the file behind it, so the document folder must be backed up, and folders should not be moved or renamed without telling the person who maintains the module.',
+      },
+    ],
+    content: `An audit rarely goes badly because the books are wrong. It goes slowly because the proof takes a week to assemble. The auditor picks a sample, asks for the bill behind one entry, and three people start opening cupboards, scrolling a phone gallery and searching a WhatsApp group.
+
+Audit preparation is not a project for the month before the audit. It is a filing habit followed through the year. This is the checklist we share with businesses in Navi Mumbai when they ask how to get ready without a week of overtime.
+
+What an auditor actually asks for
+
+- Sales invoices, with the matching delivery challan or e-way bill
+- Purchase invoices, with the supplier bill, delivery note or goods receipt
+- Bank statements for every month, with the reconciliation
+- GST returns, the GSTR-2B reconciliation and the challans for tax paid
+- TDS returns and the payment challans behind them
+- Ledger confirmations from the major debtors and creditors
+- Loan sanction letters, agreements and the interest working
+- Fixed asset bills, with registration or warranty papers where they apply
+- Salary registers, PF and ESI challans, and appointment letters
+- Rent agreement, electricity bills and other expense proof
+- Stock statements and the physical verification sheets
+- Statutory registers and board minutes
+
+The pattern is simple: every entry has a supporting document, and the auditor wants to see the entry and the document side by side.
+
+The four things that turn preparation into a week of work
+
+- A voucher whose supporting bill is in a drawer, a phone gallery or a chat
+- A scan saved with a name nobody can search for
+- Three versions of the same agreement, with no way to tell which is final
+- A document store that only one person knows how to navigate
+
+None of these are accounting problems. They are retrieval problems, and they are the reason audit weeks feel longer than they are.
+
+What good preparation looks like through the year
+
+- Attach the proof to the voucher on the day the voucher is entered
+- Name the scan before saving it: party, document type, month
+- File by financial year first, then by voucher type
+- Document each master once - GST certificate, PAN, signed agreement
+- Review the attachments report once a month, not once a year
+- Confirm your backup covers the document folder, not only the Tally data
+
+That last point is the one most businesses miss. A back-up of Tally without the document folder restores a ledger full of links to files that no longer exist.
+
+Where a TallyPrime attachment module fits
+
+- Tally stores only the link to each file; the document stays in the folder you keep it in
+- No dedicated document server and no extra cloud storage to buy
+- Your company data does not grow by the size of the documents
+- PDF, Excel, Word and image files all attach without conversion
+- Attach at company, stock item, party master and transaction level
+- Open the file from the voucher, a ledger view, the Day Book or the attachments report
+- Email the attached documents, or add outside files to the same email, from TallyPrime
+- View and upload rights follow the user role, with an audit log behind them
+
+For an on-site audit the entry and its proof are on one screen. For an online audit the same document can be emailed while the auditor is still on the call, which is usually the difference between a question answered today and a query pending for a week.
+
+Because Tally keeps a reference and not a copy, the folder you point it at becomes the source of truth. Two rules follow from that. Do not move or rename that folder without telling whoever maintains the module, and make sure it is included in your backup. A link to a deleted file is worse than no link at all.
+
+A ten minute test you can run today
+
+- Pick a purchase voucher from eight months ago and time how long the bill takes to find
+- Ask a second person to do the same, without help
+- Open a party master and find its GST certificate
+- Email one attached document to an outside address
+- Check whether the folder those files live in is inside your backup
+
+If any of those five steps takes more than a minute, the audit will too. The fix is not more staff in March. It is attaching the document when the entry is made.
+
+Sarvadnya Infotech is a Tally certified partner in CBD Belapur, Navi Mumbai. We implement the Document Management System for TallyPrime, set up the folder structure and permissions with your team, and support businesses across Mumbai, Navi Mumbai and India. Call 022 49647959 or 022 49742200, WhatsApp +91 98709 42557, or email info@sarvadnyainfotech.com for a free demo - bring one old voucher and the folder you keep its bill in.`,
+  },
+  {
+    slug: 'attach-documents-in-tallyprime',
+    title: 'Attach Documents in TallyPrime Without Extra Server or Disk Space',
+    seoTitle: 'Attach Documents in TallyPrime',
+    date: 'November 17, 2026',
+    category: 'Tally Add-ons',
+    description: 'Attach bills, challans and certificates to any TallyPrime voucher. Tally stores only the link, the file stays in your own folder - no server, no cloud space.',
+    tags: ['attach documents in tallyprime', 'attach bills to tally voucher', 'tally document attachment', 'document management system for tally', 'tally stores link to document', 'tally document management without server', 'tallyprime audit documents', 'paperless documentation tally'],
+    link: '/modules/document-management',
+    author: 'Sarvadnya Infotech LLP',
+    faqs: [
+      {
+        q: 'Where is the attached document actually stored?',
+        a: 'Wherever you keep it. The module records a link to the file, and the file stays in a folder on your own computer, a shared network folder, or a folder you already use. Nothing is copied into the Tally company data.',
+      },
+      {
+        q: 'Does attaching files increase the size of my Tally data?',
+        a: 'No. Only the reference is stored, so the company data does not grow by the size of the documents. A thousand scanned bills do not turn into a thousand bills worth of database.',
+      },
+      {
+        q: 'Do I need a dedicated server or extra cloud storage?',
+        a: 'No. There is no separate document server to run and no additional cloud space to purchase. If the folder is reachable from the machine running Tally, the attachment opens.',
+      },
+      {
+        q: 'Which file formats can I attach?',
+        a: 'PDF, Excel, Word and image files such as JPG. Scanned bills, GST certificates, rate charts, product images and agreement copies all attach as they are, with no conversion step.',
+      },
+      {
+        q: 'What can a document be attached to?',
+        a: 'A transaction such as an invoice or purchase order, or a master such as the company, a stock item or a party ledger. Company PAN and GST certificate, product images and rate charts, party GST and PAN copies, and any voucher document are the common cases.',
+      },
+      {
+        q: 'Can staff see documents they should not?',
+        a: 'View and upload rights are set by user role, so an administrator and a staff member see different things. Audit logs keep the trail of who attached or opened what.',
+      },
+      {
+        q: 'What happens if someone moves or deletes the file?',
+        a: 'Tally holds a link, so the link breaks if the file is moved or deleted. Keep the document folder inside your backup, and tell whoever maintains the module before you rename or relocate it.',
+      },
+    ],
+    content: `Attaching a document in TallyPrime means linking a file to the entry it belongs to: the purchase invoice to the purchase voucher, the GST certificate to the party ledger, the rate chart to the stock item. The file does not move into Tally. Tally keeps the link, and the file stays where you already keep it.
+
+That one design choice answers most of the questions businesses ask before they buy an attachment module.
+
+Does it eat disk space
+
+- No. The company data stores a reference to the file, not the file
+- A scanned bill on your drive does not add its size to the Tally data
+- There is no duplicate copy sitting inside the database and on the disk
+- Backups of Tally data stay the size they already were
+
+Do I need a server or cloud space
+
+- No dedicated document server to run
+- No extra cloud storage to buy for the module
+- The folder can be on the machine running Tally, on a shared office machine, or in a place your team already uses
+- If Tally can reach the file, the attachment opens
+
+Where the files live, and what that means
+
+Because the file stays outside Tally, the folder you point the module at is the real document store. Two practical rules follow.
+
+- Include that folder in your backup, not just the Tally data
+- Do not rename or move it without telling whoever maintains the module
+
+A link to a missing file is more confusing than no link, so the folder and the module are maintained together.
+
+What you can attach, and in which format
+
+- PDF - scanned purchase bills, GST certificates, signed agreements
+- Excel - rate charts, working sheets, price lists
+- Word - agreement copies, letters, terms documents
+- Images such as JPG - product photos, courier proof, site pictures
+
+The documents attach as they are. There is no conversion step and no requirement to rebuild a scan in another format.
+
+Where an attachment can sit
+
+- Company level - company PAN, GST certificate
+- Stock item - product image, rate chart
+- Party master - GST certificate, PAN copy, agreement copy
+- Transaction - invoices, purchase orders, delivery proof, any supporting paper
+
+Attach one file or many at any of those levels. The document is then available from the same screen the entry is on, and from the single attachments report that lists everything by master and by transaction.
+
+Attaching is only half of it
+
+A file that is saved somewhere but impossible to find has not solved anything. The other half is retrieval.
+
+- Open the attachment in a click from any transaction or master
+- See every attachment in one report, split by master and transaction
+- Email the attached documents, and add outside files to the same email
+- Print from the same screen when someone wants paper
+
+During an audit this is the difference between a question answered in seconds and a query that stays open for days, whether the auditor is sitting next to you or working remotely.
+
+Set it up with your own filing logic
+
+Storage is organised the way your office already works. A common setup files documents in structured folders by voucher type and financial year, so a bill from a given period is findable by period, not by memory. Rights are set by user role, so an administrator can attach and view everything while a billing clerk only handles what the role allows, and the audit log records the activity.
+
+What to check before you install one
+
+- Which voucher types and masters can hold attachments, and whether that covers your busy ones
+- Where the files will be stored, and whether that folder is backed up
+- How the folder structure survives your financial year rollover
+- How the module behaves if a file is moved or renamed
+- Whether the vendor supports your exact TallyPrime release
+
+Sarvadnya Infotech is a Tally certified partner in CBD Belapur, Navi Mumbai. We implement the Document Management System for TallyPrime, agree the folder structure and permissions with your team, and support businesses across Mumbai, Navi Mumbai and India. Call 022 49647959 or 022 49742200, WhatsApp +91 98709 42557, or email info@sarvadnyainfotech.com. A free demo takes one opened voucher to show the whole flow from entry to attached bill.`,
+  },
+  {
+    slug: 'audit-document-struggles-and-solutions',
+    title: 'Seven Document Struggles That Slow Down Every Audit, and How to Fix Them',
+    seoTitle: 'Seven Audit Document Struggles',
+    date: 'November 17, 2026',
+    category: 'Tally Add-ons',
+    description: 'Late bills, missing challans, phone scans and a folder nobody can search. Seven document problems that stretch an audit, with the practical fix for each.',
+    tags: ['audit problems and solutions', 'audit document management', 'documents missing during audit', 'audit solution for business', 'speed up audit', 'audit preparation tips', 'tallyprime audit solution', 'document management audit'],
+    link: '/modules/document-management',
+    author: 'Sarvadnya Infotech LLP',
+    faqs: [
+      {
+        q: 'Why do audits take longer than the accounting work suggests?',
+        a: 'Because the time goes into retrieving proof, not checking entries. A sampled voucher is quick to check and slow to prove when the bill, challan or certificate has to be found in a folder, an inbox or a phone.',
+      },
+      {
+        q: 'What is the single biggest fix for a slow audit?',
+        a: 'Attach the supporting document to the voucher at the time of entry. Everything else - folders, naming, reports - is easier once the document and the entry are already connected.',
+      },
+      {
+        q: 'Can a small business prepare for an audit without extra staff?',
+        a: 'Yes, if the work is spread through the year instead of collected at the end. Attaching a file takes seconds per voucher, while reconstructing a year of proof takes days and usually involves overtime.',
+      },
+      {
+        q: 'Do I need to buy storage or a server for this?',
+        a: 'No. A TallyPrime attachment module keeps only the link to the file, and the file stays in the folder you already use. No dedicated server and no additional cloud space are required.',
+      },
+      {
+        q: 'Which documents should never be left without an attachment?',
+        a: 'Purchase invoices, statutory certificates, loan and rent agreements, payment proof for tax and TDS, and anything a customer, supplier or auditor is likely to question months later.',
+      },
+    ],
+    content: `Every business that has been through an audit knows the shape of the problem. The accounts are ready. The auditor is ready. What is missing is a bill from October, a challan that was signed at the gate, and the certificate that was sent on WhatsApp in a different financial year.
+
+Here are the seven document struggles we hear about most, and the practical fix for each one.
+
+One: the bill lives in a drawer
+
+The purchase voucher exists, the supplier has been paid, and the bill is in a physical file that only the accountant knows how to navigate.
+
+The fix: attach the bill to the voucher on the day it is booked. A scanned copy in the entry takes seconds, and the physical file becomes a backup rather than the only source.
+
+Two: the scan is named IMG_2024 something
+
+A phone gallery full of unlabelled photographs is not a document store. Nobody can search it and nobody can prove which bill belongs to which voucher.
+
+The fix: name the file before saving it - party, document type, month. Better still, let the module file it into structured folders by voucher type and financial year, so the naming convention is enforced instead of remembered.
+
+Three: three versions of the same agreement
+
+A draft, a signed copy and a scanned copy circulate, and no one is certain which one the auditor should see.
+
+The fix: attach the final signed version to the party master, and treat that as the record. Drafts stay outside the store, and the version question disappears.
+
+Four: the document is in someone's email
+
+The certificate was received in March, forwarded twice, and now lives in one person's inbox.
+
+The fix: attach it to the master it belongs to when it arrives, and email it from TallyPrime next time it is needed. The mailbox stops being a filing system.
+
+Five: the audit is online and the documents are on one desktop
+
+Remote audits expose every retrieval weakness at once. The auditor asks for a bill and someone has to be physically at the machine that holds it.
+
+The fix: an attachment module that opens the file from the voucher and can email it from the same screen. No screen sharing of folders, no waiting for the person who sits at that desk.
+
+Six: nothing proves the payment
+
+The bill is there, the ledger shows the payment, and no one can produce the bank reference or the cheque image.
+
+The fix: attach payment proof to the payment voucher as well as the bill to the purchase voucher. When the trail is bill, entry and bank proof together, most queries close at the first question.
+
+Seven: the folder was reorganised over a weekend
+
+Someone tidied the shared drive, renamed three folders, and every reference to the old paths is now broken. This is the one failure mode that a link-based store creates if it is managed carelessly.
+
+The fix: treat the document folder as part of your accounting system. Put it in the backup, agree that it is not renamed without notice, and move files through the module rather than behind it.
+
+What these seven have in common
+
+None of them are accounting mistakes. All of them are retrieval failures, and all of them are prevented by the same habit: connect the document to the entry when the entry is made.
+
+That is what a TallyPrime attachment module does, and it is why the storage model matters. The file stays in your own folder, Tally keeps only the link, and your company data does not grow by the size of the papers. There is no dedicated server to maintain and no extra cloud space to buy. PDF, Excel, Word and image files all attach without conversion, at company, stock item, party master and transaction level.
+
+What preparation looks like in practice
+
+- Attach on the day of entry, not in the week before the audit
+- Keep statutory certificates on the masters they belong to
+- Review the attachments report monthly and fill the gaps early
+- Keep the document folder inside the backup
+- Set view and upload rights by role, and rely on the audit log
+- For an online audit, email from the same screen the entry is open on
+
+A quieter audit season
+
+The purpose is not to impress an auditor. It is to stop losing working days to a search for paper. Teams that attach as they go usually find that the audit becomes a review of the books rather than an investigation of the filing cabinet.
+
+Sarvadnya Infotech is a Tally certified partner in CBD Belapur, Navi Mumbai. We implement the Document Management System for TallyPrime, set up storage, folder structure and permissions with your team, and support businesses in Mumbai, Navi Mumbai and across India. Call 022 49647959 or 022 49742200, WhatsApp +91 98709 42557, or email info@sarvadnyainfotech.com to book a free demo.`,
+  },
 ];
 
 async function seed() {

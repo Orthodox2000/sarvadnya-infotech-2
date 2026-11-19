@@ -1157,15 +1157,22 @@ const DOCUMENT_MANAGEMENT: ModuleDetail = {
   shortDescription: "Attach, view and email documents inside TallyPrime.",
   fullDescription:
     "Invoices, GST certificates, agreements and other proof documents usually live outside Tally - in folders, on someone's phone or in a WhatsApp chat. This module attaches those files to the voucher or master they belong to, so the document opens from the same screen. Attach one file or many, open or print them in a click, and email them to a client, vendor or your CA without leaving TallyPrime.",
-  metaTitle: "Document Management System for TallyPrime",
+  // CHANGE: 2026-11-17 — SERP copy leads with the audit outcome (owner: "focus on audit
+  // solution and best preparation for audit"). 35 chars + the 25-char brand suffix = 60,
+  // the check:seo limit; the previous 42-char title rendered at 67.
+  metaTitle: "Audit-Ready Documents in TallyPrime",
   metaDescription:
-    "Attach invoices, GST certificates and agreements to any TallyPrime voucher or master. Open or email them in one click, audit-ready.",
+    "Attach bills to TallyPrime vouchers. Files stay in your own folders, Tally keeps only the link. Audit-ready, no extra space.",
   keywords: [
     "document management system for tally",
     "document management tallyprime",
     "tally document attachment",
+    "attach documents in tallyprime",
     "attach documents to tally voucher",
     "tally dms module",
+    "audit preparation checklist",
+    "prepare for audit tallyprime",
+    "audit solution for small business",
     "email documents from tally",
     "audit ready documents tally",
     "paperless documentation tally",
@@ -1177,12 +1184,19 @@ const DOCUMENT_MANAGEMENT: ModuleDetail = {
     "See every attachment in one report, split by master and transaction",
     "Email attached documents without leaving TallyPrime",
     "Add outside files to the same email for clients or your CA",
+    // CHANGE: 2026-11-17 — owner-supplied storage behaviour: Tally keeps the reference,
+    // not the file. This is what makes the module usable without buying storage.
+    "Tally stores only the link to each file - your company data does not grow",
+    "Files stay where you keep them: local folder, shared network folder, or a folder you already use",
+    "No dedicated document server and no extra cloud storage to buy",
   ],
   benefits: [
     "No more audit panic: proof is ready all year, on-site or online",
+    "Audit preparation without a last-minute paper hunt",
     "No more document hunting: no folders, no WhatsApp chats",
     "Nothing gets lost: each file stays linked to its entry",
     "Centrally stored: one place, no overlap, role-based access",
+    "No extra disk space used inside Tally for the documents themselves",
   ],
   problem: {
     eyebrow: "The everyday headache",
@@ -1272,6 +1286,20 @@ const DOCUMENT_MANAGEMENT: ModuleDetail = {
     {
       q: "Is it only for large businesses?",
       a: "No. Small shops, growing firms and large offices all use it. If your work runs on paperwork, it saves time from the first week.",
+    },
+    // CHANGE: 2026-11-17 — the three questions buyers ask about cost of ownership:
+    // does it take space, do I need a server, and how does it help at audit time.
+    {
+      q: "Does attaching documents increase my Tally company data size?",
+      a: "No. Tally stores only the reference to the file; the document itself stays in the folder you keep it in. Your company data does not grow by the size of the attachments.",
+    },
+    {
+      q: "Do I need a dedicated server or extra cloud storage?",
+      a: "No. There is no separate document server to run and no extra cloud space to buy. Point the module at a folder on your own computer, a shared network folder, or a folder you already keep in a cloud drive. Tally keeps the link to that file.",
+    },
+    {
+      q: "How does this help me prepare for an audit?",
+      a: "The auditor asks for a voucher and the proof for it is one click away instead of a search through folders and chats. Keep attaching as you bill through the year and the audit file is ready before the auditor arrives, on-site or online.",
     },
   ],
 };
