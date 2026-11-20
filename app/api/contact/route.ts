@@ -116,6 +116,8 @@ export async function POST(request: Request) {
       service: sanitize(rawData.service),
       formType: sanitize(rawData.formType),
       description: sanitize(rawData.description),
+      // CHANGE: 2026-11-20 — optional serial number from the Renew enquiry form.
+      ...(rawData.serialNumber ? { serialNumber: sanitize(rawData.serialNumber) } : {}),
       ...(destination ? { destination } : {}),
     };
 

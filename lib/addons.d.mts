@@ -1,6 +1,6 @@
 // CHANGE: 2026-10-22 — TypeScript declarations for lib/addons.mjs.
 // WHY: TS cannot infer types for a .mjs import; this companion file (the same pattern as
-// lib/prices-catalog.d.mts and lib/email-autoreply.d.mts) types the pure-ESM add-ons
+// lib/prices-catalog.d.mts and email-templates/email-autoreply.d.mts) types the pure-ESM add-ons
 // catalogue for Next.js while the Node seed / test scripts import the .mjs directly.
 
 export interface Addon {

@@ -1,6 +1,6 @@
 // CHANGE: 2026-10-22 — TypeScript declarations for lib/sara-catalog.mjs.
 // WHY: TS cannot infer types for a .mjs import; this companion file (the same pattern as
-// lib/prices-catalog.d.mts, lib/email-autoreply.d.mts, lib/careers-referral.d.mts) types the
+// lib/prices-catalog.d.mts, email-templates/email-autoreply.d.mts, lib/careers-referral.d.mts) types the
 // pure-ESM catalogue for Next.js while the Node test suites import the .mjs directly.
 
 export type CatalogCategory = 'product' | 'cloud' | 'service' | 'module' | 'learning';

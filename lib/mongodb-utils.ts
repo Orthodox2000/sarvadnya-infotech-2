@@ -2,6 +2,7 @@ import clientPromise from './mongodb';
 import { ObjectId } from 'mongodb';
 import { staticPartners } from './partners';
 import { enrichNews, RETIRED_NEWS_SLUGS } from './news-utils';
+import type { NewsItem } from './news';
 // Caching disabled
 
 export async function getDb() {
@@ -360,6 +361,44 @@ export async function getNewsBySlug(slug: string) {
     }
   }
   return null;
+}
+
+// CHANGE: 2026-11-20 — /news/[slug] used getNews() (every article, full content + faqs) just to
+// render three "Related Reads" cards. Read a bounded, projected set instead. `content` stays in
+// the projection ONLY because enrichNews() derives readingTime from it — the card's
+// "N min read" must match the listing and sitemap. It is removed from the returned objects so
+// the page never holds article bodies for cards it does not render.
+export async function getRelatedNews(excludeSlug: string, limit = 3): Promise<Partial<NewsItem>[]> {
+  try {
+    const col = await getCollection('news');
+    const skip = [excludeSlug, ...RETIRED_NEWS_SLUGS].filter(Boolean);
+    const docs = await col
+      .find(skip.length ? { slug: { $nin: skip } } : {}, {
+        projection: { slug: 1, category: 1, title: 1, date: 1, readingTime: 1, content: 1 },
+      })
+      .sort({ createdAt: -1, date: -1 })
+      .limit(limit + 1)
+      .toArray();
+
+    const cards = docs.map((d) => {
+      const { content: _content, ...card } = enrichNews(d) as Record<string, unknown>;
+      return card as Partial<NewsItem>;
+    });
+
+    return cards
+      // $nin cannot exclude an auto-derived slug (those docs have no `slug` field), so filter here too.
+      .filter((card) => !skip.includes(String(card.slug || '')))
+      // Same parsed-date ordering fetchNews() uses, applied to the bounded candidate set.
+      .sort((a, b) => {
+        const ta = new Date(a.date || '').getTime();
+        const tb = new Date(b.date || '').getTime();
+        return (Number.isNaN(tb) ? 0 : tb) - (Number.isNaN(ta) ? 0 : ta);
+      })
+      .slice(0, limit);
+  } catch (error) {
+    console.error('Related news lookup failed:', error);
+    return [];
+  }
 }
 
 export async function addNews(data: any) {

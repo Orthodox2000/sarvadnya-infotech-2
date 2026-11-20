@@ -1,3 +1,4 @@
+// CHANGE: 2026-11-20 — Relocated from lib/ to email-templates/; no template or API change.
 // CHANGE: 2026-11-04 — One branded header/footer for EVERY transactional email.
 // WHY: the customer auto-reply and the careers welcome mails rendered the real
 // logo + wordmark, while the internal form copy and the careers company copies
@@ -6,7 +7,7 @@
 // and every template renders them, so the brand can never drift template by
 // template again.
 //
-// Pure ESM, zero dependencies (same house pattern as lib/email-autoreply.mjs).
+// Pure ESM, zero dependencies (same house pattern as email-templates/email-autoreply.mjs).
 // `logo` is a READY-TO-USE source resolved by the caller:
 //   { cid: 'sarvadnya-logo' }            → inline attachment (live send)
 //   { data: 'data:image/png;base64,…' }  → offline preview

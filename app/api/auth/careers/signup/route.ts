@@ -18,7 +18,8 @@ import {
 // exactly-once email_queue ledger is not needed, and a candidate copy must not
 // depend on the company `careers` recipient being configured.
 import { getCompanyContact, hasInlineLogo, sendTemplatedEmail } from '@/lib/email';
-import { ACCOUNT_CREATED_SUBJECT, buildAccountCreatedHtml } from '@/lib/email-careers.mjs';
+// CHANGE: 2026-11-20 — Careers templates moved to `email-templates/` (same exports).
+import { ACCOUNT_CREATED_SUBJECT, buildAccountCreatedHtml } from '@/email-templates/email-careers.mjs';
 
 // CHANGE: 2026-10-16 — per-IP fixed window (20 signups/min is far above any human rate).
 // CHANGE: 2026-10-17 — env-overridable like every other public-write limiter (see .env.example).

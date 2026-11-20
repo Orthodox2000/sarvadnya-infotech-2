@@ -1,3 +1,4 @@
+// CHANGE: 2026-11-20 — Relocated from lib/ to email-templates/; no template or API change.
 // CHANGE: 2026-09-21 — Branded client auto-reply email template (single source of truth).
 // Pure ESM, zero dependencies, importable from both Next.js (TS) and Node scripts
 // (scripts/email-preview.mjs). The header mirrors the LIVE website navbar: light
@@ -53,7 +54,7 @@ export function buildClientAutoreplyHtml({ name, service, company, logo } = {}) 
   const firstName = esc(String(name || '').trim().split(/\s+/)[0] || 'there');
   const serviceLine = service ? ` for <strong>${esc(service)}</strong>` : '';
 
-  // CHANGE: 2026-11-04 — logo/header markup moved to lib/email-brand.mjs.
+  // CHANGE: 2026-11-04 — logo/header markup moved to email-templates/email-brand.mjs.
   // CHANGE: 2026-10-15 — logo asset replaced (owner's tallycertificat4.png saved over
   // public/TallyCertificate.png): now 2991×634 (≈4.718:1, content fills the canvas —
   // the old 3093×794 canvas had ~95px transparent top/bottom padding).

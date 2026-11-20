@@ -67,7 +67,7 @@ export default function Receipt({ data }: { data: ReceiptData }) {
             from it, use our landline numbers"). The old header showed the TallyCertificate
             badge as a 36px circle; logo.png is now a proper banner mark. The CBD Belapur
             street address is REMOVED — a receipt carries the phones a buyer can call.
-            Landlines match lib/email-autoreply.mjs DEFAULT_COMPANY. */}
+            Landlines match email-templates/email-autoreply.mjs DEFAULT_COMPANY. */}
         {/* eslint-disable-next-line @next/next/no-img-element — static brand mark, not a page asset */}
         <img src="/logo.png" alt="Sarvadnya Infotech LLP" className="mx-auto h-16 w-16 sm:h-20 sm:w-20 object-contain" />
         <h2 className="mt-3 text-lg font-bold text-slate-900">Payment receipt</h2>

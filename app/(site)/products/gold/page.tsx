@@ -268,13 +268,15 @@ export default function TallyGoldPage() {
             {/* Action Buttons */}
             <div className="hidden md:flex flex-col gap-2 shrink-0">
               {/* CHANGE: 2026-10-02 — "Get Now" became "Buy Now!" — the hero CTA now routes
-                  into the cart (bundle modal for the Gold row, then checkout). */}
+                  into the cart (bundle modal for the Gold row, then checkout).
+                  CHANGE: 2026-11-20 — secondary CTA "Know More" → "Renew", opening the
+                  license-renewal enquiry (same form, optional serial number). */}
               <BuyNowButton slug="tallyprime-gold" />
               <button
-                onClick={() => openModal('quote', 'TallyPrime Gold')}
+                onClick={() => openModal('license-renewal', 'TallyPrime Gold', 'I want to renew my TallyPrime license.')}
                 className="px-6 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider border border-[#006569] text-[#006569] transition-all hover:bg-[#006569]/5 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#006569] focus-visible:ring-offset-2"
               >
-                Know More
+                Renew
               </button>
             </div>
           </div>
@@ -284,10 +286,10 @@ export default function TallyGoldPage() {
         <div className="md:hidden flex gap-2 px-4 pb-4">
           <BuyNowButton slug="tallyprime-gold" className="flex-1" />
           <button
-            onClick={() => openModal('quote', 'TallyPrime Gold')}
+            onClick={() => openModal('license-renewal', 'TallyPrime Gold', 'I want to renew my TallyPrime license.')}
             className="flex-1 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider border border-[#006569] text-[#006569] transition-all hover:bg-[#006569]/5 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#006569] focus-visible:ring-offset-2"
           >
-            Know More
+            Renew
           </button>
         </div>
       </div>
@@ -845,7 +847,7 @@ export default function TallyGoldPage() {
               <div className="space-y-2">
                 {[
                   { label: 'Tally Products', href: '/products' },
-                  { label: 'Know More', type: 'demo' as FormType },
+                  { label: 'Renew', type: 'license-renewal' as FormType },
                   { label: 'Technical Support', type: 'support' as FormType },
                   { label: 'AMC Services', href: '/services/amc' },
                   { label: 'Corporate Training', href: '/services/corporate-training' },

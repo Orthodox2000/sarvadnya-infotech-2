@@ -60,7 +60,7 @@ identical in both projects except the nested repo also needs `ADMIN_ACCESS_KEY`.
 | `EMAIL_DESTINATION_RECIPIENTS` (optional) | both | Per-page recipients map, editable in Admin → Email Config (server-side only). |
 | `EMAIL_MAX_ATTEMPTS` / `EMAIL_RATE_LIMIT` | both | Retry/rate defaults (5 attempts, 30/min). |
 | `CRON_SECRET` | both | Optional bearer key for the external retry drain (`/api/admin/email/process`). |
-| `AUTO_REPLY_ENABLED` | both | **Default OFF.** Flip to `1` to enable client thank-you emails. See `lib/email-autoreply.mjs`. |
+| `AUTO_REPLY_ENABLED` | both | **Default OFF.** Flip to `1` to enable client thank-you emails. See `email-templates/email-autoreply.mjs`. |
 | `AUTO_REPLY_FROM` / `AUTO_REPLY_REPLY_TO` | both | Auto-reply sender/reply-to (defaults documented in `.env.example`). |
 | `GEMINI_API_KEY` / `GROQ_API_KEY` | both | Ask Sara chatbot (Groq rotation; local fallback exists). |
 | `NEXT_PUBLIC_*` | both | Support phone/email/address, social links — must be **public** (no `NEXT_PUBLIC_` = server-only). |

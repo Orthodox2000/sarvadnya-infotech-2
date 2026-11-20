@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getContent } from '@/lib/mongodb-utils';
-// Caching disabled
+import { PUBLIC_API_CACHE } from '@/lib/api-cache';
+// CHANGE: 2026-11-20 — public section content; the ?section= value is part of the CDN cache key.
 
 // CHANGE: 2026-08-26 — Write methods removed for frontend-only deployment.
 // Admin deployment handles content writes via /api/admin/settings or direct DB.
@@ -15,7 +16,7 @@ export async function GET(request: Request) {
     }
 
     const content = await getContent(section);
-    return NextResponse.json(content);
+    return NextResponse.json(content, { headers: { 'Cache-Control': PUBLIC_API_CACHE } });
   } catch (error) {
     console.error('Error fetching content:', error);
     return NextResponse.json({ error: 'Failed to fetch content' }, { status: 500 });

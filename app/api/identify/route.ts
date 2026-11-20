@@ -9,6 +9,7 @@ import {
   applyReverseDns,
   maskIp,
   visitorLog,
+  isIgnoredRequest,
 } from '@/lib/visitors';
 
 export const runtime = 'nodejs';
@@ -17,6 +18,11 @@ export const maxDuration = 10;
 const RATE_LIMIT = 120;
 const RATE_WINDOW = 60_000;
 const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
+
+// CHANGE: 2026-11-20 — known crawler signatures only. Deliberately narrow: over-matching
+// silently drops genuine visitors from the ledger. In-app browsers (WhatsApp/Telegram) are NOT
+// bots and are intentionally not matched.
+const BOT_UA_RE = /(?:bot|crawl|spider|slurp|headless|phantom|curl|wget|python-requests|semrush|ahrefs)/i;
 
 function isRateLimited(ip: string): boolean {
   const now = Date.now();
@@ -49,7 +55,15 @@ function isSameOrigin(rawUrl: string, expected: string): boolean {
 export async function POST(request: Request) {
   const meta = getRequestMeta(request);
 
-  // 1) Rate limit (in-memory; proxy.ts applies a coarser 60/min/IP global cap).
+  // CHANGE: 2026-11-20 — cheapest possible exit. Bots and ignored dev/LAN IPs never reach the
+  // rate-limit map, JSON parse, Mongo upsert or geo/reverse-DNS enrichment. recordVisitor()
+  // still gates ignored IPs as the authoritative write guard; this just stops the bookkeeping.
+  if (isIgnoredRequest(request) || BOT_UA_RE.test(meta.userAgent)) {
+    return new Response(null, { status: 204 });
+  }
+
+  // 1) Rate limit (in-memory). NOTE: the comment here used to claim proxy.ts added a coarser
+  // 60/min/IP cap — proxy.ts is dormant under Next 15 (AGENTS §2.4), so this is the only cap.
   if (isRateLimited(meta.ip)) {
     visitorLog('warn', 'rate limited', { ip: maskIp(meta.ip) });
     return NextResponse.json({}, { status: 429, headers: { 'Retry-After': '30' } });

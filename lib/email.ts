@@ -8,16 +8,18 @@ import { parseDevice } from '@/lib/visitors';
 import type { GeoInfo } from '@/lib/visitors';
 // CHANGE: 2026-09-21 — Branded client auto-reply template lives in a pure ESM
 // module so it can be rendered by the preview script too (scripts/email-preview.mjs).
+// CHANGE: 2026-11-20 — Email templates relocated to `email-templates/`; imports
+// below follow the move, module APIs and rendering behaviour are unchanged.
 import {
   buildClientAutoreplyHtml,
   CLIENT_AUTOREPLY_SUBJECT,
   DEFAULT_COMPANY,
-} from '@/lib/email-autoreply.mjs';
-import type { AutoreplyCompany } from '@/lib/email-autoreply.mjs';
+} from '@/email-templates/email-autoreply.mjs';
+import type { AutoreplyCompany } from '@/email-templates/email-autoreply.mjs';
 // CHANGE: 2026-11-04 — Same masthead/footer markup for every template (internal
 // form copy included), so the brand cannot drift template by template.
-import { renderBrandHeader, renderBrandFooter } from '@/lib/email-brand.mjs';
-import type { EmailLogo } from '@/lib/email-brand.mjs';
+import { renderBrandHeader, renderBrandFooter } from '@/email-templates/email-brand.mjs';
+import type { EmailLogo } from '@/email-templates/email-brand.mjs';
 
 export interface FormSubmissionPayload {
   name: string;
@@ -31,6 +33,8 @@ export interface FormSubmissionPayload {
   userAgent?: string;
   geo?: GeoInfo | null;
   sessionId?: string;
+  // CHANGE: 2026-11-20 — optional Tally serial number on license-renewal enquiries.
+  serialNumber?: string;
 }
 
 export interface SendResult {
@@ -66,7 +70,7 @@ export interface EmailDiagnostic {
   destinations: Record<string, string[]>;
 }
 
-export const FORM_TYPES = ['quote', 'enquire', 'support', 'callback', 'demo', 'general', 'tss-renewal'] as const;
+export const FORM_TYPES = ['quote', 'enquire', 'support', 'callback', 'demo', 'general', 'tss-renewal', 'license-renewal'] as const;
 
 export type FormType = (typeof FORM_TYPES)[number];
 
@@ -81,6 +85,8 @@ const FORM_TYPE_LABELS: Record<string, string> = {
   demo: 'Enquiry Request',
   general: 'Contact Request',
   'tss-renewal': 'TSS Renewal',
+  // CHANGE: 2026-11-20 — "Renew" CTA on product pages opens this enquiry.
+  'license-renewal': 'Tally License Renewal',
   // CHANGE: 2026-10-30 — careers emails (resume saved / job application) so the
   // admin send ledger labels them correctly instead of "Web Enquiry". Not added
   // to FORM_TYPES on purpose: careers routing is destination-first ('careers'),
@@ -154,6 +160,8 @@ export function buildFormEmailHtml(
     { label: 'Email', value: submission.email },
     { label: 'Contact No.', value: submission.contact },
     { label: 'Service / Product', value: submission.service || '—' },
+    // CHANGE: 2026-11-20 — show the optional serial number only when supplied.
+    ...(submission.serialNumber ? [{ label: 'Tally Serial Number', value: submission.serialNumber }] : []),
     { label: 'Form Type', value: getFormTypeLabel(submission.formType) },
     { label: 'Visitor Location', value: location },
     { label: 'IP Address', value: ipValue },

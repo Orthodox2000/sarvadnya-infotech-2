@@ -1,3 +1,4 @@
+// CHANGE: 2026-11-20 — Relocated from lib/ to email-templates/; types unchanged.
 export type EmailLogo =
   | { cid: string; data?: never; url?: never }
   | { data: string; cid?: never; url?: never }

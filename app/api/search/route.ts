@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getModules, getTutorials, getNews, getPartners, getSettings } from '@/lib/mongodb-utils';
+import { PUBLIC_API_CACHE } from '@/lib/api-cache';
 import { findSemanticResults } from '@/lib/search-indexer';
 // CHANGE: 2026-11-02 — module URLs built from the single helper for consistency.
 import { moduleHref } from '@/lib/modules';
@@ -219,7 +220,7 @@ export async function GET(request: Request) {
     const query = searchParams.get('q')?.toLowerCase() || '';
 
     if (!query || query.length < 2) {
-      return NextResponse.json({ results: [], summary: null });
+      return NextResponse.json({ results: [], summary: null }, { headers: { 'Cache-Control': PUBLIC_API_CACHE } });
     }
 
     // 1. Semantic results (instant, no DB)
@@ -286,10 +287,12 @@ export async function GET(request: Request) {
       ? await generateSearchSummary(query, combined.slice(0, 3))
       : null;
 
+    // CHANGE: 2026-11-20 — public query-keyed read. Cached at the Edge so repeat searches (and
+    // crawlers) do not re-run the three DB reads or the LLM summary call. `?q=` is in the key.
     return NextResponse.json({
       results: combined.slice(0, 10),
       summary
-    });
+    }, { headers: { 'Cache-Control': PUBLIC_API_CACHE } });
 
   } catch (error) {
     console.error('Search API Error:', error);

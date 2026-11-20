@@ -1,3 +1,4 @@
+// CHANGE: 2026-11-20 — Relocated from lib/ to email-templates/; no template or API change.
 // CHANGE: 2026-10-30 — Careers email templates (single source of truth).
 // WHY: a submitted resume and a submitted job application previously notified
 // nobody. The owner asked for a copy to the company AND a confirmation to the
@@ -6,7 +7,7 @@
 // carry hiring fields (position, phone, resume link) and the candidate copy must
 // NOT carry internal fields (no IP, no geo, no device data).
 //
-// Same house pattern as lib/email-autoreply.mjs: pure ESM, ZERO dependencies, a
+// Same house pattern as email-templates/email-autoreply.mjs: pure ESM, ZERO dependencies, a
 // hand-written .d.mts next door, every style inline (Gmail/Outlook-safe), and the
 // logo passed in as a READY-TO-USE src so the template never touches the
 // filesystem or the network:
@@ -21,7 +22,7 @@
 import { DEFAULT_COMPANY } from './email-autoreply.mjs';
 // CHANGE: 2026-11-04 — Company copies used to pass `logo: null` and render a
 // wordmark-only header, so hiring mail looked different from every other email.
-// The shared brand header/footer (lib/email-brand.mjs) is now rendered by every
+// The shared brand header/footer (email-templates/email-brand.mjs) is now rendered by every
 // template in this file, logo included.
 import { renderBrandHeader, renderBrandFooter } from './email-brand.mjs';
 

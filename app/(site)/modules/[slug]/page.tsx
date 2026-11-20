@@ -47,7 +47,12 @@ import { breadcrumbJsonLd, faqPageJsonLd, seoMetadata } from "@/lib/seo";
  * no section carries container-specific copy. Backgrounds follow one fixed rhythm
  * (dark hero → light → white → light → …) with no gradients or animation.
  */
-export const dynamic = "force-dynamic";
+// CHANGE: 2026-11-20 — ISR, not force-dynamic (the second-largest Fluid CPU consumer on the
+// dashboard). generateStaticParams() pre-builds every known module; dynamicParams stays true so
+// an admin-added module still renders on its first request. Edits appear within one hour —
+// 1-hour staleness was accepted by the owner, so no cross-repo revalidation webhook is added.
+export const revalidate = 3600;
+export const dynamicParams = true;
 
 const getModulesSafe = cache(async (): Promise<Module[]> => {
   try {

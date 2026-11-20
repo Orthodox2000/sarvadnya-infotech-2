@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import { getSettings } from '@/lib/mongodb-utils';
+import { PUBLIC_API_CACHE } from '@/lib/api-cache';
 
+// CHANGE: 2026-11-20 — public contact/social config, no user-specific data; Edge-cached.
 export async function GET() {
   try {
     const settingsMap = await getSettings();
@@ -19,7 +21,7 @@ export async function GET() {
       youtube_handle: settingsMap['NEXT_PUBLIC_YOUTUBE_HANDLE'] || '@sarvadnyainfotechtally',
       map_iframe_url: settingsMap['NEXT_PUBLIC_MAP_IFRAME_URL'] || process.env.NEXT_PUBLIC_MAP_IFRAME_URL || '',
     };
-    return NextResponse.json(settings);
+    return NextResponse.json(settings, { headers: { 'Cache-Control': PUBLIC_API_CACHE } });
   } catch (error) {
     console.error('Error fetching settings:', error);
     return NextResponse.json({ error: 'Failed to fetch settings' }, { status: 500 });

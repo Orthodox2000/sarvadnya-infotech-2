@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getPrices } from '@/lib/prices-server';
+import { PUBLIC_API_CACHE } from '@/lib/api-cache';
 
 // CHANGE: 2026-10-02 — public price list API (SP-1 cart build).
 // WHY: prices are now editable from the admin panel (nested repo) and stored in MongoDB;
@@ -9,13 +10,14 @@ import { getPrices } from '@/lib/prices-server';
 // rows themselves.
 //
 // Response: { items: PriceItem[], source: 'mongo' | 'fallback' } — `source` lets tests assert
-// whether the DB was actually hit. Cache is deliberately short (60s CDN, 300s stale-while-
-// revalidate) so an admin edit shows up on the live site within a minute without hammering
-// Atlas on every page view.
+// whether the DB was actually hit. CHANGE: 2026-11-20 — CDN TTL raised to 1h with
+// stale-while-revalidate; the global /api/:path* no-store rule is overridden by the exact-path
+// allowlist in next.config.js. An admin price edit is live within the hour.
 
 export const runtime = 'nodejs';
 export const maxDuration = 30;
-export const dynamic = 'force-dynamic';
+// CHANGE: 2026-11-20 — force-dynamic removed. Route handlers are dynamic by default in Next 15;
+// CDN freshness is controlled by the explicit Cache-Control header + the next.config.js allowlist.
 
 export async function GET() {
   const prices = await getPrices();
@@ -27,7 +29,7 @@ export async function GET() {
     },
     {
       headers: {
-        'Cache-Control': 'public, max-age=60, s-maxage=300, stale-while-revalidate=60',
+        'Cache-Control': PUBLIC_API_CACHE,
       },
     },
   );

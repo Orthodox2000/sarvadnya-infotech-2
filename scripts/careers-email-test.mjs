@@ -1,5 +1,6 @@
-// CHANGE: 2026-10-30 — regression suite for lib/email-careers.mjs (careers email
-// templates). NO NETWORK, NO DATABASE, NO RESEND CALLS — it only renders strings.
+// CHANGE: 2026-10-30 — regression suite for the careers email templates
+// (email-templates/email-careers.mjs since 2026-11-20).
+// NO NETWORK, NO DATABASE, NO RESEND CALLS — it only renders strings.
 //
 // WHY: the owner asked for job-application and resume notifications to reach BOTH
 // the company and the candidate. Two things must never regress:
@@ -20,8 +21,8 @@ import {
   buildResumeCompanyHtml,
   buildResumeConfirmationHtml,
   buildAccountCreatedHtml,
-} from '../lib/email-careers.mjs';
-import { DEFAULT_COMPANY } from '../lib/email-autoreply.mjs';
+} from '../email-templates/email-careers.mjs';
+import { DEFAULT_COMPANY } from '../email-templates/email-autoreply.mjs';
 
 let passed = 0;
 let failed = 0;

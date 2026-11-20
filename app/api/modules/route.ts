@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getModules } from '@/lib/mongodb-utils';
+import { PUBLIC_API_CACHE } from '@/lib/api-cache';
 
 // CHANGE: 2026-08-26 — Write methods removed for frontend-only deployment.
 // Admin deployment handles module CRUD via /api/admin/ copy.
@@ -7,7 +8,8 @@ import { getModules } from '@/lib/mongodb-utils';
 export async function GET() {
   try {
     const modules = await getModules();
-    return NextResponse.json(modules);
+    // CHANGE: 2026-11-20 — public read-only list; Edge-cached instead of re-querying Mongo per hit.
+    return NextResponse.json(modules, { headers: { 'Cache-Control': PUBLIC_API_CACHE } });
   } catch (error) {
     console.error('Error fetching modules:', error);
     return NextResponse.json({ error: 'Failed to fetch modules' }, { status: 500 });

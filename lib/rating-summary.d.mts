@@ -1,4 +1,4 @@
-// Hand-written types for lib/rating-summary.mjs (same pattern as lib/email-autoreply.d.mts,
+// Hand-written types for lib/rating-summary.mjs (same pattern as email-templates/email-autoreply.d.mts,
 // lib/careers-referral.d.mts, lib/prices-catalog.d.mts): the runtime module stays plain ESM so
 // plain `node` can import it in tests, and TypeScript still gets full types without a build step.
 

@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import clientPromise from '@/lib/mongodb';
 import { ObjectId } from 'mongodb';
 import { jobs as staticJobs } from '@/lib/jobs';
+import { PUBLIC_API_CACHE } from '@/lib/api-cache';
 
 export async function GET() {
   try {
@@ -18,7 +19,9 @@ export async function GET() {
       jobs = await collection.find({ visible: { $ne: false } }).sort({ postedAt: -1 }).toArray();
     }
     
-    return NextResponse.json(jobs);
+    // CHANGE: 2026-11-20 — public visible-jobs list; Edge-cached. Keeps the visible:{$ne:false}
+    // filter from 2026-10-06 — hidden drafts must never enter a shared cache.
+    return NextResponse.json(jobs, { headers: { 'Cache-Control': PUBLIC_API_CACHE } });
   } catch (error) {
     return NextResponse.json({ error: 'Failed to fetch careers' }, { status: 500 });
   }

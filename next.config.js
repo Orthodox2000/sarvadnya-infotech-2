@@ -37,6 +37,10 @@ const csp = [
   `form-action 'self'`,
 ].join('; ');
 
+// CHANGE: 2026-11-20 — keep in sync with lib/api-cache.ts (the route-level header). Vercel Edge
+// serves repeat hits at 0 ms Active CPU; everything else under /api stays no-store by default.
+const PUBLIC_API_CACHE = 'public, s-maxage=3600, stale-while-revalidate=86400';
+
 const nextConfig = {
   // CHANGE: 2026-08-21 — Single worker for page-data collection/type steps: this machine has 7.5GB RAM
   // (~1.3GB free) and parallel jest-workers were dying mid-build ("Cannot find module for page" ENOENT).
@@ -245,6 +249,29 @@ const nextConfig = {
           { key: 'Cache-Control', value: 'no-store, no-cache, must-revalidate' },
         ],
       },
+      // CHANGE: 2026-11-20 — the blanket no-store above forced every public read API through a
+      // Node function (/api/prices: 7 hits, 2.08s CPU). Next applies the LAST matching header
+      // rule for a given key ("Header Overriding Behavior" in the docs), so these exact-path
+      // rules restore CDN caching for public, non-user-specific GETs. Everything else keeps
+      // no-store: /api/health (live monitoring), /api/email/diagnostic, /api/auth/*,
+      // /api/chats/*, /api/cart/*, /api/identify and /api/careers (root uses find({}) and
+      // exposes hidden draft jobs). Query strings (?section=, ?type=, ?q=) are part of the key.
+      ...[
+        '/api/prices',
+        '/api/news',
+        '/api/modules',
+        '/api/tutorials',
+        '/api/settings',
+        '/api/content',
+        '/api/partners',
+        '/api/reviews',
+        '/api/search',
+        '/api/careers/visible',
+        '/api/careers/list',
+      ].map((source) => ({
+        source,
+        headers: [{ key: 'Cache-Control', value: PUBLIC_API_CACHE }],
+      })),
     ];
   },
   

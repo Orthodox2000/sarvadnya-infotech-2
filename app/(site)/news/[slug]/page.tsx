@@ -1,16 +1,26 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { getNews, getNewsBySlug } from '@/lib/mongodb-utils';
+import { cache } from 'react';
+import { getNews, getNewsBySlug, getRelatedNews } from '@/lib/mongodb-utils';
 import { SITE_NAME, SITE_URL, articleJsonLd, breadcrumbJsonLd, faqPageJsonLd, seoMetadata } from '@/lib/seo';
 import { NewsItem } from '@/lib/news';
 import { excerptFrom } from '@/lib/news-utils';
 
-// CHANGE: 2026-08-31 — First DYNAMIC route in the project. Individual SEO landing pages for each
-// news item → /news/[slug]. Force-dynamic so admin-published posts appear without a rebuild.
-export const dynamic = 'force-dynamic';
+// CHANGE: 2026-11-20 — ISR, not force-dynamic. Under force-dynamic every bot/visitor hit
+// cold-booted the Node function, reconnected to MongoDB and re-rendered the article (~575 ms
+// Active CPU per hit). generateStaticParams() pre-builds every known slug; a brand-new slug
+// added by the admin still renders on its first request because dynamicParams stays true.
+// Admin EDITS now appear within the one-hour window; the owner accepted that staleness and
+// a cross-repo revalidation webhook is deliberately NOT being added (see docs/HISTORY.md).
+export const revalidate = 3600;
+export const dynamicParams = true;
 
-// Optional pre-render list (harmless under force-dynamic; enables ISR if dynamic is ever dropped).
+// CHANGE: 2026-11-20 — generateMetadata() and the page both need the same article. React's
+// request-scoped cache() collapses the two getNewsBySlug() calls into one Mongo query per render.
+const getCachedNewsBySlug = cache((slug: string) => getNewsBySlug(slug));
+
+// Known slugs are pre-rendered at deploy time; unknown ones are generated on first request.
 export async function generateStaticParams() {
   try {
     const news: NewsItem[] = await getNews();
@@ -22,7 +32,7 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  const item = await getNewsBySlug(slug);
+  const item = await getCachedNewsBySlug(slug);
   // CHANGE: 2026-10-29 — the not-found branch is a 404: give it a real ≥50-char description
   // (the audit warned at 18 chars) and mark it noindex so a dead slug never enters the index.
   if (!item) {
@@ -76,12 +86,12 @@ function renderBody(content: string) {
 
 export default async function NewsArticlePage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const item = await getNewsBySlug(slug);
+  const item = await getCachedNewsBySlug(slug);
   if (!item) notFound();
 
-  const related: NewsItem[] = (await getNews().catch(() => []))
-    .filter((n) => n.slug !== item.slug)
-    .slice(0, 3);
+  // CHANGE: 2026-11-20 — was getNews(): loaded every article (full content + faqs) into memory
+  // just to render three cards. getRelatedNews() reads a bounded, projected set from MongoDB.
+  const related = await getRelatedNews(item.slug || '');
 
   // CHANGE: 2026-10-30 — the H1 is the article's editorial headline (`item.title`), while
   // `item.seoTitle` is only the <title> tag. WHY: seoTitle is written to fit Google's ~60-char

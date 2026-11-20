@@ -5,7 +5,9 @@ import { usePathname } from 'next/navigation';
 import { getDestinationFromPath } from '@/lib/form-destinations';
 import { useVisitor } from './VisitorProvider';
 
-export type FormType = 'quote' | 'enquire' | 'support' | 'callback' | 'demo' | 'general';
+// CHANGE: 2026-11-20 — 'license-renewal' replaces the old "Know More" enquiry on
+// product pages; the rest of the form is unchanged.
+export type FormType = 'quote' | 'enquire' | 'support' | 'callback' | 'demo' | 'general' | 'license-renewal';
 
 interface UnifiedContactModalProps {
   isOpen: boolean;
@@ -33,7 +35,8 @@ export default function UnifiedContactModal({
     email: '',
     contact: '',
     service: prefillService,
-    description: prefillDetails
+    description: prefillDetails,
+    serialNumber: ''
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -74,7 +77,9 @@ export default function UnifiedContactModal({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
+    // CHANGE: 2026-11-20 — keep the optional serial number out of non-renewal payloads.
+    const { serialNumber, ...restFormData } = formData;
+
     try {
       const endpoint = dest ? '/api/email/submit' : '/api/contact';
       // CHANGE: 2026-08-18 — Pass UTM params for campaign tracking.
@@ -90,8 +95,11 @@ export default function UnifiedContactModal({
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          ...formData,
+          ...restFormData,
           formType: type,
+          // CHANGE: 2026-11-20 — serial number is optional and only belongs to
+          // renewal enquiries; other form types send an unchanged payload.
+          ...(type === 'license-renewal' ? { serialNumber } : {}),
           ...(sessionId ? { sessionId } : {}),
           ...(dest ? { destination: dest, requestId } : {}),
           ...(Object.keys(utmParams).length > 0 ? { utmParams } : {}),
@@ -110,7 +118,8 @@ export default function UnifiedContactModal({
           email: '',
           contact: '',
           service: prefillService,
-          description: prefillDetails
+          description: prefillDetails,
+          serialNumber: ''
         });
       }, 2500);
     } catch (err) {
@@ -128,6 +137,7 @@ export default function UnifiedContactModal({
       case 'support': return 'Priority Support';
       case 'callback': return 'Request Callback';
       case 'demo': return 'Enquire Now';
+      case 'license-renewal': return 'Renew Your Tally License';
       default: return 'Contact Us';
     }
   };
@@ -139,6 +149,7 @@ export default function UnifiedContactModal({
       case 'support': return '15-Min Response';
       case 'callback': return 'Quick Connect';
       case 'demo': return 'Live Showcase';
+      case 'license-renewal': return 'License Renewal';
       default: return 'Get in Touch';
     }
   };
@@ -242,6 +253,21 @@ export default function UnifiedContactModal({
                   />
                 </div>
               </div>
+
+              {/* CHANGE: 2026-11-20 — optional Tally serial number, renewal only.
+                  Not required: the owner asked to keep it optional. */}
+              {type === 'license-renewal' && (
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-slate-500 ml-1">Tally Serial Number (Optional)</label>
+                  <input
+                    type="text"
+                    value={formData.serialNumber}
+                    onChange={e => setFormData({...formData, serialNumber: e.target.value})}
+                    placeholder="Enter your Tally serial number (if you have it)"
+                    className="w-full rounded-xl bg-white border border-slate-200 px-4 py-2 sm:py-2.5 text-sm text-slate-900 placeholder:text-slate-300 focus:outline-none focus:ring-2 focus:ring-[#006569]/20 focus:border-[#006569] transition-all shadow-sm"
+                  />
+                </div>
+              )}
 
               <div className="space-y-1.5">
                 <label className="text-[10px] font-bold uppercase tracking-wider text-slate-500 ml-1">Additional Requirements</label>

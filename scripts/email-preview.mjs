@@ -8,7 +8,8 @@
 import { writeFileSync, mkdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { buildClientAutoreplyHtml, DEFAULT_COMPANY, CLIENT_AUTOREPLY_SUBJECT } from '../lib/email-autoreply.mjs';
+// CHANGE: 2026-11-20 — Template moved to `email-templates/`; import path updated.
+import { buildClientAutoreplyHtml, DEFAULT_COMPANY, CLIENT_AUTOREPLY_SUBJECT } from '../email-templates/email-autoreply.mjs';
 
 const root = fileURLToPath(new URL('..', import.meta.url));
 const outDir = join(root, 'public', 'email');

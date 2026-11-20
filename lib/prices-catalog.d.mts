@@ -1,6 +1,6 @@
 // CHANGE: 2026-10-02 — TypeScript declaration for lib/prices-catalog.mjs (SP-1 cart).
 // WHY: TS cannot infer types for a .mjs import; this companion file (the same pattern as
-// lib/email-autoreply.d.mts) types the pure-ESM catalogue for Next.js while the Node seed /
+// email-templates/email-autoreply.d.mts) types the pure-ESM catalogue for Next.js while the Node seed /
 // test scripts import the .mjs directly.
 
 export type PriceStatus = 'priced' | 'unpriced' | 'inactive';

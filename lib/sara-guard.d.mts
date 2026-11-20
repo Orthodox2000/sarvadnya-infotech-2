@@ -1,6 +1,6 @@
 // CHANGE: 2026-10-22 — type declarations for the pure-ESM Sara guard module
 // (lib/sara-guard.mjs). Hand-written and minimal, same pattern as
-// lib/email-autoreply.d.mts and lib/careers-referral.d.mts, so TS gets types
+// email-templates/email-autoreply.d.mts and lib/careers-referral.d.mts, so TS gets types
 // without a build step.
 // CHANGE: 2026-10-30 — added the shortcut/link rules (isShortcutLabel,
 // formatShortcut, sanitizeShortcutButtons) plus the 2026-10-29 helpers that were

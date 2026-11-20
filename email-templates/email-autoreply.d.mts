@@ -1,5 +1,6 @@
+// CHANGE: 2026-11-20 — Relocated from lib/ to email-templates/; types unchanged.
 // CHANGE: 2026-09-21 — Type declarations for the pure-ESM client auto-reply
-// template module (lib/email-autoreply.mjs). Kept hand-written and minimal so
+// template module (email-templates/email-autoreply.mjs). Kept hand-written and minimal so
 // TS can import the shared template without generating types on every build.
 
 export interface AutoreplyCompany {

@@ -1,6 +1,7 @@
-// CHANGE: 2026-10-30 — Type declarations for lib/email-careers.mjs (careers
-// email templates). Hand-written and minimal, same pattern as
-// lib/email-autoreply.d.mts, so TS can import the shared templates without a
+// CHANGE: 2026-11-20 — Relocated from lib/ to email-templates/; types unchanged.
+// CHANGE: 2026-10-30 — Type declarations for email-templates/email-careers.mjs
+// (careers email templates). Hand-written and minimal, same pattern as
+// email-templates/email-autoreply.d.mts, so TS can import the shared templates without a
 // build step and plain Node scripts can import the .mjs directly.
 
 import type { AutoreplyCompany } from './email-autoreply.d.mts';

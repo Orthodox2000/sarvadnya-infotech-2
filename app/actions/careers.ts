@@ -21,12 +21,13 @@ import { storeResume } from '@/lib/careers-storage';
 import { createHash } from 'node:crypto';
 import { getCompanyContact, hasInlineLogo } from '@/lib/email';
 import { sendEmailDirect } from '@/lib/email-queue';
+// CHANGE: 2026-11-20 — Careers templates moved to `email-templates/` (same exports).
 import {
   applicationCompanySubject,
   APPLICATION_CONFIRMATION_SUBJECT,
   buildApplicationCompanyHtml,
   buildApplicantConfirmationHtml,
-} from '@/lib/email-careers.mjs';
+} from '@/email-templates/email-careers.mjs';
 
 const MEGA_ENABLED = process.env.MEGA_ENABLED === 'true' || process.env.MEGA_ENABLED === '1';
 
