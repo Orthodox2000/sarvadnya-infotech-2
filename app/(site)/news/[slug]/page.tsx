@@ -12,7 +12,8 @@ import { excerptFrom } from '@/lib/news-utils';
 // Active CPU per hit). generateStaticParams() pre-builds every known slug; a brand-new slug
 // added by the admin still renders on its first request because dynamicParams stays true.
 // Admin EDITS now appear within the one-hour window; the owner accepted that staleness and
-// a cross-repo revalidation webhook is deliberately NOT being added (see docs/HISTORY.md).
+// a cross-repo revalidation webhook is deliberately NOT being added (see the 2026-11-20
+// Fluid CPU entry in the docs/HISTORY.md index).
 export const revalidate = 3600;
 export const dynamicParams = true;
 

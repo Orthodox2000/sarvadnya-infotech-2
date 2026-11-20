@@ -6,36 +6,6 @@
 <meta name="color-scheme" content="light">
 <title>Your TallyPrime Rental License Expiring Today – Renew Now and Save Up to 10%!</title>
 
-<!--
-  ============================================================================
-  SARVADNYA INFOTECH LLP - TALLYPRIME RENTAL LICENSE EXPIRY REMINDER
-  ============================================================================
-  Added 2026-11-20. Copy supplied by the owner verbatim; no offer, date or
-  product claim was invented. Same house style as email-signature.html:
-  Calibri stack, teal #006569, light #FBFAF6 masthead, brand-colour social PNGs.
-
-  SIZE: one 600px table that falls to 100% width on phones. Padding and type
-  step down under 620px, and the CTA is a 100%-width, 48px-tall table cell so it
-  stays tappable. Fully inline styles + a small media query for the mobile step.
-
-  MERGE FIELDS: replace "Mr. Tejas Pasnani" with the recipient's name and, if
-  needed, the savings figure. Everything else is ready to send.
-
-  IMAGE HOSTING: absolute URLs under /email-signature/ and /TallyCertificate.png.
-  Do NOT switch them to data URIs - Gmail strips data URIs. The next.config.js
-  CORP/CORS rules for those paths already cover browser previews.
-
-  NOTE ON SOCIALS (corrected 2026-11-20): the Facebook link is wrong, so the
-  Facebook ICON is kept but it has NO href. Same in email-signature.html and
-  diwali-email.html. No Twitter/X profile URL exists in the repo or .env, so no
-  handle was invented. Icons: WhatsApp, LinkedIn, Instagram, Facebook (unlinked),
-  YouTube.
-
-  NO PRICES (owner ruling, 2026-11-20): only the 10% annual-subscription offer is
-  mentioned. There is NO "save ₹900" line — the "Renew Now" button is the only CTA.
-  The sign-off is "Team Sarvadnya", never "Team Tally".
-  ============================================================================
--->
 <style>
   body, table, td, a { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
   table { border-collapse: collapse !important; }
@@ -54,20 +24,19 @@
 
 <body style="margin:0;padding:0;background:#E8F0F0;font-family:Calibri,'Segoe UI',Candara,'Trebuchet MS',Arial,Helvetica,sans-serif;color:#3D4A5C;">
 
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#E8F0F0;padding:24px 12px;">
+<table role="presentation" class="outer" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#E8F0F0" style="background-color:#E8F0F0;width:100%;">
+  <!-- Top gap row (survives Gmail copy-paste) -->
   <tr>
-    <td align="center">
+    <td height="32" bgcolor="#E8F0F0" style="height:32px;font-size:32px;line-height:32px;background-color:#E8F0F0;">&nbsp;</td>
+  </tr>
 
-      <!-- CHANGE: 2026-11-20 — corner radius reduced 14px -> 4px (heavy rounding
-           killed the look). White spacer rows added above/below the full-bleed
-           masthead and legal bands so the card has top and bottom breathing room. -->
+  <!-- Main centered card row -->
+  <tr>
+    <td align="center" bgcolor="#E8F0F0" style="padding:0 16px;background-color:#E8F0F0;">
+
       <table role="presentation" class="wrap" width="600" cellpadding="0" cellspacing="0" border="0" style="width:600px;max-width:600px;background:#ffffff;border-radius:4px;overflow:hidden;box-shadow:0 8px 24px rgba(3,59,56,0.08);">
 
-        <tr>
-          <td style="height:18px;line-height:18px;font-size:0;background:#ffffff;">&nbsp;</td>
-        </tr>
-
-        <!-- Brand masthead: same cream band and wordmark scale as the signature -->
+        <!-- Brand masthead -->
         <tr>
           <td class="pad" style="padding:22px 28px;background:#FBFAF6;border-bottom:1px solid #D4EAEA;">
             <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;">
@@ -119,7 +88,7 @@
           </td>
         </tr>
 
-        <!-- Primary CTA: straight to the products section -->
+        <!-- Primary CTA -->
         <tr>
           <td class="pad" style="padding:4px 28px 22px 28px;">
             <table role="presentation" class="cta" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;">
@@ -131,8 +100,6 @@
                 </td>
               </tr>
             </table>
-            <!-- CHANGE: 2026-11-20 — the "RENEW NOW & SAVE ₹900" line was removed:
-                 no prices are mentioned, and the button above is the only CTA. -->
           </td>
         </tr>
 
@@ -145,7 +112,6 @@
                   <p class="bodycopy" style="margin:0 0 20px;font-size:14px;line-height:1.6;color:#3D4A5C;">
                     <strong style="color:#045A57;">Need help?</strong><br>
                     For any assistance, visit us on our
-                    <!-- No /support route exists in this site; /contact is the public support entry point. -->
                     <a href="https://sarvadnyainfotech.com/contact" target="_blank" rel="noopener noreferrer" style="color:#006569;font-weight:700;text-decoration:underline;">support page</a>.
                   </p>
                   <p class="bodycopy" style="margin:0;font-size:14px;line-height:1.6;color:#3D4A5C;">
@@ -158,7 +124,7 @@
           </td>
         </tr>
 
-        <!-- Sender block: real company contact, same layout scale as the signature -->
+        <!-- Sender block -->
         <tr>
           <td class="pad" style="padding:20px 28px;background:#F4FAFA;border-top:1px solid #D4EAEA;">
             <p style="margin:0 0 10px;font-size:11px;font-weight:700;letter-spacing:1.3px;text-transform:uppercase;color:#006569;">Sarvadnya Infotech LLP</p>
@@ -169,8 +135,6 @@
               73, Vindhya Commercial Premises, Sector - 11, Plot No - 1, CBD Belapur, Mumbai, Maharashtra
             </p>
 
-            <!-- Brand social icons as email-signature.html, 20px / 10px apart.
-                 Facebook icon is present but unlinked (wrong URL, owner ruling). -->
             <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;">
               <tr>
                 <td style="padding:0 10px 0 0;font-size:0;line-height:0;">
@@ -188,7 +152,6 @@
                     <img src="https://sarvadnyainfotech.com/email-signature/social/instagram.png" width="20" height="20" alt="Instagram" style="display:block;width:20px;height:20px;border:0;">
                   </a>
                 </td>
-                <!-- CHANGE: 2026-11-20 — Facebook icon kept, but NO link: the URL is wrong (owner). -->
                 <td style="padding:0 10px 0 0;font-size:0;line-height:0;">
                   <img src="https://sarvadnyainfotech.com/email-signature/social/facebook.png" width="20" height="20" alt="Facebook" title="Facebook" style="display:block;width:20px;height:20px;border:0;">
                 </td>
@@ -211,12 +174,14 @@
           </td>
         </tr>
 
-        <tr>
-          <td style="height:18px;line-height:18px;font-size:0;background:#ffffff;">&nbsp;</td>
-        </tr>
-
       </table>
+
     </td>
+  </tr>
+
+  <!-- Bottom gap row -->
+  <tr>
+    <td height="32" bgcolor="#E8F0F0" style="height:32px;font-size:32px;line-height:32px;background-color:#E8F0F0;">&nbsp;</td>
   </tr>
 </table>
 </body>

@@ -6,7 +6,7 @@
  * Run:  node scripts/compress-images.mjs            (scripts/optimize:images)
  *       node scripts/compress-images.mjs --dry-run  (report only)
  *
- * Design decisions (see docs/HISTORY.md §18):
+ * Design decisions (see docs/HISTORY.md index → 2026-10-13 "Search-Console keyword batch", formerly §18):
  *  - Filenames are NEVER changed. Every image path is a public contract: it is
  *    referenced from page TSX, Tailwind `bg-[url()]` classes, MongoDB-seeded module
  *    documents, JSON-LD and email HTML. A rename would silently break all of them.

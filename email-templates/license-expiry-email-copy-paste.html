@@ -15,10 +15,14 @@
   paste into the Gmail / Outlook compose window. All styling is INLINE — no
   <style> block, no classes — so nothing is lost when the browser copies it.
 
-  The outer shell is the grey #f3f4f6 full-width table + white 600px card that
-  the owner supplied. CHANGE: 2026-11-20 — no curvy ends: the owner asked for a
-  square/flat container, so border-radius was removed from the main card AND the
-  nested masthead, sender, legal and CTA blocks (no rounded corners anywhere).
+  The outer shell is the owner's GMAIL-SAFE structure (2026-11-20): a #eef3f3
+  full-width table with border-collapse:collapse, a TOP spacer <tr> and a BOTTOM
+  spacer <tr> (each height="32" with height/line-height 32px and &nbsp;). Gmail
+  strips vertical padding from pasted wrappers, so explicit spacer rows — not
+  padding — create the top and bottom gap. The content <td> keeps only left/right
+  padding (16px); the white card stays 600px / 1px solid #e5e7eb / 6px radius and
+  its content cell keeps the INNER CONTENT PADDING of 32px 24px requested in the
+  previous turn. Nested masthead / sender / legal / CTA blocks are flat.
 
   Inside it is the same content as license-expiry-email.html:
   owner-verbatim copy, 10% ONLY (no prices), "Team Sarvadnya" sign-off, "Renew
@@ -30,20 +34,25 @@
 -->
 </head>
 
-<body style="margin:0;padding:0;background-color:#f3f4f6;">
+<body style="margin:0;padding:0;background-color:#eef3f3;">
 
 <!-- Outer Full-Width Background Table -->
-<table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#f3f4f6" style="background-color: #f3f4f6; width: 100%; margin: 0; padding: 24px 12px;">
-  <tr>
-    <td align="center" valign="top">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#eef3f3" style="background-color: #eef3f3; width: 100%; border-collapse: collapse;">
 
-      <!-- Inner Centered Responsive Card (Max 600px) -->
-      <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#ffffff" style="max-width: 600px; width: 100%; background-color: #ffffff; border: 1px solid #e5e7eb; margin: 0 auto;">
+  <!-- TOP SPACER ROW (Forces top gap in Gmail) -->
+  <tr>
+    <td height="32" style="height: 32px; font-size: 32px; line-height: 32px; mso-line-height-rule: exactly;">&nbsp;</td>
+  </tr>
+
+  <!-- MAIN CONTENT ROW -->
+  <tr>
+    <td align="center" valign="top" style="padding-left: 16px; padding-right: 16px;">
+
+      <!-- Inner Centered White Card -->
+      <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#ffffff" style="max-width: 600px; width: 100%; background-color: #ffffff; border: 1px solid #e5e7eb; border-radius: 6px; margin: 0 auto;">
         <tr>
-          <!-- CHANGE: 2026-11-20 — top/bottom padding increased 32px -> 40px:
-               the card needs breathing room above the masthead and below the
-               legal band. Corners stay square per the owner's earlier ruling. -->
-          <td style="padding: 40px 24px; font-family: Arial, sans-serif; color: #1f2937;">
+          <!-- INNER CONTENT PADDING: space between card edge and text/logo (kept from the previous owner shell) -->
+          <td style="padding: 32px 24px; font-family: Arial, sans-serif; color: #1f2937;">
 
             <!-- Brand masthead: same cream band and wordmark scale as the signature -->
             <table width="100%" border="0" cellspacing="0" cellpadding="0" style="border-collapse:collapse;background-color:#FBFAF6;border:1px solid #D4EAEA;">
@@ -170,6 +179,12 @@
 
     </td>
   </tr>
+
+  <!-- BOTTOM SPACER ROW (Forces bottom gap in Gmail) -->
+  <tr>
+    <td height="32" style="height: 32px; font-size: 32px; line-height: 32px; mso-line-height-rule: exactly;">&nbsp;</td>
+  </tr>
+
 </table>
 </body>
 </html>

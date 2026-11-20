@@ -1,0 +1,14 @@
+# 2026-11-16 (second session) — Admin panel simplified: the Payments module removed, dashboard cleaned
+
+> Session-history detail. Index: [docs/HISTORY.md](../HISTORY.md)
+
+---
+
+| Fact | Detail |
+| :--- | :--- |
+| **Brief** | Owner: *"admin panl is too complex, reduce unwanted thing sna remove transaction logs as they are test"*. Clarified: remove the **whole Payments module**, **do not drop any other admin screen**, **just clean the dashboard**. |
+| **Deleted (nested repo)** | `sarvadnya-advanced/app/admin/payments/page.tsx` (order ledger), `.../payments/summary/page.tsx`, `.../payments/tabs.tsx`, `sarvadnya-advanced/app/api/admin/payments/route.ts`, and the **Payments** entry in `app/admin/AdminSidebar.tsx`. The routes `/admin/payments` and `/api/admin/payments` now 404. Every order in the ledger was a demo/test order — the module is gone, not hidden or filtered. No other screen was dropped. |
+| **Dashboard (`app/admin/page.tsx`)** | Removed the **Recent orders** panel, the **Orders awaiting payment** attention row, and the four payment totals (orders total / awaiting / paid / revenue collected). With them went the now-dead `RecentOrder` type, `STATUS_STYLES`, `formatMoney` and the `inr` formatter (`formatRelative` is still used by recent leads). Recent leads is now the only activity feed; the bottom card is a compact **full-width Careers** card (Job applications + Candidate accounts). The 14 mini tiles, header chip, Refresh button and inline "Updated" caption are unchanged. |
+| **Stats API (`app/api/admin/stats/route.ts`)** | Dropped the `orders` collection handle and six queries: total orders, orders today, orders pending, the revenue aggregate and the recent-orders find. Response no longer carries `orders`, `ordersToday`, `ordersPending`, `revenuePaise`, `revenueOrders` or `recentOrders` — fewer Atlas round-trips and no dead fields. Every remaining key keeps its meaning: `visitorsLast24h` still windows on **`lastSeen`** and **Site Visitors** is still unique humans. `api-test.mjs` asserts only a 200 and `visitors-admin-test.mjs` only `visitorsLast24h`, so neither is affected. |
+| **Kept on purpose** | `lib/order-status.ts` and `lib/mongodb-utils.ts → updateOrderStatus()` — order **audit-trail** helpers written by the public checkout flow, not payments UI. Removing them would break `test:status` (the 10 SP-3 order assertions) and the shared history convention in nested `AGENTS.md` §10. |
+| **Verified** | Standing single-pass directive (§3): no build, dev server, typecheck or test suite. A repo-wide grep confirmed no remaining `admin/payments`, `api/admin/payments`, `recentOrders`, `revenuePaise`, `ordersPending`, `formatMoney` or `STATUS_STYLES` reference in nested code (the only `STATUS_STYLES` hit is the unrelated one in `app/admin/prices/page.tsx`). Docs: nested `AGENTS.md` §25 + footer, `daily logs/2026-11-16.md` §§9–11, tracker row 119. |

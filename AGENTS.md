@@ -6,11 +6,12 @@
 > | Need | Read |
 > | :--- | :--- |
 > | How a subsystem works, why it is built that way | **`docs/ARCHITECTURE.md`** (§1–§14, pointers below) |
-> | What shipped in which session, what was measured, what was left undone | **`docs/HISTORY.md`** |
+> | What shipped in which session, what was measured, what was left undone | **`docs/HISTORY.md`** (headline index) → `docs/history/<slug>.md` (full detail) |
 > | Migration runbook | `docs/MIGRATION-VERCEL.md` |
 > | Admin-vs-frontend split | `docs/ADMIN-VS-FRONTEND-ISOLATION.md`, `docs/NESTED-ADMIN-REPO.md` |
 >
-> **Append new session notes to `docs/HISTORY.md`. Never grow this file with history.**
+> **Append new session detail to `docs/history/<slug>.md` AND one headline row to `docs/HISTORY.md`.
+> Neither file should grow into a single large history dump.** (Split on 2026-11-20.)
 > If you add a rule here, add the reasoning to `docs/ARCHITECTURE.md` and link the §number.
 
 ---
@@ -146,8 +147,8 @@ historical mirror — never assume it has history `origin` lacks. `git remote -v
 - **Never assume.** If scope, a requirement or an implementation detail is unclear, ask. Do not fill gaps
   with guesses.
 - **Minimal code / use libraries.** Do not over-engineer; 30 lines plus a dependency beats 200 hand-rolled.
-- **Document every change.** Inline `// CHANGE: <date> — <reason>` on non-obvious edits, plus a session
-  note in `docs/HISTORY.md` (and the daily log / tracker row the project keeps).
+- **Document every change.** Inline `// CHANGE: <date> — <reason>` on non-obvious edits, plus a detail
+  file in `docs/history/` and its headline row in `docs/HISTORY.md` (and the daily log / tracker row).
 - **Validate before completing.** Re-read the original request, re-check every item, confirm each
   requirement is actually satisfied. Requirements get silently dropped during scope — do the second pass.
 - **Accessibility:** high contrast, visible focus states, real labels, `alt` on meaningful images
@@ -315,7 +316,8 @@ npm run test:all       # everything above, minus the two that need a live server
 | `/careers` split layout | §14 |
 
 Everything about **when** and **why** a change was made — including the incidents that produced the rules in
-section 2 above — is in **`docs/HISTORY.md`**, newest first.
+section 2 above — is indexed (newest first) in **`docs/HISTORY.md`**, with the full narrative in
+`docs/history/<slug>.md`.
 
 ---
 
