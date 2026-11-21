@@ -160,9 +160,26 @@ export async function POST(request: Request) {
     const result = await saveSubmission(submissionData);
     const submissionId = result.insertedId.toString();
 
-    // No destination (unknown page) → keep the legacy save-only behavior.
+    // CHANGE: 2026-11-21 — an unknown page used to be save-only (admin panel
+    // only). Keep the company copy suppressed (legacy behaviour) but still send
+    // the lead their acknowledgement receipt — the enquiry is a lead either way.
     if (!destination) {
-      return NextResponse.json({ message: 'Submission successful', saved: true });
+      const ack = await sendEmailDirect({
+        jobKey: sanitizeJobKey(rawData.requestId) || submissionId,
+        formType: data.formType,
+        destination: '',
+        skipCompanyCopy: true,
+        submission: {
+          ...submissionData,
+          email: isValidEmail(submissionData.email) ? submissionData.email : '',
+        },
+      });
+      return NextResponse.json({
+        message: 'Submission successful',
+        saved: true,
+        clientEmailSent: ack.clientEmailSent,
+        jobId: ack.jobKey,
+      });
     }
 
     // Per-page routing with exactly-once dedupe: the client supplies a stable

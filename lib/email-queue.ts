@@ -220,22 +220,28 @@ export async function sendEmailDirect(input: {
   submission: FormSubmissionPayload;
   /** CHANGE: 2026-10-30 — optional caller-built templates (careers). */
   custom?: EmailJobCustom;
+  /** CHANGE: 2026-11-21 — legacy no-destination sidebar forms keep the old
+   *  save-only behaviour for the COMPANY copy but still acknowledge the lead. */
+  skipCompanyCopy?: boolean;
 }): Promise<DirectSendResult> {
   await ensureIndexes();
 
-  const { jobKey, formType, destination, submission, custom } = input;
+  const { jobKey, formType, destination, submission, custom, skipCompanyCopy } = input;
   const type = String(formType || 'general').trim().toLowerCase() || 'general';
 
-  // Page-level destinations win. A destination that is unconfigured (or
-  // configured empty) deliberately produces NO email — sending is opt-in so a
-  // page only emails once the admin assigns recipients for it.
-  const recipients = await resolveRecipients({ destination, formType: type });
+  // CHANGE: 2026-11-21 — the INTERNAL copy stays destination-first / opt-in, but
+  // the lead's acknowledgement must not depend on an admin having assigned a
+  // recipient for this page. Previously a page with no configured recipient
+  // saved the enquiry (visible in admin) and emailed nobody — exactly the
+  // "only admin panel show" complaint. The acknowledgement now rides the same
+  // unique-jobKey claim whenever a sender exists, so exactly-once still holds.
+  const recipients = skipCompanyCopy ? [] : await resolveRecipients({ destination, formType: type });
   const { from } = await getEmailConfig();
+  const hasCompanySend = recipients.length > 0 && !!from;
 
-  if (recipients.length === 0 || !from) {
-    // No internal recipient / sender configured — skip entirely so no send (and
-    // therefore no email) can ever happen. Protects the email budget.
-    return { claimed: false, sent: false, deduped: false, jobKey, error: 'no-recipient-configured' };
+  if (!from) {
+    // No sender at all → no transport for either email; nothing can be sent.
+    return { claimed: false, sent: false, deduped: false, jobKey, error: 'no-sender-configured' };
   }
 
   const col = await getEmailQueueCol();
@@ -282,7 +288,11 @@ export async function sendEmailDirect(input: {
   // — the caller's applicant template). Both are recorded against this jobKey;
   // the default second email is kill-switch gated (AUTO_REPLY_ENABLED) and
   // skipped when the submitter gave no valid email.
-  const res = await sendCompanyHalf({ submission, recipients, from, formType: type, destination: cleanDestination, custom });
+  // CHANGE: 2026-11-21 — no recipient for this page? Skip only the internal copy;
+  // the acknowledgement below still goes out to the lead.
+  const res = hasCompanySend
+    ? await sendCompanyHalf({ submission, recipients, from, formType: type, destination: cleanDestination, custom })
+    : { ok: false, skipped: true, error: 'no-recipient-configured', recipients: [] as string[], sentTo: [] as string[], messageId: undefined as string | undefined };
   const autoReplyRes = await sendSecondHalf({ submission, formType: type, destination: cleanDestination, custom });
 
   const autoReplyLedger: AutoReplyLedger = autoReplyRes.skipped
@@ -296,7 +306,10 @@ export async function sendEmailDirect(input: {
           attempts: 1,
         };
 
-  if (res.ok) {
+  // CHANGE: 2026-11-21 — a deliberately skipped internal copy is NOT a failure:
+  // the job is fulfilled by the acknowledgement alone. Recording it as 'sent'
+  // keeps the existing soft-retry branch alive if that acknowledgement fails.
+  if (res.ok || res.skipped) {
     await col.updateOne(
       { jobKey },
       {
@@ -314,7 +327,7 @@ export async function sendEmailDirect(input: {
     );
     return {
       claimed: true,
-      sent: true,
+      sent: res.ok,
       deduped: false,
       jobKey,
       messageId: res.messageId,

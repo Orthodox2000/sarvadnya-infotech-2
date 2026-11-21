@@ -406,11 +406,14 @@ export async function sendInternalFormCopy(
   return { ok: true, recipients, messageId: data?.id };
 }
 
-// ---------- Client auto-reply (thank you for contacting) ----------
+// ---------- Client acknowledgement (thank you / enquiry receipt) ----------
 // CHANGE: 2026-09-21 — New branded auto-reply to the SUBMITTER's own email.
-// replyTo points at info@sarvadnyainfotech.com. Gated behind AUTO_REPLY_ENABLED
-// (default OFF) so deploying this code NEVER sends clients anything until the
-// kill-switch is flipped in env/settings — the live site stays quiet.
+// CHANGE: 2026-11-21 — Owner: "send a thankyou email to people who submit their
+// contact and query ... reply to will be info@sarvadnyainfotech.com and sender
+// will be sarvadnya web team ... lead who submit query also trigger email not
+// just admin panel show." The acknowledgement now ships ENABLED by default and
+// echoes the submitted name/email/contact/message/date/product. It remains
+// admin-overridable via AUTO_REPLY_ENABLED in settings/env (set to 0 to silence).
 
 function normalizeFlag(value: unknown): boolean {
   return ['1', 'true', 'yes', 'on'].includes(String(value || '').trim().toLowerCase());
@@ -425,7 +428,39 @@ export async function isAutoreplyEnabled(): Promise<boolean> {
   }
   const fromSettings = String(settings.AUTO_REPLY_ENABLED || '');
   if (fromSettings) return normalizeFlag(fromSettings);
-  return normalizeFlag(process.env.AUTO_REPLY_ENABLED || '0');
+  // CHANGE: 2026-11-21 — default ON (was '0'). Every valid lead enquiry is now
+  // acknowledged; the admin setting / env var can still switch it off.
+  return normalizeFlag(process.env.AUTO_REPLY_ENABLED || '1');
+}
+
+// CHANGE: 2026-11-21 — Display name for the acknowledgement's From header.
+// Resend expects "Name <address>"; validate the address BEFORE decorating it so
+// isValidEmail() never receives a formatted string.
+export const AUTOREPLY_SENDER_NAME = 'Sarvadnya Web Team';
+export const AUTOREPLY_REPLY_TO = 'info@sarvadnyainfotech.com';
+
+function withSenderName(name: string, address: string): string {
+  const addr = String(address || '').trim();
+  if (!addr) return addr;
+  if (addr.includes('<')) return addr; // already "Name <address>"
+  const display = String(name || '').replace(/[\r\n<>]/g, '').trim();
+  return display ? `${display} <${addr}>` : addr;
+}
+
+function formatSubmittedAt(date = new Date()): string {
+  try {
+    return `${date.toLocaleString('en-IN', {
+      timeZone: 'Asia/Kolkata',
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true,
+    })} IST`;
+  } catch {
+    return date.toISOString();
+  }
 }
 
 // CHANGE: 2026-11-04 — Per-category global CC. The master switch alone no
@@ -544,13 +579,20 @@ export async function sendClientAutoreply(
   } catch {
     settings = {};
   }
-  const from = String(settings.AUTO_REPLY_FROM || process.env.AUTO_REPLY_FROM || '') || options?.from || configuredFrom;
-  const replyTo = String(settings.AUTO_REPLY_REPLY_TO || process.env.AUTO_REPLY_REPLY_TO || '') || 'info@sarvadnyainfotech.com';
+  const fromAddress = String(settings.AUTO_REPLY_FROM || process.env.AUTO_REPLY_FROM || '') || options?.from || configuredFrom;
+  const fromName = String(settings.AUTO_REPLY_FROM_NAME || process.env.AUTO_REPLY_FROM_NAME || '').trim() || AUTOREPLY_SENDER_NAME;
+  const replyToRaw = String(settings.AUTO_REPLY_REPLY_TO || process.env.AUTO_REPLY_REPLY_TO || '').trim();
+  // CHANGE: 2026-11-21 — a malformed override must never drop the reply-to or
+  // kill the acknowledgement; fall back to the owner's team inbox.
+  const replyTo = isValidEmail(replyToRaw) ? replyToRaw : AUTOREPLY_REPLY_TO;
   const siteUrl = options?.baseUrl || String(process.env.SITE_URL || '').replace(/\/+$/, '') || 'https://sarvadnyainfotech.com';
 
-  if (!isValidEmail(from)) {
-    return { ok: false, error: `Invalid auto-reply sender address: ${from}` };
+  if (!isValidEmail(fromAddress)) {
+    return { ok: false, error: `Invalid auto-reply sender address: ${fromAddress}` };
   }
+  // CHANGE: 2026-11-21 — Resend "Name <address>" so the lead sees the sender as
+  // "Sarvadnya Web Team" rather than a raw mailbox.
+  const from = withSenderName(fromName, fromAddress);
 
   const company = options?.company ? { ...DEFAULT_COMPANY, ...options.company } : (await getCompanyContact());
 
@@ -573,7 +615,11 @@ export async function sendClientAutoreply(
     subject: CLIENT_AUTOREPLY_SUBJECT,
     html: buildClientAutoreplyHtml({
       name: submission.name,
-      service: submission.service,
+      email: submission.email,
+      contact: submission.contact,
+      product: submission.service,
+      message: submission.description,
+      submittedAt: formatSubmittedAt(),
       company,
       logo,
     }),

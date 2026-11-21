@@ -22,8 +22,10 @@ export function brandLogoSrc(logo: EmailLogo, company?: EmailBrandCompany): stri
 export function renderBrandHeader(options?: {
   company?: EmailBrandCompany;
   logo?: EmailLogo;
+  align?: 'center' | 'left';
 }): string;
 export function renderBrandFooter(options?: {
   company?: EmailBrandCompany;
   footerHtml?: string;
+  align?: 'center' | 'left';
 }): string;

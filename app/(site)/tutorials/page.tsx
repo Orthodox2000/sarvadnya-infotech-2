@@ -44,6 +44,10 @@ export default function TutorialsPage() {
         });
     }, [tutorials, searchQuery, activeFolder]);
 
+    // CHANGE: 2026-11-21 — locally hosted tutorials use a real <video> source instead of
+    // a YouTube embed. Detect those URLs by extension so one entry type serves both.
+    const isLocalVideo = (url: string) => !!url && /\.(mp4|webm|ogg|mov)(\?.*)?$/i.test(url);
+
     const getYoutubeId = (url: string) => {
         if (!url) return '';
         if (url.includes('youtube.com') || url.includes('youtu.be')) {
@@ -131,8 +135,31 @@ export default function TutorialsPage() {
                             key={tutorial._id} 
                             className="group bg-white rounded-3xl overflow-hidden border border-slate-100 hover:shadow-2xl hover:border-[#006569]/20 hover:-translate-y-1 transition-all duration-500 flex flex-col h-full shadow-sm"
                         >
-                            <div className="aspect-video relative overflow-hidden bg-slate-100 shrink-0">
-                                {tutorial.type === 'video' ? (
+                            {/* CHANGE: 2026-11-21 — the thumbnail/play area is now the primary
+                                trigger: clicking the video opens the player directly instead
+                                of forcing the visitor to find the "Explore" button. */}
+                            <button 
+                                type="button" 
+                                onClick={() => openDetails(tutorial)}
+                                aria-label={`${tutorial.type === 'video' ? 'Play' : 'Open'} ${tutorial.title}`}
+                                className="aspect-video relative overflow-hidden bg-slate-100 shrink-0 w-full block text-left cursor-pointer"
+                            >
+                                {/* CHANGE: 2026-11-21 — a locally hosted MP4 uses its own poster,
+                                    not a bogus youtube.com/vi/<mp4 path> thumbnail. */}
+                                {tutorial.type === 'video' && isLocalVideo(tutorial.url) ? (
+                                    tutorial.thumbnail ? (
+                                        <Image
+                                            src={tutorial.thumbnail}
+                                            alt={tutorial.title}
+                                            fill
+                                            className="object-cover transition-transform duration-700 group-hover:scale-110"
+                                        />
+                                    ) : (
+                                        <div className="absolute inset-0 flex items-center justify-center bg-slate-900">
+                                            <svg className="w-14 h-14 text-white/80" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
+                                        </div>
+                                    )
+                                ) : tutorial.type === 'video' ? (
                                     <Image 
                                         src={getYoutubeThumbnail(tutorial.url)} 
                                         alt={tutorial.title}
@@ -157,8 +184,10 @@ export default function TutorialsPage() {
                                         </div>
                                     )
                                 )}
-                                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors flex items-center justify-center">
-                                    <div className="w-12 h-12 bg-white/95 rounded-full flex items-center justify-center shadow-2xl opacity-0 group-hover:opacity-100 scale-90 group-hover:scale-100 transition-all duration-500">
+                                <div className="absolute inset-0 bg-black/10 group-hover:bg-black/40 transition-colors flex items-center justify-center">
+                                    {/* CHANGE: 2026-11-21 — play affordance stays visible on touch
+                                        devices (no hover); hover-only scaling kept on sm+. */}
+                                    <div className="w-12 h-12 bg-white/95 rounded-full flex items-center justify-center shadow-2xl opacity-100 sm:opacity-0 sm:group-hover:opacity-100 scale-100 sm:scale-90 sm:group-hover:scale-100 transition-all duration-500">
                                         <svg className="w-6 h-6 text-[#006569] ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
                                     </div>
                                 </div>
@@ -167,7 +196,7 @@ export default function TutorialsPage() {
                                         {tutorial.folder || 'General'}
                                     </span>
                                 </div>
-                            </div>
+                            </button>
                             <div className="p-4 flex flex-col flex-1">
                                 <div className="flex items-center justify-between mb-2">
                                     <div className="flex items-center gap-1.5">
@@ -239,10 +268,27 @@ export default function TutorialsPage() {
                         </button>
 
                         <div className="overflow-y-auto no-scrollbar">
-                            {selectedTutorial.type === 'video' ? (
+                            {selectedTutorial.type === 'video' && isLocalVideo(selectedTutorial.url) ? (
+                                /* CHANGE: 2026-11-21 — locally hosted tutorial: native player,
+                                   no YouTube iframe. autoPlay + controls + playsInline for mobile. */
                                 <div className="aspect-video w-full bg-black">
+                                    <video
+                                        src={selectedTutorial.url}
+                                        poster={selectedTutorial.thumbnail || undefined}
+                                        title={selectedTutorial.title}
+                                        className="w-full h-full"
+                                        controls
+                                        autoPlay
+                                        playsInline
+                                        preload="metadata"
+                                    />
+                                </div>
+                            ) : selectedTutorial.type === 'video' ? (
+                                <div className="aspect-video w-full bg-black">
+                                    {/* CHANGE: 2026-11-21 — autoplay on open: the visitor clicked
+                                        the video thumbnail, so the player should start playing. */}
                                     <iframe
-                                        src={`https://www.youtube-nocookie.com/embed/${getYoutubeId(selectedTutorial.url)}?autoplay=0`}
+                                        src={`https://www.youtube-nocookie.com/embed/${getYoutubeId(selectedTutorial.url)}?autoplay=1`}
                                         title="Video Player"
                                         className="w-full h-full"
                                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -288,10 +334,23 @@ export default function TutorialsPage() {
                                 </div>
 
                                 <div className="flex flex-col sm:flex-row gap-4">
-                                    {selectedTutorial.type === 'video' ? (
+                                    {selectedTutorial.type === 'video' && isLocalVideo(selectedTutorial.url) ? (
+                                        /* CHANGE: 2026-11-21 — local video: the player is already above;
+                                           offer opening the raw file in a new tab, not "Watch on YouTube". */
+                                        <a
+                                            href={selectedTutorial.url}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="flex-1 py-4 bg-[#006569] text-white rounded-2xl font-bold text-xs uppercase tracking-widest transition-all flex items-center justify-center gap-3"
+                                        >
+                                            Open Video
+                                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" /></svg>
+                                        </a>
+                                    ) : selectedTutorial.type === 'video' ? (
                                         <a 
                                             href={selectedTutorial.url}
                                             target="_blank"
+                                            rel="noopener noreferrer"
                                             className="flex-1 py-4 bg-[#006569] text-white rounded-2xl font-bold text-xs uppercase tracking-widest transition-all flex items-center justify-center gap-3"
                                         >
                                             Watch on YouTube

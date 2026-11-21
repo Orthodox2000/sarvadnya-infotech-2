@@ -128,7 +128,10 @@ function renderShell({ docTitle, logo, comp, bodyHtml, footerHtml }) {
                 </table>
 
                 <p style="margin:24px 0 0;color:#2a2d34;font-size:14px;line-height:1.7;">Warm regards,</p>
-                <p style="margin:2px 0 0;color:#006569;font-size:14px;font-weight:800;">The ${esc(comp.name)} Team</p>
+                <!-- CHANGE: 2026-11-20 — sign-off matches the expiry email / brand rule:
+                     the firm's team name, never a person's name or the old
+                     partner-branded sign-off. -->
+                <p style="margin:2px 0 0;color:#006569;font-size:14px;font-weight:800;">Team Sarvadnya</p>
               </td>
             </tr>
             ${renderBrandFooter({ company: comp, footerHtml })}

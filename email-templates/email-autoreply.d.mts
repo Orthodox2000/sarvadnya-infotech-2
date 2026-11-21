@@ -14,6 +14,17 @@ export interface AutoreplyCompany {
 
 export interface AutoreplyRenderOptions {
   name?: string;
+  /** The submitted email (echoed back in the acknowledgement receipt). */
+  email?: string;
+  /** The submitted phone/contact number. */
+  contact?: string;
+  /** Product/service the lead enquired about (the form's `service` field). */
+  product?: string;
+  /** The submitted message (the form's `description` field). */
+  message?: string;
+  /** Pre-formatted submission date/time shown in the receipt. */
+  submittedAt?: string;
+  /** @deprecated Kept for older callers; pass `product` instead. */
   service?: string;
   company?: Partial<AutoreplyCompany>;
   /** Ready-to-use logo src, resolved by the caller:

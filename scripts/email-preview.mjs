@@ -17,9 +17,15 @@ mkdirSync(outDir, { recursive: true });
 
 const logoData = readFileSync(join(root, 'public', 'TallyCertificate.png')).toString('base64');
 
+// CHANGE: 2026-11-21 — sample now mirrors the real acknowledgement receipt so
+// the offline preview shows every field a lead actually sees.
 const sample = {
   name: 'Rahul Sharma',
-  service: 'TallyPrime Silver',
+  email: 'rahul.sharma@example.com',
+  contact: '+91 98213 09060',
+  product: 'TallyPrime Silver',
+  message: 'I would like to know about TallyPrime Silver licensing and implementation support.',
+  submittedAt: '21 Nov 2026, 10:30 AM IST',
   company: { ...DEFAULT_COMPANY },
   logo: { data: `data:image/png;base64,${logoData}` },
 };

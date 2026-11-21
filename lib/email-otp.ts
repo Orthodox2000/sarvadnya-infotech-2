@@ -31,7 +31,8 @@ export async function sendOtpEmail({ to, otp, expiryMin = 10 }: { to: string; ot
     <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; max-width: 600px; margin: 0 auto;">
       <div style="background: #FBFAF6; padding: 24px; border-bottom: 2px solid #E5F4F4;">
         <h2 style="color: #006569; margin: 0;">${escapeHtml(company.name)}</h2>
-        <p style="color: #666; margin: 4px 0 0 0; font-size: 14px;">${escapeHtml(company.tagline)}</p>
+        <!-- CHANGE: 2026-11-20 — tagline dropped: the shared brand header no longer
+             renders it, so every email (including this OTP) shows wordmark only. -->
       </div>
       <div style="padding: 32px 24px;">
         <h3 style="color: #333; margin: 0 0 16px 0;">Reset your Careers password</h3>

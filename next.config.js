@@ -260,7 +260,9 @@ const nextConfig = {
         '/api/prices',
         '/api/news',
         '/api/modules',
-        '/api/tutorials',
+        // CHANGE: 2026-11-21 — /api/tutorials removed: a 1-hour edge cache made
+        // admin-added learning videos look absent on the frontend. Feed is tiny
+        // and changes at admin-edit time, so freshness beats the CPU saving.
         '/api/settings',
         '/api/content',
         '/api/partners',

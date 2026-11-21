@@ -167,7 +167,20 @@ export async function deleteModule(id: string) {
 // Tutorials/Learning helpers
 async function fetchTutorials() {
   const col = await getCollection('learning_content');
-  const data = await col.find({}).sort({ createdAt: -1 }).toArray();
+  // CHANGE: 2026-11-21 — admin-added tutorials can arrive with `createdAt` as an
+  // ISO STRING while older seed docs hold a real BSON Date. Mongo sorts String
+  // BELOW Date, so `sort({ createdAt: -1 })` pushed the newer video to the BOTTOM
+  // of the grid (measured: the "Bank Statement Import Tool" video was 7th of 7
+  // despite being the newest). Normalise both shapes to an epoch number here so
+  // the feed is genuinely newest-first regardless of how the row was written.
+  const data = await col.find({}).toArray();
+  const createdMs = (value: unknown): number => {
+    const ms = value instanceof Date
+      ? value.getTime()
+      : new Date(String(value ?? 0)).getTime();
+    return Number.isFinite(ms) ? ms : 0;
+  };
+  data.sort((a, b) => createdMs(b.createdAt) - createdMs(a.createdAt));
   return serializeData(data);
 }
 
