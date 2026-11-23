@@ -15,14 +15,22 @@ const csp = [
   // runtime calls are connect-src, and its button/flow artwork comes from Google's
   // static hosts (gstatic). news.google.com + accounts.google.com are allowed in
   // frame-src because the opt-in flow can render Google's account surface in an iframe.
-  `script-src 'self' 'unsafe-eval' 'unsafe-inline' https://vercel.live https://*.razorpay.com https://*.vercel-insights.com https://va.vercel-scripts.com https://sc.lfeeder.com https://news.google.com`,
+  // CHANGE: 2026-11-23 — Google Tag Manager (app/layout.tsx). The container loader is
+  // served from googletagmanager.com; GA4 tags configured inside the container call
+  // google-analytics.com. Without these hosts the browser logs a CSP violation and
+  // silently drops the tag — exactly the "weird console notification" we are avoiding.
+  `script-src 'self' 'unsafe-eval' 'unsafe-inline' https://vercel.live https://*.razorpay.com https://*.vercel-insights.com https://va.vercel-scripts.com https://sc.lfeeder.com https://news.google.com https://www.googletagmanager.com https://www.google-analytics.com`,
   // CHANGE: 2026-11-19 — fonts.googleapis.com is allowed ONLY so the fallback stylesheet
   // in app/layout.tsx can resolve the Google family names when a self-hosted woff2 fails.
   // The primary faces are local (`self`); gstatic was already allowed in font-src.
   `style-src 'self' 'unsafe-inline' https://fonts.googleapis.com`,
-  `img-src 'self' data: blob: https://*.public.blob.vercel-storage.com https://img.youtube.com https://sarvadnya-infotech.vercel.app https://sarvadnyainfotech.com https://www.sarvadnyainfotech.com https://*.vercel-scripts.com https://news.google.com https://*.gstatic.com https://www.google.com`,
+  // CHANGE: 2026-11-23 — GA measurement pings are image/beacon requests; GTM preview
+  // assets come from its own host. Both need img-src or hits are blocked in production.
+  `img-src 'self' data: blob: https://*.public.blob.vercel-storage.com https://img.youtube.com https://sarvadnya-infotech.vercel.app https://sarvadnyainfotech.com https://www.sarvadnyainfotech.com https://*.vercel-scripts.com https://news.google.com https://*.gstatic.com https://www.google.com https://www.googletagmanager.com https://www.google-analytics.com`,
   `font-src 'self' data: https://*.gstatic.com`,
-  `connect-src 'self' https://api.groq.com https://*.razorpay.com https://*.public.blob.vercel-storage.com https://sarvadnya-infotech.vercel.app https://sarvadnyainfotech.com https://www.sarvadnyainfotech.com https://*.vercel-insights.com https://sc.lfeeder.com https://news.google.com https://accounts.google.com`,
+  // CHANGE: 2026-11-23 — GA4 sends collect requests to google-analytics.com and to
+  // regional endpoints (region1.*); GTM preview/container fetches hit googletagmanager.
+  `connect-src 'self' https://api.groq.com https://*.razorpay.com https://*.public.blob.vercel-storage.com https://sarvadnya-infotech.vercel.app https://sarvadnyainfotech.com https://www.sarvadnyainfotech.com https://*.vercel-insights.com https://sc.lfeeder.com https://news.google.com https://accounts.google.com https://www.googletagmanager.com https://www.google-analytics.com https://region1.google-analytics.com https://analytics.google.com`,
   // CHANGE: 2026-10-26 — added https://maps.google.com. The /contact page's map iframe falls
   // back to `https://maps.google.com/maps?q=...&output=embed` (app/(site)/contact/page.tsx),
   // and only `https://www.google.com` was allowed — so with no `map_iframe_url` in settings the
@@ -31,7 +39,9 @@ const csp = [
   // CHANGE: 2026-11-02 — YouTube frames are needed by the module pages' "showcase video"
   // block (app/components/modules/ModuleVideo.tsx). Without these the poster renders and the
   // play press produces a blocked frame. youtube-nocookie is the privacy-enhanced host.
-  `frame-src 'self' https://www.google.com https://maps.google.com https://www.youtube.com https://www.youtube-nocookie.com https://*.razorpay.com https://news.google.com https://accounts.google.com`,
+  // CHANGE: 2026-11-23 — GTM Preview mode renders tagmanager.google.com /
+  // googletagmanager.com surfaces; allow them so preview does not throw frame CSP errors.
+  `frame-src 'self' https://www.google.com https://maps.google.com https://www.youtube.com https://www.youtube-nocookie.com https://*.razorpay.com https://news.google.com https://accounts.google.com https://www.googletagmanager.com https://tagmanager.google.com`,
   `object-src 'none'`,
   `base-uri 'self'`,
   `form-action 'self'`,

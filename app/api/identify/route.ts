@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+import { NextResponse, after } from 'next/server';
 import {
   getRequestMeta,
   sanitizeTrackPayload,
@@ -108,19 +108,35 @@ export async function POST(request: Request) {
     meta,
   });
 
-  // 6) Geo enrichment when the session is new / geo stale.
+  // CHANGE: 2026-11-23 — geo + reverse DNS are BEST-EFFORT enrichment, not part of the
+  // beacon's job. They used to sit inline on the critical path: a new/stale session paid
+  // an ip_cache findOne, a 2.5 s-capped ipwho.is HTTP call, an ip_cache upsert and two
+  // `visitors` writes before the 204 went out (the 8 s / 36-hit CPU report). They now run
+  // in Next's after() — the same pattern already used by /api/cart/order — so the 204
+  // is sent as soon as the session upsert commits. recordVisitor() has already written
+  // the visitor doc; geo/rdns are lossless later $sets, so a frozen function or a failed
+  // lookup leaves only enrichment missing, never the visit itself.
   if (needsGeo) {
-    const { geo } = await lookupGeo(meta.ip);
-    await applyGeo(payload.sessionId, geo);
-    visitorLog('info', 'geo enriched', {
-      session: payload.sessionId.slice(0, 8),
-      country: geo?.country ?? null,
-    });
+    after(async () => {
+      try {
+        const { geo } = await lookupGeo(meta.ip);
+        // Always write geoAt (even when geo is null) so a failed lookup is not retried
+        // on every subsequent beacon — preserves the existing 30-day/1-hour TTL logic.
+        await applyGeo(payload.sessionId, geo);
+        visitorLog('info', 'geo enriched', {
+          session: payload.sessionId.slice(0, 8),
+          country: geo?.country ?? null,
+        });
 
-    // CHANGE: 2026-08-18 — Background reverse DNS lookup (non-blocking, best-effort).
-    lookupReverseDns(meta.ip)
-      .then((rdns) => applyReverseDns(payload.sessionId, rdns))
-      .catch(() => {});
+        // CHANGE: 2026-08-18 → 2026-11-23 — reverse DNS was fire-and-forget but still
+        // kept the function alive for up to 3 s after the 204 had been sent. It now runs
+        // inside the same post-response window as geo, fully awaited and failure-contained.
+        const rdns = await lookupReverseDns(meta.ip);
+        await applyReverseDns(payload.sessionId, rdns);
+      } catch {
+        // best-effort — the visitor record itself is already committed
+      }
+    });
   }
 
   return new Response(null, { status: 204 });

@@ -125,6 +125,24 @@ const NEGATIVE_TTL_MS = 60 * 60 * 1000; // failed lookups: retry after 1h
 const GEO_TIMEOUT_MS = 2500;
 const GEO_REFRESH_MS = 30 * 24 * 60 * 60 * 1000; // refresh stale geo after 30d
 
+// CHANGE: 2026-11-23 — warm-instance geo cache. ip_cache is already a 30-day DB cache,
+// but every new/stale session still paid a Mongo findOne. A module-level Map (one per
+// Vercel function instance) removes that read for repeat IPs — common behind office and
+// mobile NAT in India. Single-flight collapses concurrent lookups of the same IP into
+// one fetch. Bounded + TTL so a long-lived worker cannot grow it without limit.
+const GEO_MEM_MAX = 2000;
+const geoMem = new Map<string, { geo: GeoInfo | null; expiresAt: number }>();
+const geoInFlight = new Map<string, Promise<{ geo: GeoInfo | null; cached: boolean }>>();
+
+function setGeoMem(ip: string, geo: GeoInfo | null, expiresAt: number): void {
+  if (geoMem.size >= GEO_MEM_MAX) {
+    // Map preserves insertion order — evict the oldest entry.
+    const oldest = geoMem.keys().next().value;
+    if (oldest) geoMem.delete(oldest);
+  }
+  geoMem.set(ip, { geo, expiresAt });
+}
+
 const SESSION_ID_RE =
   /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
@@ -386,58 +404,84 @@ export async function lookupGeo(
   if (isIgnoredIp(ip)) return { geo: null, cached: false };
   if (!isPublicIp(ip)) return { geo: null, cached: false };
 
-  const col = await getDb().then((db) => db.collection<IpCacheRecord>('ip_cache'));
-  const hit = await col.findOne({ ip });
-  // CHANGE: 2026-10-09 — `expireAt` may be an ISO string (JSON-dump import), which
-  // previously threw `expireAt.getTime is not a function` on /api/identify. toDateMs
-  // coerces any stored type; NaN (unparseable) simply falls through to a fresh lookup.
-  if (hit && toDateMs(hit.expireAt) > Date.now()) {
-    return { geo: hit.data ?? null, cached: true };
-  }
+  // CHANGE: 2026-11-23 — answer from the warm instance before touching Mongo. A hit
+  // here is pure memory and costs no Active CPU on a Fluid instance.
+  const now = Date.now();
+  const mem = geoMem.get(ip);
+  if (mem && mem.expiresAt > now) return { geo: mem.geo, cached: true };
 
-  const base = String(process.env.IP_LOOKUP_API || 'https://ipwho.is')
-    .trim()
-    .replace(/\/+$/, '');
-  const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), GEO_TIMEOUT_MS);
+  // Collapse simultaneous beacons for the same IP (e.g. a page load firing several
+  // calls) onto one lookup — the rest await the same promise instead of each issuing
+  // an HTTP request to ipwho.is.
+  const running = geoInFlight.get(ip);
+  if (running) return running;
 
-  try {
-    let raw: unknown;
-    try {
-      const res = await fetch(`${base}/${encodeURIComponent(ip)}`, {
-        signal: controller.signal,
-        headers: { Accept: 'application/json' },
-        cache: 'no-store',
-      });
-      raw = await res.json();
-    } finally {
-      clearTimeout(timeoutId);
+  const task = (async (): Promise<{ geo: GeoInfo | null; cached: boolean }> => {
+    const col = await getDb().then((db) => db.collection<IpCacheRecord>('ip_cache'));
+    const hit = await col.findOne({ ip });
+    // CHANGE: 2026-10-09 — `expireAt` may be an ISO string (JSON-dump import), which
+    // previously threw `expireAt.getTime is not a function` on /api/identify. toDateMs
+    // coerces any stored type; NaN (unparseable) simply falls through to a fresh lookup.
+    const hitExpiry = toDateMs(hit?.expireAt);
+    if (hit && hitExpiry > Date.now()) {
+      const geo = hit.data ?? null;
+      setGeoMem(ip, geo, hitExpiry);
+      return { geo, cached: true };
     }
 
-    const geo = normalizeGeo(raw);
-    await col.updateOne(
-      { ip },
-      {
-        $set: {
-          data: geo,
-          fetchedAt: new Date(),
-          expireAt: new Date(Date.now() + (geo ? GEO_TTL_MS : NEGATIVE_TTL_MS)),
+    const base = String(process.env.IP_LOOKUP_API || 'https://ipwho.is')
+      .trim()
+      .replace(/\/+$/, '');
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), GEO_TIMEOUT_MS);
+
+    try {
+      let raw: unknown;
+      try {
+        const res = await fetch(`${base}/${encodeURIComponent(ip)}`, {
+          signal: controller.signal,
+          headers: { Accept: 'application/json' },
+          cache: 'no-store',
+        });
+        raw = await res.json();
+      } finally {
+        clearTimeout(timeoutId);
+      }
+
+      const geo = normalizeGeo(raw);
+      await col.updateOne(
+        { ip },
+        {
+          $set: {
+            data: geo,
+            fetchedAt: new Date(),
+            expireAt: new Date(Date.now() + (geo ? GEO_TTL_MS : NEGATIVE_TTL_MS)),
+          },
         },
-      },
-      { upsert: true }
-    );
-    visitorLog('debug', 'geo looked up', {
-      ip: maskIp(ip),
-      country: geo?.country ?? null,
-    });
-    return { geo, cached: false };
-  } catch (err) {
-    visitorLog('warn', 'geo lookup failed', {
-      ip: maskIp(ip),
-      error: err instanceof Error ? err.message : String(err),
-    });
-    return { geo: null, cached: false };
-  }
+        { upsert: true }
+      );
+      setGeoMem(ip, geo, Date.now() + (geo ? GEO_TTL_MS : NEGATIVE_TTL_MS));
+      visitorLog('debug', 'geo looked up', {
+        ip: maskIp(ip),
+        country: geo?.country ?? null,
+      });
+      return { geo, cached: false };
+    } catch (err) {
+      visitorLog('warn', 'geo lookup failed', {
+        ip: maskIp(ip),
+        error: err instanceof Error ? err.message : String(err),
+      });
+      // Cache the negative result briefly so a dead provider is not retried on every
+      // beacon — same shape as the existing NEGATIVE_TTL_MS in ip_cache.
+      setGeoMem(ip, null, Date.now() + NEGATIVE_TTL_MS);
+      return { geo: null, cached: false };
+    }
+  })().finally(() => {
+    geoInFlight.delete(ip);
+  });
+
+  geoInFlight.set(ip, task);
+  return task;
 }
 
 // ---------------------------------------------------------------------------
@@ -702,14 +746,27 @@ export function ensureVisitorIndexes(): Promise<void> {
   if (!visitorIndexPromise) {
     visitorIndexPromise = (async () => {
       const db = await getDb();
+      // CHANGE: 2026-11-23 — only the unique sessionId index is needed for the upsert's
+      // correctness, so it is the only one awaited. The other five used to add five
+      // serialised Mongo round trips to EVERY cold function start before the beacon
+      // could write. They persist in MongoDB once created, so warm them in the
+      // background — a cold beacon now commits after one createIndex + one upsert.
       await db.collection('visitors').createIndex({ sessionId: 1 }, { unique: true });
-      await db.collection('visitors').createIndex({ lastSeen: -1 });
-      await db.collection('visitors').createIndex({ 'geo.country': 1 });
-      await db.collection('visitors').createIndex({ visitCount: -1 });
-      await db.collection('ip_cache').createIndex({ ip: 1 }, { unique: true });
-      await db
-        .collection('ip_cache')
-        .createIndex({ expireAt: 1 }, { expireAfterSeconds: 0 });
+
+      void (async () => {
+        await db.collection('visitors').createIndex({ lastSeen: -1 });
+        await db.collection('visitors').createIndex({ 'geo.country': 1 });
+        await db.collection('visitors').createIndex({ visitCount: -1 });
+        await db.collection('ip_cache').createIndex({ ip: 1 }, { unique: true });
+        await db
+          .collection('ip_cache')
+          .createIndex({ expireAt: 1 }, { expireAfterSeconds: 0 });
+      })().catch((err) => {
+        // Admin query indexes + cache dedup are performance-only; never fail a beacon.
+        visitorLog('warn', 'secondary index warmup failed', {
+          error: err instanceof Error ? err.message : String(err),
+        });
+      });
     })().catch((err) => {
       visitorIndexPromise = null;
       throw err;

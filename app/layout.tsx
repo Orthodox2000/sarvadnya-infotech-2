@@ -5,6 +5,13 @@ import type { Metadata, Viewport } from "next";
 // primary render. Google is retained only as a fallback (see the <head> link below
 // and the `fallback` stacks on each localFont call).
 import localFont from "next/font/local";
+// CHANGE: 2026-11-23 — Google Tag Manager via @next/third-parties. The supplied tag is a
+// GTM container (`gtm.js?id=GTM-…`), NOT a GA4 `G-…` property, so GoogleTagManager is the
+// correct loader. It emits the required `gtm.start` dataLayer event and mounts through
+// next/script (afterInteractive by default): no render-blocking <script> in <head>, no
+// DOM mutation before hydration, no hydration mismatch. GTMParams has no `debugMode`
+// prop at all, so Tag Assistant / verbose console output cannot be switched on here.
+import { GoogleTagManager } from "@next/third-parties/google";
 import { cn } from "@/lib/utils";
 import { SITE_DESCRIPTION, SITE_NAME, SITE_TITLE, SITE_URL, orgJsonLd, webSiteJsonLd } from "@/lib/seo";
 // CHANGE: 2026-11-16 — greeting popup: the first-visit preload lives in lib/greeting-popup.ts.
@@ -97,6 +104,11 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
 };
 
+// CHANGE: 2026-11-23 — the container id is public (it is already in the script URL).
+// The env var wins so the container can be swapped without a code deploy; the fallback is
+// the id supplied by the owner so a fresh deployment starts tracking immediately.
+const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID?.trim() || "GTM-NNQDM334";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -123,6 +135,12 @@ export default function RootLayout({
             itself renders after hydration. See lib/greeting-popup.ts + GreetingPopup.tsx. */}
         <script id="greeting-preload" dangerouslySetInnerHTML={{ __html: buildGreetingPreloadScript() }} />
       </head>
+      {/* CHANGE: 2026-11-23 — production only. Ad blockers / the GA opt-out add-on fire
+          ERR_BLOCKED_BY_CLIENT on googletagmanager.com in local dev, which looks like a
+          hydration failure in the console; skipping the loader in dev keeps it clean.
+          Sibling of <body> directly under <html> — the official @next/third-parties
+          placement, not inside <head> and not nested in a <div>. */}
+      {process.env.NODE_ENV === "production" && <GoogleTagManager gtmId={GTM_ID} />}
       <body className="relative min-h-full w-full bg-background text-foreground" suppressHydrationWarning>
         {/* CHANGE: 2026-08-27 — Organization + WebSite JSON-LD for search/AI indexing. */}
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([orgJsonLd(), webSiteJsonLd()]) }} />
