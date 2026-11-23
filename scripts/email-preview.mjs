@@ -15,7 +15,9 @@ const root = fileURLToPath(new URL('..', import.meta.url));
 const outDir = join(root, 'public', 'email');
 mkdirSync(outDir, { recursive: true });
 
-const logoData = readFileSync(join(root, 'public', 'TallyCertificate.png')).toString('base64');
+// CHANGE: 2026-11-23 — the acknowledgement now shows the SQUARE company mark,
+// not the Tally certificate banner; keep the offline preview in sync with live.
+const logoData = readFileSync(join(root, 'public', 'logo.png')).toString('base64');
 
 // CHANGE: 2026-11-21 — sample now mirrors the real acknowledgement receipt so
 // the offline preview shows every field a lead actually sees.

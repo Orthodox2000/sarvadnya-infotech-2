@@ -1,0 +1,16 @@
+# 2026-11-23 — Thank-you email: real company logo as a hosted image, zero CC
+
+> Session-history detail. Index: [docs/HISTORY.md](../HISTORY.md)
+
+---
+
+| Fact | Detail |
+| :--- | :--- |
+| **Ask** | Owner: *"for thankyou template, abiove logo isnt of company logo and it fails to render as imae in thankyou email., also thankyou email doesnt need to have a cc for anyone, so remove it as well or unselect CC for it only"*, then pointed at `<img src="cid:sarvadnya-logo" width="240" height="51" …>` and said *"this is error"*. |
+| **Root cause 1 — wrong asset** | The acknowledgement header shared `email-brand.mjs` with every other transactional mail and therefore rendered `public/TallyCertificate.png` — the 2991×634 Tally certificate banner used by the navbar/signature — at 240×51. That is not the company's own mark. `public/logo.png` is the 256×256 square company logo used by JSON-LD, the favicon and the checkout receipt. |
+| **Root cause 2 — broken render** | Live sends passed `{ cid: 'sarvadnya-logo' }` and attached the PNG with Resend `contentId`. The Resend SDK does map `contentId → content_id` correctly, but the owner still saw a broken image in the received mail. The thank-you path now uses a normal absolute HTTPS URL instead of a `cid:` reference, with matching square dimensions. |
+| **Logo fix** | `sendClientAutoreply()` in `lib/email.ts` now passes `{ url: \`${siteUrl}/logo.png\` }` and no longer attaches the inline PNG. `email-templates/email-brand.mjs` gained optional `logoWidth`/`logoHeight` on `renderBrandHeader()` plus `EMAIL_COMPANY_LOGO_WIDTH/HEIGHT = 64`; `email-autoreply.mjs` uses those so the square mark is not squashed into a 240×51 box. All other templates keep the centred 240×51 certificate banner. `next.config.js` relaxes CORP/CORS for `/logo.png` (as already done for `/TallyCertificate.png`) so webmail clients can load the hosted image cross-origin. |
+| **CC fix** | Removed the `getGlobalCc(submission.destination \|\| submission.formType)` call and the `cc` field from `sendClientAutoreply()` entirely. The acknowledgement has **no CC under any setting**. The internal company copy and the careers applicant/company mails keep their existing destination-scoped global CC (ticked categories only). |
+| **Preview** | `scripts/email-preview.mjs` now base64-embeds `public/logo.png`; the tracked `public/email/preview-client-autoreply.html` + `.png` were regenerated with `npm run preview:email` (`PUPPETEER_EXECUTABLE_PATH=/usr/bin/google-chrome`). The generated HTML has one data-URI image, zero `cid:sarvadnya-logo`, and `width="64"`. |
+| **Files** | `lib/email.ts`, `email-templates/email-brand.mjs` + `.d.mts`, `email-templates/email-autoreply.mjs` + `.d.mts`, `email-templates/README.md`, `scripts/email-preview.mjs`, `public/email/preview-client-autoreply.html` + `.png`, `next.config.js`, `docs/ARCHITECTURE.md` §6, this file, `docs/HISTORY.md`, `daily logs/2026-11-23.md`, tracker row 153. |
+| **Verified** | Static review plus the local preview generator; no build, dev server, typecheck or check suite (standing single-pass directive, root AGENTS §3). Nested `sarvadnya-advanced/` was not touched. **Owner action:** deploy the root repo before the live thank-you email changes take effect. |

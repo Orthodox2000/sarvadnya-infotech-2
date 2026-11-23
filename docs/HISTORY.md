@@ -17,6 +17,8 @@
 
 ### 2026-11
 
+- [2026-11-23 — Fluid CPU: pin both deployments to Mumbai (`bom1`) and cache news/modules at the data layer](history/2026-11-23-fluid-cpu-mumbai-region-and-news-modules-data-cache.md)
+- [2026-11-23 — Thank-you email: real company logo as a hosted image, zero CC](history/2026-11-23-thank-you-logo-and-no-cc.md)
 - [2026-11-21 — Admin-added learning video invisible: mixed `createdAt` sort + 1-hour edge cache](history/2026-11-21-admin-added-learning-video-invisible-mixed-createdat-sort-and-edge-cache.md)
 - [2026-11-21 — Learning Hub: locally hosted MP4 tutorial + native player, inserted through the admin API](history/2026-11-21-learning-hub-local-mp4-tutorial-native-player.md)
 - [2026-11-21 — Learning Hub: clicking a video opens the player directly](history/2026-11-21-learning-hub-video-thumbnail-opens-player-directly.md)

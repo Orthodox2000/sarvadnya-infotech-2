@@ -596,22 +596,19 @@ export async function sendClientAutoreply(
 
   const company = options?.company ? { ...DEFAULT_COMPANY, ...options.company } : (await getCompanyContact());
 
-  // CHANGE: 2026-09-21 — Logo is embedded inline (cid attachment) so it renders
-  // in every mail client regardless of external-image settings; hosted URL is
-  // only the fallback if the local file is ever missing.
-  const logoFile = loadInlineLogo();
-  const logo = logoFile
-    ? { cid: 'sarvadnya-logo' }
-    : { url: `${siteUrl}/TallyCertificate.png` };
+  // CHANGE: 2026-11-23 — the acknowledgement uses the SQUARE company logo
+  // (/logo.png) as a normal hosted image. The old `cid:sarvadnya-logo` pointed at
+  // the Tally certificate banner and did not render in the received mail; no
+  // inline attachment is needed for this email.
+  const logo = { url: `${siteUrl}/logo.png` };
 
   const resend = new Resend(apiKey);
-  // CHANGE: 2026-11-04 — Global CC is destination-scoped now (see getGlobalCc);
-  // an unticked category sends no CC even when the master switch is on.
-  const globalCc = await getGlobalCc(submission.destination || submission.formType);
+  // CHANGE: 2026-11-23 — owner: the thank-you/acknowledgement must NEVER carry a
+  // CC, even if a destination is ticked for the global CC. This path simply omits
+  // `cc`; the internal copy and careers mail keep their destination-scoped CC.
   const { data, error } = await resend.emails.send({
     from,
     to: [submission.email],
-    ...(globalCc ? { cc: globalCc } : {}),
     subject: CLIENT_AUTOREPLY_SUBJECT,
     html: buildClientAutoreplyHtml({
       name: submission.name,
@@ -624,16 +621,6 @@ export async function sendClientAutoreply(
       logo,
     }),
     replyTo,
-    attachments: logoFile
-      ? [
-          {
-            filename: 'sarvadnya-logo.png',
-            content: logoFile.buffer,
-            contentType: 'image/png',
-            contentId: 'sarvadnya-logo',
-          },
-        ]
-      : undefined,
     tags: [
       { name: 'source', value: 'web-form-auto-reply' },
       { name: 'form_type', value: submission.formType || 'general' },

@@ -1,9 +1,15 @@
 import clientPromise from './mongodb';
 import { ObjectId } from 'mongodb';
+import { unstable_cache } from 'next/cache';
 import { staticPartners } from './partners';
 import { enrichNews, RETIRED_NEWS_SLUGS } from './news-utils';
 import type { NewsItem } from './news';
-// Caching disabled
+// CHANGE: 2026-11-23 — news and modules are read on every page/render but change only when
+// the owner edits them in the admin. Cache the SERIALISED results in Vercel's Data Cache so a
+// cold function or an ISR revalidation never re-scans either collection. TTL intentionally
+// MATCHES the owner-accepted 1-hour CDN/ISR window (lib/api-cache.ts) — admin edits must still
+// surface hourly; the saving is that the hourly refresh no longer repeats the CPU-heavy scan.
+const CACHED_CONTENT_SECONDS = 60 * 60;
 
 export async function getDb() {
   const client = await clientPromise;
@@ -115,7 +121,14 @@ async function fetchModules() {
   return serializeData(data);
 }
 
-export const getModules = async () => fetchModules();
+// CHANGE: 2026-11-23 — one Data Cache entry serves /api/modules, /modules/[slug], the
+// sitemap, site search and the layout. Previously each of those opened Mongo and re-sorted
+// the collection independently.
+export const getModules = unstable_cache(
+  async () => fetchModules(),
+  ['public-modules-v1'],
+  { revalidate: CACHED_CONTENT_SECONDS, tags: ['modules'] }
+);
 
 export async function addModule(data: any) {
   const col = await getCollection('modules');
@@ -359,55 +372,47 @@ async function fetchNews() {
   return serializeData(live.map((d) => enrichNews(d)));
 }
 
-export const getNews = async () => fetchNews();
+// CHANGE: 2026-11-23 — one Data Cache entry serves the site-wide news ticker, /news,
+// /news/[slug], related posts, /api/news, search and the sitemap. fetchNews() is the
+// expensive part (full-collection scan + enrichNews() reading-time on every body); it now
+// runs at most once per hour per Vercel region instead of once per uncached render/query.
+export const getNews = unstable_cache(
+  async () => fetchNews(),
+  ['public-news-v1'],
+  { revalidate: CACHED_CONTENT_SECONDS, tags: ['news'] }
+);
 
 // CHANGE: 2026-08-31 — Single-article lookup by slug (used by /news/[slug]).
 // Matches the exact final slug from enrichNews() (explicit doc.slug OR auto-derived), so both
 // admin-crafted slugs and auto-generated ones resolve. Returns null when not found.
 export async function getNewsBySlug(slug: string) {
   if (!slug) return null;
-  const col = await getCollection('news');
-  const data = await col.find({}).toArray();
-  for (const d of data) {
-    if (enrichNews(d).slug === slug) {
-      return serializeData(enrichNews(d));
-    }
-  }
-  return null;
+  // CHANGE: 2026-11-23 — this used to be a SECOND full-collection find({}).toArray() with
+  // enrichNews() on every article just to locate one. The cached getNews() list is already
+  // enriched and serialised, so lookup is an in-memory find and can never disagree with the
+  // listing, sitemap or related cards.
+  const news = await getNews();
+  return news.find((item: any) => item.slug === slug) || null;
 }
 
-// CHANGE: 2026-11-20 — /news/[slug] used getNews() (every article, full content + faqs) just to
-// render three "Related Reads" cards. Read a bounded, projected set instead. `content` stays in
-// the projection ONLY because enrichNews() derives readingTime from it — the card's
-// "N min read" must match the listing and sitemap. It is removed from the returned objects so
-// the page never holds article bodies for cards it does not render.
+// CHANGE: 2026-11-20 → 2026-11-23 — /news/[slug] used to load the entire archive three times
+// per render. It now derives the three "Related Reads" cards from the cached getNews() list.
+// `content` is stripped from each card so the page never holds article bodies it does not render;
+// the derived reading times still come from enrichNews(), so "N min read" matches the listing.
 export async function getRelatedNews(excludeSlug: string, limit = 3): Promise<Partial<NewsItem>[]> {
   try {
-    const col = await getCollection('news');
+    // CHANGE: 2026-11-23 — derived from the cached getNews() list instead of a third Mongo
+    // query per article render. getNews() is already newest-first and has retired slugs and
+    // derived reading times applied, so the ordering/exclusions stay identical. `content`
+    // is stripped here (not in the cache) because only the cards' metadata is rendered.
     const skip = [excludeSlug, ...RETIRED_NEWS_SLUGS].filter(Boolean);
-    const docs = await col
-      .find(skip.length ? { slug: { $nin: skip } } : {}, {
-        projection: { slug: 1, category: 1, title: 1, date: 1, readingTime: 1, content: 1 },
-      })
-      .sort({ createdAt: -1, date: -1 })
-      .limit(limit + 1)
-      .toArray();
-
-    const cards = docs.map((d) => {
-      const { content: _content, ...card } = enrichNews(d) as Record<string, unknown>;
-      return card as Partial<NewsItem>;
-    });
-
-    return cards
-      // $nin cannot exclude an auto-derived slug (those docs have no `slug` field), so filter here too.
-      .filter((card) => !skip.includes(String(card.slug || '')))
-      // Same parsed-date ordering fetchNews() uses, applied to the bounded candidate set.
-      .sort((a, b) => {
-        const ta = new Date(a.date || '').getTime();
-        const tb = new Date(b.date || '').getTime();
-        return (Number.isNaN(tb) ? 0 : tb) - (Number.isNaN(ta) ? 0 : ta);
-      })
-      .slice(0, limit);
+    return (await getNews())
+      .filter((item: any) => item.slug && !skip.includes(String(item.slug)))
+      .slice(0, limit)
+      .map((item: any) => {
+        const { content: _content, ...card } = item;
+        return card as Partial<NewsItem>;
+      });
   } catch (error) {
     console.error('Related news lookup failed:', error);
     return [];

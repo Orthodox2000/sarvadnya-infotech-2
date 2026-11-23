@@ -218,6 +218,17 @@ const nextConfig = {
           { key: 'Access-Control-Allow-Origin', value: '*' },
         ],
       },
+      // CHANGE: 2026-11-23 — the lead acknowledgement now renders the SQUARE
+      // company logo (/logo.png) as a normal hosted image in the email. The global
+      // `/(.*)` rule sets CORP same-origin, which can block that cross-origin image
+      // in webmail clients; relax it for this one asset, like TallyCertificate above.
+      {
+        source: '/logo.png',
+        headers: [
+          { key: 'Cross-Origin-Resource-Policy', value: 'cross-origin' },
+          { key: 'Access-Control-Allow-Origin', value: '*' },
+        ],
+      },
       {
         source: '/:path((?:.+)\\.(?:jpg|jpeg|png|gif|webp|avif|svg|ico|css|js|woff2?))',
         headers: [

@@ -28,9 +28,8 @@ export interface AutoreplyRenderOptions {
   service?: string;
   company?: Partial<AutoreplyCompany>;
   /** Ready-to-use logo src, resolved by the caller:
-   * { cid: 'sarvadnya-logo' } → <img src="cid:…">  (inline attachment, live send)
-   * { data: 'data:image/png;base64,…' }             (fully offline preview)
-   * { url: 'https://…/TallyCertificate.png' }       (hosted fallback) */
+   * { url: 'https://…/logo.png' }        → normal hosted company logo (live send)
+   * { data: 'data:image/png;base64,…' }  → fully offline preview */
   logo?: { cid?: string; data?: string; url?: string };
 }
 

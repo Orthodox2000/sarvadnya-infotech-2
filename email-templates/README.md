@@ -19,18 +19,22 @@ One home for every email template used by Sarvadnya Infotech. Everything here is
 
 - Pure ESM `.mjs`, zero dependencies, inline CSS only (Gmail/Outlook-safe), hand-written
   `.d.mts` siblings so both `next build` and plain `node scripts/*.mjs` can import them.
-- The logo is **caller-resolved** — `{ cid }` for live sends, `{ data }` for the offline
-  preview, `{ url }` as hosted fallback. Templates never touch the filesystem or network.
+- The logo is **caller-resolved** — `{ url }` for the hosted company mark used by the
+  acknowledgement, `{ cid }` for the inline certificate banner in the other transactional
+  templates, `{ data }` for the offline preview. Templates never touch the filesystem or
+  network. CHANGE: 2026-11-23 — the thank-you/receipt now uses `/logo.png` at 64×64,
+  not the Tally certificate banner at 240×51, and carries **no global CC**.
 - Import from app code as `@/email-templates/<name>.mjs`; from scripts in `scripts/` as
   `../email-templates/<name>.mjs`.
 
 ## Hosted images are deliberately NOT moved
 
 `email-signature.html` points at absolute URLs (`/email-signature/...`,
-`/TallyCertificate.png`). Those files must stay under `public/` to be served, so they
-remain in `public/email-signature/` and `public/`. The `next.config.js` CORP/CORS rules
-for those paths are unchanged. Generated previews stay in `public/email/` and are
-regenerated with `npm run preview:email`.
+`/TallyCertificate.png`); the acknowledgement points at `/logo.png`. Those files must stay
+under `public/` to be served, so they remain in `public/email-signature/` and `public/`.
+The `next.config.js` CORP/CORS rules cover those paths, including `/logo.png` since
+2026-11-23. Generated previews stay in `public/email/` and are regenerated with
+`npm run preview:email` (set `PUPPETEER_EXECUTABLE_PATH=/usr/bin/google-chrome` on this box).
 
 ## No prices — 10% only
 

@@ -1,22 +1,30 @@
+// CHANGE: 2026-11-23 — Owner: the acknowledgement's top image was the Tally
+// certificate banner, not the company logo, and the `cid:sarvadnya-logo` src did
+// not render in the received mail. This template now receives the REAL company
+// mark (`/logo.png`) as a normal absolute HTTPS URL with correct square
+// dimensions; no inline `cid:` attachment is used for this email.
 // CHANGE: 2026-11-20 — Relocated from lib/ to email-templates/; no template or API change.
 // CHANGE: 2026-09-21 — Branded client auto-reply email template (single source of truth).
 // Pure ESM, zero dependencies, importable from both Next.js (TS) and Node scripts
 // (scripts/email-preview.mjs). The header mirrors the LIVE website navbar: light
-// cream band + the real header logo (/TallyCertificate.png) + "Sarvadnya Infotech
-// LLP" wordmark, teal details. CHANGE: 2026-11-20 — the tagline is no longer
-// rendered: email-templates/email-brand.mjs is the single header/footer source and
-// now matches the expiry email / signature masthead (wordmark only).
-// CHANGE: 2026-09-21 — Logo rendering made bulletproof: the template accepts the logo
-// as a READY-TO-USE src. Live sends pass `{ cid }` (inline attachment → renders even
-// with external images blocked); the preview embeds `{ data }` (base64 data URI →
-// renders fully offline). A hosted `{ url }` is the final fallback. No Tailwind /
-// external assets — every style is inline so Gmail/Outlook render it.
+// cream band + the real company logo (/logo.png) + "Sarvadnya Infotech LLP"
+// wordmark, teal details. CHANGE: 2026-11-20 — the tagline is no longer rendered:
+// email-templates/email-brand.mjs is the single header/footer source and now
+// matches the expiry email / signature masthead (wordmark only).
+// The template accepts a READY-TO-USE src: live sends pass `{ url }` (the hosted
+// company logo), the preview passes `{ data }` (base64 data URI, renders offline).
+// No Tailwind / external assets — every style is inline so Gmail/Outlook render it.
 
 // CHANGE: 2026-11-04 — Shared header/footer so every transactional email
 // (auto-reply, internal form copy, careers) renders the same masthead and the
 // same footer band. Previously this file owned its own copy of that markup,
 // which is how the templates drifted apart.
-import { renderBrandHeader, renderBrandFooter } from './email-brand.mjs';
+import {
+  renderBrandHeader,
+  renderBrandFooter,
+  EMAIL_COMPANY_LOGO_WIDTH,
+  EMAIL_COMPANY_LOGO_HEIGHT,
+} from './email-brand.mjs';
 
 function esc(value) {
   return String(value ?? '')
@@ -46,9 +54,8 @@ export const DEFAULT_COMPANY = {
 
 // Renders the full HTML acknowledgement. `logo` is resolved by the caller so the
 // template never depends on filesystem/network specifics:
-//   { cid: 'sarvadnya-logo' }  → <img src="cid:sarvadnya-logo">   (live send)
-//   { data: 'data:image/png;base64,…' } → <img src="data:…">       (offline preview)
-//   { url: 'https://…/TallyCertificate.png' }                      (final fallback)
+//   { url: 'https://…/logo.png' }        → normal hosted image (live send)
+//   { data: 'data:image/png;base64,…' }  → <img src="data:…"> (offline preview)
 // Inputs are already sanitized upstream (the API routes strip < and >), and we
 // escape defensively anyway.
 //
@@ -70,9 +77,8 @@ export function buildClientAutoreplyHtml({
   const productLine = productName ? ` for <strong>${esc(productName)}</strong>` : '';
 
   // CHANGE: 2026-11-04 — logo/header markup moved to email-templates/email-brand.mjs.
-  // CHANGE: 2026-10-15 — logo asset replaced (owner's tallycertificat4.png saved over
-  // public/TallyCertificate.png): now 2991×634 (≈4.718:1, content fills the canvas —
-  // the old 3093×794 canvas had ~95px transparent top/bottom padding).
+  // CHANGE: 2026-11-23 — logo/header markup still comes from email-brand.mjs, but this
+  // receipt overrides the size for the square company mark (public/logo.png).
 
   // One label/value row of the "what you submitted" block. Labels sit left, the
   // value follows on the same line and wraps naturally (no nowrap → no overflow).
@@ -116,7 +122,13 @@ export function buildClientAutoreplyHtml({
         <td width="12" style="width:12px;font-size:0;">&nbsp;</td>
         <td align="left" valign="top">
           <table role="presentation" width="600" align="left" cellspacing="0" cellpadding="0" border="0" style="width:100%;max-width:600px;border-collapse:collapse;border:1px solid #dddddd;">
-            ${renderBrandHeader({ company: comp, logo, align: 'left' })}
+            ${renderBrandHeader({
+              company: comp,
+              logo,
+              align: 'left',
+              logoWidth: EMAIL_COMPANY_LOGO_WIDTH,
+              logoHeight: EMAIL_COMPANY_LOGO_HEIGHT,
+            })}
             <tr>
               <td style="padding:28px 24px 8px;">
                 <h2 style="margin:0 0 14px;color:#045A57;font-size:20px;font-weight:800;">Thank you for contacting us, ${firstName}!</h2>

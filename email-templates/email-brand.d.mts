@@ -17,12 +17,16 @@ export interface EmailBrandCompany {
 
 export const EMAIL_LOGO_WIDTH: number;
 export const EMAIL_LOGO_HEIGHT: number;
+export const EMAIL_COMPANY_LOGO_WIDTH: number;
+export const EMAIL_COMPANY_LOGO_HEIGHT: number;
 
 export function brandLogoSrc(logo: EmailLogo, company?: EmailBrandCompany): string;
 export function renderBrandHeader(options?: {
   company?: EmailBrandCompany;
   logo?: EmailLogo;
   align?: 'center' | 'left';
+  logoWidth?: number;
+  logoHeight?: number;
 }): string;
 export function renderBrandFooter(options?: {
   company?: EmailBrandCompany;

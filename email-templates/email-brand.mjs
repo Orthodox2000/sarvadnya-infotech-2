@@ -29,6 +29,13 @@ export const EMAIL_LOGO_WIDTH = 240;
 // ratio hint; CSS height:auto wins where styles apply.
 export const EMAIL_LOGO_HEIGHT = 51;
 
+// CHANGE: 2026-11-23 — the acknowledgement receipt uses the SQUARE company mark
+// (public/logo.png, 256×256), not the 4.7:1 Tally certificate banner. Keeping the
+// size here avoids magic numbers in the template and stops a 240×51 box from
+// squashing the company logo.
+export const EMAIL_COMPANY_LOGO_WIDTH = 64;
+export const EMAIL_COMPANY_LOGO_HEIGHT = 64;
+
 export function brandLogoSrc(logo, company) {
   if (logo && logo.cid) return `cid:${esc(logo.cid)}`;
   if (logo && logo.data) return esc(logo.data);
@@ -41,7 +48,13 @@ export function brandLogoSrc(logo, company) {
  *  CHANGE: 2026-11-20 — tagline removed to match the expiry email / signature masthead.
  *  The logo links to the site root, resolved from `company.website` (never a
  *  hard-coded path), so every transactional email has the same live home trigger. */
-export function renderBrandHeader({ company, logo, align = 'center' } = {}) {
+export function renderBrandHeader({
+  company,
+  logo,
+  align = 'center',
+  logoWidth = EMAIL_LOGO_WIDTH,
+  logoHeight = EMAIL_LOGO_HEIGHT,
+} = {}) {
   const comp = company || {};
   // CHANGE: 2026-11-21 — `align:'left'` lets the acknowledgement receipt use the
   // latest left-aligned template structure without touching the centred header
@@ -55,9 +68,9 @@ export function renderBrandHeader({ company, logo, align = 'center' } = {}) {
                   <img
                     src="${brandLogoSrc(logo, comp)}"
                     alt="${name}"
-                    width="${EMAIL_LOGO_WIDTH}"
-                    height="${EMAIL_LOGO_HEIGHT}"
-                    style="display:inline-block;max-width:100%;width:${EMAIL_LOGO_WIDTH}px;height:auto;border:0;outline:none;text-decoration:none;"
+                    width="${logoWidth}"
+                    height="${logoHeight}"
+                    style="display:inline-block;max-width:100%;width:${logoWidth}px;height:auto;border:0;outline:none;text-decoration:none;"
                   />
                 </a>
                 <p style="margin:14px 0 0;color:#033B38;font-size:17px;font-weight:800;letter-spacing:0.3px;white-space:nowrap;">${name}</p>
