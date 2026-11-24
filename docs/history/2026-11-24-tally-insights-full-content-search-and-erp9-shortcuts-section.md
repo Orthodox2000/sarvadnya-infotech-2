@@ -84,7 +84,17 @@ for the ERP 9 key and treats the TallyPrime key as comparison only.
 - Every shortcut in the new lesson is searchable by key, action, location or ERP 9 equivalent
   because the index parses the markdown rows into individual passages.
 
-## Not done (single-pass directive)
+## Verification (owner requested)
 
-No build, typecheck or static guard was run in this session. The owner lifted the verification
-hold on earlier sessions; this one followed the standing single-turn code-generation directive.
+The owner explicitly asked for "build test and push", so the standing single-pass hold was
+lifted for this verification only. Node v24.21.0 on PATH, no dev server running, so no
+dev/build collision:
+
+- `npm run typecheck` — exit 0.
+- `npm run build` — exit 0; 180 routes generated. Both shortcut pages are prerendered, including
+  `erp9-shortcut-keys-faster-data-entry.html` / `.meta` / `.rsc` under
+  `.next/server/app/tally-insights/shortcuts-cheat-sheet/`; the new URL is in `sitemap.xml`.
+- `npm run test:all` — exit 0; the full `&&` chain ran through to the final careers-email suite,
+  all suites green (no early stop).
+- Committed as `8a629a9` before verification; pushed to both remotes after verification. No
+  source change was needed as a result of the checks.
