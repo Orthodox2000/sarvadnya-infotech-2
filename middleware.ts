@@ -98,6 +98,19 @@ export function middleware(request: NextRequest) {
     return new NextResponse(null, { status: 410 });
   }
 
+  // CHANGE: 2026-11-24 — GSC 28d still credited 21 clicks to `http://sarvadnyainfotech.com/`.
+  // Upgrade insecure requests on the two public hosts only, collapsing `www` in the same hop so
+  // an http/www hit never becomes a two-step redirect. Preview/LAN hosts are deliberately left
+  // alone — a local build reached over http://192.168.x.x must not bounce to a nonexistent TLS host.
+  const requestHost = request.nextUrl.hostname;
+  const forwardedProto = request.headers.get('x-forwarded-proto')?.split(',')[0].trim();
+  const isInsecure = request.nextUrl.protocol === 'http:' || forwardedProto === 'http';
+  const isPublicHost = requestHost === CANONICAL_HOST || requestHost === WWW_HOST;
+  if (isInsecure && isPublicHost) {
+    const targetHost = requestHost === WWW_HOST ? CANONICAL_HOST : requestHost;
+    return NextResponse.redirect(new URL(pathname + search, `https://${targetHost}`), 301);
+  }
+
   if (request.nextUrl.hostname === WWW_HOST && !pathname.startsWith('/api/')) {
     return NextResponse.redirect(new URL(pathname + search, `https://${CANONICAL_HOST}`), 301);
   }

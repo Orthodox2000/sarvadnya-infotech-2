@@ -911,3 +911,1073 @@ main > div:first-of-type {
     transition: none !important;
   }
 }
+
+/* CHANGE: 2026-11-24 — W3-style Tally Insights docs shell.
+   WHY: section and lesson pages had separate spacing and each lesson carried hero artwork,
+   lead forms and promo cards. This is one local, dependency-free frame with the requested
+   class shape (contentcontainer / belowtopnavcontainer / w3-sidebar w3-collapse /
+   leftmenuinner / w3-main ws-light-grey / w3-row / w3-col l10 m12 / overview_header /
+   tut_overview). No W3.CSS file, W3 image, W3 brand or external font is loaded. */
+.contentcontainer,
+.contentcontainer *,
+.w3-sidebar,
+.w3-sidebar *,
+.w3-main {
+  box-sizing: border-box;
+}
+
+.contentcontainer {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+.belowtopnavcontainer {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  column-gap: 14px;
+  row-gap: 14px;
+  width: 100%;
+  padding: 16px 0 28px;
+}
+
+.w3-row {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.w3-col {
+  width: 100%;
+  padding: 0 8px;
+}
+
+.w3-col.m12 {
+  width: 100%;
+}
+
+.docs-skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 8px;
+}
+
+.docs-skip-link:focus {
+  left: 16px;
+  z-index: 4000;
+  padding: 8px 12px;
+  border-radius: 6px;
+  background: #006569;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+/* Sidebar is one in-flow flex item beside the article at all widths. The collapse toggle lives
+   inside it, so it expands/collapses in place — it never floats over or overlaps the content. */
+.w3-sidebar.w3-collapse {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid #ddefef;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
+}
+
+.leftmenuinner {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  height: 100%;
+}
+
+.docs-sidebar-head {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 8px;
+  flex: 0 0 auto;
+  padding: 10px 12px;
+  border-bottom: 1px solid #e8f0f0;
+  background: linear-gradient(180deg, #f8fbfb 0%, #fff 100%);
+}
+
+.docs-sidebar-toggle {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 32px;
+  padding: 6px 10px;
+  border: 1px solid #d4eaea;
+  border-radius: 999px;
+  background: #fff;
+  color: #006569;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.docs-sidebar-title {
+  color: #006569;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.docs-sidebar-subtitle {
+  margin-top: 2px;
+  color: #64748b;
+  font-size: 10.5px;
+  font-weight: 600;
+}
+
+.docs-search {
+  position: relative;
+  display: block;
+  flex: 1 1 100%;
+  margin-top: 4px;
+}
+
+.docs-search svg {
+  position: absolute;
+  left: 9px;
+  top: 50%;
+  color: #64748b;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.docs-search input {
+  width: 100%;
+  padding: 7px 9px 7px 28px;
+  border: 1px solid #d4eaea;
+  border-radius: 7px;
+  background: #fff;
+  color: #0f172a;
+  font-family: inherit;
+  font-size: 11.5px;
+  line-height: 1.4;
+}
+
+.docs-search input::placeholder {
+  color: #94a3b8;
+}
+
+.docs-search input:focus-visible {
+  outline: 2px solid #006569;
+  outline-offset: 1px;
+}
+
+.docs-toggle-count {
+  color: #64748b;
+  font-variant-numeric: tabular-nums;
+}
+
+.docs-sidebar-scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: #b8dede transparent;
+}
+
+.docs-nav-section {
+  border-bottom: 1px solid #e8f0f0;
+}
+
+.docs-nav-section:last-child {
+  border-bottom: 0;
+}
+
+.docs-nav-section-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 2px;
+}
+
+.docs-nav-section-link {
+  display: block;
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 9px 4px 8px 12px;
+  color: #0f172a;
+  text-decoration: none;
+}
+
+.docs-nav-section-link:hover {
+  background: #f5f4ed;
+}
+
+.docs-nav-section.is-active > .docs-nav-section-row > .docs-nav-section-link {
+  background: #e5f4f4;
+  color: #004f52;
+}
+
+.docs-nav-section-title {
+  display: block;
+  font-size: 11.5px;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.docs-nav-section-count {
+  display: inline-block;
+  margin-left: 6px;
+  color: #006569;
+  font-size: 9.5px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.docs-nav-section-desc {
+  display: block;
+  margin-top: 3px;
+  color: #64748b;
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.docs-nav-toggle {
+  display: inline-flex;
+  flex: 0 0 30px;
+  align-items: center;
+  justify-content: center;
+  min-height: 36px;
+  margin-right: 5px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: #64748b;
+  cursor: pointer;
+}
+
+.docs-nav-toggle:hover {
+  background: #e5f4f4;
+  color: #006569;
+}
+
+.docs-nav-toggle svg {
+  transition: transform 180ms ease;
+}
+
+.docs-nav-section.is-open .docs-nav-toggle svg {
+  transform: rotate(90deg);
+}
+
+.docs-nav-lessons {
+  padding: 0 8px 8px 12px;
+}
+
+.docs-nav-lesson {
+  display: block;
+  padding: 6px 9px;
+  border-radius: 6px;
+  color: #475569;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.4;
+  text-decoration: none;
+}
+
+.docs-nav-lesson:hover {
+  background: #e5f4f4;
+  color: #006569;
+}
+
+.docs-nav-lesson.is-active {
+  background: #006569;
+  color: #fff;
+  font-weight: 800;
+}
+
+.docs-nav-results {
+  padding: 6px;
+}
+
+.docs-nav-result {
+  display: block;
+  padding: 8px 9px;
+  border-radius: 6px;
+  color: #334155;
+  text-decoration: none;
+}
+
+.docs-nav-result:hover,
+.docs-nav-result.is-active {
+  background: #e5f4f4;
+  color: #006569;
+}
+
+.docs-nav-result-title,
+.docs-nav-result-section {
+  display: block;
+  line-height: 1.35;
+}
+
+.docs-nav-result-title {
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.docs-nav-result-section {
+  margin-top: 2px;
+  color: #64748b;
+  font-size: 9.5px;
+}
+
+.docs-nav-empty {
+  padding: 14px 12px;
+  color: #64748b;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.docs-nav-section-link:focus-visible,
+.docs-nav-toggle:focus-visible,
+.docs-nav-lesson:focus-visible,
+.docs-nav-result:focus-visible,
+.docs-sidebar-toggle:focus-visible,
+.docs-guide-card:focus-visible,
+.docs-back-link:focus-visible,
+.docs-cta-link:focus-visible,
+.docs-pager-link:focus-visible,
+.docs-home-link:focus-visible {
+  outline: 2px solid #006569;
+  outline-offset: 2px;
+}
+
+.w3-main.ws-light-grey {
+  min-width: 0;
+  padding: 16px;
+  border: 1px solid #e8f0f0;
+  border-radius: 10px;
+  background: #f7f9f9;
+}
+
+.docs-main-col {
+  min-width: 0;
+}
+
+.docs-breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin: 0 0 14px;
+  color: #64748b;
+  font-size: 10.5px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.docs-breadcrumb a {
+  color: #006569;
+  text-decoration: none;
+}
+
+.docs-breadcrumb a:hover {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.docs-breadcrumb [aria-hidden] {
+  color: #b8dede;
+}
+
+.overview_header.docs-page-header {
+  max-width: 100%;
+  margin-bottom: 14px;
+  padding: 18px 20px;
+  overflow-wrap: anywhere;
+  border: 1px solid #e8f0f0;
+  border-radius: 9px;
+  background: #fff;
+}
+
+.docs-kicker {
+  margin: 0 0 8px;
+  color: #006569;
+  font-size: 9.5px;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.overview_header h1 {
+  margin: 0;
+  color: #0f172a;
+  font-size: clamp(22px, 3vw, 31px);
+  font-weight: 900;
+  line-height: 1.22;
+  letter-spacing: -0.02em;
+}
+
+.docs-lede {
+  max-width: 74ch;
+  margin: 10px 0 0;
+  color: #475569;
+  font-size: 13.5px;
+  font-weight: 500;
+  line-height: 1.65;
+}
+
+.docs-quick-answer {
+  margin-top: 14px;
+  padding: 11px 14px;
+  border-left: 4px solid #006569;
+  border-radius: 6px;
+  background: #e5f4f4;
+}
+
+.docs-quick-answer h2 {
+  margin: 0 0 5px;
+  color: #006569;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.docs-quick-answer p {
+  margin: 0;
+  color: #0f3f41;
+  font-size: 12.5px;
+  font-weight: 600;
+  line-height: 1.6;
+}
+
+.tut_overview {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 900px;
+  max-width: 100%;
+}
+
+.docs-section-meta {
+  margin-bottom: 12px;
+  color: #64748b;
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.docs-guide-list {
+  display: grid;
+  gap: 11px;
+}
+
+.docs-guide-card {
+  display: block;
+  max-width: 100%;
+  padding: 15px 17px;
+  overflow-wrap: anywhere;
+  border: 1px solid #e8f0f0;
+  border-radius: 9px;
+  background: #fff;
+  color: inherit;
+  text-decoration: none;
+}
+
+.docs-guide-card:hover {
+  border-color: #b8dede;
+  background: #fcfdfd;
+}
+
+.docs-guide-card h2 {
+  margin: 0;
+  color: #0f172a;
+  font-size: 16px;
+  font-weight: 900;
+  line-height: 1.35;
+}
+
+.docs-guide-card p {
+  margin: 7px 0 0;
+  color: #475569;
+  font-size: 12.5px;
+  font-weight: 500;
+  line-height: 1.6;
+}
+
+.docs-back-row {
+  margin-top: 18px;
+}
+
+.docs-back-link {
+  display: inline-block;
+  color: #006569;
+  font-size: 11px;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.docs-article {
+  max-width: 100%;
+  padding: 18px 20px 22px;
+  overflow-wrap: anywhere;
+  border: 1px solid #e8f0f0;
+  border-radius: 9px;
+  background: #fff;
+}
+
+.docs-article > div > :first-child,
+.docs-article > :first-child {
+  margin-top: 0;
+}
+
+.docs-article h2 {
+  margin: 26px 0 9px;
+  color: #0f172a;
+  font-size: 19px;
+  font-weight: 900;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+
+.docs-article h3 {
+  margin: 18px 0 7px;
+  color: #0f172a;
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1.4;
+}
+
+.docs-article p,
+.docs-article li {
+  color: #334155;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.7;
+}
+
+.docs-article ul,
+.docs-article ol {
+  padding-left: 20px;
+}
+
+.docs-article code {
+  color: #006569;
+}
+
+.docs-block {
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid #e8f0f0;
+}
+
+.docs-block > h2:first-child {
+  margin-top: 0;
+}
+
+.docs-section-intro {
+  margin: 0 0 12px;
+  color: #64748b;
+}
+
+.docs-term-list,
+.docs-example-list,
+.docs-faq-list {
+  display: grid;
+  gap: 10px;
+}
+
+.docs-term,
+.docs-example,
+.docs-faq-item {
+  padding: 12px 14px;
+  border: 1px solid #e8f0f0;
+  border-radius: 8px;
+  background: #fbfdfd;
+}
+
+.docs-term h3,
+.docs-example h3,
+.docs-faq-item h3 {
+  margin: 0 0 6px;
+}
+
+.docs-term p,
+.docs-example p,
+.docs-example li,
+.docs-faq-item p {
+  margin: 0;
+}
+
+.docs-term-example,
+.docs-example-notes {
+  margin-top: 7px !important;
+  color: #64748b;
+  font-size: 11.5px;
+}
+
+.docs-example ol {
+  margin: 0;
+}
+
+.docs-example-notes {
+  padding-left: 18px;
+}
+
+.docs-faq-item h3 a {
+  color: #0f172a;
+  text-decoration: none;
+}
+
+.docs-faq-item h3 a:hover {
+  color: #006569;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.docs-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid #e8f0f0;
+  border-radius: 8px;
+}
+
+.docs-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.docs-table th,
+.docs-table td {
+  padding: 9px 11px;
+  border-bottom: 1px solid #e8f0f0;
+  text-align: left;
+  vertical-align: top;
+}
+
+.docs-table th {
+  background: #f5f4ed;
+  color: #334155;
+  font-weight: 900;
+}
+
+.docs-table tr:last-child td {
+  border-bottom: 0;
+}
+
+.docs-key {
+  color: #006569;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.docs-related-list {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.docs-related-list li {
+  margin-bottom: 6px;
+}
+
+.docs-related-list a {
+  color: #006569;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.docs-related-list a:hover {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.docs-cta {
+  max-width: 100%;
+  margin-top: 16px;
+  padding: 14px 16px;
+  border: 1px solid #d4eaea;
+  border-radius: 9px;
+  background: #f5f4ed;
+}
+
+.docs-cta p {
+  margin: 0;
+  color: #475569;
+  font-size: 12.5px;
+  font-weight: 500;
+  line-height: 1.6;
+}
+
+.docs-cta-title {
+  margin-bottom: 4px !important;
+  color: #0f172a !important;
+  font-size: 13px !important;
+  font-weight: 900 !important;
+}
+
+.docs-cta-link {
+  display: inline-block;
+  margin-top: 9px;
+  padding: 7px 13px;
+  border-radius: 999px;
+  background: #006569;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.docs-cta-link:hover {
+  background: #045a57;
+}
+
+/* CHANGE: 2026-11-24 — marketing layer for Tally Insights. Text-only cards (no images or
+   forms) so the clean docs layout stays intact; both wrap safely at 360px. */
+.docs-cta-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.docs-cta-actions .docs-cta-link {
+  margin-top: 0;
+}
+
+.docs-cta-link-secondary {
+  background: #fff;
+  color: #006569;
+  border: 1px solid #006569;
+}
+
+.docs-cta-link-secondary:hover {
+  background: #e5f4f4;
+}
+
+.docs-promo {
+  max-width: 100%;
+  margin-top: 16px;
+  padding: 14px 16px;
+  overflow-wrap: anywhere;
+  border: 1px solid #b8dede;
+  border-radius: 9px;
+  background: #e5f4f4;
+}
+
+.docs-promo-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.docs-promo-badge {
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: #006569;
+  color: #fff;
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.docs-promo-title {
+  margin: 0;
+  color: #033b38;
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.docs-promo-body {
+  margin: 8px 0 0;
+  color: #334155;
+  font-size: 12.5px;
+  line-height: 1.6;
+}
+
+.docs-section-help {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  max-width: 100%;
+  margin-top: 18px;
+  padding: 15px 16px;
+  border: 1px solid #d4eaea;
+  border-radius: 9px;
+  background: #ddefef;
+}
+
+.docs-section-help > div:first-child {
+  flex: 1 1 320px;
+  min-width: 0;
+}
+
+.docs-section-help h2 {
+  margin: 0 0 6px;
+  color: #033b38;
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.docs-section-help p {
+  margin: 0;
+  color: #334155;
+  font-size: 12.5px;
+  line-height: 1.6;
+}
+
+.docs-section-help .docs-cta-actions {
+  margin-top: 0;
+  align-self: center;
+}
+
+.docs-pager {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.docs-pager-link {
+  display: block;
+  min-width: 0;
+  padding: 11px 13px;
+  overflow-wrap: anywhere;
+  border: 1px solid #e8f0f0;
+  border-radius: 8px;
+  background: #fff;
+  color: #0f172a;
+  text-decoration: none;
+}
+
+.docs-pager-link.is-next {
+  text-align: right;
+}
+
+.docs-pager-link span {
+  display: block;
+  margin-bottom: 4px;
+  color: #64748b;
+  font-size: 9.5px;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.docs-pager-link strong {
+  display: block;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.4;
+}
+
+.docs-pager-link:hover {
+  border-color: #b8dede;
+}
+
+.docs-home-link-wrap {
+  padding: 0 8px 12px;
+}
+
+.docs-home-link {
+  color: #64748b;
+  font-size: 10.5px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.docs-home-link:hover {
+  color: #006569;
+}
+
+@media (min-width: 1024px) {
+  /* CHANGE: 2026-11-24 — one flex row with exactly two in-flow children: <aside> and <main>.
+     The nested `.w3-row` wrapper inside <main> is gone, so the article can no longer wrap or
+     overlap. The content column is a zero-basis flex item (not a fixed 83.33% width), so it
+     always sits to the RIGHT of the sidebar between 1024px and ~1200px. */
+  .belowtopnavcontainer.w3-row {
+    flex-wrap: nowrap;
+  }
+
+  .w3-col.l10.m12 {
+    flex: 1 1 0;
+    width: auto;
+    min-width: 0;
+  }
+
+  .w3-sidebar.w3-collapse {
+    position: sticky;
+    top: 96px;
+    flex: 0 0 270px;
+    width: 270px;
+    max-height: calc(100vh - 112px);
+  }
+
+  /* Collapsed desktop sidebar becomes a slim rail; still in flow, content shifts right. */
+  .w3-sidebar.w3-collapse.is-collapsed {
+    flex-basis: 52px;
+    width: 52px;
+  }
+
+  .w3-sidebar.w3-collapse.is-collapsed .docs-sidebar-title,
+  .w3-sidebar.w3-collapse.is-collapsed .docs-sidebar-subtitle,
+  .w3-sidebar.w3-collapse.is-collapsed .docs-search,
+  .w3-sidebar.w3-collapse.is-collapsed .docs-sidebar-scroll,
+  .w3-sidebar.w3-collapse.is-collapsed .docs-sidebar-toggle-label,
+  .w3-sidebar.w3-collapse.is-collapsed .docs-toggle-count {
+    display: none;
+  }
+
+  .w3-sidebar.w3-collapse.is-collapsed .docs-sidebar-head {
+    justify-content: center;
+    padding: 10px 0;
+  }
+
+  .w3-main.ws-light-grey {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+}
+
+@media (max-width: 1023px) {
+  /* One flex column: the sidebar is a normal in-flow block above the article. No fixed
+     positioning, no off-canvas transform, no backdrop — nothing hovers over the content. */
+  .belowtopnavcontainer {
+    flex-direction: column;
+  }
+
+  .w3-sidebar.w3-collapse {
+    position: static;
+    flex: 0 0 auto;
+    width: 100%;
+    max-height: none;
+  }
+
+  .docs-sidebar-scroll {
+    display: none;
+  }
+
+  .w3-sidebar.w3-collapse.is-open .docs-sidebar-scroll {
+    display: block;
+    max-height: 52vh;
+  }
+
+  .w3-col.l10.m12 {
+    width: 100%;
+    flex: 1 1 auto;
+  }
+
+  .w3-main.ws-light-grey {
+    flex: 1 1 auto;
+  }
+}
+
+@media (max-width: 767px) {
+  .contentcontainer {
+    padding: 0 10px;
+  }
+
+  .w3-col {
+    padding: 0 5px;
+  }
+
+  .w3-main.ws-light-grey {
+    padding: 12px;
+  }
+
+  .overview_header.docs-page-header,
+  .docs-article {
+    padding: 14px;
+  }
+
+  .docs-table thead {
+    display: none;
+  }
+
+  .docs-table,
+  .docs-table tbody,
+  .docs-table tr,
+  .docs-table td {
+    display: block;
+    width: 100%;
+  }
+
+  .docs-table tbody {
+    display: grid;
+    gap: 9px;
+    padding: 9px;
+  }
+
+  .docs-table tr {
+    overflow: hidden;
+    border: 1px solid #e8f0f0;
+    border-radius: 8px;
+    background: #fff;
+  }
+
+  .docs-table td {
+    padding: 8px 10px;
+    border-top: 1px solid #e8f0f0;
+    font-size: 12px;
+    overflow-wrap: anywhere;
+  }
+
+  .docs-table td:first-child {
+    border-top: 0;
+    background: #e5f4f4;
+    font-weight: 900;
+  }
+
+  .docs-table td:not(:first-child)::before {
+    content: attr(data-label);
+    display: block;
+    margin-bottom: 3px;
+    color: #475569;
+    font-size: 10px;
+    font-weight: 900;
+  }
+
+  .docs-key {
+    white-space: normal;
+  }
+}
+
+@media (max-width: 600px) {
+  .docs-pager {
+    grid-template-columns: 1fr;
+  }
+
+  .docs-pager-link.is-next {
+    text-align: left;
+  }
+
+  .overview_header h1 {
+    font-size: 21px;
+  }
+
+  .docs-lede {
+    font-size: 12.5px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .w3-sidebar.w3-collapse,
+  .docs-nav-toggle svg {
+    transition: none !important;
+  }
+}

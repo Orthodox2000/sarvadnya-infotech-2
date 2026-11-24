@@ -141,7 +141,9 @@ export const productItems: ProductItem[] = [
       {
         id: "l-insights",
         label: "Tally Insights",
-        href: "/tally-insights",
+        // CHANGE: 2026-11-24 — /tally-insights is a 301, not a page. Link straight to the
+        // entry section so the navbar never adds a redirect hop.
+        href: "/tally-insights/fundamentals-version-transitions",
         description: "Section-wise guides focused on solving business challenges.",
       },
       {

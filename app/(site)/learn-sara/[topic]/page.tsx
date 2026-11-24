@@ -199,8 +199,9 @@ export default async function SaraGuidePage({ params }: { params: Promise<{ topi
               </li>
             ))}
             <li>
+              {/* CHANGE: 2026-11-24 — /tally-insights is a 301; link to the entry section. */}
               <Link
-                href="/tally-insights"
+                href="/tally-insights/fundamentals-version-transitions"
                 className="inline-flex rounded-full border border-[#E9F1FA] bg-white px-3.5 py-1.5 text-[12px] font-semibold text-slate-700 transition-colors hover:border-[#B8DEDE] hover:text-[#006569]"
               >
                 Tally Insights knowledge hub

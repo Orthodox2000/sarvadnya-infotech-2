@@ -17,6 +17,9 @@
 
 ### 2026-11
 
+- [2026-11-24 — Tally Insights: marketing layer + GSC-driven keywords](history/2026-11-24-tally-insights-marketing-layer-and-gsc-keywords.md)
+- [2026-11-24 — Tally Insights: one flex container, no viewport-driven hydration swap](history/2026-11-24-tally-insights-single-flex-container-hydration-fix.md)
+- [2026-11-24 — Tally Insights: W3-style docs shell, clean layout and GSC CTR pass](history/2026-11-24-tally-insights-w3-docs-clean-layout-and-gsc-ctr-pass.md)
 - [2026-11-24 — Tally Insights: 6h ISR for static curriculum](history/2026-11-24-tally-insights-6h-isr-static-curriculum-cache.md)
 - [2026-11-24 — Modules: 6h cache/ISR, no client waterfall, on-demand revalidate webhook](history/2026-11-24-modules-6h-cache-isr-no-client-waterfall-revalidate-webhook.md)
 - [2026-11-23 — Google Tag Manager via `@next/third-parties`: deferred loader, production-only, CSP allowlisted](history/2026-11-23-google-tag-manager-via-next-third-parties.md)

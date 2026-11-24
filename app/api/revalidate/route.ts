@@ -16,7 +16,8 @@ const MODULE_TAGS = ['modules'];
 const MODULE_PATHS = ['/modules', '/api/modules', '/sitemap.xml'];
 // CHANGE: 2026-11-24 — Tally Insights curriculum is static and rarely changed; allow targeted
 // manual invalidation without waiting for 6h ISR.
-const INSIGHTS_PATHS = ['/tally-insights', '/sitemap.xml'];
+// CHANGE: 2026-11-24 — /tally-insights is a redirect, so revalidate the real entry section.
+const INSIGHTS_PATHS = ['/tally-insights/fundamentals-version-transitions', '/sitemap.xml'];
 
 function authorized(request: Request, bodySecret?: string): boolean {
   const expected = process.env.REVALIDATE_SECRET?.trim();

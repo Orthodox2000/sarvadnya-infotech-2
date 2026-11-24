@@ -183,10 +183,11 @@ historical mirror — never assume it has history `origin` lacks. `git remote -v
   It takes `contactSuffix` to opt out of the phone/location tail on reference pages.
 - `articleJsonLd()` takes **`path`** for anything outside `/news` — `slug` gets `/news/` prefixed and
   produced double-slash URLs that GSC flagged. A slash inside `slug` now fails `check:schema`.
-- **Ratings are computed, never typed.** The only permitted rating on the site is the review-wall average
-  from `lib/rating-summary.mjs` (`summariseRatings()` → `{average,count}` or **`null`** when nothing is
-  rateable). `aggregateRating` appears nowhere in `app/` or `lib/`, and no `rating: '4.8'` literal may
-  exist. `check:schema` fails on both, and also fails if the review wall stops calling `summariseRatings()`.
+- **Ratings are computed, never typed.** Every displayed rating comes from `lib/rating-summary.mjs` —
+  per-card stars via `normalizeRating()`; the review-wall **header aggregate** was removed on 2026-11-16
+  at the owner's request ("review bug shows 4.5 from 4 reviews on homscreen remove it"). `aggregateRating`
+  appears nowhere in `app/` or `lib/`, and no `rating: '4.8'` literal may exist. `check:schema` fails on
+  both, and also fails if the review wall stops using the helper entirely. The §2026-11-16 owner decision and the 2026-11-24 guard correction are recorded in `docs/HISTORY.md`.
 - Sitemap entries are generated from the same source that renders the pages (`getAllLessonSlugs()`,
   `getAllSaraGuideSlugs()`) so it cannot list a page that does not exist.
 

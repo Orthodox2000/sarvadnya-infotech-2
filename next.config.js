@@ -61,7 +61,10 @@ const nextConfig = {
     cpus: 1,
   },
 
-  allowedDevOrigins: ['26.186.62.193','192.168.7.7','192.168.1.245'],
+  // CHANGE: 2026-11-24 — Next 15 blocks /_next/* with 403 when the dev server is opened from an
+  // origin not listed here (localhost/127.0.0.1 are NOT auto-allowed — only `localhost`/`*.localhost`
+  // are). The three IPs below were stale; this box is now 192.168.1.139 and local tabs use 127.0.0.1.
+  allowedDevOrigins: ['26.186.62.193','192.168.7.7','192.168.1.245','192.168.1.139','127.0.0.1'],
   async redirects() {
     return [
       {
@@ -149,6 +152,15 @@ const nextConfig = {
       // The generator bug is fixed (articleJsonLd now takes `path`), and this keeps any
       // already-crawled variant collapsing onto the real page instead of 404ing.
       { source: '/news/tally-insights/:path*', destination: '/tally-insights/:path*', permanent: true },
+      // CHANGE: 2026-11-24 — /tally-insights is a docs redirect, not a rendered page. The
+      // former hub duplicated every section card and competed with the section indexes; all
+      // nav/breadcrumb links now point at this entry section instead of the retired hub.
+      {
+        source: '/tally-insights',
+        destination: '/tally-insights/fundamentals-version-transitions',
+        // CHANGE: 2026-11-24 — explicit 301 (not `permanent: true`, which Next emits as 308).
+        statusCode: 301,
+      },
       // NOTE 2026-10-07 — trailing-slash variants (/tally-prime/, /blog/, /about-us/, …) are NOT
       // listed here and CANNOT be collapsed to a single hop on this stack: Next's own trailing-slash
       // 308 fires before BOTH middleware AND this table (verified in dev + live: /foo/ → /foo → target

@@ -8,8 +8,10 @@
  *
  * Design decisions (see docs/HISTORY.md index → 2026-10-13 "Search-Console keyword batch", formerly §18):
  *  - Filenames are NEVER changed. Every image path is a public contract: it is
- *    referenced from page TSX, Tailwind `bg-[url()]` classes, MongoDB-seeded module
- *    documents, JSON-LD and email HTML. A rename would silently break all of them.
+ *    referenced from page TSX, Tailwind arbitrary background-image classes, MongoDB-seeded
+ *    module documents, JSON-LD and email HTML. A rename would silently break all of them.
+ *    NOTE: never write an empty background-image class literal in a comment. Tailwind 4 scans
+ *    this file and would generate a real rule with an empty image URI from it, breaking dev.
  *  - The real format is detected from the bytes, not the extension: several legacy
  *    files (e.g. assets/images/1523381210434-*.jpg) are actually PNG data.
  *  - Two PNG candidates are compared: palette-quantised and lossless. The smaller

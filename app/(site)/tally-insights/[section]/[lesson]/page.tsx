@@ -1,18 +1,18 @@
 // CHANGE: 2026-10-23 - Hardened lesson route: dynamicParams=false, section match guard,
 // unified metadata via seoMetadata, added internal sidebar, correct section breadcrumb.
+// CHANGE: 2026-11-24 — rebuilt for the W3-style docs shell. Every per-lesson image, lead
+// form and large promo card is removed: those were the missing-asset and layout-noise source.
+// The page now renders text, tables, FAQs and one quiet contact link.
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import Footer from "../../../../components/Footer";
 import {
-  getInsightsNavModel,
+  INSIGHTS_ENTRY_PATH,
   getLessonBySlug,
   getLessonsBySection,
-  getSectionById
+  getSectionById,
 } from "@/lib/learn-tally-curriculum";
 import { articleJsonLd, breadcrumbJsonLd, faqPageJsonLd, seoMetadata } from "@/lib/seo";
 import MarkdownBody from "@/app/components/TallyInsights/MarkdownBody";
-import LessonFigure from "@/app/components/TallyInsights/LessonFigure";
-import TallyInsightsNav from "@/app/components/TallyInsights/TallyInsightsNav";
 
 // CHANGE: 2026-11-24 — static curriculum, rarely changes; 6h ISR to reduce CPU.
 export const revalidate = 21600;
@@ -22,12 +22,12 @@ export async function generateStaticParams() {
   const { getAllLessonSlugs } = await import("@/lib/learn-tally-curriculum");
   return getAllLessonSlugs().map(({ section, slug }) => ({
     section,
-    lesson: slug
+    lesson: slug,
   }));
 }
 
 export async function generateMetadata({
-  params
+  params,
 }: {
   params: Promise<{ section: string; lesson: string }>;
 }) {
@@ -37,97 +37,23 @@ export async function generateMetadata({
   // /tally-insights/gst-compliance/how-to-lock-data-in-tallyprime never serves the lesson's
   // metadata (duplicate-content signal) even before the page body calls notFound().
   if (!l || l.sectionId !== section) return {};
-  // CHANGE: 2026-10-23 - strip the legacy "| Tally Insights" suffix before seoMetadata
-  // appends the brand. WHY: the helper appends " | Sarvadnya Infotech LLP", so keeping the
-  // old suffix produced a double-branded <title> (e.g. "... | Tally Insights | Sarvadnya
-  // Infotech LLP"). The suffix is not part of the lesson's identity - the brand comes from
-  // the one central helper - so dropping it keeps each title as short as possible.
+  // The helper appends the brand; older values carried a legacy "| Tally Insights" tail that
+  // produced a double-branded title. The strip is harmless for the current clean titles.
   const title = (l.seoTitle || l.title).replace(/\s*\|\s*Tally Insights\s*$/i, "");
   const description = l.seoDescription || l.intro;
-  const keywords = l.keywords || [
-    "tally insights",
-    "tally prime guide",
-    "learn tally prime"
-  ];
+  const keywords = l.keywords || ["tally insights", "tally prime guide", "learn tally prime"];
   return seoMetadata({
     title,
     description,
     path: `/tally-insights/${l.sectionId}/${l.slug}`,
     keywords,
     // CHANGE: 2026-10-29 — answer-first reference page (see lib/seo.ts `contactSuffix`).
-    // A lesson snippet must lead with the actual answer, not the same phone tail on all 16.
     contactSuffix: false,
   });
 }
 
-function LeadMagnetForm({ leadMagnet }: { leadMagnet: any }) {
-  return (
-    <div className="bg-[#F5F4ED]/40 rounded-3xl border border-[#E5F4F4] p-6 md:p-8">
-      <div className="flex items-start gap-4 mb-6">
-        <div className="w-12 h-12 bg-[#006569]/10 rounded-2xl flex items-center justify-center">
-          <svg
-            className="w-6 h-6 text-[#006569]"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            strokeWidth="2.5"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M12 10.5v6m3-3H9m4.06-7.19l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z"
-            />
-          </svg>
-        </div>
-        <div>
-          <h3 className="text-lg md:text-xl font-bold text-slate-900 tracking-tight">
-            {leadMagnet.title}
-          </h3>
-          <p className="text-sm text-slate-600 mt-2 font-medium leading-relaxed">
-            {leadMagnet.description}
-          </p>
-        </div>
-      </div>
-      <p className="text-xs text-slate-500 font-medium">
-        Lead capture is minimal and business-focused. Fill details below to
-        download the resource.
-      </p>
-    </div>
-  );
-}
-
-function ModulePromoCard({ promo }: { promo: any }) {
-  return (
-    <div className="bg-[#006569] rounded-3xl p-6 md:p-8 text-white relative overflow-hidden shadow-xl hover:shadow-2xl transition-shadow duration-300">
-      <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent pointer-events-none" />
-      <div className="relative z-10">
-        <div className="flex items-center gap-2 mb-4">
-          <span className="px-3 py-1 bg-white/20 text-white text-[10px] font-black uppercase tracking-widest rounded-full backdrop-blur">
-            {promo.badge || "Our Solution"}
-          </span>
-        </div>
-        <h3 className="text-lg md:text-xl font-bold tracking-tight mb-3">
-          {promo.title}
-        </h3>
-        <p className="text-sm text-white/90 font-medium leading-relaxed mb-6">
-          {promo.body}
-        </p>
-        {promo.productUrl && (
-          <Link
-            href={promo.productUrl}
-            className="inline-flex items-center justify-center bg-white text-[#006569] px-6 py-3 rounded-full font-black text-[10px] uppercase tracking-[0.15em] hover:bg-[#E5F4F4] hover:scale-105 transition-all duration-200 transform active:scale-95 shadow-lg"
-          >
-            {promo.productUrl.includes('/contact') ? 'Contact Us' : 'Learn More'}
-          </Link>
-        )}
-      </div>
-      <div className="absolute -top-10 -right-10 w-40 h-40 bg-white/5 rounded-full blur-2xl" />
-    </div>
-  );
-}
-
 export default async function LessonPage({
-  params
+  params,
 }: {
   params: Promise<{ section: string; lesson: string }>;
 }) {
@@ -146,422 +72,237 @@ export default async function LessonPage({
       ? lessonsInSection[currentIndex + 1]
       : null;
 
-  const nav = getInsightsNavModel();
-  // Keep the structured-data headline in step with the <title> (no legacy suffix).
-  const headline = (lesson.seoTitle || lesson.title).replace(/\s*\|\s*Tally Insights\s*$/i, "");
+  const headline = (lesson.seoTitle || lesson.title).replace(
+    /\s*\|\s*Tally Insights\s*$/i,
+    "",
+  );
   const jsonLd: any[] = [];
   jsonLd.push(
     articleJsonLd({
       headline,
       description: lesson.seoDescription || lesson.intro,
       // CHANGE: 2026-10-27 — pass the FULL path as `path`, not as `slug`. `slug` is
-      // /news-scoped, so a path-like slug produced `url`/`mainEntityOfPage` values like
-      // `/news//tally-insights/...` — the malformed URLs Search Console reported as
-      // failed indexing. See articleJsonLd() in lib/seo.ts.
+      // /news-scoped, so a path-like slug produced malformed `/news//tally-insights/...`
+      // URLs that Search Console reported as failed indexing.
       path: `/tally-insights/${lesson.sectionId}/${lesson.slug}`,
       datePublished: "2026-10-19",
-      dateModified: "2026-10-19",
-      author: "Sarvadnya Infotech LLP"
-    })
+      // CHANGE: 2026-11-24 — the copy and layout changed today; keep the structured-data
+      // modification date in step with the page actually served.
+      dateModified: "2026-11-24",
+      author: "Sarvadnya Infotech LLP",
+    }),
   );
   jsonLd.push(
     breadcrumbJsonLd([
       { name: "Home", path: "/" },
-      { name: "Tally Insights", path: "/tally-insights" },
+      { name: "Tally Insights", path: INSIGHTS_ENTRY_PATH },
       section
         ? { name: section.title, path: `/tally-insights/${section.id}` }
-        : { name: lesson.sectionTitle, path: "/tally-insights" },
-      { name: lesson.title, path: `/tally-insights/${lesson.sectionId}/${lesson.slug}` }
-    ])
+        : { name: lesson.sectionTitle, path: INSIGHTS_ENTRY_PATH },
+      {
+        name: lesson.title,
+        path: `/tally-insights/${lesson.sectionId}/${lesson.slug}`,
+      },
+    ]),
   );
   if (lesson.faqs && lesson.faqs.length > 0) {
     jsonLd.push(faqPageJsonLd(lesson.faqs));
   }
 
+  const quickAnswer =
+    lesson.quickAnswer || lesson.seoDescription || lesson.intro;
+
   return (
-    <div className="min-h-screen bg-white">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <main className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
-          <aside className="lg:w-[240px] xl:w-[260px] 2xl:w-[280px] flex-shrink-0">
-            <TallyInsightsNav nav={nav} activeSectionId={lesson.sectionId} activeLessonSlug={lesson.slug} />
-          </aside>
-          <div className="flex-1 min-w-0 max-w-5xl">
-            <nav className="mb-8 text-xs text-slate-500 font-medium">
-              <Link href="/" className="hover:text-[#006569]">
-                Home
-              </Link>{" "}
-              /{" "}
-              <Link href="/tally-insights" className="hover:text-[#006569]">
-                Tally Insights
-              </Link>{" "}
-              /{" "}
-              <Link href={`/tally-insights/${lesson.sectionId}`} className="hover:text-[#006569]">
-                {lesson.sectionTitle}
-              </Link>{" "}
-              /{" "}
-              <span className="text-slate-700">{lesson.title}</span>
-            </nav>
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
 
-        <header className="mb-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#F5F4ED] border border-[#E5F4F4] mb-4">
-            <span className="text-[10px] font-black uppercase tracking-widest text-[#006569]">
-              {lesson.sectionTitle}
-            </span>
-          </div>
-          <h1 className="text-2xl md:text-4xl font-black text-slate-900 tracking-tight leading-tight mb-4">
-            {lesson.title}
-          </h1>
-          <p className="text-base md:text-lg text-slate-600 font-medium leading-relaxed max-w-3xl">
-            {lesson.intro}
-          </p>
-          {lesson.slug === 'tally-erp9-vs-tally-prime' && (
-            <div className="mt-6 overflow-hidden rounded-2xl border border-slate-100 shadow-sm">
-              <img
-                src="/images/insights/erp9-vs-prime.svg"
-                alt="Tally ERP 9 vs Tally Prime comparison"
-                className="w-full h-auto"
-                loading="lazy"
-              />
-            </div>
-          )}
-          {lesson.slug === 'latest-version-of-tally-prime' && (
-            <>
-              <div className="mt-6 overflow-hidden rounded-2xl border border-slate-100 shadow-sm">
-                <img
-                  src="/images/insights/latest-tally-prime.svg"
-                  alt="TallyPrime 7.2 is the latest version of Tally Prime"
-                  className="w-full h-auto"
-                  loading="lazy"
-                />
-              </div>
-              {/* CHANGE: 2026-10-27 — the official TallyPrime 7.2 artwork is now the page HERO.
-                  WHY: the owner asked for 7.2 to be the hero of this lesson ("ensure to use ...
-                  tallyprime 7.2 as its hero"). It used to sit far down the article, after the whole
-                  body, so the release it is about was never actually seen on arrival. It is the
-                  first visual proof that 7.2 is the current release, so it belongs in the header
-                  directly under the banner, before any body copy. The component (shared, no
-                  "use client") caps the portrait asset at 320/360/400 px per breakpoint, centres
-                  it and links the full-size image, so nothing overflows at 360 px. */}
-              <LessonFigure
-                src="/images/insights/tallyprime-7.2.webp"
-                alt="TallyPrime 7.2 new features and benefits - the latest release of Tally Prime"
-                caption="TallyPrime 7.2 - the latest release of Tally Prime. Click the image to open it full size."
-                width={1024}
-                height={1371}
-              />
-            </>
-          )}
-          {lesson.slug === 'tally-prime-shortcuts-complete-list' && (
-            <div className="mt-6 overflow-hidden rounded-2xl border border-slate-100 shadow-sm">
-              <img
-                src="/images/insights/tally-shortcuts.svg"
-                alt="Tally Prime shortcut keys complete list"
-                className="w-full h-auto"
-                loading="lazy"
-              />
-            </div>
-          )}
-          {lesson.slug === 'how-to-create-company-in-tally' && (
-            <div className="mt-6 overflow-hidden rounded-2xl border border-slate-100 shadow-sm">
-              <img
-                src="/images/insights/tally-company.svg"
-                alt="How to create company in Tally Prime step by step"
-                className="w-full h-auto"
-                loading="lazy"
-              />
-            </div>
-          )}
-          {lesson.slug === 'masters-ledgers-groups' && (
-            <div className="mt-6 overflow-hidden rounded-2xl border border-slate-100 shadow-sm">
-              <img
-                src="/images/insights/tally-masters.svg"
-                alt="Masters ledgers groups in Tally Prime"
-                className="w-full h-auto"
-                loading="lazy"
-              />
-            </div>
-          )}
-          {lesson.slug === 'vouchers-types-contra' && (
-            <div className="mt-6 overflow-hidden rounded-2xl border border-slate-100 shadow-sm">
-              <img
-                src="/images/insights/tally-vouchers.svg"
-                alt="Types of vouchers in Tally Prime"
-                className="w-full h-auto"
-                loading="lazy"
-              />
-            </div>
-          )}
-          {lesson.slug === 'how-to-record-bank-reconciliation-in-tally' && (
-            <div className="mt-6 overflow-hidden rounded-2xl border border-slate-100 shadow-sm">
-              <img
-                src="/images/insights/tally-bank-reco.svg"
-                alt="Bank reconciliation in Tally Prime"
-                className="w-full h-auto"
-                loading="lazy"
-              />
-            </div>
-          )}
-          {lesson.slug === 'cost-centre-in-tally' && (
-            <div className="mt-6 overflow-hidden rounded-2xl border border-slate-100 shadow-sm">
-              <img
-                src="/images/insights/tally-cost-centre.svg"
-                alt="Cost centre in Tally Prime"
-                className="w-full h-auto"
-                loading="lazy"
-              />
-            </div>
-          )}
-          {lesson.slug === 'tally-inventory-bom-godowns' && (
-            <div className="mt-6 overflow-hidden rounded-2xl border border-slate-100 shadow-sm">
-              <img
-                src="/images/insights/tally-inventory.svg"
-                alt="Tally Prime inventory BOM godowns"
-                className="w-full h-auto"
-                loading="lazy"
-              />
-            </div>
-          )}
-          {lesson.slug === 'tally-gst' && (
-            <div className="mt-6 overflow-hidden rounded-2xl border border-slate-100 shadow-sm">
-              <img
-                src="/images/insights/tally-gst.svg"
-                alt="GST setup, invoicing and reports in Tally Prime"
-                className="w-full h-auto"
-                loading="lazy"
-              />
-            </div>
-          )}
-          {lesson.slug === 'tally-payroll-hrms' && (
-            <div className="mt-6 overflow-hidden rounded-2xl border border-slate-100 shadow-sm">
-              <img
-                src="/images/insights/tally-payroll.svg"
-                alt="Tally Prime payroll and HRMS"
-                className="w-full h-auto"
-                loading="lazy"
-              />
-            </div>
-          )}
-          {lesson.slug === 'tally-reports-analysis' && (
-            <div className="mt-6 overflow-hidden rounded-2xl border border-slate-100 shadow-sm">
-              <img
-                src="/images/insights/tally-reports.svg"
-                alt="Tally Prime reports analysis"
-                className="w-full h-auto"
-                loading="lazy"
-              />
-            </div>
-          )}
-          {lesson.slug === 'tally-integration-excel-xml-odbc' && (
-            <div className="mt-6 overflow-hidden rounded-2xl border border-slate-100 shadow-sm">
-              <img
-                src="/images/insights/tally-integration.svg"
-                alt="Tally integration Excel XML API ODBC"
-                className="w-full h-auto"
-                loading="lazy"
-              />
-            </div>
-          )}
-          {lesson.slug === 'tally-career-prep' && (
-            <div className="mt-6 overflow-hidden rounded-2xl border border-slate-100 shadow-sm">
-              <img
-                src="/images/insights/tally-career.svg"
-                alt="Tally career preparation interview MCQ"
-                className="w-full h-auto"
-                loading="lazy"
-              />
-            </div>
-          )}
-          {lesson.slug === 'tss-licensing-upgrades-cloud' && (
-            <div className="mt-6 overflow-hidden rounded-2xl border border-slate-100 shadow-sm">
-              <img
-                src="/images/insights/tally-tss-cloud.svg"
-                alt="TSS licensing upgrades Tally Cloud"
-                className="w-full h-auto"
-                loading="lazy"
-              />
-            </div>
-          )}
-        </header>
+      <nav className="docs-breadcrumb" aria-label="Breadcrumb">
+        <Link href="/">Home</Link>
+        <span aria-hidden="true">/</span>
+        <Link href={INSIGHTS_ENTRY_PATH}>Tally Insights</Link>
+        <span aria-hidden="true">/</span>
+        <Link href={`/tally-insights/${lesson.sectionId}`}>{lesson.sectionTitle}</Link>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">{lesson.title}</span>
+      </nav>
 
-        {/* CHANGE: 2026-10-22 — the body is rendered by the shared MarkdownBody component.
-            WHY: the old inline renderer printed markdown table rows as raw `| ... |` text and
-            then appended the parsed tables at the BOTTOM of the article (wrong order), while
-            the client hub printed the whole body as one raw blob. MarkdownBody is used by
-            BOTH surfaces so a markdown table is a real <table> exactly where it was written. */}
-        <article>
-          <MarkdownBody md={lesson.bodyMd} />
-
-          {lesson.definitions && lesson.definitions.length > 0 && (
-            <div className="not-prose mt-10">
-              <h2 className="text-xl font-black text-slate-900 mb-4 tracking-tight">
-                Key Terms
-              </h2>
-              <div className="grid gap-4">
-                {lesson.definitions.map((d, i) => (
-                  <div
-                    key={i}
-                    className="p-5 rounded-2xl border border-slate-100 bg-white"
-                  >
-                    <h3 className="font-bold text-slate-900">{d.term}</h3>
-                    <p className="text-sm text-slate-600 mt-2 font-medium leading-relaxed">
-                      {d.definition}
-                    </p>
-                    {d.example && (
-                      <p className="text-xs text-slate-500 mt-2 font-medium">
-                        Example: {d.example}
-                      </p>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {lesson.examples && lesson.examples.length > 0 && (
-            <div className="not-prose mt-10">
-              <h2 className="text-xl font-black text-slate-900 mb-6 tracking-tight">
-                Step-by-Step Examples
-              </h2>
-              <div className="grid gap-6">
-                {lesson.examples.map((ex, i) => (
-                  <div
-                    key={i}
-                    className="p-6 rounded-3xl border border-slate-100 bg-white"
-                  >
-                    <h3 className="font-bold text-slate-900 mb-4">
-                      {ex.title}
-                    </h3>
-                    <ol className="space-y-3 text-sm text-slate-700 font-medium list-decimal list-inside">
-                      {ex.steps.map((s, idx) => (
-                        <li key={idx}>{s}</li>
-                      ))}
-                    </ol>
-                    {ex.notes && ex.notes.length > 0 && (
-                      <ul className="mt-4 space-y-2 text-xs text-slate-500 list-disc list-inside">
-                        {ex.notes.map((n, idx) => (
-                          <li key={idx}>{n}</li>
-                        ))}
-                      </ul>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {lesson.shortcuts && lesson.shortcuts.length > 0 && (
-            <div className="not-prose mt-10">
-              <h2 className="text-xl font-black text-slate-900 mb-4 tracking-tight">
-                Quick Shortcut Reference
-              </h2>
-              <div className="overflow-x-auto rounded-xl border border-slate-200 shadow-sm">
-                <table className="w-full text-sm">
-                  <thead>
-                    <tr className="bg-gradient-to-r from-slate-50 to-[#F5F4ED]/30">
-                      <th className="text-left py-3 px-4 font-bold text-slate-700">
-                        Keys
-                      </th>
-                      <th className="text-left py-3 px-4 font-bold text-slate-700">
-                        Action
-                      </th>
-                      <th className="text-left py-3 px-4 font-bold text-slate-700">
-                        Notes
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {lesson.shortcuts.map((sc, i) => (
-                      <tr key={i} className="border-t border-slate-100 hover:bg-[#F5F4ED]/20 transition-colors duration-150">
-                        <td className="py-2.5 px-4 font-mono text-[#006569] font-semibold whitespace-nowrap">
-                          {sc.keys}
-                        </td>
-                        <td className="py-2.5 px-4 text-slate-700 font-medium">
-                          {sc.action}
-                        </td>
-                        <td className="py-2.5 px-4 text-slate-500 font-medium">
-                          {sc.notes || "-"}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          )}
-
-          {lesson.faqs && lesson.faqs.length > 0 && (
-            <div className="not-prose mt-12">
-              <h2 className="text-xl font-black text-slate-900 mb-6 tracking-tight">
-                FAQs
-              </h2>
-              <div className="grid gap-4">
-                {lesson.faqs.map((f, i) => (
-                  <div
-                    key={i}
-                    className="p-5 rounded-2xl border border-slate-100 bg-white"
-                  >
-                    <h3 className="font-bold text-slate-900">{f.q}</h3>
-                    <p className="text-sm text-slate-600 mt-2 font-medium leading-relaxed">
-                      {f.a}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          <div className="not-prose mt-12 space-y-6">
-            {lesson.leadMagnet && <LeadMagnetForm leadMagnet={lesson.leadMagnet} />}
-            {lesson.modulePromo && <ModulePromoCard promo={lesson.modulePromo} />}
-          </div>
-        </article>
-
-        <div className="mt-12 flex flex-col sm:flex-row justify-between gap-4">
-          {prev ? (
-            <Link
-              href={`/tally-insights/${prev.sectionId}/${prev.slug}`}
-              className="flex-1 p-4 rounded-2xl border border-slate-100 hover:border-[#006569]/30 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200"
-            >
-              <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">
-                Previous
-              </p>
-              <p className="font-bold text-slate-900 group-hover:text-[#006569]">
-                {prev.title}
-              </p>
-            </Link>
-          ) : (
-            <div className="flex-1" />
-          )}
-          {next ? (
-            <Link
-              href={`/tally-insights/${next.sectionId}/${next.slug}`}
-              className="flex-1 p-4 rounded-2xl border border-slate-100 hover:border-[#006569]/30 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 text-right"
-            >
-              <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">
-                Next
-              </p>
-              <p className="font-bold text-slate-900 group-hover:text-[#006569]">
-                {next.title}
-              </p>
-            </Link>
-          ) : (
-            <div className="flex-1" />
-          )}
+      <header className="overview_header docs-page-header">
+        <p className="docs-kicker">{lesson.sectionTitle}</p>
+        <h1>{lesson.title}</h1>
+        <p className="docs-lede">{lesson.intro}</p>
+        <div className="docs-quick-answer">
+          <h2>Quick answer</h2>
+          <p>{quickAnswer}</p>
         </div>
+      </header>
 
-        <div className="mt-12 text-center">
-          <Link
-            href="/tally-insights"
-            className="inline-flex items-center justify-center px-6 py-3 rounded-full border border-slate-200 text-slate-700 font-black text-[10px] uppercase tracking-[0.15em] hover:border-[#006569] hover:text-[#006569] hover:shadow-md transition-all duration-200"
-          >
-            Back to Tally Insights
+      <article className="tut_overview docs-article">
+        <MarkdownBody md={lesson.bodyMd} />
+
+        {lesson.definitions && lesson.definitions.length > 0 && (
+          <section className="docs-block" aria-labelledby="docs-terms-heading">
+            <h2 id="docs-terms-heading">Key terms</h2>
+            <div className="docs-term-list">
+              {lesson.definitions.map((d, i) => (
+                <div key={i} className="docs-term">
+                  <h3>{d.term}</h3>
+                  <p>{d.definition}</p>
+                  {d.example && <p className="docs-term-example">Example: {d.example}</p>}
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {lesson.examples && lesson.examples.length > 0 && (
+          <section className="docs-block" aria-labelledby="docs-examples-heading">
+            <h2 id="docs-examples-heading">Worked examples</h2>
+            <div className="docs-example-list">
+              {lesson.examples.map((ex, i) => (
+                <div key={i} className="docs-example">
+                  <h3>{ex.title}</h3>
+                  <ol>
+                    {ex.steps.map((s, idx) => (
+                      <li key={idx}>{s}</li>
+                    ))}
+                  </ol>
+                  {ex.notes && ex.notes.length > 0 && (
+                    <ul className="docs-example-notes">
+                      {ex.notes.map((n, idx) => (
+                        <li key={idx}>{n}</li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {lesson.shortcuts && lesson.shortcuts.length > 0 && (
+          <section className="docs-block" aria-labelledby="docs-shortcuts-heading">
+            <h2 id="docs-shortcuts-heading">Quick shortcut reference</h2>
+            <div className="docs-table-wrap">
+              <table className="docs-table">
+                <thead>
+                  <tr>
+                    <th scope="col">Keys</th>
+                    <th scope="col">Action</th>
+                    <th scope="col">Notes</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {lesson.shortcuts.map((sc, i) => (
+                    <tr key={i}>
+                      <td className="docs-key" data-label="Keys">{sc.keys}</td>
+                      <td data-label="Action">{sc.action}</td>
+                      <td data-label="Notes">{sc.notes || "-"}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </section>
+        )}
+
+        {lesson.faqs && lesson.faqs.length > 0 && (
+          <section id="faq" className="docs-block" aria-labelledby="docs-faq-heading">
+            <h2 id="docs-faq-heading">Frequently asked questions</h2>
+            {lesson.faqIntro && <p className="docs-section-intro">{lesson.faqIntro}</p>}
+            <div className="docs-faq-list">
+              {lesson.faqs.map((f, i) => (
+                <div key={i} id={`faq-${i + 1}`} className="docs-faq-item">
+                  <h3>
+                    <a href={`#faq-${i + 1}`}>{f.q}</a>
+                  </h3>
+                  <p>{f.a}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {lesson.relatedLinks && lesson.relatedLinks.length > 0 && (
+          <section className="docs-block" aria-labelledby="docs-related-heading">
+            <h2 id="docs-related-heading">Related guides</h2>
+            <ul className="docs-related-list">
+              {lesson.relatedLinks.map((link) => (
+                <li key={link.href}>
+                  <Link href={link.href}>{link.title}</Link>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+      </article>
+
+      {/* CHANGE: 2026-11-24 — the curated modulePromo data existed since 2026-10 but was never
+          rendered. Surface it as a text-only card (no image/form) so every guide carries its
+          own product/service message without disturbing the clean docs layout. */}
+      {lesson.modulePromo && (
+        <aside className="docs-promo" aria-label={lesson.modulePromo.title}>
+          <div className="docs-promo-head">
+            {lesson.modulePromo.badge && (
+              <span className="docs-promo-badge">{lesson.modulePromo.badge}</span>
+            )}
+            <h2 className="docs-promo-title">{lesson.modulePromo.title}</h2>
+          </div>
+          <p className="docs-promo-body">{lesson.modulePromo.body}</p>
+          {lesson.modulePromo.productUrl && (
+            <Link href={lesson.modulePromo.productUrl} className="docs-cta-link">
+              Learn more
+            </Link>
+          )}
+        </aside>
+      )}
+
+      <aside className="docs-cta" aria-label="Talk to a Tally specialist">
+        <p className="docs-cta-title">Why not just search this on Google?</p>
+        <p>
+          A search result tells you the menu path. It cannot tell you whether <em>your</em>{" "}
+          ledger structure, TSS status or version will behave the same way. We are a Tally
+          Certified Partner since 2008, based in CBD Belapur, Navi Mumbai, and we support
+          1500+ businesses with TallyPrime, cloud, TSS renewal, TDL customization and training.
+          A short conversation with our team gets you an answer checked against your actual
+          setup instead of a generic forum reply.
+        </p>
+        <div className="docs-cta-actions">
+          <Link href="/contact" className="docs-cta-link">
+            Talk to our team
+          </Link>
+          <Link href="/services" className="docs-cta-link docs-cta-link-secondary">
+            See our services
           </Link>
         </div>
-          </div>
-        </div>
-      </main>
-      <Footer />
-    </div>
+      </aside>
+
+      <nav className="docs-pager" aria-label="Previous and next guides">
+        {prev ? (
+          <Link
+            href={`/tally-insights/${prev.sectionId}/${prev.slug}`}
+            className="docs-pager-link"
+          >
+            <span>Previous</span>
+            <strong>{prev.title}</strong>
+          </Link>
+        ) : (
+          <span />
+        )}
+        {next ? (
+          <Link
+            href={`/tally-insights/${next.sectionId}/${next.slug}`}
+            className="docs-pager-link is-next"
+          >
+            <span>Next</span>
+            <strong>{next.title}</strong>
+          </Link>
+        ) : (
+          <span />
+        )}
+      </nav>
+    </>
   );
 }

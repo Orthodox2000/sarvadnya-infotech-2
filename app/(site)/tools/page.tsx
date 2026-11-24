@@ -83,8 +83,9 @@ export default function ToolsHubPage() {
             TSS renewal guide
           </Link>
           , the{" "}
+          {/* CHANGE: 2026-11-24 — /tally-insights is a 301; link to the entry section. */}
           <Link
-            href="/tally-insights"
+            href="/tally-insights/fundamentals-version-transitions"
             className="font-bold text-[#006569] underline decoration-[#B8DEDE] underline-offset-2 hover:decoration-[#006569]"
           >
             Tally Insights hub

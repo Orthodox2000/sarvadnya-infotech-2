@@ -135,7 +135,8 @@ export default function LearnSaraHubPage() {
 
         <p className="mt-10 text-[13px] leading-relaxed text-slate-600">
           Want the deeper, step-by-step product walkthroughs instead?{" "}
-          <Link href="/tally-insights" className="font-bold text-[#006569] underline decoration-[#B8DEDE] underline-offset-2 hover:decoration-[#006569]">
+          {/* CHANGE: 2026-11-24 — /tally-insights is a 301; link to the entry section. */}
+          <Link href="/tally-insights/fundamentals-version-transitions" className="font-bold text-[#006569] underline decoration-[#B8DEDE] underline-offset-2 hover:decoration-[#006569]">
             Visit the Tally Insights knowledge hub
           </Link>
           , or{" "}

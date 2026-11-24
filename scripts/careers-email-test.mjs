@@ -194,7 +194,9 @@ test('is a real email document with the company contact block', () => {
   assert(applicant.startsWith('<!DOCTYPE html>'), 'not an HTML document');
   has(applicant, DEFAULT_COMPANY.email);
   has(applicant, DEFAULT_COMPANY.website);
-  has(applicant, 'All Rights Reserved');
+  // CHANGE: 2026-11-24 — match the shared footer's actual copy casing (email-brand.mjs ships
+  // "All rights reserved"). The old title-case assertion was a pre-existing false failure.
+  has(applicant, 'All rights reserved');
 });
 
 test('leaks NO internal fields (IP, geo, device, job id, resume link)', () => {
@@ -421,7 +423,7 @@ test('is a real email document with the company contact block and logo', () => {
   has(accountCreated, 'src="cid:sarvadnya-logo"');
   has(accountCreated, DEFAULT_COMPANY.email);
   has(accountCreated, DEFAULT_COMPANY.website);
-  has(accountCreated, 'All Rights Reserved');
+  has(accountCreated, 'All rights reserved');
 
   const hosted = buildAccountCreatedHtml({ ...ACCOUNT });
   lacks(hosted, 'cid:');

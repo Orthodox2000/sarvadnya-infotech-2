@@ -64,6 +64,14 @@ export type Faq = {
   a: string;
 };
 
+// CHANGE: 2026-11-24 — small internal-link model for the docs layout. These are hand-picked,
+// already-published guides only; no URL is synthesised from a title, so a link can never point
+// at a route that does not exist.
+export type RelatedLink = {
+  title: string;
+  href: string;
+};
+
 export type Lesson = {
   id: string;
   slug: string;
@@ -83,6 +91,13 @@ export type Lesson = {
   moduleWarnings?: ModuleWarning[];
   addonWarnings?: AddonWarning[];
   faqs?: Faq[];
+  // CHANGE: 2026-11-24 — answer-first snippet placed directly under the H1 in the docs layout.
+  // Falls back to seoDescription/intro when a lesson has no explicit value.
+  quickAnswer?: string;
+  // CHANGE: 2026-11-24 — visible FAQ label; keeps the section heading useful without claiming
+  // a count that would go stale when an FAQ is edited.
+  faqIntro?: string;
+  relatedLinks?: RelatedLink[];
   leadMagnet?: LeadMagnet;
   modulePromo?: ModulePromo;
 };
@@ -129,10 +144,15 @@ export const SECTIONS: Section[] = [
       'High-impact keyboard shortcuts to save time. Download the printable cheat sheet.',
     seoTitle: 'Tally Prime Shortcut Keys',
     seoDescription:
-      'Every key TallyPrime shortcut in one searchable list: navigation, vouchers, reports, GST and printing.',
+      'Tally Prime shortcut keys in one searchable list: F1-F12, navigation, vouchers, reports, GST and printing. Find the key in seconds.',
     keywords: [
+      'tally prime shortcut keys',
       'tally prime shortcuts',
       'tally shortcut keys',
+      'shortcut keys of tally prime',
+      'tally prime short cut keys',
+      'tally prime shortcut keys list',
+      'tally prime all shortcut keys',
       'tally keyboard shortcuts',
       'tally prime shortcut list'
     ]
@@ -150,7 +170,10 @@ export const SECTIONS: Section[] = [
       'how to create company in tally',
       'tally ledgers and groups',
       'tally chart of accounts',
-      'tallyprime company setup'
+      'tallyprime company setup',
+      'ledger master in tally prime',
+      'tally master',
+      'ledger master'
     ]
   },
   {
@@ -161,9 +184,15 @@ export const SECTIONS: Section[] = [
       'Record transactions accurately with correct voucher types and best practices.',
     seoTitle: 'Tally Voucher Types & Contra',
     seoDescription:
-      'Use the right TallyPrime voucher type every time, including contra, payment, receipt and journal entries.',
+      'Types of voucher in TallyPrime explained: contra, payment, receipt and journal. See which voucher to use, with real examples.',
     keywords: [
       'types of vouchers in tally',
+      'types of voucher',
+      'types of vouchers',
+      'voucher types',
+      'tally voucher types',
+      'how many types of vouchers in tally',
+      'types of accounting voucher',
       'contra voucher in tally',
       'tally payment entry',
       'tally journal entry'
@@ -305,15 +334,26 @@ export const SECTIONS: Section[] = [
       'Understand TSS, licensing, ERP 9 to Prime upgrades, Tally Cloud Access and support.',
     seoTitle: 'TSS, Licensing & Tally Cloud',
     seoDescription:
-      'Understand Tally Software Services (TSS), licence types, ERP 9 to TallyPrime upgrades, offline renewal and Cloud Access.',
+      'Check and verify TSS expiry, renew a Tally licence, upgrade ERP 9 to TallyPrime and set up Tally Cloud Access - with help from a Certified Partner.',
     keywords: [
       'tss in tally',
       'tally software services',
       'tally licence renewal',
-      'tally cloud access'
+      'tally cloud access',
+      'tallycloud access',
+      'tss verify',
+      'verify tss',
+      'tss checker',
+      'tss full form'
     ]
   }
 ];
+
+// CHANGE: 2026-11-24 — /tally-insights is a redirect, not a rendered page. Every breadcrumb,
+// sidebar "top" link and revalidation default uses this one entry section so the retired hub
+// cannot be linked again by accident.
+export const INSIGHTS_ENTRY_SECTION_ID = 'fundamentals-version-transitions';
+export const INSIGHTS_ENTRY_PATH = `/tally-insights/${INSIGHTS_ENTRY_SECTION_ID}`;
 
 // CHANGE: 2026-10-29 - 13 lesson seoTitles shortened to <=35 characters of body copy.
 // WHY: seoMetadata() appends " | Sarvadnya Infotech LLP" (25 chars), so any body over 35
@@ -409,7 +449,7 @@ TallyPrime 7.2 is a compliance and productivity release. It adds five features t
 | :-- | :-- |
 | Personalized print of purchase orders | Customize and print purchase orders with personalized formats directly from your system. |
 | GSTR-9 export to Excel utility | Seamlessly export annual GSTR-9 returns directly into Excel format with ease. |
-| Login extended for the entire day for e-way bill / e-invoice generation | Enjoy uninterrupted generation with an extended all-day login session for e-way bills and e-invoices. |
+| Extended login session for e-invoice / e-way bill generation | Login sessions of up to 30 days are supported for e-Invoicing and e-Way Bill, in addition to the earlier 6-hour session validity. |
 | Deemed taxable value support for tobacco products | Accurate tax calculations and compliance updates specifically for tobacco products and cess. |
 | TDS file now supports the latest FVU format | Fully compliant with the latest FVU formats for error-free TDS file generation and returns. |
 
@@ -417,7 +457,7 @@ TallyPrime 7.2 is a compliance and productivity release. It adds five features t
 
 - **Personalized print of purchase orders** - your purchase order layout is stored in TallyPrime, so the same format prints every time instead of being rebuilt in Word or Excel.
 - **GSTR-9 export to Excel utility** - the annual return moves straight into a spreadsheet, which is what your accountant needs for reconciliation before filing.
-- **All-day login for e-way bill and e-invoice generation** - the session no longer interrupts you in the middle of a dispatch day, so documents are generated when the goods actually move.
+- **Extended login session for e-invoice and e-way bill generation** - TallyPrime supports sessions of up to 30 days for these services, in addition to the earlier 6-hour validity, so frequent sign-ins no longer interrupt a dispatch schedule.
 - **Deemed taxable value for tobacco products** - deemed value and cess follow the statutory rule for tobacco inside TallyPrime instead of being calculated outside it.
 - **TDS file with the latest FVU format** - the TDS file is generated in the format the FVU validation utility expects, so the validation step stops failing on an old format.
 
@@ -456,9 +496,18 @@ We install and validate the update, keep your data on a verified backup, and che
     // CHANGE: 2026-11-03 — GSC 28d: 333 impressions, 2 clicks, position 9.7. The query is
     // literally "tally prime 7.2" (169 impressions, 0 clicks), so the release number now
     // leads the title instead of sitting after "Latest Version of".
-    seoTitle: 'Tally Prime 7.2: Latest Version & New Features',
+    // CHANGE: 2026-11-24 — GSC 28d: 530 impressions, 3 clicks, position 9.49. Month labels in
+    // a title go stale; the version and the two search intents (features + upgrade) do not.
+    seoTitle: 'TallyPrime 7.2: Features & Upgrade',
     seoDescription:
-      'TallyPrime 7.2, also written Tally Prime 7.2, is the latest version of Tally Prime. Its five new features, how to check your version and how to upgrade.',
+      'TallyPrime 7.2 is the latest version of Tally Prime. See its five new features, check your release in F1 (Help) > About, and upgrade safely.',
+    quickAnswer:
+      'TallyPrime 7.2 — also written Tally Prime 7.2 — is the latest release. It adds personalized purchase-order printing, GSTR-9 export to Excel, an extended e-invoice/e-way bill login session of up to 30 days, deemed taxable value for tobacco products and the latest TDS FVU format.',
+    relatedLinks: [
+      { title: 'Tally ERP 9 vs Tally Prime', href: '/tally-insights/fundamentals-version-transitions/tally-erp9-vs-tally-prime' },
+      { title: 'Tally Prime shortcut keys', href: '/tally-insights/shortcuts-cheat-sheet/tally-prime-shortcuts-complete-list' },
+      { title: 'TSS, licensing and cloud basics', href: '/tally-insights/tss-licensing-cloud/tss-licensing-upgrades-cloud' },
+    ],
     keywords: [
       'latest version of tally',
       'latest version of tally prime',
@@ -478,7 +527,7 @@ We install and validate the update, keep your data on a verified backup, and che
         to: 'TallyPrime 7.2',
         what: 'Latest stable release',
         impact:
-          'Better GST compliance (GSTR-9 export to Excel), personalized purchase order print, all-day login for e-way bill and e-invoice generation, deemed taxable value for tobacco products and the latest FVU format for TDS files',
+          'Better GST compliance (GSTR-9 export to Excel), personalized purchase order print, extended login sessions of up to 30 days for e-invoice and e-way bill, deemed taxable value for tobacco products and the latest FVU format for TDS files',
         warnings: [
           'Custom TDL modules may need validation against TallyPrime 7.2',
           'Add-ons should be tested on a backed-up copy of the data before upgrading',
@@ -495,11 +544,11 @@ We install and validate the update, keep your data on a verified backup, and che
       },
       {
         q: 'What is the latest version of Tally Prime?',
-        a: 'As of now, TallyPrime 7.2 is the latest version of Tally Prime. It adds five features: personalized print of purchase orders, GSTR-9 export to Excel, login extended for the entire day for e-way bill and e-invoice generation, deemed taxable value support for tobacco products, and TDS files in the latest FVU format.'
+        a: 'As of now, TallyPrime 7.2 is the latest version of Tally Prime. It adds five features: personalized print of purchase orders, GSTR-9 export to Excel, an extended e-invoice/e-way bill login session of up to 30 days, deemed taxable value support for tobacco products, and TDS files in the latest FVU format.'
       },
       {
         q: 'What are the new features in TallyPrime 7.2?',
-        a: 'TallyPrime 7.2 brings personalized print of purchase orders, a GSTR-9 export to Excel utility, an all-day login session for e-way bill and e-invoice generation, deemed taxable value support for tobacco products with cess, and TDS file support for the latest FVU format.'
+        a: 'TallyPrime 7.2 brings personalized print of purchase orders, a GSTR-9 export to Excel utility, extended login sessions of up to 30 days for e-invoice and e-way bill, deemed taxable value support for tobacco products with cess, and TDS file support for the latest FVU format.'
       },
       {
         q: 'How do I check which Tally Prime version I am using?',
@@ -541,9 +590,19 @@ We install and validate the update, keep your data on a verified backup, and che
     // "<key> is used for in tally" and "F1 to F12" shapes. "The Complete List" said nothing a
     // searcher typed; "Complete F1-F12 List" matches "tally function keys", "tally keys name",
     // "complete shortcut keys" and "what is f1, f2 ... f12 in tally" at once.
-    seoTitle: 'Tally Prime Shortcut Keys: Complete F1-F12 List',
+    // CHANGE: 2026-11-24 — GSC 28d: 11,254 impressions but only 15 clicks (0.13%). The
+    // old "Complete F1-F12 List" promised more than the page showed and pushed the title over
+    // the SERP budget once the brand suffix is appended. This names the exact query shape.
+    seoTitle: 'Tally Prime Shortcut Keys (F1-F12)',
     seoDescription:
-      'Every Tally Prime shortcut key on one page: F1 to F12, delivery note Alt+F8, narration Alt+R, unhide Alt+U, plus voucher, navigation and report keys.',
+      'Tally Prime shortcut keys from F1 to F12, including voucher keys, Alt+G Go To, Alt+R narration and delivery note Alt+F8.',
+    quickAnswer:
+      'Use F1-F12 for the main TallyPrime actions: F1 Help, F2 Date, F3 Company, F4 Contra, F5 Payment, F6 Receipt, F7 Journal, F8 Sales, F9 Purchase, F10 Voucher Types, F11 Features and F12 Configuration. Alt+G opens Go To from anywhere.',
+    relatedLinks: [
+      { title: 'Voucher types and their shortcut keys', href: '/tally-insights/vouchers-contra/vouchers-types-contra' },
+      { title: 'Create a company in Tally Prime', href: '/tally-insights/company-masters/how-to-create-company-in-tally' },
+      { title: 'TallyPrime 7.2 features and upgrade steps', href: '/tally-insights/fundamentals-version-transitions/latest-version-of-tally-prime' },
+    ],
     keywords: [
       'tally prime shortcut keys pdf',
       'shortcut key to delete company in tally',
@@ -558,6 +617,10 @@ We install and validate the update, keep your data on a verified backup, and che
       // does not answer.
       'tally shortcut keys',
       'tally prime shortcut keys',
+      'tally prime short cut keys',
+      'shortcut keys of tally prime',
+      'tally prime shortcut keys list',
+      'tally prime all shortcut keys',
       'tally all shortcut keys',
       'tally function keys',
       'tally keys name',
@@ -656,8 +719,11 @@ We install and validate the update, keep your data on a verified backup, and che
         a: 'TallyPrime 7.2 uses Alt+G (Go To) to search and jump to any report, master or voucher from anywhere, and Switch To to move between tasks without losing context. This is far faster than menu-hopping in Tally ERP 9.'
       },
       {
+        // CHANGE: 2026-11-24 — the docs layout no longer renders a download form, so the old
+        // "PDF below" answer pointed at a missing asset. The tables above are the source of
+        // truth and the browser's own Print command produces the printable copy.
         q: 'Where can I find a printable Tally Prime shortcut keys PDF?',
-        a: 'Download the Tally Prime Shortcuts Cheat-Sheet PDF below using the form to keep it offline and share with your team.'
+        a: 'The complete F1-F12 and voucher-key list is in the tables above. Use your browser Print command to save this page as a PDF; no separate download or form is needed.'
       },
       // CHANGE: 2026-11-03 — GSC long-tail pass. The 60 queries below the head term are all
       // "what is <key> used for" or "shortcut key for <document>" shapes, and the page already
@@ -775,9 +841,17 @@ We install and validate the update, keep your data on a verified backup, and che
       "Accurate company setup ensures correct reporting and compliance. Define the financial year, address, GST details (if applicable) and security settings at the start, and keep your masters clean to avoid reconciliation issues later.\n\n## Steps to create a company (TallyPrime 7.2)\n\n1. Open TallyPrime and press **Alt+K** (Company) > **Create Company**.\n2. Fill Company Name, Mailing Name, Address, State, Country and Contact details.\n3. Set Financial Year From (for example 01-04-YYYY) and Books Beginning From.\n4. Set the Base Currency Symbol, which is INR for an Indian company.\n5. Configure GST details if the business is registered.\n6. Accept with **Ctrl+A**.\n\n## Decide these before you start\n\n| Field | Why it matters later |\n| :-- | :-- |\n| Company Name | Appears on every invoice, report and payslip. Changing it later changes how historical prints look. |\n| Financial Year From | Sets the reporting year. A wrong year surfaces months later as a period error. |\n| Books Beginning From | The date from which vouchers may be entered. It can be earlier than the financial year start when opening balances go further back. |\n| State | Decides the place of supply on GST invoices, and therefore CGST/SGST versus IGST. |\n| GSTIN | Needed before the first tax invoice is raised. A missing GSTIN blocks the GST reports. |\n\n## Open, switch, alter and shut a company\n\n- **Select a company:** Alt+K (Company) > Select Company, then choose the company and press Enter. Alt+F3 opens the same selection list from anywhere.\n- **Switch between companies already open:** press **F3** and pick from the list.\n- **Alter company details:** Alt+K (Company) > Alter > select the company > edit > **Ctrl+A**.\n- **Shut a company:** Alt+K (Company) > Shut Company > select the company > Enter. **Ctrl+F3** shuts every loaded company at once.\n- **Delete a company:** Alt+K (Company) > Alter > select the company > **Alt+D** > confirm twice. Take a backup first, because this is not reversible.\n\n## Security and access\n\nThe company is only protected if access is controlled. User Access Control is configured from **Alt+K (Company) > Alter**, then **F12 > Use User Access Control = Yes**. A separate password policy sits under **Alt+K > Password Policy**. Configure both before the books go live, not after the first dispute.\n\n## After the company is created\n\n1. Press **F11** (Company Features) and switch on only the features the business uses: GST, TDS, cost centres, payroll, inventory.\n2. Create the masters. Groups and ledgers first, then stock items if inventory is enabled.\n3. Enter opening balances through a Journal voucher or through the opening balance of each ledger.\n4. Check the trial balance before a single live transaction is entered.\n\n## One company is one set of books\n\nA company in TallyPrime holds one balance sheet, one profit and loss statement and one GST registration, so the unit to think in is the legal entity rather than the office. Two branches of the same entity belong in one company and are separated with cost centres, godowns or branch ledgers. Two different legal entities need two companies, even when the same people run both, because the books and the tax registration belong to the entity. A newly created company also starts empty: it has the default groups, but no ledgers, no stock items and no carried-over masters, so the chart of accounts has to be built before the first voucher.\n\n## Common mistakes\n\n- Creating a second company for the next year instead of altering the existing one.\n- Leaving the state blank, then discovering that GST invoices split the wrong way.\n- Enabling every feature at once, which clutters the voucher menu for a team that only raises invoices.\n- Skipping opening balances, so the first balance sheet has nothing to compare against.",
     // CHANGE: 2026-11-03 — GSC 28d: 58 impressions, 0 clicks, position 11.7. The page was
     // missing the "how to" that every query for it starts with.
-    seoTitle: 'How to Create a Company in Tally Prime',
+    // CHANGE: 2026-11-24 — GSC 28d: 482 impressions on "how to create company in tally".
+    // Keeping the query's exact opening words in the title; the brand suffix still fits.
+    seoTitle: 'How to Create Company in Tally',
     seoDescription:
-      "Create a company in Tally Prime step by step: company details, financial year, base currency, GST setup, security settings and the mistakes to avoid.",
+      'Create a company in Tally Prime: Alt+K > Create Company, then set the financial year, base currency, GST details and security before saving with Ctrl+A.',
+    quickAnswer:
+      'Press Alt+K (Company) > Create Company in TallyPrime. Fill the company and mailing names, address, state, financial year and books-beginning date, set the base currency and GST details, then accept with Ctrl+A.',
+    relatedLinks: [
+      { title: 'Ledger masters and groups', href: '/tally-insights/company-masters/masters-ledgers-groups' },
+      { title: 'GST setup, invoicing and reports', href: '/tally-insights/gst-compliance/tally-gst' },
+    ],
     keywords: [
       'how to create company in tally',
       'create company in tally prime',
@@ -835,9 +909,17 @@ We install and validate the update, keep your data on a verified backup, and che
     // CHANGE: 2026-11-03 — GSC 28d: 137 impressions, 1 click, position 8.4. "ledger master in
     // tally prime" (34 impressions, 0 clicks) was the visible query; "Create Ledgers & Groups"
     // contained none of its words.
-    seoTitle: 'Ledger Master in Tally Prime: Create & Alter',
+    // CHANGE: 2026-11-24 — GSC 28d: 1,341 impressions, 4 clicks. The query cluster is
+    // "ledger master / ledger group", not "create & alter", so both nouns now lead.
+    seoTitle: 'Tally Ledger Masters & Groups',
     seoDescription:
-      "Create a ledger master in Tally Prime, choose the right group, and alter it later - plus how groups decide what every report shows.",
+      'Create a ledger master in TallyPrime with Alt+G > Create Master > Ledger, choose the right group, alter it later and keep the balance sheet correct.',
+    quickAnswer:
+      'A group classifies accounts; a ledger holds the actual balance. Create a ledger with Alt+G (Go To) > Create Master > Ledger, pick its group, then accept with Ctrl+A. The group decides where the ledger appears in reports.',
+    relatedLinks: [
+      { title: 'Create a company in Tally Prime', href: '/tally-insights/company-masters/how-to-create-company-in-tally' },
+      { title: 'Voucher types and when to use them', href: '/tally-insights/vouchers-contra/vouchers-types-contra' },
+    ],
     keywords: [
       'masters in tally',
       'ledgers in tally',
@@ -922,11 +1004,26 @@ We install and validate the update, keep your data on a verified backup, and che
     // Order and Sales Order, and wrongly implied Sales/Purchase need inventory enabled (they
     // work in accounting-only mode). Shortcuts come from the same source set already pinned in
     // the shortcut lesson, so the two pages cannot disagree.
-    seoTitle: 'Types of Vouchers in Tally Prime & When to Use Each',
+    // CHANGE: 2026-11-24 — GSC 28d: 7,714 impressions but only 21 clicks (0.27%). No count is
+    // claimed: Tally's published voucher families are the verified structure on this page.
+    seoTitle: 'Tally Voucher Types & Uses',
     seoDescription:
-      "All voucher types in Tally Prime - accounting, inventory and order vouchers - with the shortcut and what each one records.",
+      'TallyPrime voucher types grouped as accounting, inventory and order vouchers, with the shortcut key and the transaction each one records.',
+    quickAnswer:
+      'TallyPrime groups vouchers into accounting (Contra F4, Payment F5, Receipt F6, Journal F7, Sales F8, Purchase F9, Debit Note Alt+F5, Credit Note Alt+F6), inventory (Physical Stock Ctrl+F7, Stock Journal Alt+F7, Delivery Note Alt+F8, Receipt Note Alt+F9) and order vouchers (Sales Order Ctrl+F8, Purchase Order Ctrl+F9).',
+    relatedLinks: [
+      { title: 'Complete Tally Prime shortcut key list', href: '/tally-insights/shortcuts-cheat-sheet/tally-prime-shortcuts-complete-list' },
+      { title: 'Ledger masters and groups', href: '/tally-insights/company-masters/masters-ledgers-groups' },
+      { title: 'Bank reconciliation in TallyPrime', href: '/tally-insights/bank-reconciliation/how-to-record-bank-reconciliation-in-tally' },
+    ],
     keywords: [
       'types of vouchers in tally',
+      'types of voucher',
+      'types of vouchers',
+      'voucher types',
+      'tally voucher types',
+      'how many types of vouchers in tally',
+      'types of accounting voucher',
       'what is contra entry in tally',
       'contra entry in tally',
       'voucher entry in tally prime',
@@ -1042,13 +1139,23 @@ We install and validate the update, keep your data on a verified backup, and che
     intro:
       'Enable GST in TallyPrime 7.2, configure ledgers with HSN/SAC and GSTIN, raise GST invoices and produce GSTR-1, GSTR-3B and GST reports.',
     bodyMd:
-      "GST is built into TallyPrime 7.2 - there is no separate GST add-on to buy. Once GST is switched on in Company Features, TallyPrime adds GST fields to your masters and vouchers, prints GST-compliant invoices, and produces the statutory reports you need for filing.\n\n## 1. Enable GST in Company Features\nPress F11 (Company Features) and switch on the GST options you need. Every option is independent, so most businesses enable plain GST first and add e-Invoicing or e-Way Bills later.\n\n| Option | What it turns on | When you need it |\n| :-- | :-- | :-- |\n| Maintain GST | GST fields on ledgers and vouchers, plus the GST report set | Every GST-registered business |\n| Maintain GST with TDS | TDS deducted on GST payments, with reporting for it | Businesses that deduct TDS while paying GST |\n| Maintain GST with TCS | Tax collected at source on GST | Businesses receiving large GST payments from registered buyers |\n| Enable e-Invoicing | IRP invoice numbering and IRN capture on invoices | Turnover above the notified e-Invoice threshold (Rs 5 crore) |\n| Enable e-Way Bills | e-Way Bill details on sales and purchase documents | Goods movement above the notified e-Way Bill threshold (Rs 50,000) |\n\nAccept the screen with Ctrl+A. The change applies to the company immediately.\n\n## 2. Create the ledgers that GST needs\n| Ledger type | Where it goes | Key settings |\n| :-- | :-- | :-- |\n| Party ledger (customer / supplier) | Any of the normal groups | Enable GST = Yes, Applicable for = Goods or Services, HSN code or SAC, GSTIN and State for registered parties |\n| GST output ledgers (CGST, SGST, IGST at each rate) | Duties and Taxes | One ledger per rate, for example GST 5, 12, 18 and 28 |\n| Input tax credit ledgers (Input CGST, Input SGST, Input IGST) | Duties and Taxes | Without these, the tax you pay on purchases is treated as an expense instead of a credit |\n| Non-GST ledgers | Normal groups | Leave Enable GST = No so that no tax is calculated against them |\n\nSet the HSN code to the number of digits the law asks for (2, 4, 6 or 8) and make sure the state on the party ledger matches the state in its GSTIN - a mismatch is the most common reason for a wrong tax split.\n\n## 3. Raise a GST invoice\n1. Press F8 for a Sales voucher and pick the customer ledger.\n2. Enter the item name, quantity and rate. The GST rate and HSN/SAC flow in from the ledger setup.\n3. Check the tax split - CGST plus SGST for an intra-state sale, IGST for an inter-state sale.\n4. Press Alt+P to print. Choose Original for Recipient, Duplicate for Transporter or Counterfoil.\n5. Set invoice numbering under F11 > Accounts Info > Invoice Numbering so every invoice number is generated and reused consistently across the GST reports.\n\nA GST invoice must carry the supplier GSTIN, the buyer GSTIN and state, a sequential invoice number and date, the HSN/SAC, the taxable value, the tax split and the total. The printed invoice from TallyPrime already carries all of these.\n\n## 4. Work with the GST reports\nGateway of Tally > Display > Statutory Reports > GST Reports gives you GSTR-1, GSTR-3B, GST Summary, GST Invoice details and the input tax credit reconciliation. Press Alt+E on any report to export it to Excel, XML or JSON, which is how most accountants hand data to their filing software.\n\nDownloading GSTR-2A and GSTR-2B from the portal, e-Invoice and e-Way Bill utilities all need an active TSS. When TSS expires, TallyPrime keeps your accounting working but those statutory utilities are restricted until it is renewed.",
+      "GST is built into TallyPrime 7.2 - there is no separate GST add-on to buy. Once GST is switched on in Company Features, TallyPrime adds GST fields to your masters and vouchers, prints GST-compliant invoices, and produces the statutory reports you need for filing.\n\n## 1. Enable GST in Company Features\nPress F11 (Company Features) and switch on the GST options you need. Every option is independent, so most businesses enable plain GST first and add e-Invoicing or e-Way Bills later.\n\n| Option | What it turns on | When you need it |\n| :-- | :-- | :-- |\n| Maintain GST | GST fields on ledgers and vouchers, plus the GST report set | Every GST-registered business |\n| Maintain GST with TDS | TDS deducted on GST payments, with reporting for it | Businesses that deduct TDS while paying GST |\n| Maintain GST with TCS | Tax collected at source on GST | Businesses receiving large GST payments from registered buyers |\n| Enable e-Invoicing | IRP invoice numbering and IRN capture on invoices | Turnover above the notified e-Invoice threshold (Rs 5 crore) |\n| Enable e-Way Bills | e-Way Bill details on sales and purchase documents | Goods movement above the notified e-Way Bill threshold (Rs 50,000) |\n\nAccept the screen with Ctrl+A. The change applies to the company immediately.\n\n## 2. Create the ledgers that GST needs\n| Ledger type | Where it goes | Key settings |\n| :-- | :-- | :-- |\n| Party ledger (customer / supplier) | Any of the normal groups | Enable GST = Yes, Applicable for = Goods or Services, HSN code or SAC, GSTIN and State for registered parties |\n| GST output ledgers (CGST, SGST, IGST at each rate) | Duties and Taxes | One ledger per rate, for example GST 5, 12, 18 and 28 |\n| Input tax credit ledgers (Input CGST, Input SGST, Input IGST) | Duties and Taxes | Without these, the tax you pay on purchases is treated as an expense instead of a credit |\n| Non-GST ledgers | Normal groups | Leave Enable GST = No so that no tax is calculated against them |\n\nSet the HSN code to the number of digits the law asks for (2, 4, 6 or 8) and make sure the state on the party ledger matches the state in its GSTIN - a mismatch is the most common reason for a wrong tax split.\n\n## Add or change a GSTIN on a ledger\n1. Press **Alt+G** (Go To) > **Alter Master > Ledger** and select the customer or supplier ledger.\n2. Keep **Enable GST = Yes**, set **Applicable for** to Goods or Services, and enter the GSTIN.\n3. Set the **State** to the state encoded in that GSTIN, then accept with **Ctrl+A**.\n\nThe GSTIN on the party ledger is what TallyPrime prints on the invoice and uses to decide the tax split, so correct it before the first voucher for that party.\n\n## 3. Raise a GST invoice\n1. Press F8 for a Sales voucher and pick the customer ledger.\n2. Enter the item name, quantity and rate. The GST rate and HSN/SAC flow in from the ledger setup.\n3. Check the tax split - CGST plus SGST for an intra-state sale, IGST for an inter-state sale.\n4. Press Alt+P to print. Choose Original for Recipient, Duplicate for Transporter or Counterfoil.\n5. Set invoice numbering under F11 > Accounts Info > Invoice Numbering so every invoice number is generated and reused consistently across the GST reports.\n\nA GST invoice must carry the supplier GSTIN, the buyer GSTIN and state, a sequential invoice number and date, the HSN/SAC, the taxable value, the tax split and the total. The printed invoice from TallyPrime already carries all of these.\n\n## 4. Work with the GST reports\nGateway of Tally > Display > Statutory Reports > GST Reports gives you GSTR-1, GSTR-3B, GST Summary, GST Invoice details and the input tax credit reconciliation. Press Alt+E on any report to export it to Excel, XML or JSON, which is how most accountants hand data to their filing software.\n\nDownloading GSTR-2A and GSTR-2B from the portal, e-Invoice and e-Way Bill utilities all need an active TSS. When TSS expires, TallyPrime keeps your accounting working but those statutory utilities are restricted until it is renewed.",
     // CHANGE: 2026-11-03 — GSC 28d: 347 impressions, 1 click (0.29%), position 6.7. The
     // snippet now promises the three things people ask for (enable, invoice, report) instead
     // of listing report names.
-    seoTitle: 'GST in Tally Prime: Setup, Invoice & Reports',
+    // CHANGE: 2026-11-24 — GSC 28d: 945 impressions, 2 clicks. A shorter title leaves room
+    // for the full brand suffix while still carrying the three queries people type.
+    seoTitle: 'GST in Tally Prime: Setup & Reports',
     seoDescription:
-      'Enable GST in TallyPrime, set GSTIN and HSN on the ledgers, raise a GST invoice and pull GSTR-1 or GSTR-3B - with the menu path for each step.',
+      'Enable GST in TallyPrime, add or change a GSTIN on a ledger, raise a GST invoice and export GSTR-1 or GSTR-3B with the menu path for each step.',
+    quickAnswer:
+      'GST is built into TallyPrime: press F11 (Company Features), switch on Maintain GST, add GSTIN, HSN/SAC and State on the party ledger, then record the voucher. GST reports are under Display > Statutory Reports > GST Reports.',
+    faqIntro: 'Short answers to the GST questions most often asked by Tally users.',
+    relatedLinks: [
+      { title: 'Create a company and set GST details', href: '/tally-insights/company-masters/how-to-create-company-in-tally' },
+      { title: 'Ledger masters and groups', href: '/tally-insights/company-masters/masters-ledgers-groups' },
+      { title: 'TallyPrime shortcut keys', href: '/tally-insights/shortcuts-cheat-sheet/tally-prime-shortcuts-complete-list' },
+    ],
     keywords: [
       'gst in tally prime',
       'how to enable gst in tally prime',
@@ -1211,14 +1318,18 @@ We install and validate the update, keep your data on a verified backup, and che
     intro:
       'Move data in and out of TallyPrime 7.2 - Excel import and export, the XML API for automation, ODBC connectivity and Power Query reporting.',
     bodyMd:
-      "TallyPrime is a closed accounting book, but it is not a closed data silo. It exports, it imports, and it serves data over an API - which is how a finance team stops re-keying numbers between Tally and Excel.\n\n## Choose the right route\n| What you want to do | Tool to use | How it works |\n| :-- | :-- | :-- |\n| Bring ledgers, items and opening balances in from Excel | Excel import | Gateway of Tally > Import of Data > Masters, point at an Excel sheet and map the columns |\n| Take a report out for analysis | Export (Alt+E) | Export any report to Excel, XML, JSON or JPEG |\n| Push and pull data automatically | XML API | TallyPrime serves XML over HTTP on your own machine, so any script or service can read and write |\n| Build dashboards in Excel or Power BI | ODBC or Power Query | Connect to the Tally data source and treat the ledgers as tables |\n| Send data to a website or portal | XML API | Post vouchers, masters and reports from your own server to the Tally API |\n\n## Excel import, step by step\n1. Prepare one row per master, with a header row that names each field exactly as Tally expects.\n2. Gateway of Tally > Import of Data > Masters (or Vouchers for voucher data).\n3. Choose the file, then map each spreadsheet column to the Tally field in the mapping screen.\n4. Create or alter masters as part of the import - tick the option if you want the import to create masters that do not exist yet.\n5. Import, then review the log. Every rejected row is listed with the reason.\n6. Verify with a display list before you close the screen - an import that half worked is worse than no import.\n\n## The XML API\nTallyPrime can run as a server on your workstation or server and answer requests over HTTP, typically on port 9000. You send a request that names the company and the data you want, and TallyPrime returns XML (JSON is supported as well).\n\n- Point the request at the local host and the company, so the data never leaves the office network unless you build it that way.\n- The usual pattern is a scheduled script that reads the day's vouchers and writes them into your own reporting store.\n- Keep the request templates in version control and log every request - an integration that nobody can debug is worse than a manual export.\n- Always open and close the company session inside a single request. A half-open session is the most common cause of empty responses.\n\n## ODBC and Power Query\nInstall the Tally ODBC driver, enable the ODBC connection from Company Features, then connect any ODBC-compliant tool (Excel Power Query, Power BI, Tableau) to the Tally data source and treat masters, ledgers and vouchers as tables.\n\nWith Power Query the same job is done through the API: choose Get Data > Web, point it at the Tally request URL and let Power Query parse the XML response. Refresh on a schedule and your dashboard updates without anybody exporting anything.\n\n## Practical advice\n- Import masters once and maintain them in Tally. Re-importing the same masters every month is how duplicates appear.\n- Export to CSV rather than Excel for anything that will be loaded into another system - it avoids date and number formatting surprises.\n- Keep a sandbox company for integration testing so a bad request never touches live books.\n- Log every automated write. Automation without a log is an audit finding waiting to happen.",
+      "TallyPrime is a closed accounting book, but it is not a closed data silo. It exports, it imports, and it serves data over an API - which is how a finance team stops re-keying numbers between Tally and Excel.\n\n## Choose the right route\n| What you want to do | Tool to use | How it works |\n| :-- | :-- | :-- |\n| Bring ledgers, items and opening balances in from Excel | Excel import | Gateway of Tally > Import of Data > Masters, point at an Excel sheet and map the columns |\n| Take a report out for analysis | Export (Alt+E) | Export any report to Excel, XML, JSON or JPEG |\n| Push and pull data automatically | XML API | TallyPrime serves XML over HTTP on your own machine, so any script or service can read and write |\n| Build dashboards in Excel or Power BI | ODBC or Power Query | Connect to the Tally data source and treat the ledgers as tables |\n| Send data to a website or portal | XML API | Post vouchers, masters and reports from your own server to the Tally API |\n\n## Excel import, step by step\n1. Prepare one row per master, with a header row that names each field exactly as Tally expects.\n2. Gateway of Tally > Import of Data > Masters (or Vouchers for voucher data).\n3. Choose the file, then map each spreadsheet column to the Tally field in the mapping screen.\n4. Create or alter masters as part of the import - tick the option if you want the import to create masters that do not exist yet.\n5. Import, then review the log. Every rejected row is listed with the reason.\n6. Verify with a display list before you close the screen - an import that half worked is worse than no import.\n\n## Where a direct Excel import goes wrong\n\nTally's own import screen works, but every check is yours:\n\n- Column headers have to match the field names Tally expects. Rename a header and that column simply stays unmapped.\n- The import log lists rejected rows with a reason. Somebody still has to read it, and rejected rows are common when dates, GSTINs and numbers arrive in a different format.\n- Excel can change a date or a number while formatting a cell, so the value you typed is not always the value Tally receives.\n- Creating masters during an import can add duplicates when the same ledger already exists under a slightly different name. Most companies already have masters, so they should be maintained in Tally rather than re-imported every month.\n- A partly successful import is the dangerous one: some rows land, some do not, and the books look plausible until somebody checks a report.\n\n## How our integration team handles it\n\nOur Data Integration service is built for exactly this. It maps your Excel columns to Tally fields once instead of every month, applies error validation logic before values reach the books, and can schedule recurring bulk imports so a monthly file is not a manual chore. The same secure API bridges cover XML API posting, ODBC/data-bridge reporting and marketplace or CRM sync.\n\nThat is the difference between a menu path you found online and a repeatable workflow configured and supported for your company. If your file shape changes, you are not the one debugging a rejected-row log.\n\n## The XML API\nTallyPrime can run as a server on your workstation or server and answer requests over HTTP, typically on port 9000. You send a request that names the company and the data you want, and TallyPrime returns XML (JSON is supported as well).\n\n- Point the request at the local host and the company, so the data never leaves the office network unless you build it that way.\n- The usual pattern is a scheduled script that reads the day's vouchers and writes them into your own reporting store.\n- Keep the request templates in version control and log every request - an integration that nobody can debug is worse than a manual export.\n- Always open and close the company session inside a single request. A half-open session is the most common cause of empty responses.\n\n## ODBC and Power Query\nInstall the Tally ODBC driver, enable the ODBC connection from Company Features, then connect any ODBC-compliant tool (Excel Power Query, Power BI, Tableau) to the Tally data source and treat masters, ledgers and vouchers as tables.\n\nWith Power Query the same job is done through the API: choose Get Data > Web, point it at the Tally request URL and let Power Query parse the XML response. Refresh on a schedule and your dashboard updates without anybody exporting anything.\n\n## Practical advice\n- Import masters once and maintain them in Tally. Re-importing the same masters every month is how duplicates appear.\n- Export to CSV rather than Excel for anything that will be loaded into another system - it avoids date and number formatting surprises.\n- Keep a sandbox company for integration testing so a bad request never touches live books.\n- Log every automated write. Automation without a log is an audit finding waiting to happen.",
     seoTitle: 'TallyPrime Excel, XML API & ODBC',
     seoDescription:
-      'Import masters from Excel, export reports, use the Tally XML API and connect with ODBC or Power Query.',
+      'Import Excel into TallyPrime without the rejected-row surprises. Excel import limits, XML API, ODBC and Power Query explained by a Tally Certified Partner.',
     keywords: [
       'tally prime integration',
       'tally xml api',
       'import data from excel to tally',
+      'excel to tally import',
+      'import excel to tally prime',
+      'excel import in tally',
+      'tally excel import',
       'tally power query',
       'tally odbc connectivity',
       'tally prime data export'
@@ -1242,10 +1353,10 @@ We install and validate the update, keep your data on a verified backup, and che
       }
     ],
     modulePromo: {
-      title: 'Custom Integration For Your Workflow',
-      body: 'We build TallyPrime integrations for MIS, portals and ERP links - XML API, Excel automation and ODBC reporting pipelines.',
+      title: 'Stop Fighting Excel Imports',
+      body: 'Our Data Integration service maps your columns once, validates values before they reach the books and schedules recurring bulk imports. XML API, ODBC and marketplace sync too.',
       productUrl: '/contact?service=Tally%20Integration',
-      badge: 'Integration'
+      badge: 'Our Service'
     }
   },
   {
@@ -1310,6 +1421,11 @@ We install and validate the update, keep your data on a verified backup, and che
       'tally erp 9 to tally prime upgrade',
       'tally prime licence types',
       'tally cloud access',
+      'tallycloud access',
+      'tss verify',
+      'verify tss',
+      'tss checker',
+      'tss full form',
       'tally prime server license'
     ],
     faqs: [
@@ -1409,9 +1525,12 @@ export function getAllLessonSlugs() {
 // CHANGE: 2026-10-23 - Compact nav model for the client sidebar island.
 // WHY: the hub/section/lesson pages all use the same internal nav. Instead of shipping the
 // entire LESSONS array (with bodyMd) to the browser, we pass only title+slug per lesson.
+// CHANGE: 2026-11-24 — section `description` added so the sidebar shows a short label under
+// each expandable section, as requested for the W3-style docs layout. Still no bodyMd.
 export type InsightsNavModel = Array<{
   id: string;
   title: string;
+  description: string;
   lessons: Array<{ slug: string; title: string }>;
 }>;
 
@@ -1421,6 +1540,7 @@ export function getInsightsNavModel(): InsightsNavModel {
     .map((s) => ({
       id: s.id,
       title: s.title,
+      description: s.description,
       lessons: getLessonsBySection(s.id).map((l) => ({ slug: l.slug, title: l.title })),
     }));
 }

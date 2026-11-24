@@ -217,15 +217,22 @@ if (!existsSync(RATING_HELPER)) {
       problems.push(`lib/rating-summary.mjs: expected exported ${fn}()`)
     }
   }
+  // CHANGE: 2026-11-24 — on 2026-11-16 the owner ordered the header aggregate rating removed
+  // ("review bug shows 4.5 from 4 reviews on homscreen remove it"). The wall still renders
+  // per-card stars, normalised through normalizeRating(), so the permitted path is still in
+  // use. Requiring summariseRatings() specifically contradicted that explicit decision. The
+  // real protections above (no aggregateRating, no hand-typed figures) are unchanged.
   const wall = readFileSync(join(ROOT, 'app', 'components', 'CustomerReviews.tsx'), 'utf8')
-  if (!/from '@\/lib\/rating-summary\.mjs'/.test(wall) || !/summariseRatings\(/.test(wall)) {
+  const importsHelper = /from '@\/lib\/rating-summary\.mjs'/.test(wall)
+  const usesHelper = /\b(?:normalizeRating|summariseRatings|formatRating)\(/.test(wall)
+  if (!importsHelper || !usesHelper) {
     problems.push(
-      'app/components/CustomerReviews.tsx: the review wall must compute its average with ' +
-        'summariseRatings() - a manual figure would defeat the whole rule',
+      'app/components/CustomerReviews.tsx: the review wall must use lib/rating-summary.mjs ' +
+        '(normalizeRating / summariseRatings / formatRating) - never a hand-typed figure',
     )
   }
 }
-checked.push('review-wall average computed from lib/rating-summary.mjs')
+checked.push('review-wall ratings computed from lib/rating-summary.mjs')
 
 // ── 6-9. per-call-site checks ─────────────────────────────────────────────────────────────
 

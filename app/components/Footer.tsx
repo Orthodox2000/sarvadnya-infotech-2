@@ -277,7 +277,8 @@ export default function Footer({ settings: initialSettings }: { settings?: SiteS
                             </li>
                         ))}
                         <li>
-                            <Link href="/tally-insights" className="hover:text-[#B8DEDE] transition-colors hover-underline-animation py-1">
+                            {/* CHANGE: 2026-11-24 — /tally-insights is a 301; link to the real entry section. */}
+                            <Link href="/tally-insights/fundamentals-version-transitions" className="hover:text-[#B8DEDE] transition-colors hover-underline-animation py-1">
                                 Tally Insights
                             </Link>
                         </li>

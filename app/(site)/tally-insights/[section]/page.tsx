@@ -1,9 +1,14 @@
 // CHANGE: 2026-10-23 - Section index page (server-rendered, indexable).
+// CHANGE: 2026-11-24 — moved into the shared W3-style docs shell; the page now renders only
+// its own header, breadcrumb and clean guide list. No local nav, footer or hero assets.
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import Footer from "../../../components/Footer";
-import TallyInsightsNav from "@/app/components/TallyInsights/TallyInsightsNav";
-import { getInsightsNavModel, getLessonsBySection, getSectionById, SECTIONS } from "@/lib/learn-tally-curriculum";
+import {
+  INSIGHTS_ENTRY_PATH,
+  getLessonsBySection,
+  getSectionById,
+  SECTIONS,
+} from "@/lib/learn-tally-curriculum";
 import { breadcrumbJsonLd, seoMetadata } from "@/lib/seo";
 
 // CHANGE: 2026-11-24 — static curriculum, rarely changes; 6h ISR to reduce CPU.
@@ -15,7 +20,7 @@ export function generateStaticParams() {
 }
 
 export async function generateMetadata({
-  params
+  params,
 }: {
   params: Promise<{ section: string }>;
 }) {
@@ -36,7 +41,7 @@ export async function generateMetadata({
 }
 
 export default async function TallyInsightsSectionPage({
-  params
+  params,
 }: {
   params: Promise<{ section: string }>;
 }) {
@@ -45,74 +50,74 @@ export default async function TallyInsightsSectionPage({
   if (!sec) return notFound();
 
   const lessons = getLessonsBySection(section);
-  const nav = getInsightsNavModel();
   const jsonLd = breadcrumbJsonLd([
     { name: "Home", path: "/" },
-    { name: "Tally Insights", path: "/tally-insights" },
-    { name: sec.title, path: `/tally-insights/${sec.id}` }
+    { name: "Tally Insights", path: INSIGHTS_ENTRY_PATH },
+    { name: sec.title, path: `/tally-insights/${sec.id}` },
   ]);
 
   return (
-    <div className="min-h-screen bg-white">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <main className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        <div className="mb-8">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#F5F4ED] border border-[#E5F4F4] mb-4">
-            <span className="text-[10px] font-black uppercase tracking-widest text-[#006569]">
-              Tally Insights
-            </span>
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <nav className="docs-breadcrumb" aria-label="Breadcrumb">
+        <Link href="/">Home</Link>
+        <span aria-hidden="true">/</span>
+        <Link href={INSIGHTS_ENTRY_PATH}>Tally Insights</Link>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">{sec.title}</span>
+      </nav>
+
+      <header className="overview_header docs-page-header">
+        <p className="docs-kicker">Tally Insights</p>
+        <h1>{sec.title}</h1>
+        <p className="docs-lede">{sec.description}</p>
+      </header>
+
+      <section className="tut_overview" aria-label={`${sec.title} guides`}>
+        <div className="docs-section-meta">
+          {lessons.length} guide{lessons.length === 1 ? "" : "s"} in this section
+        </div>
+        <div className="docs-guide-list">
+          {lessons.map((lesson) => (
+            <Link
+              key={lesson.slug}
+              href={`/tally-insights/${sec.id}/${lesson.slug}`}
+              className="docs-guide-card"
+            >
+              <h2>{lesson.title}</h2>
+              <p>{lesson.intro}</p>
+            </Link>
+          ))}
+        </div>
+        {/* CHANGE: 2026-11-24 — one grounded "why us over a search result" strip per section. */}
+        <aside className="docs-section-help" aria-label="Help applying these guides">
+          <div>
+            <h2>Got the steps. Need it working in your Tally?</h2>
+            <p>
+              These guides show how TallyPrime works. As a Tally Certified Partner since 2008
+              serving 1500+ businesses, we configure it for your data, version and compliance —
+              from setup and TSS renewal to TDL customization, cloud hosting and training. Skip
+              the trial-and-error of generic search results.
+            </p>
           </div>
-          <h1 className="text-2xl md:text-4xl font-black text-slate-900 tracking-tight mb-2">
-            {sec.title}
-          </h1>
-          <p className="text-sm md:text-base text-slate-600 font-medium max-w-3xl">
-            {sec.description}
-          </p>
+          <div className="docs-cta-actions">
+            <Link href="/contact" className="docs-cta-link">
+              Ask our team
+            </Link>
+            <Link href="/services" className="docs-cta-link docs-cta-link-secondary">
+              Our services
+            </Link>
+          </div>
+        </aside>
+        <div className="docs-back-row">
+          <Link href={INSIGHTS_ENTRY_PATH} className="docs-back-link">
+            &larr; Start from the first section
+          </Link>
         </div>
-
-        <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
-          <aside className="lg:w-[240px] xl:w-[260px] 2xl:w-[280px] flex-shrink-0">
-            <TallyInsightsNav nav={nav} activeSectionId={sec.id} />
-          </aside>
-
-          <section className="flex-1 min-w-0">
-            <div className="grid gap-4">
-              {lessons.map((lesson) => (
-                <Link
-                  key={lesson.slug}
-                  href={`/tally-insights/${sec.id}/${lesson.slug}`}
-                  className="group border border-slate-200 rounded-lg p-5 sm:p-6 bg-white shadow-sm hover:shadow-lg hover:-translate-y-[2px] transition-all duration-300"
-                >
-                  <div className="flex items-start justify-between gap-4">
-                    <div>
-                      <h2 className="text-lg md:text-xl font-black text-slate-900 tracking-tight group-hover:text-[#006569] transition-colors">
-                        {lesson.title}
-                      </h2>
-                      <p className="text-sm text-slate-600 mt-2 font-medium leading-relaxed">
-                        {lesson.intro}
-                      </p>
-                    </div>
-                    <span className="mt-1 text-[#006569] opacity-0 group-hover:opacity-100 transition-opacity">
-                      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-                      </svg>
-                    </span>
-                  </div>
-                </Link>
-              ))}
-            </div>
-            <div className="mt-10">
-              <Link
-                href="/tally-insights"
-                className="inline-flex items-center justify-center px-5 py-2.5 rounded-full border border-slate-200 text-slate-700 text-[10px] font-black uppercase tracking-widest hover:border-[#006569] hover:text-[#006569] transition-colors duration-200"
-              >
-                Back to All Guides
-              </Link>
-            </div>
-          </section>
-        </div>
-      </main>
-      <Footer />
-    </div>
+      </section>
+    </>
   );
 }

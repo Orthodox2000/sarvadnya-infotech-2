@@ -91,7 +91,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     '/team',
     '/terms',
     '/tutorials',
-    '/tally-insights',
+    // CHANGE: 2026-11-24 — /tally-insights is now a 301 to its first section, not a page.
+    // Section and lesson entries below are the canonical indexable URLs.
     // CHANGE: 2026-10-26 — the guide hub and the free tool are real pages now (see guideEntries).
     '/learn-sara',
     '/tools',

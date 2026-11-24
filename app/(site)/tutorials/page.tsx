@@ -82,8 +82,9 @@ export default function TutorialsPage() {
                         Professional guides, webinars, and technical documentation to master TallyPrime and scale your business.
                     </p>
                     <div className="flex flex-col sm:flex-row justify-center gap-3 mt-6">
+                        {/* CHANGE: 2026-11-24 — /tally-insights is a 301; link to the entry section. */}
                         <Link
-                            href="/tally-insights"
+                            href="/tally-insights/fundamentals-version-transitions"
                             className="inline-flex items-center justify-center px-6 py-3 rounded-full border border-[#006569]/30 text-[#006569] font-black text-[10px] uppercase tracking-[0.15em] hover:bg-[#006569] hover:text-white transition-all"
                         >
                             Prefer a structured path? Go to Tally Insights

@@ -79,6 +79,47 @@ function* walk(dir) {
 }
 
 /**
+ * Strip `/* ... *&#47;` block comments, including JSX `{/* ... *&#47;}` prose.
+ * CHANGE: 2026-11-24 — the guard only understood `//`, so the root layout's multi-line JSX
+ * comment about the greeting popup's skip list was read as a route link. A route mention in
+ * ANY comment is documentation, never a link, so all comment forms are now ignored. State is
+ * carried across lines so multi-line blocks are removed completely; the guard stays strict
+ * on real code (no new allowlist suppression).
+ */
+function stripBlockComments(line, state) {
+  let out = '';
+  let i = 0;
+  while (i < line.length) {
+    if (state.inBlockComment) {
+      const end = line.indexOf('*/', i);
+      if (end === -1) return out; // rest of the line is inside the comment
+      state.inBlockComment = false;
+      i = end + 2;
+      continue;
+    }
+    const jsxStart = line.indexOf('{/*', i);
+    const plainStart = line.indexOf('/*', i);
+    let start = -1;
+    let markerLen = 0;
+    if (jsxStart !== -1 && (plainStart === -1 || jsxStart <= plainStart)) {
+      start = jsxStart;
+      markerLen = 3;
+    } else if (plainStart !== -1) {
+      start = plainStart;
+      markerLen = 2;
+    }
+    if (start === -1) {
+      out += line.slice(i);
+      break;
+    }
+    out += line.slice(i, start);
+    state.inBlockComment = true;
+    i = start + markerLen;
+  }
+  return out;
+}
+
+/**
  * Strip a trailing `//` comment.
  * A `//` directly preceded by `:` is a URL scheme (`https://`), NOT a comment — treating
  * it as one truncates the line and hides real hits. (A `//` inside a string literal is
@@ -108,8 +149,9 @@ for (const scanRoot of SCAN_ROOTS) {
     if (!EXTS.has(rel.slice(rel.lastIndexOf('.')))) continue;
 
     const lines = readFileSync(abs, 'utf8').split('\n');
+    const commentState = { inBlockComment: false };
     lines.forEach((line, idx) => {
-      const code = stripLineComment(line);
+      const code = stripLineComment(stripBlockComments(line, commentState));
       const matches = code.match(DEMO_RE);
       if (!matches) return;
       const lineNo = idx + 1;
