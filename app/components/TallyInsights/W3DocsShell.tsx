@@ -6,10 +6,13 @@
 // CHANGE: 2026-11-24 (one-screen flex fix) — the shell used to nest a second `.w3-row`
 // inside `<main>`, so the article was a grandchild of the flex container. There is now exactly
 // one flex row with two in-flow children (nav + main). Nothing is fixed, absolute or overlaid.
+// CHANGE: 2026-11-24 — the main column now opens with a full-content guide search bar. It is an
+// in-flow sibling of the page content, so the two-in-flow-children rule for the flex row holds.
 import type { ReactNode } from "react";
 import Link from "next/link";
 import Footer from "@/app/components/Footer";
 import TallyInsightsNav from "@/app/components/TallyInsights/TallyInsightsNav";
+import InsightsSearch from "@/app/components/TallyInsights/InsightsSearch";
 import { getInsightsNavModel } from "@/lib/learn-tally-curriculum";
 
 export default function W3DocsShell({ children }: { children: ReactNode }) {
@@ -27,6 +30,11 @@ export default function W3DocsShell({ children }: { children: ReactNode }) {
             id="tally-docs-main"
             className="w3-main ws-light-grey w3-col l10 m12 docs-main-col"
           >
+            {/* CHANGE: 2026-11-24 — one full-content search bar above every guide. The sidebar
+                filter browses titles; this searches shortcut rows, FAQs and body copy too. */}
+            <div className="docs-search-region">
+              <InsightsSearch />
+            </div>
             {children}
           </main>
         </div>

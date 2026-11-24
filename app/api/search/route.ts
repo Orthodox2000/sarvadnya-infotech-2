@@ -2,6 +2,9 @@ import { NextResponse } from 'next/server';
 import { getModules, getTutorials, getNews, getPartners, getSettings } from '@/lib/mongodb-utils';
 import { PUBLIC_API_CACHE } from '@/lib/api-cache';
 import { findSemanticResults } from '@/lib/search-indexer';
+// CHANGE: 2026-11-24 — Tally Insights guides are now searchable from the global search too.
+// The curriculum was the largest body of on-site text that /api/search never indexed.
+import { searchInsights } from '@/lib/insights-search';
 // CHANGE: 2026-11-02 — module URLs built from the single helper for consistency.
 import { moduleHref } from '@/lib/modules';
 // CHANGE: 2026-10-23 — the /shop catalogue (107 TDLs, importers, boosters, modules) is searchable.
@@ -232,6 +235,16 @@ export async function GET(request: Request) {
     // 2b. Shop catalogue matching (instant, no DB) — CHANGE: 2026-10-23
     const shopMatches = matchShopItems(query);
 
+    // 2c. Tally Insights guides (instant, no DB) — CHANGE: 2026-11-24.
+    // The "match" label and snippet tell the visitor which shortcut/FAQ/line was found.
+    const insightMatches = searchInsights(query, 5).map((r) => ({
+      title: r.title,
+      description: `${r.match}: ${r.snippet}`,
+      url: r.href,
+      type: 'Tally Insights',
+      icon: 'M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z',
+    }));
+
     // 3. DB results (parallel fetch)
     const [modules, tutorials, news] = await Promise.all([
       getModules(),
@@ -274,7 +287,9 @@ export async function GET(request: Request) {
     });
 
     // 4. Merge all results
-    let combined = deduplicate([...semanticResults, ...staticMatches, ...shopMatches, ...dbResults]);
+    // CHANGE: 2026-11-24 — insights matches come before static/DB results so a specific
+    // guide outranks a generic landing page when the query names a shortcut or FAQ.
+    let combined = deduplicate([...semanticResults, ...insightMatches, ...staticMatches, ...shopMatches, ...dbResults]);
 
     // 5. AI fallback only when very few results
     if (combined.length < 2) {
