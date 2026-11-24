@@ -17,6 +17,7 @@
 
 ### 2026-11
 
+- [2026-11-24 — Tally Insights: 6h ISR for static curriculum](history/2026-11-24-tally-insights-6h-isr-static-curriculum-cache.md)
 - [2026-11-24 — Modules: 6h cache/ISR, no client waterfall, on-demand revalidate webhook](history/2026-11-24-modules-6h-cache-isr-no-client-waterfall-revalidate-webhook.md)
 - [2026-11-23 — Google Tag Manager via `@next/third-parties`: deferred loader, production-only, CSP allowlisted](history/2026-11-23-google-tag-manager-via-next-third-parties.md)
 - [2026-11-23 — `/api/identify` fast path: post-response geo/rdns, warm geo cache, lean cold start](history/2026-11-23-identify-beacon-fast-path-after-and-warm-geo-cache.md)
