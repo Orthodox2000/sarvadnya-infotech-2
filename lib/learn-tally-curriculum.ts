@@ -346,28 +346,6 @@ export const SECTIONS: Section[] = [
       'tss checker',
       'tss full form'
     ]
-  },
-  // CHANGE: 2026-11-24 — new ERP 9 shortcut-equivalents section, added with the circulated
-  // "TallyPrime Shortcut Keys for Faster Data Entry" table supplied by the owner. Kept separate
-  // from the existing shortcuts cheat-sheet so the two pages target different queries and the
-  // ERP 9 comparison column stays in one place.
-  {
-    id: 'erp9-shortcuts',
-    title: 'ERP 9 Shortcuts & Faster Data Entry',
-    order: 14,
-    description:
-      'TallyPrime shortcut keys for faster data entry, grouped by action with the menu location, where each key works and its Tally.ERP 9 equivalent.',
-    seoTitle: 'ERP 9 & TallyPrime Shortcut Keys',
-    seoDescription:
-      'Find the TallyPrime shortcut for any action - general, reports, vouchers, masters, data processing - with its location and the equivalent in Tally.ERP 9.',
-    keywords: [
-      'tally erp 9 shortcut keys',
-      'erp 9 shortcuts',
-      'tallyprime shortcut keys for faster data entry',
-      'tallyprime shortcut keys with erp 9 equivalent',
-      'tally shortcut keys location where it works',
-      'tally prime data entry shortcuts'
-    ]
   }
 ];
 
@@ -1525,38 +1503,41 @@ We install and validate the update, keep your data on a verified backup, and che
       badge: 'TSS Renewal'
     }
   },
-  // CHANGE: 2026-11-24 — ERP 9 shortcut-equivalents lesson. Source data was supplied by the
-  // owner as a circulated "TallyPrime Shortcut Keys for Faster Data Entry" list. Reproduced
-  // as given, including the ERP 9 column; no extra shortcut is invented. Kept as bodyMd tables
-  // so the shared search index can surface each individual row.
+  // CHANGE: 2026-11-24 (owner correction) — this is the ERP 9 shortcut list, so it lives as its
+  // OWN sub-page inside the existing shortcuts section, never merged into the TallyPrime
+  // complete-list lesson. All 121 source rows are kept; the Tally.ERP 9 key is the last column
+  // and the TallyPrime key is shown beside it for comparison only. SEO targets ERP 9 queries.
   {
-    id: 'tallyprime-shortcut-keys-faster-data-entry',
-    slug: 'tallyprime-shortcut-keys-faster-data-entry',
-    sectionId: 'erp9-shortcuts',
-    sectionTitle: 'ERP 9 Shortcuts & Faster Data Entry',
-    order: 1,
-    title: 'TallyPrime Shortcut Keys for Faster Data Entry (with ERP 9 Equivalents)',
+    id: 'erp9-shortcut-keys-faster-data-entry',
+    slug: 'erp9-shortcut-keys-faster-data-entry',
+    sectionId: 'shortcuts-cheat-sheet',
+    sectionTitle: 'Tally Prime Shortcuts',
+    order: 2,
+    title: 'Tally ERP 9 Shortcut Keys for Faster Data Entry',
     intro:
-      'Find the key for a task instead of hunting through menus. This reference groups TallyPrime shortcuts by the area where they work and shows the equivalent in Tally.ERP 9.',
+      'Find the Tally.ERP 9 key for a task instead of hunting through menus. This separate reference groups the supplied shortcut list by the area where it works, with the TallyPrime key shown only for comparison.',
     quickAnswer:
-      'Look up the action in the tables below, then read the key, its location in TallyPrime, where it works and the Tally.ERP 9 equivalent. Alt+G (Go To) and Ctrl+G (Switch To) are TallyPrime top-menu shortcuts with no ERP 9 equivalent in this list.',
-    seoTitle: 'ERP 9 Shortcut Keys, Side by Side',
+      'Look up the action in the tables below and read the Tally.ERP 9 key in the last column. Where it says None, the circulated list gives no ERP 9 key for that TallyPrime action. The middle columns show the TallyPrime key, its menu location and where it works.',
+    seoTitle: 'ERP 9 Shortcut Keys',
     seoDescription:
-      'TallyPrime shortcuts for faster data entry: general, reports, vouchers, masters and data processing, each with its location, where it works and the Tally.ERP 9 equivalent.',
+      'Tally.ERP 9 shortcut keys for faster data entry: general, reports, vouchers, masters and data processing, grouped by action with the TallyPrime key alongside for comparison.',
     keywords: [
-      'tally prime shortcut keys for faster data entry',
       'tally erp 9 shortcut keys',
-      'tally prime shortcut keys list with erp 9 equivalent',
-      'shortcut key location in tally prime where does it work',
-      'tally prime data entry shortcut keys'
+      'erp 9 shortcut keys',
+      'tally erp9 shortcuts',
+      'tally erp 9 shortcut keys list',
+      'tally erp 9 keyboard shortcuts',
+      'tally erp 9 data entry shortcuts',
+      'tally erp 9 f1 f2 f3 shortcut keys',
+      'erp 9 voucher shortcut keys'
     ],
-    bodyMd: `TallyPrime shortcut keys cut the number of steps between a task and the screen that performs it. The tables below are grouped by the area where each key works. Every row gives the action, the key, the location in TallyPrime, where the key works, and the equivalent in Tally.ERP 9 where the circulated list provides one.
+    bodyMd: `Tally.ERP 9 shortcut keys cut the number of steps between a task and the screen that performs it. The tables below group the supplied list by the area where each action is used. For every row, read the **Tally.ERP 9 key** in the last column: where it says **None**, the circulated list gives no ERP 9 key for that action and shows the TallyPrime key only for comparison. The middle columns record that TallyPrime key, its menu location and where it works.
 
-The source list is circulated on professional networks for sharing knowledge. Menu labels can vary slightly by release, so confirm a key on the screen in front of you if it does not respond.
+This ERP 9 reference is a separate page from the [complete Tally Prime shortcut list](/tally-insights/shortcuts-cheat-sheet/tally-prime-shortcuts-complete-list), so the two versions can be read on their own. The source list is circulated on professional networks for sharing knowledge. Menu labels can vary slightly by release, so confirm a key on the screen in front of you if it does not respond.
 
 ### General shortcuts
 
-| Action | Key shortcut | Location in TallyPrime | Where does it work | Equivalent in Tally.ERP 9 |
+| Action | TallyPrime key (for comparison) | Location in TallyPrime | Where does it work | Tally.ERP 9 key |
 | :-- | :-- | :-- | :-- | :-- |
 | To primarily open a report, and create masters and vouchers in the flow of work | Alt+G | Top menu | Across TallyPrime | None |
 | To switch to a different report, and create masters and vouchers in the flow of work | Ctrl+G | Top menu | Across TallyPrime | None |
@@ -1592,7 +1573,7 @@ The source list is circulated on professional networks for sharing knowledge. Me
 
 ### Shortcuts in reports
 
-| Action | Key shortcut | Location in TallyPrime | Where does it work | Equivalent in Tally.ERP 9 |
+| Action | TallyPrime key (for comparison) | Location in TallyPrime | Where does it work | Tally.ERP 9 key |
 | :-- | :-- | :-- | :-- | :-- |
 | To insert a voucher in a report | Alt+I | Hidden key | Reports | Alt+I |
 | To create an entry in the report, by duplicating a voucher | Alt+2 | Hidden key | Reports | Alt+2 |
@@ -1626,7 +1607,7 @@ The source list is circulated on professional networks for sharing knowledge. Me
 
 ### Shortcuts in vouchers
 
-| Action | Key shortcut | Location in TallyPrime | Where does it work | Equivalent in Tally.ERP 9 |
+| Action | TallyPrime key (for comparison) | Location in TallyPrime | Where does it work | Tally.ERP 9 key |
 | :-- | :-- | :-- | :-- | :-- |
 | To open Contra voucher | F4 | Accounting Vouchers | Vouchers | F4 |
 | To open Payment voucher | F5 | Accounting Vouchers | Vouchers | F5 |
@@ -1660,7 +1641,7 @@ The source list is circulated on professional networks for sharing knowledge. Me
 
 ### Shortcuts in masters and vouchers
 
-| Action | Key shortcut | Location in TallyPrime | Where does it work | Equivalent in Tally.ERP 9 |
+| Action | TallyPrime key (for comparison) | Location in TallyPrime | Where does it work | Tally.ERP 9 key |
 | :-- | :-- | :-- | :-- | :-- |
 | To go to the next input field | Tab | Hidden key | Masters & Vouchers | Tab |
 | To go to the previous input field | Shift+Tab | Hidden key | Masters & Vouchers | Shift+Tab |
@@ -1676,7 +1657,7 @@ The source list is circulated on professional networks for sharing knowledge. Me
 
 ### Shortcuts for vouchers and reports
 
-| Action | Key shortcut | Location in TallyPrime | Where does it work | Equivalent in Tally.ERP 9 |
+| Action | TallyPrime key (for comparison) | Location in TallyPrime | Where does it work | Tally.ERP 9 key |
 | :-- | :-- | :-- | :-- | :-- |
 | To export the current voucher or report | Ctrl+E | Top menu | Vouchers & Reports | Alt+E |
 | To e-mail the current voucher or report | Ctrl+M | Top menu | Vouchers & Reports | Alt+M |
@@ -1687,7 +1668,7 @@ The source list is circulated on professional networks for sharing knowledge. Me
 
 ### Shortcuts for reports, vouchers and masters
 
-| Action | Key shortcut | Location in TallyPrime | Where does it work | Equivalent in Tally.ERP 9 |
+| Action | TallyPrime key (for comparison) | Location in TallyPrime | Where does it work | Tally.ERP 9 key |
 | :-- | :-- | :-- | :-- | :-- |
 | To navigate to the next artifact in the context / To increment the Report date or next report in a sequence of reports displayed | + | Hidden key | Masters, Vouchers, and Reports | + |
 | To navigate to the previous artifact in the context / To decrement Report date or previous report in a sequence of reports displayed | - | Hidden key | Masters, Vouchers, and Reports | - |
@@ -1702,7 +1683,7 @@ The source list is circulated on professional networks for sharing knowledge. Me
 
 ### Data processing and keyboard shortcuts across TallyPrime
 
-| Action | Key shortcut | Location in TallyPrime | Where does it work | Equivalent in Tally.ERP 9 |
+| Action | TallyPrime key (for comparison) | Location in TallyPrime | Where does it work | Tally.ERP 9 key |
 | :-- | :-- | :-- | :-- | :-- |
 | To rewrite data | Ctrl+Alt+R | Hidden key | Across TallyPrime | Ctrl+Alt+R |
 | To synchronise data | Alt+Z | Top menu | Across TallyPrime | None |
@@ -1712,44 +1693,49 @@ The source list is circulated on professional networks for sharing knowledge. Me
 
 ### How to use this list
 
-- Find the task in the Action column, then read the key in the next column. "Top menu" and "Right button" keys are visible on screen; "Hidden key" shortcuts are pressed directly.
-- Check the "Where does it work" column before trying a key: a voucher shortcut will not do the same job in a report.
-- Where the last column says "None", the listed source gives no Tally.ERP 9 equivalent. Do not assume an older key will work in TallyPrime.
+- Find the task in the Action column, then read the **Tally.ERP 9 key** in the last column. "None" means the source gives no ERP 9 key for that action; the TallyPrime key beside it is there for comparison only.
+- The "Location in TallyPrime" and "Where does it work" columns describe the TallyPrime behaviour recorded in the source. Check "Where does it work" before trying a key: a voucher shortcut will not do the same job in a report.
+- "Top menu" and "Right button" keys are visible on screen; "Hidden key" shortcuts are pressed directly.
 - Use the search bar above this guide to jump straight to a key, an action or a menu path in any Tally Insights guide.`,
     definitions: [
       {
-        term: 'Go To (Alt+G)',
+        term: 'Tally.ERP 9 key',
         definition:
-          'A TallyPrime top-menu shortcut that opens a report or creates a master or voucher in the flow of work.',
-        example: 'The circulated list gives no Tally.ERP 9 equivalent for Alt+G.'
+          'The last column of every table in this guide: the key to press in Tally.ERP 9 for the action, where the circulated list gives one.',
+        example: 'F4 opens a Contra voucher in Tally.ERP 9.'
       },
       {
-        term: 'Switch To (Ctrl+G)',
+        term: 'None',
         definition:
-          'A TallyPrime top-menu shortcut that switches to a different report while creating masters or vouchers in the flow of work.',
-        example: 'The circulated list gives no Tally.ERP 9 equivalent for Ctrl+G.'
+          'Marks an action with no Tally.ERP 9 key in the circulated list. The TallyPrime key is shown beside it for comparison only.',
+        example: 'Alt+G (Go To) is marked None for Tally.ERP 9.'
       }
     ],
     faqs: [
       {
+        q: 'Where can I find the Tally.ERP 9 key for an action?',
+        a: 'Look in the last column of each table. Where it says "None", the circulated list gives no ERP 9 key for that action; the TallyPrime key in the second column is shown for comparison only.'
+      },
+      {
         q: 'Is there a Tally.ERP 9 equivalent for Alt+G and Ctrl+G?',
-        a: 'No. In the circulated list the Tally.ERP 9 equivalent for both Alt+G (Go To) and Ctrl+G (Switch To) is "None". They are TallyPrime top-menu shortcuts.'
+        a: 'No. In the circulated list the Tally.ERP 9 key for both Alt+G (Go To) and Ctrl+G (Switch To) is "None". They are TallyPrime shortcuts.'
       },
       {
-        q: 'How do I bring back hidden lines in a TallyPrime report?',
-        a: 'Alt+U displays all hidden line entries. Ctrl+U restores the last hidden line, and pressing it repeatedly restores earlier hidden lines in sequence. The ERP 9 equivalents listed are Ctrl+U and Alt+U respectively.'
+        q: 'Which Tally.ERP 9 key opens a Contra voucher?',
+        a: 'F4. The same action is F4 in TallyPrime.'
       },
       {
-        q: 'Which key opens the GST Portal from a statutory report?',
-        a: 'Alt+V, shown on the right button in statutory reports. The Tally.ERP 9 equivalent in the list is Ctrl+O.'
+        q: 'How do I bring back hidden lines in a report?',
+        a: 'In Tally.ERP 9, Ctrl+U displays all hidden line entries and Alt+U displays the last hidden line. The TallyPrime keys for those two actions are Alt+U and Ctrl+U respectively.'
       },
       {
-        q: 'Which key accepts or saves a screen in TallyPrime?',
-        a: 'Ctrl+A. It is listed under reports, vouchers and masters, and the Tally.ERP 9 equivalent is Ctrl+A.'
+        q: 'Which key accepts or saves a screen in Tally.ERP 9?',
+        a: 'Ctrl+A. It is listed under reports, vouchers and masters, with Ctrl+A as the TallyPrime key too.'
       }
     ],
     relatedLinks: [
       { title: 'Complete Tally Prime shortcut key list', href: '/tally-insights/shortcuts-cheat-sheet/tally-prime-shortcuts-complete-list' },
+      { title: 'Difference Between Tally ERP 9 and Tally Prime', href: '/tally-insights/fundamentals-version-transitions/tally-erp9-vs-tally-prime' },
       { title: 'Voucher types and their shortcut keys', href: '/tally-insights/vouchers-contra/vouchers-types-contra' }
     ],
     modulePromo: {

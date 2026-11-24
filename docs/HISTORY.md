@@ -17,7 +17,7 @@
 
 ### 2026-11
 
-- [2026-11-24 — Tally Insights: full-content search bar + ERP 9 shortcuts section](history/2026-11-24-tally-insights-full-content-search-and-erp9-shortcuts-section.md)
+- [2026-11-24 — Tally Insights: full-content search bar + separate ERP 9 shortcuts page (owner-corrected placement)](history/2026-11-24-tally-insights-full-content-search-and-erp9-shortcuts-section.md)
 - [2026-11-24 — Tally Insights: marketing layer + GSC-driven keywords](history/2026-11-24-tally-insights-marketing-layer-and-gsc-keywords.md)
 - [2026-11-24 — Tally Insights: one flex container, no viewport-driven hydration swap](history/2026-11-24-tally-insights-single-flex-container-hydration-fix.md)
 - [2026-11-24 — Tally Insights: W3-style docs shell, clean layout and GSC CTR pass](history/2026-11-24-tally-insights-w3-docs-clean-layout-and-gsc-ctr-pass.md)

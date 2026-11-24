@@ -1,4 +1,4 @@
-# 2026-11-24 — Tally Insights: full-content search + ERP 9 shortcut-equivalents section
+# 2026-11-24 — Tally Insights: full-content search + separate ERP 9 shortcuts page
 
 ## Why
 
@@ -8,9 +8,10 @@ The owner asked for two things:
    filtered guide titles and section titles (`TallyInsightsNav.tsx`), so a visitor looking for
    one shortcut row, FAQ answer or menu path had to open guides and scroll. The global
    `/api/search` also does not index the curriculum at all.
-2. A new section carrying the circulated **"TallyPrime Shortcut Keys for Faster Data
-   Entry"** table, including the *Location in TallyPrime*, *Where does it work* and
-   *Equivalent in Tally.ERP 9* columns.
+2. A **separate ERP 9 page inside the shortcuts area** carrying the circulated shortcut table.
+   The owner corrected the first attempt the same day: the supplied keys are ERP 9 keys and must
+   not sit in a TallyPrime-named section or be merged with the TallyPrime complete-list lesson.
+   See "Owner correction" below.
 
 ## Changes
 
@@ -42,22 +43,37 @@ The owner asked for two things:
 The sidebar's existing title-only filter was deliberately left alone: it is the browse-the-tree
 control and has a documented hydration incident history. The new bar is the content search.
 
-### ERP 9 shortcuts section
+### ERP 9 shortcuts sub-page (final placement)
 
 - `lib/learn-tally-curriculum.ts`
-  - new section `erp9-shortcuts` (order 14) — "ERP 9 Shortcuts & Faster Data Entry", with its
-    own SEO title/description and keywords.
-  - new lesson `tallyprime-shortcut-keys-faster-data-entry` — the complete circulated table,
-    transcribed as seven grouped markdown tables (general, reports, vouchers, masters and
-    vouchers, vouchers and reports, reports/vouchers/masters, data processing). All five source
-    columns are kept on every row. No shortcut was added, merged or "corrected".
-  - `quickAnswer`, definitions, four FAQs, two related links and one quiet corporate-training
-    promo. SEO title kept under 35 characters of body copy because `seoMetadata()` appends the
-    brand suffix.
-- `app/sitemap.ts` already derives section and lesson URLs from `SECTIONS` and
-  `getAllLessonSlugs()`, so the new URLs are included without an edit.
-- Both new routes are covered by `generateStaticParams()` in the section and lesson pages;
-  no static param list needed updating.
+  - new lesson `erp9-shortcut-keys-faster-data-entry`, `sectionId: 'shortcuts-cheat-sheet'`,
+    `order: 2` — a distinct sub-page at
+    `/tally-insights/shortcuts-cheat-sheet/erp9-shortcut-keys-faster-data-entry`. It sits beside
+    the TallyPrime complete list (order 1), not inside it.
+  - the circulated table is transcribed as seven grouped markdown tables (general, reports,
+    vouchers, masters and vouchers, vouchers and reports, reports/vouchers/masters, data
+    processing). All five source columns are kept on every row; the header now names the last
+    column **Tally.ERP 9 key** and the middle key column **TallyPrime key (for comparison)** so
+    the ERP 9 value is the one the reader acts on. No shortcut was added, merged or "corrected".
+  - ERP 9-focused SEO: title `ERP 9 Shortcut Keys`, description leading with Tally.ERP 9,
+    keywords for `tally erp 9 shortcut keys`, `erp 9 shortcut keys list`, `tally erp9 shortcuts`,
+    `tally erp 9 keyboard shortcuts` and similar. ERP 9-first `quickAnswer`, two definitions,
+    five FAQs and related links to the TallyPrime list, the ERP 9 vs Prime comparison and the
+    voucher-types guide.
+- `app/sitemap.ts` derives lesson URLs from `getAllLessonSlugs()`, so the new URL is included
+  without an edit. The lesson route's `generateStaticParams()` is also source-derived.
+- The page uses the shared lesson template, so it inherits canonical URL, Article/Breadcrumb/FAQ
+  JSON-LD, the 6h ISR window and the full-content search bar automatically.
+
+### Owner correction (same day)
+
+The first pass added a separate `erp9-shortcuts` **section** with lesson
+`tallyprime-shortcut-keys-faster-data-entry` and TallyPrime-led SEO. The owner corrected it:
+*"last set of shortcut keys i sent over were of erp9, and wanted in a seperate page and not with
+tallyprime, check again and make new sub page isnide shortvut for erp 9 ans SEO it"*. That section
+and lesson were removed and replaced with the ERP 9 sub-page above. The body copy no longer says
+"TallyPrime shortcuts ... with ERP 9 equivalents"; it directs the reader to the **last column**
+for the ERP 9 key and treats the TallyPrime key as comparison only.
 
 ## Content notes
 
