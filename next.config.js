@@ -50,6 +50,9 @@ const csp = [
 // CHANGE: 2026-11-20 — keep in sync with lib/api-cache.ts (the route-level header). Vercel Edge
 // serves repeat hits at 0 ms Active CPU; everything else under /api stays no-store by default.
 const PUBLIC_API_CACHE = 'public, s-maxage=3600, stale-while-revalidate=86400';
+// CHANGE: 2026-11-24 — modules are rarely updated; longer CDN TTL to cut CPU. Keep in sync with
+// lib/api-cache.ts PUBLIC_MODULES_API_CACHE. Manual/admin edits should trigger /api/revalidate.
+const PUBLIC_MODULES_API_CACHE = 'public, s-maxage=21600, stale-while-revalidate=86400';
 
 const nextConfig = {
   // CHANGE: 2026-08-21 — Single worker for page-data collection/type steps: this machine has 7.5GB RAM
@@ -280,7 +283,6 @@ const nextConfig = {
       ...[
         '/api/prices',
         '/api/news',
-        '/api/modules',
         // CHANGE: 2026-11-21 — /api/tutorials removed: a 1-hour edge cache made
         // admin-added learning videos look absent on the frontend. Feed is tiny
         // and changes at admin-edit time, so freshness beats the CPU saving.
@@ -295,6 +297,10 @@ const nextConfig = {
         source,
         headers: [{ key: 'Cache-Control', value: PUBLIC_API_CACHE }],
       })),
+      {
+        source: '/api/modules',
+        headers: [{ key: 'Cache-Control', value: PUBLIC_MODULES_API_CACHE }],
+      },
     ];
   },
   

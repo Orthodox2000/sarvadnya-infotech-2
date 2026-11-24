@@ -10,6 +10,9 @@ import type { NewsItem } from './news';
 // MATCHES the owner-accepted 1-hour CDN/ISR window (lib/api-cache.ts) — admin edits must still
 // surface hourly; the saving is that the hourly refresh no longer repeats the CPU-heavy scan.
 const CACHED_CONTENT_SECONDS = 60 * 60;
+// CHANGE: 2026-11-24 — modules are rarely updated; keep them cached longer to reduce CPU/DB.
+// Admin/manual updates must trigger POST /api/revalidate (tag: modules) for immediate freshness.
+const CACHED_MODULE_SECONDS = 60 * 60 * 6;
 
 export async function getDb() {
   const client = await clientPromise;
@@ -127,7 +130,7 @@ async function fetchModules() {
 export const getModules = unstable_cache(
   async () => fetchModules(),
   ['public-modules-v1'],
-  { revalidate: CACHED_CONTENT_SECONDS, tags: ['modules'] }
+  { revalidate: CACHED_MODULE_SECONDS, tags: ['modules'] }
 );
 
 export async function addModule(data: any) {

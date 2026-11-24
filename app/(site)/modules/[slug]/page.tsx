@@ -49,9 +49,10 @@ import { breadcrumbJsonLd, faqPageJsonLd, seoMetadata } from "@/lib/seo";
  */
 // CHANGE: 2026-11-20 — ISR, not force-dynamic (the second-largest Fluid CPU consumer on the
 // dashboard). generateStaticParams() pre-builds every known module; dynamicParams stays true so
-// an admin-added module still renders on its first request. Edits appear within one hour —
-// 1-hour staleness was accepted by the owner, so no cross-repo revalidation webhook is added.
-export const revalidate = 3600;
+// an admin-added module still renders on its first request.
+// CHANGE: 2026-11-24 — raised to 6 hours for rare module edits to reduce CPU. Manual/admin
+// edits should call POST /api/revalidate (tag: modules, paths: affected module pages/sitemap/api).
+export const revalidate = 21600;
 export const dynamicParams = true;
 
 const getModulesSafe = cache(async (): Promise<Module[]> => {
