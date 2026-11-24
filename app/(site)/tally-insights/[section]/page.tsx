@@ -6,6 +6,8 @@ import TallyInsightsNav from "@/app/components/TallyInsights/TallyInsightsNav";
 import { getInsightsNavModel, getLessonsBySection, getSectionById, SECTIONS } from "@/lib/learn-tally-curriculum";
 import { breadcrumbJsonLd, seoMetadata } from "@/lib/seo";
 
+// CHANGE: 2026-11-24 — static curriculum, rarely changes; 6h ISR to reduce CPU.
+export const revalidate = 21600;
 export const dynamicParams = false;
 
 export function generateStaticParams() {

@@ -16,6 +16,10 @@ import {
 } from "@/lib/learn-tally-curriculum";
 import { breadcrumbJsonLd, seoMetadata } from "@/lib/seo";
 
+// CHANGE: 2026-11-24 — Tally Insights is static curriculum content (rarely changes).
+// Long ISR window cuts CPU; manual/admin redeploy or revalidation handles rare edits.
+export const revalidate = 21600;
+
 // CHANGE: 2026-10-23 - Hub metadata moved here from the route layout.
 // WHY: the layout metadata applied to the whole /tally-insights subtree, so every future
 // section/lesson page would inherit the hub's canonical. Metadata is now owned per page.

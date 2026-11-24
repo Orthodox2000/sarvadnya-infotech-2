@@ -14,6 +14,9 @@ type RevalidateBody = {
 
 const MODULE_TAGS = ['modules'];
 const MODULE_PATHS = ['/modules', '/api/modules', '/sitemap.xml'];
+// CHANGE: 2026-11-24 — Tally Insights curriculum is static and rarely changed; allow targeted
+// manual invalidation without waiting for 6h ISR.
+const INSIGHTS_PATHS = ['/tally-insights', '/sitemap.xml'];
 
 function authorized(request: Request, bodySecret?: string): boolean {
   const expected = process.env.REVALIDATE_SECRET?.trim();
@@ -36,8 +39,9 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
+  const defaultPaths = Array.isArray(body.tags) && body.tags.includes('insights') ? INSIGHTS_PATHS : MODULE_PATHS;
   const tags = Array.isArray(body.tags) && body.tags.length ? body.tags : MODULE_TAGS;
-  const paths = Array.isArray(body.paths) && body.paths.length ? body.paths : MODULE_PATHS;
+  const paths = Array.isArray(body.paths) && body.paths.length ? body.paths : defaultPaths;
 
   const safeTags = tags.filter((t): t is string => typeof t === 'string' && t.length > 0);
   const safePaths = paths.filter((p): p is string => typeof p === 'string' && p.startsWith('/'));

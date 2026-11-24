@@ -14,6 +14,8 @@ import MarkdownBody from "@/app/components/TallyInsights/MarkdownBody";
 import LessonFigure from "@/app/components/TallyInsights/LessonFigure";
 import TallyInsightsNav from "@/app/components/TallyInsights/TallyInsightsNav";
 
+// CHANGE: 2026-11-24 — static curriculum, rarely changes; 6h ISR to reduce CPU.
+export const revalidate = 21600;
 export const dynamicParams = false;
 
 export async function generateStaticParams() {
