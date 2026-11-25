@@ -130,7 +130,7 @@ All keep `stale-while-revalidate=86400`, so a stale copy answers while the refre
 
 ### Deliberately not changed
 
-- `/api/identify` beacon frequency — increasing the client throttle only delays path beacons; it does not reduce their count, and path history is part of the tracking the owner values.
+- `/api/identify` beacon frequency — simply raising the old client throttle only delayed path beacons without reducing their count. It is now **batched** instead ([detail](history/2026-11-25-batched-identify-beacons.md)): one POST carries all paths in a 30 s window, and the server increments the counters by the batch size so path history and visitor totals are preserved.
 - `robots.txt` / crawler blocking — most bot hits are already cached; blocking trades CPU for search and AI-search visibility.
 - `/api/cart/*`, payment verification, `/demo` — money paths stay `no-store`, test-key locked, and HMAC-verified.
 - Tally Insights content structure — already static in `lib/learn-tally-curriculum.ts`; moving it to `data/` would add import churn with zero CPU or DB benefit.
@@ -183,7 +183,7 @@ No `npm run dev` was started at any point during verification, so no production 
 ## 7. Risks and open decisions
 
 - **Staleness:** admin edits to prices/news/modules/settings/careers/tutorials now take 6–24 h. The owner confirmed no updates for several weeks. If a price changes unexpectedly, the displayed price (6 h cache) could differ from the server-authoritative cart price — lower `PUBLIC_API_CACHE` to 1 h immediately if that happens.
-- **`/api/identify` remains the top CPU path (7 s).** It is the source of the visitor ledger and already skips bots, rate-limits and defers enrichment via `after()`. The only lever added is the optional enrichment kill-switch.
+- **`/api/identify` was the top CPU path (7 s).** It is the source of the visitor ledger and already skips bots, rate-limits and defers enrichment via `after()`. Levers added: the optional enrichment kill-switch (`VISITOR_ENRICHMENT=0`, owner-set) and batched beacons ([detail](history/2026-11-25-batched-identify-beacons.md)), which cut invocation count without changing ledger totals.
 - **AI crawlers:** `meta-externalagent` drives ~59 uncached page renders in 7 days. Edge-blocking it would cut CPU but may reduce AI-search visibility — needs an explicit owner decision.
 - **No automated tests were run.** The build covers type checking; the static guards (`check:h1`, `check:schema`, etc.) were not invoked because the owner did not ask for them.
 

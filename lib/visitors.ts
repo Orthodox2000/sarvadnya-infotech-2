@@ -100,6 +100,8 @@ export interface TrackPayload {
   language: string;
   screen: string;
   sectionViews: string[];
+  // CHANGE: 2026-11-25 — batched beacon: every path seen in one flush window.
+  paths?: Array<{ path: string; at: Date }>;
   utmSource?: string;
   utmMedium?: string;
   utmCampaign?: string;
@@ -333,10 +335,35 @@ export function sanitizeTrackPayload(raw: unknown): TrackPayload | null {
     sectionViews = [...new Set(sectionViews)];
   }
 
+  // CHANGE: 2026-11-25 — accept batched paths; timestamps are clamped to a sane window so
+  // a bad client clock cannot poison the timeline. Unbatched clients keep the single `path`.
+  let paths: Array<{ path: string; at: Date }> | undefined;
+  if (Array.isArray(r.paths)) {
+    const nowMs = Date.now();
+    paths = r.paths
+      .slice(0, 30)
+      .map((entry) => {
+        const item = (entry && typeof entry === 'object' ? entry : {}) as Record<string, unknown>;
+        const rawAt = Number(item.at);
+        const atMs =
+          Number.isFinite(rawAt) &&
+          rawAt >= nowMs - 30 * 24 * 60 * 60 * 1000 &&
+          rawAt <= nowMs + 60_000
+            ? rawAt
+            : nowMs;
+        return { path: cleanStr(item.path, 500), at: new Date(atMs) };
+      })
+      .filter((p) => p.path);
+    if (paths.length === 0) paths = undefined;
+  }
+  const singlePath = cleanStr(r.path, 500);
+  const path = paths?.[0]?.path ?? (singlePath || '/');
+
 // CHANGE: 2026-08-18 — Sanitize UTM fields from beacon payload.
   return {
     sessionId,
-    path: cleanStr(r.path, 500) || '/',
+    path,
+    paths,
     referrer: cleanStr(r.referrer, 500),
     title: cleanStr(r.title, 200),
     language: cleanStr(r.language, 60),
@@ -510,6 +537,10 @@ export async function recordVisitor(input: {
 
   await ensureVisitorIndexes();
   const now = new Date();
+  // CHANGE: 2026-11-25 — one upsert per batch: N paths increment the counters N times and
+  // are pushed with their own timestamps. Totals match the old one-POST-per-path behaviour.
+  const paths = payload.paths?.length ? payload.paths : [{ path: payload.path, at: now }];
+  const pathCount = paths.length;
   const col = await getDb().then((db) => db.collection<VisitorRecord>('visitors'));
 
   // Build UTM params object — only include fields that have values.
@@ -529,13 +560,13 @@ export async function recordVisitor(input: {
     {
       $setOnInsert: {
         firstSeen: now,
-        entryPath: payload.path,
+        entryPath: paths[0].path,
         referrer: payload.referrer,
       },
-      $inc: { visitCount: 1, pageViews: 1 },
+      $inc: { visitCount: pathCount, pageViews: pathCount },
       $set: {
         lastSeen: now,
-        lastPath: payload.path,
+        lastPath: paths[pathCount - 1].path,
         lastReferrer: payload.referrer,
         title: payload.title,
         language: payload.language || meta.language,
@@ -549,7 +580,7 @@ export async function recordVisitor(input: {
         updatedAt: now,
         ...(utmParams ? { utmParams } : {}),
       },
-      $push: { paths: { $each: [{ path: payload.path, at: now }], $slice: -30 } },
+      $push: { paths: { $each: paths, $slice: -30 } },
       $addToSet: { sectionViews: { $each: payload.sectionViews } },
     },
     { upsert: true, returnDocument: 'before' }

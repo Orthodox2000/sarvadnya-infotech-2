@@ -12,7 +12,10 @@ import { usePathname } from 'next/navigation';
 
 const SESSION_COOKIE = 'svd_vid';
 const COOKIE_MAX_AGE = 365 * 24 * 60 * 60;
-const THROTTLE_MS = 10_000;
+// CHANGE: 2026-11-25 — Fluid CPU: buffer paths and send one beacon per window instead of
+// one POST per path (the old 10 s throttle still sent a separate request for every path).
+const BATCH_FLUSH_MS = 30_000;
+const MAX_BUFFERED_PATHS = 30;
 const MAX_SECTION_VIEWS = 20;
 const SESSION_ID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
@@ -50,92 +53,105 @@ export const useVisitor = () => useContext(VisitorContext);
 export function VisitorProvider({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const [sessionId, setSessionId] = useState<string | null>(null);
-  const lastSendRef = useRef(0);
-  const pendingPathRef = useRef<string | null>(null);
+  const pathBuf = useRef<Array<{ path: string; at: number }>>([]);
+  const flushTimerRef = useRef<number | null>(null);
   const sectionBuf = useRef<string[]>([]);
+
+  // CHANGE: 2026-11-25 — one POST now carries every path buffered in the flush window.
+  // The server increments visitCount/pageViews by the batch size and pushes each path with
+  // its client timestamp, so ledger totals stay identical while /api/identify calls fall.
+  const flush = useCallback(() => {
+    if (!sessionId) return;
+    if (flushTimerRef.current !== null) {
+      window.clearTimeout(flushTimerRef.current);
+      flushTimerRef.current = null;
+    }
+    const paths = pathBuf.current;
+    if (paths.length === 0) return; // leave section views buffered for the next path beacon
+    const sectionViews = sectionBuf.current;
+    pathBuf.current = [];
+    sectionBuf.current = [];
+
+    // CHANGE: 2026-08-18 — Parse UTM params from URL for campaign tracking.
+    const params = new URLSearchParams(window.location.search);
+    const utmSource = params.get('utm_source') || undefined;
+    const utmMedium = params.get('utm_medium') || undefined;
+    const utmCampaign = params.get('utm_campaign') || undefined;
+    const utmTerm = params.get('utm_term') || undefined;
+    const utmContent = params.get('utm_content') || undefined;
+
+    const body = JSON.stringify({
+      sessionId,
+      path: paths[0].path, // backward-compatible single-path field for older readers
+      paths,
+      referrer: document.referrer.slice(0, 500),
+      title: document.title.slice(0, 200),
+      language: navigator.language || '',
+      screen: `${window.screen?.width || 0}x${window.screen?.height || 0}`,
+      sectionViews: sectionViews.slice(0, MAX_SECTION_VIEWS),
+      ...(utmSource ? { utmSource } : {}),
+      ...(utmMedium ? { utmMedium } : {}),
+      ...(utmCampaign ? { utmCampaign } : {}),
+      ...(utmTerm ? { utmTerm } : {}),
+      ...(utmContent ? { utmContent } : {}),
+    });
+
+    fetch('/api/identify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body,
+      keepalive: true,
+    }).catch(() => {});
+  }, [sessionId]);
 
   const send = useCallback(
     (path: string) => {
-      // CHANGE: 2026-10-26 — a hidden tab must not count as an active page view, but the path
-      // used to be DISCARDED here, so a visitor who opened a Google result in a background tab
-      // (mobile especially) was never recorded at all — one more reason the Visitors count sat
-      // below Search Console's click count. The path is now parked in `pendingPathRef` and
-      // flushed by the `visibilitychange` listener below the moment the tab becomes visible.
+      // CHANGE: 2026-11-25 — hidden tabs are no longer discarded or parked as one pending
+      // path; every path enters the same buffer and is flushed on pagehide/visibilitychange
+      // with keepalive. Background-tab visits survive without needing an extra POST.
       if (!sessionId) return;
-      if (document.visibilityState !== 'visible') {
-        pendingPathRef.current = path;
+      pathBuf.current.push({ path, at: Date.now() });
+      if (pathBuf.current.length >= MAX_BUFFERED_PATHS) {
+        flush();
         return;
       }
-
-      const sectionViews = sectionBuf.current;
-      sectionBuf.current = [];
-
-      // CHANGE: 2026-08-18 — Parse UTM params from URL for campaign tracking.
-      const params = new URLSearchParams(window.location.search);
-      const utmSource = params.get('utm_source') || undefined;
-      const utmMedium = params.get('utm_medium') || undefined;
-      const utmCampaign = params.get('utm_campaign') || undefined;
-      const utmTerm = params.get('utm_term') || undefined;
-      const utmContent = params.get('utm_content') || undefined;
-
-      const body = JSON.stringify({
-        sessionId,
-        path,
-        referrer: document.referrer.slice(0, 500),
-        title: document.title.slice(0, 200),
-        language: navigator.language || '',
-        screen: `${window.screen?.width || 0}x${window.screen?.height || 0}`,
-        sectionViews: sectionViews.slice(0, MAX_SECTION_VIEWS),
-        ...(utmSource ? { utmSource } : {}),
-        ...(utmMedium ? { utmMedium } : {}),
-        ...(utmCampaign ? { utmCampaign } : {}),
-        ...(utmTerm ? { utmTerm } : {}),
-        ...(utmContent ? { utmContent } : {}),
-      });
-
-      const now = Date.now();
-      if (now - lastSendRef.current >= THROTTLE_MS) {
-        lastSendRef.current = now;
-        fetch('/api/identify', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body,
-          keepalive: true,
-        }).catch(() => {});
-      } else {
-        pendingPathRef.current = path;
-        window.setTimeout(() => {
-          const p = pendingPathRef.current;
-          pendingPathRef.current = null;
-          if (p) send(p);
-        }, THROTTLE_MS);
+      if (flushTimerRef.current === null) {
+        flushTimerRef.current = window.setTimeout(() => {
+          flushTimerRef.current = null;
+          flush();
+        }, BATCH_FLUSH_MS);
       }
     },
-    [sessionId]
+    [sessionId, flush]
   );
 
   useEffect(() => {
     setSessionId(getOrCreateSessionId());
   }, []);
 
-  // Page-level beacon on mount + every path change (throttled).
+  // Page-level paths are buffered on mount + every path change.
   useEffect(() => {
     if (sessionId) send(pathname);
   }, [pathname, sessionId, send]);
 
-  // CHANGE: 2026-10-26 — flush a beacon that was parked while the tab was hidden. Without
-  // this the deferred path was lost for good (see the guard inside `send`).
+  // CHANGE: 2026-11-25 — flush buffered paths when the tab is hidden or unloaded.
+  // keepalive lets the final beacon out as the page closes; the timer above covers
+  // normal in-session navigation.
   useEffect(() => {
-    const flushPending = () => {
-      if (document.visibilityState !== 'visible') return;
-      const parked = pendingPathRef.current;
-      if (!parked) return;
-      pendingPathRef.current = null;
-      send(parked);
+    const onHide = () => {
+      if (document.visibilityState === 'hidden') flush();
     };
-    document.addEventListener('visibilitychange', flushPending);
-    return () => document.removeEventListener('visibilitychange', flushPending);
-  }, [send]);
+    document.addEventListener('visibilitychange', onHide);
+    window.addEventListener('pagehide', flush);
+    return () => {
+      document.removeEventListener('visibilitychange', onHide);
+      window.removeEventListener('pagehide', flush);
+      if (flushTimerRef.current !== null) {
+        window.clearTimeout(flushTimerRef.current);
+        flushTimerRef.current = null;
+      }
+    };
+  }, [flush]);
 
   const trackSection = useCallback((id: string) => {
     if (!id || sectionBuf.current.includes(id)) return;
