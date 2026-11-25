@@ -19,6 +19,7 @@
 
 ### 2026-11
 
+- [2026-11-25 — Advanced dashboard: engaging teal redesign adapted from SmartIQ (style only, rules intact)](history/2026-11-25-advanced-dashboard-engaging-teal-redesign.md)
 - [2026-11-25 — Batched `/api/identify` beacons: fewer Fluid calls, complete section data, bounded retries](history/2026-11-25-batched-identify-beacons.md)
 - [2026-11-25 — Email signature: two addresses, smaller logos, relabelled marks, Our Services above logos, full width, `email_footer` UTM](history/2026-11-25-email-signature-address-and-partner-strip.md)
 - [2026-11-25 — High-traffic hands-off window: long public caches, 24 h ISR, image TTL, enrichment kill-switch](history/2026-11-25-high-traffic-hands-off-cache-hardening.md)
