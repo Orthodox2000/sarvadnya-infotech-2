@@ -100,7 +100,8 @@ export interface TrackPayload {
   language: string;
   screen: string;
   sectionViews: string[];
-  // CHANGE: 2026-11-25 — batched beacon: every path seen in one flush window.
+  // CHANGE: 2026-11-25 — batched beacon: every path seen in one flush window. An explicit
+  // empty array means a section-only beacon (no page-view increment); `path` is context.
   paths?: Array<{ path: string; at: Date }>;
   utmSource?: string;
   utmMedium?: string;
@@ -337,8 +338,11 @@ export function sanitizeTrackPayload(raw: unknown): TrackPayload | null {
 
   // CHANGE: 2026-11-25 — accept batched paths; timestamps are clamped to a sane window so
   // a bad client clock cannot poison the timeline. Unbatched clients keep the single `path`.
+  // An explicit `paths: []` is a section-only beacon: it carries no page view at all.
   let paths: Array<{ path: string; at: Date }> | undefined;
+  let hasPathsArray = false;
   if (Array.isArray(r.paths)) {
+    hasPathsArray = true;
     const nowMs = Date.now();
     paths = r.paths
       .slice(0, 30)
@@ -354,16 +358,16 @@ export function sanitizeTrackPayload(raw: unknown): TrackPayload | null {
         return { path: cleanStr(item.path, 500), at: new Date(atMs) };
       })
       .filter((p) => p.path);
-    if (paths.length === 0) paths = undefined;
   }
   const singlePath = cleanStr(r.path, 500);
+  // With `paths: []` the `path` field is context only (last known path), never a new view.
   const path = paths?.[0]?.path ?? (singlePath || '/');
 
 // CHANGE: 2026-08-18 — Sanitize UTM fields from beacon payload.
   return {
     sessionId,
     path,
-    paths,
+    ...(hasPathsArray ? { paths: paths ?? [] } : {}),
     referrer: cleanStr(r.referrer, 500),
     title: cleanStr(r.title, 200),
     language: cleanStr(r.language, 60),
@@ -539,8 +543,14 @@ export async function recordVisitor(input: {
   const now = new Date();
   // CHANGE: 2026-11-25 — one upsert per batch: N paths increment the counters N times and
   // are pushed with their own timestamps. Totals match the old one-POST-per-path behaviour.
-  const paths = payload.paths?.length ? payload.paths : [{ path: payload.path, at: now }];
+  // An explicit `paths: []` is a section-only beacon: it must never invent a page view or a
+  // `/` path, so counters, $push and lastPath are omitted for that case.
+  const hasPathsArray = Array.isArray(payload.paths);
+  const paths = hasPathsArray
+    ? (payload.paths as Array<{ path: string; at: Date }>)
+    : [{ path: payload.path || '/', at: now }];
   const pathCount = paths.length;
+  const hasPaths = pathCount > 0;
   const col = await getDb().then((db) => db.collection<VisitorRecord>('visitors'));
 
   // Build UTM params object — only include fields that have values.
@@ -560,13 +570,19 @@ export async function recordVisitor(input: {
     {
       $setOnInsert: {
         firstSeen: now,
-        entryPath: paths[0].path,
+        ...(hasPaths ? { entryPath: paths[0].path } : {}),
+        ...(!hasPaths && payload.path ? { entryPath: payload.path } : {}),
         referrer: payload.referrer,
       },
-      $inc: { visitCount: pathCount, pageViews: pathCount },
+      ...(hasPaths
+        ? {
+            $inc: { visitCount: pathCount, pageViews: pathCount },
+            $push: { paths: { $each: paths, $slice: -30 } },
+          }
+        : {}),
       $set: {
         lastSeen: now,
-        lastPath: paths[pathCount - 1].path,
+        ...(hasPaths ? { lastPath: paths[pathCount - 1].path } : {}),
         lastReferrer: payload.referrer,
         title: payload.title,
         language: payload.language || meta.language,
@@ -580,8 +596,9 @@ export async function recordVisitor(input: {
         updatedAt: now,
         ...(utmParams ? { utmParams } : {}),
       },
-      $push: { paths: { $each: paths, $slice: -30 } },
-      $addToSet: { sectionViews: { $each: payload.sectionViews } },
+      ...(payload.sectionViews.length
+        ? { $addToSet: { sectionViews: { $each: payload.sectionViews } } }
+        : {}),
     },
     { upsert: true, returnDocument: 'before' }
   );

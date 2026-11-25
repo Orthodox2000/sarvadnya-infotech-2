@@ -56,19 +56,44 @@ export function VisitorProvider({ children }: { children: React.ReactNode }) {
   const pathBuf = useRef<Array<{ path: string; at: number }>>([]);
   const flushTimerRef = useRef<number | null>(null);
   const sectionBuf = useRef<string[]>([]);
+  const retryCountRef = useRef(0);
+  const inFlightRef = useRef(false);
+  const flushRef = useRef<() => void>(() => {});
+  // CHANGE: 2026-11-25 — section-only beacons carry the last known path for context,
+  // so a late section view never invents `/` as the visitor's entry/last path.
+  const lastPathRef = useRef('/');
+
+  // CHANGE: 2026-11-25 — exactly one timer per provider, and it always calls the latest
+  // flush via a ref. A sessionId change can no longer strand a pending timer or leave an
+  // old listener scheduling extra POSTs (the CPU leak in the first batching pass).
+  const scheduleFlush = useCallback(() => {
+    if (flushTimerRef.current !== null) return;
+    flushTimerRef.current = window.setTimeout(() => {
+      flushTimerRef.current = null;
+      flushRef.current();
+    }, BATCH_FLUSH_MS);
+  }, []);
 
   // CHANGE: 2026-11-25 — one POST now carries every path buffered in the flush window.
   // The server increments visitCount/pageViews by the batch size and pushes each path with
   // its client timestamp, so ledger totals stay identical while /api/identify calls fall.
   const flush = useCallback(() => {
     if (!sessionId) return;
+    // CHANGE: 2026-11-25 — never overlap beacons. Two concurrent POSTs can both succeed
+    // (or a failed one can retry after a newer one succeeded), duplicating paths and CPU.
+    if (inFlightRef.current) {
+      scheduleFlush();
+      return;
+    }
     if (flushTimerRef.current !== null) {
       window.clearTimeout(flushTimerRef.current);
       flushTimerRef.current = null;
     }
     const paths = pathBuf.current;
-    if (paths.length === 0) return; // leave section views buffered for the next path beacon
     const sectionViews = sectionBuf.current;
+    // A section-only flush is valid: it carries no paths, so the server must not count a
+    // page view. Without this, section views seen after the last navigation were lost.
+    if (paths.length === 0 && sectionViews.length === 0) return;
     pathBuf.current = [];
     sectionBuf.current = [];
 
@@ -82,8 +107,11 @@ export function VisitorProvider({ children }: { children: React.ReactNode }) {
 
     const body = JSON.stringify({
       sessionId,
-      path: paths[0].path, // backward-compatible single-path field for older readers
-      paths,
+      // backward-compatible single-path field; `paths: []` tells the server this is a
+      // section-only beacon (no page-view increment) while `path` keeps context.
+      ...(paths.length > 0
+        ? { path: paths[0].path, paths }
+        : { path: lastPathRef.current, paths: [] }),
       referrer: document.referrer.slice(0, 500),
       title: document.title.slice(0, 200),
       language: navigator.language || '',
@@ -96,13 +124,39 @@ export function VisitorProvider({ children }: { children: React.ReactNode }) {
       ...(utmContent ? { utmContent } : {}),
     });
 
+    inFlightRef.current = true;
     fetch('/api/identify', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body,
       keepalive: true,
-    }).catch(() => {});
-  }, [sessionId]);
+    })
+      .then((res) => {
+        // 4xx means the beacon itself is wrong — retrying it only burns CPU.
+        if (res.status >= 500 || res.status === 429) throw new Error('retry beacon');
+        retryCountRef.current = 0;
+      })
+      .catch(() => {
+        // CHANGE: 2026-11-25 — bounded retry restores the buffer after a transient failure
+        // so a failed beacon is not silently dropped; three strikes stops any retry loop.
+        if (retryCountRef.current < 3) {
+          retryCountRef.current += 1;
+          pathBuf.current = [...paths, ...pathBuf.current];
+          sectionBuf.current = [...sectionViews, ...sectionBuf.current];
+        }
+      })
+      .finally(() => {
+        inFlightRef.current = false;
+        // Paths/sections buffered while the POST was in flight still need a beacon.
+        if (pathBuf.current.length > 0 || sectionBuf.current.length > 0) scheduleFlush();
+      });
+  }, [sessionId, scheduleFlush]);
+
+  // CHANGE: 2026-11-25 — publish the current flush to the single timer in an effect, not
+  // during render, so a concurrent/discarded render cannot point the timer at stale code.
+  useEffect(() => {
+    flushRef.current = flush;
+  }, [flush]);
 
   const send = useCallback(
     (path: string) => {
@@ -110,19 +164,15 @@ export function VisitorProvider({ children }: { children: React.ReactNode }) {
       // path; every path enters the same buffer and is flushed on pagehide/visibilitychange
       // with keepalive. Background-tab visits survive without needing an extra POST.
       if (!sessionId) return;
+      lastPathRef.current = path;
       pathBuf.current.push({ path, at: Date.now() });
       if (pathBuf.current.length >= MAX_BUFFERED_PATHS) {
         flush();
         return;
       }
-      if (flushTimerRef.current === null) {
-        flushTimerRef.current = window.setTimeout(() => {
-          flushTimerRef.current = null;
-          flush();
-        }, BATCH_FLUSH_MS);
-      }
+      scheduleFlush();
     },
-    [sessionId, flush]
+    [sessionId, flush, scheduleFlush]
   );
 
   useEffect(() => {
@@ -153,11 +203,17 @@ export function VisitorProvider({ children }: { children: React.ReactNode }) {
     };
   }, [flush]);
 
-  const trackSection = useCallback((id: string) => {
-    if (!id || sectionBuf.current.includes(id)) return;
-    if (sectionBuf.current.length >= MAX_SECTION_VIEWS) return;
-    sectionBuf.current.push(id);
-  }, []);
+  const trackSection = useCallback(
+    (id: string) => {
+      if (!id || sectionBuf.current.includes(id)) return;
+      if (sectionBuf.current.length >= MAX_SECTION_VIEWS) return;
+      sectionBuf.current.push(id);
+      // CHANGE: 2026-11-25 — a section seen after the path beacon has already flushed must
+      // schedule its own section-only beacon; otherwise it sat in memory until tab close.
+      scheduleFlush();
+    },
+    [scheduleFlush]
+  );
 
   // Global IntersectionObserver for any `[data-track]` element already in the
   // DOM (covers plain markup). <TrackSection> also self-observes so sections
