@@ -6,13 +6,16 @@ import { enrichNews, RETIRED_NEWS_SLUGS } from './news-utils';
 import type { NewsItem } from './news';
 // CHANGE: 2026-11-23 — news and modules are read on every page/render but change only when
 // the owner edits them in the admin. Cache the SERIALISED results in Vercel's Data Cache so a
-// cold function or an ISR revalidation never re-scans either collection. TTL intentionally
-// MATCHES the owner-accepted 1-hour CDN/ISR window (lib/api-cache.ts) — admin edits must still
-// surface hourly; the saving is that the hourly refresh no longer repeats the CPU-heavy scan.
-const CACHED_CONTENT_SECONDS = 60 * 60;
+// cold function or an ISR revalidation never re-scans either collection.
+// CHANGE: 2026-11-25 — HIGH-TRAFFIC HANDS-OFF WINDOW. Next's build output showed /news at 1h
+// and /modules at 6h despite larger route revalidate values: the segment revalidate is capped
+// by the shortest unstable_cache TTL it reads. These data-layer TTLs therefore had to be raised
+// in step with the route/API values (news 1h -> 6h, modules 6h -> 24h). Restore the old values
+// when admin edits resume; /api/revalidate (tag: modules|news) still invalidates immediately.
+const CACHED_CONTENT_SECONDS = 60 * 60 * 6;
 // CHANGE: 2026-11-24 — modules are rarely updated; keep them cached longer to reduce CPU/DB.
 // Admin/manual updates must trigger POST /api/revalidate (tag: modules) for immediate freshness.
-const CACHED_MODULE_SECONDS = 60 * 60 * 6;
+const CACHED_MODULE_SECONDS = 60 * 60 * 24;
 
 export async function getDb() {
   const client = await clientPromise;

@@ -122,29 +122,14 @@ const MASK = {
 };
 
 const CustomerReviews = ({ initialData }: { initialData?: Review[] }) => {
-    const [reviews, setReviews] = useState<Review[]>(initialData || []);
-    const [loading, setLoading] = useState(!initialData);
+    // CHANGE: 2026-11-25 — the wall is STATIC. The homepage passes the committed snapshot;
+    // the old mount-time fetch('/api/reviews') (an edge request + DB read per visitor) is gone.
+    const reviews = initialData || [];
     const [isVisible, setIsVisible] = useState(false);
     const [reduceMotion, setReduceMotion] = useState(false);
     const sectionRef = useRef<HTMLElement>(null);
 
-    useEffect(() => {
-        if (initialData) return;
-        const fetchReviews = async () => {
-            try {
-                const response = await fetch('/api/reviews');
-                const data = await response.json();
-                if (data && !data.error) {
-                    setReviews(data);
-                }
-            } catch (err) {
-                console.error('Error fetching reviews:', err);
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchReviews();
-    }, [initialData]);
+    // CHANGE: 2026-11-25 — removed the mount-time /api/reviews fetch (see note above).
 
     useEffect(() => {
         setReduceMotion(
@@ -155,7 +140,7 @@ const CustomerReviews = ({ initialData }: { initialData?: Review[] }) => {
     }, []);
 
     useEffect(() => {
-        if (loading || reviews.length === 0) return;
+        if (reviews.length === 0) return;
         const currentRef = sectionRef.current;
         const observer = new IntersectionObserver(
             ([entry]) => {
@@ -167,7 +152,7 @@ const CustomerReviews = ({ initialData }: { initialData?: Review[] }) => {
         return () => {
             if (currentRef) observer.unobserve(currentRef);
         };
-    }, [loading, reviews.length]);
+    }, [reviews.length]);
 
     // Split the list into two balanced rows. Each row is then repeated by `buildLoop` so the
     // marquee can wrap without a gap, whatever the screen width.
@@ -179,7 +164,7 @@ const CustomerReviews = ({ initialData }: { initialData?: Review[] }) => {
 
     const loops = useMemo(() => rows.map(buildLoop), [rows]);
 
-    if (loading || reviews.length === 0) return null;
+    if (reviews.length === 0) return null;
 
     return (
         <section

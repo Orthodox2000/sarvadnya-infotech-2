@@ -21,6 +21,7 @@ All parameters are lowercase, no spaces, no commas. Only change the values insid
 | Code | Means | Medium to use |
 |---|---|---|
 | `email` | Email / newsletter | `email` |
+| `email_footer` | Email signature / footer links (alias of `email`) | `email` |
 | `youtube` | YouTube channel / video | `social` |
 | `facebook` | Facebook page or post | `social` |
 | `facebook_ads` | Facebook / Meta paid ads | `cpc` |

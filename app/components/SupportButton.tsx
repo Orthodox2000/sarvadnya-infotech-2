@@ -6,6 +6,9 @@ import QuickSupportModal from './QuickSupportModal';
 // CHANGE: 2026-10-23 — /shop (and anything else) can open Ask Sara with a pre-typed question
 // through this event, without owning the modal state.
 import { SARA_ASK_EVENT, type SaraAskDetail } from '@/lib/ask-sara';
+// CHANGE: 2026-11-25 — STATIC: the (site) layout always passes the committed settings;
+// the old mount-time fetch('/api/settings') is removed (an edge request on every page).
+import { STATIC_SITE_SETTINGS } from '@/lib/static-site-content';
 
 // CHANGE: 2026-10-13 — owner: no hover behaviour at all (no ✕, no hover reveal). The homepage
 // Ask Sara tab carries a message bubble reading "Get AI assistance" (13 px, centred, wraps to
@@ -22,7 +25,9 @@ export default function SupportButton({ initialSettings }: { initialSettings?: a
   // card). It only PREFILLS the input; the visitor still presses send. Cleared on close so
   // reopening the chat manually never resurfaces an old question.
   const [initialQuestion, setInitialQuestion] = useState('');
-  const [whatsappPhone, setWhatsappPhone] = useState(initialSettings?.whatsapp_phone || initialSettings?.support_phone || "9821309060");
+  const [whatsappPhone] = useState(
+    initialSettings?.whatsapp_phone || initialSettings?.support_phone || STATIC_SITE_SETTINGS.whatsapp_phone
+  );
 
   // CHANGE: 2026-10-23 — listen for the `sara:ask` event (lib/ask-sara.ts).
   useEffect(() => {
@@ -36,23 +41,7 @@ export default function SupportButton({ initialSettings }: { initialSettings?: a
     return () => window.removeEventListener(SARA_ASK_EVENT, onAsk);
   }, []);
 
-  useEffect(() => {
-    if (initialSettings) return;
-    const fetchSettings = async () => {
-      try {
-        const response = await fetch('/api/settings');
-        const data = await response.json();
-        if (data.whatsapp_phone) {
-          setWhatsappPhone(data.whatsapp_phone);
-        } else if (data.support_phone) {
-          setWhatsappPhone(data.support_phone);
-        }
-      } catch (err) {
-        console.error('Failed to fetch whatsapp phone:', err);
-      }
-    };
-    fetchSettings();
-  }, [initialSettings]);
+  // CHANGE: 2026-11-25 — removed the mount-time /api/settings fetch (see import note).
 
   // CHANGE: 2026-10-13 — the bubble shows on the homepage only, and hides while Sara is open.
   // It blinks (no movement) and disappears after PROMO_VISIBLE_MS. This state lives in memory

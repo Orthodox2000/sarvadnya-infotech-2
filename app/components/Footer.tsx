@@ -5,10 +5,11 @@ import Image from 'next/image';
 import { useState, useEffect } from 'react';
 // CHANGE: 2026-11-02 — module URLs come from moduleHref() so every surface stays in sync.
 import { moduleHref } from '@/lib/modules';
-// CHANGE: 2026-11-16 — the server passes the RAW settings map (uppercase keys), so the prop is
-// normalised here; without it every social URL read undefined and rendered href="#" (see
-// lib/site-settings.ts for the full incident).
-import { normaliseSettings, type SiteSettingsShape } from '@/lib/site-settings';
+import type { SiteSettingsShape } from '@/lib/site-settings';
+// CHANGE: 2026-11-25 — FOOTER IS STATIC. The old code fetched /api/settings and /api/modules
+// on every mount (two edge requests + two DB reads per page). Both are replaced by the
+// committed snapshot in lib/static-site-content.ts.
+import { STATIC_SITE_SETTINGS, STATIC_FOOTER_MODULES } from '@/lib/static-site-content';
 
 export type SiteSettings = SiteSettingsShape;
 
@@ -23,43 +24,16 @@ const SOCIAL_FALLBACK = {
     youtube: process.env.NEXT_PUBLIC_YOUTUBE_URL || 'https://www.youtube.com/@sarvadnyainfotechtally',
 };
 
-export default function Footer({ settings: initialSettings }: { settings?: SiteSettings | Record<string, unknown> | null }) {
+export default function Footer({ settings: initialSettings }: { settings?: SiteSettings | null }) {
     const [year, setYear] = useState<number>(2026);
-    const [settings, setSettings] = useState<SiteSettings | null>(() => normaliseSettings(initialSettings));
-    const [dynamicModules, setDynamicModules] = useState<any[]>([]);
+    const settings: SiteSettings = initialSettings ?? STATIC_SITE_SETTINGS;
 
     useEffect(() => {
         setYear(new Date().getFullYear());
-        if (!initialSettings) fetchSettings();
-        fetchModules();
-    }, [initialSettings]);
+    }, []);
 
-    const fetchSettings = async () => {
-        try {
-            const response = await fetch('/api/settings');
-            const data = await response.json();
-            if (data && !data.error) {
-                setSettings(normaliseSettings(data));
-            }
-        } catch (err) {
-            console.error('Failed to fetch footer settings:', err);
-        }
-    };
-
-    const fetchModules = async () => {
-        try {
-            const response = await fetch('/api/modules');
-            const data = await response.json();
-            if (Array.isArray(data)) {
-                setDynamicModules(data.slice(0, 6).map(m => ({
-                    name: m.title,
-                    href: moduleHref(m.id || m._id)
-                })));
-            }
-        } catch (err) {
-            console.error('Failed to fetch modules for footer:', err);
-        }
-    };
+    // CHANGE: 2026-11-25 — fetchSettings()/fetchModules() removed. See header comment.
+    // The homepage still passes the same snapshot explicitly; other pages fall back to it.
 
     const supportPhone = settings?.support_phone || process.env.NEXT_PUBLIC_SUPPORT_PHONE || "9821309060";
     const whatsappPhone = settings?.whatsapp_phone || supportPhone;
@@ -119,14 +93,10 @@ export default function Footer({ settings: initialSettings }: { settings?: SiteS
         { name: 'TallyCapital', href: '/products/tallycapital' },
     ];
 
-    const customizedModules = dynamicModules.length > 0 ? dynamicModules : [
-        { name: 'CFA Module (Clearing & Forwarding)', href: '/modules/cf-agencies' },
-        { name: 'Housing Society Module', href: '/modules/housing-societies' },
-        { name: 'SalesMan / Agent Module', href: '/modules/sales-commission' },
-        { name: 'Transport Module', href: '/modules/logistics-transport' },
-        { name: 'Container Handling Module', href: '/modules/container-handling' },
-        { name: 'Garment / Footwear Module', href: '/modules/garment-retail' }
-    ];
+    const customizedModules = STATIC_FOOTER_MODULES.map(m => ({
+        name: m.title,
+        href: moduleHref(m.id),
+    }));
 
     const supportOnTally = [
         { name: 'TSS Renewal', href: '/services/tss' },

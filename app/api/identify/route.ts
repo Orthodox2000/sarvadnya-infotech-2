@@ -116,7 +116,11 @@ export async function POST(request: Request) {
   // is sent as soon as the session upsert commits. recordVisitor() has already written
   // the visitor doc; geo/rdns are lossless later $sets, so a frozen function or a failed
   // lookup leaves only enrichment missing, never the visit itself.
-  if (needsGeo) {
+  // CHANGE: 2026-11-25 — operational kill-switch for the high-traffic window. Set
+  // VISITOR_ENRICHMENT=0 in Vercel to skip the post-response ipwho.is + reverse-DNS work
+  // entirely. Default is unchanged; the visitor ledger itself is never affected — only the
+  // optional country/ISP enrichment on the first beacon of a session.
+  if (needsGeo && process.env.VISITOR_ENRICHMENT !== '0') {
     after(async () => {
       try {
         const { geo } = await lookupGeo(meta.ip);

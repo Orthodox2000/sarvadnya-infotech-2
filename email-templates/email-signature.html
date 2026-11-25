@@ -12,7 +12,8 @@
   ============================================================================
   Compact, full-width layout: "Best regards" sign-off (editable placeholders),
   then the brand column + contact column (social icons at the foot of Contact),
-  then the certified-partner strip, the services line, and the legal line.
+  then the services line, the certified-partner strip (2026-11-25 reorder), and
+  the legal line.
   The Customized Modules on Tally list was removed on the owner's request.
 
   CHANGE: 2026-11-20 — relocated from the repo root into email-templates/.
@@ -82,7 +83,13 @@
           <td align="left" valign="top">
 
       <!-- ================= SIGNATURE START ================= -->
-      <table role="presentation" width="600" align="left" cellpadding="0" cellspacing="0" border="0" bgcolor="#FFFFFF" style="max-width:600px;width:100%;border-collapse:collapse;background:#FFFFFF;">
+      <!-- CHANGE: 2026-11-25 — the card no longer carries the 600px cap. Owner wants
+           the footer to span the full width on 1024px desktops (and the full mail
+           reading pane in clients). width="100%" on both the HTML attribute and the
+           inline style keeps Outlook's Word renderer in step with browsers. The outer
+           shell's real 24px spacer rows and 12px gutter cells are unchanged, so the
+           2026-11-20 no-overflow rule still holds. -->
+      <table role="presentation" width="100%" align="left" cellpadding="0" cellspacing="0" border="0" bgcolor="#FFFFFF" style="width:100%;border-collapse:collapse;background:#FFFFFF;">
 
         <!-- Sign-off — sits ABOVE the brand block, where a mail reader expects it.
              Each sender edits the four bracketed placeholders: name, designation,
@@ -159,7 +166,7 @@
               <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="width:100%;border-collapse:collapse;">
               <tr>
               <td width="107" valign="middle" style="width:107px;padding:0 5px 0 0;font-size:0;line-height:0;">
-              <a href="https://sarvadnyainfotech.com" target="_blank" rel="noopener noreferrer" style="display:block;line-height:0;text-decoration:none;border:0;">
+              <a href="https://sarvadnyainfotech.com/?utm_source=email_footer" target="_blank" rel="noopener noreferrer" style="display:block;line-height:0;text-decoration:none;border:0;">
               <img src="https://sarvadnyainfotech.com/TallyCertificate.png"
               width="107" height="23" alt="Tally Certified Partner"
               style="display:block;width:100%;max-width:107px;height:auto;border:0;outline:none;text-decoration:none;">
@@ -174,12 +181,23 @@
               <!-- CHANGE: 2026-11-20 — removed the "Tally Certified Partner · Trusted
                    Since 2008" text line to match the expiry-email masthead. The
                    certificate image above still carries that label in its alt text. -->
+              <!-- CHANGE: 2026-11-25 — label the existing (registered) office as
+                   "Regd. Address" and add the current office as "Curr. Address" on
+                   two address lines, per owner. 10px top padding on the Curr. block
+                   keeps the two addresses clearly separated. -->
               <div style="margin-top:12px;max-width:330px;font-size:11.5px;line-height:1.5;color:#5A677B;word-break:break-word;overflow-wrap:break-word;">
+              <div style="padding:1px 0;">
+              <div style="font-size:9px;font-weight:700;letter-spacing:0.7px;text-transform:uppercase;color:#8A97AA;">Regd. Address</div>
               <a href="https://maps.google.com/maps?q=73%2C%20Vindhya%20Commercial%20Premises%2C%20Sector%2011%2C%20CBD%20Belapur%2C%20Mumbai%2C%20MH"
               target="_blank" rel="noopener noreferrer"
               style="color:#5A677B;text-decoration:none;">
               73, Vindhya Commercial Premises, Sector - 11, Plot No - 1, CBD Belapur, Mumbai, Maharashtra
               </a>
+              </div>
+              <div style="padding:10px 0 1px 0;">
+              <div style="font-size:9px;font-weight:700;letter-spacing:0.7px;text-transform:uppercase;color:#8A97AA;">Curr. Address</div>
+              Shop No. 10 B, Kukreja Center, Plot No. 13, Sector 11,<br>CBD Belapur, Navi Mumbai 400614
+              </div>
               </div>
               </div><div class="sig-col sig-col-contact" style="display:inline-block;width:100%;max-width:244px;vertical-align:top;box-sizing:border-box;padding:18px 0 18px 0;font-size:11.5px;line-height:1.6;">
               <!-- ===== CONTACT ===== -->
@@ -210,7 +228,7 @@
 
               <div style="padding:1px 0;">
               <span style="display:inline-block;min-width:44px;font-size:9px;font-weight:700;letter-spacing:0.7px;text-transform:uppercase;color:#8A97AA;">Web</span>
-              <a href="https://sarvadnyainfotech.com" target="_blank" rel="noopener noreferrer" style="color:#033B38;font-weight:600;text-decoration:none;">sarvadnyainfotech.com</a>
+              <a href="https://sarvadnyainfotech.com/?utm_source=email_footer" target="_blank" rel="noopener noreferrer" style="color:#033B38;font-weight:600;text-decoration:none;">sarvadnyainfotech.com</a>
               </div>
               </div>
 
@@ -249,6 +267,25 @@
           </td>
         </tr>
 
+        <!-- CHANGE: 2026-11-25 — Services strip moved ABOVE the partner logos.
+             Partner tiles/images reduced again (44px tiles / 14px logos) and labels
+             renamed (Biz Analyst → Tally on Mobile, OTU → HRMS, NoSky → Data Backup)
+             per owner. The hosted image files are unchanged — only their rendered
+             size changed. Heading is now "Our Services". All 17 own-domain links
+             carry only the short `?utm_source=email_footer` tag; external social /
+             Maps / tel / mailto links are deliberately untagged. -->
+        <!-- Services strip — same label scale as Contact / Certified Industry Partners
+             and the same 11.5px body text as the contact values, so the strip no longer
+             reads as a different font. -->
+        <tr>
+          <td class="sig-cell" style="padding:9px 16px 10px 0;border-top:1px solid #E6EDF5;background-color:#F7FBFB;">
+            <div style="padding-bottom:4px;font-size:9px;line-height:1.4;font-weight:700;letter-spacing:1.3px;text-transform:uppercase;color:#006569;">Our Services</div>
+            <div style="font-size:11.5px;line-height:1.7;color:#5A677B;">
+              <a href="https://sarvadnyainfotech.com/products?utm_source=email_footer" target="_blank" rel="noopener noreferrer" style="color:#045A57;font-weight:600;text-decoration:none;">TallyPrime Licences</a><span style="padding:0 5px;color:#C7D0DD;">&middot;</span><a href="https://sarvadnyainfotech.com/services/tss?utm_source=email_footer" target="_blank" rel="noopener noreferrer" style="color:#045A57;font-weight:600;text-decoration:none;">TSS Renewal</a><span style="padding:0 5px;color:#C7D0DD;">&middot;</span><a href="https://sarvadnyainfotech.com/services/amc?utm_source=email_footer" target="_blank" rel="noopener noreferrer" style="color:#045A57;font-weight:600;text-decoration:none;">AMC &amp; Support</a><span style="padding:0 5px;color:#C7D0DD;">&middot;</span><a href="https://sarvadnyainfotech.com/services/tdl?utm_source=email_footer" target="_blank" rel="noopener noreferrer" style="color:#045A57;font-weight:600;text-decoration:none;">TDL Customisation</a><span style="padding:0 5px;color:#C7D0DD;">&middot;</span><a href="https://sarvadnyainfotech.com/cloud/tallycloudaccess?utm_source=email_footer" target="_blank" rel="noopener noreferrer" style="color:#045A57;font-weight:600;text-decoration:none;">Tally on Cloud</a><span style="padding:0 5px;color:#C7D0DD;">&middot;</span><a href="https://sarvadnyainfotech.com/hrms?utm_source=email_footer" target="_blank" rel="noopener noreferrer" style="color:#045A57;font-weight:600;text-decoration:none;">HRMS &amp; Payroll</a>
+            </div>
+          </td>
+        </tr>
+
         <!-- Certified Industry Partners -->
         <tr>
           <td class="sig-cell" style="padding:9px 16px 10px 0;border-top:1px solid #E6EDF5;background-color:#F7FBFB;">
@@ -256,7 +293,7 @@
               Certified Industry Partners
             </div>
 
-            <!-- Square 64px-high tiles, capped at 300px and LEFT-ALIGNED like the rest of
+            <!-- Square 44px-high tiles, capped at 300px and LEFT-ALIGNED like the rest of
                  the signature: a logo is never stretched across ~200px of empty card.
                  Percentages + table-layout:fixed keep the strip inside the container at
                  every width (4 x 23.5% + 3 x 2% = 100%). The label rides INSIDE the link
@@ -264,53 +301,41 @@
                  partner name twice. -->
             <table role="presentation" align="left" width="300" cellpadding="0" cellspacing="0" border="0" style="width:100%;max-width:300px;border-collapse:collapse;table-layout:fixed;">
               <tr>
-                <td width="23.5%" height="64" align="center" valign="middle" style="width:23.5%;height:64px;padding:0;background-color:#FFFFFF;border:1px solid #D9E8E8;border-radius:8px;">
-                  <a href="https://sarvadnyainfotech.com/products" target="_blank" rel="noopener noreferrer" style="display:block;text-decoration:none;border:0;">
-                    <img src="https://sarvadnyainfotech.com/email-signature/tally-software.png" height="22" alt="" style="display:block;height:22px;width:auto;max-width:46px;margin:0 auto;border:0;outline:none;text-decoration:none;">
+                <td width="23.5%" height="44" align="center" valign="middle" style="width:23.5%;height:44px;padding:0;background-color:#FFFFFF;border:1px solid #D9E8E8;border-radius:8px;">
+                  <a href="https://sarvadnyainfotech.com/products?utm_source=email_footer" target="_blank" rel="noopener noreferrer" style="display:block;text-decoration:none;border:0;">
+                    <img src="https://sarvadnyainfotech.com/email-signature/tally-software.png" height="14" alt="" style="display:block;height:14px;width:auto;max-width:30px;margin:0 auto;border:0;outline:none;text-decoration:none;">
                     <div style="padding-top:4px;font-size:7px;line-height:1.2;font-weight:700;color:#033B38;text-align:center;">TallyPrime</div>
                   </a>
                 </td>
 
                 <td width="2%" style="width:2%;font-size:0;line-height:0;">&nbsp;</td>
 
-                <td width="23.5%" height="64" align="center" valign="middle" style="width:23.5%;height:64px;padding:0;background-color:#FFFFFF;border:1px solid #D9E8E8;border-radius:8px;">
-                  <a href="https://sarvadnyainfotech.com/products" target="_blank" rel="noopener noreferrer" style="display:block;text-decoration:none;border:0;">
-                    <img src="https://sarvadnyainfotech.com/email-signature/bizanalyst.png" height="22" alt="" style="display:block;height:22px;width:auto;max-width:46px;margin:0 auto;border:0;outline:none;text-decoration:none;">
-                    <div style="padding-top:4px;font-size:7px;line-height:1.2;font-weight:700;color:#033B38;text-align:center;">Biz Analyst</div>
+                <td width="23.5%" height="44" align="center" valign="middle" style="width:23.5%;height:44px;padding:0;background-color:#FFFFFF;border:1px solid #D9E8E8;border-radius:8px;">
+                  <a href="https://sarvadnyainfotech.com/products?utm_source=email_footer" target="_blank" rel="noopener noreferrer" style="display:block;text-decoration:none;border:0;">
+                    <img src="https://sarvadnyainfotech.com/email-signature/bizanalyst.png" height="14" alt="" style="display:block;height:14px;width:auto;max-width:30px;margin:0 auto;border:0;outline:none;text-decoration:none;">
+                    <div style="padding-top:4px;font-size:7px;line-height:1.2;font-weight:700;color:#033B38;text-align:center;">Tally on Mobile</div>
                   </a>
                 </td>
 
                 <td width="2%" style="width:2%;font-size:0;line-height:0;">&nbsp;</td>
 
-                <td width="23.5%" height="64" align="center" valign="middle" style="width:23.5%;height:64px;padding:0;background-color:#FFFFFF;border:1px solid #D9E8E8;border-radius:8px;">
-                  <a href="https://sarvadnyainfotech.com/services" target="_blank" rel="noopener noreferrer" style="display:block;text-decoration:none;border:0;">
-                    <img src="https://sarvadnyainfotech.com/email-signature/otu.png" height="22" alt="" style="display:block;height:22px;width:auto;max-width:46px;margin:0 auto;border:0;outline:none;text-decoration:none;">
-                    <div style="padding-top:4px;font-size:7px;line-height:1.2;font-weight:700;color:#033B38;text-align:center;">OTU</div>
+                <td width="23.5%" height="44" align="center" valign="middle" style="width:23.5%;height:44px;padding:0;background-color:#FFFFFF;border:1px solid #D9E8E8;border-radius:8px;">
+                  <a href="https://sarvadnyainfotech.com/services?utm_source=email_footer" target="_blank" rel="noopener noreferrer" style="display:block;text-decoration:none;border:0;">
+                    <img src="https://sarvadnyainfotech.com/email-signature/otu.png" height="14" alt="" style="display:block;height:14px;width:auto;max-width:30px;margin:0 auto;border:0;outline:none;text-decoration:none;">
+                    <div style="padding-top:4px;font-size:7px;line-height:1.2;font-weight:700;color:#033B38;text-align:center;">HRMS</div>
                   </a>
                 </td>
 
                 <td width="2%" style="width:2%;font-size:0;line-height:0;">&nbsp;</td>
 
-                <td width="23.5%" height="64" align="center" valign="middle" style="width:23.5%;height:64px;padding:0;background-color:#FFFFFF;border:1px solid #D9E8E8;border-radius:8px;">
-                  <a href="https://sarvadnyainfotech.com/cloud/tallycloudaccess" target="_blank" rel="noopener noreferrer" style="display:block;text-decoration:none;border:0;">
-                    <img src="https://sarvadnyainfotech.com/email-signature/nosky.png" height="22" alt="" style="display:block;height:22px;width:auto;max-width:46px;margin:0 auto;border:0;outline:none;text-decoration:none;">
-                    <div style="padding-top:4px;font-size:7px;line-height:1.2;font-weight:700;color:#033B38;text-align:center;">NoSky</div>
+                <td width="23.5%" height="44" align="center" valign="middle" style="width:23.5%;height:44px;padding:0;background-color:#FFFFFF;border:1px solid #D9E8E8;border-radius:8px;">
+                  <a href="https://sarvadnyainfotech.com/cloud/tallycloudaccess?utm_source=email_footer" target="_blank" rel="noopener noreferrer" style="display:block;text-decoration:none;border:0;">
+                    <img src="https://sarvadnyainfotech.com/email-signature/nosky.png" height="14" alt="" style="display:block;height:14px;width:auto;max-width:30px;margin:0 auto;border:0;outline:none;text-decoration:none;">
+                    <div style="padding-top:4px;font-size:7px;line-height:1.2;font-weight:700;color:#033B38;text-align:center;">Data Backup</div>
                   </a>
                 </td>
               </tr>
             </table>
-          </td>
-        </tr>
-
-        <!-- Services strip — same label scale as Contact / Certified Industry Partners
-             and the same 11.5px body text as the contact values, so the strip no longer
-             reads as a different font. -->
-        <tr>
-          <td class="sig-cell" style="padding:9px 16px 10px 0;border-top:1px solid #E6EDF5;background-color:#F7FBFB;">
-            <div style="padding-bottom:4px;font-size:9px;line-height:1.4;font-weight:700;letter-spacing:1.3px;text-transform:uppercase;color:#006569;">Services</div>
-            <div style="font-size:11.5px;line-height:1.7;color:#5A677B;">
-              <a href="https://sarvadnyainfotech.com/products" target="_blank" rel="noopener noreferrer" style="color:#045A57;font-weight:600;text-decoration:none;">TallyPrime Licences</a><span style="padding:0 5px;color:#C7D0DD;">&middot;</span><a href="https://sarvadnyainfotech.com/services/tss" target="_blank" rel="noopener noreferrer" style="color:#045A57;font-weight:600;text-decoration:none;">TSS Renewal</a><span style="padding:0 5px;color:#C7D0DD;">&middot;</span><a href="https://sarvadnyainfotech.com/services/amc" target="_blank" rel="noopener noreferrer" style="color:#045A57;font-weight:600;text-decoration:none;">AMC &amp; Support</a><span style="padding:0 5px;color:#C7D0DD;">&middot;</span><a href="https://sarvadnyainfotech.com/services/tdl" target="_blank" rel="noopener noreferrer" style="color:#045A57;font-weight:600;text-decoration:none;">TDL Customisation</a><span style="padding:0 5px;color:#C7D0DD;">&middot;</span><a href="https://sarvadnyainfotech.com/cloud/tallycloudaccess" target="_blank" rel="noopener noreferrer" style="color:#045A57;font-weight:600;text-decoration:none;">Tally on Cloud</a><span style="padding:0 5px;color:#C7D0DD;">&middot;</span><a href="https://sarvadnyainfotech.com/hrms" target="_blank" rel="noopener noreferrer" style="color:#045A57;font-weight:600;text-decoration:none;">HRMS &amp; Payroll</a>
-            </div>
           </td>
         </tr>
 
@@ -320,15 +345,15 @@
             <div style="font-size:10px;line-height:1.8;color:#8A97AA;">
               &copy; 2026 Sarvadnya Infotech LLP. All rights reserved.
               <span style="color:#C7D0DD;padding:0 3px;">&middot;</span>
-              <a href="https://sarvadnyainfotech.com/privacy" target="_blank" rel="noopener noreferrer" style="color:#5A677B;text-decoration:none;">Privacy Policy</a>
+              <a href="https://sarvadnyainfotech.com/privacy?utm_source=email_footer" target="_blank" rel="noopener noreferrer" style="color:#5A677B;text-decoration:none;">Privacy Policy</a>
               <span style="color:#C7D0DD;padding:0 3px;">&middot;</span>
-              <a href="https://sarvadnyainfotech.com/terms" target="_blank" rel="noopener noreferrer" style="color:#5A677B;text-decoration:none;">Terms &amp; Conditions</a>
+              <a href="https://sarvadnyainfotech.com/terms?utm_source=email_footer" target="_blank" rel="noopener noreferrer" style="color:#5A677B;text-decoration:none;">Terms &amp; Conditions</a>
               <span style="color:#C7D0DD;padding:0 3px;">&middot;</span>
-              <a href="https://sarvadnyainfotech.com/eula" target="_blank" rel="noopener noreferrer" style="color:#5A677B;text-decoration:none;">EULA</a>
+              <a href="https://sarvadnyainfotech.com/eula?utm_source=email_footer" target="_blank" rel="noopener noreferrer" style="color:#5A677B;text-decoration:none;">EULA</a>
               <span style="color:#C7D0DD;padding:0 3px;">&middot;</span>
-              <a href="https://sarvadnyainfotech.com/careers" target="_blank" rel="noopener noreferrer" style="color:#5A677B;text-decoration:none;">Careers</a>
+              <a href="https://sarvadnyainfotech.com/careers?utm_source=email_footer" target="_blank" rel="noopener noreferrer" style="color:#5A677B;text-decoration:none;">Careers</a>
               <span style="color:#C7D0DD;padding:0 3px;">&middot;</span>
-              <a href="https://sarvadnyainfotech.com/contact" target="_blank" rel="noopener noreferrer" style="color:#5A677B;text-decoration:none;">Contact</a>
+              <a href="https://sarvadnyainfotech.com/contact?utm_source=email_footer" target="_blank" rel="noopener noreferrer" style="color:#5A677B;text-decoration:none;">Contact</a>
             </div>
           </td>
         </tr>

@@ -12,7 +12,8 @@ import {
 import { breadcrumbJsonLd, seoMetadata } from "@/lib/seo";
 
 // CHANGE: 2026-11-24 — static curriculum, rarely changes; 6h ISR to reduce CPU.
-export const revalidate = 21600;
+// CHANGE: 2026-11-25 — 6h -> 24h for the high-traffic hands-off window (no edits planned).
+export const revalidate = 86400;
 export const dynamicParams = false;
 
 export function generateStaticParams() {

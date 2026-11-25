@@ -208,13 +208,18 @@ export default function QuickSupportModal({ isOpen, onClose, initialQuestion }: 
     }
   }, []);
 
-  // Fetch tutorials for matching
+  // CHANGE: 2026-11-25 — CPU mitigation: this modal is mounted on EVERY page even while
+  // closed, so the mount-time fetch was an uncached /api/tutorials invocation per visitor.
+  // Fetch only when Sara is actually opened, and only once per session of the component.
   useEffect(() => {
+    if (!isOpen || tutorials.length > 0) return;
+    let cancelled = false;
     fetch('/api/tutorials')
       .then(r => r.json())
-      .then(data => { if (data && !data.error) setTutorials(data); })
+      .then(data => { if (!cancelled && data && !data.error) setTutorials(data); })
       .catch(() => {});
-  }, []);
+    return () => { cancelled = true; };
+  }, [isOpen, tutorials.length]);
 
   // Auto-scroll to bottom with smooth behavior
   const scrollToBottom = (force = false) => {

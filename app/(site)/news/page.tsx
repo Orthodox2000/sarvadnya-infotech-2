@@ -4,6 +4,11 @@ import { getNews } from '@/lib/mongodb-utils';
 import { NewsItem } from '@/lib/news';
 import { seoMetadata } from "@/lib/seo";
 
+// CHANGE: 2026-11-25 — explicit 6-hour ISR for the news index. It calls getNews() and was
+// otherwise left to Next's default rendering, so every cache miss was a Node render.
+// Matches /news/[slug] and the public API cache during the hands-off window.
+export const revalidate = 21600;
+
 // CHANGE: 2026-08-27 — SEO metadata for AI/search indexing.
 // CHANGE: 2026-08-31 — Metadata strengthened with target keywords; cards link internally to /news/[slug].
 // CHANGE: 2026-10-29 — action-first title + tightened description for CTR (impressions without

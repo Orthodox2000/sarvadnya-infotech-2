@@ -3,7 +3,6 @@
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { Partner } from "@/lib/partners";
-import { fetchWithCache } from "@/lib/client-api";
 
 // CHANGE: 2026-09-16 — redesigned the flat logo-card row into a network graph.
 // CHANGE: 2026-09-17 rev-3/4/5 — X-format then "blend with background" polish then
@@ -121,8 +120,9 @@ const connectPath = (cx: number, cy: number, ex: number, ey: number) => {
 };
 
 const CertifiedPartners = ({ initialData }: { initialData?: Partner[] }) => {
-    const [partners, setPartners] = useState<Partner[]>(initialData || []);
-    const [loading, setLoading] = useState(!initialData);
+    // CHANGE: 2026-11-25 — STATIC: the homepage passes the committed partner row and the
+    // mount-time fetch('/api/partners?type=brand') has been removed.
+    const partners = initialData || [];
     const [isVisible, setIsVisible] = useState(false);
     const [hovered, setHovered] = useState<string | null>(null);
     // Only fine-pointers may drive the hovered state. Touch/stylus devices otherwise get a
@@ -151,27 +151,7 @@ const CertifiedPartners = ({ initialData }: { initialData?: Partner[] }) => {
         return () => observer.disconnect();
     }, []);
 
-    useEffect(() => {
-        if (initialData) return;
-        const fetchPartners = async () => {
-            try {
-                const data = await fetchWithCache('/api/partners?type=brand');
-                if (Array.isArray(data)) setPartners(data);
-            } catch (err) { console.error('Failed to fetch partners:', err); }
-            finally { setLoading(false); }
-        };
-        fetchPartners();
-    }, [initialData]);
-
-    if (loading) return (
-        <div className="w-full py-10 md:py-14 flex items-center justify-center">
-            <div className="flex gap-4">
-                {[1, 2, 3, 4, 5].map(i => (
-                    <div key={i} className="w-32 h-20 bg-white rounded-md md:rounded-2xl animate-pulse border border-[#E9F1FA]" />
-                ))}
-            </div>
-        </div>
-    );
+    // CHANGE: 2026-11-25 — removed the mount-time /api/partners fetch and its skeleton.
 
     if (partners.length === 0) return null;
 

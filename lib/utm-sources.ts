@@ -43,7 +43,9 @@ export const UTM_SOURCES: UtmSourceDef[] = [
   { source: 'whatsapp', label: 'WhatsApp', category: 'Social', aliases: ['wa', 'whats app'] },
   { source: 'telegram', label: 'Telegram', category: 'Social', aliases: ['tg'] },
   { source: 'x', label: 'X / Twitter', category: 'Social', aliases: ['twitter'] },
-  { source: 'email', label: 'Email Newsletter', category: 'Email', aliases: ['newsletter', 'news letter', 'mailchimp', 'mail'] },
+  // CHANGE: 2026-11-25 — `email_footer` is the source tag on every outbound link in
+  // email-templates/email-signature.html; keep it in the Email category, not "Other".
+  { source: 'email', label: 'Email Newsletter', category: 'Email', aliases: ['newsletter', 'news letter', 'mailchimp', 'mail', 'email_footer', 'email-footer'] },
   { source: 'justdial', label: 'JustDial', category: 'Local', aliases: ['jd', 'just dial', 'justdial listing'] },
   { source: 'indiamart', label: 'IndiaMART', category: 'Local', aliases: ['im', 'indiamart lead'] },
   { source: 'google_maps', label: 'Google Maps', category: 'Local', aliases: ['maps', 'gmb', 'google maps listing', 'google my business'] },

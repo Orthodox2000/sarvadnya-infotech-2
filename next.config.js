@@ -47,12 +47,16 @@ const csp = [
   `form-action 'self'`,
 ].join('; ');
 
-// CHANGE: 2026-11-20 — keep in sync with lib/api-cache.ts (the route-level header). Vercel Edge
+// CHANGE: 2026-11-25 — keep in sync with lib/api-cache.ts (the route-level header). Vercel Edge
 // serves repeat hits at 0 ms Active CPU; everything else under /api stays no-store by default.
-const PUBLIC_API_CACHE = 'public, s-maxage=3600, stale-while-revalidate=86400';
-// CHANGE: 2026-11-24 — modules are rarely updated; longer CDN TTL to cut CPU. Keep in sync with
+// High-traffic / hands-off window: public reads are 6h (was 1h), modules and the learning feed
+// are 24h/6h. Restore the shorter TTLs when admin updates resume.
+const PUBLIC_API_CACHE = 'public, s-maxage=21600, stale-while-revalidate=86400';
+// CHANGE: 2026-11-25 — learning feed; no admin updates planned for weeks (see lib/api-cache.ts).
+const PUBLIC_TUTORIALS_API_CACHE = 'public, s-maxage=21600, stale-while-revalidate=86400';
+// CHANGE: 2026-11-25 — modules rarely change; 24h CDN TTL to cut CPU. Keep in sync with
 // lib/api-cache.ts PUBLIC_MODULES_API_CACHE. Manual/admin edits should trigger /api/revalidate.
-const PUBLIC_MODULES_API_CACHE = 'public, s-maxage=21600, stale-while-revalidate=86400';
+const PUBLIC_MODULES_API_CACHE = 'public, s-maxage=86400, stale-while-revalidate=86400';
 
 const nextConfig = {
   // CHANGE: 2026-08-21 — Single worker for page-data collection/type steps: this machine has 7.5GB RAM
@@ -171,6 +175,12 @@ const nextConfig = {
     ];
   },
   images: {
+    // CHANGE: 2026-11-25 — /_next/image was 135 requests / 88.9% cached in the 7-day CDN
+    // report; each miss is a sharp optimisation inside a Function. A 7-day minimum TTL
+    // removes repeat re-encoding of the same public assets during the high-traffic window.
+    // Source files are served immutable already, so a longer optimizer TTL does not make a
+    // changed image stale; if a file is ever replaced in place, bump its filename/query.
+    minimumCacheTTL: 604800,
     remotePatterns: [
       {
         protocol: 'https',
@@ -295,9 +305,9 @@ const nextConfig = {
       ...[
         '/api/prices',
         '/api/news',
-        // CHANGE: 2026-11-21 — /api/tutorials removed: a 1-hour edge cache made
-        // admin-added learning videos look absent on the frontend. Feed is tiny
-        // and changes at admin-edit time, so freshness beats the CPU saving.
+        // CHANGE: 2026-11-25 — /api/tutorials moved OUT of this list into its own rule below:
+        // 23 uncached invocations / 3.4 s CPU in the 7-day report. Owner confirmed no
+        // content updates for weeks, so it uses the long TTL like the other public feeds.
         '/api/settings',
         '/api/content',
         '/api/partners',
@@ -312,6 +322,12 @@ const nextConfig = {
       {
         source: '/api/modules',
         headers: [{ key: 'Cache-Control', value: PUBLIC_MODULES_API_CACHE }],
+      },
+      // CHANGE: 2026-11-25 — 6-hour edge cache for the learning feed (was no-store/5 min).
+      // Placed last so it overrides the blanket /api/:path* no-store rule.
+      {
+        source: '/api/tutorials',
+        headers: [{ key: 'Cache-Control', value: PUBLIC_TUTORIALS_API_CACHE }],
       },
     ];
   },

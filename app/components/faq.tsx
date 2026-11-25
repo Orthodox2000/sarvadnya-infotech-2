@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { fetchWithCache } from '@/lib/client-api';
 
 const CATEGORIES = ['All', 'Products', 'Services', 'Technical', 'Contact'];
 
@@ -10,8 +9,9 @@ const CATEGORIES = ['All', 'Products', 'Services', 'Technical', 'Contact'];
 const PAGE_SIZE = 5;
 
 const FAQ = ({ initialData, initialSettings }: { initialData?: any[], initialSettings?: any }) => {
-    const [faqData, setFaqData] = useState<any[]>(initialData || []);
-    const [loading, setLoading] = useState(!initialData);
+    // CHANGE: 2026-11-25 — STATIC: homepage passes the committed FAQ snapshot; the
+    // mount-time fetch('/api/content?section=home_faq') has been removed.
+    const faqData = initialData || [];
     const [activeIndex, setActiveIndex] = useState<number | null>(null);
     const [activeCategory, setActiveCategory] = useState('All');
     // CHANGE: 2026-08-24 — How many FAQs are currently revealed.
@@ -19,20 +19,7 @@ const FAQ = ({ initialData, initialSettings }: { initialData?: any[], initialSet
     const [isVisible, setIsVisible] = useState(false);
     const sectionRef = useRef<HTMLDivElement>(null);
 
-    useEffect(() => {
-        if (initialData) return;
-        const fetchData = async () => {
-            try {
-                const data = await fetchWithCache('/api/content?section=home_faq');
-                if (Array.isArray(data)) setFaqData(data);
-            } catch (err) {
-                console.error('Failed to fetch FAQ data:', err);
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchData();
-    }, [initialData]);
+    // CHANGE: 2026-11-25 — removed the mount-time /api/content fetch (see note above).
 
     useEffect(() => {
         const el = sectionRef.current;
@@ -59,11 +46,7 @@ const FAQ = ({ initialData, initialSettings }: { initialData?: any[], initialSet
         setActiveIndex(activeIndex === index ? null : index);
     };
 
-    if (loading && faqData.length === 0) return (
-        <div className="w-full h-96 flex items-center justify-center">
-            <div className="w-10 h-10 border-4 border-[#006569] border-t-transparent rounded-full animate-spin"></div>
-        </div>
-    );
+    // CHANGE: 2026-11-25 — the loading spinner is gone; data is always present synchronously.
 
     return (
         <section ref={sectionRef} className="w-full py-16 md:py-20 bg-[linear-gradient(90deg,_rgba(249,251,245,1)_0%,_rgba(244,242,234,1)_53%,_rgba(238,236,223,1)_100%)]">

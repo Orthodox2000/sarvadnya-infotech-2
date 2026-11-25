@@ -10,6 +10,8 @@
 - Find a session by date/headline in the index below, open its detail file.
 - After a session, **add one detail file under `docs/history/` and one index row here**.
 - Detail files link back here; narrative links between sessions use the detail file path.
+- Operational runbook for the 2026-11-25 CPU/high-traffic work (telemetry, TTL matrix,
+  deploy/rollback): [docs/HIGH-TRAFFIC-CPU-RUNBOOK.md](HIGH-TRAFFIC-CPU-RUNBOOK.md).
 
 ---
 
@@ -17,6 +19,10 @@
 
 ### 2026-11
 
+- [2026-11-25 — Email signature: two addresses, smaller logos, relabelled marks, Our Services above logos, full width, `email_footer` UTM](history/2026-11-25-email-signature-address-and-partner-strip.md)
+- [2026-11-25 — High-traffic hands-off window: long public caches, 24 h ISR, image TTL, enrichment kill-switch](history/2026-11-25-high-traffic-hands-off-cache-hardening.md)
+- [2026-11-25 — Fluid CPU follow-up: gate `/api/tutorials` fetches, 5-minute cache, insights already static](history/2026-11-25-fluid-cpu-tutorials-api-and-client-fetch-trim.md)
+- [2026-11-25 — Static homepage chrome/content: snapshot arrays kill per-page Mongo reads and client `/api/*` waterfall](history/2026-11-25-static-homepage-chrome-cpu-mitigation.md)
 - [2026-11-24 — Tally Insights: full-content search bar + separate ERP 9 shortcuts page (owner-corrected placement)](history/2026-11-24-tally-insights-full-content-search-and-erp9-shortcuts-section.md)
 - [2026-11-24 — Tally Insights: marketing layer + GSC-driven keywords](history/2026-11-24-tally-insights-marketing-layer-and-gsc-keywords.md)
 - [2026-11-24 — Tally Insights: one flex container, no viewport-driven hydration swap](history/2026-11-24-tally-insights-single-flex-container-hydration-fix.md)

@@ -6,8 +6,9 @@ import ModulesPageClient from './ModulesPageClient';
 // WHY: the old 'use client' page fetched /api/modules after hydration on every visit. Modules
 // change rarely, so we read from the cached getModules() (unstable_cache, tag 'modules') during
 // ISR and pass the data as props. This removes client CPU, an extra request, and origin work.
-// 6-hour ISR matches the module cache TTL; admin/manual changes should call /api/revalidate.
-export const revalidate = 21600;
+// CHANGE: 2026-11-25 — 6h -> 24h ISR for the high-traffic hands-off window (no edits planned).
+// Matches the module API cache TTL; admin/manual changes should call /api/revalidate.
+export const revalidate = 86400;
 
 export default async function ModulesPage() {
   let modules: Module[] = [];

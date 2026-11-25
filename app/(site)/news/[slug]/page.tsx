@@ -11,10 +11,13 @@ import { excerptFrom } from '@/lib/news-utils';
 // cold-booted the Node function, reconnected to MongoDB and re-rendered the article (~575 ms
 // Active CPU per hit). generateStaticParams() pre-builds every known slug; a brand-new slug
 // added by the admin still renders on its first request because dynamicParams stays true.
-// Admin EDITS now appear within the one-hour window; the owner accepted that staleness and
+// Admin EDITS now appear within the window; the owner accepted that staleness and
 // a cross-repo revalidation webhook is deliberately NOT being added (see the 2026-11-20
 // Fluid CPU entry in the docs/HISTORY.md index).
-export const revalidate = 3600;
+// CHANGE: 2026-11-25 — 1 h -> 6 h for the high-traffic hands-off window (no edits planned).
+// /news/[slug] is 91.9% CDN-cached but still 161 requests in 7 days; the longer ISR window
+// cuts the uncached re-renders that consume Fluid Active CPU. Restore 3600 when edits resume.
+export const revalidate = 21600;
 export const dynamicParams = true;
 
 // CHANGE: 2026-11-20 — generateMetadata() and the page both need the same article. React's

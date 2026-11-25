@@ -3,10 +3,11 @@ import type { CSSProperties } from "react";
 import type { Metadata } from 'next';
 import Navbar from "../components/Navbar";
 import Productbar from "../components/Productbar";
-import { getSettings, getNews } from "@/lib/mongodb-utils";
-// CHANGE: 2026-11-16 — getSettings() returns the raw uppercase-key map; components read
-// snake_case fields. Normalise once here (see lib/site-settings.ts).
-import { normaliseSettings } from "@/lib/site-settings";
+// CHANGE: 2026-11-25 — CPU mitigation: the site chrome no longer reads MongoDB.
+// getSettings() + getNews() (full collection scan + enrichNews) used to run on EVERY page
+// render here, in addition to the homepage's own four reads. The ticker and the floating
+// WhatsApp button now take the committed snapshot from lib/static-site-content.ts.
+import { STATIC_NEWS, STATIC_SITE_SETTINGS } from "@/lib/static-site-content";
 import { CONTACT_SUFFIX } from "@/lib/seo";
 import { Analytics } from "@vercel/analytics/next"
 import { SpeedInsights } from "@vercel/speed-insights/next"
@@ -53,32 +54,19 @@ export const metadata: Metadata = {
     'Tally Certified Partner trusted by 1500+ businesses. TallyPrime, Tally on Cloud, AMC, Tally on WhatsApp, TallyDrive cloud backup, HRMS, TDL customization & corporate training.' + CONTACT_SUFFIX,
 };
 
-// CHANGE: 2026-09-18 — removed getTheme(): its per-request Mongo call (a 3rd getSettings)
-// produced a `theme` value that was never referenced anywhere in the layout/JSX.
-// CHANGE: 2026-09-21 — restored the getSettingsData() declaration that was
-// accidentally dropped with getTheme() (its body + the call at line 51 survived).
-async function getSettingsData() {
-  try {
-    return await getSettings();
-  } catch (err) {
-    console.error('Error loading settings:', err);
-    return {};
-  }
-}
-
-export default async function SiteLayout({
+// CHANGE: 2026-11-25 — removed getSettingsData() and the layout's DB read entirely.
+// Previously:
+//   const [settings, newsData] = await Promise.all([getSettingsData(), getNews().catch(() => [])]);
+//   const siteSettings = normaliseSettings(settings);
+// Both calls hit the live cluster on every site page request.
+// CHANGE: 2026-09-18/21 history: getTheme() was removed here earlier for the same reason
+// (a per-request Mongo call whose value was never rendered).
+export default function SiteLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const [settings, newsData] = await Promise.all([
-    getSettingsData(),
-    getNews().catch(() => [])
-  ]);
-  // CHANGE: 2026-11-16 — SupportButton reads whatsapp_phone/support_phone; the raw map made both
-  // undefined and (being truthy) skipped its /api/settings fetch, so the floating WhatsApp button
-  // used the hard-coded support number instead of the configured WhatsApp number.
-  const siteSettings = normaliseSettings(settings);
+  const siteSettings = STATIC_SITE_SETTINGS;
 
   return (
     <>
@@ -96,7 +84,7 @@ export default async function SiteLayout({
             Tailwind's overflow-x-clip compiles to overflow-x: clip — unsupported browsers
             (Safari < 16.4) simply ignore it and keep the pre-existing behavior. */}
         <div className="sticky top-0 z-[2000] w-full flex flex-col overflow-x-clip">
-          <NewsFeed initialData={newsData} />
+          <NewsFeed initialData={STATIC_NEWS} />
           {/* CHANGE: 2026-08-26 — Navbar & Productbar are fully hardcoded now; settings no longer passed. */}
           <Navbar />
           <Productbar />

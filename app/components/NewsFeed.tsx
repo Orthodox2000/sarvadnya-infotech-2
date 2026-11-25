@@ -2,15 +2,17 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { NewsItem } from '@/lib/news';
+import type { TickerNews } from '@/lib/static-site-content';
 
 const TICKER_SPEED_PX_PER_SEC = 15;
 
-export default function NewsFeed({ initialData }: { initialData?: NewsItem[] }) {
-  const [newsItems, setNewsItems] = useState<NewsItem[]>(initialData || []);
+// CHANGE: 2026-11-25 — the ticker is now STATIC. It used to fetch('/api/news') on mount
+// whenever initialData was missing, adding an edge request + a DB read to every page load.
+// The (site) layout always passes the committed snapshot; no client fetch exists any more.
+export default function NewsFeed({ initialData }: { initialData?: TickerNews[] }) {
+  const newsItems = initialData || [];
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [popoverPos, setPopoverPos] = useState({ top: 0, left: 0 });
-  const [loading, setLoading] = useState(!initialData);
   // CHANGE: 2026-08-31 — marquee duration is derived from the measured track width
   // so the ticker keeps a constant px/s speed no matter how many news items exist.
   // Uses ResizeObserver to get the measurement once the DOM is laid out (fires
@@ -41,21 +43,7 @@ export default function NewsFeed({ initialData }: { initialData?: NewsItem[] }) 
     return () => ro.disconnect();
   }, [newsItems.length]);
 
-  useEffect(() => {
-    if (initialData) return;
-    const fetchNews = async () => {
-      try {
-        const res = await fetch('/api/news');
-        const data = await res.json();
-        setNewsItems(data);
-      } catch (err) {
-        console.error('Failed to fetch news for feed:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchNews();
-  }, [initialData]);
+  // CHANGE: 2026-11-25 — removed the mount-time /api/news fetch (see header comment).
 
   const handleMouseEnter = (e: React.MouseEvent, index: number) => {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -69,7 +57,7 @@ export default function NewsFeed({ initialData }: { initialData?: NewsItem[] }) 
 
   const currentNews = hoveredIndex !== null && newsItems.length > 0 ? newsItems[hoveredIndex % newsItems.length] : null;
 
-  if (loading || newsItems.length === 0) {
+  if (newsItems.length === 0) {
     return (
       <div className="relative w-full bg-[#006569] h-[20px] flex items-center border-b border-white/10 z-[50]">
         <div className="px-6 flex items-center gap-2">

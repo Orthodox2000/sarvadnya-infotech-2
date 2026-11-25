@@ -130,7 +130,8 @@ const Productbar = () => {
     // Only set active menu on hover for desktop
     if (window.innerWidth >= 640) {
       setActiveMenu(label);
-      if (label === 'Learning') prefetchData('/api/tutorials');
+      // CHANGE: 2026-11-25 — dropped the Learning prefetch: /api/tutorials was 23 uncached
+      // invocations / 3.4 s CPU and the Sara modal now fetches it only when opened.
       if (label === 'Company') {
           prefetchData('/api/content?section=about');
           prefetchData('/api/content?section=team');
@@ -143,8 +144,7 @@ const Productbar = () => {
     e.stopPropagation();
     setActiveMenu(prev => prev === label ? null : label);
     
-    // Prefetch for specific menus
-    if (label === 'Learning') prefetchData('/api/tutorials');
+    // Prefetch for specific menus (Learning prefetch removed 2026-11-25 — see hover handler).
     if (label === 'Company') {
         prefetchData('/api/content?section=about');
         prefetchData('/api/content?section=team');

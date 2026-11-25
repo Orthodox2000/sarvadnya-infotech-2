@@ -3,6 +3,9 @@
 import { useState, useEffect } from "react";
 import { Phone, Mail, Clock, MapPin, ArrowRight, ChevronDown, BadgeCheck } from "lucide-react";
 import Footer from "../../components/Footer";
+// CHANGE: 2026-11-25 — CONTACT CONTENT IS STATIC. The page used to fetch /api/settings on
+// mount (edge request + DB read). The live public contact fields are committed here instead.
+import { STATIC_SITE_SETTINGS } from "@/lib/static-site-content";
 
 export type SiteSettings = {
   support_phone: string;
@@ -32,7 +35,7 @@ const serviceSectors = [
 ];
 
 export default function ContactPage() {
-  const [settings, setSettings] = useState<SiteSettings | null>(null);
+  const settings: SiteSettings = STATIC_SITE_SETTINGS;
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [formData, setFormData] = useState({
@@ -43,9 +46,7 @@ export default function ContactPage() {
     message: ''
   });
 
-  useEffect(() => {
-    fetchSettings();
-  }, []);
+  // CHANGE: 2026-11-25 — removed the mount-time /api/settings fetch (see import note).
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -93,17 +94,7 @@ export default function ContactPage() {
     }
   };
 
-  const fetchSettings = async () => {
-    try {
-      const response = await fetch('/api/settings');
-      const data = await response.json();
-      if (data && !data.error) {
-        setSettings(data);
-      }
-    } catch (err) {
-      console.error('Failed to fetch contact settings:', err);
-    }
-  };
+  // CHANGE: 2026-11-25 — fetchSettings() removed. The form POST is unchanged.
 
   const formatPhoneDisplay = (phone: string) => {
       const cleaned = phone.trim();
