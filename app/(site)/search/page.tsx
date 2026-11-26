@@ -267,7 +267,9 @@ function SearchContent() {
                                   </Link>
                                 );
                               }
-                              return part;
+                              // CHANGE: 2026-11-26 — strip half-written link tokens from older
+                              // cached summaries so a stray "[[" never prints as text.
+                              return part.replace(/\[\[|\]\]/g, "");
                             })}
                             {i < summary.split('\n').length - 1 && <br />}
                           </span>

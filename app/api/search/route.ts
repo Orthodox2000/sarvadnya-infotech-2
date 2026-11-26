@@ -89,6 +89,20 @@ async function getAIRecommendations(query: string, siteMap: any[]) {
   }
 }
 
+// CHANGE: 2026-11-26 — Groq sometimes emits a half-written link token (e.g. a trailing
+// "[[Tally Prime"). The /search page renders anything starting with [[ as a button, so the
+// fragment leaked into the Quick AI Overview. Keep only COMPLETE tokens whose URL came from
+// this response's results, then strip any leftover brackets from plain text.
+function sanitizeSummary(text: string, allowedUrls: string[]): string {
+  return text
+    .replace(/<think>[\s\S]*?<\/think>/g, "")
+    .replace(/\[\[([^\]|\n]+)\|([^\]\n]+)\]\]/g, (_match, label: string, url: string) =>
+      allowedUrls.includes(url.trim()) ? `[[${label.trim()}|${url.trim()}]]` : label.trim(),
+    )
+    .replace(/\[\[|\]\]/g, "")
+    .trim();
+}
+
 async function generateSearchSummary(query: string, results: any[]) {
   if (results.length === 0) return null;
 
@@ -113,8 +127,9 @@ async function generateSearchSummary(query: string, results: any[]) {
           messages: [
             {
               role: "system",
-              content: `Summarize how these results answer: "${query}". Max 3 sentences.
-              Use [[Button Label|/url]] for relevant links.`
+              content: `Summarize how these results answer: "${query}". Max 3 plain sentences.
+              Link at most two results using exactly [[Label|url]], copying the url from the results list.
+              Never leave an unclosed [[ and never output markup or brackets outside those links.`
             },
             { role: "user", content: `Results: ${results.map(r => `${r.title}: ${r.url}`).join(' | ')}` }
           ],
@@ -126,7 +141,8 @@ async function generateSearchSummary(query: string, results: any[]) {
 
       const data = await response.json();
       if (data.choices?.[0]) {
-        return data.choices[0].message.content.replace(/<think>[\s\S]*?<\/think>/g, '').trim();
+        const allowedUrls = results.map((r: any) => r.url).filter(Boolean);
+        return sanitizeSummary(data.choices[0].message.content, allowedUrls);
       }
       return null;
     // });

@@ -13,6 +13,7 @@ import {
 } from "@/lib/learn-tally-curriculum";
 import { articleJsonLd, breadcrumbJsonLd, faqPageJsonLd, seoMetadata } from "@/lib/seo";
 import MarkdownBody from "@/app/components/TallyInsights/MarkdownBody";
+import InsightsSearch from "@/app/components/TallyInsights/InsightsSearch";
 
 // CHANGE: 2026-11-24 — static curriculum, rarely changes; 6h ISR to reduce CPU.
 // CHANGE: 2026-11-25 — 6h -> 24h for the high-traffic hands-off window (no edits planned).
@@ -120,6 +121,12 @@ export default async function LessonPage({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
+      {/* CHANGE: 2026-11-26 — this guide searches only its own text; results jump to the
+          exact shortcut / FAQ / heading. Global site search stays in the navbar. */}
+      <div className="docs-search-region">
+        <InsightsSearch scope={{ sectionId: lesson.sectionId, lessonSlug: lesson.slug }} />
+      </div>
+
       <nav className="docs-breadcrumb" aria-label="Breadcrumb">
         <Link href="/">Home</Link>
         <span aria-hidden="true">/</span>
@@ -133,22 +140,22 @@ export default async function LessonPage({
       <header className="overview_header docs-page-header">
         <p className="docs-kicker">{lesson.sectionTitle}</p>
         <h1>{lesson.title}</h1>
-        <p className="docs-lede">{lesson.intro}</p>
-        <div className="docs-quick-answer">
+        <p id="guide-intro" className="docs-lede">{lesson.intro}</p>
+        <div id="quick-answer" className="docs-quick-answer">
           <h2>Quick answer</h2>
           <p>{quickAnswer}</p>
         </div>
       </header>
 
       <article className="tut_overview docs-article">
-        <MarkdownBody md={lesson.bodyMd} />
+        <MarkdownBody md={lesson.bodyMd} anchorPrefix="body" />
 
         {lesson.definitions && lesson.definitions.length > 0 && (
           <section className="docs-block" aria-labelledby="docs-terms-heading">
             <h2 id="docs-terms-heading">Key terms</h2>
             <div className="docs-term-list">
               {lesson.definitions.map((d, i) => (
-                <div key={i} className="docs-term">
+                <div key={i} id={`term-${i + 1}`} className="docs-term">
                   <h3>{d.term}</h3>
                   <p>{d.definition}</p>
                   {d.example && <p className="docs-term-example">Example: {d.example}</p>}
@@ -163,7 +170,7 @@ export default async function LessonPage({
             <h2 id="docs-examples-heading">Worked examples</h2>
             <div className="docs-example-list">
               {lesson.examples.map((ex, i) => (
-                <div key={i} className="docs-example">
+                <div key={i} id={`example-${i + 1}`} className="docs-example">
                   <h3>{ex.title}</h3>
                   <ol>
                     {ex.steps.map((s, idx) => (
@@ -197,7 +204,7 @@ export default async function LessonPage({
                 </thead>
                 <tbody>
                   {lesson.shortcuts.map((sc, i) => (
-                    <tr key={i}>
+                    <tr key={i} id={`shortcut-${i + 1}`}>
                       <td className="docs-key" data-label="Keys">{sc.keys}</td>
                       <td data-label="Action">{sc.action}</td>
                       <td data-label="Notes">{sc.notes || "-"}</td>

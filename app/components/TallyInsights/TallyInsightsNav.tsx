@@ -1,4 +1,8 @@
 // CHANGE: 2026-10-23 — Shared client nav for Tally Insights (minimal bundle).
+// CHANGE: 2026-11-26 — Sidebar follows the admin panel's structure (roomy pill rows,
+// text-only +/- toggle) but uses the site's light teal theme. No icons, no section
+// descriptions and no count badge — just titles in regular weight; bold is reserved
+// for the selected item. The full curriculum body still never reaches the browser.
 // CHANGE: 2026-11-24 — Rebuilt for the W3-style docs shell: compact sidebar, selected
 // section/lesson, collapsible sections with one-line descriptions and an in-panel collapse
 // toggle. The full curriculum body still never reaches the browser.
@@ -18,7 +22,6 @@ import { useEffect, useMemo, useState } from "react";
 type NavModel = Array<{
   id: string;
   title: string;
-  description?: string;
   lessons: Array<{ slug: string; title: string }>;
 }>;
 
@@ -136,35 +139,11 @@ export default function TallyInsightsNav({
             aria-label={visuallyOpen ? "Collapse guide navigation" : "Expand guide navigation"}
             onClick={() => setManualExpanded(!visuallyOpen)}
           >
-            <svg
-              className="w-3.5 h-3.5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth="2.5"
-              aria-hidden="true"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
             <span className="docs-sidebar-toggle-label">Guides</span>
             <span className="docs-toggle-count">{resultCount}</span>
           </button>
           <div className="docs-sidebar-title">Tally Insights</div>
-          <div className="docs-sidebar-subtitle">
-            {query.trim() ? "Search results" : `${resultCount} guides`}
-          </div>
           <label className="docs-search">
-            <svg
-              className="w-3.5 h-3.5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth="2"
-              aria-hidden="true"
-            >
-              <circle cx="11" cy="11" r="7" />
-              <path d="m20 20-3-3" />
-            </svg>
             <input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
@@ -208,13 +187,7 @@ export default function TallyInsightsNav({
                       className="docs-nav-section-link"
                       aria-current={isActive && !currentLessonSlug ? "page" : undefined}
                     >
-                      <span className="docs-nav-section-title">
-                        {section.title}
-                        <span className="docs-nav-section-count">{section.lessons.length}</span>
-                      </span>
-                      {section.description && (
-                        <span className="docs-nav-section-desc">{section.description}</span>
-                      )}
+                      <span className="docs-nav-section-title">{section.title}</span>
                     </Link>
                     <button
                       type="button"
@@ -223,16 +196,7 @@ export default function TallyInsightsNav({
                       aria-label={`${sectionOpen ? "Collapse" : "Expand"} ${section.title}`}
                       className="docs-nav-toggle"
                     >
-                      <svg
-                        className="w-2.5 h-2.5"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        strokeWidth="3"
-                        aria-hidden="true"
-                      >
-                        <path strokeLinecap="round" strokeLinejoin="round" d="m9 18 6-6-6-6" />
-                      </svg>
+                      <span aria-hidden="true">{sectionOpen ? "−" : "+"}</span>
                     </button>
                   </div>
                   {sectionOpen && (

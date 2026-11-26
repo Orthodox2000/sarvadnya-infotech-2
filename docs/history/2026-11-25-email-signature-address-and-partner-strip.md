@@ -28,8 +28,9 @@ Back to [docs/HISTORY.md](../HISTORY.md).
 2. **Partner logo strip reduced** (twice, per owner): tile height 64px → 56px → 44px,
    image height 22px → 18px → 14px, image `max-width` 46px → 38px → 30px. No hosted
    file changed.
-3. **Labels renamed** without changing the linked URLs or image files:
-   `Biz Analyst` → `Tally on Mobile`, `OTU` → `HRMS`, `NoSky` → `Data Backup`.
+3. **Labels renamed** without changing the linked URLs or image files. Final owner
+   wording: `Biz Analyst` → `Tally on Mobile`, `OTU` → `HRMS Solution`, `NoSky` →
+   `Cloud Backup Solution` (the interim captions were "HRMS" and "Data Backup").
    The `public/email-signature/` folder has no replacement artwork, so only the visible
    caption changed.
 4. **Order swapped**: the `Services` strip now sits **above** the `Certified Industry

@@ -7,7 +7,7 @@
 
 import { useEffect, useRef, useState, type KeyboardEvent } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 
 type Suggestion = {
   title: string;
@@ -43,8 +43,17 @@ function Highlight({ text, query }: { text: string; query: string }) {
   );
 }
 
-export default function InsightsSearch() {
+// CHANGE: 2026-11-26 — the search bar is now local to the current section or single guide.
+// Global site search lives only in the navbar; this bar must never redirect to /search.
+export default function InsightsSearch({
+  scope,
+}: {
+  scope: { sectionId: string; lessonSlug?: string };
+}) {
   const router = useRouter();
+  const pathname = usePathname();
+  const sectionId = scope.sectionId;
+  const lessonSlug = scope.lessonSlug;
   const [value, setValue] = useState("");
   const [results, setResults] = useState<Suggestion[]>([]);
   const [open, setOpen] = useState(false);
@@ -70,7 +79,9 @@ export default function InsightsSearch() {
     let cancelled = false;
     const timer = setTimeout(async () => {
       try {
-        const res = await fetch(`/api/insights/search?q=${encodeURIComponent(q)}`, {
+        const params = new URLSearchParams({ q, section: sectionId });
+        if (lessonSlug) params.set("lesson", lessonSlug);
+        const res = await fetch(`/api/insights/search?${params.toString()}`, {
           signal: controller.signal,
         });
         if (!res.ok) throw new Error(`Search failed: ${res.status}`);
@@ -93,7 +104,7 @@ export default function InsightsSearch() {
       clearTimeout(timer);
       controller.abort();
     };
-  }, [value]);
+  }, [value, sectionId, lessonSlug]);
 
   useEffect(() => {
     const onPointerDown = (event: MouseEvent) => {
@@ -110,6 +121,13 @@ export default function InsightsSearch() {
     setExpanded(false);
     setActive(-1);
     setValue("");
+    const [path, hash] = href.split("#");
+    // Already on this guide: scroll straight to the matched shortcut / FAQ / heading.
+    if (hash && path === pathname) {
+      document.getElementById(hash)?.scrollIntoView({ behavior: "smooth", block: "start" });
+      window.history.replaceState(null, "", href);
+      return;
+    }
     router.push(href);
   };
 
@@ -174,13 +192,7 @@ export default function InsightsSearch() {
         role="search"
         onSubmit={(event) => {
           event.preventDefault();
-          if (results.length) {
-            go(results[Math.max(active, 0)].href);
-            return;
-          }
-          if (value.trim()) {
-            router.push(`/search?q=${encodeURIComponent(value.trim())}`);
-          }
+          if (results.length) go(results[Math.max(active, 0)].href);
         }}
       >
         <svg
@@ -204,8 +216,8 @@ export default function InsightsSearch() {
           }}
           onFocus={() => { if (results.length) setOpen(true); }}
           onKeyDown={onKeyDown}
-          placeholder="Search all guides: shortcuts, GST steps, TSS, FAQs..."
-          aria-label="Search all Tally Insights guide content"
+          placeholder={lessonSlug ? "Search this guide: shortcuts, steps, FAQs..." : "Search guides in this section..."}
+          aria-label={lessonSlug ? "Search this Tally Insights guide" : "Search guides in this section"}
           role="combobox"
           aria-autocomplete="list"
           aria-expanded={hasQuery && open}
@@ -235,7 +247,7 @@ export default function InsightsSearch() {
       </form>
 
       <p className="sr-only" aria-live="polite">
-        {loading ? "Searching guides" : hasQuery ? `${results.length} guides found` : ""}
+        {loading ? "Searching" : hasQuery ? `${results.length} matches` : ""}
       </p>
 
       {hasQuery && open && (
@@ -243,7 +255,7 @@ export default function InsightsSearch() {
           {expanded ? (
             <div className="insights-search-panel" aria-label="All matching guides">
               <div className="insights-search-panel-head">
-                <strong>{results.length} guides matching &ldquo;{value.trim()}&rdquo;</strong>
+                <strong>{results.length} matches for &ldquo;{value.trim()}&rdquo;</strong>
                 <button type="button" onClick={() => setExpanded(false)}>
                   Show suggestions
                 </button>
@@ -265,7 +277,7 @@ export default function InsightsSearch() {
                     {shown.map(renderSuggestion)}
                   </ul>
                   <div className="insights-search-foot">
-                    <span>{loading ? "Searching..." : `${results.length} guides found`}</span>
+                    <span>{loading ? "Searching..." : `${results.length} matches`}</span>
                     {results.length > 6 && (
                       <button type="button" onClick={() => setExpanded(true)}>
                         View all {results.length}
@@ -275,7 +287,10 @@ export default function InsightsSearch() {
                 </>
               ) : !loading ? (
                 <div className="insights-search-empty">
-                  <p>No guide text matches &ldquo;{value.trim()}&rdquo;.</p>
+                  <p>
+                    No match in {lessonSlug ? "this guide" : "this section"} for
+                    &ldquo;{value.trim()}&rdquo;.
+                  </p>
                   <Link href="/ask-sara" onClick={() => setOpen(false)}>
                     Ask Sara instead &rarr;
                   </Link>

@@ -6,6 +6,7 @@
 // NOTE: no DB, no LLM and no client import — the API route owns this module.
 
 import { LESSONS, SECTIONS, type Lesson } from "./learn-tally-curriculum";
+import { parseMarkdownBlocks } from "./markdown-blocks";
 
 export type InsightsSearchResult = {
   title: string;
@@ -25,12 +26,18 @@ type Passage = {
   weight: number;
 };
 
+// CHANGE: 2026-11-26 — passages can carry the anchor rendered on the lesson page, so a
+// result lands on the exact shortcut row / FAQ / heading instead of the top of the guide.
+type AnchoredPassage = Passage & { anchor?: string };
+
 type IndexEntry = {
   title: string;
   sectionTitle: string;
-  href: string;
-  passages: Passage[];
+  baseHref: string;
+  passages: AnchoredPassage[];
 };
+
+export type InsightsScope = { sectionId: string; lessonSlug?: string };
 
 const STOPWORDS = new Set([
   "the", "a", "an", "and", "or", "of", "to", "in", "on", "for", "is", "are", "was",
@@ -128,7 +135,7 @@ const INDEX: IndexEntry[] = LESSONS.map((lesson) => {
   return {
     title: lesson.title,
     sectionTitle: lesson.sectionTitle || section?.title || "Tally Insights",
-    href: `/tally-insights/${lesson.sectionId}/${lesson.slug}`,
+    baseHref: `/tally-insights/${lesson.sectionId}/${lesson.slug}`,
     passages: lessonPassages(lesson, section?.description || ""),
   };
 });
@@ -159,11 +166,8 @@ function snippet(text: string, limit = 190): string {
   return `${(lastSpace > limit / 2 ? cut.slice(0, lastSpace) : cut).trimEnd()}...`;
 }
 
-/**
- * Search every guide title, intro, keyword, FAQ, definition, shortcut row and body line.
- * Returns the best-matching passages with a short "why it matched" label.
- */
-export function searchInsights(query: string, limit = 8): InsightsSearchResult[] {
+/** Rank passages for one or more guides. Shared by global and scope-limited search. */
+function scoreEntries(query: string, entries: IndexEntry[], limit: number): InsightsSearchResult[] {
   const cleaned = (query || "").trim();
   if (cleaned.length < 2) return [];
 
@@ -173,8 +177,8 @@ export function searchInsights(query: string, limit = 8): InsightsSearchResult[]
   const phrase = cleaned.toLowerCase();
   const results: InsightsSearchResult[] = [];
 
-  for (const entry of INDEX) {
-    let best: { passage: Passage; score: number; fullMatch: boolean } | null = null;
+  for (const entry of entries) {
+    let best: { passage: AnchoredPassage; score: number; fullMatch: boolean } | null = null;
     let matchingPassages = 0;
 
     for (const passage of entry.passages) {
@@ -203,7 +207,8 @@ export function searchInsights(query: string, limit = 8): InsightsSearchResult[]
     results.push({
       title: entry.title,
       sectionTitle: entry.sectionTitle,
-      href: entry.href,
+      // CHANGE: 2026-11-26 — exact-match deep link when the matched passage has a rendered id.
+      href: `${entry.baseHref}${best.passage.anchor ? `#${best.passage.anchor}` : ""}`,
       snippet: snippet(best.passage.text),
       match: best.passage.label,
       score: best.score + Math.min(matchingPassages, 5) * 0.5,
@@ -211,4 +216,96 @@ export function searchInsights(query: string, limit = 8): InsightsSearchResult[]
   }
 
   return results.sort((a, b) => b.score - a.score).slice(0, Math.max(1, limit));
+}
+
+/** Search every guide title, intro, keyword, FAQ, definition, shortcut row and body line. */
+export function searchInsights(query: string, limit = 8): InsightsSearchResult[] {
+  return scoreEntries(query, INDEX, limit);
+}
+
+// CHANGE: 2026-11-26 — the in-guide search bar is local: on a lesson it searches only that
+// guide; on a section index it searches only that section's guides. Global search stays in
+// the navbar. Anchors mirror the ids rendered by MarkdownBody and the lesson page blocks.
+function anchoredPassages(lesson: Lesson): AnchoredPassage[] {
+  const out: AnchoredPassage[] = [
+    { text: lesson.title, label: "Guide", weight: 12 },
+    { text: lesson.intro, label: "Overview", weight: 5, anchor: "guide-intro" },
+    { text: (lesson.keywords || []).join(", "), label: "Keywords", weight: 7 },
+  ];
+
+  if (lesson.quickAnswer || lesson.seoDescription) {
+    out.push({
+      text: lesson.quickAnswer || lesson.seoDescription || "",
+      label: "Quick answer",
+      weight: 6,
+      anchor: "quick-answer",
+    });
+  }
+
+  (lesson.definitions || []).forEach((d, i) => {
+    out.push({
+      text: `${d.term}. ${d.definition}${d.example ? ` Example: ${d.example}` : ""}`,
+      label: "Key term",
+      weight: 5,
+      anchor: `term-${i + 1}`,
+    });
+  });
+
+  (lesson.examples || []).forEach((ex, i) => {
+    out.push({
+      text: `${ex.title}. ${ex.steps.join(". ")}${ex.notes?.length ? `. ${ex.notes.join(". ")}` : ""}`,
+      label: "Worked example",
+      weight: 4,
+      anchor: `example-${i + 1}`,
+    });
+  });
+
+  // Highest weight of all: a "print" query must surface the print shortcut row itself.
+  (lesson.shortcuts || []).forEach((sc, i) => {
+    out.push({
+      text: `${sc.keys}. ${sc.action}${sc.notes ? `. ${sc.notes}` : ""}`,
+      label: "Shortcut",
+      weight: 11,
+      anchor: `shortcut-${i + 1}`,
+    });
+  });
+
+  (lesson.faqs || []).forEach((f, i) => {
+    out.push({ text: `${f.q} ${f.a}`, label: "FAQ", weight: 4, anchor: `faq-${i + 1}` });
+  });
+
+  parseMarkdownBlocks(lesson.bodyMd || "").forEach((block, index) => {
+    const text =
+      block.type === "list"
+        ? block.items.join(". ")
+        : block.type === "table"
+          ? `${block.headers.join(". ")}. ${block.rows.map((row) => row.join(". ")).join(". ")}`
+          : block.text;
+    out.push({
+      text,
+      label: block.type === "heading" ? "In this guide" : "Guide text",
+      weight: block.type === "heading" ? 6 : 3,
+      anchor: `body-${index}`,
+    });
+  });
+
+  return out.filter((p) => p.text.length > 0);
+}
+
+export function searchInsightsScoped(
+  query: string,
+  scope: InsightsScope,
+  limit = 8,
+): InsightsSearchResult[] {
+  const section = SECTIONS.find((s) => s.id === scope.sectionId);
+  const lessons = LESSONS.filter(
+    (l) => l.sectionId === scope.sectionId && (!scope.lessonSlug || l.slug === scope.lessonSlug),
+  );
+  const entries: IndexEntry[] = lessons.map((lesson) => ({
+    title: lesson.title,
+    sectionTitle: lesson.sectionTitle || section?.title || "Tally Insights",
+    baseHref: `/tally-insights/${lesson.sectionId}/${lesson.slug}`,
+    passages: anchoredPassages(lesson),
+  }));
+  return scoreEntries(query, entries, limit);
 }

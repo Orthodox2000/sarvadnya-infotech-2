@@ -912,6 +912,13 @@ main > div:first-of-type {
   }
 }
 
+/* CHANGE: 2026-11-26 — brand-coloured text selection instead of the browser default blue.
+   Light teal tint keeps the selection readable on both white cards and the dark page-title band. */
+::selection {
+  background: #b8dede;
+  color: #033b38;
+}
+
 /* CHANGE: 2026-11-24 — W3-style Tally Insights docs shell.
    WHY: section and lesson pages had separate spacing and each lesson carried hero artwork,
    lead forms and promo cards. This is one local, dependency-free frame with the requested
@@ -976,17 +983,21 @@ main > div:first-of-type {
   font-weight: 800;
 }
 
-/* Sidebar is one in-flow flex item beside the article at all widths. The collapse toggle lives
-   inside it, so it expands/collapses in place — it never floats over or overlaps the content. */
+/* CHANGE: 2026-11-26 — the docs sidebar keeps the admin panel's roomy pill rows and 14px
+   bold titles, but uses the SITE's light teal palette instead of the admin's dark surface
+   (owner: the black background does not suit the website theme). No W3.CSS, no icons and no
+   per-section descriptions — each entry is just its title. Still one in-flow flex item
+   beside the article at all widths; the collapse toggle never overlays the content. */
 .w3-sidebar.w3-collapse {
   display: flex;
   flex-direction: column;
   min-width: 0;
   overflow: hidden;
-  border: 1px solid #ddefef;
-  border-radius: 10px;
-  background: #fff;
-  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
+  border: 1px solid #d4eaea;
+  border-radius: 12px;
+  background: #f7fbfb;
+  color: #0f3f41;
+  box-shadow: 0 4px 16px rgba(3, 59, 56, 0.06);
 }
 
 .leftmenuinner {
@@ -996,16 +1007,19 @@ main > div:first-of-type {
   height: 100%;
 }
 
+/* CHANGE: 2026-11-26 — second sizing pass: the owner asked for still smaller sidebar text.
+   Type is stepped down one notch across the head, section, lesson, result and empty-state rows;
+   padding, pill shapes and the glassmorphic selection are deliberately unchanged. */
 .docs-sidebar-head {
   position: relative;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 4px 8px;
+  gap: 8px;
   flex: 0 0 auto;
-  padding: 10px 12px;
-  border-bottom: 1px solid #e8f0f0;
-  background: linear-gradient(180deg, #f8fbfb 0%, #fff 100%);
+  padding: 16px;
+  border-bottom: 1px solid #d4eaea;
+  background: linear-gradient(135deg, #e5f4f4 0%, #d9e8e8 100%);
 }
 
 .docs-sidebar-toggle {
@@ -1015,32 +1029,25 @@ main > div:first-of-type {
   justify-content: center;
   gap: 6px;
   min-height: 32px;
-  padding: 6px 10px;
-  border: 1px solid #d4eaea;
+  padding: 5px 10px;
+  border: 1px solid #b8dede;
   border-radius: 999px;
   background: #fff;
   color: #006569;
   cursor: pointer;
   font-family: inherit;
-  font-size: 10px;
-  font-weight: 900;
+  font-size: 9px;
+  font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }
 
 .docs-sidebar-title {
   color: #006569;
-  font-size: 11px;
-  font-weight: 900;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-}
-
-.docs-sidebar-subtitle {
-  margin-top: 2px;
-  color: #64748b;
-  font-size: 10.5px;
-  font-weight: 600;
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
 }
 
 .docs-search {
@@ -1050,29 +1057,20 @@ main > div:first-of-type {
   margin-top: 4px;
 }
 
-.docs-search svg {
-  position: absolute;
-  left: 9px;
-  top: 50%;
-  color: #64748b;
-  transform: translateY(-50%);
-  pointer-events: none;
-}
-
 .docs-search input {
   width: 100%;
-  padding: 7px 9px 7px 28px;
+  padding: 10px 12px;
   border: 1px solid #d4eaea;
-  border-radius: 7px;
+  border-radius: 10px;
   background: #fff;
   color: #0f172a;
   font-family: inherit;
-  font-size: 11.5px;
+  font-size: 12px;
   line-height: 1.4;
 }
 
 .docs-search input::placeholder {
-  color: #94a3b8;
+  color: #7c9aa0;
 }
 
 .docs-search input:focus-visible {
@@ -1081,7 +1079,7 @@ main > div:first-of-type {
 }
 
 .docs-toggle-count {
-  color: #64748b;
+  color: #006569;
   font-variant-numeric: tabular-nums;
 }
 
@@ -1104,91 +1102,85 @@ main > div:first-of-type {
 
 .docs-nav-section-row {
   display: flex;
-  align-items: flex-start;
-  gap: 2px;
+  align-items: center;
+  gap: 4px;
 }
 
 .docs-nav-section-link {
   display: block;
   flex: 1 1 auto;
   min-width: 0;
-  padding: 9px 4px 8px 12px;
-  color: #0f172a;
+  margin: 6px 0 6px 6px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  color: #0f3f41;
   text-decoration: none;
 }
 
 .docs-nav-section-link:hover {
-  background: #f5f4ed;
+  background: #e5f4f4;
+  color: #006569;
 }
 
+/* CHANGE: 2026-11-26 — selected nav rows are a light, glassmorphic teal (translucent fill,
+   blur and a hairline border) instead of a solid green block. Bold stays on the selection only. */
 .docs-nav-section.is-active > .docs-nav-section-row > .docs-nav-section-link {
-  background: #e5f4f4;
+  border: 1px solid rgba(0, 101, 105, 0.18);
+  background: rgba(0, 101, 105, 0.11);
   color: #004f52;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7), 0 4px 14px rgba(0, 101, 105, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/* CHANGE: 2026-11-26 — regular weight is the default for every guide title; thickness is
+   earned only by the active section/lesson and by real page headings. */
+.docs-nav-section.is-active > .docs-nav-section-row > .docs-nav-section-link .docs-nav-section-title {
+  font-weight: 800;
 }
 
 .docs-nav-section-title {
   display: block;
-  font-size: 11.5px;
-  font-weight: 800;
-  line-height: 1.35;
-}
-
-.docs-nav-section-count {
-  display: inline-block;
-  margin-left: 6px;
-  color: #006569;
-  font-size: 9.5px;
-  font-weight: 800;
-  font-variant-numeric: tabular-nums;
-}
-
-.docs-nav-section-desc {
-  display: block;
-  margin-top: 3px;
-  color: #64748b;
-  font-size: 10px;
+  font-size: 13px;
   font-weight: 500;
-  line-height: 1.4;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
 }
 
 .docs-nav-toggle {
   display: inline-flex;
-  flex: 0 0 30px;
+  flex: 0 0 34px;
   align-items: center;
   justify-content: center;
-  min-height: 36px;
-  margin-right: 5px;
+  min-height: 34px;
+  margin-right: 6px;
   border: 0;
-  border-radius: 6px;
+  border-radius: 8px;
   background: transparent;
-  color: #64748b;
+  color: #006569;
   cursor: pointer;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1;
 }
 
 .docs-nav-toggle:hover {
   background: #e5f4f4;
-  color: #006569;
-}
-
-.docs-nav-toggle svg {
-  transition: transform 180ms ease;
-}
-
-.docs-nav-section.is-open .docs-nav-toggle svg {
-  transform: rotate(90deg);
+  color: #004f52;
 }
 
 .docs-nav-lessons {
-  padding: 0 8px 8px 12px;
+  padding: 0 10px 10px 16px;
 }
 
 .docs-nav-lesson {
   display: block;
-  padding: 6px 9px;
-  border-radius: 6px;
+  padding: 10px 12px;
+  border-radius: 10px;
   color: #475569;
-  font-size: 11px;
-  font-weight: 600;
+  font-size: 12px;
+  font-weight: 400;
   line-height: 1.4;
   text-decoration: none;
 }
@@ -1199,27 +1191,39 @@ main > div:first-of-type {
 }
 
 .docs-nav-lesson.is-active {
-  background: #006569;
-  color: #fff;
+  border: 1px solid rgba(0, 101, 105, 0.18);
+  background: rgba(0, 101, 105, 0.11);
+  color: #004f52;
   font-weight: 800;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7), 0 4px 14px rgba(0, 101, 105, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
 .docs-nav-results {
-  padding: 6px;
+  padding: 8px;
 }
 
 .docs-nav-result {
   display: block;
-  padding: 8px 9px;
-  border-radius: 6px;
+  padding: 10px 12px;
+  border-radius: 10px;
   color: #334155;
   text-decoration: none;
 }
 
-.docs-nav-result:hover,
-.docs-nav-result.is-active {
+.docs-nav-result:hover {
   background: #e5f4f4;
   color: #006569;
+}
+
+.docs-nav-result.is-active {
+  border: 1px solid rgba(0, 101, 105, 0.18);
+  background: rgba(0, 101, 105, 0.11);
+  color: #004f52;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7), 0 4px 14px rgba(0, 101, 105, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
 .docs-nav-result-title,
@@ -1229,28 +1233,42 @@ main > div:first-of-type {
 }
 
 .docs-nav-result-title {
-  font-size: 11px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.docs-nav-result.is-active .docs-nav-result-title {
   font-weight: 800;
 }
 
 .docs-nav-result-section {
   margin-top: 2px;
   color: #64748b;
-  font-size: 9.5px;
+  font-size: 10px;
+}
+
+.docs-nav-result:hover .docs-nav-result-section,
+.docs-nav-result.is-active .docs-nav-result-section {
+  color: #004f52;
 }
 
 .docs-nav-empty {
   padding: 14px 12px;
   color: #64748b;
-  font-size: 11px;
+  font-size: 12px;
   line-height: 1.5;
 }
 
+/* CHANGE: 2026-11-26 — teal focus outline on the light sidebar controls. */
 .docs-nav-section-link:focus-visible,
 .docs-nav-toggle:focus-visible,
 .docs-nav-lesson:focus-visible,
 .docs-nav-result:focus-visible,
-.docs-sidebar-toggle:focus-visible,
+.docs-sidebar-toggle:focus-visible {
+  outline: 2px solid #006569;
+  outline-offset: 2px;
+}
+
 .docs-guide-card:focus-visible,
 .docs-back-link:focus-visible,
 .docs-cta-link:focus-visible,
@@ -1311,7 +1329,7 @@ main > div:first-of-type {
   color: #0f172a;
   font-family: inherit;
   font-size: 12.5px;
-  font-weight: 600;
+  font-weight: 400;
   line-height: 1.4;
   outline: none;
   appearance: none;
@@ -1455,7 +1473,7 @@ main > div:first-of-type {
   min-width: 0;
   color: #64748b;
   font-size: 10px;
-  font-weight: 700;
+  font-weight: 500;
 }
 
 .insights-search-option-title,
@@ -1467,14 +1485,14 @@ main > div:first-of-type {
 .insights-search-option-title {
   color: #0f172a;
   font-size: 12.5px;
-  font-weight: 800;
+  font-weight: 500;
 }
 
 .insights-search-option-snippet {
   margin-top: 2px;
   color: #475569;
   font-size: 11px;
-  font-weight: 500;
+  font-weight: 400;
 }
 
 .insights-search mark {
@@ -1527,7 +1545,7 @@ main > div:first-of-type {
   padding: 16px 14px;
   color: #64748b;
   font-size: 11.5px;
-  font-weight: 600;
+  font-weight: 400;
   line-height: 1.5;
 }
 
@@ -1537,7 +1555,7 @@ main > div:first-of-type {
 
 .insights-search-empty a {
   color: #006569;
-  font-weight: 800;
+  font-weight: 700;
 }
 
 @media (max-width: 640px) {
@@ -1576,6 +1594,12 @@ main > div:first-of-type {
   min-width: 0;
 }
 
+/* CHANGE: 2026-11-26 — in-guide search jumps to exact ids; keep them clear of the sticky navbar. */
+.docs-article [id],
+.overview_header [id] {
+  scroll-margin-top: 96px;
+}
+
 .docs-breadcrumb {
   display: flex;
   flex-wrap: wrap;
@@ -1584,7 +1608,7 @@ main > div:first-of-type {
   margin: 0 0 14px;
   color: #64748b;
   font-size: 10.5px;
-  font-weight: 600;
+  font-weight: 400;
   line-height: 1.5;
 }
 
@@ -1602,21 +1626,61 @@ main > div:first-of-type {
   color: #b8dede;
 }
 
+/* CHANGE: 2026-11-26 — every /tally-insights page title now sits in the same compact teal
+   gradient band as the admin dashboard hero (#006569 -> #045A57 -> #033B38). Shallow by
+   design so the guide list / article stays in view; the two decorative circles are CSS-only,
+   so neither the section nor the lesson markup changes (no hydration risk). */
 .overview_header.docs-page-header {
+  position: relative;
+  isolation: isolate;
   max-width: 100%;
   margin-bottom: 14px;
-  padding: 18px 20px;
+  padding: 22px;
+  overflow: hidden;
   overflow-wrap: anywhere;
-  border: 1px solid #e8f0f0;
-  border-radius: 9px;
-  background: #fff;
+  border: 1px solid #033b38;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #006569 0%, #045a57 52%, #033b38 100%);
+  box-shadow: 0 10px 24px rgba(3, 59, 56, 0.16);
+}
+
+.overview_header.docs-page-header::before,
+.overview_header.docs-page-header::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.overview_header.docs-page-header::before {
+  top: -64px;
+  right: -48px;
+  width: 160px;
+  height: 160px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  filter: blur(28px);
+}
+
+.overview_header.docs-page-header::after {
+  right: 30%;
+  bottom: -76px;
+  width: 144px;
+  height: 144px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 999px;
+}
+
+.overview_header.docs-page-header > * {
+  position: relative;
+  z-index: 1;
 }
 
 .docs-kicker {
   margin: 0 0 8px;
-  color: #006569;
+  color: #ddefef;
   font-size: 9.5px;
-  font-weight: 900;
+  font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
 }
@@ -1630,37 +1694,42 @@ main > div:first-of-type {
   letter-spacing: -0.02em;
 }
 
-.docs-lede {
+.overview_header.docs-page-header h1 {
+  color: #fff;
+}
+
+.overview_header.docs-page-header .docs-lede {
   max-width: 74ch;
   margin: 10px 0 0;
-  color: #475569;
+  color: #ddefef;
   font-size: 13.5px;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 1.65;
 }
 
 .docs-quick-answer {
   margin-top: 14px;
   padding: 11px 14px;
-  border-left: 4px solid #006569;
-  border-radius: 6px;
-  background: #e5f4f4;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-left: 4px solid #b8dede;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .docs-quick-answer h2 {
   margin: 0 0 5px;
-  color: #006569;
+  color: #ddefef;
   font-size: 10px;
-  font-weight: 900;
+  font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
 
 .docs-quick-answer p {
   margin: 0;
-  color: #0f3f41;
+  color: #fff;
   font-size: 12.5px;
-  font-weight: 600;
+  font-weight: 400;
   line-height: 1.6;
 }
 
@@ -1674,7 +1743,7 @@ main > div:first-of-type {
   margin-bottom: 12px;
   color: #64748b;
   font-size: 10.5px;
-  font-weight: 800;
+  font-weight: 700;
   letter-spacing: 0.05em;
   text-transform: uppercase;
 }
@@ -1713,7 +1782,7 @@ main > div:first-of-type {
   margin: 7px 0 0;
   color: #475569;
   font-size: 12.5px;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 1.6;
 }
 
@@ -1725,7 +1794,7 @@ main > div:first-of-type {
   display: inline-block;
   color: #006569;
   font-size: 11px;
-  font-weight: 800;
+  font-weight: 500;
   text-decoration: none;
 }
 
@@ -1764,7 +1833,7 @@ main > div:first-of-type {
 .docs-article li {
   color: #334155;
   font-size: 13px;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 1.7;
 }
 
@@ -1871,7 +1940,7 @@ main > div:first-of-type {
 .docs-table th {
   background: #f5f4ed;
   color: #334155;
-  font-weight: 900;
+  font-weight: 700;
 }
 
 .docs-table tr:last-child td {
@@ -1881,7 +1950,7 @@ main > div:first-of-type {
 .docs-key {
   color: #006569;
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-weight: 800;
+  font-weight: 700;
   white-space: nowrap;
 }
 
@@ -1896,7 +1965,7 @@ main > div:first-of-type {
 
 .docs-related-list a {
   color: #006569;
-  font-weight: 700;
+  font-weight: 500;
   text-decoration: none;
 }
 
@@ -1918,7 +1987,7 @@ main > div:first-of-type {
   margin: 0;
   color: #475569;
   font-size: 12.5px;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 1.6;
 }
 
@@ -2078,7 +2147,7 @@ main > div:first-of-type {
   margin-bottom: 4px;
   color: #64748b;
   font-size: 9.5px;
-  font-weight: 900;
+  font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }
@@ -2101,7 +2170,7 @@ main > div:first-of-type {
 .docs-home-link {
   color: #64748b;
   font-size: 10.5px;
-  font-weight: 700;
+  font-weight: 500;
   text-decoration: none;
 }
 
@@ -2124,32 +2193,39 @@ main > div:first-of-type {
     min-width: 0;
   }
 
+  /* CHANGE: 2026-11-26 — narrowed 270px -> 230px: lesson titles are short, so the extra
+     column width was wasted. Normal nav text is regular weight; bold is reserved for the
+     selected section/lesson and the page h1. */
   .w3-sidebar.w3-collapse {
     position: sticky;
     top: 96px;
-    flex: 0 0 270px;
-    width: 270px;
+    flex: 0 0 230px;
+    width: 230px;
     max-height: calc(100vh - 112px);
   }
 
-  /* Collapsed desktop sidebar becomes a slim rail; still in flow, content shifts right. */
+  /* CHANGE: 2026-11-26 — the collapsed rail is wide enough for the text-only "Guides"
+     toggle (no hamburger icon), and keeps that label visible as the only control. */
   .w3-sidebar.w3-collapse.is-collapsed {
-    flex-basis: 52px;
-    width: 52px;
+    flex-basis: 76px;
+    width: 76px;
   }
 
   .w3-sidebar.w3-collapse.is-collapsed .docs-sidebar-title,
-  .w3-sidebar.w3-collapse.is-collapsed .docs-sidebar-subtitle,
   .w3-sidebar.w3-collapse.is-collapsed .docs-search,
   .w3-sidebar.w3-collapse.is-collapsed .docs-sidebar-scroll,
-  .w3-sidebar.w3-collapse.is-collapsed .docs-sidebar-toggle-label,
   .w3-sidebar.w3-collapse.is-collapsed .docs-toggle-count {
     display: none;
   }
 
   .w3-sidebar.w3-collapse.is-collapsed .docs-sidebar-head {
     justify-content: center;
-    padding: 10px 0;
+    padding: 12px 4px;
+  }
+
+  .w3-sidebar.w3-collapse.is-collapsed .docs-sidebar-toggle {
+    padding: 6px;
+    letter-spacing: 0;
   }
 
   .w3-main.ws-light-grey {
@@ -2244,7 +2320,7 @@ main > div:first-of-type {
   .docs-table td:first-child {
     border-top: 0;
     background: #e5f4f4;
-    font-weight: 900;
+    font-weight: 700;
   }
 
   .docs-table td:not(:first-child)::before {
@@ -2253,7 +2329,7 @@ main > div:first-of-type {
     margin-bottom: 3px;
     color: #475569;
     font-size: 10px;
-    font-weight: 900;
+    font-weight: 600;
   }
 
   .docs-key {
@@ -2280,8 +2356,7 @@ main > div:first-of-type {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .w3-sidebar.w3-collapse,
-  .docs-nav-toggle svg {
+  .w3-sidebar.w3-collapse {
     transition: none !important;
   }
 }

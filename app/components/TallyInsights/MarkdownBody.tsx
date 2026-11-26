@@ -108,11 +108,22 @@ function plainLabel(text: string): string {
     .trim();
 }
 
-function TableBlock({ block, index }: { block: Extract<MdBlock, { type: "table" }>; index: number }) {
+function TableBlock({
+  block,
+  index,
+  anchorId,
+}: {
+  block: Extract<MdBlock, { type: "table" }>;
+  index: number;
+  anchorId?: string;
+}) {
   if (!block.headers.length && !block.rows.length) return null;
 
   return (
-    <div className="my-6 overflow-x-auto rounded-xl border border-slate-200 shadow-sm">
+    <div
+      id={anchorId}
+      className="my-6 overflow-x-auto rounded-xl border border-slate-200 shadow-sm"
+    >
       {/* CHANGE: 2026-10-22 — the table carries the `insights-table` class and every cell
           carries its column header in `data-label`.
           WHY: the owner asked for the tables to become cards on a phone. Below the md
@@ -163,12 +174,16 @@ function TableBlock({ block, index }: { block: Extract<MdBlock, { type: "table" 
 
 export default function MarkdownBody({
   md,
-  className
+  className,
+  anchorPrefix,
 }: {
   md: string;
   className?: string;
+  /** CHANGE: 2026-11-26 — ids matching the in-guide search anchors (body-<block index>). */
+  anchorPrefix?: string;
 }) {
   const blocks = parseMarkdownBlocks(md);
+  const anchorId = (index: number) => (anchorPrefix ? `${anchorPrefix}-${index}` : undefined);
 
   return (
     <div className={className}>
@@ -183,6 +198,7 @@ export default function MarkdownBody({
           return (
             <h2
               key={index}
+              id={anchorId(index)}
               className={`${sizes[Math.min(block.level, 4) - 1]} mt-8 mb-4 first:mt-0`}
             >
               {renderInline(block.text, `h${index}`)}
@@ -195,6 +211,7 @@ export default function MarkdownBody({
           return (
             <ListTag
               key={index}
+              id={anchorId(index)}
               className={`my-4 pl-5 space-y-1.5 text-slate-700 font-medium leading-relaxed ${
                 block.ordered ? "list-decimal" : "list-disc"
               } marker:text-[#006569] marker:font-black`}
@@ -207,12 +224,13 @@ export default function MarkdownBody({
         }
 
         if (block.type === "table") {
-          return <TableBlock key={index} block={block} index={index} />;
+          return <TableBlock key={index} block={block} index={index} anchorId={anchorId(index)} />;
         }
 
         return (
           <p
             key={index}
+            id={anchorId(index)}
             className="my-4 text-slate-700 font-medium leading-relaxed first:mt-0 last:mb-0"
           >
             {renderInline(block.text, `p${index}`)}

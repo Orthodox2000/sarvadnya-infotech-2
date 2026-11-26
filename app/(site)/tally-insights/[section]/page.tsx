@@ -10,6 +10,7 @@ import {
   SECTIONS,
 } from "@/lib/learn-tally-curriculum";
 import { breadcrumbJsonLd, seoMetadata } from "@/lib/seo";
+import InsightsSearch from "@/app/components/TallyInsights/InsightsSearch";
 
 // CHANGE: 2026-11-24 — static curriculum, rarely changes; 6h ISR to reduce CPU.
 // CHANGE: 2026-11-25 — 6h -> 24h for the high-traffic hands-off window (no edits planned).
@@ -63,6 +64,11 @@ export default async function TallyInsightsSectionPage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
+      {/* CHANGE: 2026-11-26 — section-scoped guide search; the navbar owns global search. */}
+      <div className="docs-search-region">
+        <InsightsSearch scope={{ sectionId: sec.id }} />
+      </div>
+
       <nav className="docs-breadcrumb" aria-label="Breadcrumb">
         <Link href="/">Home</Link>
         <span aria-hidden="true">/</span>

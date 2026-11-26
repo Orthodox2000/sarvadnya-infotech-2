@@ -19,6 +19,8 @@
 
 ### 2026-11
 
+- [2026-11-26 — Tally Insights: lesson-scoped search with exact-match anchors, AI Overview cleanup, brand selection and glassmorphic active nav](history/2026-11-26-scoped-guide-search-ai-summary-and-selection-polish.md)
+- [2026-11-26 — Tally Insights: compact 230px icon-free light-teal sidebar (titles only, still smaller text), regular-weight body text, gradient page titles](history/2026-11-26-tally-insights-admin-style-sidebar-and-gradient-titles.md)
 - [2026-11-25 — Advanced dashboard: engaging teal redesign adapted from SmartIQ (style only, rules intact)](history/2026-11-25-advanced-dashboard-engaging-teal-redesign.md)
 - [2026-11-25 — Batched `/api/identify` beacons: fewer Fluid calls, complete section data, bounded retries](history/2026-11-25-batched-identify-beacons.md)
 - [2026-11-25 — Email signature: two addresses, smaller logos, relabelled marks, Our Services above logos, full width, `email_footer` UTM](history/2026-11-25-email-signature-address-and-partner-strip.md)
