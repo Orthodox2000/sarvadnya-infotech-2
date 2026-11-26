@@ -179,7 +179,8 @@ export function orgJsonLd(): JsonLd {
       // CHANGE: 2026-11-16 — facebook.com/sarvadnyainfotech is a dead page (error page); the live
       // profile is the owner's pfbid URL. Keep in sync with Footer + the settings collection.
       'https://www.facebook.com/people/Suman-Sawant/pfbid02fQZB9QyH59fPFffaWDfHKWhpp9mZjBSKN5x3T2zYUbgcpWW49LDAAy8Eiutqfs97l/',
-      'https://www.instagram.com/sarvadnya.infotech/',
+      // CHANGE: 2026-11-26 — owner: Instagram is now @sarvadnya_infotech everywhere.
+      'https://www.instagram.com/sarvadnya_infotech/',
       'https://linkedin.com/company/sarvadnyainfotech',
       'https://www.youtube.com/@sarvadnyainfotechtally',
     ],
@@ -207,7 +208,8 @@ export function localBusinessJsonLd(): JsonLd {
     // site states everywhere ("Tally Certified Partner Since 2008").
     sameAs: [
       'https://www.facebook.com/people/Suman-Sawant/pfbid02fQZB9QyH59fPFffaWDfHKWhpp9mZjBSKN5x3T2zYUbgcpWW49LDAAy8Eiutqfs97l/',
-      'https://www.instagram.com/sarvadnya.infotech/',
+      // CHANGE: 2026-11-26 — owner: Instagram is now @sarvadnya_infotech everywhere.
+      'https://www.instagram.com/sarvadnya_infotech/',
       'https://linkedin.com/company/sarvadnyainfotech',
       'https://www.youtube.com/@sarvadnyainfotechtally',
     ],

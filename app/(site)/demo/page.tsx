@@ -1,58 +1,22 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
-import ProductCard from '@/app/components/demo/ProductCard';
-import CartSummary from './CartSummary';
-import { CATALOG } from '@/lib/demo/catalog';
+// CHANGE: 2026-11-26 — renamed module (was ChromePreview.tsx) to force a fresh dev chunk URL.
+// The browser had cached the old chunk under the same URL and kept throwing "flatten is not
+// defined" even though the source and the on-disk chunk were already correct.
+import ChromePreview from '@/app/components/demo/ChromePreviewV2';
 
-// CHANGE: 2026-10-02 — /demo is now a cart scaffold, replacing the 43-line homepage clone
-// that used to live here (Task 3 deleted it). It is a TEST-ONLY payment harness.
+// CHANGE: 2026-11-26 — /demo main page is a SELF-CONTAINED preview of the owner's new chrome
+// design (see app/components/demo/ChromePreviewV2.tsx). The live site chrome in app/(site)/layout.tsx
+// is deliberately unchanged; the preview is a fixed layer rendered only on this route.
 //
-// The catalog is a literal imported from lib/demo/catalog.ts — the same source the order
-// route reprices from, so what is displayed and what is charged cannot diverge.
-// noindex is declared on the layout AND here (belt and braces, per spec §3.7).
+// The cart/payment harness still lives on at /demo/checkout (left intact). noindex stays —
+// this is a test route, never indexable content.
 
 export const metadata: Metadata = {
   robots: { index: false, follow: false },
   title: 'Cart Test — Sarvadnya Infotech LLP',
-  description: 'Isolated test-mode cart scaffold. No real payments.',
+  description: 'Test-mode scaffold. No real payments.',
 };
 
 export default function DemoPage() {
-  return (
-    <main className="min-h-screen bg-[#FBFAF6]">
-      <div className="mx-auto max-w-6xl px-4 py-8 sm:py-10">
-        <header className="mb-6">
-          <h1 className="text-2xl font-bold text-teal-900 sm:text-3xl">Cart test harness</h1>
-          <p className="mt-2 max-w-2xl text-sm leading-relaxed text-teal-900/70">
-            Add items to exercise the cart, the totals and a Razorpay test-mode payment end to
-            end. This route is isolated from the live site and is not indexed.
-          </p>
-        </header>
-
-        <div className="grid gap-6 lg:grid-cols-[1fr_320px] lg:items-start">
-          <section aria-label="Products">
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {CATALOG.map((product) => (
-                <ProductCard key={product.id} product={product} />
-              ))}
-            </div>
-          </section>
-
-          <aside className="lg:sticky lg:top-24">
-            <CartSummary />
-            <p className="mt-4 text-sm text-teal-900/70">
-              Looking for the real thing?{' '}
-              <Link
-                href="/contact"
-                className="font-semibold text-teal-700 underline underline-offset-2 hover:text-teal-900"
-              >
-                Book a real demo
-              </Link>
-              .
-            </p>
-          </aside>
-        </div>
-      </div>
-    </main>
-  );
+  return <ChromePreview />;
 }

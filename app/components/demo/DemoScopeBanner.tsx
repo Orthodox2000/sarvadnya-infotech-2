@@ -1,5 +1,7 @@
 'use client';
 
+import { usePathname } from 'next/navigation';
+
 // CHANGE: 2026-10-02 — prominent test-scope notice for the /demo cart scaffold (SP-1).
 // WHY: /demo was a "Book a Demo" page until 2026-10-02 and is now a payment test harness.
 // A visitor arriving from an old link or a search result must be told immediately, in
@@ -7,8 +9,16 @@
 // is the single worst failure this scaffold could have.
 //
 // Readable at 360px: the copy is short and the badge wraps rather than overflowing.
+//
+// CHANGE: 2026-11-26 — hidden on the bare /demo page, which the owner stripped to just the
+// three chrome bars for testing/redevelopment. The notice is kept on every /demo/checkout*
+// route — those are the routes where a test payment can still be triggered, so the warning
+// must stay. Segment-exact on '/demo' only; a startsWith would suppress it on checkout too.
 
 export default function DemoScopeBanner() {
+  const pathname = usePathname() || '/';
+  if (pathname === '/demo') return null;
+
   return (
     <div
       role="note"

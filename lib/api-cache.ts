@@ -29,3 +29,9 @@ export const PUBLIC_MODULES_API_CACHE = 'public, s-maxage=86400, stale-while-rev
 // owner has confirmed NO content updates for several weeks, so it is now 6 hours to match the
 // other public feeds. Restore 300 s when frequent admin edits resume.
 export const PUBLIC_TUTORIALS_API_CACHE = 'public, s-maxage=21600, stale-while-revalidate=86400';
+
+// CHANGE: 2026-11-26 — /api/social-links backs the copy/paste email templates.
+// Short freshness on purpose: an admin social-link edit must show up in the next
+// copy within ~5 minutes, while repeat hits still cost 0 ms at the edge. Keep in
+// sync with next.config.js PUBLIC_SOCIAL_LINKS_API_CACHE.
+export const PUBLIC_SOCIAL_LINKS_API_CACHE = 'public, s-maxage=300, stale-while-revalidate=86400';

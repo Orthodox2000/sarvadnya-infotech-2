@@ -15,6 +15,35 @@ One home for every email template used by Sarvadnya Infotech. Everything here is
 | `email-brand.mjs` + `.d.mts` | Shared masthead/footer (`renderBrandHeader`, `renderBrandFooter`, `brandLogoSrc`) used by every transactional template. **The only place the email masthead/footer may be defined.** Since 2026-11-20 the masthead is the logo (linked to `company.website` root) + wordmark only — the "Tally Certified Partner · Trusted Since 2008" tagline was dropped to match the expiry email and signature. The footer carries the automated-note, `© 2026 <company>. All rights reserved.` and the signature's legal link set — Privacy Policy, Terms &amp; Conditions, EULA, Careers, Contact — all built from `company.website`, so no template depends on an old placement or retired route. It never names an individual. **2026-11-21:** both renderers accept `align:'left'` (default `'center'`), used by the acknowledgement receipt to match the left-aligned signature structure. |
 | `email-careers.mjs` + `.d.mts` | Careers mail: job application (company + candidate), saved resume (company + candidate), account-created welcome. |
 
+## Dynamic social links (2026-11-26)
+
+`email-signature.html`, `license-expiry-email.html`,
+`license-expiry-email-copy-paste.html` and `diwali-email.html` no longer own their
+social destinations. The four linked icons carry `data-social="<key>"`; a script
+at the end of each file (outside the copyable table) fetches the fixed route
+**`/api/social-links`** when the file is opened in a browser and rewrites those
+`href`s from server settings before the table is copied.
+
+- `GET /api/social-links` returns a fixed shape — `{ whatsapp, linkedin,
+  instagram, facebook, youtube }` — resolved by `lib/social-links.ts` from the
+  admin-managed `settings` collection (`NEXT_PUBLIC_WHATSAPP_PHONE`,
+  `NEXT_PUBLIC_LINKEDIN_URL`, `NEXT_PUBLIC_INSTAGRAM_URL`,
+  `NEXT_PUBLIC_FACEBOOK_URL`, `NEXT_PUBLIC_YOUTUBE_URL`), with the committed public
+  snapshot as fallback. Only absolute http(s) URLs are accepted.
+- **Why a browser script and not JS in the email:** Gmail/Outlook/Apple Mail never
+  run JavaScript or fetch APIs. The script runs before copy, so the pasted mail
+  contains plain `https` hrefs — universal client support. The script sits outside
+  the table and is never pasted.
+- **Fixed reply string:** each anchor keeps its original href in the markup. If
+  the API is down, the file is opened offline, the response is malformed or the
+  value is not an http(s) URL, that baked-in href stays and the signature still
+  works. The 3-second abort bounds a hanging request.
+- `/api/social-links` is public/read-only, CORS + CORP relaxed in `next.config.js`
+  (a locally-opened file has origin `null`) and edge-cached 5 minutes so an admin
+  edit reaches the next copy quickly.
+- Facebook stays **unlinked** in all templates per the 2026-11-20 owner ruling —
+  the API serves its value for future use, but no template turns it into an `<a>`.
+
 ## Conventions (unchanged by the 2026-11-20 move)
 
 - Pure ESM `.mjs`, zero dependencies, inline CSS only (Gmail/Outlook-safe), hand-written

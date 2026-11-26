@@ -19,6 +19,9 @@
 
 ### 2026-11
 
+- [2026-11-26 — Dynamic social links for the email signature and other templates via fixed `/api/social-links` route, with baked-in fallback hrefs](history/2026-11-26-dynamic-email-social-links-api.md)
+- [2026-11-26 — New chrome design preview ported to the whole site: `SiteChrome` replaces NewsFeed + Navbar + Productbar, 25px news bar, merged hover menus, real cart/search; 14-width parity verified](history/2026-11-26-demo-new-chrome-design-preview.md)
+- [2026-11-26 — `/demo` main page stripped to the three chrome bars; checkout harness left intact](history/2026-11-26-demo-stripped-to-site-chrome.md)
 - [2026-11-26 — Tally Insights: lesson-scoped search with exact-match anchors, AI Overview cleanup, brand selection and glassmorphic active nav](history/2026-11-26-scoped-guide-search-ai-summary-and-selection-polish.md)
 - [2026-11-26 — Tally Insights: compact 230px icon-free light-teal sidebar (titles only, still smaller text), regular-weight body text, gradient page titles](history/2026-11-26-tally-insights-admin-style-sidebar-and-gradient-titles.md)
 - [2026-11-25 — Advanced dashboard: engaging teal redesign adapted from SmartIQ (style only, rules intact)](history/2026-11-25-advanced-dashboard-engaging-teal-redesign.md)

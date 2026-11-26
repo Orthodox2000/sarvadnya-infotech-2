@@ -1,13 +1,14 @@
 import dynamic from 'next/dynamic'
 import type { CSSProperties } from "react";
 import type { Metadata } from 'next';
-import Navbar from "../components/Navbar";
-import Productbar from "../components/Productbar";
+// CHANGE: 2026-11-26 — the owner-approved /demo chrome is now the production chrome.
+// SiteChrome replaces NewsFeed + Navbar + Productbar: two bars (25px ticker + navbar),
+// hover panels carrying every catalogue destination, real cart/search/AI actions.
 // CHANGE: 2026-11-25 — CPU mitigation: the site chrome no longer reads MongoDB.
-// getSettings() + getNews() (full collection scan + enrichNews) used to run on EVERY page
-// render here, in addition to the homepage's own four reads. The ticker and the floating
-// WhatsApp button now take the committed snapshot from lib/static-site-content.ts.
-import { STATIC_NEWS, STATIC_SITE_SETTINGS } from "@/lib/static-site-content";
+// The ticker and the floating WhatsApp button take the committed snapshot from
+// lib/static-site-content.ts (SiteChrome owns the ticker; this layout keeps settings for SupportButton).
+import SiteChrome from "../components/SiteChrome";
+import { STATIC_SITE_SETTINGS } from "@/lib/static-site-content";
 import { CONTACT_SUFFIX } from "@/lib/seo";
 import { Analytics } from "@vercel/analytics/next"
 import { SpeedInsights } from "@vercel/speed-insights/next"
@@ -30,17 +31,6 @@ import CartDrawer from "../components/cart/CartDrawer";
 // for five seconds per browser session.
 import PreferredSource from "../components/PreferredSource";
 import PreferredSourceGate from "../components/PreferredSourceGate";
-
-const NewsFeed = dynamic(() => import("../components/NewsFeed"), {
-  loading: () => (
-    <div className="relative w-full bg-[#006569] h-[20px] flex items-center border-b border-white/10 z-[50]">
-      <div className="px-6 flex items-center gap-2">
-        <div className="h-1.5 w-1.5 rounded-full bg-white/30 animate-pulse" />
-        <div className="h-2 w-32 bg-white/20 rounded animate-pulse" />
-      </div>
-    </div>
-  )
-});
 
 const SupportButton = dynamic(() => import("../components/SupportButton"));
 
@@ -83,11 +73,11 @@ export default function SiteLayout({
             keep working, and fixed overlays (SupportButton) are unaffected.
             Tailwind's overflow-x-clip compiles to overflow-x: clip — unsupported browsers
             (Safari < 16.4) simply ignore it and keep the pre-existing behavior. */}
+        {/* CHANGE: 2026-11-26 — one component owns both bars. The old three-layer mount
+            (NewsFeed + Navbar + Productbar) is gone; the 20px ticker is now the 25px news bar
+            and the teal product bar is replaced by the hover panels inside SiteChrome. */}
         <div className="sticky top-0 z-[2000] w-full flex flex-col overflow-x-clip">
-          <NewsFeed initialData={STATIC_NEWS} />
-          {/* CHANGE: 2026-08-26 — Navbar & Productbar are fully hardcoded now; settings no longer passed. */}
-          <Navbar />
-          <Productbar />
+          <SiteChrome />
         </div>
 
         <VisitorProvider>

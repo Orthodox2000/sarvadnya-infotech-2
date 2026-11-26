@@ -237,17 +237,17 @@
               <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;margin-top:10px;">
               <tr>
               <td style="padding:0 10px 0 0;font-size:0;line-height:0;">
-              <a href="https://wa.me/919870942557" title="WhatsApp" target="_blank" rel="noopener noreferrer" style="display:block;line-height:0;text-decoration:none;">
+              <a data-social="whatsapp" href="https://wa.me/919870942557" title="WhatsApp" target="_blank" rel="noopener noreferrer" style="display:block;line-height:0;text-decoration:none;">
               <img src="https://sarvadnyainfotech.com/email-signature/social/whatsapp.png" width="20" height="20" alt="WhatsApp" style="display:block;width:20px;height:20px;border:0;outline:none;text-decoration:none;">
               </a>
               </td>
               <td style="padding:0 10px 0 0;font-size:0;line-height:0;">
-              <a href="https://www.linkedin.com/company/sarvadnya-infotech-llp/" title="LinkedIn" target="_blank" rel="noopener noreferrer" style="display:block;line-height:0;text-decoration:none;">
+              <a data-social="linkedin" href="https://www.linkedin.com/company/sarvadnya-infotech-llp/" title="LinkedIn" target="_blank" rel="noopener noreferrer" style="display:block;line-height:0;text-decoration:none;">
               <img src="https://sarvadnyainfotech.com/email-signature/social/linkedin.png" width="20" height="20" alt="LinkedIn" style="display:block;width:20px;height:20px;border:0;outline:none;text-decoration:none;">
               </a>
               </td>
               <td style="padding:0 10px 0 0;font-size:0;line-height:0;">
-              <a href="https://www.instagram.com/sarvadnya.infotech/" title="Instagram" target="_blank" rel="noopener noreferrer" style="display:block;line-height:0;text-decoration:none;">
+              <a data-social="instagram" href="https://www.instagram.com/sarvadnya_infotech/" title="Instagram" target="_blank" rel="noopener noreferrer" style="display:block;line-height:0;text-decoration:none;">
               <img src="https://sarvadnyainfotech.com/email-signature/social/instagram.png" width="20" height="20" alt="Instagram" style="display:block;width:20px;height:20px;border:0;outline:none;text-decoration:none;">
               </a>
               </td>
@@ -256,7 +256,7 @@
               <img src="https://sarvadnyainfotech.com/email-signature/social/facebook.png" width="20" height="20" alt="Facebook" title="Facebook" style="display:block;width:20px;height:20px;border:0;outline:none;text-decoration:none;">
               </td>
               <td style="padding:0;font-size:0;line-height:0;">
-              <a href="https://www.youtube.com/@sarvadnyainfotechtally" title="YouTube" target="_blank" rel="noopener noreferrer" style="display:block;line-height:0;text-decoration:none;">
+              <a data-social="youtube" href="https://www.youtube.com/@sarvadnyainfotechtally" title="YouTube" target="_blank" rel="noopener noreferrer" style="display:block;line-height:0;text-decoration:none;">
               <img src="https://sarvadnyainfotech.com/email-signature/social/youtube.png" width="20" height="20" alt="YouTube" style="display:block;width:20px;height:20px;border:0;outline:none;text-decoration:none;">
               </a>
               </td>
@@ -371,5 +371,42 @@
     <td height="24" style="height:24px;line-height:24px;font-size:0;">&nbsp;</td>
   </tr>
 </table>
+
+<!-- CHANGE: 2026-11-26 — SOCIAL LINKS ARE LIVE, NOT HARD-CODED IN THE SENT MAIL.
+     This runs in the BROWSER when the template file is opened, BEFORE you select
+     the table and paste it. It reads /api/social-links (server settings) and
+     rewrites the four data-social anchors' href. The script is OUTSIDE the
+     signature table, so no executable code reaches Gmail/Outlook — the pasted
+     mail carries plain https URLs, which every mail client supports. If the API
+     is down or the file is opened offline, the baked-in hrefs above stay put. -->
+<script>
+(function () {
+  var endpoint = 'https://sarvadnyainfotech.com/api/social-links';
+  function apply(data) {
+    if (!data || typeof data !== 'object') return;
+    var anchors = document.querySelectorAll('a[data-social]');
+    for (var i = 0; i < anchors.length; i++) {
+      var key = anchors[i].getAttribute('data-social');
+      var raw = data[key];
+      if (typeof raw !== 'string' || !raw) continue;
+      try {
+        var url = new URL(raw);
+        if (url.protocol !== 'https:' && url.protocol !== 'http:') continue;
+        anchors[i].setAttribute('href', url.href);
+      } catch (err) {
+        /* keep the baked-in fallback href */
+      }
+    }
+  }
+  if (typeof fetch !== 'function') return;
+  var controller = typeof AbortController === 'function' ? new AbortController() : null;
+  var timer = controller ? setTimeout(function () { controller.abort(); }, 3000) : null;
+  fetch(endpoint, { mode: 'cors', signal: controller ? controller.signal : undefined })
+    .then(function (response) { return response.ok ? response.json() : null; })
+    .then(function (data) { apply(data); })
+    .catch(function () { /* fixed fallback hrefs are already in the markup */ })
+    .then(function () { if (timer) clearTimeout(timer); });
+})();
+</script>
 </body>
 </html>

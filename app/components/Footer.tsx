@@ -19,7 +19,7 @@ export type SiteSettings = SiteSettingsShape;
 // the owner's live profile is the pfbid URL below. Keep this in sync with .env.
 const SOCIAL_FALLBACK = {
     facebook: process.env.NEXT_PUBLIC_FACEBOOK_URL || 'https://www.facebook.com/people/Suman-Sawant/pfbid02fQZB9QyH59fPFffaWDfHKWhpp9mZjBSKN5x3T2zYUbgcpWW49LDAAy8Eiutqfs97l/',
-    instagram: process.env.NEXT_PUBLIC_INSTAGRAM_URL || 'https://www.instagram.com/sarvadnya.infotech/',
+    instagram: process.env.NEXT_PUBLIC_INSTAGRAM_URL || 'https://www.instagram.com/sarvadnya_infotech/',
     linkedin: process.env.NEXT_PUBLIC_LINKEDIN_URL || 'https://www.linkedin.com/company/sarvadnya-infotech-llp/',
     youtube: process.env.NEXT_PUBLIC_YOUTUBE_URL || 'https://www.youtube.com/@sarvadnyainfotechtally',
 };

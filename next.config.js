@@ -57,6 +57,9 @@ const PUBLIC_TUTORIALS_API_CACHE = 'public, s-maxage=21600, stale-while-revalida
 // CHANGE: 2026-11-25 — modules rarely change; 24h CDN TTL to cut CPU. Keep in sync with
 // lib/api-cache.ts PUBLIC_MODULES_API_CACHE. Manual/admin edits should trigger /api/revalidate.
 const PUBLIC_MODULES_API_CACHE = 'public, s-maxage=86400, stale-while-revalidate=86400';
+// CHANGE: 2026-11-26 — social links for email templates; keep in sync with
+// lib/api-cache.ts PUBLIC_SOCIAL_LINKS_API_CACHE. 5 min so admin edits propagate.
+const PUBLIC_SOCIAL_LINKS_API_CACHE = 'public, s-maxage=300, stale-while-revalidate=86400';
 
 const nextConfig = {
   // CHANGE: 2026-08-21 — Single worker for page-data collection/type steps: this machine has 7.5GB RAM
@@ -328,6 +331,18 @@ const nextConfig = {
       {
         source: '/api/tutorials',
         headers: [{ key: 'Cache-Control', value: PUBLIC_TUTORIALS_API_CACHE }],
+      },
+      // CHANGE: 2026-11-26 — /api/social-links is read by email templates opened
+      // as a LOCAL FILE (origin `null`), so the blanket CORP same-origin rule and
+      // the /api/:path* no-store rule above must both be overridden here. Placed
+      // last so it wins for all three keys. Public, read-only data only.
+      {
+        source: '/api/social-links',
+        headers: [
+          { key: 'Cache-Control', value: PUBLIC_SOCIAL_LINKS_API_CACHE },
+          { key: 'Cross-Origin-Resource-Policy', value: 'cross-origin' },
+          { key: 'Access-Control-Allow-Origin', value: '*' },
+        ],
       },
     ];
   },
