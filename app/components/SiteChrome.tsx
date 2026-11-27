@@ -190,11 +190,24 @@ export default function SiteChrome() {
         setSearchOpen(false);
         setActiveSection(null);
         setMenuQuery('');
+        // CHANGE: 2026-11-27 — Escape must also close the mobile drawer now that it is a fixed overlay.
+        setMobileOpen(false);
       }
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
   }, []);
+
+  // CHANGE: 2026-11-27 — mobile scroll-jump fix. The drawer used to render in normal flow inside the
+  // sticky header (~1945px tall), so opening it appended that height above the viewport and scroll
+  // anchoring shot the page down by the same amount (scrollY 300 -> 2245 on a 360px phone). It is an
+  // overlay now; lock the background while it is open and always restore the previous value.
+  useEffect(() => {
+    if (!mobileOpen) return;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => { document.body.style.overflow = previous; };
+  }, [mobileOpen]);
 
   // CHANGE: 2026-11-26 — the modal submits to the real /search route instead of the demo toast.
   const runSearch = (term: string) => {
@@ -370,9 +383,24 @@ export default function SiteChrome() {
         </div>
       )}
 
-      {/* Mobile drawer uses the same recursive renderer as the hover panel. */}
+      {/* CHANGE: 2026-11-27 — mobile drawer is an OVERLAY, not an in-flow child of the sticky header.
+          In flow it added ~1945px above the viewport and scroll anchoring jumped scrollY 300 -> 2245.
+          The backdrop covers the page; the drawer scrolls inside its own capped height. */}
       {mobileOpen && (
-        <div data-mobile-panel className="border-t border-slate-200 bg-white px-4 pb-8 pt-4 text-slate-800 shadow-2xl lg:hidden">
+        <button
+          type="button"
+          aria-label="Close menu"
+          onClick={() => setMobileOpen(false)}
+          className="fixed inset-0 z-[2990] cursor-default bg-slate-900/30 lg:hidden"
+        />
+      )}
+      {mobileOpen && (
+        <div
+          data-mobile-panel
+          role="dialog"
+          aria-label="Site menu"
+          className="absolute left-0 right-0 top-full z-[2991] max-h-[calc(100dvh-5rem)] overflow-y-auto overscroll-contain border-t border-slate-200 bg-white px-4 pb-8 pt-4 text-slate-800 shadow-2xl lg:hidden"
+        >
           <div className="grid gap-5 sm:grid-cols-2">
             {NAV_SECTIONS.map((section) => (
               <div key={section.label} className="min-w-0">

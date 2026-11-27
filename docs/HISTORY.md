@@ -19,6 +19,7 @@
 
 ### 2026-11
 
+- [2026-11-27 — Mobile drawer scroll-jump fixed (overlay + body lock); greeting popup moved to ONE global rule: 15 s delay, show time recorded, reset after 6 h for everyone](history/2026-11-27-mobile-drawer-scroll-jump-and-global-greeting-timing.md)
 - [2026-11-27 — `botid@1.5.13` installed but not wired, new `SiteChrome` navbar verified at six widths with all links valid, pushed to both remotes](history/2026-11-27-botid-install-navbar-verification-and-push.md)
 - [2026-11-26 — Dynamic social links for the email signature and other templates via fixed `/api/social-links` route, with baked-in fallback hrefs](history/2026-11-26-dynamic-email-social-links-api.md)
 - [2026-11-26 — New chrome design preview ported to the whole site: `SiteChrome` replaces NewsFeed + Navbar + Productbar, 25px news bar, merged hover menus, real cart/search; 14-width parity verified](history/2026-11-26-demo-new-chrome-design-preview.md)

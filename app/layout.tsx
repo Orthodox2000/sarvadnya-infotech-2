@@ -126,13 +126,11 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Playfair+Display:wght@400..900&display=swap" />
-        {/* CHANGE: 2026-11-17 — greeting popup preload. Runs during HTML parse, i.e. BEFORE the
-            app bundle hydrates. It (a) captures whether the admin visitor-session cookie
-            `svd_vid` already exists into a window global — the new/repeat signal the popup
-            needs — and (b) preloads the artwork for a NEW session only, whose card opens on
-            mount. A repeat session waits 20 s and is not speculatively preloaded. The per-tab
-            sessionStorage flag and the checkout/demo-cart skip list suppress both. The popup
-            itself renders after hydration. See lib/greeting-popup.ts + GreetingPopup.tsx. */}
+        {/* CHANGE: 2026-11-27 — greeting popup preload. Runs during HTML parse, i.e. BEFORE the
+            app bundle hydrates. ONE global rule for every visitor: skip /checkout and /demo, and
+            preload the artwork only when the 6-hour cooldown (recorded in localStorage at show
+            time) has expired. The card itself waits 15 s after hydration to appear. See
+            lib/greeting-popup.ts + GreetingPopup.tsx. */}
         <script id="greeting-preload" dangerouslySetInnerHTML={{ __html: buildGreetingPreloadScript() }} />
       </head>
       {/* CHANGE: 2026-11-23 — production only. Ad blockers / the GA opt-out add-on fire

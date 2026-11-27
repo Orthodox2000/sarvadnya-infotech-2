@@ -1,6 +1,8 @@
-// CHANGE: 2026-11-17 — shared constants for the site-wide greeting popup. Successor of the
-// 2026-11-16 Diwali-derived card. The timing no longer reads a retired localStorage flag: it is
-// driven by the visitor session the admin already tracks.
+// CHANGE: 2026-11-27 — ONE GLOBAL rule for every visitor (owner). The 2026-11-17 split between
+// "new" (immediate) and "repeat" (20 s, driven by the `svd_vid` cookie + a sessionStorage flag)
+// is removed. Every visit now waits GREETING_DELAY_MS, records the show time in LOCAL storage,
+// and stays quiet until GREETING_COOLDOWN_MS has passed. One setting file, one persistent key,
+// identical behaviour for all visitors and all tabs.
 //
 // WHY THIS FILE EXISTS: two places must agree on the same strings —
 //   app/layout.tsx                   builds the <head> preload script (server)
@@ -9,48 +11,26 @@
 // Pure constants + a string builder, no React, no browser API at module scope, so importing it
 // from a server component does not pull anything client-only into the server bundle.
 //
-// BEHAVIOUR (owner, 2026-11-17):
-//   new visitor      -> no `svd_vid` cookie at load -> the card opens as soon as it mounts
-//   repeat visitor   -> `svd_vid` cookie already present -> opens GREETING_REVISIT_DELAY_MS later
-//   the flag is raised in SESSION storage at show time, but a visit that already has a visitor
-//     session resets it to false first, so the 20 s timer is guaranteed on every repeat visit.
-//   neither sees it on /checkout or on the test-only demo cart.
-//
-// "Repeat visitor" comes from VisitorProvider's long-lived `svd_vid` cookie — the very id
-// /api/identify records in the admin's `visitors` collection. The <head> script reads it BEFORE
-// VisitorProvider can create it, so the new/repeat decision cannot be corrupted by bootstrap.
+// BEHAVIOUR (owner, 2026-11-27):
+//   every visit  -> wait GREETING_DELAY_MS (15 s) from landing, then show the card and record
+//                   Date.now() under GREETING_SHOWN_KEY.
+//   next 6 hours -> no card anywhere on the site, regardless of session, tab or reload.
+//   after 6 hours-> the 15 s timer runs again.
+//   /checkout and /demo (payment/test routes) stay excluded — see GREETING_SKIP_PATHS.
 //
 // Remove this file together with the component and its layout mount.
 
 /**
- * Base for the per-tab popup flag. CHANGE 2026-11-17: now written to **sessionStorage** at open
- * time (was localStorage), so a repeat visitor can see the card again in a later session. The
- * in-memory ref in the component is the fallback when storage is blocked.
+ * Single global show-time key. localStorage (not sessionStorage) so the 6-hour cooldown survives
+ * tab closes, reloads and new sessions. Value is a Date.now() millisecond timestamp.
  */
-export const GREETING_STORAGE_KEY = 'svd_greeting_2026';
+export const GREETING_SHOWN_KEY = 'svd_greeting_2026_shown_at';
 
-/**
- * sessionStorage key. '1' = handled; a repeat visit resets it to '0' before scheduling its timer
- * so an older flag can never suppress the card on the 2nd, 3rd, ... visit.
- */
-export const GREETING_SESSION_KEY = `${GREETING_STORAGE_KEY}_session`;
+/** Delay from landing to the card, for ALL visitors. */
+export const GREETING_DELAY_MS = 15_000;
 
-/**
- * The visitor-session cookie written by VisitorProvider (app/components/VisitorProvider.tsx).
- * This is the id /api/identify stores in the admin's `visitors` collection, so its presence at
- * page load is the "known / repeat visitor" signal. Keep in sync with VisitorProvider's
- * SESSION_COOKIE — if it ever changes, both this constant and that one must change together.
- */
-export const VISITOR_SESSION_COOKIE = 'svd_vid';
-
-/**
- * window global installed by the <head> preload script before hydration.
- * true = the visitor-session cookie already existed at load time (repeat visitor -> 20 s delay).
- */
-export const GREETING_RETURNING_GLOBAL = '__svdGreetingReturning';
-
-/** How long a repeat visitor browses before the card appears. Immediate for a new session. */
-export const GREETING_REVISIT_DELAY_MS = 20_000;
+/** Global cooldown after a show — reset only after this long. */
+export const GREETING_COOLDOWN_MS = 6 * 60 * 60 * 1000;
 
 /** Routes where the greeting is not shown (and therefore not preloaded) — see the component. */
 export const GREETING_SKIP_PATHS = ['/checkout', '/demo'] as const;
@@ -91,28 +71,19 @@ export const GREETING_ART = {
 /**
  * Inline script for <head>, executed during HTML parse — before React hydration.
  *
- * TWO JOBS (change 2026-11-17):
- *   1. Capture the visitor-session cookie into `window.__svdGreetingReturning` BEFORE
- *      VisitorProvider mounts and creates it. This is the admin's session/visitor signal that
- *      decides immediate (new) vs 20 s delayed (repeat) in GreetingPopup.tsx.
- *   2. Preload the artwork for a NEW session only — its card opens on mount, so the image must
- *      already be on its way. A repeat visitor's card waits 20 s, so no speculative download.
- *
- * The per-tab sessionStorage flag suppresses both the preload and (in the component) the card.
- * Deliberately tiny and dependency-free; every storage access is wrapped in try/catch so a
- * blocked cookie jar / storage cannot throw in <head>.
+ * ONE global decision (2026-11-27): skip the payment/test paths, then preload the artwork only if
+ * the 6-hour cooldown has expired. The constants are injected from this file, so the preload and
+ * the component can never disagree. Deliberately tiny and dependency-free; storage access is in
+ * try/catch so a blocked storage jar cannot throw in <head>.
  */
 export function buildGreetingPreloadScript(): string {
   return (
     '(function(){' +
     'try{' +
-    `window[${JSON.stringify(GREETING_RETURNING_GLOBAL)}]=('; '+document.cookie).indexOf(${JSON.stringify(`; ${VISITOR_SESSION_COOKIE}=`)})>-1;` +
-    '}catch(e){}' +
-    'try{' +
     `var p=location.pathname,s=${JSON.stringify(GREETING_SKIP_PATHS)};` +
     "for(var i=0;i<s.length;i++){if(p===s[i]||p.indexOf(s[i]+'/')===0)return}" +
-    `if(sessionStorage.getItem(${JSON.stringify(GREETING_SESSION_KEY)}))return;` +
-    `if(window[${JSON.stringify(GREETING_RETURNING_GLOBAL)}])return;` +
+    `var t=localStorage.getItem(${JSON.stringify(GREETING_SHOWN_KEY)});` +
+    `if(t&&Date.now()-Number(t)<${JSON.stringify(GREETING_COOLDOWN_MS)})return;` +
     "var l=document.createElement('link');l.rel='preload';l.as='image';l.type='image/webp';" +
     `l.href=${JSON.stringify(GREETING_ART.src)};` +
     "l.setAttribute('fetchpriority','high');document.head.appendChild(l)" +

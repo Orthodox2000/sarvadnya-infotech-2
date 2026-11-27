@@ -1,20 +1,18 @@
 'use client';
 
-// CHANGE: 2026-11-17 — timing now follows the visitor session the admin tracks, not a retired
-// localStorage flag. Artwork: public/ev.png (1280x640, 2:1, owner-supplied) via the pre-encoded
-// public/greeting-popup.webp.
+// CHANGE: 2026-11-27 — ONE GLOBAL timing rule (owner): every visitor waits 15 s from landing,
+// then the card shows and a timestamp is recorded in localStorage. It is not shown again until
+// 6 hours have elapsed. The 2026-11-17 new/repeat split (svd_vid cookie, window global,
+// sessionStorage flag) is removed. Artwork: public/ev.png (1280x640, 2:1, owner-supplied) via
+// the pre-encoded public/greeting-popup.webp.
 //
-// TIMING (owner, 2026-11-17):
-//   NEW visitor      -> no `svd_vid` cookie at page load -> opens immediately on mount and stays
-//                       until the visitor closes it (the ✕, a click outside, or Esc).
-//   REPEAT visitor   -> `svd_vid` cookie already present -> opens 20 s after landing
-//                       (GREETING_REVISIT_DELAY_MS). The cookie is the same session id the admin
-//                       records in `visitors`; the <head> script captures its presence before
-//                       VisitorProvider can create it.
-//   Once per page load: the flag is raised in sessionStorage at SHOW time, but a visit that
-//   already has a visitor session RESETS it to false first — so the 20 s timer is guaranteed on
-//   the 2nd, 3rd, ... visit too (owner bug report 2026-11-17). The in-memory shownRef still blocks
-//   a second card within one page load, and new visitors still get the immediate card.
+// TIMING (owner, 2026-11-27):
+//   EVERY visit     -> schedule GREETING_DELAY_MS (15 s) from the landing page. At reveal time,
+//                      re-check the skip paths and the cooldown (another tab may have just shown
+//                      it), write Date.now() under GREETING_SHOWN_KEY, then stay until dismissed.
+//   Next 6 hours    -> no card, regardless of reloads, tabs or sessions.
+//   After 6 hours   -> the 15 s timer runs again.
+//   shownRef still blocks a second card inside one page load (StrictMode-safe).
 //
 // HOW TO REMOVE IT (four steps, nothing else to unpick — no DB, env, settings or CSS change):
 //   1. delete app/components/GreetingPopup.tsx
@@ -24,7 +22,7 @@
 //   4. delete the `buildGreetingPreloadScript` import and the `<script id="greeting-preload">`
 //      line in app/layout.tsx
 // Optionally delete public/greeting-popup.webp. public/ev.png is the owner's master and may be
-// kept. The `svd_greeting_2026` flag can stay in visitors' localStorage; nothing reads it again.
+// kept. Old `svd_greeting_2026_session` flags in visitors' sessionStorage are ignored now.
 //
 // WHY A MODAL AND NOT A CORNER TOAST: the artwork is a greeting card. A card needs room on
 // every aspect ratio, so it is centred over a dimmed backdrop instead of being shrunk into a
@@ -45,10 +43,10 @@ import Link from 'next/link';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import {
   GREETING_ART,
+  GREETING_COOLDOWN_MS,
   GREETING_CTA_HREF,
-  GREETING_RETURNING_GLOBAL,
-  GREETING_REVISIT_DELAY_MS,
-  GREETING_SESSION_KEY,
+  GREETING_DELAY_MS,
+  GREETING_SHOWN_KEY,
   GREETING_SKIP_PATHS,
 } from '@/lib/greeting-popup';
 
@@ -97,75 +95,49 @@ export default function GreetingPopup() {
     [],
   );
 
-  // Timing decision. Runs ONCE per page load (mount-only deps): the (site) group layout stays
-  // mounted across client-side navigation, so "20 s on the site" is measured from the landing
-  // page, not from the last route change — a visitor who keeps browsing still gets the card.
-  // The new/repeat decision was captured in <head> (before VisitorProvider creates `svd_vid`);
-  // the per-tab flag is sessionStorage, read/written in this effect, never during render.
-  // It is raised at SHOW time, not close time, so navigating away mid-show cannot make the card
-  // reappear — the exact bug ConsentBanner hit in September.
+  // CHANGE: 2026-11-27 — ONE global rule, mount-only deps. The (site) layout stays mounted across
+  // client-side navigation, so the 15 s is measured from the landing page, not from the last route
+  // change. The timestamp lives in localStorage so the 6 h cooldown survives reloads, tabs and
+  // sessions. Read/written in this effect (never during render); written at SHOW time, not close
+  // time, so navigating away mid-show cannot make the card reappear (the ConsentBanner bug).
   useEffect(() => {
     if (shownRef.current) return;
 
-    // Repeat = the admin's visitor-session cookie already existed at load time. The <head>
-    // script wrote the global before VisitorProvider could create the cookie on a first visit.
-    const returning =
-      (window as unknown as Record<string, unknown>)[GREETING_RETURNING_GLOBAL] === true;
+    const onSkipPath = (path: string) =>
+      GREETING_SKIP_PATHS.some((p) => path === p || path.startsWith(`${p}/`));
 
-    let sessionHandled = false;
-    try {
-      sessionHandled = window.sessionStorage.getItem(GREETING_SESSION_KEY) === '1';
-    } catch {
-      // Ignore: without session storage the in-memory ref still blocks a second card this mount.
-    }
+    if (onSkipPath(window.location.pathname)) return;
 
-    // CHANGE: 2026-11-17 (owner bug report) — on a 3rd+ visit the flag left by an earlier visit in
-    // the same tab was still '1', so the 20 s timer never ran and no card appeared. When a visitor
-    // session exists, reset the flag to false FIRST so the timer is guaranteed on every repeat
-    // visit. shownRef still prevents a second card inside this page load. A brand-new session
-    // keeps the guard: it has no cookie yet, so a stale flag means it already got the card here.
-    if (returning) {
+    const inCooldown = () => {
       try {
-        window.sessionStorage.setItem(GREETING_SESSION_KEY, '0');
+        const raw = window.localStorage.getItem(GREETING_SHOWN_KEY);
+        if (!raw) return false;
+        const shownAt = Number(raw);
+        return Number.isFinite(shownAt) && Date.now() - shownAt < GREETING_COOLDOWN_MS;
       } catch {
-        // Ignore: with storage blocked the flag cannot suppress anything anyway.
-      }
-    } else if (sessionHandled) {
-      return;
-    }
-
-    const path = window.location.pathname;
-    if (GREETING_SKIP_PATHS.some((p) => path === p || path.startsWith(`${p}/`))) return;
-
-    const markSessionHandled = () => {
-      try {
-        window.sessionStorage.setItem(GREETING_SESSION_KEY, '1');
-      } catch {
-        // Ignore: failing to persist only means a repeat view in this tab is possible.
+        return false; // storage blocked -> cannot remember; the 15 s rule still applies this load
       }
     };
 
+    if (inCooldown()) return;
+
     const reveal = () => {
       if (shownRef.current) return;
-      // Re-check the skip list at REVEAL time, not only at mount: a returning visitor can
-      // navigate onto the checkout or the demo cart during the 20 s countdown, and a blocking
-      // card over a payment form is a lost order. Bailing here deliberately does NOT write the
-      // flag, so the visitor still gets the card on a later visit.
-      const now = window.location.pathname;
-      if (GREETING_SKIP_PATHS.some((p) => now === p || now.startsWith(`${p}/`))) return;
-      markSessionHandled();
+      // Re-check at REVEAL time: the visitor can navigate onto checkout/demo during the 15 s, and
+      // another tab may have shown the card meanwhile. Bailing writes nothing, so the card is
+      // still owed on a later visit once the path is safe / the cooldown has expired.
+      if (onSkipPath(window.location.pathname)) return;
+      if (inCooldown()) return;
+      try {
+        window.localStorage.setItem(GREETING_SHOWN_KEY, String(Date.now()));
+      } catch {
+        // Ignore: without storage the in-memory ref still blocks a second card this page load.
+      }
       shownRef.current = true;
       setOpen(true);
     };
 
-    if (!returning) {
-      // New session -> immediate popup, flag raised in reveal().
-      reveal();
-      return;
-    }
-
-    // Repeat visitor -> wait, then show and raise the flag in the session.
-    const timer = window.setTimeout(reveal, GREETING_REVISIT_DELAY_MS);
+    const timer = window.setTimeout(reveal, GREETING_DELAY_MS);
     return () => window.clearTimeout(timer);
   }, []);
 
