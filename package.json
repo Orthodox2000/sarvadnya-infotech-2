@@ -67,6 +67,7 @@
     "@vercel/blob": "^2.8.2",
     "@vercel/speed-insights": "^2.0.0",
     "bcryptjs": "^3.0.3",
+    "botid": "^1.5.13",
     "clsx": "^2.1.1",
     "groq-sdk": "^1.6.0",
     "lucide-react": "^1.61.0",
