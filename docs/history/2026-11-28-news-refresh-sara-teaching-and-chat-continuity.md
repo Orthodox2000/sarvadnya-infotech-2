@@ -73,7 +73,7 @@ is what pushes them to production; editing the seed alone does not change live m
 - `/learn-sara` metadata and on-page copy now spell out the split: Ask Sara = short answer, Learn
   Sara = full AI-led lesson; chat CTA renamed "Start a lesson".
 
-## Verification (owner requested on 2026-11-28)
+## Delivery and verification (owner requested on 2026-11-28)
 
 - `npm run typecheck`, `npm run build`, `npm run test:all` (all 25 chained suites), the static guards
   (`check:h1`, `check:alt`, `check:seo`, `check:schema`, `check:dms-prices`, `check:insights-svg`,
@@ -93,6 +93,12 @@ is what pushes them to production; editing the seed alone does not change live m
   deleted, 18 unchanged. `npm run test:news-verify` then exposed a stale exact-string assertion
   (the canonical post now says "There is no conversion step" instead of the old combined sentence);
   the verifier was aligned with the seed and now passes 31/31.
-- **Deployment caveat:** the production domain is still serving the previous Vercel deployment
-  (`7418139`), so the new news slugs are in MongoDB but `/news/<new-slug>` still 404s publicly until
-  the current code is deployed or the `news` cache tag is revalidated. No push or deploy was made.
+- **Deployment (owner-approved):** committed as `92260bc` and pushed to both `origin` and `secondary`
+  (`7418139..92260bc`). Vercel built production deployment `dpl_24JyS2tXLpchvmiDLL6q65wA88ca`
+  (`READY`, Next 15.5.29, ~1 min build). `https://sarvadnyainfotech.com/api/news` now returns 20
+  documents including both new slugs; `/news/bank-statement-import-tallyprime`,
+  `/news/excel-to-tally-import-vouchers-masters`, `/services`, `/shop` and `/learn-sara` all return
+  200 with the updated copy on the live apex domain. `www` redirects to the apex as configured.
+  `en.sarvadnyainfotech.com` is **not** a domain of this Vercel project (the project owns only
+  `sarvadnyainfotech.com`, `www.sarvadnyainfotech.com` and `sarvadnya-live.vercel.app`), so it still
+  serves an older tree and must not be used to judge this deployment.
