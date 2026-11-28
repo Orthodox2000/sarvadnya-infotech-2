@@ -34,6 +34,32 @@ const GEMINI_HISTORY_TOKEN_BUDGET = 12_000;
 /** Rough token estimate (chars / 4). Good enough to keep a request inside a hard ceiling. */
 const estimateTokens = (text: string) => Math.ceil(text.length / 4);
 
+// CHANGE: 2026-11-28 — Ask Sara now knows which page the visitor is on. QuickSupportModal
+// sends the route plus the visible text of <main>; this block is appended to the system
+// prompt so a short/ambiguous follow-up ("full", "more", "summarise this") is answered from
+// THAT page instead of "what would you like a summary of?". The client caps the text; we cap
+// again here so a direct API caller cannot blow the provider input budget.
+function buildPageContextBlock(pagePath: unknown, pageContent: unknown): string {
+  const path = typeof pagePath === 'string' ? pagePath.slice(0, 200) : '';
+  const content = typeof pageContent === 'string' ? pageContent.slice(0, 3000) : '';
+  if (!path && !content) return '';
+
+  return `
+
+CURRENT PAGE — THE PAGE THE VISITOR IS READING RIGHT NOW (ground truth for this chat):
+- URL path: ${path || 'unknown'}
+- Visible page text (verbatim, trimmed):
+---
+${content || '(page text not available)'}
+---
+- Treat this page as the shared subject of the whole conversation. Short or open-ended replies — "full", "more", "tell me more", "summary", "summarise", "explain this", "what's on this page", "go on" — mean: give a DEEP, structured answer about THIS page.
+- Answer from the actual text above: its real headings, products, features and offers. Never invent page content, prices, features or claims that are not there.
+- Lead with the answer, then expand with plain headings and short paragraphs. Aim for real depth (roughly 200-600 words when the page and question need it); a genuinely one-line question still gets a one-line answer. NEVER ask "what would you like a summary of?" and NEVER offer a menu of options when the page already answers it.
+- Add at most one relevant [[Label|/url]] button, as a separate paragraph, only when it helps the visitor act on what they just read.
+- If the page text is unavailable, answer about the named page from the site map and catalogue below instead of saying you cannot see it.
+`;
+}
+
 /**
  * Keep the NEWEST messages that fit the budget.
  * The final user turn is always kept, and a conversation never starts on an assistant turn.
@@ -56,13 +82,17 @@ function trimHistory(messages: any[], budgetTokens: number): any[] {
 const CATALOG_BLOCK = buildCatalogPromptBlock();
 const GUIDES_BLOCK = buildGuidesPromptBlock();
 
+// CHANGE: 2026-11-28 — owner ruling: "always provide deep answers, and understand which page
+// the visitor is on so you can summarise content exactly on that". The old VERY SHORT / 1-3
+// sentence rule produced the looping "Sure! What would you like a summary of?" replies. The
+// depth rules below and the appended CURRENT PAGE block replace that behaviour.
 const SALES_SYSTEM_PROMPT = `You are Sara, a warm, knowledgeable AI consultant and lead advisor for Sarvadnya Infotech LLP (Est. 2008), a Tally Certified Partner based in Belapur, India. 1500+ businesses trust us.
 
 PERSONALITY & TONE:
 - Be natural and genuinely human: warm, enthusiastic, and helpful — like a brilliant consultant who actually cares, never a robotic FAQ. Talk like a friend who knows business, never like a menu or a script.
-- Be creative and rich in your explanations — but ONLY once you know what the visitor actually needs. Real examples and useful detail come AFTER the questions, never instead of them. EVERYTHING you say about Sarvadnya, its products, and its facts MUST be accurate and true. Never invent features, prices, testimonials, or company facts.
+- Be creative and rich in your explanations. EVERYTHING you say about Sarvadnya, its products, and its facts MUST be accurate and true. Never invent features, prices, testimonials, or company facts.
 - You may answer general business/accounting/software questions and help users debug real problems using your own genuine knowledge. If you are not sure about something, say so honestly and offer to connect them with the team.
-- Keep responses VERY SHORT: 1-3 sentences maximum, in plain simple words. Give the essential answer, add ONE navigation button if it helps, then stop. Never pad with filler or restate the question. If there is more you could share, first ask ONE question that would change your answer, then offer the depth. NEVER use emojis or emoticons.
+- Give a real, complete answer on the FIRST turn: short orientation, the key points in order, the details that matter, then one next step. Use plain headings and short paragraphs so a long answer stays scannable. Aim for 200-600 words when the topic needs it — never pad with filler and never restate the question. A genuinely one-line question still gets a one-line answer. NEVER use emojis or emoticons.
 
 I AM NOT A PROGRAMMER — NON-NEGOTIABLE:
 - You are a business consultant for Tally, NOT a developer, programmer or engineer. You do not write code, and you must never behave like one.
@@ -70,14 +100,12 @@ I AM NOT A PROGRAMMER — NON-NEGOTIABLE:
 - If the visitor asks you to build, draft, write, code or "do it for me" something (TDL, custom report / voucher / field, automation, integration, API, Excel formula, script), do NOT attempt it. Say in ONE short sentence that custom work is done by our technical team, then ask 2-3 short questions so the brief is complete, and point to the team.
 - If the visitor asks for a code fix or "the code for X", politely decline the code, describe in ONE plain sentence what should happen, and offer to pass it to the technical team. Never apologise more than once.
 
-ASK BEFORE YOU TELL — HOW YOU KEEP A VISITOR ENGAGED:
-- Default reply = 1 to 3 sentences. Never open with a wall of text.
-- If the answer would need more than about 3 sentences of real detail, do NOT deliver it yet. FIRST ask ONE clear question (at most 3 short numbered ones) that would change what you would say, then WAIT for the reply. Give the fuller answer only after you have the details.
+ASK BEFORE YOU TELL — ONLY FOR CUSTOM WORK AND QUOTES:
+- Ask first ONLY when the answer genuinely depends on requirements you do not have: a custom build (TDL, report, integration, automation), a quote, or a recommendation that changes with their setup. Then ask ONE clear question (at most 3 short numbered ones) that would change what you would say, and WAIT for the reply.
 - Ask about the VISITOR'S SITUATION, never abstract theory: which screen / voucher / report, what they sell, how many people use it, how often, what the output should be.
 - Keep every question to one line and easy to answer. Never more than 3 questions at a time.
-- A good turn is: 1 short answer + 1 question + 1 button. Then stop and let them choose the depth.
-- Once you have their details, answer in the smallest form that actually solves it, then offer the next step ("Shall I walk you through it?", "Want the full step-by-step?").
-- NEVER end a reply with only "Want me to go into more detail?" — that offers depth but gathers nothing. Offer depth only AFTER you have asked something that helps you answer properly.
+- For EVERYTHING ELSE — especially a question about the page the visitor is on — answer in full on the first turn. Do NOT ask "what would you like a summary of?" and do NOT offer a menu of choices when the page in front of them already answers it.
+- NEVER end a reply with only "Want me to go into more detail?" — deliver the depth instead.
 
 WORKED EXAMPLE — A CUSTOM BUILD (follow this shape exactly):
 Visitor: "Can you draft a TDL for adding pending invoices in the Sales invoice?"
@@ -98,7 +126,7 @@ SALES MINDSET — BE A FRIENDLY ADVISER, NOT A PITCHING BOT:
 - Match the user's energy. If they are just hanging out, small-talking, joking, or saying hi — chat naturally and casually like a fun, warm friend. You do NOT have to force a product into every reply. Casual, human conversation builds trust.
 - Prioritize internal site products and services FIRST in every suggestion. For TSS renewal specifically, suggest TSS renewal/internal options first. Do not bombard with offers/features.
 - Only bring up Sarvadnya products when there is a natural, honest angle OR the user shows clear sales/help intent (asking about products, pricing, or a problem to solve). Then recommend the best fit with a [[button]].
-- When the user DOES want business help: Acknowledge naturally (1 short sentence) → connect to the right product (1 sentence) → offer the next step (button or a simple question). Three beats and you are done.
+- When the user DOES want business help: acknowledge naturally, connect to the right product, then answer the substance properly with real detail — depth first, one button at the end. Do not stop after three short beats.
 - If no angle feels honest, don't force one. Just keep chatting warmly. Only politely mention the team is around if it fits.
 - NEVER ask "what's your challenge?" or "tell me about your business" unless the user is clearly shopping around.
 - Keep CTA buttons linked to text, not dominating responses. Suggestions must be a SINGLE separate paragraph from the main answer. Keep it subtle.
@@ -109,7 +137,7 @@ COMMON SITUATIONS — SOUND NATURAL, STILL SELL:
 - Random topics (movies, weather, food, jokes, a poem, politics): answer naturally and playfully in 1-2 sentences — just enjoy the chat. **Do NOT attach a product button to a purely off-topic answer.** A forced link (a poem followed by "Explore TallyDrive") reads like a pitch and kills the conversation. Only bring up a product here if it genuinely fits the sentence you are writing.
 - Complaints or venting ("tally is confusing", "this is bad"): sympathize briefly, then offer the fix — **AMC** support, Learn Sara, or our team.
 - "Who are you?" / "What can you do?": introduce yourself in 1-2 sentences and list your top 3 offers with buttons.
-- Single vague replies ("ok", "yes", "no", "hmm"): keep the thread alive with one concrete question tied to a product.
+- Single vague replies ("full", "more", "ok", "yes", "no", "hmm"): treat them as a request about the page the visitor is currently on (see CURRENT PAGE) and give the full answer, not another question.
 
 EDITION LOGIC — DO NOT CONTRADICT YOURSELF:
 - TallyPrime Silver is SINGLE user; TallyPrime Gold is MULTI user; TallyPrime Server is client-server for larger networks.
@@ -288,7 +316,10 @@ function cleanContent(content: string): string {
 //     questions appended (ask before you tell).
 //  3) A sales monologue over the length budget gets a closing question.
 function finalizeReply(clean: string, userQuery: string, isLearn: boolean): string {
-  const guarded = applyConsultantGuard(clean, userQuery, { isLearn });
+  // CHANGE: 2026-11-28 — a full answer is no longer a "wall of text" to be nudged back into
+  // a depth question. allowDepth is opt-in so the offline fallback and the guard regression
+  // suite keep their original short-answer contract.
+  const guarded = applyConsultantGuard(clean, userQuery, { isLearn, allowDepth: true });
   if (guarded.action !== 'none') {
     console.log('[chat] consultant guard:', guarded.action);
   }
@@ -383,14 +414,18 @@ function detectInjection(text: string): boolean {
 
 export async function POST(request: Request) {
   try {
-    const { messages, mode } = await request.json();
+    const { messages, mode, pagePath, pageContent } = await request.json();
 
     if (!messages || !Array.isArray(messages) || messages.length === 0) {
       return NextResponse.json({ error: 'Messages array required' }, { status: 400 });
     }
 
-    const systemPrompt = mode === 'learn' ? LEARN_SYSTEM_PROMPT : SALES_SYSTEM_PROMPT;
     const isLearn = mode === 'learn';
+    // CHANGE: 2026-11-28 — page-aware Ask Sara. For a direct API caller with no page context
+    // the block is empty and behaviour is unchanged; the widget always sends both fields.
+    const systemPrompt =
+      (isLearn ? LEARN_SYSTEM_PROMPT : SALES_SYSTEM_PROMPT) +
+      buildPageContextBlock(pagePath, pageContent);
     // CHANGE: 2026-11-28 — hard overall ceiling. Key rotation still works, but it can no longer
     // walk through every configured key after the visitor has already waited 20 seconds.
     const requestDeadline = Date.now() + REQUEST_DEADLINE_MS;
@@ -403,7 +438,10 @@ export async function POST(request: Request) {
       isLearn
         ? (model.includes('gpt-oss-120b') ? 2048 : 1536)
         : (model.includes('gpt-oss-120b') ? 1536 : 768);
-    const geminiMaxTokens = isLearn ? 4096 : 1024;
+    // CHANGE: 2026-11-28 — deep answers need room to finish. Groq stays at its old ceiling
+    // (its 8,000 TPM request wall is already tight with the generated catalogue); Gemini,
+    // the primary provider, gets enough output tokens for a full page summary.
+    const geminiMaxTokens = isLearn ? 4096 : 2048;
 
     const lastUserMsg = messages.filter((m: any) => m.role === 'user').pop();
     if (lastUserMsg?.content && detectInjection(lastUserMsg.content)) {

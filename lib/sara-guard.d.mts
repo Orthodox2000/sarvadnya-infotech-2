@@ -50,7 +50,7 @@ export type ConsultantGuardAction =
 export function applyConsultantGuard(
   reply: string,
   userQuery?: string,
-  options?: { isLearn?: boolean }
+  options?: { isLearn?: boolean; allowDepth?: boolean }
 ): {
   reply: string;
   action: ConsultantGuardAction;

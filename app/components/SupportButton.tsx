@@ -134,10 +134,14 @@ export default function SupportButton({ initialSettings }: { initialSettings?: a
         </a>
       </div>
 
+      {/* CHANGE: 2026-11-28 — the chat needs to know which page the visitor is on so a short
+          reply ("full", "more", "summarise") is answered about THAT page, not with another
+          clarifying question. usePathname() is already here for the homepage promo. */}
       <QuickSupportModal
         isOpen={isOpen}
         onClose={() => { setIsOpen(false); setInitialQuestion(''); }}
         initialQuestion={initialQuestion}
+        pagePath={pathname}
       />
     </>
   );

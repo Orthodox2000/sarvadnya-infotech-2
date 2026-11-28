@@ -56,9 +56,25 @@ interface QuickSupportModalProps {
   onClose: () => void;
   /** CHANGE: 2026-10-23 — a question pre-typed by the page (e.g. a /shop card). Prefill only. */
   initialQuestion?: string;
+  /** CHANGE: 2026-11-28 — current route, so Sara can answer about the page being read. */
+  pagePath?: string;
 }
 
-export default function QuickSupportModal({ isOpen, onClose, initialQuestion }: QuickSupportModalProps) {
+// CHANGE: 2026-11-28 — Ask Sara is page-aware. Send the visible main text of the current
+// page so a short follow-up ("full", "more", "summarise this") is answered from what the
+// visitor is actually reading instead of a generic catalogue menu. Read at SEND time (an
+// event handler, never during render) so there is no hydration risk. <main> is preferred —
+// it excludes the chrome, footer and this chat widget; body text is the fallback. Capped so
+// the request stays inside the provider input ceiling.
+const PAGE_TEXT_LIMIT = 3000;
+function getCurrentPageText(): string {
+  if (typeof document === 'undefined') return '';
+  const root = document.querySelector('main') || document.body;
+  const raw = (root as HTMLElement).innerText || '';
+  return raw.replace(/[ \t]+\n/g, '\n').replace(/\n{3,}/g, '\n\n').trim().slice(0, PAGE_TEXT_LIMIT);
+}
+
+export default function QuickSupportModal({ isOpen, onClose, initialQuestion, pagePath }: QuickSupportModalProps) {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
@@ -405,10 +421,12 @@ export default function QuickSupportModal({ isOpen, onClose, initialQuestion }: 
       const controller = new AbortController();
       abortControllerRef.current = controller;
 
+      // CHANGE: 2026-11-28 — page context travels with every turn. The server turns it into
+      // a CURRENT PAGE block in the system prompt, so "full" means "summarise this page".
       const response = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: apiMessages }),
+        body: JSON.stringify({ messages: apiMessages, pagePath, pageContent: getCurrentPageText() }),
         signal: controller.signal,
       });
 

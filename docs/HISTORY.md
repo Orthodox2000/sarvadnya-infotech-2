@@ -19,6 +19,7 @@
 
 ### 2026-11
 
+- [2026-11-28 — Ask Sara reversed to deep, page-aware answers: chat sends the current route + visible `<main>` text, "full"/"more" now summarises the exact page instead of looping clarifying questions; guard length-nudge made opt-in](history/2026-11-28-ask-sara-deep-page-aware-answers.md)
 - [2026-11-28 — News refreshed in ticker + seed (generic posts retired, bank/Excel import posts added), action-first titles/tags, Learn Sara detailed teaching, Ask Sara short, chat resumes in-session and slow/fourth-message fixes; verified (typecheck/build/test:all/UI), live seed applied, stale news assertion corrected, pushed both remotes and deployed](history/2026-11-28-news-refresh-sara-teaching-and-chat-continuity.md)
 - [2026-11-27 — Mobile drawer scroll-jump fixed (overlay + body lock); greeting popup moved to ONE global rule: 15 s delay, show time recorded, reset after 6 h for everyone](history/2026-11-27-mobile-drawer-scroll-jump-and-global-greeting-timing.md)
 - [2026-11-27 — `botid@1.5.13` installed but not wired, new `SiteChrome` navbar verified at six widths with all links valid, pushed to both remotes](history/2026-11-27-botid-install-navbar-verification-and-push.md)
