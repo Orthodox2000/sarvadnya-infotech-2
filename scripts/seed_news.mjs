@@ -22,6 +22,11 @@
 // from the collection (keeps the blog professional and in sync with the seed).
 // CHANGE: 2026-09-17 - TSS-renewal body copy no longer limits coverage to specific cities;
 // now says "anywhere in India" per owner (local stays in titles/keywords only).
+// CHANGE: 2026-11-28 - owner: remove generic partner/city/list posts, KEEP the how-to and
+// document-management posts (the best performers), and add bank-statement import + Excel-to-Tally
+// import articles that link to the existing /shop deep links. The retired objects are kept in
+// ALL_POSTS for the record but filtered out of `posts`, and their slugs are sent to REMOVE_SLUGS
+// when the seed runs so the live collection and the 301s in next.config.js stay in step.
 //
 // Run:  node scripts/seed_news.mjs   (MONGODB_URI from .env)
 
@@ -29,9 +34,24 @@ import { MongoClient } from 'mongodb';
 import 'dotenv/config';
 import { pathToFileURL } from 'node:url';
 
+// CHANGE: 2026-11-28 — generic partner/city/list posts retired by owner. How-to attach data,
+// document management and the other task-based guides are deliberately NOT in this list.
+const REMOVED_NEWS_SLUGS = [
+  'tally-partner-mumbai',
+  'tally-erp9-add-ons',
+  'tally-3-star-partner-mumbai',
+  'cloud-tally-cities-agra-patna-lucknow-mumbai',
+  'it-companies-in-belapur',
+  'software-companies-in-navi-mumbai',
+  'smbs-cbd-belapur-certified-tally-partner',
+  'tally-5-star-partner-mumbai',
+  'tally-partner-near-me',
+  'cbd-belapur-it-companies-list',
+];
+
 // CHANGE: 2026-11-03 — exported so maintenance scripts (scripts/update-news-seo.mjs) read the
 // SAME title/description values instead of keeping a second copy that silently drifts.
-export const posts = [
+const ALL_POSTS = [
   {
     slug: 'tally-partner-mumbai',
     title: 'How to Choose the Right Tally Partner in Mumbai: Checklist (Star Rating, TSS, AMC)',
@@ -1591,7 +1611,111 @@ The purpose is not to impress an auditor. It is to stop losing working days to a
 
 Sarvadnya Infotech is a Tally certified partner in CBD Belapur, Navi Mumbai. We implement the Document Management System for TallyPrime, set up storage, folder structure and permissions with your team, and support businesses in Mumbai, Navi Mumbai and across India. Call 022 49647959 or 022 49742200, WhatsApp +91 98709 42557, or email info@sarvadnyainfotech.com to book a free demo.`,
   },
+  {
+    // CHANGE: 2026-11-28 — new task-based post for the bank-import query cluster. Links to the
+    // existing shop deep link; no tool page is invented. ASCII-only per house rule.
+    slug: 'bank-statement-import-tallyprime',
+    title: 'Import a Bank Statement into TallyPrime: Steps and Setup',
+    seoTitle: 'Import Bank Statement in TallyPrime',
+    date: 'November 28, 2026',
+    category: 'How To',
+    description: 'Bring a bank statement into TallyPrime, match receipts and payments, and finish the reconciliation without typing each line twice.',
+    tags: ['bank statement import', 'bank import tally', 'auto bank reconciliation', 'tallyprime banking', 'brs in tallyprime'],
+    link: '/shop#excel-bank-statement-import',
+    author: 'Sarvadnya Infotech LLP',
+    faqs: [
+      {
+        q: 'Can TallyPrime import a bank statement?',
+        a: 'Yes. Banking > Bank Reconciliation, select the bank ledger and use Import Statement. TallyPrime reads the statement export and matches entries by amount and date. You review the unmatched lines before accepting the reconciliation.',
+      },
+      {
+        q: 'Why did the imported entries not match?',
+        a: 'Check three things first: the date range on the export, the bank ledger selected in TallyPrime, and whether TSS is active. Auto bank reconciliation is a TSS-connected service, so an expired subscription stops the matching even when the import file is correct.',
+      },
+    ],
+    content: `Importing a bank statement into TallyPrime is a reconciliation job, not a data-entry job. The software reads the statement, proposes matches against your ledger entries, and leaves you the exceptions to review.
+
+Start from the right screen
+
+1. Open Banking > Bank Reconciliation from the Gateway of Tally.
+2. Select the exact bank ledger the statement belongs to. If you run more than one account, select the right one before importing, or the proposed matches will be wrong.
+3. Choose Import Statement and pick the export file from your bank. CSV, OFX and QIF exports are the common formats used for this.
+4. Set the date range to the period you are reconciling. A whole-year file makes review slower without adding accuracy.
+5. Let TallyPrime match by amount and date, then review the unmatched lines one by one.
+
+What the match actually does
+
+A matched line confirms that the entry in your books and the entry in the bank statement are the same payment or receipt. It does not create an accounting entry by itself. If a bank line has no matching voucher, you still need to record that receipt or payment in TallyPrime before the reconciliation can close.
+
+Before you blame the import file
+
+Auto bank reconciliation is one of the services that depends on an active TSS subscription. If TSS has lapsed, the import may read the file but the automatic matching will not work. Check F1 (Help) > Settings > License > Manage License before spending time re-exporting the statement.
+
+When the statement arrives as an Excel sheet
+
+Some banks export a spreadsheet rather than a clean CSV, and some businesses keep a sheet of bank lines prepared by their accountant. Our shop has a ready-made bank statement importer that creates the matching receipt and payment entries from those rows, leaving only the reconciliation to finish. See the bank statement importer in the shop: [[Bank Statement Import|/shop#excel-bank-statement-import]]
+
+A short close checklist
+
+- Import into the correct bank ledger, every time
+- Keep the export date range aligned with the period you are closing
+- Record the vouchers for unmatched bank lines before accepting
+- Check TSS status when matching stops working suddenly
+- Keep the export file with the period's working papers
+
+Sarvadnya Infotech is a Tally certified partner in CBD Belapur, Navi Mumbai. We set up bank reconciliation and importers for businesses across Mumbai, Navi Mumbai and India, and our AMC team handles the exceptions that a file cannot resolve. Call 022 49647959 or 022 49742200, WhatsApp +91 98709 42557, or email info@sarvadnyainfotech.com.`,
+  },
+  {
+    // CHANGE: 2026-11-28 — new task-based post for the Excel-to-Tally query cluster. Links to the
+    // existing grouped shop view; no second catalogue is declared here. ASCII-only.
+    slug: 'excel-to-tally-import-vouchers-masters',
+    title: 'Excel to Tally Import: Move Vouchers and Masters Without Retyping',
+    seoTitle: 'Excel to Tally Import: Step Guide',
+    date: 'November 28, 2026',
+    category: 'How To',
+    description: 'A practical guide to Excel to Tally import: which masters to load first, how voucher rows become entries, and where the ready-made importers live.',
+    tags: ['excel to tally import', 'excel to tally', 'bulk voucher import', 'tally data import', 'import masters in tallyprime'],
+    link: '/shop?group=excel',
+    author: 'Sarvadnya Infotech LLP',
+    faqs: [
+      {
+        q: 'What can be imported from Excel into TallyPrime?',
+        a: 'Masters such as ledgers and stock items, and accounting vouchers. The shop also carries focused importers for bank statements and other repeat jobs, each with a plain-language description of the rows it accepts.',
+      },
+      {
+        q: 'Do I need to create the ledgers before importing vouchers?',
+        a: 'Yes. Import the masters first so every row can point at a real ledger or stock item. A voucher row that names a ledger TallyPrime cannot find will be rejected at validation.',
+      },
+    ],
+    content: `Excel to Tally import is the fastest way to move a month of entries that already sit in a spreadsheet. The work is mostly preparation: get the columns right, load the masters first, and validate a small batch before you import everything.
+
+Order matters: masters before vouchers
+
+Create or import the ledgers, stock items and any other masters first. A voucher row refers to a ledger by name, and a name TallyPrime cannot resolve will fail validation. If you import five hundred rows and half of them fail, the cause is nearly always a master that was not loaded or a name that does not match exactly.
+
+How a voucher row becomes an entry
+
+A voucher importer reads each row as one accounting entry: the date, the ledger, the amount and a narration. For a single-ledger debit and credit importer, each row becomes one voucher with one ledger debited and one credited. That suits a sheet where every line already balances.
+
+Pick the importer that matches the sheet
+
+Our shop keeps the Excel importers together under one group, so you can compare what each one does without reading a price list. The all-vouchers importer covers general accounting vouchers; separate importers cover bank statements and other specific jobs. Each entry says plainly what it reads and what it creates. Browse the Excel group: [[Excel to Tally Importers|/shop?group=excel]]
+
+Run a small validation batch
+
+Before the full file, import five rows: one normal entry, one with a narration, and one that you expect to fail. Check how the five landed in TallyPrime. If the dates, ledgers and amounts are right, the remaining rows will behave the same way. If a row fails, fix the column or the master name before scaling up.
+
+Keep the original sheet
+
+The spreadsheet is your audit trail for the import. Keep it with the period's working papers, along with a note of which importer was used. That makes a later question about a single entry answerable in minutes.
+
+Sarvadnya Infotech is a Tally certified partner in CBD Belapur, Navi Mumbai. We configure importers for your exact sheet, validate the first batch with you, and support the setup across Mumbai, Navi Mumbai and India. Call 022 49647959 or 022 49742200, WhatsApp +91 98709 42557, or email info@sarvadnyainfotech.com.`,
+  },
 ];
+
+// CHANGE: 2026-11-28 — the filter is the single retirement switch. Maintenance scripts import
+// `posts`, so they see exactly what the seed will write to the live collection.
+export const posts = ALL_POSTS.filter(p => !REMOVED_NEWS_SLUGS.includes(p.slug));
 
 async function seed() {
   const uri = process.env.MONGODB_URI;
@@ -1617,7 +1741,9 @@ async function seed() {
     // collection, otherwise stale posts keep ranking and showing in /news, /sitemap.xml
     // and the search API. REMOVE_SLUGS is additive-on-purpose: it never deletes
     // admin-authored posts that were never seeded here.
-    const REMOVE_SLUGS = ['tally-dealers-mumbai'];
+    // CHANGE: 2026-11-28 — retired generic posts are deleted from the live collection on the
+    // next seed, not just hidden, so /news, search and the sitemap all lose them together.
+    const REMOVE_SLUGS = ['tally-dealers-mumbai', ...REMOVED_NEWS_SLUGS];
 
     for (const slug of REMOVE_SLUGS) {
       const res = await col.deleteOne({ slug });

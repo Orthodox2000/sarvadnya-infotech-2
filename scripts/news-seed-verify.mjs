@@ -179,13 +179,17 @@ try {
     );
   }
   const attachDoc = auditDocs.find((d) => d.slug === 'attach-documents-in-tallyprime');
+  // CHANGE: 2026-11-28 — the canonical post now lists the formats as separate bullets and
+  // says "There is no conversion step"; the old one-sentence wording is no longer in the seed.
+  // Assert the current published facts, not a stale exact string.
   check(
     'attach-documents post carries the link-only storage facts',
     !!attachDoc &&
       typeof attachDoc.content === 'string' &&
       attachDoc.content.includes('Tally keeps the link') &&
       attachDoc.content.includes('No dedicated document server') &&
-      attachDoc.content.includes('PDF, Excel, Word and image files all attach without conversion'),
+      attachDoc.content.includes('PDF - scanned purchase bills') &&
+      attachDoc.content.includes('There is no conversion step'),
     attachDoc && typeof attachDoc.content === 'string' ? `${attachDoc.content.length} chars` : 'missing'
   );
   const checklistDoc = auditDocs.find((d) => d.slug === 'audit-preparation-checklist-small-business');

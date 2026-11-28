@@ -314,6 +314,18 @@ export function getFallbackResponse(userInput: string): string {
 export function getTeachingFallbackResponse(userInput: string): string {
   const input = userInput.toLowerCase();
 
+  // CHANGE: 2026-11-28 — when the AI is slow or unavailable the old fallback was a generic
+  // "tell me more" question, which read as the lesson stopping after a few messages. Build a
+  // complete lesson from the SAME topic data the written guides render, so Learn Sara stays an
+  // education agent even with no provider available.
+  const match = matchTopic(userInput);
+  if (match) {
+    const extra = match.topic.followUp?.length
+      ? `\n\n${match.topic.followUp.map(f => `### ${f.label}\n${f.answer}`).join('\n\n')}`
+      : '';
+    return `Here is the full lesson on ${match.topic.label}.\n\n${match.topic.answer}${extra}\n\nCheck yourself: which step above matches the screen in front of you? Tell me where you stopped and we will continue from there.\n\n[[Open the written guide|/learn-sara/${topicSlug(match.topic.label)}]]`;
+  }
+
   const teachingResponses: [RegExp, string][] = [
     [/hello|hi|hey|namaste|good\s*(morning|afternoon|evening)/, "Hello! Welcome to Learn Sara. I am here to help you master TallyPrime step by step. What would you like to learn about — GST, inventory, banking, payroll, or something else?"],
     [/thank|thanks|bye|goodbye|ok|okay|theek|alright/, "You're welcome! Keep practicing and you'll master TallyPrime in no time. Feel free to come back anytime with more questions."],
@@ -357,10 +369,13 @@ export function getTeachingFallbackResponse(userInput: string): string {
   const guideReply = guideSuggestionReply(userInput);
   if (guideReply) return guideReply;
 
+  // CHANGE: 2026-11-28 — even an off-syllabus question now gets a learning structure instead of
+  // a bare question. No Tally fact is invented; the structure only tells the visitor how we will
+  // work together and points at the written guides.
   const genericTeachingResponses = [
-    "That is an interesting question! Let me help you understand this better in the context of TallyPrime. Could you tell me more about what you are trying to accomplish? For example, are you working with invoicing, inventory, or reports?",
-    "Good question! TallyPrime has a feature for that. Let me guide you through it step by step. First, can you tell me which TallyPrime product you are using — Silver (single user) or Gold (multi user)?",
-    "I understand your question. Let me break this down into simple steps. In TallyPrime, most tasks start from the Gateway of Tally. What specific area are you trying to learn — accounting, inventory, or statutory compliance?",
+    "Let us work through it like a lesson. 1. Name the screen you are on. 2. Say what you expected to see. 3. Tell me what appeared instead. I will then give you the exact steps, a worked example and a check question. Invoicing, inventory and reports are the most common starting points. [[Browse the guides|/learn-sara]]",
+    "Good question. Before I teach the steps, I need one detail that changes them: are you on Silver (single user) or Gold (multi user)? Once I know, I will teach the whole task in one reply - steps, example, common mistake and a quick check at the end. [[Browse the guides|/learn-sara]]",
+    "I will break this into a full lesson rather than a one-line answer. Most TallyPrime tasks start from the Gateway of Tally; tell me whether yours is accounting, inventory or statutory compliance and I will give you the numbered steps, what you should see at each one, and a check question. [[Browse the guides|/learn-sara]]",
   ];
 
   const hash = input.split('').reduce((acc, ch) => acc + ch.charCodeAt(0), 0);

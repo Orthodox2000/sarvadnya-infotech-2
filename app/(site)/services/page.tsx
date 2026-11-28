@@ -111,11 +111,11 @@ export default function ServicesPage() {
 
   const supportServices = [
     {
-      title: "Corporate Training",
+      title: "Train Your Team in TallyPrime",
       simpleDesc: "Advanced certification programs designed to transform your accounting staff into TallyPrime power users. We focus on statutory compliance and high-efficiency workflows.",
       detailedDesc: "Our Corporate Training is a strategic investment in your human capital. We move beyond basic entries to teach advanced statutory features, audit trails, and complex management reporting. The program includes hands-on workshops on multi-company management and security configurations, ensuring your team can maximize TallyPrime's potential to drive business growth.",
       features: ["GST/TDS Statutory mastery", "Advanced MIS Reporting", "Audit Trail implementation", "Automated BRS workflows", "Multi-company management", "Security configuration"],
-      tag: "Training",
+      tag: "Team Training",
       iconBg: "bg-[#006569]",
       link: "/services/corporate-training",
       icon: (
@@ -125,11 +125,11 @@ export default function ServicesPage() {
       )
     },
     {
-      title: "Data Integration",
+      title: "Connect Tally to CRM, ERP & E-commerce",
       simpleDesc: "Eliminate manual data entry with bidirectional sync between Tally and your CRM, ERP, or E-commerce platforms using secure API bridges.",
       detailedDesc: "Break down data silos across your organization. We architect custom integration layers that allow real-time data flow between TallyPrime and external applications. Whether it is syncing sales from Shopify, leads from Salesforce, or payroll from an external HRMS, our integration services ensure data integrity and eliminate the risk of human error.",
       features: ["Real-time API sync", "Excel bulk migration", "CRM & Marketplace sync", "Database bridge development", "Automated data scheduling", "Error validation logic"],
-      tag: "Integration",
+      tag: "Connect Data",
       iconBg: "bg-[#045A57]",
       icon: (
         <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -138,11 +138,11 @@ export default function ServicesPage() {
       )
     },
     {
-      title: "TSS Renewal",
+      title: "Renew TSS and Restore Connected Features",
       simpleDesc: "Ensure zero-day access to the latest statutory updates and product enhancements with priority Tally Software Services (TSS) management.",
       detailedDesc: "TSS is the heartbeat of your Tally ecosystem. We handle the entire renewal lifecycle, ensuring you never miss a critical statutory update or a new product feature. Beyond renewal, we help you activate and utilize Tally.NET services for remote access and synchronized data, keeping your business compliant and agile.",
       features: ["Latest Statutory Updates", "Remote Access via Browser", "Data Synchronization", "Bank Reconciliation (Auto)", "Latest Product Releases", "Tally.NET Services"],
-      tag: "Renewal",
+      tag: "Renew TSS",
       iconBg: "bg-[#131921]",
       link: "/services/tss",
       icon: (
@@ -152,11 +152,11 @@ export default function ServicesPage() {
       )
     },
     {
-      title: "TDL Customization",
+      title: "Build a Custom TDL for Your Workflow",
       simpleDesc: "Bespoke business logic developed via Tally Definition Language (TDL) to automate your unique industry workflows and reporting.",
       detailedDesc: "Every business has a unique DNA. We build custom TDL modules that extend Tally's core functionality to match your specific operational needs. From specialized invoice formats and field-level validations to complex analytical reports, we ensure Tally works exactly the way your business does, not the other way around.",
       features: ["Industry module design", "Customized Invoices", "Field-level validations", "Analytical reports", "Digital Signatures", "Email/SMS automation"],
-      tag: "TDL",
+      tag: "Custom TDL",
       iconBg: "bg-[#006569]",
       link: "/services/tdl",
       icon: (
@@ -167,11 +167,11 @@ export default function ServicesPage() {
       )
     },
     {
-      title: "Tally on Mobile",
+      title: "Check Tally Reports on Mobile",
       simpleDesc: "Enterprise-grade mobile dashboards providing real-time visibility into sales, outstandings, and inventory from any device.",
       detailedDesc: "Empower your leadership with data-driven decision making on the go. Our mobile solutions bridge the gap between the office and the field, allowing secure access to critical Tally reports. With end-to-end encryption and real-time sync, you can monitor business health and approve transactions without being tied to a desk.",
       features: ["Live Sales Dashboards", "WhatsApp sharing", "Ageing & Alert sync", "End-to-end encryption", "Customer info on the go", "Stock status tracking"],
-      tag: "Mobile",
+      tag: "Mobile Reports",
       iconBg: "bg-[#045A57]",
       link: "/services/mobile-app-biz",
       icon: (
@@ -181,11 +181,11 @@ export default function ServicesPage() {
       )
     },
     {
-      title: "AMC Services",
+      title: "Keep Tally Running with AMC Support",
       simpleDesc: "Premium annual maintenance contracts ensuring 99.9% uptime with priority technical support and proactive system health audits.",
       detailedDesc: "Our AMC is more than just a support contract; it is a business continuity guarantee. We provide a rigorous safety net involving 15-minute response SLAs, unlimited remote troubleshooting, and quarterly health checkups. From emergency data recovery to performance tuning, we ensure your Tally environment remains stable and secure. With each AMC period, your team naturally becomes more proficient — gaining deeper Tally knowledge and stronger command over your accounts through ongoing expert interactions.",
       features: ["15-min response SLA", "Priority troubleshooting", "System health audits", "Data recovery experts", "Unlimited remote support", "Quarterly health checks"],
-      tag: "Support",
+      tag: "AMC Support",
       iconBg: "bg-[#131921]",
       link: "/services/amc",
       icon: (
@@ -195,11 +195,11 @@ export default function ServicesPage() {
       )
     },
     {
-      title: "Tally on WhatsApp",
+      title: "Send Tally Documents on WhatsApp",
       simpleDesc: "Automated document delivery and customer communication integrated directly with your TallyPrime data for instant engagement.",
       detailedDesc: "Transform your customer experience by automating the flow of invoices, payment reminders, and ledger statements via WhatsApp. By integrating Tally with the world's most popular messaging app, you reduce payment cycles and improve transparency, all while maintaining a professional and secure communication channel.",
       features: ["Automated PDF Sharing", "Payment Reminders", "Ledger Queries", "Bulk Marketing", "24/7 Availability", "Secure Integration"],
-      tag: "WhatsApp",
+      tag: "WhatsApp Docs",
       iconBg: "bg-[#25D366]",
       link: "/services/tally-on-whatsapp",
       icon: (

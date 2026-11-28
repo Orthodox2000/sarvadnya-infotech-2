@@ -16,13 +16,21 @@ const PRIMARY_MODEL = "openai/gpt-oss-120b";
 const FALLBACK_MODEL = "openai/gpt-oss-20b";
 const GEMINI_MODEL = "gemini-3.5-flash-lite";
 const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`;
-const TIMEOUT_MS = 30_000;
+// CHANGE: 2026-11-28 — a slow provider no longer holds the visitor for 30 s per key.
+// One provider attempt gets 12 s, and the WHOLE request gets 20 s before the client sees a
+// deterministic teaching fallback. The old 30 s x N keys chain was the "loads forever" report.
+const PROVIDER_TIMEOUT_MS = 12_000;
+const REQUEST_DEADLINE_MS = 20_000;
 const MAX_HISTORY_TURNS = 24;
 // CHANGE: 2026-10-27 — Groq's free tier is 8,000 tokens per minute, measured against the WHOLE
 // request, and it rejects an oversized request with a 413 that no key rotation can fix. This is
 // the input-side ceiling we keep every request under (the sales prompt alone is ~5,100).
 // Measured: the reply for "how r u" cost prompt_tokens 5,091 + completion 146.
 const GROQ_INPUT_TOKEN_BUDGET = 6_200;
+// CHANGE: 2026-11-28 — Gemini has no 8k TPM wall, so it keeps a much longer context. This is the
+// fix for "the reply drops after four messages": Groq's 600-token history budget was being used
+// for Gemini too, so a detailed lesson lost its own earlier steps on the very next turn.
+const GEMINI_HISTORY_TOKEN_BUDGET = 12_000;
 /** Rough token estimate (chars / 4). Good enough to keep a request inside a hard ceiling. */
 const estimateTokens = (text: string) => Math.ceil(text.length / 4);
 
@@ -152,12 +160,18 @@ I AM NOT A PROGRAMMER:
 - You teach how to USE TallyPrime. You do not write code.
 - NEVER output TDL, scripts, formulas, XML or any programming code — not even a partial snippet. Code blocks are ONLY for menu paths, shortcuts and config values.
 - If the user asks for a TDL, a custom report/field, "write the code for X" or any custom development: say in ONE short sentence that custom development is done by our technical team and point to [[TDL Customization|/services/tdl]]. Then ask what they want to achieve ON SCREEN, so you can teach them the closest TallyPrime way to do it.
-- Before teaching a multi-step task, ask ONE quick question about their setup (TallyPrime edition, GST on or off, inventory on or off) so the steps match the screen in front of them.
+- For a multi-step task, state the assumed setup in one line (TallyPrime edition, GST on or off, inventory on or off) and carry on teaching. Put the correction question in "Check yourself" at the END, never before the lesson.
 
-REPLY LENGTH — KEEP IT SHORT BY DEFAULT:
-- Default replies are SHORT: 2-4 sentences, or a compact numbered outline. Never dump a long wall of text unless asked.
-- If there is more to teach, end the reply with a short invitation: "Want a detailed walkthrough? Just say 'detailed'."
-- When the user asks for more depth (e.g. "detailed", "explain more", "step by step", "tell me everything"), then switch to the full, patient, step-by-step teaching.
+// CHANGE: 2026-11-28 — owner ruling: Ask Sara is the SHORT-ANSWER assistant; Learn Sara is the
+// DETAILED AI TEACHER. The old "2-4 sentences, say detailed for more" gate made the learning chat
+// feel read-only and pushed the depth behind a follow-up. Teach the whole lesson on the first turn.
+DETAILED TEACHING MODE — ANSWER IN FULL, IN STRUCTURE:
+- Give a complete lesson on the first reply: a one-or-two-sentence orientation, a numbered set of steps, one small worked example or what the visitor should see on screen, the common mistake to avoid, and a short check-your-understanding question at the end.
+- Use plain headings ("What this does", "Steps", "Example", "Watch out for", "Check yourself") so a long answer stays scannable. Aim for real depth: roughly 300-700 words when the topic needs it, longer for a full setup. Never pad with filler.
+- Do NOT ask the visitor to say "detailed" or "explain more" before teaching. Deliver the lesson, THEN ask the check question. Only compress when the visitor explicitly says "short", "quick", or "just the answer".
+- Build on what was already taught in this conversation. If a previous turn covered enabling a feature, start from there instead of re-teaching it. Refer back to the exact step ("as in step 2 above").
+- You are an education agent, not a brochure: explain the why behind each step, not only which button to press.
+- Treat the conversation as ONE course, not isolated questions: continue from the lesson already covered, finish a topic with its check question before moving on, and point to the matching written guide with [[Label|/learn-sara/<topic>]] when one exists.
 
 TONE:
 - Be warm, encouraging, human, and gently playful. Celebrate small wins ("Great! Your company is created. Now let's set up GST.").
@@ -377,6 +391,9 @@ export async function POST(request: Request) {
 
     const systemPrompt = mode === 'learn' ? LEARN_SYSTEM_PROMPT : SALES_SYSTEM_PROMPT;
     const isLearn = mode === 'learn';
+    // CHANGE: 2026-11-28 — hard overall ceiling. Key rotation still works, but it can no longer
+    // walk through every configured key after the visitor has already waited 20 seconds.
+    const requestDeadline = Date.now() + REQUEST_DEADLINE_MS;
 
     // openai/gpt-oss-120b needs a higher budget since reasoning tokens consume the window.
     // CHANGE: 2026-10-27 — learn mode was asking for 8,192 completion tokens on a ~4k-token
@@ -420,17 +437,23 @@ export async function POST(request: Request) {
     // 413 "Request too large" (not retryable across keys), so the visitor got
     // "AI service temporarily unavailable". History is now trimmed oldest-first against whatever
     // is left of the budget once the system prompt is paid for.
-    const historyBudget = Math.max(600, GROQ_INPUT_TOKEN_BUDGET - estimateTokens(systemPrompt));
-    const trimmedMessages = trimHistory(messages.slice(-MAX_HISTORY_TURNS), historyBudget);
+    const recentMessages = messages.slice(-MAX_HISTORY_TURNS);
+    const groqHistoryBudget = Math.max(600, GROQ_INPUT_TOKEN_BUDGET - estimateTokens(systemPrompt));
+    const trimmedGroqMessages = trimHistory(recentMessages, groqHistoryBudget);
+    // CHANGE: 2026-11-28 — Gemini gets its own, larger budget (see constant comment). Passing the
+    // Groq-trimmed array to BOTH providers is why a detailed lesson forgot its own context on the
+    // next turn once the conversation passed four messages.
+    const trimmedGeminiMessages = trimHistory(recentMessages, GEMINI_HISTORY_TOKEN_BUDGET);
     let lastError: any = null;
 
     // PRIORITY: Gemini Flash first
     const shuffledGemini = [...geminiKeys].sort(() => Math.random() - 0.5);
     for (const apiKey of shuffledGemini) {
+      if (Date.now() >= requestDeadline) break;
       const controller = new AbortController();
-      const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
+      const timer = setTimeout(() => controller.abort(), Math.max(1000, Math.min(PROVIDER_TIMEOUT_MS, requestDeadline - Date.now())));
       try {
-        const content = await callGemini(apiKey, trimmedMessages, controller.signal, systemPrompt, geminiMaxTokens);
+        const content = await callGemini(apiKey, trimmedGeminiMessages, controller.signal, systemPrompt, geminiMaxTokens);
         clearTimeout(timer);
         const clean = cleanContent(content);
         if (clean) return NextResponse.json({ message: finalizeReply(clean, lastUserMsg?.content || '', isLearn) });
@@ -449,13 +472,14 @@ export async function POST(request: Request) {
     // FALLBACK: Groq
     const shuffledKeys = [...groqKeys].sort(() => Math.random() - 0.5);
     for (const [idx, apiKey] of shuffledKeys.entries()) {
+      if (Date.now() >= requestDeadline) break;
       const controller = new AbortController();
-      const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
+      const timer = setTimeout(() => controller.abort(), Math.max(1000, Math.min(PROVIDER_TIMEOUT_MS, requestDeadline - Date.now())));
 
       const model = idx === 0 ? PRIMARY_MODEL : FALLBACK_MODEL;
 
       try {
-        const data = await callGroq(apiKey, trimmedMessages, model, controller.signal, systemPrompt, groqMaxTokens(model));
+        const data = await callGroq(apiKey, trimmedGroqMessages, model, controller.signal, systemPrompt, groqMaxTokens(model));
         clearTimeout(timer);
 
         if (data.choices?.[0]) {

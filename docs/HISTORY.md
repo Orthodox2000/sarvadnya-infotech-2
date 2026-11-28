@@ -19,6 +19,7 @@
 
 ### 2026-11
 
+- [2026-11-28 — News refreshed in ticker + seed (generic posts retired, bank/Excel import posts added), action-first titles/tags, Learn Sara detailed teaching, Ask Sara short, chat resumes in-session and slow/fourth-message fixes; verified (typecheck/build/test:all/UI), live seed applied, stale news assertion corrected](history/2026-11-28-news-refresh-sara-teaching-and-chat-continuity.md)
 - [2026-11-27 — Mobile drawer scroll-jump fixed (overlay + body lock); greeting popup moved to ONE global rule: 15 s delay, show time recorded, reset after 6 h for everyone](history/2026-11-27-mobile-drawer-scroll-jump-and-global-greeting-timing.md)
 - [2026-11-27 — `botid@1.5.13` installed but not wired, new `SiteChrome` navbar verified at six widths with all links valid, pushed to both remotes](history/2026-11-27-botid-install-navbar-verification-and-push.md)
 - [2026-11-26 — Dynamic social links for the email signature and other templates via fixed `/api/social-links` route, with baked-in fallback hrefs](history/2026-11-26-dynamic-email-social-links-api.md)

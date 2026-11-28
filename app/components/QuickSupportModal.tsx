@@ -473,7 +473,9 @@ export default function QuickSupportModal({ isOpen, onClose, initialQuestion }: 
     lastTopicRef.current = topic.label;
 
     setIsTyping(true);
-    const delay = Math.min(600 + topic.answer.length * 8, 2000);
+    // CHANGE: 2026-11-28 — a known answer should not sit behind a 2-second typing delay; a short
+    // beat is enough to show the indicator before the text streams in.
+    const delay = Math.min(200 + topic.answer.length * 2, 600);
     await new Promise(resolve => setTimeout(resolve, delay));
     setIsTyping(false);
 

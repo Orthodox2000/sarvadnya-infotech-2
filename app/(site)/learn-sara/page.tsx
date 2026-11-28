@@ -16,13 +16,14 @@ import { breadcrumbJsonLd, seoMetadata } from "@/lib/seo";
 export const metadata: Metadata = seoMetadata({
   title: "Learn TallyPrime Step by Step",
   description:
-    "Free step-by-step TallyPrime guides on GST, inventory, banking, payroll, reports, TSS renewal and ERP 9 upgrades. No signup needed.",
+    "Free step-by-step TallyPrime guides and detailed AI lessons on GST, inventory, banking, payroll, reports and TSS renewal. No signup needed.",
   path: "/learn-sara",
   keywords: [
     "learn tally prime",
     "tallyprime guides",
     "tally tutorial",
     "learn sara",
+    "ai tally tutor",
     "tally gst guide",
     "tss renewal guide",
   ],
@@ -69,8 +70,9 @@ export default function LearnSaraHubPage() {
         <p className="mt-4 max-w-3xl text-[15px] leading-relaxed text-slate-600">
           These are the questions our customers ask most often, written out in full: GST and e-invoicing,
           inventory, bank reconciliation, payroll, reports, shortcuts, TSS renewal, ERP 9 upgrades, ready-made
-          add-ons and TDL customisation. Every guide below is also loaded into Sara, our AI consultant, so you
-          can read it here or ask her a follow-up in plain English.
+          add-ons and TDL customisation. Every guide below is also loaded into Sara. Read a guide here, or open
+          the chat for a full AI-led lesson. Need only a quick answer? Ask Sara keeps it short; Learn Sara
+          teaches the whole topic in detail.
         </p>
 
         <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -99,16 +101,17 @@ export default function LearnSaraHubPage() {
         {/* The two non-guide destinations on this hub: the chat itself, and the free tool. */}
         <div className="mt-10 grid gap-4 md:grid-cols-2">
           <div className="rounded-2xl bg-[#006569] p-6 text-white">
-            <h2 className="text-lg font-bold tracking-tight">Ask Sara directly</h2>
+            <h2 className="text-lg font-bold tracking-tight">Learn with Sara, in full lessons</h2>
             <p className="mt-2 text-[13px] leading-relaxed text-white/85">
-              Prefer a conversation? Sara walks you through the same topics step by step, and asks a question
-              first when your situation needs one.
+              Ask any TallyPrime topic and Sara teaches it in detail: the steps, a worked example, the common
+              mistake and a check question at the end. The chat keeps its place if you leave the page and come
+              back in the same browser session. For a one-line answer, use Ask Sara instead.
             </p>
             <Link
               href="/learn-sara/chat"
               className="mt-5 inline-flex items-center gap-2 rounded-xl bg-white px-4 py-2.5 text-[12px] font-extrabold uppercase tracking-[0.12em] text-[#006569] transition-colors hover:bg-[#E5F4F4]"
             >
-              Open the chat
+              Start a lesson
               <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
               </svg>

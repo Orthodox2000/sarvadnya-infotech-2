@@ -22,6 +22,10 @@ import type { SiteSettingsShape } from './site-settings';
 /** Fields the ticker actually renders — no article body needed on every page. */
 export type TickerNews = Pick<NewsItem, 'title' | 'description' | 'slug' | 'date'>;
 
+// CHANGE: 2026-11-28 — owner retired the generic partner/city/list posts (the how-to, DMS and
+// document-management items are the performers and stay). The two ticker slots those posts held
+// now carry the new bank-statement-import and Excel-to-Tally guides, which link to the existing
+// /shop deep links. Keep slugs here in step with scripts/seed_news.mjs.
 export const STATIC_NEWS: TickerNews[] = [
     {
         slug: 'tally-custom-modules-supply-chain',
@@ -78,16 +82,16 @@ export const STATIC_NEWS: TickerNews[] = [
         description: 'A domestic Indian TallyPrime license is not designed to keep working abroad; a permanent move needs an international edition. Options by region.',
     },
     {
-        slug: 'tally-partner-near-me',
-        title: 'Tally Partner Near Me: How to Find and Verify a Certified Tally Partner',
-        date: 'September 7, 2026',
-        description: 'Searching "tally partner near me"? Here is a repeatable way to find and verify a certified Tally partner in Mumbai, Navi Mumbai and Belapur - and the questions to ask.',
+        slug: 'bank-statement-import-tallyprime',
+        title: 'Import a Bank Statement into TallyPrime: Steps and Setup',
+        date: 'November 28, 2026',
+        description: 'Bring a bank statement into TallyPrime, match receipts and payments, and finish reconciliation without typing each line twice.',
     },
     {
-        slug: 'tally-5-star-partner-mumbai',
-        title: 'Tally Partner Tiers in Mumbai: 3 Star vs 5 Star, What the Certification Means',
-        date: 'September 6, 2026',
-        description: 'Tally partner tiers explained: what 3 star and 5 star certification mean, how to verify the tier, and why an honest 3 star Tally partner in Mumbai can fit.',
+        slug: 'excel-to-tally-import-vouchers-masters',
+        title: 'Excel to Tally Import: Move Vouchers and Masters Without Retyping',
+        date: 'November 28, 2026',
+        description: 'Load the masters first, import voucher rows, and validate a small batch before moving a whole spreadsheet into TallyPrime.',
     },
     {
         slug: 'tally-tss-expiry-meaning',

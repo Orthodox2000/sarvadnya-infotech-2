@@ -37,13 +37,12 @@ const SLUGS = [
   'tally-cloud-access',
   'what-is-tally-capital',
   'how-to-check-tss-expiry-date-tallyprime',
-  'cbd-belapur-it-companies-list',
-  // REMOVED 2026-11-03: 'it-companies-in-belapur' — retired into the list post by a 301 (see
-  // RETIRED_NEWS_SLUGS in lib/news-utils.ts). Its title no longer reaches a visitor, so keeping it
-  // here would just be a second, invisible copy of the same fix.
+  // REMOVED 2026-11-28: 'cbd-belapur-it-companies-list' and 'tally-5-star-partner-mumbai' were
+  // retired with the other generic list/partner posts. Keeping either here would make this
+  // maintenance script fail its "slug must exist in the seed" check (see REMOVED_NEWS_SLUGS in
+  // scripts/seed_news.mjs). 'it-companies-in-belapur' was retired on 2026-11-03.
   'tally-tss-renewal-2026',
   'tallyprime-international-licenses',
-  'tally-5-star-partner-mumbai',
 ];
 
 const uri = process.env.MONGODB_URI;

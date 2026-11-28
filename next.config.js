@@ -93,7 +93,9 @@ const nextConfig = {
       { source: '/tally-software-implementation-service', destination: '/services', permanent: true },
       // CHANGE: 2026-09-17 — old WP blog post "Small Add-ons in Tally ERP 9" → its modern
       // news article (same topic, live seeded slug) so the GSC 404 row clears and equity passes.
-      { source: '/small-add-ons-in-tally-erp-9', destination: '/news/tally-erp9-add-ons', permanent: true },
+      // CHANGE: 2026-11-28 — the add-ons article was retired; the live destination for
+      // "small add-ons" is the shop, which is where the ready-made TDLs actually live.
+      { source: '/small-add-ons-in-tally-erp-9', destination: '/shop', permanent: true },
       // CHANGE: 2026-10-26 — three pre-seed admin news posts had no `slug`, so their URLs were
       // derived from the title + ObjectId tail. They were replaced by three factual seeded posts
       // (see LEGACY_UNSLUGGED_TITLES in scripts/seed_news.mjs) and are now deleted from the DB.
@@ -138,14 +140,22 @@ const nextConfig = {
       { source: '/ensure-quality-training-and-service-thereafter-increase-client-satisfaction', destination: '/services', permanent: true },
       // 2026-10-12 — clear GSC 404s reported by user
       { source: '/news/tally-dealers-mumbai', destination: '/news', permanent: true },
-      // CHANGE: 2026-11-03 — cannibalisation 301 (owner-approved). /news/it-companies-in-belapur
-      // (28 impressions, position 14.25) and /news/cbd-belapur-it-companies-list (610 impressions,
-      // position 6.52) were chasing the same "it companies in belapur" cluster, so the weak URL is
-      // retired into the strong one instead of competing. The article document is NOT deleted: its
-      // slug is listed in RETIRED_NEWS_SLUGS (lib/news-utils.ts), which fetchNews() filters, so it
-      // disappears from the listing, search, related posts and sitemap while this 301 keeps its
-      // inbound links working. Keep the two in step — see the comment on that constant.
-      { source: '/news/it-companies-in-belapur', destination: '/news/cbd-belapur-it-companies-list', permanent: true },
+      // CHANGE: 2026-11-28 — owner retired the generic partner/city/list posts. They stay in
+      // RETIRED_NEWS_SLUGS (lib/news-utils.ts) so fetchNews() drops them from /news, search,
+      // related posts and the sitemap, and the seed removes them from the live collection. These
+      // 301s keep already-indexed URLs and inbound links from 404ing. Partner-intent URLs land on
+      // /contact or /about; topic URLs land on the live hub that now covers them. Every slug in
+      // RETIRED_NEWS_SLUGS must have an entry here.
+      { source: '/news/it-companies-in-belapur', destination: '/news', permanent: true },
+      { source: '/news/cbd-belapur-it-companies-list', destination: '/news', permanent: true },
+      { source: '/news/tally-partner-mumbai', destination: '/contact', permanent: true },
+      { source: '/news/tally-erp9-add-ons', destination: '/shop', permanent: true },
+      { source: '/news/tally-3-star-partner-mumbai', destination: '/contact', permanent: true },
+      { source: '/news/tally-5-star-partner-mumbai', destination: '/contact', permanent: true },
+      { source: '/news/tally-partner-near-me', destination: '/contact', permanent: true },
+      { source: '/news/cloud-tally-cities-agra-patna-lucknow-mumbai', destination: '/cloud', permanent: true },
+      { source: '/news/software-companies-in-navi-mumbai', destination: '/news', permanent: true },
+      { source: '/news/smbs-cbd-belapur-certified-tally-partner', destination: '/about', permanent: true },
       { source: '/category/uncategorized', destination: '/news', permanent: true },
       { source: '/category/uncategorized/', destination: '/news', permanent: true },
       { source: '/shop/bumper stickers', destination: '/products', permanent: true },

@@ -22,7 +22,22 @@ type Message = {
   timestamp: Date;
 };
 
-const WELCOME_TEXT = "Hi! I'm Sara, your TallyPrime learning assistant. I can walk you through GST setup, invoicing, inventory, payroll, bank reconciliation, reports, and much more. What would you like to learn today?";
+// CHANGE: 2026-11-28 — Ask Sara = short answers, Learn Sara = full lessons. The greeting now
+// promises the detailed teaching mode instead of a menu of topics.
+const WELCOME_TEXT = "Hi! I'm Sara, your TallyPrime teacher. Ask me any topic and I'll give you a full lesson - the steps, a worked example, what to watch out for, and a quick check at the end. What would you like to learn?";
+
+// CHANGE: 2026-11-28 — the chat used to call /api/chats/end on every React unmount, so a
+// client-side route change silently started a NEW chat on the same session. Keeping the
+// transcript + chatId in sessionStorage (and ending only on `pagehide`) makes an in-session
+// navigation resume the same lesson. It is intentionally sessionStorage, not localStorage: a
+// new browser session must still start clean.
+const CHAT_STORAGE_KEY = 'sarvadnya-learn-sara-chat';
+
+type StoredChat = {
+  sessionId: string;
+  chatId: string | null;
+  messages: Array<Omit<Message, 'timestamp'> & { timestamp: string }>;
+};
 
 function uid() {
   return Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
@@ -47,7 +62,22 @@ export default function LearnSaraPage() {
   const containerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const chatIdRef = useRef<string|null>(null);
+  const hydratedRef = useRef(false);
   const { sessionId } = useVisitor();
+
+  const persistChat = useCallback((current: Message[]) => {
+    if (!sessionId) return;
+    const payload: StoredChat = {
+      sessionId,
+      chatId: chatIdRef.current,
+      messages: current.map(m => ({ ...m, timestamp: m.timestamp.toISOString() })),
+    };
+    try { sessionStorage.setItem(CHAT_STORAGE_KEY, JSON.stringify(payload)); } catch { /* private mode */ }
+  }, [sessionId]);
+
+  useEffect(() => {
+    if (hydratedRef.current) persistChat(messages);
+  }, [messages, persistChat]);
 
   // Lock body scroll while the chat sheet is open
   useEffect(() => {
@@ -124,10 +154,31 @@ export default function LearnSaraPage() {
     window.speechSynthesis.speak(utterance);
   }, [voices, voiceEnabled]);
 
-  // Welcome message on mount
+  // CHANGE: 2026-11-28 — restore the in-session chat, or show the greeting only when there is
+  // nothing to restore. hydratedRef is set only when the state is actually applied, so a
+  // StrictMode remount cannot skip the greeting by cancelling the first timer.
   useEffect(() => {
+    if (!sessionId || hydratedRef.current) return;
+    let cancelled = false;
+    let timer: ReturnType<typeof setTimeout> | undefined;
+
+    try {
+      const raw = sessionStorage.getItem(CHAT_STORAGE_KEY);
+      if (raw) {
+        const saved = JSON.parse(raw) as StoredChat;
+        if (saved.sessionId === sessionId && Array.isArray(saved.messages) && saved.messages.length > 0) {
+          chatIdRef.current = saved.chatId || null;
+          setMessages(saved.messages.map(m => ({ ...m, timestamp: new Date(m.timestamp) })));
+          hydratedRef.current = true;
+          return;
+        }
+      }
+    } catch { /* corrupt or unavailable storage: start fresh */ }
+
     setIsTyping(true);
-    const t = setTimeout(() => {
+    timer = setTimeout(() => {
+      if (cancelled) return;
+      hydratedRef.current = true;
       const id = uid();
       setMessages([{
         id,
@@ -139,8 +190,12 @@ export default function LearnSaraPage() {
       setShowAudioPromptId(id);
       setIsTyping(false);
     }, 800);
-    return () => clearTimeout(t);
-  }, []);
+
+    return () => {
+      cancelled = true;
+      if (timer) clearTimeout(timer);
+    };
+  }, [sessionId]);
 
   // Auto-scroll — aggressively scroll the chat container to bottom
   const scrollToBottom = useCallback(() => {
@@ -163,18 +218,26 @@ export default function LearnSaraPage() {
   // Focus input
   useEffect(() => { inputRef.current?.focus(); }, []);
 
+  // CHANGE: 2026-11-28 — start ONE transcript per session and keep it across client-side
+  // navigation. The old unmount cleanup ended the chat on every route change, so coming back
+  // created a second chat for the same session. `pagehide` fires only on a real document unload,
+  // which is the right place to close the transcript.
   useEffect(() => {
-    if (sessionId && !chatIdRef.current) {
-      fetch('/api/chats/start',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({sessionId,path:'/learn-sara',entryPoint:'learn-sara-page',meta:{referrer:document.referrer,userAgent:navigator.userAgent}})}).then(r=>r.json()).then(d=>{if(d.chatId) chatIdRef.current=d.chatId}).catch(()=>{});
+    if (!sessionId) return;
+    if (!chatIdRef.current) {
+      fetch('/api/chats/start',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({sessionId,path:'/learn-sara',entryPoint:'learn-sara-page',meta:{referrer:document.referrer,userAgent:navigator.userAgent}})})
+        .then(r=>r.json())
+        .then(d=>{ if (d.chatId) { chatIdRef.current = d.chatId; persistChat(messages); } })
+        .catch(()=>{});
     }
-    return () => {
-      // CHANGE: 2026-10-09 — close the transcript when the page unmounts (parity with
-      // Ask Sara, which ends its chat on close). keepalive lets the request survive unload.
+    const endChat = () => {
       if (chatIdRef.current && sessionId) {
-        fetch('/api/chats/end',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({chatId:chatIdRef.current,sessionId,endedReason:'unmounted'}),keepalive:true}).catch(()=>{});
+        fetch('/api/chats/end',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({chatId:chatIdRef.current,sessionId,endedReason:'pagehide'}),keepalive:true}).catch(()=>{});
       }
     };
-  }, [sessionId]);
+    window.addEventListener('pagehide', endChat);
+    return () => window.removeEventListener('pagehide', endChat);
+  }, [sessionId, persistChat]);
 
   // Refocus the input once typing finishes so the user can immediately send the next message
   useEffect(() => {
@@ -221,7 +284,9 @@ export default function LearnSaraPage() {
 
   const respondWithDelay = useCallback((text: string, topics?: Topic[], queryText?: string) => {
     setIsTyping(true);
-    const delay = Math.min(900 + text.length * 10, 3000);
+    // CHANGE: 2026-11-28 — the old 900 ms + 10 ms/char cap of 3 s made even a cached answer feel
+    // slow. A short beat is enough to show the typing indicator.
+    const delay = Math.min(250 + text.length * 3, 900);
     setTimeout(() => {
       setIsTyping(false);
       addAssistantMessage(text, topics, queryText);
@@ -229,6 +294,10 @@ export default function LearnSaraPage() {
   }, [addAssistantMessage]);
 
   const callLearnAI = useCallback(async (conversationHistory: { role: string; content: string }[]) => {
+    // CHANGE: 2026-11-28 — client-side ceiling. The server already has a 20 s deadline; this
+    // keeps a hung network request from leaving the input disabled indefinitely.
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 18_000);
     try {
       const response = await fetch('/api/chat', {
         method: 'POST',
@@ -237,6 +306,7 @@ export default function LearnSaraPage() {
           messages: conversationHistory,
           mode: 'learn',
         }),
+        signal: controller.signal,
       });
 
       if (!response.ok) return null;
@@ -245,6 +315,8 @@ export default function LearnSaraPage() {
       return data.message || null;
     } catch {
       return null;
+    } finally {
+      clearTimeout(timer);
     }
   }, []);
 
@@ -312,6 +384,9 @@ export default function LearnSaraPage() {
   };
 
   const handleReset = () => {
+    // CHANGE: 2026-11-28 — clearing the lesson is not the same as ending the session chat.
+    // Keep chatIdRef so the transcript in the admin panel stays one continuous conversation.
+    try { sessionStorage.removeItem(CHAT_STORAGE_KEY); } catch { /* private mode */ }
     if (typeof window !== 'undefined' && window.speechSynthesis) {
       window.speechSynthesis.cancel();
       setIsSpeaking(false);

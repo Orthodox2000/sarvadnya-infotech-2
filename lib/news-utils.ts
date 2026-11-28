@@ -17,7 +17,21 @@ export const DEFAULT_AUTHOR = 'Sarvadnya Infotech LLP';
 // undo a retirement. The matching 301 lives in next.config.js `redirects()`; the two must be kept
 // in step (a slug here without a redirect throws away its inbound links, a redirect without an
 // entry here leaves a dead URL in the sitemap).
-export const RETIRED_NEWS_SLUGS = ['it-companies-in-belapur'];
+// CHANGE: 2026-11-28 — generic partner/city/list posts retired by owner. Kept as a hide-list
+// (not a DB delete) so an admin-authored document with one of these slugs stays recoverable.
+// Every slug here must have a matching 301 in next.config.js.
+export const RETIRED_NEWS_SLUGS = [
+  'it-companies-in-belapur',
+  'tally-partner-mumbai',
+  'tally-erp9-add-ons',
+  'tally-3-star-partner-mumbai',
+  'cloud-tally-cities-agra-patna-lucknow-mumbai',
+  'software-companies-in-navi-mumbai',
+  'smbs-cbd-belapur-certified-tally-partner',
+  'tally-5-star-partner-mumbai',
+  'tally-partner-near-me',
+  'cbd-belapur-it-companies-list',
+];
 
 /** Deterministic URL slug from a title. Lowercases, strips punctuation, collapses whitespace. */
 export function slugifyText(text: string): string {

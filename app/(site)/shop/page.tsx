@@ -24,7 +24,7 @@ const SHOP_PATH = '/shop';
 // site suffix, so the new page does not add fresh `npm run check:seo` warnings (the helper
 // appends " | Sarvadnya Infotech LLP" and the contact suffix automatically). Same message.
 export const metadata: Metadata = seoMetadata({
-  title: 'Tally Shop: TDL Add-ons & Importers',
+  title: 'Find TallyPrime TDLs & Importers',
   description:
     '100+ ready-made TDL add-ons, Excel importers, boosters and modules for TallyPrime. Find yours by the problem it solves.',
   path: SHOP_PATH,
@@ -33,6 +33,7 @@ export const metadata: Metadata = seoMetadata({
     'tally tdl',
     'tallyprime tdl',
     'excel to tally import',
+    'bank statement import',
     'tally customization',
     'tally modules',
     'tally add-on price',
